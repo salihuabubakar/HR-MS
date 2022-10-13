@@ -19,6 +19,7 @@ import Timesheet from './timesheet';
 import Overtime from './overtime';
 import ShiftScheduling from './shiftscheduling';
 import ShiftList from './shiftlist';
+import SelectDept from './selectDept';
 
 const EmployeesRoute = ({ match }) => (
    <Switch>
@@ -36,6 +37,7 @@ const EmployeesRoute = ({ match }) => (
       <Route path={`${match.url}/timesheet`} component={Timesheet} />
       <Route path={`${match.url}/overtime`} component={Overtime} />
       <Route path={`${match.url}/shift-scheduling`} component={ShiftScheduling} />
+      <Route path={`${match.url}/selectDept`} component={SelectDept} />
       <Route path={`${match.url}/shift-list`} component={ShiftList} />
    </Switch>
 );

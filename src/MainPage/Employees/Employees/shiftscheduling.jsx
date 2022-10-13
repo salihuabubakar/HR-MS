@@ -32,7 +32,7 @@ const ShiftScheduling = () => {
                   <h3 className="page-title">Daily Scheduling</h3>
                   <ul className="breadcrumb">
                     <li className="breadcrumb-item"><Link to="/app/main/dashboard">Dashboard</Link></li>
-                    <li className="breadcrumb-item"><Link to="/app/employee/allemployees">Employees</Link></li>
+                    <li className="breadcrumb-item"><Link to="/app/employee/selectDept">Departments</Link></li>
                     <li className="breadcrumb-item active">Shift Scheduling</li>
                   </ul>
                 </div>
