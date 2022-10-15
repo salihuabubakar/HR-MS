@@ -8,6 +8,7 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import {itemRender,onShowSizeChange} from "../../paginationfunction"
 import "../../antdstyle.css"
+import { designations } from '../../../utils/localDate';
 
 const Designations = () => {
 
@@ -17,39 +18,22 @@ const Designations = () => {
 		setMenu(!menu)
 	  }
 
-    const [data, setData] = useState([
-      {id:1,department:'Web Development',designation:"Web Developer"},
-      {id:2,department:'Application Development',designation:"Application Developer"},
-      {id:3,department:'Web Development',designation:"Web Developer"},
-      {id:4,department:'Web Development',designation:"Web Developer"},
-      {id:5,department:'Web Development',designation:"Web Developer"},
-      {id:6,department:'Application Development',designation:"Application Developer"},
-    ]);
-    useEffect( ()=>{
-      if($('.select').length > 0) {
-        $('.select').select2({
-          minimumResultsForSearch: -1,
-          width: '100%'
-        });
-      }
-    }); 
-
 
       const columns = [        
         {
           title: '#',
           dataIndex: 'id',
-          sorter: (a, b) => a.id.length - b.id.length,
+          // sorter: (a, b) => a.id.length - b.id.length,
         },
         {
           title: 'Department',
-          dataIndex: 'department',
-          sorter: (a, b) => a.department.length - b.department.length,
+          dataIndex: 'dept',
+          // sorter: (a, b) => a.department.length - b.department.length,
         },
         {
           title: 'Designation',
-          dataIndex: 'designation',
-          sorter: (a, b) => a.designation.length - b.designation.length,
+          dataIndex: 'name',
+          // sorter: (a, b) => a.designation.length - b.designation.length,
         },
         {
           title: 'Action',
@@ -98,13 +82,13 @@ const Designations = () => {
             <div className="table-responsive">
               
             <Table className="table-striped"
-                  pagination= { {total : data.length,
+                  pagination= { {total : designations?.length,
                     showTotal : (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                     showSizeChanger : true,onShowSizeChange: onShowSizeChange ,itemRender : itemRender } }
                   style = {{overflowX : 'auto'}}
                   columns={columns}                 
                   // bordered
-                  dataSource={data}
+                  dataSource={designations}
                   rowKey={record => record.id}
                   onChange={console.log("change")}
                 />

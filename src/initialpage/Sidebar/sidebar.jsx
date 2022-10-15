@@ -353,7 +353,7 @@ const toggleLevelThree = (value) => {
                                 }
                                 to="/app/employee/selectDept"
                               >
-                                Select Department
+                                Select House
                               </Link>
                             </li>
                           </ul>

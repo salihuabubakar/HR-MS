@@ -11,10 +11,15 @@ import  Editemployee from "../../../_components/modelbox/Editemployee"
 import  Addemployee from "../../../_components/modelbox/Addemployee"
 import Header from '../../../initialpage/Sidebar/header'
 import Sidebar from '../../../initialpage/Sidebar/sidebar'
+import { staffs, designations } from '../../../utils/localDate';
 
 const Employeeslist = () => {
 
   const [menu, setMenu] = useState(false)
+  
+  const handleSelectedEvent = (e) =>{
+    console.log("salihu", e.target.value);
+  }
 
 	const toggleMobileMenu = () => {
 		setMenu(!menu)
@@ -45,8 +50,8 @@ const Employeeslist = () => {
               dataIndex: 'name',
               render: (text, record) => (            
                   <h2 className="table-avatar">
-                    <Link to="/app/profile/employee-profile" className="avatar"><img alt="" src={record.image} /></Link>
-                    <Link to="/app/profile/employee-profile">{text} <span>{record.role}</span></Link>
+                    <Link to="/app/profile/employee-profile" className="avatar"><img alt="" src={record.img} /></Link>
+                    <Link to="/app/profile/employee-profile">{text} <span>{record.designation}</span></Link>
                   </h2>
                 ), 
                 sorter: (a, b) => a.name.length - b.name.length,
@@ -74,20 +79,20 @@ const Employeeslist = () => {
               dataIndex: 'joindate',
               sorter: (a, b) => a.joindate.length - b.joindate.length,
             },
-            {
-              title: 'Role',
-              render: (text, record) => (
-                <div className="dropdown">
-                <a href="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Web Developer </a>
-                <div className="dropdown-menu">
-                  <a className="dropdown-item" href="#">Software Engineer</a>
-                  <a className="dropdown-item" href="#">Software Tester</a>
-                  <a className="dropdown-item" href="#">Frontend Developer</a>
-                  <a className="dropdown-item" href="#">UI/UX Developer</a>
-                </div>
-              </div>
-                ),
-            },
+            // {
+            //   title: 'Role',
+            //   render: (text, record) => (
+            //     <div className="dropdown">
+            //     <a href="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Web Developer </a>
+            //     <div className="dropdown-menu">
+            //       <a className="dropdown-item" href="#">Software Engineer</a>
+            //       <a className="dropdown-item" href="#">Software Tester</a>
+            //       <a className="dropdown-item" href="#">Frontend Developer</a>
+            //       <a className="dropdown-item" href="#">UI/UX Developer</a>
+            //     </div>
+            //   </div>
+            //     ),
+            // },
             {
               title: 'Action',
               render: (text, record) => (
@@ -150,12 +155,19 @@ const Employeeslist = () => {
              </div>
              <div className="col-sm-6 col-md-3"> 
                <div className="form-group form-focus select-focus">
-                 <select className="select floating"> 
-                   <option>Select Designation</option>
-                   <option>Web Developer</option>
-                   <option>Web Designer</option>
-                   <option>Android Developer</option>
-                   <option>Ios Developer</option>
+                 <select onChange={handleSelectedEvent} className="select floating">
+                  <option hidden>Select Designation</option>
+                  {designations?.map(role => {
+                   const {dept, name, id} = role;
+                   return (
+                     <option
+                       key={id}
+                       value={name}
+                     >
+                       {name}
+                     </option>
+                   );
+                  })} 
                  </select>
                  <label className="focus-label">Designation</label>
                </div>
@@ -169,14 +181,14 @@ const Employeeslist = () => {
              <div className="col-md-12">
                <div className="table-responsive">
                <Table className="table-striped"
-                  pagination= { {total : data.length,
+                  pagination= { {total : staffs.length,
                     showTotal : (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                     showSizeChanger : true,onShowSizeChange: onShowSizeChange ,itemRender : itemRender } }
                   style = {{overflowX : 'auto'}}
                   columns={columns}                 
                   // bordered
-                  dataSource={data}
-                  rowKey={record => record.id}
+                  dataSource={staffs}
+                  rowKey={staff => staff.staff_id}
                   onChange={console.log("change")}
                 />
                </div>

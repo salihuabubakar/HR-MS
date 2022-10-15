@@ -8,6 +8,7 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import {itemRender,onShowSizeChange} from "../../paginationfunction"
 import "../../antdstyle.css"
+import { dept } from '../../../utils/localDate';
 
 const Department = () => {
 
@@ -16,40 +17,52 @@ const Department = () => {
 	const toggleMobileMenu = () => {
 		setMenu(!menu)
 	  }
-
-    const [data, setData] = useState([
-      {id:1,department:'Web Development'},
-      {id:2,department:'Application Development'},
-      {id:3,department:'IT Management'},
-      {id:4,department:'Accounts Management'},
-      {id:5,department:'Support Management'},
-      {id:6,department:'Marketing'},
-    ]);
     
-      const columns = [        
+      const columns = [
         {
-          title: '#',
-          dataIndex: 'id',
-          sorter: (a, b) => a.id.length - b.id.length,
+          title: "#",
+          dataIndex: "dept_id",
+          // sorter: (a, b) => adept_id.length - b.dept_id.length,
         },
         {
-          title: 'Department',
-          dataIndex: 'department',
-          sorter: (a, b) => a.department.length - b.department.length,
+          title: "Department",
+          dataIndex: "name",
+          // sorter: (a, b) => a.name.length - b.name.length,
         },
         {
-          title: 'Action',
+          title: "Action",
           render: (text, record) => (
-              <div className="dropdown dropdown-action text-end">
-                  <a href="#" className="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_department"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                    <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_department"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                  </div>
+            <div className="dropdown dropdown-action text-end">
+              <a
+                href="#"
+                className="action-icon dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i className="material-icons">more_vert</i>
+              </a>
+              <div className="dropdown-menu dropdown-menu-right">
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#edit_department"
+                >
+                  <i className="fa fa-pencil m-r-5" /> Edit
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#delete_department"
+                >
+                  <i className="fa fa-trash-o m-r-5" /> Delete
+                </a>
               </div>
-            ),
-        }, 
-      ]
+            </div>
+          ),
+        },
+      ];
       return ( 
         
     <div className={`main-wrapper ${menu ? 'slide-nav': ''}`}> 
@@ -84,13 +97,13 @@ const Department = () => {
           <div className="table-responsive">
               
               <Table className="table-striped"
-                    pagination= { {total : data.length,
+                    pagination= { {total : dept?.length,
                       showTotal : (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                       showSizeChanger : true,onShowSizeChange: onShowSizeChange ,itemRender : itemRender } }
                     style = {{overflowX : 'auto'}}
                     columns={columns}                 
                     // bordered
-                    dataSource={data}
+                    dataSource={dept}
                     rowKey={record => record.id}
                     onChange={console.log("change")}
                   />
