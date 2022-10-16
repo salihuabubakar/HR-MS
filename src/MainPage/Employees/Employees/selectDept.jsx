@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
+import { houses } from "../../../utils/localDate";
 
 const SelectDept = () => {
   const [menu, setMenu] = useState(false);
@@ -35,12 +36,12 @@ const SelectDept = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Departments</h3>
+                <h3 className="page-title">Houses</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
                     <Link to="/app/main/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">Departments</li>
+                  <li className="breadcrumb-item active">Houses</li>
                 </ul>
               </div>
             </div>
@@ -63,67 +64,22 @@ const SelectDept = () => {
           </div>
           {/* Search Filter */}
           <div className="row staff-grid-row">
-            <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-              <div className="profile-widget">
-                <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                  <Link to="/app/employee/shift-scheduling">
-                    Web Development
-                  </Link>
-                </h4>
-                <div className="small text-muted">Number of staffs: 20</div>
-              </div>
-            </div>
-
-            <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-              <div className="profile-widget">
-                <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                  <Link to="/app/employee/shift-scheduling">
-                    Application Development
-                  </Link>
-                </h4>
-                <div className="small text-muted">Number of staffs: 20</div>
-              </div>
-            </div>
-
-            <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-              <div className="profile-widget">
-                <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                  <Link to="/app/employee/shift-scheduling">IT Management</Link>
-                </h4>
-                <div className="small text-muted">Number of staffs: 20</div>
-              </div>
-            </div>
-
-            <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-              <div className="profile-widget">
-                <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                  <Link to="/app/employee/shift-scheduling">
-                    Accounts Management
-                  </Link>
-                </h4>
-                <div className="small text-muted">Number of staffs: 20</div>
-              </div>
-            </div>
-
-            <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-              <div className="profile-widget">
-                <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                  <Link to="/app/employee/shift-scheduling">
-                    Support Management
-                  </Link>
-                </h4>
-                <div className="small text-muted">Number of staffs: 20</div>
-              </div>
-            </div>
-
-            <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-              <div className="profile-widget">
-                <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                  <Link to="/app/employee/shift-scheduling"> Marketing</Link>
-                </h4>
-                <div className="small text-muted">Number of staffs: 20</div>
-              </div>
-            </div>
+            {houses?.map(house => {
+              const {house_id, name} = house;
+              return (
+                <div key={house_id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+                  <div className="profile-widget">
+                    <h4 className="user-name m-t-10 mb-0 text-ellipsis">
+                      <Link to="/app/employee/shift-scheduling">
+                        {name}
+                      </Link>
+                    </h4>
+                    <div className="small text-muted">Number of staffs: 20</div>
+                  </div>
+                </div>
+              );
+            })}
+            
           </div>
         </div>
       </div>
