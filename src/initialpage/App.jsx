@@ -47,27 +47,29 @@ import Error500 from '../MainPage/Pages/ErrorPage/error500';
 
 export default class App extends Component {
     componentDidMount(){
-        if (location.pathname.includes("login") || location.pathname.includes("register") || location.pathname.includes("forgotpassword")
-        || location.pathname.includes("otp")|| location.pathname.includes("lockscreen") ) {
-            // $('body').addClass('account-page');
-        }else if (location.pathname.includes("error-404") || location.pathname.includes("error-500") ) {
-            $('body').addClass('error-page');
-        }
+        // if (location.pathname.includes("login") || location.pathname.includes("register") || location.pathname.includes("forgotpassword")
+        // || location.pathname.includes("otp")|| location.pathname.includes("lockscreen") ) {
+        //     // $('body').addClass('account-page');
+        // }else if (location.pathname.includes("error-404") || location.pathname.includes("error-500") ) {
+        //     $('body').addClass('error-page');
+        // }
     }
        render(){
             const { location, match, user } = this.props;
+
+            console.log("L", location, "M", match, "U", user);
             
             
-            // if (location.pathname === '/') {
-            // if (user === null) {
-            //     return (<Redirect to={'/login'} />);
-            // } else {
-            //     return (<Redirect to={'/app/main/dashboard'} />);
-            // }
-            // }
-            if (location.pathname === '/') {                 
-                   return (<Redirect to={'/app/main/dashboard'} />);                
-             }
+            if (location.pathname === '/') {
+            if (user === undefined) {
+                return (<Redirect to={'/login'} />);
+            } else {
+                return (<Redirect to={'/app/main/dashboard'} />);
+            }
+            }
+            // if (location.pathname === '/') {                 
+            //        return (<Redirect to={'/app/main/dashboard'} />);                
+            //  }
             return (
                 <Switch>
                     {/* <InitialPath

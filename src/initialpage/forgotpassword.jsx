@@ -15,7 +15,6 @@ const ForgotPassword = () => {
                     <meta name="description" content="Login page"/>					
             </Helmet>
           <div className="account-content">
-            <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">Apply Job</Link>
             <div className="container">
               {/* Account Logo */}
               <div className="account-logo">
