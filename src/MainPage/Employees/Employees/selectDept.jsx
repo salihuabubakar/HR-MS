@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
-import { houses } from "../../../utils/localDate";
+import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
 
 const SelectDept = () => {
   const [menu, setMenu] = useState(false);
+  const [house, dispatchHouse] = useReducer(savedHouseReducer, [], initHouse);
+  const [houseList, setHouseList] = useState();
+  useEffect(() => {
+    setHouseList(house);
+  }, [house]);
 
   const toggleMobileMenu = () => {
     setMenu(!menu);
@@ -64,22 +69,24 @@ const SelectDept = () => {
           </div>
           {/* Search Filter */}
           <div className="row staff-grid-row">
-            {houses?.map(house => {
-              const {house_id, name} = house;
+            {houseList?.map((house) => {
+              const { id, houseName, employee } = house;
               return (
-                <div key={house_id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+                <div
+                  key={id}
+                  className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
+                >
                   <div className="profile-widget">
                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                       <Link to="/app/employee/shift-scheduling">
-                        {name}
+                        {houseName}
                       </Link>
                     </h4>
-                    <div className="small text-muted">Number of staffs: 20</div>
+                    <div className="small text-muted">{"Number of staffs: " + employee?.length}</div>
                   </div>
                 </div>
               );
             })}
-            
           </div>
         </div>
       </div>
