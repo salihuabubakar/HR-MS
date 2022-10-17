@@ -8,42 +8,42 @@ import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
-import { initDept, savedDeptReducer } from "../../../utils/localStorage";
-import AddDepartment from "../../../_components/modelbox/AddDepartment";
+import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
+import AddHouse from "../../../_components/modelbox/AddHouse";
 
-const Department = () => {
-  const [depts, dispatchDepts] = useReducer(savedDeptReducer, [], initDept);
+const Housing = () => {
+  const [house, dispatchHouse] = useReducer(savedHouseReducer, [], initHouse);
   const [showModal] = useGlobalState("showModal");
 
   useEffect(() => {
-    localStorage.setItem("dept", JSON.stringify(depts));
-  }, [depts]);
+    localStorage.setItem("house", JSON.stringify(house));
+  }, [house]);
   useEffect(() => {
     if(!showModal) {
-      setGlobalState("selectedDept", "");
+      setGlobalState("selectedHouse", "");
     }
   }, [showModal])
 
-  const [deptList, setDeptList] = useState();
+  const [houseList, setHouseList] = useState();
   useEffect(() => {
-    setDeptList(depts);
-  }, [depts]);
+    setHouseList(house);
+  }, [house]);
 
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState(0);
-  const [deptIdToEdit, setDeptIdToEdit] = useState("");
+  const [houseIdToEdit, setHouseIdToEdit] = useState("");
 
   const handleDeptEdit = (id, index) => {
-    setDeptIdToEdit(id);
+    setHouseIdToEdit(id);
     setIndexToEdit(index);
     setGlobalState("showModal", true);
-    setGlobalState("selectedDept", depts);
+    setGlobalState("selectedHouse", house);
   };
 
   const handleDeptDelete = async (index) => {
-    dispatchDepts({
+    dispatchHouse({
       type: "delete",
-      payload: depts[index],
+      payload: house[index],
     });
   };
 
@@ -59,8 +59,8 @@ const Department = () => {
       // sorter: (a, b) => adept_id.length - b.dept_id.length,
     },
     {
-      title: "Department",
-      dataIndex: "deptName",
+      title: "House",
+      dataIndex: "houseName",
       // sorter: (a, b) => a.name.length - b.name.length,
     },
     {
@@ -110,12 +110,12 @@ const Department = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Department</h3>
+                <h3 className="page-title">House</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
                     <Link to="/app/main/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">Department</li>
+                  <li className="breadcrumb-item active">House</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
@@ -124,7 +124,7 @@ const Department = () => {
                   className="btn add-btn"
                   onClick={() => setGlobalState("showModal", true)}
                 >
-                  <i className="fa fa-plus" /> Add Department
+                  <i className="fa fa-plus" /> Add House
                 </a>
               </div>
             </div>
@@ -136,7 +136,7 @@ const Department = () => {
                 <Table
                   className="table-striped"
                   pagination={{
-                    total: deptList?.length,
+                    total: houseList?.length,
                     showTotal: (total, range) =>
                       `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                     showSizeChanger: true,
@@ -146,8 +146,8 @@ const Department = () => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   // bordered
-                  dataSource={deptList}
-                  rowKey={(dept) => dept.id}
+                  dataSource={houseList}
+                  rowKey={(house) => house.id}
                   onChange={console.log("change")}
                 />
               </div>
@@ -157,11 +157,11 @@ const Department = () => {
         {/* /Page Content */}
         {/* Add Department Modal */}
         {showModal && (
-          <AddDepartment
-            dispatchDepts={dispatchDepts}
+          <AddHouse
+            dispatchHouse={dispatchHouse}
             indexToEdit={indexToEdit}
-            deptIdToEdit={deptIdToEdit}
-            depts={depts}
+            deptIdToEdit={houseIdToEdit}
+            house={house}
           />
         )}
         {/* /Add Department Modal */}
@@ -206,4 +206,4 @@ const Department = () => {
   );
 };
 
-export default Department;
+export default Housing;

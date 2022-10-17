@@ -5,14 +5,27 @@ import  Addemployee from "../../../_components/modelbox/Addemployee"
 import  Editemployee from "../../../_components/modelbox/Editemployee"
 import Header from '../../../initialpage/Sidebar/header'
 import Sidebar from '../../../initialpage/Sidebar/sidebar'
-import { staffs, designations } from "../../../utils/localDate";
 import { setGlobalState, useGlobalState } from '../../../context/GlobalState';
-import { initUserAccount, savedUserAccountReducer } from "../../../utils/localStorage";
+import {
+  initUserAccount,
+  savedUserAccountReducer,
+  initDesignation,
+  savedDesignationReducer,
+} from "../../../utils/localStorage";
 import SmileImg from "../../../assets/img/smile.png";
 import Select from "react-select";
 
 
 const AllEmployees = () => {
+  const [desig] = useReducer(
+    savedDesignationReducer,
+    [],
+    initDesignation
+  );
+  const [desigList, setDesignationList] = useState();
+  useEffect(() => {
+    setDesignationList(desig);
+  }, [desig]);
 
    const customSelectStyles = {
      option: (provided, state) => ({
@@ -27,11 +40,14 @@ const AllEmployees = () => {
      }),
    };
 
+   
+
    const [designation, setDesignation] = useState("");
+    const [showModal] = useGlobalState("showModal");
 
   const roles = [];
-  designations?.map((role) => {
-    roles.push({ value: role.id, label: role.name });
+  desigList?.map((role) => {
+    roles.push({ value: role.id, label: role.desigName });
   });
 
    const handleRoleChange = (event) => {
@@ -49,6 +65,11 @@ const AllEmployees = () => {
   useEffect(() => {
     localStorage.setItem("userAccount", JSON.stringify(userAcct));
   }, [userAcct]);
+  useEffect(() => {
+    if(!showModal) {
+      setGlobalState("selectedUserAccount", "")
+    }
+  }, [showModal])
 
   const [employeeAccts, setEmployeeAccts] = useState();
   useEffect(() => {
@@ -56,9 +77,14 @@ const AllEmployees = () => {
   }, [userAcct]);
 
   const [menu, setMenu] = useState(false)
-  const [showModal] = useGlobalState("showModal");
+ 
   const [indexToEdit, setIndexToEdit] = useState(0);
   const [acctIdToEdit, setAcctIdToEdit] = useState("");
+
+  const handleAddEmployee = () => {
+    setGlobalState("showModal", true);
+    setGlobalState("selectedUserAccount", "");
+  }
 
   const handleEditAcct = (id, index) => {
     setAcctIdToEdit(id);
@@ -115,7 +141,7 @@ const AllEmployees = () => {
                     <a
                       href="#"
                       className="btn add-btn"
-                      onClick={() => setGlobalState("showModal", true)}
+                      onClick={handleAddEmployee}
                     >
                       <i className="fa fa-plus" /> Add Employee
                     </a>
@@ -154,14 +180,6 @@ const AllEmployees = () => {
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus select-focus">
                     <Select
-                      // defaultValue={
-                      //   isEdit()
-                      //     ? {
-                      //         value: userAcct[indexToEdit].designation.value,
-                      //         label: userAcct[indexToEdit].designation.label,
-                      //       }
-                      //     : "Select Designation"
-                      // }
                       onChange={handleRoleChange}
                       options={roles}
                       styles={customSelectStyles}

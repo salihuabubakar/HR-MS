@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import Select from "react-select";
-import { dept as allDept, designations } from '../../utils/localDate';
+import { designations } from '../../utils/localDate';
 import { useGlobalState, setGlobalState } from '../../context/GlobalState';
+import {
+  initDept,
+  savedDeptReducer,
+  initDesignation,
+  savedDesignationReducer,
+} from "../../utils/localStorage";
 import {
   PopupWrapper,
   PopupOverlay,
@@ -11,17 +17,32 @@ import {
 const Addemployee = ({
   dispatchUserAcct,
   indexToEdit,
-  acctIdToEdit,
+  // acctIdToEdit,
   userAcct,
 }) => {
-  const isEdit = () => !!(acctIdToEdit && userAcct[indexToEdit]);
+  // const isEdit = () => !!(acctIdToEdit && userAcct[indexToEdit]);
 
   const [selectedUserAccount] = useGlobalState("selectedUserAccount");
+  const [depts] = useReducer(savedDeptReducer, [], initDept);
+  const [deptList, setDeptList] = useState();
+  useEffect(() => {
+    setDeptList(depts);
+  }, [depts]);
+
+  const [desig] = useReducer(
+    savedDesignationReducer,
+    [],
+    initDesignation
+  );
+  const [desigList, setDesignationList] = useState();
+  useEffect(() => {
+    setDesignationList(desig);
+  }, [desig]);
 
   const [firstName, setFirstName] = useState(
     selectedUserAccount[indexToEdit]?.firstName
-    ? selectedUserAccount[indexToEdit]?.firstName
-    : ""
+      ? selectedUserAccount[indexToEdit]?.firstName
+      : ""
   );
   const [lastName, setLastName] = useState(
     selectedUserAccount[indexToEdit]?.lastName
@@ -81,7 +102,8 @@ const Addemployee = ({
   const [id, setId] = useState(
     selectedUserAccount[indexToEdit]?.id
     ? selectedUserAccount[indexToEdit]?.id
-    : Date.now());
+    : Date.now()
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -128,8 +150,8 @@ const Addemployee = ({
   ];
 
   const departments = [];
-  allDept?.map((dept) => {
-    departments.push({ value: dept.dept_id, label: dept.name });
+  deptList?.map((dept) => {
+    departments.push({ value: dept.id, label: dept.deptName });
   });
 
   const handleCompanyChange = (event) => {
@@ -142,8 +164,8 @@ const Addemployee = ({
   };
 
   const roles = [];
-  designations?.map((role) => {
-    roles.push({ value: role.id, label: role.name });
+  desigList?.map((role) => {
+    roles.push({ value: role.id, label: role.desigName });
   });
 
   const handleRoleChange = (event) => {
@@ -163,13 +185,12 @@ const Addemployee = ({
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Add Employee</h5>
-                <button type="button" className="close">
-                  <span
-                    aria-hidden="true"
-                    onClick={() => setGlobalState("showModal", false)}
-                  >
-                    ×
-                  </span>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={() => setGlobalState("showModal", false)}
+                >
+                  <span aria-hidden="true">×</span>
                 </button>
               </div>
               <div className="modal-body">
@@ -181,9 +202,7 @@ const Addemployee = ({
                           First Name <span className="text-danger">*</span>
                         </label>
                         <input
-                          defaultValue={
-                            isEdit() ? userAcct[indexToEdit].firstName : ""
-                          }
+                          value={firstName}
                           onChange={(event) => setFirstName(event.target.value)}
                           className="form-control"
                           type="text"
@@ -194,9 +213,7 @@ const Addemployee = ({
                       <div className="form-group">
                         <label className="col-form-label">Last Name</label>
                         <input
-                          defaultValue={
-                            isEdit() ? userAcct[indexToEdit].lastName : ""
-                          }
+                          value={lastName}
                           onChange={(event) => setLastName(event.target.value)}
                           className="form-control"
                           type="text"
@@ -209,9 +226,7 @@ const Addemployee = ({
                           Username <span className="text-danger">*</span>
                         </label>
                         <input
-                          defaultValue={
-                            isEdit() ? userAcct[indexToEdit].userName : ""
-                          }
+                          value={userName}
                           onChange={(event) => setUserName(event.target.value)}
                           className="form-control"
                           type="text"
@@ -224,9 +239,7 @@ const Addemployee = ({
                           Email <span className="text-danger">*</span>
                         </label>
                         <input
-                          defaultValue={
-                            isEdit() ? userAcct[indexToEdit].email : ""
-                          }
+                          value={email}
                           onChange={(event) => setEmail(event.target.value)}
                           className="form-control"
                           type="email"
@@ -237,9 +250,7 @@ const Addemployee = ({
                       <div className="form-group">
                         <label className="col-form-label">Password</label>
                         <input
-                          defaultValue={
-                            isEdit() ? userAcct[indexToEdit].password : ""
-                          }
+                          value={password}
                           onChange={(event) => setPassword(event.target.value)}
                           className="form-control"
                           type="password"
@@ -252,11 +263,7 @@ const Addemployee = ({
                           Confirm Password
                         </label>
                         <input
-                          defaultValue={
-                            isEdit()
-                              ? userAcct[indexToEdit].confirmPassword
-                              : ""
-                          }
+                          value={confirmPassword}
                           onChange={(event) =>
                             setConfirmPassword(event.target.value)
                           }
@@ -271,9 +278,7 @@ const Addemployee = ({
                           Employee ID <span className="text-danger">*</span>
                         </label>
                         <input
-                          defaultValue={
-                            isEdit() ? userAcct[indexToEdit].employeeId : ""
-                          }
+                          value={employeeId}
                           onChange={(event) =>
                             setEmployeeId(event.target.value)
                           }
@@ -291,9 +296,7 @@ const Addemployee = ({
                           <input
                             className="form-control datetimepicker"
                             type="date"
-                            defaultValue={
-                              isEdit() ? userAcct[indexToEdit].joinDate : ""
-                            }
+                            value={joinDate}
                             onChange={(event) =>
                               setJoinDate(event.target.value)
                             }
@@ -305,9 +308,7 @@ const Addemployee = ({
                       <div className="form-group">
                         <label className="col-form-label">Phone </label>
                         <input
-                          defaultValue={
-                            isEdit() ? userAcct[indexToEdit].phoneNo : ""
-                          }
+                          value={phoneNo}
                           onChange={(event) => setPhoneNo(event.target.value)}
                           className="form-control"
                           type="text"
@@ -319,7 +320,7 @@ const Addemployee = ({
                         <label className="col-form-label">Company</label>
                         <Select
                           defaultValue={
-                            isEdit()
+                            selectedUserAccount[indexToEdit]?.company
                               ? {
                                   value: userAcct[indexToEdit].company.value,
                                   label: userAcct[indexToEdit].company.label,
@@ -340,7 +341,7 @@ const Addemployee = ({
                         </label>
                         <Select
                           defaultValue={
-                            isEdit()
+                            selectedUserAccount[indexToEdit]?.dept
                               ? {
                                   value: userAcct[indexToEdit].dept.value,
                                   label: userAcct[indexToEdit].dept.label,
@@ -361,7 +362,7 @@ const Addemployee = ({
                         </label>
                         <Select
                           defaultValue={
-                            isEdit()
+                            selectedUserAccount[indexToEdit]?.designation
                               ? {
                                   value:
                                     userAcct[indexToEdit].designation.value,

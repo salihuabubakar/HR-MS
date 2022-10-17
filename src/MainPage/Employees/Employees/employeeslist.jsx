@@ -9,16 +9,26 @@ import "../../antdstyle.css"
 import  Addemployee from "../../../_components/modelbox/Addemployee"
 import Header from '../../../initialpage/Sidebar/header'
 import Sidebar from '../../../initialpage/Sidebar/sidebar'
-import { staffs, designations } from '../../../utils/localDate';
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import {
   initUserAccount,
   savedUserAccountReducer,
+  initDesignation,
+  savedDesignationReducer
 } from "../../../utils/localStorage";
 import SmileImg from "../../../assets/img/smile.png";
 import Select from "react-select";
 
 const Employeeslist = () => {
+  const [desig] = useReducer(
+    savedDesignationReducer,
+    [],
+    initDesignation
+  );
+  const [desigList, setDesignationList] = useState();
+  useEffect(() => {
+    setDesignationList(desig);
+  }, [desig]);
 
   const customSelectStyles = {
     option: (provided, state) => ({
@@ -34,10 +44,11 @@ const Employeeslist = () => {
   };
 
    const [designation, setDesignation] = useState("");
+   const [showModal] = useGlobalState("showModal");
 
    const roles = [];
-   designations?.map((role) => {
-     roles.push({ value: role.id, label: role.name });
+   desigList?.map((role) => {
+     roles.push({ value: role.id, label: role.desigName });
    });
 
    const handleRoleChange = (event) => {
@@ -53,17 +64,18 @@ const Employeeslist = () => {
   useEffect(() => {
     localStorage.setItem("userAccount", JSON.stringify(userAcct));
   }, [userAcct]);
+  useEffect(() => {
+    if (!showModal) {
+      setGlobalState("selectedUserAccount", "");
+    }
+  }, [showModal]);
 
   const [employeeAccts, setEmployeeAccts] = useState();
   useEffect(() => {
-    userAcct.map((event) => {
-      return event;
-    });
     setEmployeeAccts(userAcct);
   }, [userAcct]);
 
   const [menu, setMenu] = useState(false); 
-  const [showModal] = useGlobalState("showModal");
   const [indexToEdit, setIndexToEdit] = useState(0);
   const [acctIdToEdit, setAcctIdToEdit] = useState("");
 
@@ -247,14 +259,6 @@ const Employeeslist = () => {
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus select-focus">
                     <Select
-                      // defaultValue={
-                      //   isEdit()
-                      //     ? {
-                      //         value: userAcct[indexToEdit].designation.value,
-                      //         label: userAcct[indexToEdit].designation.label,
-                      //       }
-                      //     : "Select Designation"
-                      // }
                       onChange={handleRoleChange}
                       options={roles}
                       styles={customSelectStyles}
