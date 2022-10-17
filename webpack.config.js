@@ -66,7 +66,7 @@ module.exports = {
       apiUrl: '',
       imageapiUrl: '',
       
-      publicPath : '/orange'            
+      publicPath : '/'            
   })
 },
  resolve: {

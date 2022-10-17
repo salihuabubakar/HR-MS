@@ -10,6 +10,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup';
 import  { alphaNumericPattern, emailrgx } from '../constant'
+import { Redirect, Route, Switch } from "react-router-dom";
 
 
 const schema = yup
@@ -73,7 +74,6 @@ const Loginpage = (props) => {
                <meta name="description" content="Login page"/>					
          </Helmet>
         <div className="account-content">
-          <Link to="/applyjob/joblist" className="btn btn-primary apply-btn">Apply Job</Link>
           <div className="container">
             {/* Account Logo */}
             <div className="account-logo">
