@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
 import Select from "react-select";
-import { designations } from '../../utils/localDate';
 import { useGlobalState, setGlobalState } from '../../context/GlobalState';
 import {
   initDept,
@@ -12,6 +11,7 @@ import {
   PopupWrapper,
   PopupOverlay,
   PopupContainer,
+  Card,
 } from "./Addemployee.style";
 
 const Addemployee = ({
@@ -177,8 +177,8 @@ const Addemployee = ({
       {/* Add Employee Modal */}
       <PopupWrapper>
         <PopupOverlay />
-        <PopupContainer className=" custom-modal" role="dialog">
-          <div
+        <PopupContainer className="custom-modal" role="dialog">
+          <Card
             className="modal-dialog modal-dialog-centered modal-lg"
             role="document"
           >
@@ -575,7 +575,7 @@ const Addemployee = ({
                 </form>
               </div>
             </div>
-          </div>
+          </Card>
         </PopupContainer>
       </PopupWrapper>
       {/* /Add Employee Modal */}
