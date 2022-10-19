@@ -53,13 +53,13 @@ import Error500 from '../MainPage/Pages/ErrorPage/error500';
   const user = localStorage.getItem("email");
    console.log("L", location, "M", match, "U", user);
 
-  //  if (location.pathname === '/') {
-  //    if (user === null && isLoggedIn === null) {
-  //      return <Redirect to={"/login"} />;
-  //    } else {
-  //      return <Redirect to={"/app/main/dashboard"} />;
-  //    }
-  //  }
+   if (location.pathname === '/') {
+     if (user === null && isLoggedIn === null) {
+       return <Redirect to={"/login"} />;
+     } else {
+       return <Redirect to={"/app/main/dashboard"} />;
+     }
+   }
 
    return (
      <Switch>
