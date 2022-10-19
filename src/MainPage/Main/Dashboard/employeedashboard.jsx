@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet";
 import {Avatar_02,Avatar_04,Avatar_05,Avatar_07,Avatar_08,Avatar_09} from '../../../Entryfile/imagepath.jsx'
 import Header from '../../../initialpage/Sidebar/header'
 import Sidebar from '../../../initialpage/Sidebar/sidebar'
+import { withRouter } from "react-router-dom";
 
 const EmployeeDashboard = () => {
 
@@ -247,4 +248,4 @@ const EmployeeDashboard = () => {
       );
   }
 
-export default EmployeeDashboard;
+export default withRouter(EmployeeDashboard);

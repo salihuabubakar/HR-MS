@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useMemo, useReducer } from 'react';
 import { Helmet } from "react-helmet";
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from "react-router-dom";
 import  Addemployee from "../../../_components/modelbox/Addemployee"
 import  Editemployee from "../../../_components/modelbox/Editemployee"
 import Header from '../../../initialpage/Sidebar/header'
@@ -316,4 +316,4 @@ const AllEmployees = () => {
       );
   }
 
-export default AllEmployees;
+export default withRouter(AllEmployees);

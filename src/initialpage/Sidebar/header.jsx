@@ -448,9 +448,9 @@ const Header = (props) => {
             <Link className="dropdown-item" to="/settings/companysetting">
               Settings
             </Link>
-            <Link onClick={handleLogOut} className="dropdown-item">
+            <button onClick={handleLogOut} className="dropdown-item">
               Logout
-            </Link>
+            </button>
           </div>
         </li>
       </ul>
@@ -472,9 +472,9 @@ const Header = (props) => {
           <Link className="dropdown-item" to="/settings/companysetting">
             Settings
           </Link>
-          <Link onClick={handleLogOut} className="dropdown-item">
+          <button onClick={handleLogOut} className="dropdown-item">
             Logout
-          </Link>
+          </button>
         </div>
       </div>
       {/* /Mobile Menu */}

@@ -50,23 +50,25 @@ import Error500 from '../MainPage/Pages/ErrorPage/error500';
     />
   );
 
+  console.log([match.url, location.pathname]);
+
   const user = localStorage.getItem("email");
 
-  //  if (location.pathname === '/') {
-  //    if (user === null && isLoggedIn === null) {
-  //      return <Redirect to={"/login"} />;
-  //    } else {
-  //      return <Redirect to={"/app/main/dashboard"} />;
-  //    }
-  //  }
+   if (location.pathname === '/') {
+     if (user === null && isLoggedIn === null) {
+       return <Redirect to={"/login"} />;
+     } else {
+       return <Redirect to={"/app/main/dashboard"} />;
+     }
+   }
 
    return (
      <Switch>
-       <InitialPath
+       {/* <InitialPath
          path={`${match.url}app`}
          authUser={user}
          component={DefaultLayout}
-       />
+       /> */}
        <Redirect exact from={`${match.url}/`} to={`${match.url}/login`} />
        <Route path="/login" component={LoginPage} />
        <Route path="/forgotpassword" component={ForgotPassword} />

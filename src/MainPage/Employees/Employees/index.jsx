@@ -3,7 +3,7 @@
  */
 /* eslint-disable */
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
 import AllEmployees from './allemployees';
 import AllEmployeesList from './employeeslist';
