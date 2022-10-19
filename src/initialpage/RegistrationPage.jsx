@@ -46,6 +46,7 @@ const Registrationpage = () => {
       localStorage.setItem("email", email);
       localStorage.setItem("password", password);
       alert("Account created successfully!!");
+      history.push("/login");
       // window.location.reload();
     }
   };
