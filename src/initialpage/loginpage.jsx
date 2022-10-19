@@ -62,7 +62,13 @@ const Loginpage = () => {
           {/* Account Logo */}
           <div className="account-logo">
             <Link to="/app/main/dashboard">
-              <img src={Applogo} alt="Dreamguy's Technologies" />
+              <img
+                src={
+                  "https://peepaltree.co.uk/wp-content/uploads/2021/02/Header-logo-800px.png"
+                }
+                style={{ width: "25%" }}
+                alt=""
+              />
             </Link>
           </div>
           {/* /Account Logo */}

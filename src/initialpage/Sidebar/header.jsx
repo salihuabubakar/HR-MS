@@ -43,7 +43,14 @@ const Header = (props) => {
       {/* Logo */}
       <div className="header-left">
         <Link to="/app/main/dashboard" className="logo">
-          <img src={headerlogo} width={40} height={40} alt="" />
+          <img
+            src={
+              "https://peepaltree.co.uk/wp-content/uploads/2020/07/logo_full_res-150x150.jpg"
+            }
+            width={40}
+            height={40}
+            alt=""
+          />
         </Link>
       </div>
       {/* /Logo */}
@@ -67,7 +74,14 @@ const Header = (props) => {
       </a>
       {/* Header Title */}
       <div className="page-title-box">
-        <h3>Dreamguy's Technologies</h3>
+        {/* <h3>PEEPAL TREE</h3> */}
+        <img
+          src={
+            "https://peepaltree.co.uk/wp-content/uploads/2021/02/Header-logo-800px.png"
+          }
+          style={{width: "25%"}}
+          alt=""
+        />
       </div>
       {/* /Header Title */}
       <a
