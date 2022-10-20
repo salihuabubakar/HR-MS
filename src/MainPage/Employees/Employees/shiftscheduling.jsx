@@ -108,7 +108,7 @@ const ShiftScheduling = () => {
                         <td>
                           <h2 className="table-avatar">
                             <Link to="/app/profile/employee-profile" className="avatar"><img src={Avatar_02} /></Link>
-                            <Link to="/app/profile/employee-profile">John Doe <span>Web Designer</span></Link>
+                            <Link to="/app/profile/employee-profile">Abdullahi Abubakar <span>Web Designer</span></Link>
                           </h2>
                         </td>
                         <td>

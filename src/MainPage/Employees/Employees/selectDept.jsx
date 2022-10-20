@@ -70,7 +70,7 @@ const SelectDept = () => {
           {/* Search Filter */}
           <div className="row staff-grid-row">
             {houseList?.map((house) => {
-              const { id, houseName, employee } = house;
+              const { id, houseName, employee, managerName } = house;
               return (
                 <div
                   key={id}
@@ -82,7 +82,12 @@ const SelectDept = () => {
                         {houseName}
                       </Link>
                     </h4>
-                    <div className="small text-muted">{"Number of staffs: " + employee?.length}</div>
+                    <p className="small text-muted">
+                      House Manager: {managerName}
+                    </p>
+                    <div className="small text-muted">
+                      {"Number of staffs: " + employee?.length}
+                    </div>
                   </div>
                 </div>
               );
