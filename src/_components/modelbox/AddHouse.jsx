@@ -32,6 +32,12 @@ const AddDepartment = ({
       : ""
   );
 
+  const [managerName, setManagerName] = useState(
+    selectedHouse[indexToEdit]?.managerName
+      ? selectedHouse[indexToEdit]?.managerName
+      : ""
+  );
+
   const [employee, setEmployee] = useState(
     selectedHouse[indexToEdit]?.employee
       ? selectedHouse[indexToEdit]?.employee
@@ -49,6 +55,7 @@ const AddDepartment = ({
     const house = {
       houseName,
       employee,
+      managerName,
       id,
     };
     if (selectedHouse[indexToEdit]?.id) {
@@ -113,7 +120,18 @@ const AddDepartment = ({
                 </div>
                 <div className="form-group">
                   <label>
-                    Employees <span className="text-danger">*</span>
+                    Manager <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    value={managerName}
+                    onChange={(e) => setManagerName(e.target.value)}
+                    className="form-control"
+                    type="text"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>
+                    Staffs <span className="text-danger">*</span>
                   </label>
                   <Select
                     defaultValue={
@@ -122,14 +140,14 @@ const AddDepartment = ({
                             value: house[indexToEdit].employee.value,
                             label: house[indexToEdit].employee.label,
                           }
-                        : "Select Employee"
+                        : "Select Staff"
                     }
                     onChange={handleEmployeeChange}
                     isMulti
                     closeMenuOnSelect={false}
                     options={users}
                     styles={customSelectStyles}
-                    placeholder="Select Employee"
+                    placeholder="Select Staff"
                   />
                 </div>
                 <div className="submit-section">

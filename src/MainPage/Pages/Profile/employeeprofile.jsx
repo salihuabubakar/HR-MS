@@ -50,12 +50,12 @@ const EmployeeProfile = () => {
                           <div className="row">
                             <div className="col-md-5">
                               <div className="profile-info-left">
-                                <h3 className="user-name m-t-0 mb-0">John Doe</h3>
+                                <h3 className="user-name m-t-0 mb-0">Abdullahi Abubakar</h3>
                                 <h6 className="text-muted">UI/UX Design Team</h6>
                                 <small className="text-muted">Web Designer</small>
                                 <div className="staff-id">Employee ID : FT-0001</div>
-                                <div className="small doj text-muted">Date of Join : 1st Jan 2013</div>
-                                <div className="staff-msg"><Link onClick={()=>localStorage.setItem("minheight","true")} className="btn btn-custom" to="/conversation/chat">Send Message</Link></div>
+                                <div className="small doj text-muted">Date of Join : 1st oct 2022</div>
+                                {/* <div className="staff-msg"><Link onClick={()=>localStorage.setItem("minheight","true")} className="btn btn-custom" to="/conversation/chat">Send Message</Link></div> */}
                               </div>
                             </div>
                             <div className="col-md-7">
@@ -66,7 +66,7 @@ const EmployeeProfile = () => {
                                 </li>
                                 <li>
                                   <div className="title">Email:</div>
-                                  <div className="text"><a href="">johndoe@example.com</a></div>
+                                  <div className="text"><a href="">abdullahiabubakar@example.com</a></div>
                                 </li>
                                 <li>
                                   <div className="title">Birthday:</div>
@@ -89,7 +89,7 @@ const EmployeeProfile = () => {
                                       </div>
                                     </div>
                                     <Link to = "/app/profile/employee-profile">
-                                      Jeffery Lalor
+                                      Abdul
                                     </Link>
                                   </div>
                                 </li>
