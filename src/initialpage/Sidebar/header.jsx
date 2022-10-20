@@ -20,6 +20,7 @@ import {
   Avatar_17,
   Avatar_21,
 } from "../../Entryfile/imagepath";
+import Applogo from "../../assets/img/circle-logo.png"
 
 const Header = (props) => {
   const history = useHistory();
@@ -43,14 +44,7 @@ const Header = (props) => {
       {/* Logo */}
       <div className="header-left">
         <Link to="/app/main/dashboard" className="logo">
-          <img
-            src={
-              "https://peepaltree.co.uk/wp-content/uploads/2020/07/logo_full_res-150x150.jpg"
-            }
-            width={40}
-            height={40}
-            alt=""
-          />
+          <img src={Applogo} width={40} height={40} alt="" />
         </Link>
       </div>
       {/* /Logo */}
@@ -79,7 +73,7 @@ const Header = (props) => {
           src={
             "https://peepaltree.co.uk/wp-content/uploads/2021/02/Header-logo-800px.png"
           }
-          style={{width: "25%"}}
+          style={{ width: "25%" }}
           alt=""
         />
       </div>
