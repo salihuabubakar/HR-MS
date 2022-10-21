@@ -146,7 +146,7 @@ const ServiceWorker = () => {
                   <div className="profile-widget">
                     <div className="profile-img">
                       <Link
-                        to="/app/profile/employee-profile"
+                        to="#"
                         className="avatar"
                       >
                         <img src={SmileImg} alt="" />
