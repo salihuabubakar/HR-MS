@@ -78,12 +78,7 @@ const Header = (props) => {
         />
       </div>
       {/* /Header Title */}
-      <a
-        id="mobile_btn"
-        className="mobile_btn"
-        href="#"
-        onClick={() => onMenuClik()}
-      >
+      <a id="mobile_btn" className="mobile_btn" href="#" onClick={onMenuClik}>
         <i className="fa fa-bars" />
       </a>
       {/* Header Menu */}
