@@ -6,6 +6,8 @@ import {
   savedDeptReducer,
   initDesignation,
   savedDesignationReducer,
+  initHouse,
+  savedHouseReducer
 } from "../../utils/localStorage";
 import {
   PopupWrapper,
@@ -38,6 +40,12 @@ const Addemployee = ({
   useEffect(() => {
     setDesignationList(desig);
   }, [desig]);
+
+  const [house] = useReducer(savedHouseReducer, [], initHouse);
+  const [houseList, setHouseList] = useState();
+  useEffect(() => {
+    setHouseList(house);
+  }, [house]);
 
   const [firstName, setFirstName] = useState(
     selectedUserAccount[indexToEdit]?.firstName
@@ -99,6 +107,11 @@ const Addemployee = ({
       ? selectedUserAccount[indexToEdit]?.designation
       : ""
   );
+  const [accomodation, setAccomodation] = useState(
+    selectedUserAccount[indexToEdit]?.accomodation
+      ? selectedUserAccount[indexToEdit]?.accomodation
+      : ""
+  );
   const [id, setId] = useState(
     selectedUserAccount[indexToEdit]?.id
     ? selectedUserAccount[indexToEdit]?.id
@@ -120,6 +133,7 @@ const Addemployee = ({
       company,
       dept,
       designation,
+      accomodation,
       id,
     };
     if (selectedUserAccount[indexToEdit]?.id) {
@@ -170,6 +184,15 @@ const Addemployee = ({
 
   const handleRoleChange = (event) => {
     setDesignation(event);
+  };
+
+  const houses = [];
+  houseList?.map((h) => {
+    houses.push({ value: h.id, label: h.houseName });
+  });
+
+  const handleHouseChange = (event) => {
+    setAccomodation(event);
   };
 
   return (
@@ -375,6 +398,29 @@ const Addemployee = ({
                           options={roles}
                           styles={customSelectStyles}
                           placeholder="Select Designation"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>
+                          House <span className="text-danger">*</span>
+                        </label>
+                        <Select
+                          defaultValue={
+                            selectedUserAccount[indexToEdit]?.accomodation
+                              ? {
+                                  value:
+                                    userAcct[indexToEdit].accomodation.value,
+                                  label:
+                                    userAcct[indexToEdit].accomodation.label,
+                                }
+                              : "Select House"
+                          }
+                          onChange={handleHouseChange}
+                          options={houses}
+                          styles={customSelectStyles}
+                          placeholder="Select House"
                         />
                       </div>
                     </div>

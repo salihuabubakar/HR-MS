@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState, useReducer, Fragment } from "react";
 import { Helmet } from "react-helmet";
 import { Link, withRouter } from 'react-router-dom';
 import { Avatar_02,Avatar_05,Avatar_11, Avatar_12,Avatar_09,Avatar_10, Avatar_13 } from "../../../Entryfile/imagepath"
@@ -7,8 +7,13 @@ import { useLocation } from "react-router-dom";
 import { initHouse, savedHouseReducer } from '../../../utils/localStorage';
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
-import { initDept, savedDeptReducer } from "../../../utils/localStorage";
-
+import Smile from "../../../assets/img/smile.png";
+import { 
+  initDept, 
+  savedDeptReducer,
+  initUserAccount,
+  savedUserAccountReducer, 
+} from "../../../utils/localStorage";
 const ShiftScheduling = () => {
   const location = useLocation();
   const { id: houseId } = location?.state;
@@ -27,9 +32,26 @@ const ShiftScheduling = () => {
     setDeptList(depts);
   }, [depts]);
 
-  const selectedMappedHouse = houseList?.find(({id}) => id === houseId);
+  const [userAcct] = useReducer(
+    savedUserAccountReducer,
+    [],
+    initUserAccount
+  );
+  const [employeeAccts, setEmployeeAccts] = useState();
+  useEffect(() => {
+    setEmployeeAccts(userAcct);
+  }, [userAcct]);
 
-  console.log("selectedMappedHouse", selectedMappedHouse);
+  // const selectedMappedHouse = [];
+  // houseList?.find((staff) => {
+  //   const {id, employee, houseName, managerName} = staff;
+  //   id === houseId;
+  //   if (id === houseId) {
+  //     selectedMappedHouse.push({ id: id, employee: employee, houseName: houseName, managerName: managerName });
+  //   }
+  // });
+
+  // console.log("selectedMappedHouse", selectedMappedHouse);
 
   const handleDeptChange = (event) => {
     console.log(event);
@@ -174,157 +196,161 @@ const ShiftScheduling = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <h2 className="table-avatar">
-                          <Link
-                            to="/app/profile/employee-profile"
-                            className="avatar"
-                          >
-                            <img src={Avatar_02} />
-                          </Link>
-                          <Link to="/app/profile/employee-profile">
-                            {selectedMappedHouse?.employee?.map((staff, id) => {
-                              const {value, label} = staff;
-                              return (
-                                <React.Fragment key={id}>
-                                  {label}
-                                </React.Fragment>
-                              );
-                            })}<span>Web Designer</span>
-                          </Link>
-                        </h2>
-                      </td>
-                      <td>
-                        <div className="user-add-shedule-list">
-                          <h2>
-                            <a
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_schedule"
-                              style={{ border: "2px dashed #1eb53a" }}
-                            >
-                              <span className="username-info m-b-10">
-                                6:30 am - 9:30 pm ( 14 hrs 15 mins)
-                              </span>
-                              <span className="userrole-info">
-                                Web Designer - SMARTHR
-                              </span>
-                            </a>
-                          </h2>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="user-add-shedule-list">
-                          <a
-                            href="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#add_schedule"
-                          >
-                            <span>
-                              <i className="fa fa-plus" />
-                            </span>
-                          </a>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="user-add-shedule-list">
-                          <a
-                            href="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#add_schedule"
-                          >
-                            <span>
-                              <i className="fa fa-plus" />
-                            </span>
-                          </a>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="user-add-shedule-list">
-                          <a
-                            href="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#add_schedule"
-                          >
-                            <span>
-                              <i className="fa fa-plus" />
-                            </span>
-                          </a>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="user-add-shedule-list">
-                          <a
-                            href="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#add_schedule"
-                          >
-                            <span>
-                              <i className="fa fa-plus" />
-                            </span>
-                          </a>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="user-add-shedule-list">
-                          <a
-                            href="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#add_schedule"
-                          >
-                            <span>
-                              <i className="fa fa-plus" />
-                            </span>
-                          </a>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="user-add-shedule-list">
-                          <h2>
-                            <a
-                              href="#"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_schedule"
-                              style={{ border: "2px dashed #1eb53a" }}
-                            >
-                              <span className="username-info m-b-10">
-                                6:30 am - 9:30 pm ( 14 hrs 15 mins)
-                              </span>
-                              <span className="userrole-info">
-                                Web Designer - SMARTHR
-                              </span>
-                            </a>
-                          </h2>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="user-add-shedule-list">
-                          <a
-                            href="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#add_schedule"
-                          >
-                            <span>
-                              <i className="fa fa-plus" />
-                            </span>
-                          </a>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="user-add-shedule-list">
-                          <a
-                            href="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#add_schedule"
-                          >
-                            <span>
-                              <i className="fa fa-plus" />
-                            </span>
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
+                    {employeeAccts?.map((staff) => {
+                      const { id, firstName, lastName, userName, email, accomodation } = staff;
+                      const {value, label} = staff.accomodation;
+                      if (value === houseId) {
+                        return (
+                          <Fragment key={id}>
+                            <tr>
+                              <td>
+                                <h2 className="table-avatar">
+                                  <Link
+                                    to="/app/profile/employee-profile"
+                                    className="avatar"
+                                  >
+                                    <img src={Smile} />
+                                  </Link>
+                                  <Link to="/app/profile/employee-profile">
+                                    {`${firstName} ${lastName}`}
+                                    <span>Web Designer</span>
+                                  </Link>
+                                </h2>
+                              </td>
+                              <td>
+                                <div className="user-add-shedule-list">
+                                  <h2>
+                                    <a
+                                      href="#"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#edit_schedule"
+                                      style={{ border: "2px dashed #1eb53a" }}
+                                    >
+                                      <span className="username-info m-b-10">
+                                        6:30 am - 9:30 pm ( 14 hrs 15 mins)
+                                      </span>
+                                      <span className="userrole-info">
+                                        Web Designer - SMARTHR
+                                      </span>
+                                    </a>
+                                  </h2>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="user-add-shedule-list">
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#add_schedule"
+                                  >
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="user-add-shedule-list">
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#add_schedule"
+                                  >
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="user-add-shedule-list">
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#add_schedule"
+                                  >
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="user-add-shedule-list">
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#add_schedule"
+                                  >
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="user-add-shedule-list">
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#add_schedule"
+                                  >
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="user-add-shedule-list">
+                                  <h2>
+                                    <a
+                                      href="#"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#edit_schedule"
+                                      style={{ border: "2px dashed #1eb53a" }}
+                                    >
+                                      <span className="username-info m-b-10">
+                                        6:30 am - 9:30 pm ( 14 hrs 15 mins)
+                                      </span>
+                                      <span className="userrole-info">
+                                        Web Designer - SMARTHR
+                                      </span>
+                                    </a>
+                                  </h2>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="user-add-shedule-list">
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#add_schedule"
+                                  >
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="user-add-shedule-list">
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#add_schedule"
+                                  >
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                          </Fragment>
+                        );
+                      }
+                    })}
                   </tbody>
                 </table>
               </div>
