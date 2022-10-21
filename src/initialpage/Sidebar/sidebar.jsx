@@ -5,6 +5,9 @@
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+
  
 const Sidebar = (props) => {
 
@@ -12,12 +15,18 @@ const Sidebar = (props) => {
 const [isSideMenu, setSideMenu] = useState("")
 const [level2Menu, setLevel2Menu] = useState("")
 const [level3Menu, setLevel3Menu] = useState("")
+const [isDashboardOpen, setIsDashboardOpen] = useState(false)
 
 const toggleSidebar = (value) => {
-  console.log (value);
+  console.log(value);
   setSideMenu(value);
- 
+};
+
+const handleDashboard = () => {
+  toggleSidebar(isSideMenu == "dashboard" ? "" : "dashboard");
+  setIsDashboardOpen(!isDashboardOpen);
 }
+
 
 const toggleLvelTwo = (value) => {
   setLevel2Menu(value)
@@ -50,12 +59,9 @@ const toggleLevelThree = (value) => {
                 <li className="submenu">
                   <a
                     href="#"
+                    data-bs-toggle="dropdown"
                     className={isSideMenu == "dashboard" ? "subdrop" : ""}
-                    onClick={() =>
-                      toggleSidebar(
-                        isSideMenu == "dashboard" ? "" : "dashboard"
-                      )
-                    }
+                    onClick={handleDashboard}
                   >
                     <i className="la la-dashboard" /> <span> Dashboard</span>{" "}
                     <span className="menu-arrow" />
@@ -211,6 +217,7 @@ const toggleLevelThree = (value) => {
                 <li className="submenu">
                   <a
                     href="#"
+                    data-bs-toggle="dropdown"
                     className={isSideMenu == "employee" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(isSideMenu == "employee" ? "" : "employee")
@@ -344,6 +351,7 @@ const toggleLevelThree = (value) => {
                       <li className="submenu">
                         <a
                           href="#"
+                          data-bs-toggle="dropdown"
                           className={level2Menu == "house" ? "subdrop" : ""}
                           onClick={() =>
                             toggleLvelTwo(level2Menu == "house" ? "" : "house")
