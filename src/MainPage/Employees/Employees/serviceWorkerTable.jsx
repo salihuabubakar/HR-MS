@@ -145,6 +145,7 @@ const ServiceWorkerTable = () => {
                     className="list-view btn btn-link active"
                   >
                     <i className="fa fa-bars" />
+                    
                   </Link>
                 </div>
               </div>
