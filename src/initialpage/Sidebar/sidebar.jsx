@@ -375,6 +375,44 @@ const toggleLevelThree = (value) => {
                           ""
                         )}
                       </li>
+                      <li className="submenu">
+                        <a
+                          href="#"
+                          className={
+                            level2Menu == "serviceWorker" ? "subdrop" : ""
+                          }
+                          onClick={() =>
+                            toggleLvelTwo(
+                              level2Menu == "serviceWorker"
+                                ? ""
+                                : "serviceWorker"
+                            )
+                          }
+                        >
+                          <span>Service Worker</span>{" "}
+                          <span className="menu-arrow" />
+                        </a>
+                        {level2Menu == "serviceWorker" ? (
+                          <ul>
+                            <li>
+                              <Link
+                                className={
+                                  pathname.includes("serviceWorker")
+                                    ? "active"
+                                    : pathname.includes("serviceWorkerTable")
+                                    ? "active"
+                                    : ""
+                                }
+                                to="/app/employee/serviceWorker"
+                              >
+                                Residents
+                              </Link>
+                            </li>
+                          </ul>
+                        ) : (
+                          ""
+                        )}
+                      </li>
                       {/* <li>
                         <Link
                           className={
