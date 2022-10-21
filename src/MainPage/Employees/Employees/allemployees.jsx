@@ -316,4 +316,4 @@ const AllEmployees = () => {
       );
   }
 
-export default withRouter(AllEmployees);
+export default AllEmployees;
