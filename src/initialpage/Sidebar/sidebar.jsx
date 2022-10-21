@@ -352,30 +352,62 @@ const toggleLevelThree = (value) => {
                         <a
                           href="#"
                           data-bs-toggle="dropdown"
-                          className={
-                            level2Menu == "selectDept" ? "subdrop" : ""
-                          }
+                          className={level2Menu == "house" ? "subdrop" : ""}
                           onClick={() =>
-                            toggleLvelTwo(
-                              level2Menu == "selectDept" ? "" : "selectDept"
-                            )
+                            toggleLvelTwo(level2Menu == "house" ? "" : "house")
                           }
                         >
                           <span>Shift &amp; Schedule</span>{" "}
                           <span className="menu-arrow" />
                         </a>
-                        {level2Menu == "selectDept" ? (
+                        {level2Menu == "house" ? (
                           <ul>
                             <li>
                               <Link
                                 className={
-                                  pathname.includes("selectDept")
+                                  pathname.includes("house") ? "active" : ""
+                                }
+                                to="/app/employee/house"
+                              >
+                                Select House
+                              </Link>
+                            </li>
+                          </ul>
+                        ) : (
+                          ""
+                        )}
+                      </li>
+                      <li className="submenu">
+                        <a
+                          href="#"
+                          className={
+                            level2Menu == "serviceWorker" ? "subdrop" : ""
+                          }
+                          onClick={() =>
+                            toggleLvelTwo(
+                              level2Menu == "serviceWorker"
+                                ? ""
+                                : "serviceWorker"
+                            )
+                          }
+                        >
+                          <span>Service Worker</span>{" "}
+                          <span className="menu-arrow" />
+                        </a>
+                        {level2Menu == "serviceWorker" ? (
+                          <ul>
+                            <li>
+                              <Link
+                                className={
+                                  pathname.includes("serviceWorker")
+                                    ? "active"
+                                    : pathname.includes("serviceWorkerTable")
                                     ? "active"
                                     : ""
                                 }
-                                to="/app/employee/selectDept"
+                                to="/app/employee/serviceWorker"
                               >
-                                Select House
+                                Residents
                               </Link>
                             </li>
                           </ul>

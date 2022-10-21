@@ -145,7 +145,12 @@ const Header = (props) => {
             <i className="fa fa-bell-o" />{" "}
             <span className="badge badge-pill">3</span>
           </a>
-          <div className="dropdown-menu notifications">
+          <div
+            className="dropdown-menu notifications"
+            style={{
+              width: "355px",
+            }}
+          >
             <div className="topnav-dropdown-header">
               <span className="notification-title">Notifications</span>
               <a href="" className="clear-noti">
@@ -156,10 +161,7 @@ const Header = (props) => {
             <div className="noti-content">
               <ul className="notification-list">
                 <li className="notification-message">
-                  <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/app/administrator/activities"
-                  >
+                  <Link to="/app/administrator/activities">
                     <div className="media">
                       <span className="avatar">
                         <img alt="" src={Avatar_02} />
@@ -181,81 +183,7 @@ const Header = (props) => {
                 </li>
                 <li className="notification-message">
                   <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/app/administrator/activities"
-                  >
-                    <div className="media">
-                      <span className="avatar">
-                        <img alt="" src={Avatar_03} />
-                      </span>
-                      <div className="media-body">
-                        <p className="noti-details">
-                          <span className="noti-title">Tarah Shropshire</span>{" "}
-                          changed the task name{" "}
-                          <span className="noti-title">
-                            Appointment booking with payment gateway
-                          </span>
-                        </p>
-                        <p className="noti-time">
-                          <span className="notification-time">6 mins ago</span>
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-                <li className="notification-message">
-                  <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/app/administrator/activities"
-                  >
-                    <div className="media">
-                      <span className="avatar">
-                        <img alt="" src={Avatar_06} />
-                      </span>
-                      <div className="media-body">
-                        <p className="noti-details">
-                          <span className="noti-title">Misty Tison</span> added{" "}
-                          <span className="noti-title">Domenic Houston</span>{" "}
-                          and <span className="noti-title">Claire Mapes</span>{" "}
-                          to project{" "}
-                          <span className="noti-title">
-                            Doctor available module
-                          </span>
-                        </p>
-                        <p className="noti-time">
-                          <span className="notification-time">8 mins ago</span>
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-                <li className="notification-message">
-                  <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/app/administrator/activities"
-                  >
-                    <div className="media">
-                      <span className="avatar">
-                        <img alt="" src={Avatar_17} />
-                      </span>
-                      <div className="media-body">
-                        <p className="noti-details">
-                          <span className="noti-title">Rolland Webber</span>{" "}
-                          completed task{" "}
-                          <span className="noti-title">
-                            Patient and Doctor video conferencing
-                          </span>
-                        </p>
-                        <p className="noti-time">
-                          <span className="notification-time">12 mins ago</span>
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-                <li className="notification-message">
-                  <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
+                    // onClick={() => localStorage.setItem("minheight", "true")}
                     to="/app/administrator/activities"
                   >
                     <div className="media">
@@ -281,7 +209,7 @@ const Header = (props) => {
             </div>
             <div className="topnav-dropdown-footer">
               <Link
-                onClick={() => localStorage.setItem("minheight", "true")}
+                // onClick={() => localStorage.setItem("minheight", "true")}
                 to="/app/administrator/activities"
               >
                 View all Notifications
@@ -300,7 +228,12 @@ const Header = (props) => {
             <i className="fa fa-comment-o" />{" "}
             <span className="badge badge-pill">8</span>
           </a>
-          <div className="dropdown-menu notifications">
+          <div
+            style={{
+              width: "355px",
+            }}
+            className="dropdown-menu notifications"
+          >
             <div className="topnav-dropdown-header">
               <span className="notification-title">Messages</span>
               <a href="" className="clear-noti">
@@ -312,29 +245,7 @@ const Header = (props) => {
               <ul className="notification-list">
                 <li className="notification-message">
                   <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/conversation/chat"
-                  >
-                    <div className="list-item">
-                      <div className="list-left">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_09} />
-                        </span>
-                      </div>
-                      <div className="list-body">
-                        <span className="message-author">Richard Miles </span>
-                        <span className="message-time">12:28 AM</span>
-                        <div className="clearfix" />
-                        <span className="message-content">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-                <li className="notification-message">
-                  <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
+                    // onClick={() => localStorage.setItem("minheight", "true")}
                     to="/conversation/chat"
                   >
                     <div className="list-item">
@@ -356,7 +267,7 @@ const Header = (props) => {
                 </li>
                 <li className="notification-message">
                   <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
+                    // onClick={() => localStorage.setItem("minheight", "true")}
                     to="/conversation/chat"
                   >
                     <div className="list-item">
@@ -371,53 +282,6 @@ const Header = (props) => {
                           Tarah Shropshire{" "}
                         </span>
                         <span className="message-time">5 Mar</span>
-                        <div className="clearfix" />
-                        <span className="message-content">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-                <li className="notification-message">
-                  <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/conversation/chat"
-                  >
-                    <div className="list-item">
-                      <div className="list-left">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_05} />
-                        </span>
-                      </div>
-                      <div className="list-body">
-                        <span className="message-author">Mike Litorus</span>
-                        <span className="message-time">3 Mar</span>
-                        <div className="clearfix" />
-                        <span className="message-content">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-                <li className="notification-message">
-                  <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/conversation/chat"
-                  >
-                    <div className="list-item">
-                      <div className="list-left">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_08} />
-                        </span>
-                      </div>
-                      <div className="list-body">
-                        <span className="message-author">
-                          {" "}
-                          Catherine Manseau{" "}
-                        </span>
-                        <span className="message-time">27 Feb</span>
                         <div className="clearfix" />
                         <span className="message-content">
                           Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -452,7 +316,10 @@ const Header = (props) => {
             <span>Admin</span>
           </a>
           <div className="dropdown-menu">
-            <Link className="dropdown-item" to="/app/profile/employee-profile">
+            <Link
+              className="dropdown-item"
+              to={{ pathname: "/app/profile/employee-profile", state: { id: "occupation" }}}
+            >
               My Profile
             </Link>
             <Link className="dropdown-item" to="/settings/companysetting">

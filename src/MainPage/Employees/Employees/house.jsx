@@ -7,7 +7,7 @@ import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
 
 const SelectDept = () => {
   const [menu, setMenu] = useState(false);
-  const [house, dispatchHouse] = useReducer(savedHouseReducer, [], initHouse);
+  const [house] = useReducer(savedHouseReducer, [], initHouse);
   const [houseList, setHouseList] = useState();
   useEffect(() => {
     setHouseList(house);
@@ -70,7 +70,7 @@ const SelectDept = () => {
           {/* Search Filter */}
           <div className="row staff-grid-row">
             {houseList?.map((house) => {
-              const { id, houseName, employee } = house;
+              const { id, houseName, employee, managerName } = house;
               return (
                 <div
                   key={id}
@@ -78,11 +78,19 @@ const SelectDept = () => {
                 >
                   <div className="profile-widget">
                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                      <Link to="/app/employee/shift-scheduling">
-                        {houseName}
+                      <Link 
+                        to={{
+                          pathname: "/app/employee/shift-scheduling",
+                          state: { id: id }
+                        }}>{houseName}
                       </Link>
                     </h4>
-                    <div className="small text-muted">{"Number of staffs: " + employee?.length}</div>
+                    <p className="small text-muted">
+                      House Manager: {managerName}
+                    </p>
+                    <div className="small text-muted">
+                      {"Number of staffs: " + employee?.length}
+                    </div>
                   </div>
                 </div>
               );
