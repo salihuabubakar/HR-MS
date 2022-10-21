@@ -136,13 +136,13 @@ const ServiceWorkerTable = () => {
                 <div className="view-icons">
                   <Link
                     to="/app/employee/serviceWorker"
-                    className="grid-view btn btn-link active"
+                    className="grid-view btn btn-link"
                   >
                     <i className="fa fa-th" />
                   </Link>
                   <Link
                     to="/app/employee/serviceWorkerTable"
-                    className="list-view btn btn-link"
+                    className="list-view btn btn-link active"
                   >
                     <i className="fa fa-bars" />
                   </Link>
