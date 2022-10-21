@@ -6,7 +6,16 @@ import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
 import {Avatar_02,Avatar_05,Avatar_09,Avatar_10,Avatar_16 } from '../../../Entryfile/imagepath'
 
+  import { useParams, useLocation } from "react-router-dom";
+
 const EmployeeProfile = () => {
+
+  // const { id } = useParams();
+  const location = useLocation();
+  // const { id } = location?.state;
+
+  console.log("location", location);
+  
   useEffect( ()=>{
     if($('.select').length > 0) {
       $('.select').select2({
