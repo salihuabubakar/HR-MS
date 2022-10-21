@@ -3,15 +3,35 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
-import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
+import { initHouse, savedHouseReducer, initUserAccount, savedUserAccountReducer } from "../../../utils/localStorage";
 
 const SelectDept = () => {
   const [menu, setMenu] = useState(false);
+  const [getHouseId, setGetHouseId] = useState();
   const [house] = useReducer(savedHouseReducer, [], initHouse);
   const [houseList, setHouseList] = useState();
   useEffect(() => {
     setHouseList(house);
   }, [house]);
+
+  const [userAcct] = useReducer(savedUserAccountReducer, [], initUserAccount);
+  const [employeeAccts, setEmployeeAccts] = useState();
+  useEffect(() => {
+    setEmployeeAccts(userAcct);
+  }, [userAcct]);
+
+  const numberOfEmployeeInAParticularHouse = employeeAccts?.find((staff) => { staff.accomodation.value === getHouseId });
+  console.log(
+    "numberOfEmployeeInAParticularHouse",
+    numberOfEmployeeInAParticularHouse
+  );
+
+  const handleGetId = (id) => {
+    setGetHouseId(id);
+    console.log("getHouseId", id);
+  }
+
+  console.log("getHouseId", getHouseId);
 
   const toggleMobileMenu = () => {
     setMenu(!menu);
@@ -78,11 +98,13 @@ const SelectDept = () => {
                 >
                   <div className="profile-widget">
                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                      <Link 
+                      <Link
                         to={{
                           pathname: "/app/employee/shift-scheduling",
-                          state: { id: id }
-                        }}>{houseName}
+                          state: { id: id },
+                        }}
+                      >
+                        {houseName}
                       </Link>
                     </h4>
                     <p className="small text-muted">
