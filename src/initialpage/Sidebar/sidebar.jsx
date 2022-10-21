@@ -36,7 +36,9 @@ const toggleLevelThree = (value) => {
 }
 
 
-    let pathname = props.location.pathname
+    let pathname = props.location.pathname;
+    let headerHamburgerToggle = props.menu;
+    console.log("menuuu", headerHamburgerToggle);
     return (
       <div className="sidebar" id="sidebar">
         <Scrollbars
@@ -46,7 +48,7 @@ const toggleLevelThree = (value) => {
           autoHeight
           autoHeightMin={0}
           autoHeightMax="95vh"
-          thumbMinSize={30}
+          // thumbMinSize={30}
           universal={false}
           hideTracksWhenNotNeeded={true}
         >
@@ -66,7 +68,8 @@ const toggleLevelThree = (value) => {
                     <i className="la la-dashboard" /> <span> Dashboard</span>{" "}
                     <span className="menu-arrow" />
                   </a>
-                  {isSideMenu == "dashboard" ? (
+                  {isSideMenu == "dashboard" &&
+                  headerHamburgerToggle !== true ? (
                     <ul>
                       <li>
                         <Link
@@ -377,44 +380,6 @@ const toggleLevelThree = (value) => {
                           ""
                         )}
                       </li>
-                      <li className="submenu">
-                        <a
-                          href="#"
-                          className={
-                            level2Menu == "serviceWorker" ? "subdrop" : ""
-                          }
-                          onClick={() =>
-                            toggleLvelTwo(
-                              level2Menu == "serviceWorker"
-                                ? ""
-                                : "serviceWorker"
-                            )
-                          }
-                        >
-                          <span>Service Worker</span>{" "}
-                          <span className="menu-arrow" />
-                        </a>
-                        {level2Menu == "serviceWorker" ? (
-                          <ul>
-                            <li>
-                              <Link
-                                className={
-                                  pathname.includes("serviceWorker")
-                                    ? "active"
-                                    : pathname.includes("serviceWorkerTable")
-                                    ? "active"
-                                    : ""
-                                }
-                                to="/app/employee/serviceWorker"
-                              >
-                                Residents
-                              </Link>
-                            </li>
-                          </ul>
-                        ) : (
-                          ""
-                        )}
-                      </li>
                       {/* <li>
                         <Link
                           className={
@@ -425,6 +390,40 @@ const toggleLevelThree = (value) => {
                           Overtime
                         </Link>
                       </li> */}
+                    </ul>
+                  ) : (
+                    ""
+                  )}
+                </li>
+                <li className="submenu">
+                  <a
+                    href="#"
+                    className={isSideMenu == "serviceWork" ? "subdrop" : ""}
+                    onClick={() =>
+                      toggleSidebar(
+                        isSideMenu == "serviceWork" ? "" : "serviceWork"
+                      )
+                    }
+                  >
+                    <i className="la la-user" /> <span> Service Worker</span>{" "}
+                    <span className="menu-arrow" />
+                  </a>
+                  {isSideMenu == "serviceWork" ? (
+                    <ul>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("serviceWorker")
+                              ? "active"
+                              : pathname.includes("serviceWorkerTable")
+                              ? "active"
+                              : ""
+                          }
+                          to="/app/serviceWork/serviceWorker"
+                        >
+                          Residents
+                        </Link>
+                      </li>
                     </ul>
                   ) : (
                     ""

@@ -21,8 +21,6 @@ import ShiftScheduling from './shiftscheduling';
 import ShiftList from './shiftlist';
 import House from "./house";
 import Accomodation from './accomodation';
-import ServiceWorker from "./serviceWorker";
-import ServiceWorkerTable from './serviceWorkerTable';
 
 const EmployeesRoute = ({ match }) => (
   <Switch>
@@ -45,11 +43,6 @@ const EmployeesRoute = ({ match }) => (
     <Route path={`${match.url}/shift-scheduling`} component={ShiftScheduling} />
     <Route path={`${match.url}/house`} component={House} />
     <Route path={`${match.url}/accomodation`} component={Accomodation} />
-    <Route path={`${match.url}/serviceWorker`} component={ServiceWorker} />
-    <Route
-      path={`${match.url}/serviceWorkerTable`}
-      component={ServiceWorkerTable}
-    />
     <Route path={`${match.url}/shift-list`} component={ShiftList} />
   </Switch>
 );
