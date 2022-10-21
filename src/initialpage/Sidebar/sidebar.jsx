@@ -48,7 +48,7 @@ const toggleLevelThree = (value) => {
           autoHeight
           autoHeightMin={0}
           autoHeightMax="95vh"
-          // thumbMinSize={30}
+          thumbMinSize={30}
           universal={false}
           hideTracksWhenNotNeeded={true}
         >
@@ -398,6 +398,7 @@ const toggleLevelThree = (value) => {
                 <li className="submenu">
                   <a
                     href="#"
+                    data-bs-toggle="dropdown"
                     className={isSideMenu == "serviceWork" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(
