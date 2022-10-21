@@ -344,28 +344,22 @@ const toggleLevelThree = (value) => {
                       <li className="submenu">
                         <a
                           href="#"
-                          className={
-                            level2Menu == "selectDept" ? "subdrop" : ""
-                          }
+                          className={level2Menu == "house" ? "subdrop" : ""}
                           onClick={() =>
-                            toggleLvelTwo(
-                              level2Menu == "selectDept" ? "" : "selectDept"
-                            )
+                            toggleLvelTwo(level2Menu == "house" ? "" : "house")
                           }
                         >
                           <span>Shift &amp; Schedule</span>{" "}
                           <span className="menu-arrow" />
                         </a>
-                        {level2Menu == "selectDept" ? (
+                        {level2Menu == "house" ? (
                           <ul>
                             <li>
                               <Link
                                 className={
-                                  pathname.includes("selectDept")
-                                    ? "active"
-                                    : ""
+                                  pathname.includes("house") ? "active" : ""
                                 }
-                                to="/app/employee/selectDept"
+                                to="/app/employee/house"
                               >
                                 Select House
                               </Link>

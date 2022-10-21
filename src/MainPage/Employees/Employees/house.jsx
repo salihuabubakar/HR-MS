@@ -7,7 +7,7 @@ import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
 
 const SelectDept = () => {
   const [menu, setMenu] = useState(false);
-  const [house, dispatchHouse] = useReducer(savedHouseReducer, [], initHouse);
+  const [house] = useReducer(savedHouseReducer, [], initHouse);
   const [houseList, setHouseList] = useState();
   useEffect(() => {
     setHouseList(house);
@@ -78,8 +78,11 @@ const SelectDept = () => {
                 >
                   <div className="profile-widget">
                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                      <Link to="/app/employee/shift-scheduling">
-                        {houseName}
+                      <Link 
+                        to={{
+                          pathname: "/app/employee/shift-scheduling",
+                          state: { id: id }
+                        }}>{houseName}
                       </Link>
                     </h4>
                     <p className="small text-muted">

@@ -314,7 +314,10 @@ const Header = (props) => {
             <span>Admin</span>
           </a>
           <div className="dropdown-menu">
-            <Link className="dropdown-item" to="/app/profile/employee-profile">
+            <Link
+              className="dropdown-item"
+              to={{ pathname: "/app/profile/employee-profile", state: { id: "occupation" }}}
+            >
               My Profile
             </Link>
             <Link className="dropdown-item" to="/settings/companysetting">
