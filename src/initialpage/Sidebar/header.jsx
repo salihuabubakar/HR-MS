@@ -50,6 +50,7 @@ const Header = (props) => {
       {/* /Logo */}
       <a
         id="toggle_btn"
+        data-bs-toggle="dropdown"
         href="#"
         style={{
           display: pathname.includes("tasks")
@@ -78,7 +79,13 @@ const Header = (props) => {
         />
       </div>
       {/* /Header Title */}
-      <a id="mobile_btn" className="mobile_btn" href="#" onClick={onMenuClik}>
+      <a
+        id="mobile_btn"
+        className="mobile_btn"
+        href="#"
+        onClick={onMenuClik}
+        data-bs-toggle="dropdown"
+      >
         <i className="fa fa-bars" />
       </a>
       {/* Header Menu */}
