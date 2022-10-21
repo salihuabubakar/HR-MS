@@ -16,15 +16,15 @@ const AddDepartment = ({
   const [selectedHouse] = useGlobalState("selectedHouse");
 
      
-//  const [userAcct, dispatchUserAcct] = useReducer(
-//    savedUserAccountReducer,
-//    [],
-//    initUserAccount
-//  );
-//  const [employeeAccts, setEmployeeAccts] = useState();
-//  useEffect(() => {
-//    setEmployeeAccts(userAcct);
-//  }, [userAcct]);
+ const [userAcct, dispatchUserAcct] = useReducer(
+   savedUserAccountReducer,
+   [],
+   initUserAccount
+ );
+ const [employeeAccts, setEmployeeAccts] = useState();
+ useEffect(() => {
+   setEmployeeAccts(userAcct);
+ }, [userAcct]);
 
   const [houseName, setHouseName] = useState(
     selectedHouse[indexToEdit]?.houseName
@@ -38,11 +38,11 @@ const AddDepartment = ({
       : ""
   );
 
-  // const [employee, setEmployee] = useState(
-  //   selectedHouse[indexToEdit]?.employee
-  //     ? selectedHouse[indexToEdit]?.employee
-  //     : ""
-  // );
+  const [employee, setEmployee] = useState(
+    selectedHouse[indexToEdit]?.employee
+      ? selectedHouse[indexToEdit]?.employee
+      : ""
+  );
 
   const [id, setId] = useState(
     selectedHouse[indexToEdit]?.id ? selectedHouse[indexToEdit]?.id : Date.now()
@@ -54,7 +54,7 @@ const AddDepartment = ({
     e.preventDefault();
     const house = {
       houseName,
-      // employee,
+      employee,
       managerName,
       id,
     };
@@ -83,10 +83,10 @@ const AddDepartment = ({
       setEmployee(event);
     };
 
-  // const users = [];
-  // employeeAccts?.map((user) => {
-  //   users.push({ value: user.id, label: user.firstName + " " + user.lastName });
-  // });
+  const users = [];
+  employeeAccts?.map((user) => {
+    users.push({ value: user.id, label: user.firstName + " " + user.lastName });
+  });
 
 
   return (
@@ -129,7 +129,7 @@ const AddDepartment = ({
                     type="text"
                   />
                 </div>
-                {/* <div className="form-group">
+                <div className="form-group">
                   <label>
                     Staffs <span className="text-danger">*</span>
                   </label>
@@ -149,7 +149,7 @@ const AddDepartment = ({
                     styles={customSelectStyles}
                     placeholder="Select Staff"
                   />
-                </div> */}
+                </div>
                 <div className="submit-section">
                   <button
                     onClick={handleSubmit}
