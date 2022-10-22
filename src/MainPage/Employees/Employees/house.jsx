@@ -3,35 +3,23 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
-import { initHouse, savedHouseReducer, initUserAccount, savedUserAccountReducer } from "../../../utils/localStorage";
+import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
 
 const SelectDept = () => {
   const [menu, setMenu] = useState(false);
-  const [getHouseId, setGetHouseId] = useState();
   const [house] = useReducer(savedHouseReducer, [], initHouse);
   const [houseList, setHouseList] = useState();
   useEffect(() => {
     setHouseList(house);
   }, [house]);
 
-  const [userAcct] = useReducer(savedUserAccountReducer, [], initUserAccount);
-  const [employeeAccts, setEmployeeAccts] = useState();
-  useEffect(() => {
-    setEmployeeAccts(userAcct);
-  }, [userAcct]);
 
-  const numberOfEmployeeInAParticularHouse = employeeAccts?.find((staff) => { staff.accomodation.value === getHouseId });
-  console.log(
-    "numberOfEmployeeInAParticularHouse",
-    numberOfEmployeeInAParticularHouse
-  );
+  // const numberOfEmployeeInAParticularHouse = employeeAccts?.find((staff) => { staff.accomodation.value === getHouseId });
+  // console.log(
+  //   "numberOfEmployeeInAParticularHouse",
+  //   numberOfEmployeeInAParticularHouse
+  // );
 
-  const handleGetId = (id) => {
-    setGetHouseId(id);
-    console.log("getHouseId", id);
-  }
-
-  console.log("getHouseId", getHouseId);
 
   const toggleMobileMenu = () => {
     setMenu(!menu);
