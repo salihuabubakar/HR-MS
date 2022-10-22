@@ -196,10 +196,9 @@ const ShiftScheduling = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {employeeAccts?.map((staff) => {
-                      const { id, firstName, lastName, userName, email, accomodation } = staff;
-                      const {value, label} = staff.accomodation;
-                      if (value === houseId) {
+                    {houseList?.map((house) => {
+                      const { id, houseName, employee, managerName } = house;
+                      if (id === houseId) {
                         return (
                           <Fragment key={id}>
                             <tr>
@@ -212,7 +211,9 @@ const ShiftScheduling = () => {
                                     <img src={Smile} />
                                   </Link>
                                   <Link to="/app/profile/employee-profile">
-                                    {`${firstName} ${lastName}`}
+                                    {employee.map((staff) => {
+                                      return staff.label
+                                    })}
                                     <span>Web Designer</span>
                                   </Link>
                                 </h2>
