@@ -134,14 +134,18 @@ const AddDepartment = ({
                     Staffs <span className="text-danger">*</span>
                   </label>
                   <Select
-                    defaultValue={
-                      selectedHouse[indexToEdit]?.employee
-                        ? {
-                            value: house[indexToEdit].employee?.map(value => value.value),
-                            label: house[indexToEdit].employee?.map(label => label.label),
-                          }
-                        : "Select Staff"
-                    }
+                    defaultValue={[
+                      selectedHouse[indexToEdit]?.employee[0],
+                      selectedHouse[indexToEdit]?.employee[1],
+                    ]}
+                    // defaultValue={
+                    //   selectedHouse[indexToEdit]?.employee
+                    //     ? {
+                    //         value: house[indexToEdit].employee?.map(value => value.value),
+                    //         label: house[indexToEdit].employee?.map(label => label.label),
+                    //       }
+                    //     : "Select Staff"
+                    // }
                     onChange={handleEmployeeChange}
                     isMulti
                     closeMenuOnSelect={false}
