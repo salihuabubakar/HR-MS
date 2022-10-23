@@ -137,6 +137,15 @@ const AddDepartment = ({
                     defaultValue={[
                       selectedHouse[indexToEdit]?.employee[0],
                       selectedHouse[indexToEdit]?.employee[1],
+                      selectedHouse[indexToEdit]?.employee[2],
+                      selectedHouse[indexToEdit]?.employee[3],
+                      selectedHouse[indexToEdit]?.employee[4],
+                      selectedHouse[indexToEdit]?.employee[5],
+                      selectedHouse[indexToEdit]?.employee[6],
+                      selectedHouse[indexToEdit]?.employee[7],
+                      selectedHouse[indexToEdit]?.employee[8],
+                      selectedHouse[indexToEdit]?.employee[9],
+                      selectedHouse[indexToEdit]?.employee[10],
                     ]}
                     // defaultValue={
                     //   selectedHouse[indexToEdit]?.employee
