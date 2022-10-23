@@ -64,11 +64,11 @@ import Error500 from '../MainPage/Pages/ErrorPage/error500';
 
    return (
      <Switch>
-       <InitialPath
+       {/* <InitialPath
          path={`${match.url}app`}
          authUser={user}
          component={DefaultLayout}
-       />
+       /> */}
        <Redirect exact from={`${match.url}/`} to={`${match.url}/login`} />
        <Route path="/login" component={LoginPage} />
        <Route path="/forgotpassword" component={ForgotPassword} />
