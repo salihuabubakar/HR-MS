@@ -137,8 +137,8 @@ const AddDepartment = ({
                     defaultValue={
                       selectedHouse[indexToEdit]?.employee
                         ? {
-                            value: house[indexToEdit].employee.value,
-                            label: house[indexToEdit].employee.label,
+                            value: house[indexToEdit].employee?.map(value => value.value),
+                            label: house[indexToEdit].employee?.map(label => label.label),
                           }
                         : "Select Staff"
                     }
