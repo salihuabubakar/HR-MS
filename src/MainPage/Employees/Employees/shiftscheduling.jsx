@@ -88,8 +88,8 @@ const ShiftScheduling = () => {
 
   const [employeeId, setEmployeeId] = useState();
   const [employeeSelectedIndex, setEmployeeSelectedIndex] = useState();
-  const [selecteDay, setSelectedDay] = useState("");
-  const [selecteDayIndex, setSelectedDayIndex] = useState("");
+  const [selecteDay, setSelectedDay] = useState();
+  const [selecteDayIndex, setSelectedDayIndex] = useState();
 
   const handleMondayShift = (index, value) => {
     log("SelectedEvent: Monday", index);
@@ -107,10 +107,11 @@ const ShiftScheduling = () => {
 
   const handleTuesDayShift = (index, value) => {
     log("SelectedEvent: Tuesday", index);
-    setGlobalState("showModal", true);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Tuesday");
+    setGlobalState("selectedShiftEvent", shiftEvents);
+    setGlobalState("showModal", true);
   };
 
   const handleTuesdayShiftIndex = (index) => {
@@ -120,10 +121,11 @@ const ShiftScheduling = () => {
 
   const handleWednesdayShift = (index, value) => {
     log("SelectedEvent: Wednesday", index);
-    setGlobalState("showModal", true);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Wednesday");
+    setGlobalState("selectedShiftEvent", shiftEvents);
+    setGlobalState("showModal", true);
   };
 
   const handleWednesdayShiftIndex = (index) => {
@@ -133,10 +135,11 @@ const ShiftScheduling = () => {
 
   const handleThursdayShift = (index, value) => {
     log("SelectedEvent: Thursday", index);
-    setGlobalState("showModal", true);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Thursday");
+    setGlobalState("selectedShiftEvent", shiftEvents);
+    setGlobalState("showModal", true);
   };
 
   const handleThursdayShiftIndex = (index) => {
@@ -146,10 +149,11 @@ const ShiftScheduling = () => {
 
   const handleFridayShift = (index, value) => {
     log("SelectedEvent: Friday", index);   
-    setGlobalState("showModal", true);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Friday");
+    setGlobalState("selectedShiftEvent", shiftEvents);
+    setGlobalState("showModal", true);
   };
 
   const handleFridayShiftIndex = (index) => {
@@ -159,10 +163,11 @@ const ShiftScheduling = () => {
 
   const handlSaturdayShift = (index, value) => {
     log("SelectedEvent: Saturday", index);
-    setGlobalState("showModal", true);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Saturday");
+    setGlobalState("selectedShiftEvent", shiftEvents);
+    setGlobalState("showModal", true);
   };
 
   const handleSaturdayShiftIndex = (index) => {
@@ -172,10 +177,11 @@ const ShiftScheduling = () => {
 
   const handleSundayShift = (index, value) => {
     log("SelectedEvent: Sunday", index);
-    setGlobalState("showModal", true);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Sunday");
+    setGlobalState("selectedShiftEvent", shiftEvents);
+    setGlobalState("showModal", true);
   };
 
   const handleSundayShiftIndex = (index) => {
@@ -184,7 +190,8 @@ const ShiftScheduling = () => {
   };
 
   console.log("selecteDay: ", selecteDay);
-    
+  console.log("selecteDayIndex: ", selecteDayIndex);
+  console.log("employeeSelectedIndex: ", employeeSelectedIndex);
   return (
     <>
       {/* Page Wrapper */}
@@ -330,7 +337,7 @@ const ShiftScheduling = () => {
                               </td>
                             ) : ( */}
                             <td onClick={() => handleMondayShift(index, value)}>
-                              {shiftEvents?.map((events, index) => {
+                              {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
                                   startTime,
@@ -347,7 +354,7 @@ const ShiftScheduling = () => {
                                   return (
                                     <div
                                       onClick={() =>
-                                        handleMondayShiftIndex(index)
+                                        handleMondayShiftIndex(indexID)
                                       }
                                       key={id}
                                       className="user-add-shedule-list"
@@ -389,7 +396,7 @@ const ShiftScheduling = () => {
                             <td
                               onClick={() => handleTuesDayShift(index, value)}
                             >
-                              {shiftEvents?.map((events, index) => {
+                              {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
                                   startTime,
@@ -406,7 +413,7 @@ const ShiftScheduling = () => {
                                   return (
                                     <div
                                       onClick={() =>
-                                        handleTuesdayShiftIndex(index)
+                                        handleTuesdayShiftIndex(indexID)
                                       }
                                       key={id}
                                       className="user-add-shedule-list"
@@ -450,7 +457,7 @@ const ShiftScheduling = () => {
                             <td
                               onClick={() => handleWednesdayShift(index, value)}
                             >
-                              {shiftEvents?.map((events, index) => {
+                              {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
                                   startTime,
@@ -467,7 +474,7 @@ const ShiftScheduling = () => {
                                   return (
                                     <div
                                       onClick={() =>
-                                        handleWednesdayShiftIndex(index)
+                                        handleWednesdayShiftIndex(indexID)
                                       }
                                       key={id}
                                       className="user-add-shedule-list"
@@ -511,7 +518,7 @@ const ShiftScheduling = () => {
                             <td
                               onClick={() => handleThursdayShift(index, value)}
                             >
-                              {shiftEvents?.map((events, index) => {
+                              {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
                                   startTime,
@@ -528,7 +535,7 @@ const ShiftScheduling = () => {
                                   return (
                                     <div
                                       onClick={() =>
-                                        handleThursdayShiftIndex(index)
+                                        handleThursdayShiftIndex(indexID)
                                       }
                                       key={id}
                                       className="user-add-shedule-list"
@@ -568,7 +575,7 @@ const ShiftScheduling = () => {
                               </td>
                             ) : ( */}
                             <td onClick={() => handleFridayShift(index, value)}>
-                              {shiftEvents?.map((events, index) => {
+                              {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
                                   startTime,
@@ -585,7 +592,7 @@ const ShiftScheduling = () => {
                                   return (
                                     <div
                                       onClick={() =>
-                                        handleFridayShiftIndex(index)
+                                        handleFridayShiftIndex(indexID)
                                       }
                                       key={id}
                                       className="user-add-shedule-list"
@@ -627,7 +634,7 @@ const ShiftScheduling = () => {
                             <td
                               onClick={() => handlSaturdayShift(index, value)}
                             >
-                              {shiftEvents?.map((events, index) => {
+                              {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
                                   startTime,
@@ -644,7 +651,7 @@ const ShiftScheduling = () => {
                                   return (
                                     <div
                                       onClick={() =>
-                                        handleSaturdayShiftIndex(index)
+                                        handleSaturdayShiftIndex(indexID)
                                       }
                                       key={id}
                                       className="user-add-shedule-list"
@@ -684,7 +691,7 @@ const ShiftScheduling = () => {
                               </td>
                             ) : ( */}
                             <td onClick={() => handleSundayShift(index, value)}>
-                              {shiftEvents?.map((events, index) => {
+                              {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
                                   startTime,
@@ -701,7 +708,7 @@ const ShiftScheduling = () => {
                                   return (
                                     <div
                                       onClick={() =>
-                                        handleSundayShiftIndex(index)
+                                        handleSundayShiftIndex(indexID)
                                       }
                                       key={id}
                                       className="user-add-shedule-list"
