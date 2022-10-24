@@ -286,13 +286,13 @@ const ShiftScheduling = () => {
                   <thead>
                     <tr>
                       <th>Scheduled Shift</th>
-                      <th>Mon 21</th>
-                      <th>Tue 22</th>
-                      <th>Wed 23</th>
-                      <th>Thu 24</th>
-                      <th>Fri 25</th>
-                      <th>Sat 26</th>
-                      <th>Sun 27</th>
+                      <th>Mon</th>
+                      <th>Tue</th>
+                      <th>Wed</th>
+                      <th>Thu</th>
+                      <th>Fri</th>
+                      <th>Sat</th>
+                      <th>Sun</th>
                     </tr>
                   </thead>
                   <tbody>
