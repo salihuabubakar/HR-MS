@@ -6,6 +6,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedDesignation: [],
   selectedHouse: [],
   selectedResident: [],
+  selectedShiftEvent: [],
   showModal: false,
 });
 
