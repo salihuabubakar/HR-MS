@@ -20,6 +20,9 @@ export const PopupWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  ${mobile} {
+    top: 30px;
+  }
 `;
 
 export const PopupOverlay = styled.div`
@@ -29,18 +32,39 @@ export const PopupOverlay = styled.div`
 `;
 
 export const PopupContainer = styled.div`
-  width: 100%;
   position: absolute;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   border-radius: 8px;
   
 `;
 
 export const Card = styled.div`
-  border: 1px solid red;
-  height: 50px;
-  /* ${mobile} {
-    height: 50%;
-  } */
+  background-color: #fff;
+  border-radius: 4px;
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .row- {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 400px;
+  }
+
+  .col-sm {
+    width: 100%;
+    margin: 2%;
+  }
+
+  .submit-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  ${mobile} {
+    width: 90%;
+  }
 `;

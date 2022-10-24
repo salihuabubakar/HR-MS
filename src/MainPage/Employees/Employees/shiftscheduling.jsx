@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Avatar_02,Avatar_05,Avatar_11, Avatar_12,Avatar_09,Avatar_10, Avatar_13 } from "../../../Entryfile/imagepath"
 import  Addschedule from "../../../_components/modelbox/Addschedule"
 import { useLocation } from "react-router-dom";
-import { initHouse, savedHouseReducer } from '../../../utils/localStorage';
+import { initHouse, savedHouseReducer, initShiftEvent, savedShiftEventReducer } from '../../../utils/localStorage';
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import Smile from "../../../assets/img/smile.png";
@@ -14,11 +14,29 @@ import {
   initUserAccount,
   savedUserAccountReducer, 
 } from "../../../utils/localStorage";
+import "./styles.css"
 const ShiftScheduling = () => {
   const location = useLocation();
   const { id: houseId } = location?.state;
 
   console.log("houseId", houseId);
+
+  const [showModal] = useGlobalState("showModal");
+
+  const [shift, dispatchShift] = useReducer(savedShiftEventReducer, [], initShiftEvent)
+  useEffect(() => {
+    localStorage.setItem("shiftEvent", JSON.stringify(shift));
+  }, [shift]);
+  useEffect(() => {
+    if (!showModal) {
+      setGlobalState("selectedShiftEvent", "");
+    }
+  }, [showModal]);
+
+  const [shiftEvents, setShiftEvents] = useState();
+  useEffect(() => {
+    setShiftEvents(shift);
+  }, [shift]);
 
   const [house] = useReducer(savedHouseReducer, [], initHouse);
   const [houseList, setHouseList] = useState();
@@ -66,6 +84,107 @@ const ShiftScheduling = () => {
     }
   });
 
+  const {log} = console;
+
+  const [employeeId, setEmployeeId] = useState();
+  const [employeeSelectedIndex, setEmployeeSelectedIndex] = useState();
+  const [selecteDay, setSelectedDay] = useState("");
+  const [selecteDayIndex, setSelectedDayIndex] = useState("");
+
+  const handleMondayShift = (index, value) => {
+    log("SelectedEvent: Monday", index);
+    setEmployeeId(value);
+    setEmployeeSelectedIndex(index);
+    setSelectedDay("Monday");
+    setGlobalState("selectedShiftEvent", shiftEvents);
+    setGlobalState("showModal", true);
+  };
+
+  const handleMondayShiftIndex = (index) => {
+    console.log("handleMondayShiftIndex: ", index);
+    setSelectedDayIndex(index);
+  }
+
+  const handleTuesDayShift = (index, value) => {
+    log("SelectedEvent: Tuesday", index);
+    setGlobalState("showModal", true);
+    setEmployeeId(value);
+    setEmployeeSelectedIndex(index);
+    setSelectedDay("Tuesday");
+  };
+
+  const handleTuesdayShiftIndex = (index) => {
+    console.log("handleTuesdayShiftIndex: ", index);
+    setSelectedDayIndex(index);
+  };
+
+  const handleWednesdayShift = (index, value) => {
+    log("SelectedEvent: Wednesday", index);
+    setGlobalState("showModal", true);
+    setEmployeeId(value);
+    setEmployeeSelectedIndex(index);
+    setSelectedDay("Wednesday");
+  };
+
+  const handleWednesdayShiftIndex = (index) => {
+    console.log("handleWednesdayShiftIndex: ", index);
+    setSelectedDayIndex(index);
+  };
+
+  const handleThursdayShift = (index, value) => {
+    log("SelectedEvent: Thursday", index);
+    setGlobalState("showModal", true);
+    setEmployeeId(value);
+    setEmployeeSelectedIndex(index);
+    setSelectedDay("Thursday");
+  };
+
+  const handleThursdayShiftIndex = (index) => {
+    console.log("handleThursdayShiftIndex: ", index);
+    setSelectedDayIndex(index);
+  };
+
+  const handleFridayShift = (index, value) => {
+    log("SelectedEvent: Friday", index);   
+    setGlobalState("showModal", true);
+    setEmployeeId(value);
+    setEmployeeSelectedIndex(index);
+    setSelectedDay("Friday");
+  };
+
+  const handleFridayShiftIndex = (index) => {
+    console.log("handleFridayShiftIndex: ", index);
+    setSelectedDayIndex(index);
+  };
+
+  const handlSaturdayShift = (index, value) => {
+    log("SelectedEvent: Saturday", index);
+    setGlobalState("showModal", true);
+    setEmployeeId(value);
+    setEmployeeSelectedIndex(index);
+    setSelectedDay("Saturday");
+  };
+
+  const handleSaturdayShiftIndex = (index) => {
+    console.log("handleSaturdayShiftIndex: ", index);
+    setSelectedDayIndex(index);
+  };
+
+  const handleSundayShift = (index, value) => {
+    log("SelectedEvent: Sunday", index);
+    setGlobalState("showModal", true);
+    setEmployeeId(value);
+    setEmployeeSelectedIndex(index);
+    setSelectedDay("Sunday");
+  };
+
+  const handleSundayShiftIndex = (index) => {
+    console.log("handleSundayShiftIndex: ", index);
+    setSelectedDayIndex(index);
+  };
+
+  console.log("selecteDay: ", selecteDay);
+    
   return (
     <>
       {/* Page Wrapper */}
@@ -91,7 +210,7 @@ const ShiftScheduling = () => {
                   <li className="breadcrumb-item active">Shift Scheduling</li>
                 </ul>
               </div>
-              <div className="col-auto float-end ml-auto">
+              {/* <div className="col-auto float-end ml-auto">
                 <Link
                   to="/app/employee/shift-list"
                   className="btn add-btn m-r-5"
@@ -107,7 +226,7 @@ const ShiftScheduling = () => {
                   {" "}
                   Assign Shifts
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
           {/* /Page Header */}
@@ -167,15 +286,13 @@ const ShiftScheduling = () => {
                   <thead>
                     <tr>
                       <th>Scheduled Shift</th>
-                      <th>Fri 21</th>
-                      <th>Sat 22</th>
-                      <th>Sun 23</th>
-                      <th>Mon 24</th>
-                      <th>Tue 25</th>
-                      <th>Wed 26</th>
-                      <th>Thu 27</th>
-                      <th>Fri 28</th>
-                      <th>Sat 29</th>
+                      <th>Mon</th>
+                      <th>Tue</th>
+                      <th>Wed</th>
+                      <th>Thu</th>
+                      <th>Fri</th>
+                      <th>Sat</th>
+                      <th>Sun</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -198,135 +315,417 @@ const ShiftScheduling = () => {
                                 </Link>
                               </h2>
                             </td>
-                            <td>
-                              <div className="user-add-shedule-list">
-                                <h2>
-                                  <a
-                                    href="#"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#edit_schedule"
-                                    style={{ border: "2px dashed #1eb53a" }}
-                                  >
-                                    <span className="username-info m-b-10">
-                                      6:30 am - 9:30 pm ( 14 hrs 15 mins)
-                                    </span>
-                                    <span className="userrole-info">
-                                      Web Designer - SMARTHR
+                            {/* 
+                            {shiftEvents?.length === 0 ? (
+                              <td
+                                onClick={() => handleMondayShift(index, value)}
+                              >
+                                <div className="user-add-shedule-list">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
                                     </span>
                                   </a>
-                                </h2>
-                              </div>
+                                </div>
+                              </td>
+                            ) : ( */}
+                            <td onClick={() => handleMondayShift(index, value)}>
+                              {shiftEvents?.map((events, index) => {
+                                const {
+                                  id,
+                                  startTime,
+                                  endTime,
+                                  selecteDay,
+                                  employeeId: eId,
+                                  employeeSelectedIndex: indexId,
+                                } = events;
+                                if (
+                                  value === eId &&
+                                  index === indexId &&
+                                  selecteDay === "Monday"
+                                ) {
+                                  return (
+                                    <div
+                                      onClick={() =>
+                                        handleMondayShiftIndex(index)
+                                      }
+                                      key={id}
+                                      className="user-add-shedule-list"
+                                    >
+                                      <h2>
+                                        <a
+                                          style={{
+                                            border: "2px dashed #1eb53a",
+                                          }}
+                                        >
+                                          <span className="username-info m-b-10">
+                                            {startTime} - {endTime}
+                                          </span>
+                                          <span className="userrole-info">
+                                            Web Designer - {label}
+                                          </span>
+                                        </a>
+                                      </h2>
+                                    </div>
+                                  );
+                                }
+                              })}
                             </td>
-                            <td>
-                              <div className="user-add-shedule-list">
-                                <a
-                                  href="#"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#add_schedule"
-                                >
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="user-add-shedule-list">
-                                <a
-                                  href="#"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#add_schedule"
-                                >
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="user-add-shedule-list">
-                                <a
-                                  href="#"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#add_schedule"
-                                >
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="user-add-shedule-list">
-                                <a
-                                  href="#"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#add_schedule"
-                                >
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="user-add-shedule-list">
-                                <a
-                                  href="#"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#add_schedule"
-                                >
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="user-add-shedule-list">
-                                <h2>
-                                  <a
-                                    href="#"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#edit_schedule"
-                                    style={{ border: "2px dashed #1eb53a" }}
-                                  >
-                                    <span className="username-info m-b-10">
-                                      6:30 am - 9:30 pm ( 14 hrs 15 mins)
-                                    </span>
-                                    <span className="userrole-info">
-                                      Web Designer - SMARTHR
+                            {/* )} */}
+
+                            {/* {shiftEvents?.length === 0 ? (
+                              <td
+                                onClick={() => handleTuesDayShift(index, value)}
+                              >
+                                <div className="user-add-shedule-list">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
                                     </span>
                                   </a>
-                                </h2>
-                              </div>
+                                </div>
+                              </td>
+                            ) : ( */}
+                            <td
+                              onClick={() => handleTuesDayShift(index, value)}
+                            >
+                              {shiftEvents?.map((events, index) => {
+                                const {
+                                  id,
+                                  startTime,
+                                  endTime,
+                                  selecteDay,
+                                  employeeId: eId,
+                                  employeeSelectedIndex: indexId,
+                                } = events;
+                                if (
+                                  value === eId &&
+                                  index === indexId &&
+                                  selecteDay === "Tuesday"
+                                ) {
+                                  return (
+                                    <div
+                                      onClick={() =>
+                                        handleTuesdayShiftIndex(index)
+                                      }
+                                      key={id}
+                                      className="user-add-shedule-list"
+                                    >
+                                      <h2>
+                                        <a
+                                          style={{
+                                            border: "2px dashed #1eb53a",
+                                          }}
+                                        >
+                                          <span className="username-info m-b-10">
+                                            {startTime} - {endTime}
+                                          </span>
+                                          <span className="userrole-info">
+                                            Web Designer - {label}
+                                          </span>
+                                        </a>
+                                      </h2>
+                                    </div>
+                                  );
+                                }
+                              })}
                             </td>
-                            <td>
-                              <div className="user-add-shedule-list">
-                                <a
-                                  href="#"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#add_schedule"
-                                >
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </div>
+                            {/* )} */}
+
+                            {/* {shiftEvents?.length === 0 ? (
+                              <td
+                                onClick={() =>
+                                  handleWednesdayShift(index, value)
+                                }
+                              >
+                                <div className="user-add-shedule-list">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                            ) : ( */}
+                            <td
+                              onClick={() => handleWednesdayShift(index, value)}
+                            >
+                              {shiftEvents?.map((events, index) => {
+                                const {
+                                  id,
+                                  startTime,
+                                  endTime,
+                                  selecteDay,
+                                  employeeId: eId,
+                                  employeeSelectedIndex: indexId,
+                                } = events;
+                                if (
+                                  value === eId &&
+                                  index === indexId &&
+                                  selecteDay === "Wednesday"
+                                ) {
+                                  return (
+                                    <div
+                                      onClick={() =>
+                                        handleWednesdayShiftIndex(index)
+                                      }
+                                      key={id}
+                                      className="user-add-shedule-list"
+                                    >
+                                      <h2>
+                                        <a
+                                          style={{
+                                            border: "2px dashed #1eb53a",
+                                          }}
+                                        >
+                                          <span className="username-info m-b-10">
+                                            {startTime} - {endTime}
+                                          </span>
+                                          <span className="userrole-info">
+                                            Web Designer - {label}
+                                          </span>
+                                        </a>
+                                      </h2>
+                                    </div>
+                                  );
+                                }
+                              })}
                             </td>
-                            <td>
-                              <div className="user-add-shedule-list">
-                                <a
-                                  href="#"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#add_schedule"
-                                >
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </div>
+                            {/* )} */}
+
+                            {/* {shiftEvents?.length === 0 ? (
+                              <td
+                                onClick={() =>
+                                  handleThursdayShift(index, value)
+                                }
+                              >
+                                <div className="user-add-shedule-list">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                            ) : ( */}
+                            <td
+                              onClick={() => handleThursdayShift(index, value)}
+                            >
+                              {shiftEvents?.map((events, index) => {
+                                const {
+                                  id,
+                                  startTime,
+                                  endTime,
+                                  selecteDay,
+                                  employeeId: eId,
+                                  employeeSelectedIndex: indexId,
+                                } = events;
+                                if (
+                                  value === eId &&
+                                  index === indexId &&
+                                  selecteDay === "Thursday"
+                                ) {
+                                  return (
+                                    <div
+                                      onClick={() =>
+                                        handleThursdayShiftIndex(index)
+                                      }
+                                      key={id}
+                                      className="user-add-shedule-list"
+                                    >
+                                      <h2>
+                                        <a
+                                          style={{
+                                            border: "2px dashed #1eb53a",
+                                          }}
+                                        >
+                                          <span className="username-info m-b-10">
+                                            {startTime} - {endTime}
+                                          </span>
+                                          <span className="userrole-info">
+                                            Web Designer - {label}
+                                          </span>
+                                        </a>
+                                      </h2>
+                                    </div>
+                                  );
+                                }
+                              })}
                             </td>
+                            {/* )} */}
+
+                            {/* {shiftEvents?.length === 0 ? (
+                              <td
+                                onClick={() => handleFridayShift(index, value)}
+                              >
+                                <div className="user-add-shedule-list">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                            ) : ( */}
+                            <td onClick={() => handleFridayShift(index, value)}>
+                              {shiftEvents?.map((events, index) => {
+                                const {
+                                  id,
+                                  startTime,
+                                  endTime,
+                                  selecteDay,
+                                  employeeId: eId,
+                                  employeeSelectedIndex: indexId,
+                                } = events;
+                                if (
+                                  value === eId &&
+                                  index === indexId &&
+                                  selecteDay === "Friday"
+                                ) {
+                                  return (
+                                    <div
+                                      onClick={() =>
+                                        handleFridayShiftIndex(index)
+                                      }
+                                      key={id}
+                                      className="user-add-shedule-list"
+                                    >
+                                      <h2>
+                                        <a
+                                          style={{
+                                            border: "2px dashed #1eb53a",
+                                          }}
+                                        >
+                                          <span className="username-info m-b-10">
+                                            {startTime} - {endTime}
+                                          </span>
+                                          <span className="userrole-info">
+                                            Web Designer - {label}
+                                          </span>
+                                        </a>
+                                      </h2>
+                                    </div>
+                                  );
+                                }
+                              })}
+                            </td>
+                            {/* )} */}
+
+                            {/* {shiftEvents?.length === 0 ? (
+                              <td
+                                onClick={() => handlSaturdayShift(index, value)}
+                              >
+                                <div className="user-add-shedule-list">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                            ) : ( */}
+                            <td
+                              onClick={() => handlSaturdayShift(index, value)}
+                            >
+                              {shiftEvents?.map((events, index) => {
+                                const {
+                                  id,
+                                  startTime,
+                                  endTime,
+                                  selecteDay,
+                                  employeeId: eId,
+                                  employeeSelectedIndex: indexId,
+                                } = events;
+                                if (
+                                  value === eId &&
+                                  index === indexId &&
+                                  selecteDay === "Saturday"
+                                ) {
+                                  return (
+                                    <div
+                                      onClick={() =>
+                                        handleSaturdayShiftIndex(index)
+                                      }
+                                      key={id}
+                                      className="user-add-shedule-list"
+                                    >
+                                      <h2>
+                                        <a
+                                          style={{
+                                            border: "2px dashed #1eb53a",
+                                          }}
+                                        >
+                                          <span className="username-info m-b-10">
+                                            {startTime} - {endTime}
+                                          </span>
+                                          <span className="userrole-info">
+                                            Web Designer - {label}
+                                          </span>
+                                        </a>
+                                      </h2>
+                                    </div>
+                                  );
+                                }
+                              })}
+                            </td>
+                            {/* )} */}
+
+                            {/* {shiftEvents?.length === 0 ? (
+                              <td
+                                onClick={() => handleSundayShift(index, value)}
+                              >
+                                <div className="user-add-shedule-list">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </div>
+                              </td>
+                            ) : ( */}
+                            <td onClick={() => handleSundayShift(index, value)}>
+                              {shiftEvents?.map((events, index) => {
+                                const {
+                                  id,
+                                  startTime,
+                                  endTime,
+                                  selecteDay,
+                                  employeeId: eId,
+                                  employeeSelectedIndex: indexId,
+                                } = events;
+                                if (
+                                  value === eId &&
+                                  index === indexId &&
+                                  selecteDay === "Saturday"
+                                ) {
+                                  return (
+                                    <div
+                                      onClick={() =>
+                                        handleSundayShiftIndex(index)
+                                      }
+                                      key={id}
+                                      className="user-add-shedule-list"
+                                    >
+                                      <h2>
+                                        <a
+                                          style={{
+                                            border: "2px dashed #1eb53a",
+                                          }}
+                                        >
+                                          <span className="username-info m-b-10">
+                                            {startTime} - {endTime}
+                                          </span>
+                                          <span className="userrole-info">
+                                            Web Designer - {label}
+                                          </span>
+                                        </a>
+                                      </h2>
+                                    </div>
+                                  );
+                                }
+                              })}
+                            </td>
+                            {/* )} */}
                           </tr>
                         </Fragment>
                       );
@@ -342,344 +741,15 @@ const ShiftScheduling = () => {
       </div>
       {/* /Page Wrapper */}
       {/* Add Schedule Modal */}
-      <Addschedule />
-      {/* /Add Schedule Modal */}
-      {/* Edit Schedule Modal */}
-      <div id="edit_schedule" className="modal custom-modal fade" role="dialog">
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Edit Schedule</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Department <span className="text-danger">*</span>
-                      </label>
-                      <select className="select">
-                        <option value>Select</option>
-                        <option>Development</option>
-                        <option value={1}>Finance</option>
-                        <option value={2}>Finance and Management</option>
-                        <option value={3}>Hr &amp; Finance</option>
-                        <option value={4}>ITech</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Employee Name <span className="text-danger">*</span>
-                      </label>
-                      <select className="select">
-                        <option value>Select </option>
-                        <option value={1}>Richard Miles </option>
-                        <option value={2}>John Smith</option>
-                        <option value={3}>Mike Litorus </option>
-                        <option value={4}>Wilmer Deluna</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Date <span className="text-danger">*</span>
-                      </label>
-                      <div>
-                        <input
-                          className="form-control datetimepicker"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Shifts <span className="text-danger">*</span>
-                      </label>
-                      <select className="select">
-                        <option value>Select </option>
-                        <option value={1}>10'o clock Shift</option>
-                        <option value={2}>10:30 shift</option>
-                        <option value={3}>Daily Shift </option>
-                        <option value={4}>New Shift</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-sm-4">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Min Start Time <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="06:11 am"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-4">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Start Time <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="06:30 am"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-4">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Max Start Time <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="08:12 am"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-4">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Min End Time <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="09:12 pm"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-4">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        End Time <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="09:30 pm"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-4">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Max End Time <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="09:45 pm"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-4">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Break Time <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue={45}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-12">
-                    <div className="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        className="custom-control-input"
-                        id="customCheck1"
-                      />
-                      <label
-                        className="custom-control-label"
-                        htmlFor="customCheck1"
-                      >
-                        Recurring Shift
-                      </label>
-                    </div>
-                  </div>
-                  <div className="col-sm-12">
-                    <div className="form-group">
-                      <label className="col-form-label">Repeat Every</label>
-                      <select className="select">
-                        <option value>1 </option>
-                        <option value={1}>2</option>
-                        <option value={2}>3</option>
-                        <option value={3}>4</option>
-                        <option value={4}>5</option>
-                        <option value={3}>6</option>
-                      </select>
-                      <label className="col-form-label">Week(s)</label>
-                    </div>
-                  </div>
-                  <div className="col-sm-12">
-                    <div className="form-group wday-box">
-                      <label className="checkbox-inline">
-                        <input
-                          type="checkbox"
-                          name="week_days[]"
-                          defaultValue="monday"
-                          className="days recurring"
-                          defaultChecked
-                        />
-                        <span className="checkmark">M</span>
-                      </label>
-                      <label className="checkbox-inline">
-                        <input
-                          type="checkbox"
-                          name="week_days[]"
-                          defaultValue="tuesday"
-                          className="days recurring"
-                          defaultChecked
-                        />
-                        <span className="checkmark">T</span>
-                      </label>
-                      <label className="checkbox-inline">
-                        <input
-                          type="checkbox"
-                          name="week_days[]"
-                          defaultValue="wednesday"
-                          className="days recurring"
-                          defaultChecked
-                        />
-                        <span className="checkmark">W</span>
-                      </label>
-                      <label className="checkbox-inline">
-                        <input
-                          type="checkbox"
-                          name="week_days[]"
-                          defaultValue="thursday"
-                          className="days recurring"
-                          defaultChecked
-                        />
-                        <span className="checkmark">T</span>
-                      </label>
-                      <label className="checkbox-inline">
-                        <input
-                          type="checkbox"
-                          name="week_days[]"
-                          defaultValue="friday"
-                          className="days recurring"
-                          defaultChecked
-                        />
-                        <span className="checkmark">F</span>
-                      </label>
-                      <label className="checkbox-inline">
-                        <input
-                          type="checkbox"
-                          name="week_days[]"
-                          defaultValue="saturday"
-                          className="days recurring"
-                        />
-                        <span className="checkmark">S</span>
-                      </label>
-                      <label className="checkbox-inline">
-                        <input
-                          type="checkbox"
-                          name="week_days[]"
-                          defaultValue="sunday"
-                          className="days recurring"
-                        />
-                        <span className="checkmark">S</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        End On <span className="text-danger">*</span>
-                      </label>
-                      <div>
-                        <input
-                          className="form-control datetimepicker"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-12">
-                    <div className="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        className="custom-control-input"
-                        id="customCheck2"
-                      />
-                      <label
-                        className="custom-control-label"
-                        htmlFor="customCheck2"
-                      >
-                        Indefinite
-                      </label>
-                    </div>
-                  </div>
-                  <div className="col-sm-12">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Accept Extra Hours{" "}
-                      </label>
-                      <div className="custom-control custom-switch">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          id="customSwitch3"
-                          defaultChecked
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="customSwitch3"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-12">
-                    <div className="form-group">
-                      <label className="col-form-label">Publish </label>
-                      <div className="custom-control custom-switch">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          id="customSwitch4"
-                          defaultChecked
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="customSwitch4"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Edit Schedule Modal */}
+      {showModal && (
+        <Addschedule
+          employeeId={employeeId}
+          employeeSelectedIndex={employeeSelectedIndex}
+          dispatchShift={dispatchShift}
+          selecteDay={selecteDay}
+          selecteDayIndex={selecteDayIndex}
+        />
+      )}
     </>
   );
 }
