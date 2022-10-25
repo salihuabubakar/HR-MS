@@ -30,8 +30,10 @@ const ShiftScheduling = () => {
   useEffect(() => {
     if (!showModal) {
       setGlobalState("selectedShiftEvent", "");
+      console.log("showModal is false");
     }
   }, [showModal]);
+
 
   const [shiftEvents, setShiftEvents] = useState();
   useEffect(() => {
@@ -703,7 +705,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === "Saturday"
+                                  selecteDay === "Sunday"
                                 ) {
                                   return (
                                     <div

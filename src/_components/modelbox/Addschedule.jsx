@@ -91,7 +91,12 @@ const Addschedule = ({
           <Card className="" role="document">
             <div className="card-content">
               <div className="card-header">
-                <h5 className="card-title">Add Schedule</h5>
+                <h5 className="card-title">
+                  {selectedShiftEvent[selecteDayIndex]?.id
+                    ? "Edit Schedule"
+                    : "Add Schedule"
+                  }
+                </h5>
                 <div>
                   {selectedShiftEvent[selecteDayIndex]?.id && (
                     <button type="submit" onClick={handleDeleteEvent}>
