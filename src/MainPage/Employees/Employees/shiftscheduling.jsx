@@ -1,20 +1,21 @@
 import React, { useEffect, useState, useReducer, Fragment } from "react";
 import { Helmet } from "react-helmet";
 import { Link, withRouter } from 'react-router-dom';
-import { Avatar_02,Avatar_05,Avatar_11, Avatar_12,Avatar_09,Avatar_10, Avatar_13 } from "../../../Entryfile/imagepath"
 import  Addschedule from "../../../_components/modelbox/Addschedule"
 import { useLocation } from "react-router-dom";
 import { initHouse, savedHouseReducer, initShiftEvent, savedShiftEventReducer } from '../../../utils/localStorage';
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import Smile from "../../../assets/img/smile.png";
+import { Body } from "./styles.js";
 import { 
   initDept, 
   savedDeptReducer,
   initUserAccount,
   savedUserAccountReducer, 
 } from "../../../utils/localStorage";
-import "./styles.css"
+import "./styles.js"
+
 const ShiftScheduling = () => {
   const location = useLocation();
   const { id: houseId } = location?.state;
@@ -22,6 +23,7 @@ const ShiftScheduling = () => {
   console.log("houseId", houseId);
 
   const [showModal] = useGlobalState("showModal");
+  const [selectedShiftEvent] = useGlobalState("selectedShiftEvent");
 
   const [shift, dispatchShift] = useReducer(savedShiftEventReducer, [], initShiftEvent)
   useEffect(() => {
@@ -30,7 +32,6 @@ const ShiftScheduling = () => {
   useEffect(() => {
     if (!showModal) {
       setGlobalState("selectedShiftEvent", "");
-      console.log("showModal is false");
     }
   }, [showModal]);
 
@@ -98,13 +99,13 @@ const ShiftScheduling = () => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Monday");
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setGlobalState("showModal", true);
   };
 
   const handleMondayShiftIndex = (index) => {
     console.log("handleMondayShiftIndex: ", index);
     setSelectedDayIndex(index);
+    setGlobalState("selectedShiftEvent", shiftEvents);
   }
 
   const handleTuesDayShift = (index, value) => {
@@ -112,13 +113,13 @@ const ShiftScheduling = () => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Tuesday");
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setGlobalState("showModal", true);
   };
 
   const handleTuesdayShiftIndex = (index) => {
     console.log("handleTuesdayShiftIndex: ", index);
     setSelectedDayIndex(index);
+    setGlobalState("selectedShiftEvent", shiftEvents);
   };
 
   const handleWednesdayShift = (index, value) => {
@@ -126,12 +127,12 @@ const ShiftScheduling = () => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Wednesday");
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setGlobalState("showModal", true);
   };
 
   const handleWednesdayShiftIndex = (index) => {
     console.log("handleWednesdayShiftIndex: ", index);
+    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
   };
 
@@ -140,12 +141,12 @@ const ShiftScheduling = () => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Thursday");
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setGlobalState("showModal", true);
   };
 
   const handleThursdayShiftIndex = (index) => {
     console.log("handleThursdayShiftIndex: ", index);
+    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
   };
 
@@ -154,12 +155,12 @@ const ShiftScheduling = () => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Friday");
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setGlobalState("showModal", true);
   };
 
   const handleFridayShiftIndex = (index) => {
     console.log("handleFridayShiftIndex: ", index);
+    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
   };
 
@@ -168,12 +169,12 @@ const ShiftScheduling = () => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Saturday");
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setGlobalState("showModal", true);
   };
 
   const handleSaturdayShiftIndex = (index) => {
     console.log("handleSaturdayShiftIndex: ", index);
+    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
   };
 
@@ -182,12 +183,12 @@ const ShiftScheduling = () => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Sunday");
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setGlobalState("showModal", true);
   };
 
   const handleSundayShiftIndex = (index) => {
     console.log("handleSundayShiftIndex: ", index);
+    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
   };
 
@@ -197,7 +198,7 @@ const ShiftScheduling = () => {
   return (
     <>
       {/* Page Wrapper */}
-      <div className="page-wrapper">
+      <Body className="page-wrapper">
         <Helmet>
           <title>Shift &amp; Schedule - Peepal Tree</title>
           <meta name="description" content="Login page" />
@@ -294,13 +295,15 @@ const ShiftScheduling = () => {
                 <table className="table table-striped custom-table">
                   <thead>
                     <tr>
-                      <th>Scheduled Shift</th>
-                      <th>Mon</th>
-                      <th>Tue</th>
-                      <th>Wed</th>
-                      <th>Thu</th>
-                      <th>Fri</th>
-                      <th>Sat</th>
+                      <th style={{ borderRight: "1px solid grey" }}>
+                        Scheduled Shift
+                      </th>
+                      <th style={{ borderRight: "1px solid grey" }}>Mon</th>
+                      <th style={{ borderRight: "1px solid grey" }}>Tue</th>
+                      <th style={{ borderRight: "1px solid grey" }}>Wed</th>
+                      <th style={{ borderRight: "1px solid grey" }}>Thu</th>
+                      <th style={{ borderRight: "1px solid grey" }}>Fri</th>
+                      <th style={{ borderRight: "1px solid grey" }}>Sat</th>
                       <th>Sun</th>
                     </tr>
                   </thead>
@@ -324,9 +327,9 @@ const ShiftScheduling = () => {
                                 </Link>
                               </h2>
                             </td>
-                            {/* 
-                            {shiftEvents?.length === 0 ? (
-                              <td
+
+                            {/* {shiftEvents?.length === 0 ? ( */}
+                            {/* <td
                                 onClick={() => handleMondayShift(index, value)}
                               >
                                 <div className="user-add-shedule-list">
@@ -336,9 +339,15 @@ const ShiftScheduling = () => {
                                     </span>
                                   </a>
                                 </div>
-                              </td>
-                            ) : ( */}
-                            <td onClick={() => handleMondayShift(index, value)}>
+                              </td> */}
+                            {/* ) : ( */}
+                            <td
+                              className="tool-tip"
+                              onClick={() => handleMondayShift(index, value)}
+                            >
+                              <span className="tool-tip-text">
+                                Click To Add/Edit/Delete Shift
+                              </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
@@ -396,8 +405,12 @@ const ShiftScheduling = () => {
                               </td>
                             ) : ( */}
                             <td
+                              className="tool-tip"
                               onClick={() => handleTuesDayShift(index, value)}
                             >
+                              <span className="tool-tip-text">
+                                Click To Add/Edit/Delete Shift
+                              </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
@@ -457,8 +470,12 @@ const ShiftScheduling = () => {
                               </td>
                             ) : ( */}
                             <td
+                              className="tool-tip"
                               onClick={() => handleWednesdayShift(index, value)}
                             >
+                              <span className="tool-tip-text">
+                                Click To Add/Edit/Delete Shift
+                              </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
@@ -518,8 +535,12 @@ const ShiftScheduling = () => {
                               </td>
                             ) : ( */}
                             <td
+                              className="tool-tip"
                               onClick={() => handleThursdayShift(index, value)}
                             >
+                              <span className="tool-tip-text">
+                                Click To Add/Edit/Delete Shift
+                              </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
@@ -576,7 +597,13 @@ const ShiftScheduling = () => {
                                 </div>
                               </td>
                             ) : ( */}
-                            <td onClick={() => handleFridayShift(index, value)}>
+                            <td
+                              className="tool-tip"
+                              onClick={() => handleFridayShift(index, value)}
+                            >
+                              <span className="tool-tip-text">
+                                Click To Add/Edit/Delete Shift
+                              </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
@@ -634,8 +661,12 @@ const ShiftScheduling = () => {
                               </td>
                             ) : ( */}
                             <td
+                              className="tool-tip"
                               onClick={() => handlSaturdayShift(index, value)}
                             >
+                              <span className="tool-tip-text">
+                                Click To Add/Edit/Delete Shift
+                              </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
@@ -692,7 +723,13 @@ const ShiftScheduling = () => {
                                 </div>
                               </td>
                             ) : ( */}
-                            <td onClick={() => handleSundayShift(index, value)}>
+                            <td
+                              className="tool-tip"
+                              onClick={() => handleSundayShift(index, value)}
+                            >
+                              <span className="tool-tip-text">
+                                Click To Add/Edit/Delete Shift
+                              </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
                                   id,
@@ -747,7 +784,7 @@ const ShiftScheduling = () => {
           {/* /Content End */}
         </div>
         {/* /Page Content */}
-      </div>
+      </Body>
       {/* /Page Wrapper */}
       {/* Add Schedule Modal */}
       {showModal && (

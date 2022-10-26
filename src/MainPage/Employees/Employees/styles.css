@@ -1,8 +1,0 @@
-td {
-  cursor: pointer;
-}
-
-td:hover {
-  background-color: aquamarine;
-  color: red;
-}
