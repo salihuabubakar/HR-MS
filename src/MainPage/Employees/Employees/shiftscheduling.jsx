@@ -346,7 +346,11 @@ const ShiftScheduling = () => {
                               onClick={() => handleMondayShift(index, value)}
                             >
                               <span className="tool-tip-text">
-                                Click To Add/Edit/Delete Shift
+                                <a>
+                                  <span>
+                                    <i className="fa fa-plus" />
+                                  </span>
+                                </a>
                               </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
@@ -409,7 +413,11 @@ const ShiftScheduling = () => {
                               onClick={() => handleTuesDayShift(index, value)}
                             >
                               <span className="tool-tip-text">
-                                Click To Add/Edit/Delete Shift
+                                <a>
+                                  <span>
+                                    <i className="fa fa-plus" />
+                                  </span>
+                                </a>
                               </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
@@ -474,7 +482,11 @@ const ShiftScheduling = () => {
                               onClick={() => handleWednesdayShift(index, value)}
                             >
                               <span className="tool-tip-text">
-                                Click To Add/Edit/Delete Shift
+                                <a>
+                                  <span>
+                                    <i className="fa fa-plus" />
+                                  </span>
+                                </a>
                               </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
@@ -539,7 +551,11 @@ const ShiftScheduling = () => {
                               onClick={() => handleThursdayShift(index, value)}
                             >
                               <span className="tool-tip-text">
-                                Click To Add/Edit/Delete Shift
+                                <a>
+                                  <span>
+                                    <i className="fa fa-plus" />
+                                  </span>
+                                </a>
                               </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
@@ -602,7 +618,11 @@ const ShiftScheduling = () => {
                               onClick={() => handleFridayShift(index, value)}
                             >
                               <span className="tool-tip-text">
-                                Click To Add/Edit/Delete Shift
+                                <a>
+                                  <span>
+                                    <i className="fa fa-plus" />
+                                  </span>
+                                </a>
                               </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
@@ -665,7 +685,11 @@ const ShiftScheduling = () => {
                               onClick={() => handlSaturdayShift(index, value)}
                             >
                               <span className="tool-tip-text">
-                                Click To Add/Edit/Delete Shift
+                                <a>
+                                  <span>
+                                    <i className="fa fa-plus" />
+                                  </span>
+                                </a>
                               </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
@@ -728,7 +752,11 @@ const ShiftScheduling = () => {
                               onClick={() => handleSundayShift(index, value)}
                             >
                               <span className="tool-tip-text">
-                                Click To Add/Edit/Delete Shift
+                                <a>
+                                  <span>
+                                    <i className="fa fa-plus" />
+                                  </span>
+                                </a>
                               </span>
                               {shiftEvents?.map((events, indexID) => {
                                 const {
