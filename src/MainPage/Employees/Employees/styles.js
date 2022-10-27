@@ -28,10 +28,10 @@ export const Body = styled.div`
   }
 
   .tool-tip .tool-tip-text {
-    font-size: 8px;
+    font-size: 10px;
     visibility: hidden;
-    width: 120px;
-    border: 1px dashed #1eb53a;
+    width: 20px;
+    /* border: 1px dashed #1eb53a; */
     color: #888888;
     text-align: center;
     border-radius: 6px;
@@ -44,9 +44,6 @@ export const Body = styled.div`
   }
 
   ${mobile} {
-    .tool-tip {
-      display: none;
-    }
     .tool-tip-text {
       display: none;
     }
