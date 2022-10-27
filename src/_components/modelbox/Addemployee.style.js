@@ -51,7 +51,6 @@ export const Card = styled.div`
   .row- {
     display: flex;
     flex-wrap: wrap;
-    max-width: 400px;
   }
 
   .col-sm {
@@ -66,5 +65,12 @@ export const Card = styled.div`
   }
   ${mobile} {
     width: 90%;
+    .row- {
+      max-width: fit-content;
+      width: 100%;
+    }
+    .col-sm {
+      margin: 2% 0;
+    }
   }
 `;

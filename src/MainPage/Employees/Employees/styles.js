@@ -27,6 +27,10 @@ export const Body = styled.div`
     position: relative;
   }
 
+  /* .user-add-shedule-list {
+    width: 10px;
+  } */
+
   .tool-tip .tool-tip-text {
     font-size: 10px;
     visibility: hidden;
