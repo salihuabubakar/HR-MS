@@ -357,6 +357,7 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
+                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -381,7 +382,27 @@ const ShiftScheduling = () => {
                                           }}
                                         >
                                           <span className="username-info m-b-10">
-                                            {startTime} - {endTime}
+                                            {`${new Date(startTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            -{" "}
+                                            {`${new Date(endTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            ({" "}
+                                            {`${new Date(selectedDate)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(0, 1)
+                                              .join(" ")
+                                              .split("")
+                                              .splice(0, 10)
+                                              .join("")}`}{" "}
+                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -424,6 +445,7 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
+                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -448,7 +470,27 @@ const ShiftScheduling = () => {
                                           }}
                                         >
                                           <span className="username-info m-b-10">
-                                            {startTime} - {endTime}
+                                            {`${new Date(startTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            -{" "}
+                                            {`${new Date(endTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            ({" "}
+                                            {`${new Date(selectedDate)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(0, 1)
+                                              .join(" ")
+                                              .split("")
+                                              .splice(0, 10)
+                                              .join("")}`}{" "}
+                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -493,6 +535,7 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
+                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -517,7 +560,27 @@ const ShiftScheduling = () => {
                                           }}
                                         >
                                           <span className="username-info m-b-10">
-                                            {startTime} - {endTime}
+                                            {`${new Date(startTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            -{" "}
+                                            {`${new Date(endTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            ({" "}
+                                            {`${new Date(selectedDate)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(0, 1)
+                                              .join(" ")
+                                              .split("")
+                                              .splice(0, 10)
+                                              .join("")}`}{" "}
+                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -562,6 +625,7 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
+                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -586,7 +650,27 @@ const ShiftScheduling = () => {
                                           }}
                                         >
                                           <span className="username-info m-b-10">
-                                            {startTime} - {endTime}
+                                            {`${new Date(startTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            -{" "}
+                                            {`${new Date(endTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            ({" "}
+                                            {`${new Date(selectedDate)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(0, 1)
+                                              .join(" ")
+                                              .split("")
+                                              .splice(0, 10)
+                                              .join("")}`}{" "}
+                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -629,6 +713,7 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
+                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -653,7 +738,27 @@ const ShiftScheduling = () => {
                                           }}
                                         >
                                           <span className="username-info m-b-10">
-                                            {startTime} - {endTime}
+                                            {`${new Date(startTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            -{" "}
+                                            {`${new Date(endTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            ({" "}
+                                            {`${new Date(selectedDate)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(0, 1)
+                                              .join(" ")
+                                              .split("")
+                                              .splice(0, 10)
+                                              .join("")}`}{" "}
+                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -696,6 +801,7 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
+                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -720,7 +826,27 @@ const ShiftScheduling = () => {
                                           }}
                                         >
                                           <span className="username-info m-b-10">
-                                            {startTime} - {endTime}
+                                            {`${new Date(startTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            -{" "}
+                                            {`${new Date(endTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            ({" "}
+                                            {`${new Date(selectedDate)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(0, 1)
+                                              .join(" ")
+                                              .split("")
+                                              .splice(0, 10)
+                                              .join("")}`}{" "}
+                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -763,6 +889,7 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
+                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -787,7 +914,27 @@ const ShiftScheduling = () => {
                                           }}
                                         >
                                           <span className="username-info m-b-10">
-                                            {startTime} - {endTime}
+                                            {`${new Date(startTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            -{" "}
+                                            {`${new Date(endTime)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(1)
+                                              .join(" ")}`}{" "}
+                                            ({" "}
+                                            {`${new Date(selectedDate)
+                                              .toLocaleString()
+                                              .split(" ")
+                                              .splice(0, 1)
+                                              .join(" ")
+                                              .split("")
+                                              .splice(0, 10)
+                                              .join("")}`}{" "}
+                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}

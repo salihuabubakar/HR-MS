@@ -7,7 +7,13 @@ import {
 } from "./Addemployee.style";
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { DatePicker } from "antd";
+import dayjs from "dayjs";
+import TextField from "@mui/material/TextField";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 
 const Addschedule = ({
   employeeId,
@@ -18,28 +24,21 @@ const Addschedule = ({
 }) => {
   const [selectedShiftEvent] = useGlobalState("selectedShiftEvent");
 
-  console.log("selectedShiftEvent: ", selectedShiftEvent);
-
-  const [am, setAm] = useState(
-    selectedShiftEvent[selecteDayIndex]?.am
-      ? selectedShiftEvent[selecteDayIndex]?.am
-      : ""
-  );
-  const [pm, setPm] = useState(
-    selectedShiftEvent[selecteDayIndex]?.pm
-      ? selectedShiftEvent[selecteDayIndex]?.pm
-      : ""
+  const [selectedDate, setSelectedDate] = useState(
+    selectedShiftEvent[selecteDayIndex]?.selectedDate
+      ? selectedShiftEvent[selecteDayIndex]?.selectedDate
+      : dayjs()
   );
 
   const [startTime, setStartTime] = useState(
     selectedShiftEvent[selecteDayIndex]?.startTime
       ? selectedShiftEvent[selecteDayIndex]?.startTime
-      : ""
+      : dayjs()
   );
   const [endTime, setEndTime] = useState(
     selectedShiftEvent[selecteDayIndex]?.endTime
       ? selectedShiftEvent[selecteDayIndex]?.endTime
-      : ""
+      : dayjs()
   );
 
   const [id, setId] = useState(
@@ -48,21 +47,12 @@ const Addschedule = ({
       : Date.now()
   );
 
-  const handlep = (event) => {
-    console.log(event.target.value);
-    setPm(event.target.value);
-  };
-
-  const handlea = (event) => {
-    console.log(event.target.value);
-    setAm(event.target.value);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const shift = {
-      startTime: startTime + " " + am,
-      endTime: endTime + " " + pm,
+      startTime,
+      endTime,
+      selectedDate,
       employeeId,
       employeeSelectedIndex,
       selecteDay,
@@ -84,6 +74,26 @@ const Addschedule = ({
     setGlobalState("showModal", false);
   };
 
+   const handleStartTimeChange = (newValue) => {
+    //  const hours = newValue;
+     console.log("newValue:", newValue);
+    //  let date = new Date(hours).toLocaleString();
+    //  date = date.split(" ").splice(1).join(" ");
+    //  console.log("date", date);
+    //  const minutes = newValue.toString().padStart(2, "0");
+    //  const textValue = hours + ":" + minutes;
+    //  console.log("dateString", textValue);
+     setStartTime(newValue.$d);
+   };
+
+   const handleEndTimeChange = (newValue) => {
+    setEndTime(newValue.$d);
+   }
+
+   const handleSelectedDateChange = (newValue) => {
+    setSelectedDate(newValue.$d);
+   };
+
   return (
     <>
       <PopupWrapper>
@@ -95,8 +105,7 @@ const Addschedule = ({
                 <h5 className="card-title">
                   {selectedShiftEvent[selecteDayIndex]?.id
                     ? "Edit Schedule"
-                    : "Add Schedule"
-                  }
+                    : "Add Schedule"}
                 </h5>
                 <div>
                   {selectedShiftEvent[selecteDayIndex]?.id && (
@@ -165,56 +174,39 @@ const Addschedule = ({
                         </select>
                       </div>
                     </div> */}
+
                     <div className="col-sm">
-                      <div className="">
-                        <label className="">Start Time</label>
-                        <div className="">
-                          <input
-                            value={startTime}
-                            onChange={(event) =>
-                              setStartTime(event.target.value)
-                            }
-                            type="time"
-                            className=""
-                          />
-                        </div>
-                      </div>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <MobileDatePicker
+                          label="Current Date"
+                          inputFormat="MM/DD/YYYY"
+                          value={selectedDate}
+                          onChange={handleSelectedDateChange}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>
                     </div>
                     <div className="col-sm">
-                      <div className="">
-                        <label className="">AM/PM</label>
-                        <select onChange={handlea} className="">
-                          <option value>Select </option>
-                          <option value={"am"}>am</option>
-                          <option value={"pm"}>pm</option>
-                        </select>
-                      </div>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <TimePicker
+                          label="Start Time"
+                          value={startTime}
+                          onChange={handleStartTimeChange}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>
                     </div>
                     <div className="col-sm">
-                      <div className="">
-                        <label className="">
-                          End Time <span className="text-danger">*</span>
-                        </label>
-                        <div className="">
-                          <input
-                            value={endTime}
-                            onChange={(event) => setEndTime(event.target.value)}
-                            type="time"
-                            className=""
-                          />
-                        </div>
-                      </div>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <TimePicker
+                          label="End Time"
+                          value={endTime}
+                          onChange={handleEndTimeChange}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>
                     </div>
-                    <div className="col-sm">
-                      <div className="">
-                        <label className="">AM/PM</label>
-                        <select onChange={handlep} className="">
-                          <option value>Select </option>
-                          <option value={"am"}>am</option>
-                          <option value={"pm"}>pm</option>
-                        </select>
-                      </div>
-                    </div>
+
                     {/* <div className="col-sm">
                       <div className="">
                         <label className="">
