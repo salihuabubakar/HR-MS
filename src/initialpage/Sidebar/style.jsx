@@ -1,4 +1,7 @@
 import styled from "@emotion/styled";
+import {media} from "../../_components/modelbox/Addemployee.style";
+
+const { mobile  } = media;
 
 export const Button = styled.button`
   color: #B7C0CD;
@@ -7,5 +10,11 @@ export const Button = styled.button`
   outline: none;
   &:hover {
     color: #EBECEC;
+  }
+`;
+
+export const HeaderContainer = styled.div`
+  ${mobile} {
+    z-index: -1;
   }
 `;

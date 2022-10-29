@@ -22,6 +22,8 @@ import {
 } from "../../Entryfile/imagepath";
 import Applogo from "../../assets/img/circle-logo.png"
 
+import {HeaderContainer} from "./style"
+
 const Header = (props) => {
   const history = useHistory();
 
@@ -40,7 +42,7 @@ const Header = (props) => {
   let pathname = location.pathname;
 
   return (
-    <div className="header" style={{ right: "0px" }}>
+    <HeaderContainer className="header" style={{ right: "0px" }}>
       {/* Logo */}
       <div className="header-left">
         <Link to="/app/main/dashboard" className="logo">
@@ -355,7 +357,7 @@ const Header = (props) => {
         </div>
       </div>
       {/* /Mobile Menu */}
-    </div>
+    </HeaderContainer>
   );
 };
 

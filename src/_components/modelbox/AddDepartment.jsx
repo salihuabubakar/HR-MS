@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { PopupContainer, PopupOverlay, PopupWrapper } from './Addemployee.style';
+import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 
 const AddDepartment = ({ 
@@ -39,19 +39,25 @@ const AddDepartment = ({
     <PopupWrapper>
       <PopupOverlay />
       <PopupContainer className=" custom-modal" role="dialog">
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Add Department</h5>
-              <button
-                type="button"
-                className="close"
-                onClick={() => setGlobalState("showModal", false)}
-              >
-                <span aria-hidden="true">×</span>
-              </button>
+        <Card className="" role="document">
+          <div className="card-content">
+            <div className="card-header">
+              <h5 className="card-title">
+                {selectedDept[indexToEdit]?.id
+                  ? "Edit Department"
+                  : "Add Department"}
+              </h5>
+              <div className="btn-container">
+                <button
+                  className="closeX"
+                  type="button"
+                  onClick={() => setGlobalState("showModal", false)}
+                >
+                  <span>×</span>
+                </button>
+              </div>
             </div>
-            <div className="modal-body">
+            <div className="card-body">
               <form>
                 <div className="form-group">
                   <label>
@@ -64,10 +70,10 @@ const AddDepartment = ({
                     type="text"
                   />
                 </div>
-                <div className="submit-section">
+                <div className="submit-btn">
                   <button
                     onClick={handleSubmit}
-                    className="btn btn-primary submit-btn"
+                    className="submit-Btn"
                   >
                     {selectedDept[indexToEdit]?.id ? "Update" : "Save"}
                   </button>
@@ -75,7 +81,7 @@ const AddDepartment = ({
               </form>
             </div>
           </div>
-        </div>
+        </Card>
       </PopupContainer>
     </PopupWrapper>
   );

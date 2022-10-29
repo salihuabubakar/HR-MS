@@ -180,27 +180,30 @@ const Addemployee = ({
       <PopupWrapper>
         <PopupOverlay />
         <PopupContainer className="custom-modal" role="dialog">
-          <Card
-            className="modal-dialog modal-dialog-centered modal-lg"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Add Employee</h5>
-                <button
-                  type="button"
-                  className="close"
-                  onClick={() => setGlobalState("showModal", false)}
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
+          <Card className="" role="document">
+            <div className="card-content">
+              <div className="card-header">
+                <h5 className="card-title">
+                  {selectedUserAccount[indexToEdit]?.id
+                    ? "Edit Employee"
+                    : "Add Employee"}
+                </h5>
+                <div className="btn-container">
+                  <button
+                    type="button"
+                    className="closeX"
+                    onClick={() => setGlobalState("showModal", false)}
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
               </div>
-              <div className="modal-body">
+              <div className="card-body">
                 <form>
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">
+                  <div className="row-">
+                    <div className="col-sm">
+                      <div className="right">
+                        <label className="">
                           First Name <span className="text-danger">*</span>
                         </label>
                         <input
@@ -210,10 +213,8 @@ const Addemployee = ({
                           type="text"
                         />
                       </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">Last Name</label>
+                      <div className="">
+                        <label className="">Last Name</label>
                         <input
                           value={lastName}
                           onChange={(event) => setLastName(event.target.value)}
@@ -222,9 +223,9 @@ const Addemployee = ({
                         />
                       </div>
                     </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">
+                    <div className="col-sm">
+                      <div className="right">
+                        <label className="">
                           Username <span className="text-danger">*</span>
                         </label>
                         <input
@@ -234,10 +235,8 @@ const Addemployee = ({
                           type="text"
                         />
                       </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">
+                      <div className="">
+                        <label className="">
                           Email <span className="text-danger">*</span>
                         </label>
                         <input
@@ -248,9 +247,9 @@ const Addemployee = ({
                         />
                       </div>
                     </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">Password</label>
+                    <div className="col-sm">
+                      <div className="right">
+                        <label className="">Password</label>
                         <input
                           value={password}
                           onChange={(event) => setPassword(event.target.value)}
@@ -258,12 +257,8 @@ const Addemployee = ({
                           type="password"
                         />
                       </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">
-                          Confirm Password
-                        </label>
+                      <div className="">
+                        <label className="">Confirm Password</label>
                         <input
                           value={confirmPassword}
                           onChange={(event) =>
@@ -274,9 +269,9 @@ const Addemployee = ({
                         />
                       </div>
                     </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">
+                    <div className="col-sm">
+                      <div className="right">
+                        <label className="">
                           Employee ID <span className="text-danger">*</span>
                         </label>
                         <input
@@ -288,15 +283,13 @@ const Addemployee = ({
                           className="form-control"
                         />
                       </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">
+                      <div className="">
+                        <label className="">
                           Joining Date <span className="text-danger">*</span>
                         </label>
                         <div>
                           <input
-                            className="form-control datetimepicker"
+                            className=" datetimepicker"
                             type="date"
                             value={joinDate}
                             onChange={(event) =>
@@ -306,9 +299,9 @@ const Addemployee = ({
                         </div>
                       </div>
                     </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">Phone </label>
+                    <div className="col-sm">
+                      <div className="right">
+                        <label className="">Phone </label>
                         <input
                           value={phoneNo}
                           onChange={(event) => setPhoneNo(event.target.value)}
@@ -316,10 +309,8 @@ const Addemployee = ({
                           type="text"
                         />
                       </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="col-form-label">Company</label>
+                      <div className="">
+                        <label className="">Company</label>
                         <Select
                           defaultValue={
                             selectedUserAccount[indexToEdit]?.company
@@ -336,8 +327,8 @@ const Addemployee = ({
                         />
                       </div>
                     </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
+                    <div className="col-sm">
+                      <div className="right">
                         <label>
                           Department <span className="text-danger">*</span>
                         </label>
@@ -356,9 +347,7 @@ const Addemployee = ({
                           placeholder="Select Department"
                         />
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
+                      <div className="">
                         <label>
                           Designation <span className="text-danger">*</span>
                         </label>
@@ -566,11 +555,8 @@ const Addemployee = ({
                     </tbody>
                   </table>
                 </div> */}
-                  <div className="submit-section">
-                    <button
-                      onClick={handleSubmit}
-                      className="btn btn-primary submit-btn"
-                    >
+                  <div className="submit-btn">
+                    <button onClick={handleSubmit} className="submit-Btn">
                       {selectedUserAccount[indexToEdit]?.id ? "Update" : "Save"}
                     </button>
                   </div>
