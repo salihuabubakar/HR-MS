@@ -203,7 +203,7 @@ const Addemployee = ({
                   <div className="row-">
                     <div className="col-sm">
                       <div className="right">
-                        <label className="">
+                        <label className="label">
                           First Name <span className="text-danger">*</span>
                         </label>
                         <input
@@ -215,7 +215,7 @@ const Addemployee = ({
                         />
                       </div>
                       <div className="">
-                        <label className="">Last Name</label>
+                        <label className="label">Last Name</label>
                         <input
                           value={lastName}
                           onChange={(event) => setLastName(event.target.value)}
@@ -227,7 +227,7 @@ const Addemployee = ({
                     </div>
                     <div className="col-sm">
                       <div className="right">
-                        <label className="">
+                        <label className="label">
                           Username <span className="text-danger">*</span>
                         </label>
                         <input
@@ -239,7 +239,7 @@ const Addemployee = ({
                         />
                       </div>
                       <div className="">
-                        <label className="">
+                        <label className="label">
                           Email <span className="text-danger">*</span>
                         </label>
                         <input
@@ -253,7 +253,7 @@ const Addemployee = ({
                     </div>
                     <div className="col-sm">
                       <div className="right">
-                        <label className="">Password</label>
+                        <label className="label">Password</label>
                         <input
                           value={password}
                           onChange={(event) => setPassword(event.target.value)}
@@ -263,7 +263,7 @@ const Addemployee = ({
                         />
                       </div>
                       <div className="">
-                        <label className="">Confirm Password</label>
+                        <label className="label">Confirm Password</label>
                         <input
                           value={confirmPassword}
                           onChange={(event) =>
@@ -277,7 +277,7 @@ const Addemployee = ({
                     </div>
                     <div className="col-sm">
                       <div className="right">
-                        <label className="">
+                        <label className="label">
                           Employee ID <span className="text-danger">*</span>
                         </label>
                         <input
@@ -291,7 +291,7 @@ const Addemployee = ({
                         />
                       </div>
                       <div className="">
-                        <label className="">
+                        <label className="label">
                           Joining Date <span className="text-danger">*</span>
                         </label>
                         <div>
@@ -309,7 +309,7 @@ const Addemployee = ({
                     </div>
                     <div className="col-sm">
                       <div className="right">
-                        <label className="">Phone </label>
+                        <label className="label">Phone </label>
                         <input
                           value={phoneNo}
                           onChange={(event) => setPhoneNo(event.target.value)}
@@ -319,7 +319,7 @@ const Addemployee = ({
                         />
                       </div>
                       <div className="">
-                        <label className="">Company</label>
+                        <label className="label">Company</label>
                         <Select
                           defaultValue={
                             selectedUserAccount[indexToEdit]?.company
@@ -338,7 +338,7 @@ const Addemployee = ({
                     </div>
                     <div className="col-sm">
                       <div className="right">
-                        <label>
+                        <label className="label">
                           Department <span className="text-danger">*</span>
                         </label>
                         <Select
@@ -357,7 +357,7 @@ const Addemployee = ({
                         />
                       </div>
                       <div className="">
-                        <label>
+                        <label className="label">
                           Designation <span className="text-danger">*</span>
                         </label>
                         <Select

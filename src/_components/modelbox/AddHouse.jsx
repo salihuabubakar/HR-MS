@@ -112,7 +112,7 @@ const AddDepartment = ({
             <div className="card-body">
               <form>
                 <div className="form-group">
-                  <label>
+                  <label className="label">
                     House Name <span className="text-danger">*</span>
                   </label>
                   <input
@@ -124,7 +124,7 @@ const AddDepartment = ({
                   />
                 </div>
                 <div className="form-group">
-                  <label>
+                  <label className="label">
                     Manager <span className="text-danger">*</span>
                   </label>
                   <input
@@ -136,7 +136,7 @@ const AddDepartment = ({
                   />
                 </div>
                 <div className="form-group">
-                  <label>
+                  <label className="label">
                     Staffs <span className="text-danger">*</span>
                   </label>
                   <Select

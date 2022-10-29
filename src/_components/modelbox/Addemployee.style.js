@@ -79,7 +79,7 @@ export const Card = styled.div`
   .card-body {
     /* height: 100%;
     overflow-y: scroll; */
-    label {
+    .label {
       ${mobile} {
         font-size: 9px;
         display: none;

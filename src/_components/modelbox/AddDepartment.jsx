@@ -60,7 +60,7 @@ const AddDepartment = ({
             <div className="card-body">
               <form>
                 <div className="form-group">
-                  <label>
+                  <label className="label">
                     Department Name <span className="text-danger">*</span>
                   </label>
                   <input
