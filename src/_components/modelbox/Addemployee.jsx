@@ -211,6 +211,7 @@ const Addemployee = ({
                           onChange={(event) => setFirstName(event.target.value)}
                           className="form-control"
                           type="text"
+                          placeholder="First Name"
                         />
                       </div>
                       <div className="">
@@ -220,6 +221,7 @@ const Addemployee = ({
                           onChange={(event) => setLastName(event.target.value)}
                           className="form-control"
                           type="text"
+                          placeholder="Last Name"
                         />
                       </div>
                     </div>
@@ -233,6 +235,7 @@ const Addemployee = ({
                           onChange={(event) => setUserName(event.target.value)}
                           className="form-control"
                           type="text"
+                          placeholder="Username"
                         />
                       </div>
                       <div className="">
@@ -244,6 +247,7 @@ const Addemployee = ({
                           onChange={(event) => setEmail(event.target.value)}
                           className="form-control"
                           type="email"
+                          placeholder="Email"
                         />
                       </div>
                     </div>
@@ -255,6 +259,7 @@ const Addemployee = ({
                           onChange={(event) => setPassword(event.target.value)}
                           className="form-control"
                           type="password"
+                          placeholder="Password"
                         />
                       </div>
                       <div className="">
@@ -266,6 +271,7 @@ const Addemployee = ({
                           }
                           className="form-control"
                           type="password"
+                          placeholder="Confirm Password"
                         />
                       </div>
                     </div>
@@ -281,6 +287,7 @@ const Addemployee = ({
                           }
                           type="text"
                           className="form-control"
+                          placeholder="Employee ID"
                         />
                       </div>
                       <div className="">
@@ -295,6 +302,7 @@ const Addemployee = ({
                             onChange={(event) =>
                               setJoinDate(event.target.value)
                             }
+                            placeholder="Joining Date"
                           />
                         </div>
                       </div>
@@ -307,6 +315,7 @@ const Addemployee = ({
                           onChange={(event) => setPhoneNo(event.target.value)}
                           className="form-control"
                           type="text"
+                          placeholder="Phone"
                         />
                       </div>
                       <div className="">

@@ -113,6 +113,7 @@ const AddDepartment = ({
                     onChange={(e) => setDesigName(e.target.value)}
                     className="form-control"
                     type="text"
+                    placeholder="Designation Name"
                   />
                 </div>
                 <div className="form-group">
