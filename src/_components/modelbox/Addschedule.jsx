@@ -107,13 +107,18 @@ const Addschedule = ({
                     ? "Edit Schedule"
                     : "Add Schedule"}
                 </h5>
-                <div>
+                <div className="btn-container">
                   {selectedShiftEvent[selecteDayIndex]?.id && (
-                    <button type="submit" onClick={handleDeleteEvent}>
+                    <button
+                      className="delete"
+                      type="submit"
+                      onClick={handleDeleteEvent}
+                    >
                       Delete
                     </button>
                   )}
                   <button
+                    className="closeX"
                     type="button"
                     onClick={() => setGlobalState("showModal", false)}
                   >
@@ -177,33 +182,35 @@ const Addschedule = ({
 
                     <div className="col-sm">
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <MobileDatePicker
-                          label="Current Date"
-                          inputFormat="MM/DD/YYYY"
-                          value={selectedDate}
-                          onChange={handleSelectedDateChange}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
+                        <div className="right date-picker-mobile">
+                          <MobileDatePicker
+                            label="Current Date"
+                            inputFormat="MM/DD/YYYY"
+                            value={selectedDate}
+                            onChange={handleSelectedDateChange}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </div>
                       </LocalizationProvider>
                     </div>
                     <div className="col-sm">
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <TimePicker
-                          label="Start Time"
-                          value={startTime}
-                          onChange={handleStartTimeChange}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                      </LocalizationProvider>
-                    </div>
-                    <div className="col-sm">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <TimePicker
-                          label="End Time"
-                          value={endTime}
-                          onChange={handleEndTimeChange}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
+                        <div className="right">
+                          <TimePicker
+                            label="Start Time"
+                            value={startTime}
+                            onChange={handleStartTimeChange}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </div>
+                        <div>
+                          <TimePicker
+                            label="End Time"
+                            value={endTime}
+                            onChange={handleEndTimeChange}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </div>
                       </LocalizationProvider>
                     </div>
 
@@ -255,8 +262,10 @@ const Addschedule = ({
                     </div> */}
                   </div>
                   <div className="submit-btn" onClick={handleSubmit}>
-                    <button className="btn btn-primary submit-btn">
-                      Submit
+                    <button className="submit-Btn">
+                      {selectedShiftEvent[selecteDayIndex]?.id
+                        ? "Update"
+                        : "Save"}
                     </button>
                   </div>
                 </form>

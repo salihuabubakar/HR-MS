@@ -12,17 +12,17 @@ const { smallScreenLaptop, mobile, tablet, bigMobile } = media;
 
 export const PopupWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: fixed;
-  top: 0;
+  top: 30px;
   left: 0;
   z-index: 11;
   display: flex;
   align-items: center;
   justify-content: center;
-  ${mobile} {
-    top: 30px;
-  }
+  /* ${mobile} {
+    z-index: 500;
+  } */
 `;
 
 export const PopupOverlay = styled.div`
@@ -47,26 +47,79 @@ export const Card = styled.div`
   .card-header {
     display: flex;
     justify-content: space-between;
+    padding: 10px;
+    .btn-container {
+      .delete {
+        border: 2px solid #000;
+        border-radius: 3px;
+        margin-right: 25px;
+        color: #fff;
+        background-color: #a0a0a0;
+
+        ${mobile} {
+          margin-right: 5px;
+        }
+      }
+
+      .closeX {
+        border: 2px solid #000;
+        border-radius: 40px;
+        color: #fff;
+        background-color: #a0a0a0;
+      }
+
+      /* ${mobile} {
+       display: flex;
+       flex-direction: column;
+       border: 1px solid red;
+      } */
+    }
   }
+
+  .card-body {
+    /* height: 100%;
+    overflow-y: scroll; */
+  }
+
   .row- {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
   }
 
   .col-sm {
     width: 100%;
-    margin: 2%;
+    display: flex;
+
+    .right {
+      margin-right: 10px;
+    }
+
+    .date-picker-mobile {
+      margin-bottom: 20px;
+    }
   }
 
   .submit-btn {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .submit-Btn {
+      background-color: #ff9b44;
+      color: #fff;
+      border-top-left-radius: 50px;
+      border-top-right-radius: 50px;
+      border-bottom-left-radius: 50px;
+      border-bottom-right-radius: 50px;
+      padding: 2% 10%;
+      border: none;
+    }
   }
+
   ${mobile} {
     width: 90%;
     .row- {
-      max-width: fit-content;
       width: 100%;
     }
     .col-sm {
