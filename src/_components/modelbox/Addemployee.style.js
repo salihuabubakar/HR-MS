@@ -20,9 +20,9 @@ export const PopupWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* ${mobile} {
-    z-index: 500;
-  } */
+  ${mobile} {
+    top: 20;
+  }
 `;
 
 export const PopupOverlay = styled.div`
@@ -79,6 +79,12 @@ export const Card = styled.div`
   .card-body {
     /* height: 100%;
     overflow-y: scroll; */
+    label {
+      ${mobile} {
+        font-size: 9px;
+        display: none;
+      }
+    }
   }
 
   .row- {

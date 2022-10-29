@@ -69,6 +69,7 @@ const AddResident = ({
                     onChange={(e) => setResidentName(e.target.value)}
                     className="form-control"
                     type="text"
+                    placeholder="Resident Name"
                   />
                 </div>
                 <div className="submit-btn">

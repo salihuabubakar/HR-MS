@@ -68,13 +68,11 @@ const AddDepartment = ({
                     onChange={(e) => setDeptName(e.target.value)}
                     className="form-control"
                     type="text"
+                    placeholder="Department Name"
                   />
                 </div>
                 <div className="submit-btn">
-                  <button
-                    onClick={handleSubmit}
-                    className="submit-Btn"
-                  >
+                  <button onClick={handleSubmit} className="submit-Btn">
                     {selectedDept[indexToEdit]?.id ? "Update" : "Save"}
                   </button>
                 </div>

@@ -120,6 +120,7 @@ const AddDepartment = ({
                     onChange={(e) => setHouseName(e.target.value)}
                     className="form-control"
                     type="text"
+                    placeholder="House Name"
                   />
                 </div>
                 <div className="form-group">
@@ -131,6 +132,7 @@ const AddDepartment = ({
                     onChange={(e) => setManagerName(e.target.value)}
                     className="form-control"
                     type="text"
+                    placeholder="Manager"
                   />
                 </div>
                 <div className="form-group">
