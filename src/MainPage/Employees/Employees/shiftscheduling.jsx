@@ -118,6 +118,7 @@ const ShiftScheduling = () => {
 
   const handleMondayShiftIndex = (index) => {
     console.log("handleMondayShiftIndex: ", index);
+    
     setSelectedDayIndex(index);
     setGlobalState("selectedShiftEvent", shiftEvents);
   }
