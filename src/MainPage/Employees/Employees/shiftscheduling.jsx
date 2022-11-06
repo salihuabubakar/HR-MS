@@ -310,7 +310,7 @@ const ShiftScheduling = () => {
               style={{ border: "none", marginRight: "10px" }}
               className="btn btn-success btn-block w-10"
             >
-              Prev
+              Prev Week
             </button>
             {/* <button onClick={goToCurrent} style={{border: "none"}}>Today</button> */}
             <button
@@ -318,7 +318,7 @@ const ShiftScheduling = () => {
               style={{ border: "none", marginLeft: "10px" }}
               className="btn btn-success btn-block w-10"
             >
-              Next
+              Next Week
             </button>
           </div>
           <div className="row">
