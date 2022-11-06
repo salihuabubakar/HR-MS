@@ -188,7 +188,7 @@ const EmployeeProfile = () => {
                         }
                         className="edit-icon"
                       >
-                        <i className="fa fa-pencil" />
+                        { profileInfo?.length > 0 ? <i className="fa fa-pencil" /> : "Add Profile" }
                       </a>
                     </div>
                   </div>
