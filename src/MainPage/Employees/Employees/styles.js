@@ -25,6 +25,7 @@ export const Body = styled.div`
 
   .tool-tip {
     position: relative;
+    margin-bottom: 5px;
   }
 
   /* .user-add-shedule-list {
