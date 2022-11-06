@@ -16,11 +16,13 @@ import {
 } from "../../../utils/localStorage";
 import "./styles.js"
 
+
 const ShiftScheduling = () => {
   const location = useLocation();
   const { id: houseId } = location?.state;
 
   console.log("houseId", houseId);
+
 
   const [showModal] = useGlobalState("showModal");
   const [selectedShiftEvent] = useGlobalState("selectedShiftEvent");
@@ -87,7 +89,19 @@ const ShiftScheduling = () => {
     }
   });
 
-  const {log} = console;
+  const [dateCounter, setDateCounter] = useState(0);
+
+  let curr = new Date();
+
+  new Date(curr.setDate(dateCounter == 0 ? null : dateCounter));
+  let results = [];
+
+  for (let i = 1; i <= 7; i++) {
+    let first = curr.getDate() - curr.getDay() + i;
+    let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
+    day = day.split("").slice(8).join("");
+    results.push(day);
+  }
 
   const [employeeId, setEmployeeId] = useState();
   const [employeeSelectedIndex, setEmployeeSelectedIndex] = useState();
@@ -95,10 +109,10 @@ const ShiftScheduling = () => {
   const [selecteDayIndex, setSelectedDayIndex] = useState();
 
   const handleMondayShift = (index, value) => {
-    log("SelectedEvent: Monday", index);
+    console.log("SelectedEvent: Monday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Monday");
+    setSelectedDay("Mon " + results[0]);
     setGlobalState("showModal", true);
   };
 
@@ -109,10 +123,10 @@ const ShiftScheduling = () => {
   }
 
   const handleTuesDayShift = (index, value) => {
-    log("SelectedEvent: Tuesday", index);
+    console.log("SelectedEvent: Tuesday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Tuesday");
+    setSelectedDay("Tue " + results[1]);
     setGlobalState("showModal", true);
   };
 
@@ -123,10 +137,10 @@ const ShiftScheduling = () => {
   };
 
   const handleWednesdayShift = (index, value) => {
-    log("SelectedEvent: Wednesday", index);
+    console.log("SelectedEvent: Wednesday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Wednesday");
+    setSelectedDay("Wed " + results[2]);
     setGlobalState("showModal", true);
   };
 
@@ -137,10 +151,10 @@ const ShiftScheduling = () => {
   };
 
   const handleThursdayShift = (index, value) => {
-    log("SelectedEvent: Thursday", index);
+    console.log("SelectedEvent: Thursday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Thursday");
+    setSelectedDay("Thu " + results[3]);
     setGlobalState("showModal", true);
   };
 
@@ -151,10 +165,10 @@ const ShiftScheduling = () => {
   };
 
   const handleFridayShift = (index, value) => {
-    log("SelectedEvent: Friday", index);   
+    console.log("SelectedEvent: Friday", index);   
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Friday");
+    setSelectedDay("Fri " + results[4]);
     setGlobalState("showModal", true);
   };
 
@@ -165,10 +179,10 @@ const ShiftScheduling = () => {
   };
 
   const handlSaturdayShift = (index, value) => {
-    log("SelectedEvent: Saturday", index);
+    console.log("SelectedEvent: Saturday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Saturday");
+    setSelectedDay("Sat " + results[5]);
     setGlobalState("showModal", true);
   };
 
@@ -179,10 +193,10 @@ const ShiftScheduling = () => {
   };
 
   const handleSundayShift = (index, value) => {
-    log("SelectedEvent: Sunday", index);
+    console.log("SelectedEvent: Sunday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Sunday");
+    setSelectedDay("Sun " + results[6]);
     setGlobalState("showModal", true);
   };
 
@@ -195,6 +209,7 @@ const ShiftScheduling = () => {
   console.log("selecteDay: ", selecteDay);
   console.log("selecteDayIndex: ", selecteDayIndex);
   console.log("employeeSelectedIndex: ", employeeSelectedIndex);
+
   return (
     <>
       {/* Page Wrapper */}
@@ -250,7 +265,7 @@ const ShiftScheduling = () => {
               </div>
             </div>
             <div className="col-sm-6 col-md-3">
-              <div className="form-group form-focus select-focus">
+              <div className="field">
                 <Select
                   onChange={handleDeptChange}
                   options={departments}
@@ -289,6 +304,23 @@ const ShiftScheduling = () => {
             </div>
           </div>
           {/* Search Filter */}
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "5px" }}>
+            <button
+              onClick={() => setDateCounter((prev) => prev - 7)}
+              style={{ border: "none", marginRight: "10px" }}
+              className="btn btn-success btn-block w-10"
+            >
+              Prev
+            </button>
+            {/* <button onClick={goToCurrent} style={{border: "none"}}>Today</button> */}
+            <button
+              onClick={() => setDateCounter((prev) => prev + 7)}
+              style={{ border: "none", marginLeft: "10px" }}
+              className="btn btn-success btn-block w-10"
+            >
+              Next
+            </button>
+          </div>
           <div className="row">
             <div className="col-md-12">
               <div className="table-responsive">
@@ -298,13 +330,25 @@ const ShiftScheduling = () => {
                       <th style={{ borderRight: "1px solid grey" }}>
                         Scheduled Shift
                       </th>
-                      <th style={{ borderRight: "1px solid grey" }}>Mon</th>
-                      <th style={{ borderRight: "1px solid grey" }}>Tue</th>
-                      <th style={{ borderRight: "1px solid grey" }}>Wed</th>
-                      <th style={{ borderRight: "1px solid grey" }}>Thu</th>
-                      <th style={{ borderRight: "1px solid grey" }}>Fri</th>
-                      <th style={{ borderRight: "1px solid grey" }}>Sat</th>
-                      <th>Sun</th>
+                      <th style={{ borderRight: "1px solid grey" }}>
+                        Mon {results[0]}
+                      </th>
+                      <th style={{ borderRight: "1px solid grey" }}>
+                        Tue {results[1]}
+                      </th>
+                      <th style={{ borderRight: "1px solid grey" }}>
+                        Wed {results[2]}
+                      </th>
+                      <th style={{ borderRight: "1px solid grey" }}>
+                        Thu {results[3]}
+                      </th>
+                      <th style={{ borderRight: "1px solid grey" }}>
+                        Fri {results[4]}
+                      </th>
+                      <th style={{ borderRight: "1px solid grey" }}>
+                        Sat {results[5]}
+                      </th>
+                      <th>Sun {results[6]}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -357,15 +401,15 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
-                                  selectedDate,
                                   selecteDay,
+                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
                                 } = events;
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === "Monday"
+                                  selecteDay === ("Mon " + results[0])
                                 ) {
                                   return (
                                     <div
@@ -393,17 +437,8 @@ const ShiftScheduling = () => {
                                               .split(" ")
                                               .splice(1)
                                               .join(" ")}`}{" "}
-                                            ({" "}
-                                            {`${new Date(selectedDate)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(0, 1)
-                                              .join(" ")
-                                              .split("")
-                                              .splice(0, 10)
-                                              .join("")}`}{" "}
-                                            )
                                           </span>
+                                          <span>{title}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -445,7 +480,6 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
-                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -453,7 +487,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === "Tuesday"
+                                  selecteDay === ("Tue " + results[1])
                                 ) {
                                   return (
                                     <div
@@ -481,16 +515,6 @@ const ShiftScheduling = () => {
                                               .split(" ")
                                               .splice(1)
                                               .join(" ")}`}{" "}
-                                            ({" "}
-                                            {`${new Date(selectedDate)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(0, 1)
-                                              .join(" ")
-                                              .split("")
-                                              .splice(0, 10)
-                                              .join("")}`}{" "}
-                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -535,7 +559,6 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
-                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -543,7 +566,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === "Wednesday"
+                                  selecteDay === ("Wed " + results[2])
                                 ) {
                                   return (
                                     <div
@@ -571,16 +594,6 @@ const ShiftScheduling = () => {
                                               .split(" ")
                                               .splice(1)
                                               .join(" ")}`}{" "}
-                                            ({" "}
-                                            {`${new Date(selectedDate)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(0, 1)
-                                              .join(" ")
-                                              .split("")
-                                              .splice(0, 10)
-                                              .join("")}`}{" "}
-                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -625,7 +638,6 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
-                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -633,7 +645,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === "Thursday"
+                                  selecteDay === ("Thu " + results[3])
                                 ) {
                                   return (
                                     <div
@@ -661,16 +673,6 @@ const ShiftScheduling = () => {
                                               .split(" ")
                                               .splice(1)
                                               .join(" ")}`}{" "}
-                                            ({" "}
-                                            {`${new Date(selectedDate)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(0, 1)
-                                              .join(" ")
-                                              .split("")
-                                              .splice(0, 10)
-                                              .join("")}`}{" "}
-                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -713,7 +715,6 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
-                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -721,7 +722,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === "Friday"
+                                  selecteDay === ("Fri " + results[4])
                                 ) {
                                   return (
                                     <div
@@ -749,16 +750,6 @@ const ShiftScheduling = () => {
                                               .split(" ")
                                               .splice(1)
                                               .join(" ")}`}{" "}
-                                            ({" "}
-                                            {`${new Date(selectedDate)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(0, 1)
-                                              .join(" ")
-                                              .split("")
-                                              .splice(0, 10)
-                                              .join("")}`}{" "}
-                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -801,7 +792,6 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
-                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -809,7 +799,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === "Saturday"
+                                  selecteDay === ("Sat " + results[5])
                                 ) {
                                   return (
                                     <div
@@ -837,16 +827,6 @@ const ShiftScheduling = () => {
                                               .split(" ")
                                               .splice(1)
                                               .join(" ")}`}{" "}
-                                            ({" "}
-                                            {`${new Date(selectedDate)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(0, 1)
-                                              .join(" ")
-                                              .split("")
-                                              .splice(0, 10)
-                                              .join("")}`}{" "}
-                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
@@ -889,7 +869,6 @@ const ShiftScheduling = () => {
                                   id,
                                   startTime,
                                   endTime,
-                                  selectedDate,
                                   selecteDay,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
@@ -897,7 +876,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === "Sunday"
+                                  selecteDay === ("Sun " + results[6])
                                 ) {
                                   return (
                                     <div
@@ -925,16 +904,6 @@ const ShiftScheduling = () => {
                                               .split(" ")
                                               .splice(1)
                                               .join(" ")}`}{" "}
-                                            ({" "}
-                                            {`${new Date(selectedDate)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(0, 1)
-                                              .join(" ")
-                                              .split("")
-                                              .splice(0, 10)
-                                              .join("")}`}{" "}
-                                            )
                                           </span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
