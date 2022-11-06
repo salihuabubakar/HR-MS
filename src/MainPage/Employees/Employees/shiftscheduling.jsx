@@ -99,8 +99,50 @@ const ShiftScheduling = () => {
   for (let i = 1; i <= 7; i++) {
     let first = curr.getDate() - curr.getDay() + i;
     let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
+    let month = day.split("").slice(5, 7).join("");
+    switch (month) {
+      case "01":
+        month = "Jan";
+        break;
+      case "02":
+        month = "Feb";
+        break;
+      case "03":
+        month = "Mar";
+        break;
+      case "04":
+        month = "Apr";
+        break;
+      case "05":
+        month = "May";
+        break;
+      case "06":
+        month = "Jun";
+        break;
+      case "07":
+        month = "Jul";
+        break;
+      case "08":
+        month = "Aug";
+        break;
+      case "09":
+        month = "Sep";
+        break;
+      case "10":
+        month = "Oct";
+        break;
+      case "11":
+        month = "Nov";
+        break;
+      case "12":
+        month = "Dec";
+        break;
+      default:
+        console.log("Error, Month doesn't exist");
+        break;
+    }
     day = day.split("").slice(8).join("");
-    results.push(day);
+    results.push(day + " " + month);
   }
 
   const [employeeId, setEmployeeId] = useState();
