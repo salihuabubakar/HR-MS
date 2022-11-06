@@ -24,11 +24,11 @@ const Addschedule = ({
 }) => {
   const [selectedShiftEvent] = useGlobalState("selectedShiftEvent");
 
-  const [selectedDate, setSelectedDate] = useState(
-    selectedShiftEvent[selecteDayIndex]?.selectedDate
-      ? selectedShiftEvent[selecteDayIndex]?.selectedDate
-      : dayjs()
-  );
+  const [title, setTitle] = useState(
+    selectedShiftEvent[selecteDayIndex]?.title
+    ? selectedShiftEvent[selecteDayIndex]?.title
+    : ""
+  )
 
   const [startTime, setStartTime] = useState(
     selectedShiftEvent[selecteDayIndex]?.startTime
@@ -50,9 +50,9 @@ const Addschedule = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     const shift = {
+      title,
       startTime,
       endTime,
-      selectedDate,
       employeeId,
       employeeSelectedIndex,
       selecteDay,
@@ -181,18 +181,18 @@ const Addschedule = ({
                     </div> */}
 
                     <div className="col-sm">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <div className="right date-picker-mobile">
-                          <MobileDatePicker
-                            label="Current Date"
-                            inputFormat="MM/DD/YYYY"
-                            value={selectedDate}
-                            onChange={handleSelectedDateChange}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </div>
-                      </LocalizationProvider>
+                      <div className="form-group">
+                        <label className="label">Title</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Title"
+                          value={title}
+                          onChange={(event) => setTitle(event.target.value)}
+                        />
+                      </div>
                     </div>
+
                     <div className="col-sm">
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <div className="right">
