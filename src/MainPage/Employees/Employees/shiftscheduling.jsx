@@ -481,6 +481,7 @@ const ShiftScheduling = () => {
                                   startTime,
                                   endTime,
                                   selecteDay,
+                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
                                 } = events;
@@ -516,6 +517,7 @@ const ShiftScheduling = () => {
                                               .splice(1)
                                               .join(" ")}`}{" "}
                                           </span>
+                                          <span>{title}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -560,6 +562,7 @@ const ShiftScheduling = () => {
                                   startTime,
                                   endTime,
                                   selecteDay,
+                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
                                 } = events;
@@ -595,6 +598,7 @@ const ShiftScheduling = () => {
                                               .splice(1)
                                               .join(" ")}`}{" "}
                                           </span>
+                                          <span>{title}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -639,6 +643,7 @@ const ShiftScheduling = () => {
                                   startTime,
                                   endTime,
                                   selecteDay,
+                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
                                 } = events;
@@ -674,6 +679,7 @@ const ShiftScheduling = () => {
                                               .splice(1)
                                               .join(" ")}`}{" "}
                                           </span>
+                                          <span>{title}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -716,6 +722,7 @@ const ShiftScheduling = () => {
                                   startTime,
                                   endTime,
                                   selecteDay,
+                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
                                 } = events;
@@ -751,6 +758,7 @@ const ShiftScheduling = () => {
                                               .splice(1)
                                               .join(" ")}`}{" "}
                                           </span>
+                                          <span>{title}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -793,6 +801,7 @@ const ShiftScheduling = () => {
                                   startTime,
                                   endTime,
                                   selecteDay,
+                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
                                 } = events;
@@ -828,6 +837,7 @@ const ShiftScheduling = () => {
                                               .splice(1)
                                               .join(" ")}`}{" "}
                                           </span>
+                                          <span>{title}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -870,6 +880,7 @@ const ShiftScheduling = () => {
                                   startTime,
                                   endTime,
                                   selecteDay,
+                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
                                 } = events;
@@ -905,6 +916,7 @@ const ShiftScheduling = () => {
                                               .splice(1)
                                               .join(" ")}`}{" "}
                                           </span>
+                                          <span>{title}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
