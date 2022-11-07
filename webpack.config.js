@@ -37,7 +37,7 @@ module.exports = {
 //   "jquery": "jQuery"
 // },
  entry: {
-   app: "./src/index.js"
+   app: ["regenerator-runtime/runtime.js", "./src/index.js"]
  },
  output: {
      // The build folder.
