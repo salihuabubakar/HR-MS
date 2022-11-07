@@ -15,6 +15,7 @@ import {
   savedUserAccountReducer, 
 } from "../../../utils/localStorage";
 import "./styles.js"
+import "regenerator-runtime/runtime";
 
 
 const ShiftScheduling = () => {
