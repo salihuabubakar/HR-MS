@@ -93,7 +93,7 @@ const ShiftScheduling = () => {
 
   let curr = new Date();
 
-  new Date(curr.setDate(dateCounter == 0 ? null : dateCounter));
+  new Date(curr.setDate(dateCounter == 0 ? curr.getDate() : dateCounter));
   let results = [];
 
   for (let i = 1; i <= 7; i++) {
@@ -278,23 +278,23 @@ const ShiftScheduling = () => {
                   <li className="breadcrumb-item active">Shift Scheduling</li>
                 </ul>
               </div>
-              {/* <div className="col-auto float-end ml-auto">
-                <Link
-                  to="/app/employee/shift-list"
+              <div className="col-auto float-end ml-auto">
+                <a
+                  // to="/app/employee/shift-list"
                   className="btn add-btn m-r-5"
                 >
                   Shifts
-                </Link>
-                <a
-                  href="#"
+                </a>
+                {/* <a
+                  // href="#"
                   className="btn add-btn m-r-5"
-                  data-bs-toggle="modal"
-                  data-bs-target="#add_schedule"
+                  // data-bs-toggle="modal"
+                  // data-bs-target="#add_schedule"
                 >
                   {" "}
                   Assign Shifts
-                </a>
-              </div> */}
+                </a> */}
+              </div>
             </div>
           </div>
           {/* /Page Header */}
