@@ -30,6 +30,12 @@ const Addschedule = ({
     : ""
   )
 
+  const [note, setNote] = useState(
+    selectedShiftEvent[selecteDayIndex]?.note
+      ? selectedShiftEvent[selecteDayIndex]?.note
+      : ""
+  );
+
   const [startTime, setStartTime] = useState(
     selectedShiftEvent[selecteDayIndex]?.startTime
       ? selectedShiftEvent[selecteDayIndex]?.startTime
@@ -51,6 +57,7 @@ const Addschedule = ({
     e.preventDefault();
     const shift = {
       title,
+      note,
       startTime,
       endTime,
       employeeId,
@@ -104,8 +111,8 @@ const Addschedule = ({
               <div className="card-header">
                 <h5 className="card-title">
                   {selectedShiftEvent[selecteDayIndex]?.id
-                    ? "Edit Schedule"
-                    : "Add Schedule"}
+                    ? "Edit Shift"
+                    : "Add shift"}
                 </h5>
                 <div className="btn-container">
                   {selectedShiftEvent[selecteDayIndex]?.id && (
@@ -189,6 +196,16 @@ const Addschedule = ({
                           placeholder="Title"
                           value={title}
                           onChange={(event) => setTitle(event.target.value)}
+                        />
+                      </div>
+                      <div className="form-group right">
+                        <label className="label">Note</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Description"
+                          value={note}
+                          onChange={(event) => setNote(event.target.value)}
                         />
                       </div>
                     </div>
