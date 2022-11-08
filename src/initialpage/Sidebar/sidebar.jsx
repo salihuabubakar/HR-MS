@@ -1,12 +1,7 @@
-/**
- * App Header
- */
- import React, { useEffect,useState} from 'react';
+import React, { useEffect,useState} from 'react';
 import { withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 
  
 const Sidebar = (props) => {
@@ -18,7 +13,6 @@ const [level3Menu, setLevel3Menu] = useState("")
 const [isDashboardOpen, setIsDashboardOpen] = useState(false)
 
 const toggleSidebar = (value) => {
-  console.log(value);
   setSideMenu(value);
 };
 
@@ -36,9 +30,15 @@ const toggleLevelThree = (value) => {
 }
 
 
-    let pathname = props.location.pathname;
-    let headerHamburgerToggle = props.menu;
-    console.log("menuuu", headerHamburgerToggle);
+    let pathname = props?.location?.pathname;
+    const location = useLocation();
+    let id = location?.state?.id;
+    if (id == undefined) {
+      console.log("return null");
+      id = null;
+    }
+    console.log("id-side", id);
+
     return (
       <div className="sidebar" id="sidebar">
         <Scrollbars
@@ -68,8 +68,7 @@ const toggleLevelThree = (value) => {
                     <i className="la la-dashboard" /> <span> Dashboard</span>{" "}
                     <span className="menu-arrow" />
                   </a>
-                  {isSideMenu == "dashboard" &&
-                  headerHamburgerToggle !== true ? (
+                  {isSideMenu == "dashboard" ? (
                     <ul>
                       <li>
                         <Link
@@ -92,9 +91,7 @@ const toggleLevelThree = (value) => {
                         </Link>
                       </li>
                     </ul>
-                  ) : (
-                    ""
-                  )}
+                  ) : ("")}
                 </li>
                 {/* <li className="submenu">
                   <a

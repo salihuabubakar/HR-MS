@@ -187,8 +187,8 @@ const Addschedule = ({
                       </div>
                     </div> */}
 
-                    <div className="col-sm">
-                      <div className="form-group">
+                    <div className="col-sm space-between">
+                      <div className="form-group inputText right">
                         <label className="label">Title</label>
                         <input
                           type="text"
@@ -198,7 +198,7 @@ const Addschedule = ({
                           onChange={(event) => setTitle(event.target.value)}
                         />
                       </div>
-                      <div className="form-group right">
+                      <div className="form-group inputText">
                         <label className="label">Note</label>
                         <input
                           type="text"

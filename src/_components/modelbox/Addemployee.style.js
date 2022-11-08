@@ -93,6 +93,11 @@ export const Card = styled.div`
     flex-direction: column;
   }
 
+  .space-between {
+    display: flex;
+    justify-content: space-between;
+  } 
+  
   .col-sm {
     width: 100%;
     display: flex;
@@ -103,6 +108,14 @@ export const Card = styled.div`
 
     .date-picker-mobile {
       margin-bottom: 20px;
+    }
+
+    .inputText {
+      width: 100%;
+    }
+
+    .inputText input {
+      padding: 10% 5%;
     }
   }
 
