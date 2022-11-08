@@ -16,11 +16,12 @@ import {
 } from "../../../utils/localStorage";
 import "./styles.js"
 import "regenerator-runtime/runtime";
+import AddShifts from "../../../_components/modelbox/AddShifts";
 
 
 const ShiftScheduling = () => {
   const location = useLocation();
-  const { id: houseId } = location?.state;
+  const houseId = location?.state?.id;
 
   console.log("houseId", houseId);
 
@@ -281,20 +282,19 @@ const ShiftScheduling = () => {
               </div>
               <div className="col-auto float-end ml-auto">
                 <a
-                  // to="/app/employee/shift-list"
+                  href="/app/employee/shift-list"
+                  to="/app/employee/shift-list"
                   className="btn add-btn m-r-5"
                 >
                   Shifts
                 </a>
-                {/* <a
-                  // href="#"
+                <a
                   className="btn add-btn m-r-5"
-                  // data-bs-toggle="modal"
-                  // data-bs-target="#add_schedule"
+                  onClick={() => setGlobalState("showModal", true)}
                 >
                   {" "}
-                  Assign Shifts
-                </a> */}
+                  Add Shifts
+                </a>
               </div>
             </div>
           </div>
@@ -348,7 +348,13 @@ const ShiftScheduling = () => {
             </div>
           </div>
           {/* Search Filter */}
-          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "5px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginBottom: "5px",
+            }}
+          >
             <button
               onClick={() => setDateCounter((prev) => prev - 7)}
               style={{ border: "none", marginRight: "10px" }}
@@ -453,7 +459,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === ("Mon " + results[0])
+                                  selecteDay === "Mon " + results[0]
                                 ) {
                                   return (
                                     <div
@@ -532,7 +538,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === ("Tue " + results[1])
+                                  selecteDay === "Tue " + results[1]
                                 ) {
                                   return (
                                     <div
@@ -613,7 +619,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === ("Wed " + results[2])
+                                  selecteDay === "Wed " + results[2]
                                 ) {
                                   return (
                                     <div
@@ -694,7 +700,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === ("Thu " + results[3])
+                                  selecteDay === "Thu " + results[3]
                                 ) {
                                   return (
                                     <div
@@ -773,7 +779,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === ("Fri " + results[4])
+                                  selecteDay === "Fri " + results[4]
                                 ) {
                                   return (
                                     <div
@@ -852,7 +858,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === ("Sat " + results[5])
+                                  selecteDay === "Sat " + results[5]
                                 ) {
                                   return (
                                     <div
@@ -931,7 +937,7 @@ const ShiftScheduling = () => {
                                 if (
                                   value === eId &&
                                   index === indexId &&
-                                  selecteDay === ("Sun " + results[6])
+                                  selecteDay === "Sun " + results[6]
                                 ) {
                                   return (
                                     <div
