@@ -28,7 +28,6 @@ import Error500 from '../MainPage/Pages/ErrorPage/error500';
  const App = ({ match, location }) => {
 
   const isLoggedIn = localStorage.getItem("isLoggedIn");
-  console.log("isLoggedIn Before Check", isLoggedIn);
 
   const InitialPath = ({ component: Component, authUser, ...rest }) => (
     <Route
@@ -49,8 +48,6 @@ import Error500 from '../MainPage/Pages/ErrorPage/error500';
       }}
     />
   );
-
-  console.log([match.url, location.pathname]);
 
   const user = localStorage.getItem("email");
 

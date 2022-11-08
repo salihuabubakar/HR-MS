@@ -49,7 +49,7 @@ const ShiftList = () => {
           title: 'Status',
           render: (text, record) => (
             <div className="action-label">
-              <a className="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
+              <a className="btn btn-white btn-sm btn-rounded" href="#">
                 <i className="fa fa-dot-circle-o text-success" /> Active
               </a>
             </div>

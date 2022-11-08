@@ -2,7 +2,7 @@
  * App Header
  */
 import React, { useState } from "react";
-import { withRouter, useHistory } from "react-router-dom";
+import { withRouter, useHistory, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
   headerlogo,
@@ -12,12 +12,7 @@ import {
   lnGerman,
   Avatar_02,
   Avatar_03,
-  Avatar_05,
-  Avatar_06,
-  Avatar_08,
-  Avatar_09,
   Avatar_13,
-  Avatar_17,
   Avatar_21,
 } from "../../Entryfile/imagepath";
 import Applogo from "../../assets/img/circle-logo.png"
@@ -39,7 +34,13 @@ const Header = (props) => {
     history.push("/login");
   };
 
-  let pathname = location.pathname;
+  const location = useLocation();
+  let id = location?.state?.id;
+  if (id == undefined) {
+    console.log("return null");
+    id = null;
+  }
+  console.log("id-head", id);
 
   return (
     <HeaderContainer className="header" style={{ right: "0px" }}>
@@ -54,13 +55,6 @@ const Header = (props) => {
         id="toggle_btn"
         data-bs-toggle="dropdown"
         href="#"
-        style={{
-          display: pathname.includes("tasks")
-            ? "none"
-            : pathname.includes("compose")
-            ? "none"
-            : "",
-        }}
         onClick={handlesidebar}
       >
         <span className="bar-icon">
@@ -84,7 +78,6 @@ const Header = (props) => {
       <a
         id="mobile_btn"
         className="mobile_btn"
-        href="#"
         onClick={onMenuClik}
         data-bs-toggle="dropdown"
       >
@@ -320,7 +313,10 @@ const Header = (props) => {
           <div className="dropdown-menu">
             <Link
               className="dropdown-item"
-              to={{ pathname: "/app/profile/employee-profile", state: { id: "occupation" }}}
+              to={{
+                pathname: "/app/profile/employee-profile",
+                state: { id: "occupation" },
+              }}
             >
               My Profile
             </Link>
@@ -359,6 +355,6 @@ const Header = (props) => {
       {/* /Mobile Menu */}
     </HeaderContainer>
   );
-};
+};;
 
 export default withRouter(Header);

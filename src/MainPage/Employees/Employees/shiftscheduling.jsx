@@ -23,9 +23,6 @@ const ShiftScheduling = () => {
   const location = useLocation();
   const houseId = location?.state?.id;
 
-  console.log("houseId", houseId);
-
-
   const [showModal] = useGlobalState("showModal");
   const [selectedShiftEvent] = useGlobalState("selectedShiftEvent");
 
@@ -59,8 +56,6 @@ const ShiftScheduling = () => {
 
   const selectedHouse = houseList?.find((staff) =>  staff.id === houseId );
 
-  console.log("selectedHouse", selectedHouse);
-
   const handleDeptChange = (event) => {
     console.log(event);
   };
@@ -92,6 +87,7 @@ const ShiftScheduling = () => {
   });
 
   const [dateCounter, setDateCounter] = useState(0);
+
 
   let curr = new Date();
 
@@ -153,7 +149,6 @@ const ShiftScheduling = () => {
   const [selecteDayIndex, setSelectedDayIndex] = useState();
 
   const handleMondayShift = (index, value) => {
-    console.log("SelectedEvent: Monday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Mon " + results[0]);
@@ -168,7 +163,6 @@ const ShiftScheduling = () => {
   }
 
   const handleTuesDayShift = (index, value) => {
-    console.log("SelectedEvent: Tuesday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Tue " + results[1]);
@@ -182,7 +176,6 @@ const ShiftScheduling = () => {
   };
 
   const handleWednesdayShift = (index, value) => {
-    console.log("SelectedEvent: Wednesday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Wed " + results[2]);
@@ -196,7 +189,6 @@ const ShiftScheduling = () => {
   };
 
   const handleThursdayShift = (index, value) => {
-    console.log("SelectedEvent: Thursday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Thu " + results[3]);
@@ -209,8 +201,7 @@ const ShiftScheduling = () => {
     setSelectedDayIndex(index);
   };
 
-  const handleFridayShift = (index, value) => {
-    console.log("SelectedEvent: Friday", index);   
+  const handleFridayShift = (index, value) => { 
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Fri " + results[4]);
@@ -224,7 +215,6 @@ const ShiftScheduling = () => {
   };
 
   const handlSaturdayShift = (index, value) => {
-    console.log("SelectedEvent: Saturday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Sat " + results[5]);
@@ -232,13 +222,11 @@ const ShiftScheduling = () => {
   };
 
   const handleSaturdayShiftIndex = (index) => {
-    console.log("handleSaturdayShiftIndex: ", index);
     setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
   };
 
   const handleSundayShift = (index, value) => {
-    console.log("SelectedEvent: Sunday", index);
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Sun " + results[6]);
@@ -246,14 +234,9 @@ const ShiftScheduling = () => {
   };
 
   const handleSundayShiftIndex = (index) => {
-    console.log("handleSundayShiftIndex: ", index);
     setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
   };
-
-  console.log("selecteDay: ", selecteDay);
-  console.log("selecteDayIndex: ", selecteDayIndex);
-  console.log("employeeSelectedIndex: ", employeeSelectedIndex);
 
   return (
     <>
@@ -362,7 +345,13 @@ const ShiftScheduling = () => {
             >
               Prev Week
             </button>
-            {/* <button onClick={goToCurrent} style={{border: "none"}}>Today</button> */}
+            <button
+              onClick={() => setDateCounter((prev) => prev * 0)}
+              className="btn btn-success btn-block w-10"
+              style={{ border: "none" }}
+            >
+              Current Week
+            </button>
             <button
               onClick={() => setDateCounter((prev) => prev + 7)}
               style={{ border: "none", marginLeft: "10px" }}
