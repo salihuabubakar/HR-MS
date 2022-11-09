@@ -1,22 +1,27 @@
 import React, { useEffect, useState, useReducer, Fragment } from "react";
 import { Helmet } from "react-helmet";
 import { Link, withRouter } from 'react-router-dom';
-import  Addschedule from "../../../_components/modelbox/Addschedule"
+import  AddShift from "../../../_components/modelbox/AddShift"
+import AddSchedule from "../../../_components/modelbox/Addschedule";
 import { useLocation } from "react-router-dom";
-import { initHouse, savedHouseReducer, initShiftEvent, savedShiftEventReducer } from '../../../utils/localStorage';
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import Smile from "../../../assets/img/smile.png";
 import { Body } from "./styles.js";
-import { 
-  initDept, 
+import {
+  initDept,
   savedDeptReducer,
   initUserAccount,
-  savedUserAccountReducer, 
+  savedUserAccountReducer,
+  initShiftList,
+  savedShiftListReducer,
+  initHouse,
+  savedHouseReducer,
+  initScheduleEvent,
+  savedScheduleEventReducer,
 } from "../../../utils/localStorage";
 import "./styles.js"
 import "regenerator-runtime/runtime";
-import AddShifts from "../../../_components/modelbox/AddShifts";
 
 
 const ShiftScheduling = () => {
@@ -24,23 +29,47 @@ const ShiftScheduling = () => {
   const houseId = location?.state?.id;
 
   const [showModal] = useGlobalState("showModal");
-  const [selectedShiftEvent] = useGlobalState("selectedShiftEvent");
+  const [showAddSchedul] = useGlobalState("showAddSchedul");
+  const [selectedShiftList] = useGlobalState("selectedShiftList");
 
-  const [shift, dispatchShift] = useReducer(savedShiftEventReducer, [], initShiftEvent)
+  const [schedule, dispatchSchedule] = useReducer(
+    savedScheduleEventReducer,
+    [],
+    initScheduleEvent
+  );
   useEffect(() => {
-    localStorage.setItem("shiftEvent", JSON.stringify(shift));
+    localStorage.setItem("scheduleEvent", JSON.stringify(schedule));
+  }, [schedule]);
+  useEffect(() => {
+    if (!showAddSchedul) {
+      setGlobalState("selectedScheduleEvent", "");
+    }
+  }, [showAddSchedul]);
+
+  const [shift, dispatchShift] = useReducer(
+    savedShiftListReducer,
+    [],
+    initShiftList
+  );
+  useEffect(() => {
+    localStorage.setItem("shiftList", JSON.stringify(shift));
   }, [shift]);
   useEffect(() => {
     if (!showModal) {
-      setGlobalState("selectedShiftEvent", "");
+      setGlobalState("selectedShiftList", "");
     }
   }, [showModal]);
 
 
-  const [shiftEvents, setShiftEvents] = useState();
+  const [shiftList, setShiftList] = useState();
   useEffect(() => {
-    setShiftEvents(shift);
+    setShiftList(shift);
   }, [shift]);
+
+  const [scheduleEvent, setScheduleEvent] = useState();
+  useEffect(() => {
+    setScheduleEvent(schedule);
+  }, [schedule]);
 
   const [house] = useReducer(savedHouseReducer, [], initHouse);
   const [houseList, setHouseList] = useState();
@@ -57,7 +86,7 @@ const ShiftScheduling = () => {
   const selectedHouse = houseList?.find((staff) =>  staff.id === houseId );
 
   const handleDeptChange = (event) => {
-    console.log(event);
+    // console.log(event);
   };
 
   const customSelectStyles = {
@@ -87,12 +116,15 @@ const ShiftScheduling = () => {
   });
 
   const [dateCounter, setDateCounter] = useState(0);
+  const [activeCurrentDate, setActiveCurrentDate] = useState();
 
 
   let curr = new Date();
 
   new Date(curr.setDate(dateCounter == 0 ? curr.getDate() : dateCounter));
   let results = [];
+
+  var isCurrentDateTrue;
 
   for (let i = 1; i <= 7; i++) {
     let first = curr.getDate() - curr.getDay() + i;
@@ -139,103 +171,110 @@ const ShiftScheduling = () => {
         console.log("Error, Month doesn't exist");
         break;
     }
+    
     day = day.split("").slice(8).join("");
     results.push(day + " " + month);
+
+    let currentActiveDate = new Date().toISOString().slice(9, 10);
+    if(first.toString().includes(currentActiveDate)) {
+      isCurrentDateTrue = true;
+    }
   }
+
+  console.log("isCurrentDateTrue", isCurrentDateTrue);
 
   const [employeeId, setEmployeeId] = useState();
   const [employeeSelectedIndex, setEmployeeSelectedIndex] = useState();
   const [selecteDay, setSelectedDay] = useState();
-  const [selecteDayIndex, setSelectedDayIndex] = useState();
+  const [selectedDayIndex, setSelectedDayIndex] = useState();
 
   const handleMondayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Mon " + results[0]);
-    setGlobalState("showModal", true);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleMondayShiftIndex = (index) => {
     console.log("handleMondayShiftIndex: ", index);
     
     setSelectedDayIndex(index);
-    setGlobalState("selectedShiftEvent", shiftEvents);
+    setGlobalState("selectedScheduleEvent", scheduleEvent);
   }
 
   const handleTuesDayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Tue " + results[1]);
-    setGlobalState("showModal", true);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleTuesdayShiftIndex = (index) => {
     console.log("handleTuesdayShiftIndex: ", index);
     setSelectedDayIndex(index);
-    setGlobalState("selectedShiftEvent", shiftEvents);
+    setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
   const handleWednesdayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Wed " + results[2]);
-    setGlobalState("showModal", true);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleWednesdayShiftIndex = (index) => {
     console.log("handleWednesdayShiftIndex: ", index);
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
+    setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
   const handleThursdayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Thu " + results[3]);
-    setGlobalState("showModal", true);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleThursdayShiftIndex = (index) => {
     console.log("handleThursdayShiftIndex: ", index);
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
+    setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
   const handleFridayShift = (index, value) => { 
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Fri " + results[4]);
-    setGlobalState("showModal", true);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleFridayShiftIndex = (index) => {
-    console.log("handleFridayShiftIndex: ", index);
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
+    setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
   const handlSaturdayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Sat " + results[5]);
-    setGlobalState("showModal", true);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleSaturdayShiftIndex = (index) => {
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
+    setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
   const handleSundayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
     setSelectedDay("Sun " + results[6]);
-    setGlobalState("showModal", true);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleSundayShiftIndex = (index) => {
-    setGlobalState("selectedShiftEvent", shiftEvents);
     setSelectedDayIndex(index);
+    setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
   return (
@@ -264,13 +303,12 @@ const ShiftScheduling = () => {
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
-                <a
-                  href="/app/employee/shift-list"
+                <Link
                   to="/app/employee/shift-list"
                   className="btn add-btn m-r-5"
                 >
                   Shifts
-                </a>
+                </Link>
                 <a
                   className="btn add-btn m-r-5"
                   onClick={() => setGlobalState("showModal", true)}
@@ -435,15 +473,13 @@ const ShiftScheduling = () => {
                                   </span>
                                 </a>
                               </span>
-                              {shiftEvents?.map((events, indexID) => {
+                              {scheduleEvent?.map((events, indexID) => {
                                 const {
                                   id,
-                                  startTime,
-                                  endTime,
                                   selecteDay,
-                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
+                                  shifts,
                                 } = events;
                                 if (
                                   value === eId &&
@@ -464,20 +500,7 @@ const ShiftScheduling = () => {
                                             border: "2px dashed #1eb53a",
                                           }}
                                         >
-                                          <span className="username-info m-b-10">
-                                            {`${new Date(startTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                            -{" "}
-                                            {`${new Date(endTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                          </span>
-                                          <span>{title}</span>
+                                          <span>{shifts.label}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -514,15 +537,13 @@ const ShiftScheduling = () => {
                                   </span>
                                 </a>
                               </span>
-                              {shiftEvents?.map((events, indexID) => {
+                              {scheduleEvent?.map((events, indexID) => {
                                 const {
                                   id,
-                                  startTime,
-                                  endTime,
                                   selecteDay,
-                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
+                                  shifts,
                                 } = events;
                                 if (
                                   value === eId &&
@@ -543,20 +564,7 @@ const ShiftScheduling = () => {
                                             border: "2px dashed #1eb53a",
                                           }}
                                         >
-                                          <span className="username-info m-b-10">
-                                            {`${new Date(startTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                            -{" "}
-                                            {`${new Date(endTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                          </span>
-                                          <span>{title}</span>
+                                          <span>{shifts.label}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -595,15 +603,13 @@ const ShiftScheduling = () => {
                                   </span>
                                 </a>
                               </span>
-                              {shiftEvents?.map((events, indexID) => {
+                              {scheduleEvent?.map((events, indexID) => {
                                 const {
                                   id,
-                                  startTime,
-                                  endTime,
                                   selecteDay,
-                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
+                                  shifts,
                                 } = events;
                                 if (
                                   value === eId &&
@@ -624,20 +630,7 @@ const ShiftScheduling = () => {
                                             border: "2px dashed #1eb53a",
                                           }}
                                         >
-                                          <span className="username-info m-b-10">
-                                            {`${new Date(startTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                            -{" "}
-                                            {`${new Date(endTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                          </span>
-                                          <span>{title}</span>
+                                          <span>{shifts.label}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -676,15 +669,13 @@ const ShiftScheduling = () => {
                                   </span>
                                 </a>
                               </span>
-                              {shiftEvents?.map((events, indexID) => {
+                              {scheduleEvent?.map((events, indexID) => {
                                 const {
                                   id,
-                                  startTime,
-                                  endTime,
                                   selecteDay,
-                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
+                                  shifts,
                                 } = events;
                                 if (
                                   value === eId &&
@@ -705,20 +696,7 @@ const ShiftScheduling = () => {
                                             border: "2px dashed #1eb53a",
                                           }}
                                         >
-                                          <span className="username-info m-b-10">
-                                            {`${new Date(startTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                            -{" "}
-                                            {`${new Date(endTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                          </span>
-                                          <span>{title}</span>
+                                          <span>{shifts.label}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -755,15 +733,13 @@ const ShiftScheduling = () => {
                                   </span>
                                 </a>
                               </span>
-                              {shiftEvents?.map((events, indexID) => {
+                              {scheduleEvent?.map((events, indexID) => {
                                 const {
                                   id,
-                                  startTime,
-                                  endTime,
                                   selecteDay,
-                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
+                                  shifts,
                                 } = events;
                                 if (
                                   value === eId &&
@@ -784,20 +760,7 @@ const ShiftScheduling = () => {
                                             border: "2px dashed #1eb53a",
                                           }}
                                         >
-                                          <span className="username-info m-b-10">
-                                            {`${new Date(startTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                            -{" "}
-                                            {`${new Date(endTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                          </span>
-                                          <span>{title}</span>
+                                          <span>{shifts.label}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -834,15 +797,13 @@ const ShiftScheduling = () => {
                                   </span>
                                 </a>
                               </span>
-                              {shiftEvents?.map((events, indexID) => {
+                              {scheduleEvent?.map((events, indexID) => {
                                 const {
                                   id,
-                                  startTime,
-                                  endTime,
                                   selecteDay,
-                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
+                                  shifts,
                                 } = events;
                                 if (
                                   value === eId &&
@@ -863,20 +824,7 @@ const ShiftScheduling = () => {
                                             border: "2px dashed #1eb53a",
                                           }}
                                         >
-                                          <span className="username-info m-b-10">
-                                            {`${new Date(startTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                            -{" "}
-                                            {`${new Date(endTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                          </span>
-                                          <span>{title}</span>
+                                          <span>{shifts.label}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -913,15 +861,13 @@ const ShiftScheduling = () => {
                                   </span>
                                 </a>
                               </span>
-                              {shiftEvents?.map((events, indexID) => {
+                              {scheduleEvent?.map((events, indexID) => {
                                 const {
                                   id,
-                                  startTime,
-                                  endTime,
                                   selecteDay,
-                                  title,
                                   employeeId: eId,
                                   employeeSelectedIndex: indexId,
+                                  shifts,
                                 } = events;
                                 if (
                                   value === eId &&
@@ -942,20 +888,7 @@ const ShiftScheduling = () => {
                                             border: "2px dashed #1eb53a",
                                           }}
                                         >
-                                          <span className="username-info m-b-10">
-                                            {`${new Date(startTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                            -{" "}
-                                            {`${new Date(endTime)
-                                              .toLocaleString()
-                                              .split(" ")
-                                              .splice(1)
-                                              .join(" ")}`}{" "}
-                                          </span>
-                                          <span>{title}</span>
+                                          <span>{shifts.label}</span>
                                           <span className="userrole-info">
                                             Web Designer - {label}
                                           </span>
@@ -982,13 +915,16 @@ const ShiftScheduling = () => {
       </Body>
       {/* /Page Wrapper */}
       {/* Add Schedule Modal */}
-      {showModal && (
-        <Addschedule
+      {showModal && <AddShift dispatchShift={dispatchShift} />}
+      {showAddSchedul && (
+        <AddSchedule
           employeeId={employeeId}
           employeeSelectedIndex={employeeSelectedIndex}
-          dispatchShift={dispatchShift}
+          dispatchSchedule={dispatchSchedule}
           selecteDay={selecteDay}
-          selecteDayIndex={selecteDayIndex}
+          selectedDayIndex={selectedDayIndex}
+          shiftList={shiftList}
+          schedule={schedule}
         />
       )}
     </>

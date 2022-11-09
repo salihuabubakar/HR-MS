@@ -148,7 +148,6 @@ const Department = () => {
                   // bordered
                   dataSource={deptList}
                   rowKey={(dept) => dept.id}
-                  onChange={console.log("change")}
                 />
               </div>
             </div>

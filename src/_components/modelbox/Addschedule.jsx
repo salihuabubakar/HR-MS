@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer } from 'react';
 import {
   PopupContainer,
   PopupOverlay,
@@ -7,99 +7,85 @@ import {
 } from "./Addemployee.style";
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import dayjs from "dayjs";
-import TextField from "@mui/material/TextField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 
-const Addschedule = ({
+const AddSchedule = ({
   employeeId,
   employeeSelectedIndex,
-  dispatchShift,
+  dispatchSchedule,
   selecteDay,
-  selecteDayIndex,
+  selectedDayIndex,
+  shiftList,
+  schedule,
 }) => {
-  const [selectedShiftEvent] = useGlobalState("selectedShiftEvent");
+  const [selectedScheduleEvent] = useGlobalState("selectedScheduleEvent");
 
-  const [title, setTitle] = useState(
-    selectedShiftEvent[selecteDayIndex]?.title
-    ? selectedShiftEvent[selecteDayIndex]?.title
-    : ""
-  )
-
-  const [note, setNote] = useState(
-    selectedShiftEvent[selecteDayIndex]?.note
-      ? selectedShiftEvent[selecteDayIndex]?.note
+  const [shifts, setShifts] = useState(
+    selectedScheduleEvent[selectedDayIndex]?.shifts
+      ? selectedScheduleEvent[selectedDayIndex]?.shifts
       : ""
   );
 
-  const [startTime, setStartTime] = useState(
-    selectedShiftEvent[selecteDayIndex]?.startTime
-      ? selectedShiftEvent[selecteDayIndex]?.startTime
-      : dayjs()
-  );
-  const [endTime, setEndTime] = useState(
-    selectedShiftEvent[selecteDayIndex]?.endTime
-      ? selectedShiftEvent[selecteDayIndex]?.endTime
-      : dayjs()
-  );
-
   const [id, setId] = useState(
-    selectedShiftEvent[selecteDayIndex]?.id
-      ? selectedShiftEvent[selecteDayIndex]?.id
+    selectedScheduleEvent[selectedDayIndex]?.id
+      ? selectedScheduleEvent[selectedDayIndex]?.id
       : Date.now()
   );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const shift = {
-      title,
-      note,
-      startTime,
-      endTime,
+    const schedule = {
+      shifts,
       employeeId,
       employeeSelectedIndex,
       selecteDay,
       id,
     };
-    if (selectedShiftEvent[selecteDayIndex]?.id) {
-      dispatchShift({ type: "update", payload: shift });
+    if (selectedScheduleEvent[selectedDayIndex]?.id) {
+      dispatchSchedule({ type: "update", payload: schedule });
     } else {
-      dispatchShift({ type: "push", payload: shift });
+      dispatchSchedule({ type: "push", payload: schedule });
     }
-    setGlobalState("showModal", false);
+    setGlobalState("showAddSchedul", false);
   };
-
   const handleDeleteEvent = () => {
-    dispatchShift({
+    dispatchSchedule({
       type: "delete",
-      payload: selectedShiftEvent[selecteDayIndex],
+      payload: selectedScheduleEvent[selectedDayIndex],
     });
-    setGlobalState("showModal", false);
+    setGlobalState("showAddSchedul", false);
   };
 
-   const handleStartTimeChange = (newValue) => {
-    //  const hours = newValue;
-     console.log("newValue:", newValue);
-    //  let date = new Date(hours).toLocaleString();
-    //  date = date.split(" ").splice(1).join(" ");
-    //  console.log("date", date);
-    //  const minutes = newValue.toString().padStart(2, "0");
-    //  const textValue = hours + ":" + minutes;
-    //  console.log("dateString", textValue);
-     setStartTime(newValue.$d);
-   };
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
 
-   const handleEndTimeChange = (newValue) => {
-    setEndTime(newValue.$d);
-   }
+  const shiftLists = [];
+  shiftList?.map((shift) => {
+    shiftLists.push({
+      value: shift.id,
+      label:
+        shift.title +
+        " " +
+        new Date(shift.startTime).toLocaleString().split(" ").splice(1).join(" ") +
+        " - " +
+        new Date(shift.endTime).toLocaleString().split(" ").splice(1).join(" "),
+    });
+  });
 
-   const handleSelectedDateChange = (newValue) => {
-    setSelectedDate(newValue.$d);
-   };
+    const handleShiftChange = (event) => {
+      console.log(event);
+      setShifts(event)
+    };
+
 
   return (
     <>
@@ -110,12 +96,12 @@ const Addschedule = ({
             <div className="card-content">
               <div className="card-header">
                 <h5 className="card-title">
-                  {selectedShiftEvent[selecteDayIndex]?.id
-                    ? "Edit Shift"
-                    : "Add shift"}
+                  {selectedScheduleEvent[selectedDayIndex]?.id
+                    ? "Edit Schedule"
+                    : "Add Schedule"}
                 </h5>
                 <div className="btn-container">
-                  {selectedShiftEvent[selecteDayIndex]?.id && (
+                  {selectedScheduleEvent[selectedDayIndex]?.id && (
                     <button
                       className="delete"
                       type="submit"
@@ -127,7 +113,7 @@ const Addschedule = ({
                   <button
                     className="closeX"
                     type="button"
-                    onClick={() => setGlobalState("showModal", false)}
+                    onClick={() => setGlobalState("showAddSchedul", false)}
                   >
                     <span>×</span>
                   </button>
@@ -136,151 +122,31 @@ const Addschedule = ({
               <div className="card-body">
                 <form>
                   <div className="row-">
-                    {/* <div className="col-sm">
-                      <div className="">
-                        <label className="">
-                          Department <span className="">*</span>
-                        </label>
-                        <select className="">
-                          <option value>Select </option>
-                          <option value={1}>10'o clock Shift</option>
-                          <option value={2}>10:30 shift</option>
-                          <option value={3}>Daily Shift </option>
-                          <option value={4}>New Shift</option>
-                        </select>
-                      </div>
-                    </div> */}
-                    {/* <div className="col-sm">
-                      <div className="">
-                        <label className="">
-                          Employee Name <span className="text-danger">*</span>
-                        </label>
-                        <select className="">
-                          <option value>Select </option>
-                          <option value={1}>Richard Miles </option>
-                          <option value={2}>John Smith</option>
-                          <option value={3}>Mike Litorus </option>
-                          <option value={4}>Wilmer Deluna</option>
-                        </select>
-                      </div>
-                    </div> */}
-                    {/* <div className="col-sm">
-                      <div className="">
-                        <label className="">Date</label>
-                        <div>
-                          <input className="" type="date" />
-                        </div>
-                      </div>
-                    </div> */}
-                    {/* <div className="col-sm">
-                      <div className="">
-                        <label className="">
-                          Shifts <span className="">*</span>
-                        </label>
-                        <select className="">
-                          <option value>Select </option>
-                          <option value={1}>10'o clock Shift</option>
-                          <option value={2}>10:30 shift</option>
-                          <option value={3}>Daily Shift </option>
-                          <option value={4}>New Shift</option>
-                        </select>
-                      </div>
-                    </div> */}
-
                     <div className="col-sm space-between">
                       <div className="form-group inputText right">
-                        <label className="label">Title</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Title"
-                          value={title}
-                          onChange={(event) => setTitle(event.target.value)}
-                        />
-                      </div>
-                      <div className="form-group inputText">
-                        <label className="label">Note</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Description"
-                          value={note}
-                          onChange={(event) => setNote(event.target.value)}
+                        <Select
+                          onChange={handleShiftChange}
+                          options={shiftLists}
+                          styles={customSelectStyles}
+                          placeholder="Select Shift"
+                          defaultValue={
+                            selectedScheduleEvent[selectedDayIndex]?.shifts
+                              ? {
+                                  value:
+                                    schedule[selectedDayIndex].shifts.value,
+                                  label:
+                                    schedule[selectedDayIndex].shifts.label,
+                                }
+                              : "Select Shift"
+                          }
                         />
                       </div>
                     </div>
-
-                    <div className="col-sm">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <div className="right">
-                          <TimePicker
-                            label="Start Time"
-                            value={startTime}
-                            onChange={handleStartTimeChange}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </div>
-                        <div>
-                          <TimePicker
-                            label="End Time"
-                            value={endTime}
-                            onChange={handleEndTimeChange}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </div>
-                      </LocalizationProvider>
-                    </div>
-
-                    {/* <div className="col-sm">
-                      <div className="">
-                        <label className="">
-                          Break Time <span className="text-danger">*</span>
-                        </label>
-                        <div className="">
-                          <input type="time" className="" />
-                        </div>
-                      </div>
-                    </div> */}
-                    {/* <div className="col-sm-12">
-                      <div className="form-group">
-                        <label className="col-form-label">
-                          Accept Extra Hours{" "}
-                        </label>
-                        <div className="custom-control custom-switch">
-                          <input
-                            type="checkbox"
-                            className="custom-control-input"
-                            id="customSwitch1"
-                            defaultChecked
-                          />
-                          <label
-                            className="custom-control-label"
-                            htmlFor="customSwitch1"
-                          />
-                        </div>
-                      </div>
-                    </div> */}
-                    {/* <div className="col-sm-12">
-                      <div className="form-group">
-                        <label className="col-form-label">Publish </label>
-                        <div className="custom-control custom-switch">
-                          <input
-                            type="checkbox"
-                            className="custom-control-input"
-                            id="customSwitch2"
-                            defaultChecked
-                          />
-                          <label
-                            className="custom-control-label"
-                            htmlFor="customSwitch2"
-                          />
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
+
                   <div className="submit-btn" onClick={handleSubmit}>
                     <button className="submit-Btn">
-                      {selectedShiftEvent[selecteDayIndex]?.id
+                      {selectedScheduleEvent[selectedDayIndex]?.id
                         ? "Update"
                         : "Save"}
                     </button>
@@ -295,4 +161,4 @@ const Addschedule = ({
   );
 };
 
-export default Addschedule;
+export default AddSchedule;

@@ -34,14 +34,6 @@ const Header = (props) => {
     history.push("/login");
   };
 
-  const location = useLocation();
-  let id = location?.state?.id;
-  if (id == undefined) {
-    console.log("return null");
-    id = null;
-  }
-  console.log("id-head", id);
-
   return (
     <HeaderContainer className="header" style={{ right: "0px" }}>
       {/* Logo */}
