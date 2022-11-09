@@ -6,9 +6,11 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedDesignation: [],
   selectedHouse: [],
   selectedResident: [],
-  selectedShiftEvent: [],
+  selectedScheduleEvent: [],
+  selectedShiftList: [],
   selectedProfileInfo: [],
   showModal: false,
+  showAddSchedul: false,
 });
 
 export {setGlobalState, useGlobalState}

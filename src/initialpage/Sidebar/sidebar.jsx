@@ -31,13 +31,6 @@ const toggleLevelThree = (value) => {
 
 
     let pathname = props?.location?.pathname;
-    const location = useLocation();
-    let id = location?.state?.id;
-    if (id == undefined) {
-      console.log("return null");
-      id = null;
-    }
-    console.log("id-side", id);
 
     return (
       <div className="sidebar" id="sidebar">
@@ -91,7 +84,9 @@ const toggleLevelThree = (value) => {
                         </Link>
                       </li>
                     </ul>
-                  ) : ("")}
+                  ) : (
+                    ""
+                  )}
                 </li>
                 {/* <li className="submenu">
                   <a
@@ -362,6 +357,16 @@ const toggleLevelThree = (value) => {
                         </a>
                         {level2Menu == "house" ? (
                           <ul>
+                            <li>
+                              <Link
+                                className={
+                                  pathname.includes("shift") ? "active" : ""
+                                }
+                                to="/app/employee/shift-list"
+                              >
+                                Shifts
+                              </Link>
+                            </li>
                             <li>
                               <Link
                                 className={

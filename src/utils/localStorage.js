@@ -96,13 +96,13 @@ export const savedResidentReducer = (state, { type, payload }) => {
 };
 
 
-export const initShiftEvent = () => {
-  const storageEvents = localStorage.getItem("shiftEvent");
+export const initShiftList = () => {
+  const storageEvents = localStorage.getItem("shiftList");
   const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
   return parsedEvents;
 };
 
-export const savedShiftEventReducer = (state, { type, payload }) => {
+export const savedShiftListReducer = (state, { type, payload }) => {
   switch (type) {
     case "push":
       return [...state, payload];
@@ -129,6 +129,25 @@ export const savedProfileInfoReducer = (state, { type, payload }) => {
       return state.map((info) => (info.id === payload.id ? payload : info));
     case "delete":
       return state.filter((info) => info.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};
+
+export const initScheduleEvent = () => {
+  const storageEvents = localStorage.getItem("scheduleEvent");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedScheduleEventReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((evt) => (evt.id === payload.id ? payload : evt));
+    case "delete":
+      return state.filter((evt) => evt.id !== payload.id);
     default:
       throw new Error();
   }
