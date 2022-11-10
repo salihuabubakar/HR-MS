@@ -126,6 +126,20 @@ const Housing = () => {
                 >
                   <i className="fa fa-plus" /> Add House
                 </a>
+                <div className="view-icons">
+                  <Link
+                    to="/app/employee/accomodations"
+                    className="grid-view btn btn-link"
+                  >
+                    <i className="fa fa-th" />
+                  </Link>
+                  <Link
+                    to="/app/employee/accomodation"
+                    className="list-view btn btn-link active"
+                  >
+                    <i className="fa fa-bars" />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
