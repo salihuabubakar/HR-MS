@@ -7,6 +7,8 @@ import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import Smile from "../../../assets/img/smile.png";
+import Header from "../../../initialpage/Sidebar/header";
+import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { Body } from "./styles.js";
 import {
   initDept,
@@ -27,6 +29,11 @@ import "regenerator-runtime/runtime";
 const ShiftScheduling = () => {
   const location = useLocation();
   const houseId = location?.state?.id;
+
+  const [menu, setMenu] = useState(false);
+  const toggleMobileMenu = () => {
+    setMenu(!menu);
+  };
 
   const [showModal] = useGlobalState("showModal");
   const [showAddSchedul] = useGlobalState("showAddSchedul");
@@ -196,8 +203,6 @@ const ShiftScheduling = () => {
   };
 
   const handleMondayShiftIndex = (index) => {
-    console.log("handleMondayShiftIndex: ", index);
-    
     setSelectedDayIndex(index);
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   }
@@ -210,7 +215,6 @@ const ShiftScheduling = () => {
   };
 
   const handleTuesdayShiftIndex = (index) => {
-    console.log("handleTuesdayShiftIndex: ", index);
     setSelectedDayIndex(index);
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -223,7 +227,6 @@ const ShiftScheduling = () => {
   };
 
   const handleWednesdayShiftIndex = (index) => {
-    console.log("handleWednesdayShiftIndex: ", index);
     setSelectedDayIndex(index);
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -236,7 +239,6 @@ const ShiftScheduling = () => {
   };
 
   const handleThursdayShiftIndex = (index) => {
-    console.log("handleThursdayShiftIndex: ", index);
     setSelectedDayIndex(index);
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -280,177 +282,180 @@ const ShiftScheduling = () => {
   return (
     <>
       {/* Page Wrapper */}
-      <Body className="page-wrapper">
-        <Helmet>
-          <title>Shift &amp; Schedule - Peepal Tree</title>
-          <meta name="description" content="Login page" />
-        </Helmet>
-        {/* Page Content */}
-        <div className="content container-fluid">
-          {/* Page Header */}
-          <div className="page-header">
-            <div className="row">
-              <div className="col">
-                <h3 className="page-title">Daily Scheduling</h3>
-                <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item">
-                    <Link to="/app/employee/house">House</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Shift Scheduling</li>
-                </ul>
+      <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+        <Header onMenuClick={() => toggleMobileMenu()} />
+        <Sidebar />
+        <Body className="page-wrapper">
+          <Helmet>
+            <title>Shift &amp; Schedule - Peepal Tree</title>
+            <meta name="description" content="Login page" />
+          </Helmet>
+          {/* Page Content */}
+          <div className="content container-fluid">
+            {/* Page Header */}
+            <div className="page-header">
+              <div className="row">
+                <div className="col">
+                  <h3 className="page-title">Daily Scheduling</h3>
+                  <ul className="breadcrumb">
+                    <li className="breadcrumb-item">
+                      <Link to="/app/main/dashboard">Dashboard</Link>
+                    </li>
+                    <li className="breadcrumb-item">
+                      <Link to="/app/employee/house">House</Link>
+                    </li>
+                    <li className="breadcrumb-item active">Shift Scheduling</li>
+                  </ul>
+                </div>
+                <div className="col-auto float-end ml-auto">
+                  <Link
+                    to="/app/employee/shift-list"
+                    className="btn add-btn m-r-5"
+                  >
+                    Shifts
+                  </Link>
+                  <a
+                    className="btn add-btn m-r-5"
+                    onClick={() => setGlobalState("showModal", true)}
+                  >
+                    {" "}
+                    Add Shifts
+                  </a>
+                </div>
               </div>
-              <div className="col-auto float-end ml-auto">
-                <Link
-                  to="/app/employee/shift-list"
-                  className="btn add-btn m-r-5"
-                >
-                  Shifts
-                </Link>
-                <a
-                  className="btn add-btn m-r-5"
-                  onClick={() => setGlobalState("showModal", true)}
-                >
+            </div>
+            {/* /Page Header */}
+            {/* Content Starts */}
+            {/* Search Filter */}
+            <div className="row filter-row">
+              <div className="col-sm-6 col-md-3">
+                <div className="form-group form-focus">
+                  <input type="text" className="form-control floating" />
+                  <label className="focus-label">Employee</label>
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-3">
+                <div className="field">
+                  <Select
+                    onChange={handleDeptChange}
+                    options={departments}
+                    styles={customSelectStyles}
+                    placeholder="Select Department"
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-2">
+                <div className="form-group form-focus focused">
+                  <div>
+                    <input
+                      className="form-control floating datetimepicker"
+                      type="date"
+                    />
+                  </div>
+                  <label className="focus-label">From</label>
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-2">
+                <div className="form-group form-focus focused">
+                  <div>
+                    <input
+                      className="form-control floating datetimepicker"
+                      type="date"
+                    />
+                  </div>
+                  <label className="focus-label">To</label>
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-2">
+                <a href="#" className="btn btn-success btn-block w-100">
                   {" "}
-                  Add Shifts
+                  Search{" "}
                 </a>
               </div>
             </div>
-          </div>
-          {/* /Page Header */}
-          {/* Content Starts */}
-          {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-3">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Employee</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3">
-              <div className="field">
-                <Select
-                  onChange={handleDeptChange}
-                  options={departments}
-                  styles={customSelectStyles}
-                  placeholder="Select Department"
-                />
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-2">
-              <div className="form-group form-focus focused">
-                <div>
-                  <input
-                    className="form-control floating datetimepicker"
-                    type="date"
-                  />
-                </div>
-                <label className="focus-label">From</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-2">
-              <div className="form-group form-focus focused">
-                <div>
-                  <input
-                    className="form-control floating datetimepicker"
-                    type="date"
-                  />
-                </div>
-                <label className="focus-label">To</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-2">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
-          {/* Search Filter */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginBottom: "5px",
-            }}
-          >
-            <button
-              onClick={() => setDateCounter((prev) => prev - 7)}
-              style={{ border: "none", marginRight: "10px" }}
-              className="btn btn-success btn-block w-10"
+            {/* Search Filter */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginBottom: "5px",
+              }}
             >
-              Prev Week
-            </button>
-            <button
-              onClick={() => setDateCounter((prev) => prev * 0)}
-              className="btn btn-success btn-block w-10"
-              style={{ border: "none" }}
-            >
-              Current Week
-            </button>
-            <button
-              onClick={() => setDateCounter((prev) => prev + 7)}
-              style={{ border: "none", marginLeft: "10px" }}
-              className="btn btn-success btn-block w-10"
-            >
-              Next Week
-            </button>
-          </div>
-          <div className="row">
-            <div className="col-md-12">
-              <div className="table-responsive">
-                <table className="table table-striped custom-table">
-                  <thead>
-                    <tr>
-                      <th style={{ borderRight: "1px solid grey" }}>
-                        Scheduled Shift
-                      </th>
-                      <th style={{ borderRight: "1px solid grey" }}>
-                        Mon {results[0]}
-                      </th>
-                      <th style={{ borderRight: "1px solid grey" }}>
-                        Tue {results[1]}
-                      </th>
-                      <th style={{ borderRight: "1px solid grey" }}>
-                        Wed {results[2]}
-                      </th>
-                      <th style={{ borderRight: "1px solid grey" }}>
-                        Thu {results[3]}
-                      </th>
-                      <th style={{ borderRight: "1px solid grey" }}>
-                        Fri {results[4]}
-                      </th>
-                      <th style={{ borderRight: "1px solid grey" }}>
-                        Sat {results[5]}
-                      </th>
-                      <th>Sun {results[6]}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {selectedHouse?.employee.map((staff, index) => {
-                      const { value, label } = staff;
-                      return (
-                        <Fragment key={index}>
-                          <tr>
-                            <td>
-                              <h2 className="table-avatar">
-                                <Link
-                                  to="/app/profile/employee-profile"
-                                  className="avatar"
-                                >
-                                  <img src={Smile} />
-                                </Link>
-                                <Link to="/app/profile/employee-profile">
-                                  {label}
-                                  <span>Web Designer</span>
-                                </Link>
-                              </h2>
-                            </td>
+              <button
+                onClick={() => setDateCounter((prev) => prev - 7)}
+                style={{ border: "none", marginRight: "10px" }}
+                className="btn btn-success btn-block w-10"
+              >
+                Prev Week
+              </button>
+              <button
+                onClick={() => setDateCounter((prev) => prev * 0)}
+                className="btn btn-success btn-block w-10"
+                style={{ border: "none" }}
+              >
+                Current Week
+              </button>
+              <button
+                onClick={() => setDateCounter((prev) => prev + 7)}
+                style={{ border: "none", marginLeft: "10px" }}
+                className="btn btn-success btn-block w-10"
+              >
+                Next Week
+              </button>
+            </div>
+            <div className="row">
+              <div className="col-md-12">
+                <div className="table-responsive">
+                  <table className="table table-striped custom-table">
+                    <thead>
+                      <tr>
+                        <th style={{ borderRight: "1px solid grey" }}>
+                          Scheduled Shift
+                        </th>
+                        <th style={{ borderRight: "1px solid grey" }}>
+                          Mon {results[0]}
+                        </th>
+                        <th style={{ borderRight: "1px solid grey" }}>
+                          Tue {results[1]}
+                        </th>
+                        <th style={{ borderRight: "1px solid grey" }}>
+                          Wed {results[2]}
+                        </th>
+                        <th style={{ borderRight: "1px solid grey" }}>
+                          Thu {results[3]}
+                        </th>
+                        <th style={{ borderRight: "1px solid grey" }}>
+                          Fri {results[4]}
+                        </th>
+                        <th style={{ borderRight: "1px solid grey" }}>
+                          Sat {results[5]}
+                        </th>
+                        <th>Sun {results[6]}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedHouse?.employee.map((staff, index) => {
+                        const { value, label } = staff;
+                        return (
+                          <Fragment key={index}>
+                            <tr>
+                              <td>
+                                <h2 className="table-avatar">
+                                  <Link
+                                    to="/app/profile/employee-profile"
+                                    className="avatar"
+                                  >
+                                    <img src={Smile} />
+                                  </Link>
+                                  <Link to="/app/profile/employee-profile">
+                                    {label}
+                                    <span>Web Designer</span>
+                                  </Link>
+                                </h2>
+                              </td>
 
-                            {/* {shiftEvents?.length === 0 ? ( */}
-                            {/* <td
+                              {/* {shiftEvents?.length === 0 ? ( */}
+                              {/* <td
                                 onClick={() => handleMondayShift(index, value)}
                               >
                                 <div className="user-add-shedule-list">
@@ -461,59 +466,59 @@ const ShiftScheduling = () => {
                                   </a>
                                 </div>
                               </td> */}
-                            {/* ) : ( */}
-                            <td
-                              className="tool-tip"
-                              onClick={() => handleMondayShift(index, value)}
-                            >
-                              <span className="tool-tip-text">
-                                <a>
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </span>
-                              {scheduleEvent?.map((events, indexID) => {
-                                const {
-                                  id,
-                                  selecteDay,
-                                  employeeId: eId,
-                                  employeeSelectedIndex: indexId,
-                                  shifts,
-                                } = events;
-                                if (
-                                  value === eId &&
-                                  index === indexId &&
-                                  selecteDay === "Mon " + results[0]
-                                ) {
-                                  return (
-                                    <div
-                                      onClick={() =>
-                                        handleMondayShiftIndex(indexID)
-                                      }
-                                      key={id}
-                                      className="user-add-shedule-list"
-                                    >
-                                      <h2>
-                                        <a
-                                          style={{
-                                            border: "2px dashed #1eb53a",
-                                          }}
-                                        >
-                                          <span>{shifts.label}</span>
-                                          <span className="userrole-info">
-                                            Web Designer - {label}
-                                          </span>
-                                        </a>
-                                      </h2>
-                                    </div>
-                                  );
-                                }
-                              })}
-                            </td>
-                            {/* )} */}
+                              {/* ) : ( */}
+                              <td
+                                className="tool-tip"
+                                onClick={() => handleMondayShift(index, value)}
+                              >
+                                <span className="tool-tip-text">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </span>
+                                {scheduleEvent?.map((events, indexID) => {
+                                  const {
+                                    id,
+                                    selecteDay,
+                                    employeeId: eId,
+                                    employeeSelectedIndex: indexId,
+                                    shifts,
+                                  } = events;
+                                  if (
+                                    value === eId &&
+                                    index === indexId &&
+                                    selecteDay === "Mon " + results[0]
+                                  ) {
+                                    return (
+                                      <div
+                                        onClick={() =>
+                                          handleMondayShiftIndex(indexID)
+                                        }
+                                        key={id}
+                                        className="user-add-shedule-list"
+                                      >
+                                        <h2>
+                                          <a
+                                            style={{
+                                              border: "2px dashed #1eb53a",
+                                            }}
+                                          >
+                                            <span>{shifts.label}</span>
+                                            <span className="userrole-info">
+                                              Web Designer - {label}
+                                            </span>
+                                          </a>
+                                        </h2>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </td>
+                              {/* )} */}
 
-                            {/* {shiftEvents?.length === 0 ? (
+                              {/* {shiftEvents?.length === 0 ? (
                               <td
                                 onClick={() => handleTuesDayShift(index, value)}
                               >
@@ -526,58 +531,58 @@ const ShiftScheduling = () => {
                                 </div>
                               </td>
                             ) : ( */}
-                            <td
-                              className="tool-tip"
-                              onClick={() => handleTuesDayShift(index, value)}
-                            >
-                              <span className="tool-tip-text">
-                                <a>
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </span>
-                              {scheduleEvent?.map((events, indexID) => {
-                                const {
-                                  id,
-                                  selecteDay,
-                                  employeeId: eId,
-                                  employeeSelectedIndex: indexId,
-                                  shifts,
-                                } = events;
-                                if (
-                                  value === eId &&
-                                  index === indexId &&
-                                  selecteDay === "Tue " + results[1]
-                                ) {
-                                  return (
-                                    <div
-                                      onClick={() =>
-                                        handleTuesdayShiftIndex(indexID)
-                                      }
-                                      key={id}
-                                      className="user-add-shedule-list"
-                                    >
-                                      <h2>
-                                        <a
-                                          style={{
-                                            border: "2px dashed #1eb53a",
-                                          }}
-                                        >
-                                          <span>{shifts.label}</span>
-                                          <span className="userrole-info">
-                                            Web Designer - {label}
-                                          </span>
-                                        </a>
-                                      </h2>
-                                    </div>
-                                  );
-                                }
-                              })}
-                            </td>
-                            {/* )} */}
+                              <td
+                                className="tool-tip"
+                                onClick={() => handleTuesDayShift(index, value)}
+                              >
+                                <span className="tool-tip-text">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </span>
+                                {scheduleEvent?.map((events, indexID) => {
+                                  const {
+                                    id,
+                                    selecteDay,
+                                    employeeId: eId,
+                                    employeeSelectedIndex: indexId,
+                                    shifts,
+                                  } = events;
+                                  if (
+                                    value === eId &&
+                                    index === indexId &&
+                                    selecteDay === "Tue " + results[1]
+                                  ) {
+                                    return (
+                                      <div
+                                        onClick={() =>
+                                          handleTuesdayShiftIndex(indexID)
+                                        }
+                                        key={id}
+                                        className="user-add-shedule-list"
+                                      >
+                                        <h2>
+                                          <a
+                                            style={{
+                                              border: "2px dashed #1eb53a",
+                                            }}
+                                          >
+                                            <span>{shifts.label}</span>
+                                            <span className="userrole-info">
+                                              Web Designer - {label}
+                                            </span>
+                                          </a>
+                                        </h2>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </td>
+                              {/* )} */}
 
-                            {/* {shiftEvents?.length === 0 ? (
+                              {/* {shiftEvents?.length === 0 ? (
                               <td
                                 onClick={() =>
                                   handleWednesdayShift(index, value)
@@ -592,58 +597,60 @@ const ShiftScheduling = () => {
                                 </div>
                               </td>
                             ) : ( */}
-                            <td
-                              className="tool-tip"
-                              onClick={() => handleWednesdayShift(index, value)}
-                            >
-                              <span className="tool-tip-text">
-                                <a>
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </span>
-                              {scheduleEvent?.map((events, indexID) => {
-                                const {
-                                  id,
-                                  selecteDay,
-                                  employeeId: eId,
-                                  employeeSelectedIndex: indexId,
-                                  shifts,
-                                } = events;
-                                if (
-                                  value === eId &&
-                                  index === indexId &&
-                                  selecteDay === "Wed " + results[2]
-                                ) {
-                                  return (
-                                    <div
-                                      onClick={() =>
-                                        handleWednesdayShiftIndex(indexID)
-                                      }
-                                      key={id}
-                                      className="user-add-shedule-list"
-                                    >
-                                      <h2>
-                                        <a
-                                          style={{
-                                            border: "2px dashed #1eb53a",
-                                          }}
-                                        >
-                                          <span>{shifts.label}</span>
-                                          <span className="userrole-info">
-                                            Web Designer - {label}
-                                          </span>
-                                        </a>
-                                      </h2>
-                                    </div>
-                                  );
+                              <td
+                                className="tool-tip"
+                                onClick={() =>
+                                  handleWednesdayShift(index, value)
                                 }
-                              })}
-                            </td>
-                            {/* )} */}
+                              >
+                                <span className="tool-tip-text">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </span>
+                                {scheduleEvent?.map((events, indexID) => {
+                                  const {
+                                    id,
+                                    selecteDay,
+                                    employeeId: eId,
+                                    employeeSelectedIndex: indexId,
+                                    shifts,
+                                  } = events;
+                                  if (
+                                    value === eId &&
+                                    index === indexId &&
+                                    selecteDay === "Wed " + results[2]
+                                  ) {
+                                    return (
+                                      <div
+                                        onClick={() =>
+                                          handleWednesdayShiftIndex(indexID)
+                                        }
+                                        key={id}
+                                        className="user-add-shedule-list"
+                                      >
+                                        <h2>
+                                          <a
+                                            style={{
+                                              border: "2px dashed #1eb53a",
+                                            }}
+                                          >
+                                            <span>{shifts.label}</span>
+                                            <span className="userrole-info">
+                                              Web Designer - {label}
+                                            </span>
+                                          </a>
+                                        </h2>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </td>
+                              {/* )} */}
 
-                            {/* {shiftEvents?.length === 0 ? (
+                              {/* {shiftEvents?.length === 0 ? (
                               <td
                                 onClick={() =>
                                   handleThursdayShift(index, value)
@@ -658,58 +665,60 @@ const ShiftScheduling = () => {
                                 </div>
                               </td>
                             ) : ( */}
-                            <td
-                              className="tool-tip"
-                              onClick={() => handleThursdayShift(index, value)}
-                            >
-                              <span className="tool-tip-text">
-                                <a>
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </span>
-                              {scheduleEvent?.map((events, indexID) => {
-                                const {
-                                  id,
-                                  selecteDay,
-                                  employeeId: eId,
-                                  employeeSelectedIndex: indexId,
-                                  shifts,
-                                } = events;
-                                if (
-                                  value === eId &&
-                                  index === indexId &&
-                                  selecteDay === "Thu " + results[3]
-                                ) {
-                                  return (
-                                    <div
-                                      onClick={() =>
-                                        handleThursdayShiftIndex(indexID)
-                                      }
-                                      key={id}
-                                      className="user-add-shedule-list"
-                                    >
-                                      <h2>
-                                        <a
-                                          style={{
-                                            border: "2px dashed #1eb53a",
-                                          }}
-                                        >
-                                          <span>{shifts.label}</span>
-                                          <span className="userrole-info">
-                                            Web Designer - {label}
-                                          </span>
-                                        </a>
-                                      </h2>
-                                    </div>
-                                  );
+                              <td
+                                className="tool-tip"
+                                onClick={() =>
+                                  handleThursdayShift(index, value)
                                 }
-                              })}
-                            </td>
-                            {/* )} */}
+                              >
+                                <span className="tool-tip-text">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </span>
+                                {scheduleEvent?.map((events, indexID) => {
+                                  const {
+                                    id,
+                                    selecteDay,
+                                    employeeId: eId,
+                                    employeeSelectedIndex: indexId,
+                                    shifts,
+                                  } = events;
+                                  if (
+                                    value === eId &&
+                                    index === indexId &&
+                                    selecteDay === "Thu " + results[3]
+                                  ) {
+                                    return (
+                                      <div
+                                        onClick={() =>
+                                          handleThursdayShiftIndex(indexID)
+                                        }
+                                        key={id}
+                                        className="user-add-shedule-list"
+                                      >
+                                        <h2>
+                                          <a
+                                            style={{
+                                              border: "2px dashed #1eb53a",
+                                            }}
+                                          >
+                                            <span>{shifts.label}</span>
+                                            <span className="userrole-info">
+                                              Web Designer - {label}
+                                            </span>
+                                          </a>
+                                        </h2>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </td>
+                              {/* )} */}
 
-                            {/* {shiftEvents?.length === 0 ? (
+                              {/* {shiftEvents?.length === 0 ? (
                               <td
                                 onClick={() => handleFridayShift(index, value)}
                               >
@@ -722,58 +731,58 @@ const ShiftScheduling = () => {
                                 </div>
                               </td>
                             ) : ( */}
-                            <td
-                              className="tool-tip"
-                              onClick={() => handleFridayShift(index, value)}
-                            >
-                              <span className="tool-tip-text">
-                                <a>
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </span>
-                              {scheduleEvent?.map((events, indexID) => {
-                                const {
-                                  id,
-                                  selecteDay,
-                                  employeeId: eId,
-                                  employeeSelectedIndex: indexId,
-                                  shifts,
-                                } = events;
-                                if (
-                                  value === eId &&
-                                  index === indexId &&
-                                  selecteDay === "Fri " + results[4]
-                                ) {
-                                  return (
-                                    <div
-                                      onClick={() =>
-                                        handleFridayShiftIndex(indexID)
-                                      }
-                                      key={id}
-                                      className="user-add-shedule-list"
-                                    >
-                                      <h2>
-                                        <a
-                                          style={{
-                                            border: "2px dashed #1eb53a",
-                                          }}
-                                        >
-                                          <span>{shifts.label}</span>
-                                          <span className="userrole-info">
-                                            Web Designer - {label}
-                                          </span>
-                                        </a>
-                                      </h2>
-                                    </div>
-                                  );
-                                }
-                              })}
-                            </td>
-                            {/* )} */}
+                              <td
+                                className="tool-tip"
+                                onClick={() => handleFridayShift(index, value)}
+                              >
+                                <span className="tool-tip-text">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </span>
+                                {scheduleEvent?.map((events, indexID) => {
+                                  const {
+                                    id,
+                                    selecteDay,
+                                    employeeId: eId,
+                                    employeeSelectedIndex: indexId,
+                                    shifts,
+                                  } = events;
+                                  if (
+                                    value === eId &&
+                                    index === indexId &&
+                                    selecteDay === "Fri " + results[4]
+                                  ) {
+                                    return (
+                                      <div
+                                        onClick={() =>
+                                          handleFridayShiftIndex(indexID)
+                                        }
+                                        key={id}
+                                        className="user-add-shedule-list"
+                                      >
+                                        <h2>
+                                          <a
+                                            style={{
+                                              border: "2px dashed #1eb53a",
+                                            }}
+                                          >
+                                            <span>{shifts.label}</span>
+                                            <span className="userrole-info">
+                                              Web Designer - {label}
+                                            </span>
+                                          </a>
+                                        </h2>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </td>
+                              {/* )} */}
 
-                            {/* {shiftEvents?.length === 0 ? (
+                              {/* {shiftEvents?.length === 0 ? (
                               <td
                                 onClick={() => handlSaturdayShift(index, value)}
                               >
@@ -786,58 +795,58 @@ const ShiftScheduling = () => {
                                 </div>
                               </td>
                             ) : ( */}
-                            <td
-                              className="tool-tip"
-                              onClick={() => handlSaturdayShift(index, value)}
-                            >
-                              <span className="tool-tip-text">
-                                <a>
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </span>
-                              {scheduleEvent?.map((events, indexID) => {
-                                const {
-                                  id,
-                                  selecteDay,
-                                  employeeId: eId,
-                                  employeeSelectedIndex: indexId,
-                                  shifts,
-                                } = events;
-                                if (
-                                  value === eId &&
-                                  index === indexId &&
-                                  selecteDay === "Sat " + results[5]
-                                ) {
-                                  return (
-                                    <div
-                                      onClick={() =>
-                                        handleSaturdayShiftIndex(indexID)
-                                      }
-                                      key={id}
-                                      className="user-add-shedule-list"
-                                    >
-                                      <h2>
-                                        <a
-                                          style={{
-                                            border: "2px dashed #1eb53a",
-                                          }}
-                                        >
-                                          <span>{shifts.label}</span>
-                                          <span className="userrole-info">
-                                            Web Designer - {label}
-                                          </span>
-                                        </a>
-                                      </h2>
-                                    </div>
-                                  );
-                                }
-                              })}
-                            </td>
-                            {/* )} */}
+                              <td
+                                className="tool-tip"
+                                onClick={() => handlSaturdayShift(index, value)}
+                              >
+                                <span className="tool-tip-text">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </span>
+                                {scheduleEvent?.map((events, indexID) => {
+                                  const {
+                                    id,
+                                    selecteDay,
+                                    employeeId: eId,
+                                    employeeSelectedIndex: indexId,
+                                    shifts,
+                                  } = events;
+                                  if (
+                                    value === eId &&
+                                    index === indexId &&
+                                    selecteDay === "Sat " + results[5]
+                                  ) {
+                                    return (
+                                      <div
+                                        onClick={() =>
+                                          handleSaturdayShiftIndex(indexID)
+                                        }
+                                        key={id}
+                                        className="user-add-shedule-list"
+                                      >
+                                        <h2>
+                                          <a
+                                            style={{
+                                              border: "2px dashed #1eb53a",
+                                            }}
+                                          >
+                                            <span>{shifts.label}</span>
+                                            <span className="userrole-info">
+                                              Web Designer - {label}
+                                            </span>
+                                          </a>
+                                        </h2>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </td>
+                              {/* )} */}
 
-                            {/* {shiftEvents?.length === 0 ? (
+                              {/* {shiftEvents?.length === 0 ? (
                               <td
                                 onClick={() => handleSundayShift(index, value)}
                               >
@@ -850,69 +859,70 @@ const ShiftScheduling = () => {
                                 </div>
                               </td>
                             ) : ( */}
-                            <td
-                              className="tool-tip"
-                              onClick={() => handleSundayShift(index, value)}
-                            >
-                              <span className="tool-tip-text">
-                                <a>
-                                  <span>
-                                    <i className="fa fa-plus" />
-                                  </span>
-                                </a>
-                              </span>
-                              {scheduleEvent?.map((events, indexID) => {
-                                const {
-                                  id,
-                                  selecteDay,
-                                  employeeId: eId,
-                                  employeeSelectedIndex: indexId,
-                                  shifts,
-                                } = events;
-                                if (
-                                  value === eId &&
-                                  index === indexId &&
-                                  selecteDay === "Sun " + results[6]
-                                ) {
-                                  return (
-                                    <div
-                                      onClick={() =>
-                                        handleSundayShiftIndex(indexID)
-                                      }
-                                      key={id}
-                                      className="user-add-shedule-list"
-                                    >
-                                      <h2>
-                                        <a
-                                          style={{
-                                            border: "2px dashed #1eb53a",
-                                          }}
-                                        >
-                                          <span>{shifts.label}</span>
-                                          <span className="userrole-info">
-                                            Web Designer - {label}
-                                          </span>
-                                        </a>
-                                      </h2>
-                                    </div>
-                                  );
-                                }
-                              })}
-                            </td>
-                            {/* )} */}
-                          </tr>
-                        </Fragment>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                              <td
+                                className="tool-tip"
+                                onClick={() => handleSundayShift(index, value)}
+                              >
+                                <span className="tool-tip-text">
+                                  <a>
+                                    <span>
+                                      <i className="fa fa-plus" />
+                                    </span>
+                                  </a>
+                                </span>
+                                {scheduleEvent?.map((events, indexID) => {
+                                  const {
+                                    id,
+                                    selecteDay,
+                                    employeeId: eId,
+                                    employeeSelectedIndex: indexId,
+                                    shifts,
+                                  } = events;
+                                  if (
+                                    value === eId &&
+                                    index === indexId &&
+                                    selecteDay === "Sun " + results[6]
+                                  ) {
+                                    return (
+                                      <div
+                                        onClick={() =>
+                                          handleSundayShiftIndex(indexID)
+                                        }
+                                        key={id}
+                                        className="user-add-shedule-list"
+                                      >
+                                        <h2>
+                                          <a
+                                            style={{
+                                              border: "2px dashed #1eb53a",
+                                            }}
+                                          >
+                                            <span>{shifts.label}</span>
+                                            <span className="userrole-info">
+                                              Web Designer - {label}
+                                            </span>
+                                          </a>
+                                        </h2>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </td>
+                              {/* )} */}
+                            </tr>
+                          </Fragment>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
+            {/* /Content End */}
           </div>
-          {/* /Content End */}
-        </div>
-        {/* /Page Content */}
-      </Body>
+          {/* /Page Content */}
+        </Body>
+      </div>
       {/* /Page Wrapper */}
       {/* Add Schedule Modal */}
       {showModal && <AddShift dispatchShift={dispatchShift} />}

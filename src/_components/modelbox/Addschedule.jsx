@@ -82,7 +82,6 @@ const AddSchedule = ({
   });
 
     const handleShiftChange = (event) => {
-      console.log(event);
       setShifts(event)
     };
 

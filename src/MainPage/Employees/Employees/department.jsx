@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { Table } from "antd";
@@ -97,7 +97,7 @@ const Department = () => {
   ];
   return (
     <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-      <Header onMenuClick={(value) => toggleMobileMenu()} />
+      <Header onMenuClick={() => toggleMobileMenu()} />
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
@@ -205,4 +205,4 @@ const Department = () => {
   );
 };
 
-export default Department;
+export default withRouter(Department);

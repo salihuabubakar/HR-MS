@@ -1,6 +1,3 @@
-/**
- * App Header
- */
 import React, { useState } from "react";
 import { withRouter, useHistory, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -29,6 +26,8 @@ const Header = (props) => {
     props.onMenuClick();
   };
 
+  console.log("onMenuClick", props);
+
   const handleLogOut = () => {
     localStorage.removeItem("isLoggedIn");
     history.push("/login");
@@ -45,7 +44,6 @@ const Header = (props) => {
       {/* /Logo */}
       <a
         id="toggle_btn"
-        data-bs-toggle="dropdown"
         href="#"
         onClick={handlesidebar}
       >
@@ -70,8 +68,8 @@ const Header = (props) => {
       <a
         id="mobile_btn"
         className="mobile_btn"
+        // href="#"
         onClick={onMenuClik}
-        data-bs-toggle="dropdown"
       >
         <i className="fa fa-bars" />
       </a>

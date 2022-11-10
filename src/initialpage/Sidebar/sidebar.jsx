@@ -24,6 +24,7 @@ const handleDashboard = () => {
 
 const toggleLvelTwo = (value) => {
   setLevel2Menu(value)
+  console.log("value", value);
 }
 const toggleLevelThree = (value) => {
   setLevel3Menu(value)
@@ -54,7 +55,7 @@ const toggleLevelThree = (value) => {
                 <li className="submenu">
                   <a
                     href="#"
-                    data-bs-toggle="dropdown"
+                    // data-bs-toggle="dropdown"
                     className={isSideMenu == "dashboard" ? "subdrop" : ""}
                     onClick={handleDashboard}
                   >
@@ -212,7 +213,7 @@ const toggleLevelThree = (value) => {
                 <li className="submenu">
                   <a
                     href="#"
-                    data-bs-toggle="dropdown"
+                    // data-bs-toggle="dropdown"
                     className={isSideMenu == "employee" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(isSideMenu == "employee" ? "" : "employee")
@@ -346,16 +347,22 @@ const toggleLevelThree = (value) => {
                       <li className="submenu">
                         <a
                           href="#"
-                          data-bs-toggle="dropdown"
-                          className={level2Menu == "house" ? "subdrop" : ""}
+                          // data-bs-toggle="dropdown"
+                          className={
+                            level2Menu == "Shift&Schedule" ? "subdrop" : ""
+                          }
                           onClick={() =>
-                            toggleLvelTwo(level2Menu == "house" ? "" : "house")
+                            toggleLvelTwo(
+                              level2Menu == "Shift&Schedule"
+                                ? ""
+                                : "Shift&Schedule"
+                            )
                           }
                         >
                           <span>Shift &amp; Schedule</span>{" "}
                           <span className="menu-arrow" />
                         </a>
-                        {level2Menu == "house" ? (
+                        {level2Menu == "Shift&Schedule" ? (
                           <ul>
                             <li>
                               <Link
@@ -400,7 +407,7 @@ const toggleLevelThree = (value) => {
                 <li className="submenu">
                   <a
                     href="#"
-                    data-bs-toggle="dropdown"
+                    // data-bs-toggle="dropdown"
                     className={isSideMenu == "serviceWork" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(
