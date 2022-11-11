@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
+import Header from "../../../initialpage/Sidebar/header";
+import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import {itemRender,onShowSizeChange} from "../../paginationfunction"
@@ -15,6 +17,11 @@ import {
 const ShiftList = () => {
 
   const [showModal] = useGlobalState("showModal");
+
+    const [menu, setMenu] = useState(false);
+    const toggleMobileMenu = () => {
+      setMenu(!menu);
+    };
 
   const [shift, dispatchShift] = useReducer(
     savedShiftListReducer,
@@ -117,70 +124,71 @@ const ShiftList = () => {
       return (
         <>
           {/* Page Wrapper */}
-          <div className="page-wrapper">
-            <Helmet>
-              <title>Shift List - HRMS Admin Template</title>
-              <meta name="description" content="Login page" />
-            </Helmet>
-            {/* Page Content */}
-            <div className="content container-fluid">
-              {/* Page Header */}
-              <div className="page-header">
+          <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+            <Header onMenuClick={() => toggleMobileMenu()} />
+            <Sidebar />
+            <div className="page-wrapper">
+              <Helmet>
+                <title>Shift List - HRMS Admin Template</title>
+                <meta name="description" content="Login page" />
+              </Helmet>
+              {/* Page Content */}
+              <div className="content container-fluid">
+                {/* Page Header */}
+                <div className="page-header">
+                  <div className="row">
+                    <div className="col">
+                      <h3 className="page-title">Shift List</h3>
+                      <ul className="breadcrumb">
+                        <li className="breadcrumb-item">
+                          <Link to="/app/main/dashboard">Dashboard</Link>
+                        </li>
+                        <li className="breadcrumb-item active">Shift List</li>
+                      </ul>
+                    </div>
+                    <div className="col-auto float-end ml-auto">
+                      <a
+                        className="btn add-btn m-r-5"
+                        onClick={() => setGlobalState("showModal", true)}
+                      >
+                        Add Shifts
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                {/* /Page Header */}
+                {/* Content Starts */}
                 <div className="row">
-                  <div className="col">
-                    <h3 className="page-title">Shift List</h3>
-                    <ul className="breadcrumb">
-                      <li className="breadcrumb-item">
-                        <Link to="/app/main/dashboard">Dashboard</Link>
-                      </li>
-                      <li className="breadcrumb-item active">Shift List</li>
-                    </ul>
-                  </div>
-                  <div className="col-auto float-end ml-auto">
-                    <a
-                      className="btn add-btn m-r-5"
-                      onClick={() => setGlobalState("showModal", true)}
-                    >
-                      Add Shifts
-                    </a>
-                  </div>
-                </div>
-              </div>
-              {/* /Page Header */}
-              {/* Content Starts */}
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="table-responsive">
-                    <Table
-                      className="table-striped"
-                      pagination={{
-                        total: shiftList?.length,
-                        showTotal: (total, range) =>
-                          `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                        showSizeChanger: true,
-                        onShowSizeChange: onShowSizeChange,
-                        itemRender: itemRender,
-                      }}
-                      style={{ overflowX: "auto" }}
-                      columns={columns}
-                      // bordered
-                      dataSource={shiftList}
-                      rowKey={(shift) => shift.id}
-                    />
+                  <div className="col-md-12">
+                    <div className="table-responsive">
+                      <Table
+                        className="table-striped"
+                        pagination={{
+                          total: shiftList?.length,
+                          showTotal: (total, range) =>
+                            `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                          showSizeChanger: true,
+                          onShowSizeChange: onShowSizeChange,
+                          itemRender: itemRender,
+                        }}
+                        style={{ overflowX: "auto" }}
+                        columns={columns}
+                        // bordered
+                        dataSource={shiftList}
+                        rowKey={(shift) => shift.id}
+                      />
+                    </div>
                   </div>
                 </div>
+                {/* /Content End */}
               </div>
-              {/* /Content End */}
+              {/* /Page Content */}
             </div>
-            {/* /Page Content */}
           </div>
           {/* /Page Wrapper */}
           {/* Add Schedule Modal */}
           {showModal && (
-            <AddShift
-              dispatchShift={dispatchShift}
-              indexToEdit={indexToEdit}
-            />
+            <AddShift dispatchShift={dispatchShift} indexToEdit={indexToEdit} />
           )}
           {/* /Add Schedule Modal */}
           {/* Delete Shift Modal */}

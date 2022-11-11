@@ -161,7 +161,6 @@ const Addemployee = ({
   };
 
   const handleDeptChange = (event) => {
-    console.log(event);
     setDept(event);
   };
 
