@@ -278,37 +278,37 @@ const EmployeeProfile = () => {
                       <ul className="personal-info">
                         <li>
                           <div className="title">Passport No.</div>
-                          <div className="text">9876543210</div>
+                          <div className="text"></div>
                         </li>
                         <li>
                           <div className="title">Passport Exp Date.</div>
-                          <div className="text">9876543210</div>
+                          <div className="text"></div>
                         </li>
                         <li>
                           <div className="title">Tel</div>
                           <div className="text">
-                            <a href="">9876543210</a>
+                            <a href=""></a>
                           </div>
                         </li>
                         <li>
                           <div className="title">Nationality</div>
-                          <div className="text">Indian</div>
+                          <div className="text"></div>
                         </li>
                         <li>
                           <div className="title">Religion</div>
-                          <div className="text">Christian</div>
+                          <div className="text"></div>
                         </li>
                         <li>
                           <div className="title">Marital status</div>
-                          <div className="text">Married</div>
+                          <div className="text"></div>
                         </li>
                         <li>
                           <div className="title">Employment of spouse</div>
-                          <div className="text">No</div>
+                          <div className="text"></div>
                         </li>
                         <li>
                           <div className="title">No. of children</div>
-                          <div className="text">2</div>
+                          <div className="text"></div>
                         </li>
                       </ul>
                     </div>
