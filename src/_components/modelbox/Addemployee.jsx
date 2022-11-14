@@ -170,6 +170,7 @@ const Addemployee = ({
 
   const handleRoleChange = (event) => {
     setDesignation(event);
+    console.log(event);
   };
 
   return (
