@@ -220,7 +220,10 @@ const AllEmployees = () => {
                       <div className="profile-widget">
                         <div className="profile-img">
                           <Link
-                            to="/app/profile/employee-profile"
+                            to={{
+                              pathname: "/app/profile/employee-profile",
+                              state: { id: id, index: index },
+                            }}
                             className="avatar"
                           >
                             <img src={SmileImg} alt="" />
@@ -253,12 +256,17 @@ const AllEmployees = () => {
                           </div>
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <Link to="/app/profile/employee-profile">
+                          <Link
+                            to={{
+                              pathname: "/app/profile/employee-profile",
+                              state: { id: id, index: index },
+                            }}
+                          >
                             {firstName + " " + lastName}
                           </Link>
                         </h4>
                         <div className="small text-muted">
-                          {designation.label}
+                          {designation?.label}
                         </div>
                       </div>
                     </div>

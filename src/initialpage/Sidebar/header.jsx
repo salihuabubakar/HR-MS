@@ -13,6 +13,7 @@ import {
   Avatar_21,
 } from "../../Entryfile/imagepath";
 import Applogo from "../../assets/img/circle-logo.png"
+import AddminProfile from "../../MainPage/Pages/Profile/AddminProfile";
 
 import {HeaderContainer} from "./style"
 
@@ -25,8 +26,6 @@ const Header = (props) => {
   const onMenuClik = () => {
     props.onMenuClick();
   };
-
-  console.log("onMenuClick", props);
 
   const handleLogOut = () => {
     localStorage.removeItem("isLoggedIn");
@@ -42,11 +41,7 @@ const Header = (props) => {
         </Link>
       </div>
       {/* /Logo */}
-      <a
-        id="toggle_btn"
-        href="#"
-        onClick={handlesidebar}
-      >
+      <a id="toggle_btn" href="#" onClick={handlesidebar}>
         <span className="bar-icon">
           <span />
           <span />
@@ -304,7 +299,7 @@ const Header = (props) => {
             <Link
               className="dropdown-item"
               to={{
-                pathname: "/app/profile/employee-profile",
+                pathname: "/app/profile/AddminProfile",
                 state: { id: "occupation" },
               }}
             >

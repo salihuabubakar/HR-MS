@@ -54,7 +54,6 @@ const toggleLevelThree = (value) => {
                 </li>
                 <li className="submenu">
                   <a
-                    href="#"
                     // data-bs-toggle="dropdown"
                     className={isSideMenu == "dashboard" ? "subdrop" : ""}
                     onClick={handleDashboard}
@@ -212,7 +211,6 @@ const toggleLevelThree = (value) => {
                 </li> */}
                 <li className="submenu">
                   <a
-                    href="#"
                     // data-bs-toggle="dropdown"
                     className={isSideMenu == "employee" ? "subdrop" : ""}
                     onClick={() =>
@@ -346,7 +344,6 @@ const toggleLevelThree = (value) => {
                         to="/app/employee/shift-scheduling">Shift &amp; Schedule</Link></li> */}
                       <li className="submenu">
                         <a
-                          href="#"
                           // data-bs-toggle="dropdown"
                           className={
                             level2Menu == "Shift&Schedule" ? "subdrop" : ""
@@ -406,7 +403,6 @@ const toggleLevelThree = (value) => {
                 </li>
                 <li className="submenu">
                   <a
-                    href="#"
                     // data-bs-toggle="dropdown"
                     className={isSideMenu == "serviceWork" ? "subdrop" : ""}
                     onClick={() =>
@@ -854,7 +850,6 @@ const toggleLevelThree = (value) => {
                 </li>
                 {/* <li className="submenu">
                   <a
-                    href="#"
                     className={isSideMenu == "performance" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(
@@ -1027,7 +1022,6 @@ const toggleLevelThree = (value) => {
                 </li>
                 <li className="submenu">
                   <a
-                    href="#"
                     className={isSideMenu == "jobs" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(isSideMenu == "jobs" ? "" : "jobs")
@@ -1219,7 +1213,6 @@ const toggleLevelThree = (value) => {
                 </li>
                 {/* <li className="submenu">
                   <a
-                    href="#"
                     className={isSideMenu == "profile" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(isSideMenu == "profile" ? "" : "profile")
@@ -1459,7 +1452,6 @@ const toggleLevelThree = (value) => {
                 </li>
                 <li className="submenu">
                   <a
-                    href="#"
                     className={isSideMenu == "forms" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(isSideMenu == "forms" ? "" : "forms")
@@ -1582,7 +1574,7 @@ const toggleLevelThree = (value) => {
                   <span>Extras</span>
                 </li>
                 {/* <li>
-                  <a href="#">
+                  <a>
                     <i className="la la-file-text" /> <span>Documentation</span>
                   </a>
                 </li>
