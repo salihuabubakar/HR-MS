@@ -90,7 +90,7 @@ const ShiftScheduling = () => {
     setDeptList(depts);
   }, [depts]);
 
-  const selectedHouse = houseList?.find((staff) =>  staff.id === houseId );
+  const selectedHouse = houseList?.find((house) =>  house.id === houseId );
 
   const handleDeptChange = (event) => {
     // console.log(event);
@@ -441,16 +441,13 @@ const ShiftScheduling = () => {
                             <tr>
                               <td>
                                 <h2 className="table-avatar">
-                                  <Link
-                                    to="/app/profile/employee-profile"
-                                    className="avatar"
-                                  >
+                                  <a className="avatar">
                                     <img src={Smile} />
-                                  </Link>
-                                  <Link to="/app/profile/employee-profile">
+                                  </a>
+                                  <a>
                                     {label}
                                     <span>Web Designer</span>
-                                  </Link>
+                                  </a>
                                 </h2>
                               </td>
 

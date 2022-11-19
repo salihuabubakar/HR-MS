@@ -6,17 +6,96 @@ import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import {Avatar_02,Avatar_05,Avatar_09,Avatar_10,Avatar_16 } from '../../../Entryfile/imagepath'
 import { useParams, useLocation } from "react-router-dom";
 import AddProfileInfo from './components/AddProfileInfo';
+import AddPersonalInfo from '../../../_components/modelbox/AddPersonalInfo';
 import { useGlobalState, setGlobalState } from '../../../context/GlobalState';
-import { initProfileInfo, savedProfileInfoReducer } from '../../../utils/localStorage';
+import {
+  initProfileInfo,
+  savedProfileInfoReducer,
+  initUserAccount,
+  savedUserAccountReducer,
+} from "../../../utils/localStorage";
 
 const EmployeeProfile = () => {
 
-  const [showModal] = useGlobalState("showModal")
-
-  // const { id } = useParams();
   const location = useLocation();
-  // const { id } = location?.state;
-  console.log("location", location);
+  const employeeId = location?.state?.id;
+  const emIndex = location?.state?.index;
+  console.log("employeeId", employeeId);
+  console.log("emIndex", emIndex);
+  const [showProfileModal] = useGlobalState("showProfileModal");
+  const [showPersonalInfoModal] = useGlobalState("showPersonalInfoModal");
+
+  const [userAcct, dispatchUserAcct] = useReducer(
+    savedUserAccountReducer,
+    [],
+    initUserAccount
+  );
+
+  useEffect(() => {
+    localStorage.setItem("userAccount", JSON.stringify(userAcct));
+  }, [userAcct]);
+  useEffect(() => {
+    if (!showProfileModal) {
+      setGlobalState("selectedUserAccount", "");
+    }
+  }, [showProfileModal]);
+
+  const [employeeAccts, setEmployeeAccts] = useState();
+  useEffect(() => {
+    setEmployeeAccts(userAcct);
+  }, [userAcct]);
+
+  const [acctIdToEdit, setAcctIdToEdit] = useState("");
+
+
+  const selectedEmployee = employeeAccts?.find(
+    (staff) => staff?.id === employeeId
+  );
+
+  const userAcctDb = () => {
+    return setGlobalState("selectedUserAccount", userAcct);
+  }
+
+  const handleEditAcct = () => {
+    setGlobalState("showProfileModal", true);
+    userAcctDb();
+  };
+
+    const handlePersonalInfo = () => {
+      setGlobalState("showPersonalInfoModal", true);
+      userAcctDb();
+    };
+
+  // const {
+  //   id,
+  //   dept,
+  //   designation,
+  //   firstName,
+  //   lastName,
+  //   phoneNo,
+  //   state,
+  //   address,
+  //   image,
+  //   country,
+  //   dOB,
+  // } = selectedEmployee;
+
+  const emId = selectedEmployee?.id;
+  const image = selectedEmployee?.profileInfo?.image;
+  const firstName = selectedEmployee?.firstName;
+  const lastName = selectedEmployee?.lastName;
+  const email = selectedEmployee?.email;
+  const phoneNo = selectedEmployee?.phoneNo;
+  const dOB = selectedEmployee?.profileInfo?.dOB;
+  const state = selectedEmployee?.profileInfo?.state;
+  const address = selectedEmployee?.profileInfo?.address;
+  const passPortNo = selectedEmployee?.personalInfo?.passPortNo;
+  const passportExpiryDate = selectedEmployee?.personalInfo?.passportExpiryDate;
+  const religion = selectedEmployee?.personalInfo?.religion;
+  const emSpouse = selectedEmployee?.personalInfo?.emSpouse;
+  const noChildren = selectedEmployee?.personalInfo?.noChildren;
+  const country = selectedEmployee?.profileInfo?.country;
+
 
   useEffect( ()=>{
     if($('.select').length > 0) {
@@ -32,39 +111,6 @@ const EmployeeProfile = () => {
       setMenu(!menu);
     };
 
-  const [emProfileInfo, dispatchEmployeeProfilInfo] = useReducer(
-    savedProfileInfoReducer,
-    [],
-    initProfileInfo
-  );
-
-  useEffect(() => {
-    localStorage.setItem("profileInfo", JSON.stringify(emProfileInfo));
-  }, [emProfileInfo]);
-  useEffect(() => {
-    if (!showModal) {
-      setGlobalState("selectedProfileInfo", "");
-    }
-  }, [showModal]);
-
-  const [profileInfo, setProfileInfo] = useState();
-  useEffect(() => {
-    setProfileInfo(emProfileInfo);
-  }, [emProfileInfo]);
-
-  console.log("profileInfo", profileInfo);
-
-  const [indexToEdit, setIndexToEdit] = useState();
-
-  const handleOpenModal = () => {
-    setGlobalState("showModal", true);
-  }
-
-    const handleOpenModalEdit = (id, index) => {
-      setIndexToEdit(index);
-      setGlobalState("showModal", true);
-      setGlobalState("selectedProfileInfo", emProfileInfo);
-    };
 
   return (
     <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -96,124 +142,79 @@ const EmployeeProfile = () => {
             <div className="card-body">
               <div className="row">
                 <div className="col-md-12">
-                  {profileInfo?.length === 0 && (
-                    <div className="profile-view">
-                      <h3 className="card-title">Profile Informations</h3>
-                      <div
-                        style={{ position: "relative", bottom: "20px" }}
-                        className="pro-edit"
-                      >
-                        <a onClick={handleOpenModal} className="edit-icon">
-                          <i className="fa fa-pencil" />
+                  <div className="profile-view">
+                    <div className="profile-img-wrap">
+                      <div className="profile-img">
+                        <a href="#">
+                          <img alt="" src={image} />
                         </a>
                       </div>
                     </div>
-                  )}
-                  {profileInfo?.map((info, proFileindex) => {
-                    const {
-                      id,
-                      firstName,
-                      lastName,
-                      dOB,
-                      country,
-                      image,
-                      address,
-                      state,
-                      phoneNumber,
-                    } = info;
-                    return (
-                      <div key={id} className="profile-view">
-                        <div className="profile-img-wrap">
-                          <div className="profile-img">
-                            <a href="#">
-                              <img alt="" src={image} />
-                            </a>
+                    <div className="profile-basic">
+                      <div className="row">
+                        <div className="col-md-5">
+                          <div className="profile-info-left">
+                            <h3 className="user-name m-t-0 mb-0">
+                              {firstName + " " + lastName}
+                            </h3>
+                            <h6 className="text-muted">UI/UX Design Team</h6>
+                            <small className="text-muted">Web Designer</small>
+                            <div className="staff-id">
+                              Employee ID : FT-0001
+                            </div>
+                            <div className="small doj text-muted">
+                              Date of Join : 1st oct 2022
+                            </div>
+                            {/* <div className="staff-msg"><Link onClick={()=>localStorage.setItem("minheight","true")} className="btn btn-custom" to="/conversation/chat">Send Message</Link></div> */}
                           </div>
                         </div>
-                        <div className="profile-basic">
-                          <div className="row">
-                            <div className="col-md-5">
-                              <div className="profile-info-left">
-                                <h3 className="user-name m-t-0 mb-0">
-                                  {firstName + " " + lastName}
-                                </h3>
-                                <h6 className="text-muted">
-                                  UI/UX Design Team
-                                </h6>
-                                <small className="text-muted">
-                                  Web Designer
-                                </small>
-                                <div className="staff-id">
-                                  Employee ID : FT-0001
-                                </div>
-                                <div className="small doj text-muted">
-                                  Date of Join : 1st oct 2022
-                                </div>
-                                {/* <div className="staff-msg"><Link onClick={()=>localStorage.setItem("minheight","true")} className="btn btn-custom" to="/conversation/chat">Send Message</Link></div> */}
+                        <div className="col-md-7">
+                          <ul className="personal-info">
+                            <li>
+                              <div className="title">Phone:</div>
+                              <div className="text">
+                                <a href="">{phoneNo}</a>
                               </div>
-                            </div>
-                            <div className="col-md-7">
-                              <ul className="personal-info">
-                                <li>
-                                  <div className="title">Phone:</div>
-                                  <div className="text">
-                                    <a href="">{phoneNumber}</a>
+                            </li>
+                            <li>
+                              <div className="title">Email:</div>
+                              <div className="text">
+                                <a href="">{email}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">Birthday:</div>
+                              <div className="text">{dOB}</div>
+                            </li>
+                            <li>
+                              <div className="title">Address:</div>
+                              <div className="text">{address}</div>
+                            </li>
+                            <li>
+                              <div className="title">Gender:</div>
+                              <div className="text">Male</div>
+                            </li>
+                            <li>
+                              <div className="title">Reports to:</div>
+                              <div className="text">
+                                <div className="avatar-box">
+                                  <div className="avatar avatar-xs">
+                                    <img src={Avatar_16} alt="" />
                                   </div>
-                                </li>
-                                <li>
-                                  <div className="title">Email:</div>
-                                  <div className="text">
-                                    <a href="">abdullahiabubakar@example.com</a>
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="title">Birthday:</div>
-                                  <div className="text">{dOB}</div>
-                                </li>
-                                <li>
-                                  <div className="title">Address:</div>
-                                  <div className="text">{address}</div>
-                                </li>
-                                <li>
-                                  <div className="title">Gender:</div>
-                                  <div className="text">Male</div>
-                                </li>
-                                <li>
-                                  <div className="title">Reports to:</div>
-                                  <div className="text">
-                                    <div className="avatar-box">
-                                      <div className="avatar avatar-xs">
-                                        <img src={Avatar_16} alt="" />
-                                      </div>
-                                    </div>
-                                    <Link to="/app/profile/employee-profile">
-                                      Abdul
-                                    </Link>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="pro-edit">
-                          <a
-                            onClick={
-                              profileInfo?.length > 0
-                                ? () => handleOpenModalEdit(id, proFileindex)
-                                : handleOpenModal
-                            }
-                            className="edit-icon"
-                          >
-                            {profileInfo?.length > 0 ? (
-                              <i className="fa fa-pencil" />
-                            ) : (
-                              "Add Profile"
-                            )}
-                          </a>
+                                </div>
+                                <a>Abdul</a>
+                              </div>
+                            </li>
+                          </ul>
                         </div>
                       </div>
-                    );
-                  })}
+                    </div>
+                    <div className="pro-edit">
+                      <a onClick={handleEditAcct} className="edit-icon">
+                        <i className="fa fa-pencil" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -266,49 +267,44 @@ const EmployeeProfile = () => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Personal Informations{" "}
-                        <a
-                          href="#"
-                          className="edit-icon"
-                          data-bs-toggle="modal"
-                          data-bs-target="#personal_info_modal"
-                        >
+                        <a className="edit-icon" onClick={handlePersonalInfo}>
                           <i className="fa fa-pencil" />
                         </a>
                       </h3>
                       <ul className="personal-info">
                         <li>
                           <div className="title">Passport No.</div>
-                          <div className="text"></div>
+                          <div className="text">{passPortNo}</div>
                         </li>
                         <li>
                           <div className="title">Passport Exp Date.</div>
-                          <div className="text"></div>
+                          <div className="text">{passportExpiryDate}</div>
                         </li>
                         <li>
                           <div className="title">Tel</div>
                           <div className="text">
-                            <a href=""></a>
+                            <a href="">{phoneNo}</a>
                           </div>
                         </li>
                         <li>
                           <div className="title">Nationality</div>
-                          <div className="text"></div>
+                          <div className="text">{country}</div>
                         </li>
                         <li>
                           <div className="title">Religion</div>
-                          <div className="text"></div>
+                          <div className="text">{religion}</div>
                         </li>
                         <li>
                           <div className="title">Marital status</div>
-                          <div className="text"></div>
+                          <div className="text">Singles</div>
                         </li>
                         <li>
                           <div className="title">Employment of spouse</div>
-                          <div className="text"></div>
+                          <div className="text">{emSpouse}</div>
                         </li>
                         <li>
                           <div className="title">No. of children</div>
-                          <div className="text"></div>
+                          <div className="text">{noChildren}</div>
                         </li>
                       </ul>
                     </div>
@@ -579,7 +575,6 @@ const EmployeeProfile = () => {
                           aria-expanded="false"
                           data-bs-toggle="dropdown"
                           className="action-icon dropdown-toggle"
-                          href="#"
                         >
                           <i className="material-icons">more_vert</i>
                         </a>
@@ -595,7 +590,6 @@ const EmployeeProfile = () => {
                           <a
                             data-bs-target="#delete_project"
                             data-bs-toggle="modal"
-                            href="#"
                             className="dropdown-item"
                           >
                             <i className="fa fa-trash-o m-r-5" /> Delete
@@ -626,11 +620,7 @@ const EmployeeProfile = () => {
                         <div>Project Leader :</div>
                         <ul className="team-members">
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Jeffery Lalor"
-                            >
+                            <a data-bs-toggle="tooltip" title="Jeffery Lalor">
                               <img alt="" src={Avatar_16} />
                             </a>
                           </li>
@@ -640,45 +630,27 @@ const EmployeeProfile = () => {
                         <div>Team :</div>
                         <ul className="team-members">
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="John Doe"
-                            >
+                            <a data-bs-toggle="tooltip" title="John Doe">
                               <img alt="" src={Avatar_02} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Richard Miles"
-                            >
+                            <a data-bs-toggle="tooltip" title="Richard Miles">
                               <img alt="" src={Avatar_09} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="John Smith"
-                            >
+                            <a data-bs-toggle="tooltip" title="John Smith">
                               <img alt="" src={Avatar_10} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Mike Litorus"
-                            >
+                            <a data-bs-toggle="tooltip" title="Mike Litorus">
                               <img alt="" src={Avatar_05} />
                             </a>
                           </li>
                           <li>
-                            <a href="#" className="all-users">
-                              +15
-                            </a>
+                            <a className="all-users">+15</a>
                           </li>
                         </ul>
                       </div>
@@ -706,7 +678,6 @@ const EmployeeProfile = () => {
                           aria-expanded="false"
                           data-bs-toggle="dropdown"
                           className="action-icon dropdown-toggle"
-                          href="#"
                         >
                           <i className="material-icons">more_vert</i>
                         </a>
@@ -714,7 +685,6 @@ const EmployeeProfile = () => {
                           <a
                             data-bs-target="#edit_project"
                             data-bs-toggle="modal"
-                            href="#"
                             className="dropdown-item"
                           >
                             <i className="fa fa-pencil m-r-5" /> Edit
@@ -722,7 +692,6 @@ const EmployeeProfile = () => {
                           <a
                             data-bs-target="#delete_project"
                             data-bs-toggle="modal"
-                            href="#"
                             className="dropdown-item"
                           >
                             <i className="fa fa-trash-o m-r-5" /> Delete
@@ -753,11 +722,7 @@ const EmployeeProfile = () => {
                         <div>Project Leader :</div>
                         <ul className="team-members">
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Jeffery Lalor"
-                            >
+                            <a data-bs-toggle="tooltip" title="Jeffery Lalor">
                               <img alt="" src={Avatar_16} />
                             </a>
                           </li>
@@ -767,45 +732,27 @@ const EmployeeProfile = () => {
                         <div>Team :</div>
                         <ul className="team-members">
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="John Doe"
-                            >
+                            <a data-bs-toggle="tooltip" title="John Doe">
                               <img alt="" src={Avatar_02} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Richard Miles"
-                            >
+                            <a data-bs-toggle="tooltip" title="Richard Miles">
                               <img alt="" src={Avatar_09} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="John Smith"
-                            >
+                            <a data-bs-toggle="tooltip" title="John Smith">
                               <img alt="" src={Avatar_10} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Mike Litorus"
-                            >
+                            <a data-bs-toggle="tooltip" title="Mike Litorus">
                               <img alt="" src={Avatar_05} />
                             </a>
                           </li>
                           <li>
-                            <a href="#" className="all-users">
-                              +15
-                            </a>
+                            <a className="all-users">+15</a>
                           </li>
                         </ul>
                       </div>
@@ -833,7 +780,6 @@ const EmployeeProfile = () => {
                           aria-expanded="false"
                           data-bs-toggle="dropdown"
                           className="action-icon dropdown-toggle"
-                          href="#"
                         >
                           <i className="material-icons">more_vert</i>
                         </a>
@@ -841,7 +787,6 @@ const EmployeeProfile = () => {
                           <a
                             data-bs-target="#edit_project"
                             data-bs-toggle="modal"
-                            href="#"
                             className="dropdown-item"
                           >
                             <i className="fa fa-pencil m-r-5" /> Edit
@@ -849,7 +794,6 @@ const EmployeeProfile = () => {
                           <a
                             data-bs-target="#delete_project"
                             data-bs-toggle="modal"
-                            href="#"
                             className="dropdown-item"
                           >
                             <i className="fa fa-trash-o m-r-5" /> Delete
@@ -880,11 +824,7 @@ const EmployeeProfile = () => {
                         <div>Project Leader :</div>
                         <ul className="team-members">
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Jeffery Lalor"
-                            >
+                            <a data-bs-toggle="tooltip" title="Jeffery Lalor">
                               <img alt="" src={Avatar_16} />
                             </a>
                           </li>
@@ -894,45 +834,27 @@ const EmployeeProfile = () => {
                         <div>Team :</div>
                         <ul className="team-members">
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="John Doe"
-                            >
+                            <a data-bs-toggle="tooltip" title="John Doe">
                               <img alt="" src={Avatar_02} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Richard Miles"
-                            >
+                            <a data-bs-toggle="tooltip" title="Richard Miles">
                               <img alt="" src={Avatar_09} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="John Smith"
-                            >
+                            <a data-bs-toggle="tooltip" title="John Smith">
                               <img alt="" src={Avatar_10} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Mike Litorus"
-                            >
+                            <a data-bs-toggle="tooltip" title="Mike Litorus">
                               <img alt="" src={Avatar_05} />
                             </a>
                           </li>
                           <li>
-                            <a href="#" className="all-users">
-                              +15
-                            </a>
+                            <a className="all-users">+15</a>
                           </li>
                         </ul>
                       </div>
@@ -960,7 +882,6 @@ const EmployeeProfile = () => {
                           aria-expanded="false"
                           data-bs-toggle="dropdown"
                           className="action-icon dropdown-toggle"
-                          href="#"
                         >
                           <i className="material-icons">more_vert</i>
                         </a>
@@ -968,7 +889,6 @@ const EmployeeProfile = () => {
                           <a
                             data-bs-target="#edit_project"
                             data-bs-toggle="modal"
-                            href="#"
                             className="dropdown-item"
                           >
                             <i className="fa fa-pencil m-r-5" /> Edit
@@ -976,7 +896,6 @@ const EmployeeProfile = () => {
                           <a
                             data-bs-target="#delete_project"
                             data-bs-toggle="modal"
-                            href="#"
                             className="dropdown-item"
                           >
                             <i className="fa fa-trash-o m-r-5" /> Delete
@@ -1007,11 +926,7 @@ const EmployeeProfile = () => {
                         <div>Project Leader :</div>
                         <ul className="team-members">
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Jeffery Lalor"
-                            >
+                            <a data-bs-toggle="tooltip" title="Jeffery Lalor">
                               <img alt="" src={Avatar_16} />
                             </a>
                           </li>
@@ -1021,45 +936,27 @@ const EmployeeProfile = () => {
                         <div>Team :</div>
                         <ul className="team-members">
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="John Doe"
-                            >
+                            <a data-bs-toggle="tooltip" title="John Doe">
                               <img alt="" src={Avatar_02} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Richard Miles"
-                            >
+                            <a data-bs-toggle="tooltip" title="Richard Miles">
                               <img alt="" src={Avatar_09} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="John Smith"
-                            >
+                            <a data-bs-toggle="tooltip" title="John Smith">
                               <img alt="" src={Avatar_10} />
                             </a>
                           </li>
                           <li>
-                            <a
-                              href="#"
-                              data-bs-toggle="tooltip"
-                              title="Mike Litorus"
-                            >
+                            <a data-bs-toggle="tooltip" title="Mike Litorus">
                               <img alt="" src={Avatar_05} />
                             </a>
                           </li>
                           <li>
-                            <a href="#" className="all-users">
-                              +15
-                            </a>
+                            <a className="all-users">+15</a>
                           </li>
                         </ul>
                       </div>
@@ -1349,114 +1246,29 @@ const EmployeeProfile = () => {
         {/* /Page Content */}
 
         {/* Profile Modal */}
-        {showModal && (
-          <AddProfileInfo
-            dispatchEmployeeProfilInfo={dispatchEmployeeProfilInfo}
-            indexToEdit={indexToEdit}
-          />
+        {showProfileModal && (
+          <>
+            <AddProfileInfo
+              dispatchUserAcct={dispatchUserAcct}
+              userAcct={userAcct}
+              emIndex={emIndex}
+            />
+          </>
         )}
         {/* /Profile Modal */}
 
         {/* Personal Info Modal */}
-        <div
-          id="personal_info_modal"
-          className="modal custom-modal fade"
-          role="dialog"
-        >
-          <div
-            className="modal-dialog modal-dialog-centered modal-lg"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Personal Information</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Passport No</label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Passport Expiry Date</label>
-                        <div>
-                          <input
-                            className="form-control datetimepicker"
-                            type="date"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Tel</label>
-                        <input className="form-control" type="text" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>
-                          Nationality <span className="text-danger">*</span>
-                        </label>
-                        <input className="form-control" type="text" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Religion</label>
-                        <div>
-                          <input className="form-control" type="date" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>
-                          Marital status <span className="text-danger">*</span>
-                        </label>
-                        <select className="select form-control">
-                          <option>-</option>
-                          <option>Single</option>
-                          <option>Married</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Employment of spouse</label>
-                        <input className="form-control" type="text" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>No. of children </label>
-                        <input className="form-control" type="text" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="submit-section">
-                    <button className="btn btn-primary submit-btn">
-                      Submit
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        {showPersonalInfoModal && (
+          <>
+            <AddPersonalInfo
+              dispatchUserAcct={dispatchUserAcct}
+              userAcct={userAcct}
+              emIndex={emIndex}
+            />
+          </>
+        )}
         {/* /Personal Info Modal */}
+
         {/* Family Info Modal */}
         <div
           id="family_info_modal"

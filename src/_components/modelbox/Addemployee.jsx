@@ -107,9 +107,87 @@ const Addemployee = ({
     : Date.now()
   );
 
+  const [image, setImage] = useState(
+    selectedUserAccount[indexToEdit]?.profileInfo?.image
+      ? selectedUserAccount[indexToEdit]?.profileInfo?.image
+      : ""
+  );
+  const [address, setAddress] = useState(
+    selectedUserAccount[indexToEdit]?.profileInfo?.address
+      ? selectedUserAccount[indexToEdit]?.profileInfo?.address
+      : ""
+  );
+  const [state, setState] = useState(
+    selectedUserAccount[indexToEdit]?.profileInfo?.state
+      ? selectedUserAccount[indexToEdit]?.profileInfo?.state
+      : ""
+  );
+  const [country, setCountry] = useState(
+    selectedUserAccount[indexToEdit]?.profileInfo?.country
+      ? selectedUserAccount[indexToEdit]?.profileInfo?.country
+      : ""
+  );
+  const [pinCode, setPinCode] = useState(
+    selectedUserAccount[indexToEdit]?.profileInfo?.pinCode
+      ? selectedUserAccount[indexToEdit]?.profileInfo?.pinCode
+      : ""
+  );
+  const [dOB, setDOB] = useState(
+    selectedUserAccount[indexToEdit]?.profileInfo?.dOB
+      ? selectedUserAccount[indexToEdit]?.profileInfo?.dOB
+      : ""
+  );
+
+
+    const [passPortNo, setPassportNo] = useState(
+      selectedUserAccount[indexToEdit]?.personalInfo?.passPortNo
+        ? selectedUserAccount[indexToEdit]?.personalInfo?.passPortNo
+        : ""
+    );
+
+  const [passportExpiryDate, setPassportExpiryDate] = useState(
+    selectedUserAccount[indexToEdit]?.personalInfo?.passportExpiryDate
+      ? selectedUserAccount[indexToEdit]?.personalInfo?.passportExpiryDate
+      : ""
+  );
+
+  const [religion, setReligion] = useState(
+    selectedUserAccount[indexToEdit]?.personalInfo?.religion
+      ? selectedUserAccount[indexToEdit]?.personalInfo?.religion
+      : ""
+  );
+
+  const [emSpouse, setEmSpouse] = useState(
+    selectedUserAccount[indexToEdit]?.personalInfo?.emSpouse
+      ? selectedUserAccount[indexToEdit]?.personalInfo?.emSpouse
+      : ""
+  );
+
+  const [noChildren, setNoChildren] = useState(
+    selectedUserAccount[indexToEdit]?.personalInfo?.noChildren
+      ? selectedUserAccount[indexToEdit]?.personalInfo?.noChildren
+      : ""
+  );
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const personalInfo = {
+      passPortNo,
+      passportExpiryDate,
+      religion,
+      emSpouse,
+      noChildren,
+    };
+    const profileInfo = {
+      image,
+      address,
+      state,
+      country,
+      dOB,
+      pinCode,
+    };
     const userAccount = {
+      id,
       firstName,
       lastName,
       userName,
@@ -122,7 +200,8 @@ const Addemployee = ({
       company,
       dept,
       designation,
-      id,
+      profileInfo,
+      personalInfo,
     };
     if (selectedUserAccount[indexToEdit]?.id) {
       dispatchUserAcct({ type: "update", payload: userAccount });

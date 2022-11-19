@@ -10,6 +10,8 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedShiftList: [],
   selectedProfileInfo: [],
   showModal: false,
+  showProfileModal: false,
+  showPersonalInfoModal: false,
   showAddSchedul: false,
 });
 
