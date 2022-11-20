@@ -101,76 +101,131 @@ const Addemployee = ({
       ? selectedUserAccount[indexToEdit]?.designation
       : ""
   );
-  const [id, setId] = useState(
+  const [id] = useState(
     selectedUserAccount[indexToEdit]?.id
     ? selectedUserAccount[indexToEdit]?.id
     : Date.now()
   );
 
-  const [image, setImage] = useState(
+  const [image] = useState(
     selectedUserAccount[indexToEdit]?.profileInfo?.image
       ? selectedUserAccount[indexToEdit]?.profileInfo?.image
       : ""
   );
-  const [address, setAddress] = useState(
+  const [address] = useState(
     selectedUserAccount[indexToEdit]?.profileInfo?.address
       ? selectedUserAccount[indexToEdit]?.profileInfo?.address
       : ""
   );
-  const [state, setState] = useState(
+  const [state] = useState(
     selectedUserAccount[indexToEdit]?.profileInfo?.state
       ? selectedUserAccount[indexToEdit]?.profileInfo?.state
       : ""
   );
-  const [country, setCountry] = useState(
+  const [country] = useState(
     selectedUserAccount[indexToEdit]?.profileInfo?.country
       ? selectedUserAccount[indexToEdit]?.profileInfo?.country
       : ""
   );
-  const [pinCode, setPinCode] = useState(
+  const [pinCode] = useState(
     selectedUserAccount[indexToEdit]?.profileInfo?.pinCode
       ? selectedUserAccount[indexToEdit]?.profileInfo?.pinCode
       : ""
   );
-  const [dOB, setDOB] = useState(
+  const [dOB] = useState(
     selectedUserAccount[indexToEdit]?.profileInfo?.dOB
       ? selectedUserAccount[indexToEdit]?.profileInfo?.dOB
       : ""
   );
 
 
-    const [passPortNo, setPassportNo] = useState(
+    const [passPortNo] = useState(
       selectedUserAccount[indexToEdit]?.personalInfo?.passPortNo
         ? selectedUserAccount[indexToEdit]?.personalInfo?.passPortNo
         : ""
     );
 
-  const [passportExpiryDate, setPassportExpiryDate] = useState(
+  const [passportExpiryDate] = useState(
     selectedUserAccount[indexToEdit]?.personalInfo?.passportExpiryDate
       ? selectedUserAccount[indexToEdit]?.personalInfo?.passportExpiryDate
       : ""
   );
 
-  const [religion, setReligion] = useState(
+  const [religion] = useState(
     selectedUserAccount[indexToEdit]?.personalInfo?.religion
       ? selectedUserAccount[indexToEdit]?.personalInfo?.religion
       : ""
   );
 
-  const [emSpouse, setEmSpouse] = useState(
+  const [emSpouse] = useState(
     selectedUserAccount[indexToEdit]?.personalInfo?.emSpouse
       ? selectedUserAccount[indexToEdit]?.personalInfo?.emSpouse
       : ""
   );
 
-  const [noChildren, setNoChildren] = useState(
+  const [noChildren] = useState(
     selectedUserAccount[indexToEdit]?.personalInfo?.noChildren
       ? selectedUserAccount[indexToEdit]?.personalInfo?.noChildren
       : ""
   );
 
+  const [primaryName] = useState(
+    selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryName
+      ? selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryName
+      : ""
+  );
+  const [primaryRelationship] = useState(
+    selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryRelationship
+      ? selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryRelationship
+      : ""
+  );
+  const [primaryPhone1] = useState(
+    selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryPhone1
+      ? selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryPhone1
+      : ""
+  );
+  const [primaryPhone2] = useState(
+    selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryPhone2
+      ? selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryPhone2
+      : ""
+  );
+    const [secondaryName] = useState(
+      selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryName
+        ? selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryName
+        : ""
+    );
+  const [secondaryRelationship] = useState(
+    selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryRelationship
+      ? selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryRelationship
+      : ""
+  );
+  const [secondaryPhone1] = useState(
+    selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryPhone1
+      ? selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryPhone1
+      : ""
+  );
+  const [secondaryPhone2] = useState(
+    selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryPhone2
+      ? selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryPhone2
+      : ""
+  );
+
   const handleSubmit = (e) => {
     e.preventDefault();
+     const emergencyContact = {
+       primary: {
+         primaryName,
+         primaryRelationship,
+         primaryPhone1,
+         primaryPhone2,
+       },
+       secondary: {
+         secondaryName,
+         secondaryRelationship,
+         secondaryPhone1,
+         secondaryPhone2,
+       },
+     };
     const personalInfo = {
       passPortNo,
       passportExpiryDate,
@@ -202,6 +257,7 @@ const Addemployee = ({
       designation,
       profileInfo,
       personalInfo,
+      emergencyContact,
     };
     if (selectedUserAccount[indexToEdit]?.id) {
       dispatchUserAcct({ type: "update", payload: userAccount });

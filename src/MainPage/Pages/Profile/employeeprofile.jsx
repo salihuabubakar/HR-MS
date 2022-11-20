@@ -14,6 +14,7 @@ import {
   initUserAccount,
   savedUserAccountReducer,
 } from "../../../utils/localStorage";
+import AddEmergencyContact from '../../../_components/modelbox/AddEmergencyContact';
 
 const EmployeeProfile = () => {
 
@@ -24,6 +25,9 @@ const EmployeeProfile = () => {
   console.log("emIndex", emIndex);
   const [showProfileModal] = useGlobalState("showProfileModal");
   const [showPersonalInfoModal] = useGlobalState("showPersonalInfoModal");
+  const [showEmergencyContactModal] = useGlobalState(
+    "showEmergencyContactModal"
+  );
 
   const [userAcct, dispatchUserAcct] = useReducer(
     savedUserAccountReducer,
@@ -61,10 +65,15 @@ const EmployeeProfile = () => {
     userAcctDb();
   };
 
-    const handlePersonalInfo = () => {
-      setGlobalState("showPersonalInfoModal", true);
-      userAcctDb();
-    };
+  const handlePersonalInfo = () => {
+    setGlobalState("showPersonalInfoModal", true);
+    userAcctDb();
+  };
+
+  const handleEmergencyContact = () => {
+    setGlobalState("showEmergencyContactModal", true);
+    userAcctDb();
+  }
 
   // const {
   //   id,
@@ -95,6 +104,15 @@ const EmployeeProfile = () => {
   const emSpouse = selectedEmployee?.personalInfo?.emSpouse;
   const noChildren = selectedEmployee?.personalInfo?.noChildren;
   const country = selectedEmployee?.profileInfo?.country;
+
+  const primaryName = selectedEmployee?.emergencyContact?.primary?.primaryName;
+  const primaryPhone1 = selectedEmployee?.emergencyContact?.primary?.primaryPhone1;
+  const primaryPhone2 = selectedEmployee?.emergencyContact?.primary?.primaryPhone2;
+  const primaryRelationship = selectedEmployee?.emergencyContact?.primary?.primaryRelationship;
+  const secondaryName = selectedEmployee?.emergencyContact?.secondary?.secondaryName;
+  const secondaryRelationship = selectedEmployee?.emergencyContact?.secondary?.secondaryRelationship;
+  const secondaryPhone1 = selectedEmployee?.emergencyContact?.secondary?.secondaryPhone1;
+  const secondaryPhone2 = selectedEmployee?.emergencyContact?.secondary?.secondaryPhone2;
 
 
   useEffect( ()=>{
@@ -310,16 +328,15 @@ const EmployeeProfile = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
                         Emergency Contact{" "}
                         <a
-                          href="#"
                           className="edit-icon"
-                          data-bs-toggle="modal"
-                          data-bs-target="#emergency_contact_modal"
+                          onClick={handleEmergencyContact}
                         >
                           <i className="fa fa-pencil" />
                         </a>
@@ -328,15 +345,17 @@ const EmployeeProfile = () => {
                       <ul className="personal-info">
                         <li>
                           <div className="title">Name</div>
-                          <div className="text">John Doe</div>
+                          <div className="text">{primaryName}</div>
                         </li>
                         <li>
                           <div className="title">Relationship</div>
-                          <div className="text">Father</div>
+                          <div className="text">{primaryRelationship}</div>
                         </li>
                         <li>
                           <div className="title">Phone </div>
-                          <div className="text">9876543210, 9876543210</div>
+                          <div className="text">
+                            {primaryPhone1}, {primaryPhone2}
+                          </div>
                         </li>
                       </ul>
                       <hr />
@@ -344,21 +363,24 @@ const EmployeeProfile = () => {
                       <ul className="personal-info">
                         <li>
                           <div className="title">Name</div>
-                          <div className="text">Karen Wills</div>
+                          <div className="text">{secondaryName}</div>
                         </li>
                         <li>
                           <div className="title">Relationship</div>
-                          <div className="text">Brother</div>
+                          <div className="text">{secondaryRelationship}</div>
                         </li>
                         <li>
                           <div className="title">Phone </div>
-                          <div className="text">9876543210, 9876543210</div>
+                          <div className="text">
+                            {secondaryPhone1}, {secondaryPhone2}
+                          </div>
                         </li>
                       </ul>
                     </div>
                   </div>
                 </div>
               </div>
+
               <div className="row">
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
@@ -445,6 +467,7 @@ const EmployeeProfile = () => {
                   </div>
                 </div>
               </div>
+
               <div className="row">
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
@@ -495,6 +518,7 @@ const EmployeeProfile = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
@@ -1269,6 +1293,18 @@ const EmployeeProfile = () => {
         )}
         {/* /Personal Info Modal */}
 
+        {/* Emergency Conatact Modal */}
+        {showEmergencyContactModal && (
+          <>
+            <AddEmergencyContact
+              dispatchUserAcct={dispatchUserAcct}
+              userAcct={userAcct}
+              emIndex={emIndex}
+            />
+          </>
+        )}
+        {/* /Emergency Conatact Modal */}
+
         {/* Family Info Modal */}
         <div
           id="family_info_modal"
@@ -1403,117 +1439,7 @@ const EmployeeProfile = () => {
           </div>
         </div>
         {/* /Family Info Modal */}
-        {/* Emergency Contact Modal */}
-        <div
-          id="emergency_contact_modal"
-          className="modal custom-modal fade"
-          role="dialog"
-        >
-          <div
-            className="modal-dialog modal-dialog-centered modal-lg"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Personal Information</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">Primary Contact</h3>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Name <span className="text-danger">*</span>
-                            </label>
-                            <input type="text" className="form-control" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Relationship{" "}
-                              <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Phone <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Phone 2</label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">Primary Contact</h3>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Name <span className="text-danger">*</span>
-                            </label>
-                            <input type="text" className="form-control" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Relationship{" "}
-                              <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Phone <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Phone 2</label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="submit-section">
-                    <button className="btn btn-primary submit-btn">
-                      Submit
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* /Emergency Contact Modal */}
+
         {/* Education Modal */}
         <div
           id="education_info"

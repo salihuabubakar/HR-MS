@@ -13,6 +13,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showProfileModal: false,
   showPersonalInfoModal: false,
   showAddSchedul: false,
+  showEmergencyContactModal: false,
 });
 
 export {setGlobalState, useGlobalState}

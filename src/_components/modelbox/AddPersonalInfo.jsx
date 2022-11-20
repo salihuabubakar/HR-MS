@@ -13,72 +13,72 @@ import Select from "react-select";
 const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
   const [selectedUserAccount] = useGlobalState("selectedUserAccount");
 
-  const [userName, setUserName] = useState(
+  const [userName] = useState(
     selectedUserAccount[emIndex]?.userName
       ? selectedUserAccount[emIndex]?.userName
       : ""
   );
-  const [email, setEmail] = useState(
+  const [email] = useState(
     selectedUserAccount[emIndex]?.email
       ? selectedUserAccount[emIndex]?.email
       : ""
   );
-  const [password, setPassword] = useState(
+  const [password] = useState(
     selectedUserAccount[emIndex]?.password
       ? selectedUserAccount[emIndex]?.password
       : ""
   );
-  const [confirmPassword, setConfirmPassword] = useState(
+  const [confirmPassword] = useState(
     selectedUserAccount[emIndex]?.confirmPassword
       ? selectedUserAccount[emIndex]?.confirmPassword
       : ""
   );
-  const [company, setCompany] = useState(
+  const [company] = useState(
     selectedUserAccount[emIndex]?.company
       ? selectedUserAccount[emIndex]?.company
       : ""
   );
-  const [dept, setDept] = useState(
+  const [dept] = useState(
     selectedUserAccount[emIndex]?.dept ? selectedUserAccount[emIndex]?.dept : ""
   );
-  const [designation, setDesignation] = useState(
+  const [designation] = useState(
     selectedUserAccount[emIndex]?.designation
       ? selectedUserAccount[emIndex]?.designation
       : ""
   );
-  const [employeeId, setEmployeeId] = useState(
+  const [employeeId] = useState(
     selectedUserAccount[emIndex]?.employeeId
       ? selectedUserAccount[emIndex]?.employeeId
       : ""
   );
-  const [joinDate, setJoinDate] = useState(
+  const [joinDate] = useState(
     selectedUserAccount[emIndex]?.joinDate
       ? selectedUserAccount[emIndex]?.joinDate
       : ""
   );
 
-  const [image, setImage] = useState(
+  const [image] = useState(
     selectedUserAccount[emIndex]?.profileInfo?.image
       ? selectedUserAccount[emIndex]?.profileInfo?.image
       : ""
   );
 
-  const [firstName, setFirstName] = useState(
+  const [firstName] = useState(
     selectedUserAccount[emIndex]?.firstName
       ? selectedUserAccount[emIndex]?.firstName
       : ""
   );
-  const [lastName, setLastName] = useState(
+  const [lastName] = useState(
     selectedUserAccount[emIndex]?.lastName
       ? selectedUserAccount[emIndex]?.lastName
       : ""
   );
-  const [address, setAddress] = useState(
+  const [address] = useState(
     selectedUserAccount[emIndex]?.profileInfo?.address
       ? selectedUserAccount[emIndex]?.profileInfo?.address
       : ""
   );
-  const [state, setState] = useState(
+  const [state] = useState(
     selectedUserAccount[emIndex]?.profileInfo?.state
       ? selectedUserAccount[emIndex]?.profileInfo?.state
       : ""
@@ -88,7 +88,7 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       ? selectedUserAccount[emIndex]?.profileInfo?.country
       : ""
   );
-  const [pinCode, setPinCode] = useState(
+  const [pinCode] = useState(
     selectedUserAccount[emIndex]?.profileInfo?.pinCode
       ? selectedUserAccount[emIndex]?.profileInfo?.pinCode
       : ""
@@ -98,13 +98,13 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       ? selectedUserAccount[emIndex]?.phoneNo
       : ""
   );
-  const [dOB, setDOB] = useState(
+  const [dOB] = useState(
     selectedUserAccount[emIndex]?.profileInfo?.dOB
       ? selectedUserAccount[emIndex]?.profileInfo?.dOB
       : ""
   );
 
-  const [id, setId] = useState(
+  const [id] = useState(
     selectedUserAccount[emIndex]?.id
       ? selectedUserAccount[emIndex]?.id
       : Date.now()
@@ -140,8 +140,63 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       : ""
   );
 
+    const [primaryName] = useState(
+      selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
+        ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
+        : ""
+    );
+  const [primaryRelationship] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
+      : ""
+  );
+  const [primaryPhone1] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
+      : ""
+  );
+  const [primaryPhone2] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
+      : ""
+  );
+    const [secondaryName] = useState(
+      selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
+        ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
+        : ""
+    );
+  const [secondaryRelationship] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
+      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
+      : ""
+  );
+  const [secondaryPhone1] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
+      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
+      : ""
+  );
+  const [secondaryPhone2] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
+      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
+      : ""
+  );
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const emergencyContact = {
+      primary: {
+        primaryName,
+        primaryRelationship,
+        primaryPhone1,
+        primaryPhone2,
+      },
+      secondary: {
+        secondaryName,
+        secondaryRelationship,
+        secondaryPhone1,
+        secondaryPhone2,
+      },
+    };
     const personalInfo = {
       passPortNo,
       passportExpiryDate,
@@ -173,6 +228,7 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       designation,
       profileInfo,
       personalInfo,
+      emergencyContact,
     };
     if (selectedUserAccount[emIndex]?.id) {
       dispatchUserAcct({ type: "update", payload: userAccount });
