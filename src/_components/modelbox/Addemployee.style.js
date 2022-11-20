@@ -93,6 +93,12 @@ export const Card = styled.div`
     flex-direction: column;
   }
 
+  .Primary, .Secondary {
+    border: 1px solid grey;
+    margin: 5px 0;
+    padding: 2px;
+  }
+
   .space-between {
     display: flex;
     justify-content: space-between;

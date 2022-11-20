@@ -326,7 +326,7 @@ const Header = (props) => {
           <i className="fa fa-ellipsis-v" />
         </a>
         <div className="dropdown-menu dropdown-menu-right">
-          <Link className="dropdown-item" to="/app/profile/employee-profile">
+          <Link className="dropdown-item" to="/app/profile/AddminProfile">
             My Profile
           </Link>
           <Link className="dropdown-item" to="/settings/companysetting">

@@ -24,22 +24,22 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
   }, [desig]);
 
 
-  const [userName, setUserName] = useState(
+  const [userName] = useState(
     selectedUserAccount[emIndex]?.userName
       ? selectedUserAccount[emIndex]?.userName
       : ""
   );
-  const [email, setEmail] = useState(
+  const [email] = useState(
     selectedUserAccount[emIndex]?.email
       ? selectedUserAccount[emIndex]?.email
       : ""
   );
-  const [password, setPassword] = useState(
+  const [password] = useState(
     selectedUserAccount[emIndex]?.password
       ? selectedUserAccount[emIndex]?.password
       : ""
   );
-  const [confirmPassword, setConfirmPassword] = useState(
+  const [confirmPassword] = useState(
     selectedUserAccount[emIndex]?.confirmPassword
       ? selectedUserAccount[emIndex]?.confirmPassword
       : ""
@@ -59,12 +59,12 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
         ? selectedUserAccount[emIndex]?.designation
         : ""
     );
-    const [employeeId, setEmployeeId] = useState(
+    const [employeeId] = useState(
       selectedUserAccount[emIndex]?.employeeId
         ? selectedUserAccount[emIndex]?.employeeId
         : ""
     );
-    const [joinDate, setJoinDate] = useState(
+    const [joinDate] = useState(
       selectedUserAccount[emIndex]?.joinDate
         ? selectedUserAccount[emIndex]?.joinDate
         : ""
@@ -121,39 +121,80 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       : ""
   );
 
-  const [id, setId] = useState(
+  const [id] = useState(
     selectedUserAccount[emIndex]?.id
       ? selectedUserAccount[emIndex]?.id
       : Date.now()
   );
 
-  const [passPortNo, setPassportNo] = useState(
+  const [passPortNo] = useState(
     selectedUserAccount[emIndex]?.personalInfo?.passPortNo
       ? selectedUserAccount[emIndex]?.personalInfo?.passPortNo
       : ""
   );
 
-  const [passportExpiryDate, setPassportExpiryDate] = useState(
+  const [passportExpiryDate] = useState(
     selectedUserAccount[emIndex]?.personalInfo?.passportExpiryDate
       ? selectedUserAccount[emIndex]?.personalInfo?.passportExpiryDate
       : ""
   );
 
-  const [religion, setReligion] = useState(
+  const [religion] = useState(
     selectedUserAccount[emIndex]?.personalInfo?.religion
       ? selectedUserAccount[emIndex]?.personalInfo?.religion
       : ""
   );
 
-  const [emSpouse, setEmSpouse] = useState(
+  const [emSpouse] = useState(
     selectedUserAccount[emIndex]?.personalInfo?.emSpouse
       ? selectedUserAccount[emIndex]?.personalInfo?.emSpouse
       : ""
   );
 
-  const [noChildren, setNoChildren] = useState(
+  const [noChildren] = useState(
     selectedUserAccount[emIndex]?.personalInfo?.noChildren
       ? selectedUserAccount[emIndex]?.personalInfo?.noChildren
+      : ""
+  );
+
+      const [primaryName] = useState(
+      selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
+        ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
+        : ""
+    );
+  const [primaryRelationship] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
+      : ""
+  );
+  const [primaryPhone1] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
+      : ""
+  );
+  const [primaryPhone2] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
+      : ""
+  );
+    const [secondaryName] = useState(
+      selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
+        ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
+        : ""
+    );
+  const [secondaryRelationship] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
+      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
+      : ""
+  );
+  const [secondaryPhone1] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
+      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
+      : ""
+  );
+  const [secondaryPhone2] = useState(
+    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
+      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
       : ""
   );
   const imageOnChange = (event) => {
@@ -161,6 +202,20 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    const emergencyContact = {
+      primary: {
+        primaryName,
+        primaryRelationship,
+        primaryPhone1,
+        primaryPhone2,
+      },
+      secondary: {
+        secondaryName,
+        secondaryRelationship,
+        secondaryPhone1,
+        secondaryPhone2,
+      },
+    };
     const profileInfo = {
       image,
       address,
@@ -192,6 +247,7 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       designation,
       profileInfo,
       personalInfo,
+      emergencyContact,
     };
     if (selectedUserAccount[emIndex]?.id) {
       dispatchUserAcct({ type: "update", payload: userAccount });
