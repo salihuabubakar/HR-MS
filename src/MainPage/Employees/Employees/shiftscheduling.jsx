@@ -132,7 +132,7 @@ const ShiftScheduling = () => {
   let results = [];
 
   var isCurrentDateTrue;
-  new Date(curr.setDate(20-1));
+  // new Date(curr.setDate(20-1));
 
   for (let i = 1; i <= 7; i++) {
     let first = curr.getDate() - curr.getDay() + i;
