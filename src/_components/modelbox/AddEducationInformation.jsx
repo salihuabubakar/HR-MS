@@ -165,6 +165,57 @@ const AddEducationInformation = ({
           <div className="card-body">
             <form>
               <div className="row-">
+                <div className="Primary">
+                  <h3>Education Information</h3>
+                  <div className="col-sm">
+                    <div className="right">
+                      <label className="label">Institute</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Institute"
+                        value={institution}
+                        onChange={(event) => setInstitution(event.target.value)}
+                      />
+                    </div>
+
+                    <div className="">
+                      <label className="label">Degree</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Degree"
+                        value={degree}
+                        onChange={(event) => setDegree(event.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-sm">
+                    <div className="right">
+                      <label className="label">Starting Date</label>
+                      <input
+                        type="date"
+                        className="form-control datetimepicker"
+                        placeholder="Starting Date"
+                        value={startingDate}
+                        onChange={handleStartingDate}
+                      />
+                    </div>
+                    <div className="">
+                      <label className="label">
+                        Complete Date <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        className="form-control datetimepicker"
+                        type="date"
+                        placeholder="Complete Date"
+                        value={completeDate}
+                        onChange={handleCompleteDate}
+                      />
+                    </div>
+                  </div>
+                </div>
                 {bulkOptions.map((val, index) => {
                   return (
                     <div key={index} className="Primary">
@@ -256,57 +307,6 @@ const AddEducationInformation = ({
                       </div> */
                   );
                 })}
-                <div className="Primary">
-                  <h3>Education Information</h3>
-                  <div className="col-sm">
-                    <div className="right">
-                      <label className="label">Institute</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Institute"
-                        value={institution}
-                        onChange={(event) => setInstitution(event.target.value)}
-                      />
-                    </div>
-
-                    <div className="">
-                      <label className="label">Degree</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Degree"
-                        value={degree}
-                        onChange={(event) => setDegree(event.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-sm">
-                    <div className="right">
-                      <label className="label">Starting Date</label>
-                      <input
-                        type="date"
-                        className="form-control datetimepicker"
-                        placeholder="Starting Date"
-                        value={startingDate}
-                        onChange={handleStartingDate}
-                      />
-                    </div>
-                    <div className="">
-                      <label className="label">
-                        Complete Date <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control datetimepicker"
-                        type="date"
-                        placeholder="Complete Date"
-                        value={completeDate}
-                        onChange={handleCompleteDate}
-                      />
-                    </div>
-                  </div>
-                </div>
               </div>
               <div className="add-more" onClick={handleAddBulkPrice}>
                 <a>
