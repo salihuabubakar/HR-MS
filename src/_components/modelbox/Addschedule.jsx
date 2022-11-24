@@ -97,7 +97,8 @@ const AddSchedule = ({
                 <h5 className="card-title">
                   {selectedScheduleEvent[selectedDayIndex]?.id
                     ? "Edit Schedule"
-                    : "Add Schedule"}
+                    : "Add Schedule"
+                  }
                 </h5>
                 <div className="btn-container">
                   {selectedScheduleEvent[selectedDayIndex]?.id && (

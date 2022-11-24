@@ -11,43 +11,43 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
   const [selectedUserAccount] = useGlobalState("selectedUserAccount");
 
   const [primaryName, setPrimaryName] = useState(
-    selectedUserAccount[emIndex]?.primaryName
-      ? selectedUserAccount[emIndex]?.primaryName
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
       : ""
   );
   const [primaryRelationship, setPrimaryRelationship] = useState(
-    selectedUserAccount[emIndex]?.primaryRelationship
-      ? selectedUserAccount[emIndex]?.primaryRelationship
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
       : ""
   );
   const [primaryPhone1, setPrimaryPhone1] = useState(
-    selectedUserAccount[emIndex]?.primaryPhone1
-      ? selectedUserAccount[emIndex]?.primaryPhone1
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
       : ""
   );
   const [primaryPhone2, setPrimaryPhone2] = useState(
-    selectedUserAccount[emIndex]?.primaryPhone2
-      ? selectedUserAccount[emIndex]?.primaryPhone2
+    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
+      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
       : ""
   );
     const [secondaryName, setSecondaryName] = useState(
-      selectedUserAccount[emIndex]?.secondaryName
-        ? selectedUserAccount[emIndex]?.secondaryName
+      selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
+        ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
         : ""
     );
   const [secondaryRelationship, setSecondaryRelationship] = useState(
-    selectedUserAccount[emIndex]?.secondaryRelationship
-      ? selectedUserAccount[emIndex]?.secondaryRelationship
+    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
+      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
       : ""
   );
   const [secondaryPhone1, setSecondaryPhone1] = useState(
-    selectedUserAccount[emIndex]?.secondaryPhone1
-      ? selectedUserAccount[emIndex]?.secondaryPhone1
+    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
+      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
       : ""
   );
   const [secondaryPhone2, setSecondaryPhone2] = useState(
-    selectedUserAccount[emIndex]?.secondaryPhone2
-      ? selectedUserAccount[emIndex]?.secondaryPhone2
+    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
+      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
       : ""
   );
 
@@ -246,7 +246,7 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
       <PopupContainer className="" role="document">
         <Card className="card-content">
           <div className="card-header">
-            <h5 className="card-title">Personal Information</h5>
+            <h5 className="card-title">Emergency Contact</h5>
             <div className="btn-container">
               <button
                 className="closeX"

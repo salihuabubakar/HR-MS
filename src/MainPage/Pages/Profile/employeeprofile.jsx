@@ -13,21 +13,25 @@ import {
   savedProfileInfoReducer,
   initUserAccount,
   savedUserAccountReducer,
+  initEduInfo,
+  savedEduInfoReducer
 } from "../../../utils/localStorage";
 import AddEmergencyContact from '../../../_components/modelbox/AddEmergencyContact';
+import AddEducationInformation from '../../../_components/modelbox/AddEducationInformation';
 
 const EmployeeProfile = () => {
 
   const location = useLocation();
   const employeeId = location?.state?.id;
   const emIndex = location?.state?.index;
-  console.log("employeeId", employeeId);
-  console.log("emIndex", emIndex);
+  const emid = location?.state?.id;
+  const [eduInformationIndex, setEduInformationIndex] = useState(0);
   const [showProfileModal] = useGlobalState("showProfileModal");
   const [showPersonalInfoModal] = useGlobalState("showPersonalInfoModal");
   const [showEmergencyContactModal] = useGlobalState(
     "showEmergencyContactModal"
   );
+  const [showEducationInformationModal] = useGlobalState("showEducationInformationModal");
 
   const [userAcct, dispatchUserAcct] = useReducer(
     savedUserAccountReducer,
@@ -48,6 +52,26 @@ const EmployeeProfile = () => {
   useEffect(() => {
     setEmployeeAccts(userAcct);
   }, [userAcct]);
+
+  const [eduInfo, dispatchEduInfo] = useReducer(
+    savedEduInfoReducer,
+    [],
+    initEduInfo
+  );
+
+  useEffect(() => {
+    localStorage.setItem("eduInfo", JSON.stringify(eduInfo));
+  }, [eduInfo]);
+  useEffect(() => {
+    if (!showEducationInformationModal) {
+      setGlobalState("selectedEducationalInfo", "");
+    }
+  }, [showEducationInformationModal]);
+
+  const [eduArray, setEduArray] = useState();
+  useEffect(() => {
+    setEduArray(eduInfo);
+  }, [eduInfo]);
 
   const [acctIdToEdit, setAcctIdToEdit] = useState("");
 
@@ -73,6 +97,17 @@ const EmployeeProfile = () => {
   const handleEmergencyContact = () => {
     setGlobalState("showEmergencyContactModal", true);
     userAcctDb();
+  }
+
+  const handleEducationInfo = () => {
+    setGlobalState("showEducationInformationModal", true);
+  }
+
+  const editEduInfo = (index) => {
+    setGlobalState("showEducationInformationModal", true);
+    setGlobalState("selectedEducationalInfo", eduInfo);
+    setEduInformationIndex(index);
+    console.log("index", index);
   }
 
   // const {
@@ -104,7 +139,6 @@ const EmployeeProfile = () => {
   const emSpouse = selectedEmployee?.personalInfo?.emSpouse;
   const noChildren = selectedEmployee?.personalInfo?.noChildren;
   const country = selectedEmployee?.profileInfo?.country;
-
   const primaryName = selectedEmployee?.emergencyContact?.primary?.primaryName;
   const primaryPhone1 = selectedEmployee?.emergencyContact?.primary?.primaryPhone1;
   const primaryPhone2 = selectedEmployee?.emergencyContact?.primary?.primaryPhone2;
@@ -474,45 +508,49 @@ const EmployeeProfile = () => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Education Informations{" "}
-                        <a
-                          href="#"
-                          className="edit-icon"
-                          data-bs-toggle="modal"
-                          data-bs-target="#education_info"
-                        >
-                          <i className="fa fa-pencil" />
+                        <a onClick={handleEducationInfo} className="edit-icon">
+                          <i className="fa fa-plus" />
                         </a>
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  International College of Arts and Science (UG)
-                                </a>
-                                <div>Bsc Computer Science</div>
-                                <span className="time">2000 - 2003</span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  International College of Arts and Science (PG)
-                                </a>
-                                <div>Msc Computer Science</div>
-                                <span className="time">2000 - 2003</span>
-                              </div>
-                            </div>
-                          </li>
+                          {eduArray?.map((eduDetails, index) => {
+                            const {
+                              id,
+                              institution,
+                              degree,
+                              startingDate,
+                              completeDate,
+                              emIndex,
+                              emid,
+                            } = eduDetails;
+                            if (emid == emId) {
+                              return (
+                                <li key={id}>
+                                  <div className="experience-user">
+                                    <div className="before-circle" />
+                                  </div>
+                                  <div className="experience-content">
+                                    <div className="timeline-content">
+                                      <a className="name">
+                                        {institution}
+                                        <span
+                                          className="edit-icon"
+                                          onClick={() => editEduInfo(index)}
+                                        >
+                                          <i className="fa fa-pencil" />
+                                        </span>
+                                      </a>
+                                      <div>{degree}</div>
+                                      <span className="time">
+                                        {startingDate} - {completeDate}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </li>
+                              );
+                            }
+                          })}
                         </ul>
                       </div>
                     </div>
@@ -1305,6 +1343,19 @@ const EmployeeProfile = () => {
         )}
         {/* /Emergency Conatact Modal */}
 
+        {/* Emergency Conatact Modal */}
+        {showEducationInformationModal && (
+          <>
+            <AddEducationInformation
+              dispatchEduInfo={dispatchEduInfo}
+              emIndex={emIndex}
+              eduInformationIndex={eduInformationIndex}
+              emid={emid}
+            />
+          </>
+        )}
+        {/* /Emergency Conatact Modal */}
+
         {/* Family Info Modal */}
         <div
           id="family_info_modal"
@@ -1441,7 +1492,7 @@ const EmployeeProfile = () => {
         {/* /Family Info Modal */}
 
         {/* Education Modal */}
-        <div
+        {/* <div
           id="education_info"
           className="modal custom-modal fade"
           role="dialog"
@@ -1640,7 +1691,7 @@ const EmployeeProfile = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* /Education Modal */}
         {/* Experience Modal */}
         <div
