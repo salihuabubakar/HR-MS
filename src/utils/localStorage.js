@@ -152,3 +152,22 @@ export const savedScheduleEventReducer = (state, { type, payload }) => {
       throw new Error();
   }
 };
+
+export const initEduInfo = () => {
+  const storageEvents = localStorage.getItem("eduInfo");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedEduInfoReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((info) => (info.id === payload.id ? payload : info));
+    case "delete":
+      return state.filter((info) => info.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};

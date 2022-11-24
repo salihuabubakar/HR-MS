@@ -445,7 +445,7 @@ const ShiftScheduling = () => {
                                   <a className="avatar">
                                     <img src={Smile} />
                                   </a>
-                                  <a>
+                                  <a style={{color: "#ff9b44"}}>
                                     {label}
                                     <span>Web Designer</span>
                                   </a>

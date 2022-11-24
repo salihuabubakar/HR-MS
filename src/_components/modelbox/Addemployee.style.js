@@ -93,7 +93,8 @@ export const Card = styled.div`
     flex-direction: column;
   }
 
-  .Primary, .Secondary {
+  .Primary,
+  .Secondary {
     border: 1px solid grey;
     margin: 5px 0;
     padding: 2px;
@@ -102,8 +103,8 @@ export const Card = styled.div`
   .space-between {
     display: flex;
     justify-content: space-between;
-  } 
-  
+  }
+
   .col-sm {
     width: 100%;
     display: flex;
@@ -123,6 +124,10 @@ export const Card = styled.div`
     .inputText input {
       padding: 10% 5%;
     }
+  }
+
+  .add-more a {
+    color: #ff9b44;
   }
 
   .submit-btn {
