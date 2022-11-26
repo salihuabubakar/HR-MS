@@ -7,36 +7,54 @@ import {
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 
-const AddEducationInformation = ({
-  dispatchEduInfo,
-  eduInformationIndex,
+const AddExpModal = ({
+  dispatchExpInfo,
+  expInformationIndex,
   emid,
   emIndex,
-  fieldIndex
+  expfieldIndex,
 }) => {
-  const [selectedEducationalInfo] = useGlobalState("selectedEducationalInfo");
+  const [selectedExperienceModal] = useGlobalState("selectedExperienceModal");
   const [inputFields, setInputFields] = useState([
     {
-      institution: selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.institution 
-        ? selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.institution 
+      companyName: selectedExperienceModal[expInformationIndex]?.inputFields[
+        expfieldIndex
+      ]?.companyName
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
+            ?.companyName
         : "",
-      degree: selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.degree 
-        ? selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.degree 
-        :"",
-      startingDate: selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.startingDate 
-        ? selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.startingDate 
-        :"",
-      completeDate: selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.completeDate 
-        ? selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.completeDate 
-        :"",
+      location: selectedExperienceModal[expInformationIndex]?.inputFields[
+        expfieldIndex
+      ]?.location
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
+            ?.location
+        : "",
+      jobPosition: selectedExperienceModal[expInformationIndex]?.inputFields[
+        expfieldIndex
+      ]?.jobPosition
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
+            ?.jobPosition
+        : "",
+      periodFrom: selectedExperienceModal[expInformationIndex]?.inputFields[
+        expfieldIndex
+      ]?.periodFrom
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
+            ?.periodFrom
+        : "",
+      periodTo: selectedExperienceModal[expInformationIndex]?.inputFields[
+        expfieldIndex
+      ]?.periodTo
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
+            ?.periodTo
+        : "",
     },
   ]);
 
-  const idIsTrue = selectedEducationalInfo[eduInformationIndex]?.id;
+  const idIsTrue = selectedExperienceModal[expInformationIndex]?.id;
 
   const [id] = useState(
-    selectedEducationalInfo[eduInformationIndex]?.id
-      ? selectedEducationalInfo[eduInformationIndex]?.id
+    selectedExperienceModal[expInformationIndex]?.id
+      ? selectedExperienceModal[expInformationIndex]?.id
       : Date.now()
   );
 
@@ -49,19 +67,19 @@ const AddEducationInformation = ({
       inputFields,
     };
     if (idIsTrue) {
-      dispatchEduInfo({ type: "update", payload: educationalInfo });
+      dispatchExpInfo({ type: "update", payload: educationalInfo });
     } else {
-      dispatchEduInfo({ type: "push", payload: educationalInfo });
+      dispatchExpInfo({ type: "push", payload: educationalInfo });
     }
-    setGlobalState("showEducationInformationModal", false);
+    setGlobalState("showExperienceModal", false);
   };
 
   const handleDelete = () => {
-    dispatchEduInfo({
+    dispatchExpInfo({
       type: "delete",
-      payload: selectedEducationalInfo[eduInformationIndex],
+      payload: selectedExperienceModal[expInformationIndex],
     });
-    setGlobalState("showEducationInformationModal", false);
+    setGlobalState("showExperienceModal", false);
   };
 
   const handleInputChange = (index, event) => {
@@ -72,10 +90,11 @@ const AddEducationInformation = ({
 
   const addFields = () => {
     let newfield = {
-      institution: "",
-      degree: "",
-      startingDate: "",
-      completeDate: "",
+      companyName: "",
+      location: "",
+      jobPosition: "",
+      periodFrom: "",
+      periodTo: "",
     };
 
     setInputFields([...inputFields, newfield]);
@@ -95,8 +114,8 @@ const AddEducationInformation = ({
           <div className="card-header">
             <h5 className="card-title">
               {idIsTrue
-                ? "Edit Education Information"
-                : "Add Education Information"}
+                ? "Edit Experience Informations"
+                : "Add Experience Informations"}
             </h5>
             <div className="btn-container">
               {idIsTrue && (
@@ -113,9 +132,7 @@ const AddEducationInformation = ({
                 style={{ backgroundColor: "#ff9b44", border: "none" }}
                 className="closeX"
                 type="button"
-                onClick={() =>
-                  setGlobalState("showEducationInformationModal", false)
-                }
+                onClick={() => setGlobalState("showExperienceModal", false)}
               >
                 <span>×</span>
               </button>
@@ -128,7 +145,7 @@ const AddEducationInformation = ({
                   return (
                     <div key={index} className="Primary">
                       <h3>
-                        Education Information
+                        Experience Informations
                         {idIsTrue ? (
                           ""
                         ) : (
@@ -144,13 +161,13 @@ const AddEducationInformation = ({
                       </h3>
                       <div className="col-sm">
                         <div className="right">
-                          <label className="label">Institute</label>
+                          <label className="label">Company Name</label>
                           <input
                             type="text"
                             className="form-control"
-                            placeholder="Institute"
-                            name="institution"
-                            value={value?.institution}
+                            placeholder="Company Name"
+                            name="companyName"
+                            value={value?.companyName}
                             onChange={(event) => {
                               handleInputChange(index, event);
                             }}
@@ -158,13 +175,13 @@ const AddEducationInformation = ({
                         </div>
 
                         <div className="">
-                          <label className="label">Degree</label>
+                          <label className="label">Location</label>
                           <input
                             type="text"
                             className="form-control"
-                            placeholder="Degree"
-                            name="degree"
-                            value={value?.degree}
+                            placeholder="Location"
+                            name="location"
+                            value={value?.location}
                             onChange={(event) => {
                               handleInputChange(index, event);
                             }}
@@ -174,13 +191,13 @@ const AddEducationInformation = ({
 
                       <div className="col-sm">
                         <div className="right">
-                          <label className="label">Starting Date</label>
+                          <label className="label">Job Position</label>
                           <input
-                            type="date"
-                            className="form-control datetimepicker"
-                            placeholder="Starting Date"
-                            name="startingDate"
-                            value={value?.startingDate}
+                            type="text"
+                            className="form-control"
+                            placeholder="Job Position"
+                            name="jobPosition"
+                            value={value?.jobPosition}
                             onChange={(event) => {
                               handleInputChange(index, event);
                             }}
@@ -188,14 +205,32 @@ const AddEducationInformation = ({
                         </div>
                         <div className="">
                           <label className="label">
-                            Complete Date <span className="text-danger">*</span>
+                            Period From <span className="text-danger">*</span>
                           </label>
                           <input
                             className="form-control datetimepicker"
                             type="date"
-                            placeholder="Complete Date"
-                            name="completeDate"
-                            value={value?.completeDate}
+                            placeholder="Period From"
+                            name="periodFrom"
+                            value={value?.periodFrom}
+                            onChange={(event) => {
+                              handleInputChange(index, event);
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-sm">
+                        <div className="">
+                          <label className="label">
+                            Period To <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            className="form-control datetimepicker"
+                            type="date"
+                            placeholder="Period To"
+                            name="periodTo"
+                            value={value?.periodTo}
                             onChange={(event) => {
                               handleInputChange(index, event);
                             }}
@@ -228,4 +263,4 @@ const AddEducationInformation = ({
     </PopupWrapper>
   );
 };
-export default AddEducationInformation;
+export default AddExpModal;

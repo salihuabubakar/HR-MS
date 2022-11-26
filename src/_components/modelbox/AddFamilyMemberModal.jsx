@@ -7,36 +7,50 @@ import {
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 
-const AddEducationInformation = ({
-  dispatchEduInfo,
-  eduInformationIndex,
+const AddFamilyMemberModal = ({
+  dispatchFamilyMemb,
+  familyMembInformationIndex,
   emid,
   emIndex,
-  fieldIndex
+  familyMembfieldIndex,
 }) => {
-  const [selectedEducationalInfo] = useGlobalState("selectedEducationalInfo");
+  const [selectedFamilyMemberInfo] = useGlobalState("selectedFamilyMemberInfo");
   const [inputFields, setInputFields] = useState([
     {
-      institution: selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.institution 
-        ? selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.institution 
+      name: selectedFamilyMemberInfo[familyMembInformationIndex]?.inputFields[
+        familyMembfieldIndex
+      ]?.name
+        ? selectedFamilyMemberInfo[familyMembInformationIndex]?.inputFields[
+            familyMembfieldIndex
+          ]?.name
         : "",
-      degree: selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.degree 
-        ? selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.degree 
-        :"",
-      startingDate: selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.startingDate 
-        ? selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.startingDate 
-        :"",
-      completeDate: selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.completeDate 
-        ? selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.completeDate 
-        :"",
+      relationship: selectedFamilyMemberInfo[familyMembInformationIndex]
+        ?.inputFields[familyMembfieldIndex]?.relationship
+        ? selectedFamilyMemberInfo[familyMembInformationIndex]?.inputFields[
+            familyMembfieldIndex
+          ]?.relationship
+        : "",
+      dateOfBirth: selectedFamilyMemberInfo[familyMembInformationIndex]
+        ?.inputFields[familyMembfieldIndex]?.dateOfBirth
+        ? selectedFamilyMemberInfo[familyMembInformationIndex]?.inputFields[
+            familyMembfieldIndex
+          ]?.dateOfBirth
+        : "",
+      phone: selectedFamilyMemberInfo[familyMembInformationIndex]?.inputFields[
+        familyMembfieldIndex
+      ]?.phone
+        ? selectedFamilyMemberInfo[familyMembInformationIndex]?.inputFields[
+            familyMembfieldIndex
+          ]?.phone
+        : "",
     },
   ]);
 
-  const idIsTrue = selectedEducationalInfo[eduInformationIndex]?.id;
+  const idIsTrue = selectedFamilyMemberInfo[familyMembInformationIndex]?.id;
 
   const [id] = useState(
-    selectedEducationalInfo[eduInformationIndex]?.id
-      ? selectedEducationalInfo[eduInformationIndex]?.id
+    selectedFamilyMemberInfo[familyMembInformationIndex]?.id
+      ? selectedFamilyMemberInfo[familyMembInformationIndex]?.id
       : Date.now()
   );
 
@@ -49,19 +63,19 @@ const AddEducationInformation = ({
       inputFields,
     };
     if (idIsTrue) {
-      dispatchEduInfo({ type: "update", payload: educationalInfo });
+      dispatchFamilyMemb({ type: "update", payload: educationalInfo });
     } else {
-      dispatchEduInfo({ type: "push", payload: educationalInfo });
+      dispatchFamilyMemb({ type: "push", payload: educationalInfo });
     }
-    setGlobalState("showEducationInformationModal", false);
+    setGlobalState("showFamilyMenberModal", false);
   };
 
   const handleDelete = () => {
-    dispatchEduInfo({
+    dispatchFamilyMemb({
       type: "delete",
-      payload: selectedEducationalInfo[eduInformationIndex],
+      payload: selectedFamilyMemberInfo[familyMembInformationIndex],
     });
-    setGlobalState("showEducationInformationModal", false);
+    setGlobalState("showFamilyMenberModal", false);
   };
 
   const handleInputChange = (index, event) => {
@@ -72,10 +86,10 @@ const AddEducationInformation = ({
 
   const addFields = () => {
     let newfield = {
-      institution: "",
-      degree: "",
-      startingDate: "",
-      completeDate: "",
+      name: "",
+      relationship: "",
+      dateOfBirth: "",
+      phone: "",
     };
 
     setInputFields([...inputFields, newfield]);
@@ -94,9 +108,7 @@ const AddEducationInformation = ({
         <Card className="card-content">
           <div className="card-header">
             <h5 className="card-title">
-              {idIsTrue
-                ? "Edit Education Information"
-                : "Add Education Information"}
+              {idIsTrue ? "Edit Family Information" : "Add Family Information"}
             </h5>
             <div className="btn-container">
               {idIsTrue && (
@@ -113,9 +125,7 @@ const AddEducationInformation = ({
                 style={{ backgroundColor: "#ff9b44", border: "none" }}
                 className="closeX"
                 type="button"
-                onClick={() =>
-                  setGlobalState("showEducationInformationModal", false)
-                }
+                onClick={() => setGlobalState("showFamilyMenberModal", false)}
               >
                 <span>×</span>
               </button>
@@ -128,7 +138,7 @@ const AddEducationInformation = ({
                   return (
                     <div key={index} className="Primary">
                       <h3>
-                        Education Information
+                        Family Information
                         {idIsTrue ? (
                           ""
                         ) : (
@@ -144,13 +154,13 @@ const AddEducationInformation = ({
                       </h3>
                       <div className="col-sm">
                         <div className="right">
-                          <label className="label">Institute</label>
+                          <label className="label">Name</label>
                           <input
                             type="text"
                             className="form-control"
-                            placeholder="Institute"
-                            name="institution"
-                            value={value?.institution}
+                            placeholder="Name"
+                            name="name"
+                            value={value?.name}
                             onChange={(event) => {
                               handleInputChange(index, event);
                             }}
@@ -158,13 +168,13 @@ const AddEducationInformation = ({
                         </div>
 
                         <div className="">
-                          <label className="label">Degree</label>
+                          <label className="label">Relationship</label>
                           <input
                             type="text"
                             className="form-control"
-                            placeholder="Degree"
-                            name="degree"
-                            value={value?.degree}
+                            placeholder="Relationship"
+                            name="relationship"
+                            value={value?.relationship}
                             onChange={(event) => {
                               handleInputChange(index, event);
                             }}
@@ -174,13 +184,13 @@ const AddEducationInformation = ({
 
                       <div className="col-sm">
                         <div className="right">
-                          <label className="label">Starting Date</label>
+                          <label className="label">Date Of Birth</label>
                           <input
                             type="date"
                             className="form-control datetimepicker"
-                            placeholder="Starting Date"
-                            name="startingDate"
-                            value={value?.startingDate}
+                            placeholder="Date Of Birth"
+                            name="dateOfBirth"
+                            value={value?.dateOfBirth}
                             onChange={(event) => {
                               handleInputChange(index, event);
                             }}
@@ -188,14 +198,14 @@ const AddEducationInformation = ({
                         </div>
                         <div className="">
                           <label className="label">
-                            Complete Date <span className="text-danger">*</span>
+                            Phone <span className="text-danger">*</span>
                           </label>
                           <input
-                            className="form-control datetimepicker"
-                            type="date"
-                            placeholder="Complete Date"
-                            name="completeDate"
-                            value={value?.completeDate}
+                            className="form-control"
+                            type="text"
+                            placeholder="Phone"
+                            name="phone"
+                            value={value?.phone}
                             onChange={(event) => {
                               handleInputChange(index, event);
                             }}
@@ -228,4 +238,4 @@ const AddEducationInformation = ({
     </PopupWrapper>
   );
 };
-export default AddEducationInformation;
+export default AddFamilyMemberModal;

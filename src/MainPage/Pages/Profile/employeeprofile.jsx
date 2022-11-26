@@ -7,6 +7,8 @@ import {Avatar_02,Avatar_05,Avatar_09,Avatar_10,Avatar_16 } from '../../../Entry
 import { useParams, useLocation } from "react-router-dom";
 import AddProfileInfo from './components/AddProfileInfo';
 import AddPersonalInfo from '../../../_components/modelbox/AddPersonalInfo';
+import AddExpModal from '../../../_components/modelbox/AddExpModal';
+import AddFamilyMemberModal from '../../../_components/modelbox/AddFamilyMemberModal';
 import { useGlobalState, setGlobalState } from '../../../context/GlobalState';
 import {
   initProfileInfo,
@@ -14,7 +16,11 @@ import {
   initUserAccount,
   savedUserAccountReducer,
   initEduInfo,
-  savedEduInfoReducer
+  savedEduInfoReducer,
+  initExpInfo,
+  savedExpInfoReducer,
+  initFamilyMemberInfo,
+  savedFamilyMemberReducer
 } from "../../../utils/localStorage";
 import AddEmergencyContact from '../../../_components/modelbox/AddEmergencyContact';
 import AddEducationInformation from '../../../_components/modelbox/AddEducationInformation';
@@ -26,12 +32,19 @@ const EmployeeProfile = () => {
   const emIndex = location?.state?.index;
   const emid = location?.state?.id;
   const [eduInformationIndex, setEduInformationIndex] = useState(0);
+  const [expInformationIndex, setExpInformationIndex] = useState(0);
+  const [familyMembInformationIndex, setFamilyMembExpInformationIndex] = useState(0);
+  const [fieldIndex, setFieldIndex] = useState(0);
+  const [expfieldIndex, setExpFieldIndex] = useState(0);
+  const [familyMembfieldIndex, setFamilyMembFieldIndex] = useState(0);
   const [showProfileModal] = useGlobalState("showProfileModal");
   const [showPersonalInfoModal] = useGlobalState("showPersonalInfoModal");
   const [showEmergencyContactModal] = useGlobalState(
     "showEmergencyContactModal"
   );
   const [showEducationInformationModal] = useGlobalState("showEducationInformationModal");
+  const [showExperienceModal] = useGlobalState("showExperienceModal");
+  const [showFamilyMenberModal] = useGlobalState("showFamilyMenberModal");
 
   const [userAcct, dispatchUserAcct] = useReducer(
     savedUserAccountReducer,
@@ -73,6 +86,48 @@ const EmployeeProfile = () => {
     setEduArray(eduInfo);
   }, [eduInfo]);
 
+
+  const [expInfo, dispatchExpInfo] = useReducer(
+    savedExpInfoReducer,
+    [],
+    initExpInfo
+  );
+
+  useEffect(() => {
+    localStorage.setItem("expInfo", JSON.stringify(expInfo));
+  }, [expInfo]);
+  useEffect(() => {
+    if (!showExperienceModal) {
+      setGlobalState("selectedExperienceModal", "");
+    }
+  }, [showExperienceModal]);
+
+  const [expArray, setExpArray] = useState();
+  useEffect(() => {
+    setExpArray(expInfo);
+  }, [expInfo]);
+
+
+  const [familyMemb, dispatchFamilyMemb] = useReducer(
+    savedFamilyMemberReducer,
+    [],
+    initFamilyMemberInfo
+  );
+
+  useEffect(() => {
+    localStorage.setItem("familyMemb", JSON.stringify(familyMemb));
+  }, [familyMemb]);
+  useEffect(() => {
+    if (!showFamilyMenberModal) {
+      setGlobalState("selectedFamilyMemberInfo", "");
+    }
+  }, [showFamilyMenberModal]);
+
+  const [familyMembArray, setFamilyMembArray] = useState();
+  useEffect(() => {
+    setFamilyMembArray(familyMemb);
+  }, [familyMemb]);
+
   const [acctIdToEdit, setAcctIdToEdit] = useState("");
 
 
@@ -103,26 +158,34 @@ const EmployeeProfile = () => {
     setGlobalState("showEducationInformationModal", true);
   }
 
-  const editEduInfo = (index) => {
+  const editEduInfo = (fieldsIndex, index) => {
     setGlobalState("showEducationInformationModal", true);
     setGlobalState("selectedEducationalInfo", eduInfo);
     setEduInformationIndex(index);
-    console.log("index", index);
-  }
+    setFieldIndex(fieldsIndex);
+  };
 
-  // const {
-  //   id,
-  //   dept,
-  //   designation,
-  //   firstName,
-  //   lastName,
-  //   phoneNo,
-  //   state,
-  //   address,
-  //   image,
-  //   country,
-  //   dOB,
-  // } = selectedEmployee;
+  const handleExp = () => {
+    setGlobalState("showExperienceModal", true);
+  };
+
+  const editEpxInfo = (fieldsIndex, index) => {
+    setGlobalState("showExperienceModal", true);
+    setGlobalState("selectedExperienceModal", expInfo);
+    setExpInformationIndex(index);
+    setExpFieldIndex(fieldsIndex);
+  };
+
+  const handleAddFamilyMember = () => {
+    setGlobalState("showFamilyMenberModal", true)
+  };
+
+  const editFamilyMemberInfo = (fieldsIndex, index) => {
+    setGlobalState("showFamilyMenberModal", true);
+    setGlobalState("selectedFamilyMemberInfo", familyMemb);
+    setFamilyMembExpInformationIndex(index);
+    setFamilyMembFieldIndex(fieldsIndex);
+  };
 
   const emId = selectedEmployee?.id;
   const image = selectedEmployee?.profileInfo?.image;
@@ -447,12 +510,10 @@ const EmployeeProfile = () => {
                       <h3 className="card-title">
                         Family Informations{" "}
                         <a
-                          href="#"
                           className="edit-icon"
-                          data-bs-toggle="modal"
-                          data-bs-target="#family_info_modal"
+                          onClick={handleAddFamilyMember}
                         >
-                          <i className="fa fa-pencil" />
+                          <i className="fa fa-plus" />
                         </a>
                       </h3>
                       <div className="table-responsive">
@@ -467,33 +528,47 @@ const EmployeeProfile = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>Leo</td>
-                              <td>Brother</td>
-                              <td>Feb 16th, 2019</td>
-                              <td>9876543210</td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    aria-expanded="false"
-                                    data-bs-toggle="dropdown"
-                                    className="action-icon dropdown-toggle"
-                                    href="#"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a href="#" className="dropdown-item">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a href="#" className="dropdown-item">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
+                            {familyMembArray?.map((family, index) => {
+                              const {
+                                id,
+                                emIndex,
+                                emid,
+                                inputFields,
+                              } = family;
+                              if (emid == emId) {
+                                return (
+                                  <React.Fragment key={id}>
+                                    {inputFields?.map((fields, fieldsIndex) => {
+                                      const {
+                                        name,
+                                        relationship,
+                                        dateOfBirth,
+                                        phone,
+                                      } = fields;
+                                      return (
+                                        <tr key={fieldsIndex}>
+                                          <td>{name}</td>
+                                          <td>{relationship}</td>
+                                          <td>{dateOfBirth}</td>
+                                          <td>{phone}</td>
+                                          <td
+                                            onClick={() =>
+                                              editFamilyMemberInfo(
+                                                fieldsIndex,
+                                                index
+                                              )
+                                            }
+                                            className="text-end edit-icon"
+                                          >
+                                            <i className="fa fa-pencil" />
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                  </React.Fragment>
+                                );
+                              }
+                            })}
                           </tbody>
                         </table>
                       </div>
@@ -515,39 +590,49 @@ const EmployeeProfile = () => {
                       <div className="experience-box">
                         <ul className="experience-list">
                           {eduArray?.map((eduDetails, index) => {
-                            const {
-                              id,
-                              institution,
-                              degree,
-                              startingDate,
-                              completeDate,
-                              emIndex,
-                              emid,
-                            } = eduDetails;
+                            const { id, inputFields, emIndex, emid } =
+                              eduDetails;
                             if (emid == emId) {
                               return (
-                                <li key={id}>
-                                  <div className="experience-user">
-                                    <div className="before-circle" />
-                                  </div>
-                                  <div className="experience-content">
-                                    <div className="timeline-content">
-                                      <a className="name">
-                                        {institution}
-                                        <span
-                                          className="edit-icon"
-                                          onClick={() => editEduInfo(index)}
-                                        >
-                                          <i className="fa fa-pencil" />
-                                        </span>
-                                      </a>
-                                      <div>{degree}</div>
-                                      <span className="time">
-                                        {startingDate} - {completeDate}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </li>
+                                <React.Fragment key={id}>
+                                  {inputFields?.map((fields, fieldsIndex) => {
+                                    const {
+                                      completeDate,
+                                      degree,
+                                      institution,
+                                      startingDate,
+                                    } = fields;
+                                    return (
+                                      <li key={fieldsIndex}>
+                                        <div className="experience-user">
+                                          <div className="before-circle" />
+                                        </div>
+                                        <div className="experience-content">
+                                          <div className="timeline-content">
+                                            <a className="name">
+                                              {institution}
+                                              <span
+                                                className="edit-icon"
+                                                onClick={() =>
+                                                  editEduInfo(
+                                                    fieldsIndex,
+                                                    index
+                                                  )
+                                                }
+                                              >
+                                                <i className="fa fa-pencil" />
+                                              </span>
+                                            </a>
+                                            <div>{degree}</div>
+                                            <span className="time">
+                                              {startingDate} - {completeDate}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    );
+                                  })}
+                                </React.Fragment>
                               );
                             }
                           })}
@@ -561,63 +646,64 @@ const EmployeeProfile = () => {
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Experience{" "}
-                        <a
-                          href="#"
-                          className="edit-icon"
-                          data-bs-toggle="modal"
-                          data-bs-target="#experience_info"
-                        >
-                          <i className="fa fa-pencil" />
+                        Experience Informations{" "}
+                        <a onClick={handleExp} className="edit-icon">
+                          <i className="fa fa-plus" />
                         </a>
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  Web Designer at Zen Corporation
-                                </a>
-                                <span className="time">
-                                  Jan 2013 - Present (5 years 2 months)
-                                </span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  Web Designer at Ron-tech
-                                </a>
-                                <span className="time">
-                                  Jan 2013 - Present (5 years 2 months)
-                                </span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  Web Designer at Dalt Technology
-                                </a>
-                                <span className="time">
-                                  Jan 2013 - Present (5 years 2 months)
-                                </span>
-                              </div>
-                            </div>
-                          </li>
+                          {expArray?.map((eduDetails, index) => {
+                            const { id, inputFields, emIndex, emid } =
+                              eduDetails;
+                            if (emid == emId) {
+                              return (
+                                <React.Fragment key={id}>
+                                  {inputFields?.map((fields, fieldsIndex) => {
+                                    const {
+                                      companyName,
+                                      location,
+                                      jobPosition,
+                                      periodFrom,
+                                      periodTo,
+                                    } = fields;
+                                    return (
+                                      <li key={fieldsIndex}>
+                                        <div className="experience-user">
+                                          <div className="before-circle" />
+                                        </div>
+                                        <div className="experience-content">
+                                          <div className="timeline-content">
+                                            <a className="name">
+                                              {companyName}
+                                              <span
+                                                className="edit-icon"
+                                                onClick={() =>
+                                                  editEpxInfo(
+                                                    fieldsIndex,
+                                                    index
+                                                  )
+                                                }
+                                              >
+                                                <i className="fa fa-pencil" />
+                                              </span>
+                                            </a>
+                                            <div>{jobPosition}</div>
+                                            <span className="time">
+                                              {location}
+                                            </span>
+                                            <span className="time">
+                                              {periodFrom} - {periodTo}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    );
+                                  })}
+                                </React.Fragment>
+                              );
+                            }
+                          })}
                         </ul>
                       </div>
                     </div>
@@ -1343,7 +1429,7 @@ const EmployeeProfile = () => {
         )}
         {/* /Emergency Conatact Modal */}
 
-        {/* Emergency Conatact Modal */}
+        {/* Educational Modal */}
         {showEducationInformationModal && (
           <>
             <AddEducationInformation
@@ -1351,530 +1437,39 @@ const EmployeeProfile = () => {
               emIndex={emIndex}
               eduInformationIndex={eduInformationIndex}
               emid={emid}
+              fieldIndex={fieldIndex}
             />
           </>
         )}
-        {/* /Emergency Conatact Modal */}
+        {/* /Educational Modal */}
+
+        {/* Experience Modal */}
+        {showExperienceModal && (
+          <>
+            <AddExpModal
+              dispatchExpInfo={dispatchExpInfo}
+              emIndex={emIndex}
+              expInformationIndex={expInformationIndex}
+              emid={emid}
+              expfieldIndex={expfieldIndex}
+            />
+          </>
+        )}
+        {/* /Experience Modal */}
 
         {/* Family Info Modal */}
-        <div
-          id="family_info_modal"
-          className="modal custom-modal fade"
-          role="dialog"
-        >
-          <div
-            className="modal-dialog modal-dialog-centered modal-lg"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title"> Family Informations</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <div className="form-scroll">
-                    <div className="card">
-                      <div className="card-body">
-                        <h3 className="card-title">
-                          Family Member{" "}
-                          <a href="" className="delete-icon">
-                            <i className="fa fa-trash-o" />
-                          </a>
-                        </h3>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label>
-                                Name <span className="text-danger">*</span>
-                              </label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label>
-                                Relationship{" "}
-                                <span className="text-danger">*</span>
-                              </label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label>
-                                Date of birth{" "}
-                                <span className="text-danger">*</span>
-                              </label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label>
-                                Phone <span className="text-danger">*</span>
-                              </label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-body">
-                        <h3 className="card-title">
-                          Education Informations{" "}
-                          <a href="" className="delete-icon">
-                            <i className="fa fa-trash-o" />
-                          </a>
-                        </h3>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label>
-                                Name <span className="text-danger">*</span>
-                              </label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label>
-                                Relationship{" "}
-                                <span className="text-danger">*</span>
-                              </label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label>
-                                Date of birth{" "}
-                                <span className="text-danger">*</span>
-                              </label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label>
-                                Phone <span className="text-danger">*</span>
-                              </label>
-                              <input className="form-control" type="text" />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="add-more">
-                          <a href="">
-                            <i className="fa fa-plus-circle" /> Add More
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="submit-section">
-                    <button className="btn btn-primary submit-btn">
-                      Submit
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        {showFamilyMenberModal && (
+          <>
+            <AddFamilyMemberModal
+              dispatchFamilyMemb={dispatchFamilyMemb}
+              emIndex={emIndex}
+              familyMembInformationIndex={familyMembInformationIndex}
+              emid={emid}
+              familyMembfieldIndex={familyMembfieldIndex}
+            />
+          </>
+        )}
         {/* /Family Info Modal */}
-
-        {/* Education Modal */}
-        {/* <div
-          id="education_info"
-          className="modal custom-modal fade"
-          role="dialog"
-        >
-          <div
-            className="modal-dialog modal-dialog-centered modal-lg"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title"> Education Informations</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <div className="form-scroll">
-                    <div className="card">
-                      <div className="card-body">
-                        <h3 className="card-title">
-                          Education Informations{" "}
-                          <a href="" className="delete-icon">
-                            <i className="fa fa-trash-o" />
-                          </a>
-                        </h3>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <input
-                                type="text"
-                                defaultValue="Oxford University"
-                                className="form-control floating"
-                              />
-                              <label className="focus-label">Institution</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <input
-                                type="text"
-                                defaultValue="Computer Science"
-                                className="form-control floating"
-                              />
-                              <label className="focus-label">Subject</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <div>
-                                <input
-                                  type="date"
-                                  defaultValue="01/06/2002"
-                                  className="form-control floating datetimepicker"
-                                />
-                              </div>
-                              <label className="focus-label">
-                                Starting Date
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <div>
-                                <input
-                                  type="date"
-                                  defaultValue="31/05/2006"
-                                  className="form-control floating datetimepicker"
-                                />
-                              </div>
-                              <label className="focus-label">
-                                Complete Date
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <input
-                                type="text"
-                                defaultValue="BE Computer Science"
-                                className="form-control floating"
-                              />
-                              <label className="focus-label">Degree</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <input
-                                type="text"
-                                defaultValue="Grade A"
-                                className="form-control floating"
-                              />
-                              <label className="focus-label">Grade</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-body">
-                        <h3 className="card-title">
-                          Education Informations{" "}
-                          <a href="" className="delete-icon">
-                            <i className="fa fa-trash-o" />
-                          </a>
-                        </h3>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <input
-                                type="text"
-                                defaultValue="Oxford University"
-                                className="form-control floating"
-                              />
-                              <label className="focus-label">Institution</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <input
-                                type="text"
-                                defaultValue="Computer Science"
-                                className="form-control floating"
-                              />
-                              <label className="focus-label">Subject</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <div>
-                                <input
-                                  type="date"
-                                  defaultValue="01/06/2002"
-                                  className="form-control floating datetimepicker"
-                                />
-                              </div>
-                              <label className="focus-label">
-                                Starting Date
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <div>
-                                <input
-                                  type="date"
-                                  defaultValue="31/05/2006"
-                                  className="form-control floating datetimepicker"
-                                />
-                              </div>
-                              <label className="focus-label">
-                                Complete Date
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <input
-                                type="text"
-                                defaultValue="BE Computer Science"
-                                className="form-control floating"
-                              />
-                              <label className="focus-label">Degree</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus focused">
-                              <input
-                                type="text"
-                                defaultValue="Grade A"
-                                className="form-control floating"
-                              />
-                              <label className="focus-label">Grade</label>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="add-more">
-                          <a href="">
-                            <i className="fa fa-plus-circle" /> Add More
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="submit-section">
-                    <button className="btn btn-primary submit-btn">
-                      Submit
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div> */}
-        {/* /Education Modal */}
-        {/* Experience Modal */}
-        <div
-          id="experience_info"
-          className="modal custom-modal fade"
-          role="dialog"
-        >
-          <div
-            className="modal-dialog modal-dialog-centered modal-lg"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Experience Informations</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <div className="form-scroll">
-                    <div className="card">
-                      <div className="card-body">
-                        <h3 className="card-title">
-                          Experience Informations{" "}
-                          <a href="" className="delete-icon">
-                            <i className="fa fa-trash-o" />
-                          </a>
-                        </h3>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <input
-                                type="text"
-                                className="form-control floating"
-                                defaultValue="Digital Devlopment Inc"
-                              />
-                              <label className="focus-label">
-                                Company Name
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <input
-                                type="text"
-                                className="form-control floating"
-                                defaultValue="United States"
-                              />
-                              <label className="focus-label">Location</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <input
-                                type="text"
-                                className="form-control floating"
-                                defaultValue="Web Developer"
-                              />
-                              <label className="focus-label">
-                                Job Position
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <div>
-                                <input
-                                  type="date"
-                                  className="form-control floating datetimepicker"
-                                  defaultValue="01/07/2007"
-                                />
-                              </div>
-                              <label className="focus-label">Period From</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <div>
-                                <input
-                                  type="date"
-                                  className="form-control floating datetimepicker"
-                                  defaultValue="08/06/2018"
-                                />
-                              </div>
-                              <label className="focus-label">Period To</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-body">
-                        <h3 className="card-title">
-                          Experience Informations{" "}
-                          <a href="" className="delete-icon">
-                            <i className="fa fa-trash-o" />
-                          </a>
-                        </h3>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <input
-                                type="text"
-                                className="form-control floating"
-                                defaultValue="Digital Devlopment Inc"
-                              />
-                              <label className="focus-label">
-                                Company Name
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <input
-                                type="text"
-                                className="form-control floating"
-                                defaultValue="United States"
-                              />
-                              <label className="focus-label">Location</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <input
-                                type="text"
-                                className="form-control floating"
-                                defaultValue="Web Developer"
-                              />
-                              <label className="focus-label">
-                                Job Position
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <div>
-                                <input
-                                  type="date"
-                                  className="form-control floating datetimepicker"
-                                  defaultValue="01/07/2007"
-                                />
-                              </div>
-                              <label className="focus-label">Period From</label>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group form-focus">
-                              <div>
-                                <input
-                                  type="date"
-                                  className="form-control floating datetimepicker"
-                                  defaultValue="08/06/2018"
-                                />
-                              </div>
-                              <label className="focus-label">Period To</label>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="add-more">
-                          <a href="">
-                            <i className="fa fa-plus-circle" /> Add More
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="submit-section">
-                    <button className="btn btn-primary submit-btn">
-                      Submit
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* /Experience Modal */}
       </div>
     </div>
   );

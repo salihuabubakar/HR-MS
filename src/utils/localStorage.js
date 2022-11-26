@@ -171,3 +171,41 @@ export const savedEduInfoReducer = (state, { type, payload }) => {
       throw new Error();
   }
 };
+
+export const initExpInfo = () => {
+  const storageEvents = localStorage.getItem("expInfo");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedExpInfoReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((info) => (info.id === payload.id ? payload : info));
+    case "delete":
+      return state.filter((info) => info.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};
+
+export const initFamilyMemberInfo = () => {
+  const storageEvents = localStorage.getItem("familyMemberInfo");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedFamilyMemberReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((info) => (info.id === payload.id ? payload : info));
+    case "delete":
+      return state.filter((info) => info.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};

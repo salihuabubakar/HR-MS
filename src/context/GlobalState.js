@@ -16,6 +16,10 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showEmergencyContactModal: false,
   showEducationInformationModal: false,
   selectedEducationalInfo: [],
+  showExperienceModal: false,
+  selectedExperienceModal: [],
+  showFamilyMenberModal: false,
+  selectedFamilyMemberInfo: [],
 });
 
 export {setGlobalState, useGlobalState}
