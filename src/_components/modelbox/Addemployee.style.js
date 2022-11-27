@@ -22,6 +22,8 @@ export const PopupWrapper = styled.div`
   justify-content: center;
   ${mobile} {
     top: 20;
+    /* height: 50px;
+    overflow-y: auto; */
   }
 `;
 
@@ -44,6 +46,8 @@ export const PopupContainer = styled.div`
 export const Card = styled.div`
   background-color: #fff;
   border-radius: 4px;
+  max-height: 600px;
+  overflow-y: auto;
   .card-header {
     display: flex;
     justify-content: space-between;
