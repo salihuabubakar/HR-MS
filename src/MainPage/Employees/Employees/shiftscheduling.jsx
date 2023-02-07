@@ -67,7 +67,6 @@ const ShiftScheduling = () => {
     }
   }, [showModal]);
 
-
   const [shiftList, setShiftList] = useState();
   useEffect(() => {
     setShiftList(shift);
@@ -90,7 +89,7 @@ const ShiftScheduling = () => {
     setDeptList(depts);
   }, [depts]);
 
-  const selectedHouse = houseList?.find((house) =>  house.id === houseId );
+  const selectedHouse = houseList?.find((house) => house.id === houseId);
 
   const handleDeptChange = (event) => {
     // console.log(event);
@@ -124,72 +123,57 @@ const ShiftScheduling = () => {
 
   const [dateCounter, setDateCounter] = useState(0);
   const [activeCurrentDate, setActiveCurrentDate] = useState();
+  let recentDates = [];
 
-
-  let curr = new Date();
-
-  new Date(curr.setDate(dateCounter == 0 ? curr.getDate() : dateCounter));
-  let results = [];
-
-  var isCurrentDateTrue;
-  // new Date(curr.setDate(20-1));
-
-  for (let i = 1; i <= 7; i++) {
-    let first = curr.getDate() - curr.getDay() + i;
-    let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
-    let month = day.split("").slice(5, 7).join("");
-    switch (month) {
-      case "01":
-        month = "Jan";
-        break;
-      case "02":
-        month = "Feb";
-        break;
-      case "03":
-        month = "Mar";
-        break;
-      case "04":
-        month = "Apr";
-        break;
-      case "05":
-        month = "May";
-        break;
-      case "06":
-        month = "Jun";
-        break;
-      case "07":
-        month = "Jul";
-        break;
-      case "08":
-        month = "Aug";
-        break;
-      case "09":
-        month = "Sep";
-        break;
-      case "10":
-        month = "Oct";
-        break;
-      case "11":
-        month = "Nov";
-        break;
-      case "12":
-        month = "Dec";
-        break;
-      default:
-        console.log("Error, Month doesn't exist");
-        break;
-    }
-    
-    day = day.split("").slice(8).join("");
-    results.push(day + " " + month);
-
-    let currentActiveDate = new Date().toISOString().slice(9, 10);
-    if(first.toString().includes(currentActiveDate)) {
-      isCurrentDateTrue = true;
-    }
-  }
+  let isCurrentDateTrue;
 
   console.log("isCurrentDateTrue", isCurrentDateTrue);
+
+  // Create a new date object and set it to the current date
+  let currentDate = new Date();
+  new Date(
+    currentDate.setDate(dateCounter === 0 ? currentDate.getDate() : dateCounter)
+  );
+  console.log(("0" + currentDate.getDate()).slice(-2))
+
+  // Set the first day of the week (0 = Sunday, 1 = Monday, etc.)
+  let firstDayOfWeek = 1;
+
+  // Calculate the day of the week for the current date
+  let currentDayOfWeek = currentDate.getDay();
+
+  // Calculate the number of days to back up to the first day of the week
+  let daysToBackUp = (currentDayOfWeek + 7 - firstDayOfWeek) % 7;
+  // console.log("daysToBackUp", daysToBackUp);
+
+  // Back up to the first day of the week
+  let firstDateOfWeek = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate() - daysToBackUp
+  );
+
+  // Create an array of date objects for the current week
+  let dates = [firstDateOfWeek];
+  for (var i = 1; i < 7; i++) {
+    var nextDate = new Date(
+      firstDateOfWeek.getFullYear(),
+      firstDateOfWeek.getMonth(),
+      firstDateOfWeek.getDate() + i
+    );
+    dates.push(nextDate);
+  }
+
+  // Create a week calendar using the date objects
+  for (var i = 0; i < dates.length; i++) {
+    let dayName = dates[i].toString().slice(0, 3);
+    let dayFigure = dates[i].toString().slice(8, 10);
+    let month = dates[i].toString().slice(4, 7);
+    recentDates.push(dayName + " " + dayFigure + " " + month);
+    // console.log(recentDates);
+  }
+
+
 
   const [employeeId, setEmployeeId] = useState();
   const [employeeSelectedIndex, setEmployeeSelectedIndex] = useState();
@@ -199,19 +183,21 @@ const ShiftScheduling = () => {
   const handleMondayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Mon " + results[0]);
+    setSelectedDay(recentDates[0]);
     setGlobalState("showAddSchedul", true);
   };
+
+  console.log("hi", recentDates[1]);
 
   const handleMondayShiftIndex = (index) => {
     setSelectedDayIndex(index);
     setGlobalState("selectedScheduleEvent", scheduleEvent);
-  }
+  };
 
   const handleTuesDayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Tue " + results[1]);
+    setSelectedDay(recentDates[1]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -223,7 +209,7 @@ const ShiftScheduling = () => {
   const handleWednesdayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Wed " + results[2]);
+    setSelectedDay(recentDates[2]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -235,7 +221,7 @@ const ShiftScheduling = () => {
   const handleThursdayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Thu " + results[3]);
+    setSelectedDay(recentDates[3]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -244,10 +230,10 @@ const ShiftScheduling = () => {
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
-  const handleFridayShift = (index, value) => { 
+  const handleFridayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Fri " + results[4]);
+    setSelectedDay(recentDates[4]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -259,7 +245,7 @@ const ShiftScheduling = () => {
   const handlSaturdayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Sat " + results[5]);
+    setSelectedDay(recentDates[5]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -271,7 +257,7 @@ const ShiftScheduling = () => {
   const handleSundayShift = (index, value) => {
     setEmployeeId(value);
     setEmployeeSelectedIndex(index);
-    setSelectedDay("Sun " + results[6]);
+    setSelectedDay(recentDates[6]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -279,6 +265,10 @@ const ShiftScheduling = () => {
     setSelectedDayIndex(index);
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
+
+  const checksForCurrentDate = () => {
+    return ("0" + currentDate.getDate()).slice(-2)
+  }
 
   return (
     <>
@@ -392,7 +382,14 @@ const ShiftScheduling = () => {
               <button
                 onClick={() => setDateCounter((prev) => prev * 0)}
                 className="btn btn-success btn-block w-10"
-                style={{ border: "none" }}
+                style={{
+                  border: "none",
+                  opacity: recentDates.includes(
+                    ("0" + currentDate.getDate()).slice(-2)
+                  )
+                    ? "0.5"
+                    : "1",
+                }}
               >
                 Current Week
               </button>
@@ -413,25 +410,27 @@ const ShiftScheduling = () => {
                         <th style={{ borderRight: "1px solid grey" }}>
                           Scheduled Shift
                         </th>
-                        <th style={{ borderRight: "1px solid grey" }}>
-                          Mon {results[0]}
+                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[0].includes(checksForCurrentDate()) && "#ddd" }}>
+                          {recentDates[0]}
                         </th>
-                        <th style={{ borderRight: "1px solid grey" }}>
-                          Tue {results[1]}
+                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[1].includes(checksForCurrentDate()) && "#ddd" }}>
+                          {recentDates[1]}
                         </th>
-                        <th style={{ borderRight: "1px solid grey" }}>
-                          Wed {results[2]}
+                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[2].includes(checksForCurrentDate()) && "#ddd" }}>
+                          {recentDates[2]}
                         </th>
-                        <th style={{ borderRight: "1px solid grey" }}>
-                          Thu {results[3]}
+                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[3].includes(checksForCurrentDate()) && "#ddd" }}>
+                          {recentDates[3]}
                         </th>
-                        <th style={{ borderRight: "1px solid grey" }}>
-                          Fri {results[4]}
+                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[4].includes(checksForCurrentDate()) && "#ddd" }}>
+                          {recentDates[4]}
                         </th>
-                        <th style={{ borderRight: "1px solid grey" }}>
-                          Sat {results[5]}
+                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[5].includes(checksForCurrentDate()) && "#ddd" }}>
+                          {recentDates[5]}
                         </th>
-                        <th>Sun {results[6]}</th>
+                        <th style={{ backgroundColor: recentDates[6].includes(checksForCurrentDate()) && "#ddd" }}>
+                          {recentDates[6]}
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -445,7 +444,7 @@ const ShiftScheduling = () => {
                                   <a className="avatar">
                                     <img src={Smile} />
                                   </a>
-                                  <a style={{color: "#ff9b44"}}>
+                                  <a style={{ color: "#ff9b44" }}>
                                     {label}
                                     <span>Web Designer</span>
                                   </a>
@@ -487,7 +486,7 @@ const ShiftScheduling = () => {
                                   if (
                                     value === eId &&
                                     index === indexId &&
-                                    selecteDay === "Mon " + results[0]
+                                    selecteDay === recentDates[0]
                                   ) {
                                     return (
                                       <div
@@ -551,7 +550,7 @@ const ShiftScheduling = () => {
                                   if (
                                     value === eId &&
                                     index === indexId &&
-                                    selecteDay === "Tue " + results[1]
+                                    selecteDay === recentDates[1]
                                   ) {
                                     return (
                                       <div
@@ -619,7 +618,7 @@ const ShiftScheduling = () => {
                                   if (
                                     value === eId &&
                                     index === indexId &&
-                                    selecteDay === "Wed " + results[2]
+                                    selecteDay === recentDates[2]
                                   ) {
                                     return (
                                       <div
@@ -687,7 +686,7 @@ const ShiftScheduling = () => {
                                   if (
                                     value === eId &&
                                     index === indexId &&
-                                    selecteDay === "Thu " + results[3]
+                                    selecteDay === recentDates[3]
                                   ) {
                                     return (
                                       <div
@@ -751,7 +750,7 @@ const ShiftScheduling = () => {
                                   if (
                                     value === eId &&
                                     index === indexId &&
-                                    selecteDay === "Fri " + results[4]
+                                    selecteDay === recentDates[4]
                                   ) {
                                     return (
                                       <div
@@ -815,7 +814,7 @@ const ShiftScheduling = () => {
                                   if (
                                     value === eId &&
                                     index === indexId &&
-                                    selecteDay === "Sat " + results[5]
+                                    selecteDay === recentDates[5]
                                   ) {
                                     return (
                                       <div
@@ -879,7 +878,7 @@ const ShiftScheduling = () => {
                                   if (
                                     value === eId &&
                                     index === indexId &&
-                                    selecteDay === "Sun " + results[6]
+                                    selecteDay === recentDates[6]
                                   ) {
                                     return (
                                       <div
