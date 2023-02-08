@@ -122,19 +122,17 @@ const ShiftScheduling = () => {
   });
 
   const [dateCounter, setDateCounter] = useState(0);
-  const [activeCurrentDate, setActiveCurrentDate] = useState();
+  const [activeCurrentDate, setActiveCurrentDate] = useState([]);
   let recentDates = [];
+  let dayIndex = [];
 
   let isCurrentDateTrue;
-
-  console.log("isCurrentDateTrue", isCurrentDateTrue);
 
   // Create a new date object and set it to the current date
   let currentDate = new Date();
   new Date(
     currentDate.setDate(dateCounter === 0 ? currentDate.getDate() : dateCounter)
   );
-  console.log(("0" + currentDate.getDate()).slice(-2))
 
   // Set the first day of the week (0 = Sunday, 1 = Monday, etc.)
   let firstDayOfWeek = 1;
@@ -144,7 +142,6 @@ const ShiftScheduling = () => {
 
   // Calculate the number of days to back up to the first day of the week
   let daysToBackUp = (currentDayOfWeek + 7 - firstDayOfWeek) % 7;
-  // console.log("daysToBackUp", daysToBackUp);
 
   // Back up to the first day of the week
   let firstDateOfWeek = new Date(
@@ -170,8 +167,12 @@ const ShiftScheduling = () => {
     let dayFigure = dates[i].toString().slice(8, 10);
     let month = dates[i].toString().slice(4, 7);
     recentDates.push(dayName + " " + dayFigure + " " + month);
-    // console.log(recentDates);
   }
+
+  const checksForCurrentDate = () => {
+    if (daysToBackUp === recentDates[daysToBackUp])
+      return ("0" + currentDate.getDate()).slice(-2);
+  };
 
 
 
@@ -186,8 +187,6 @@ const ShiftScheduling = () => {
     setSelectedDay(recentDates[0]);
     setGlobalState("showAddSchedul", true);
   };
-
-  console.log("hi", recentDates[1]);
 
   const handleMondayShiftIndex = (index) => {
     setSelectedDayIndex(index);
@@ -266,9 +265,10 @@ const ShiftScheduling = () => {
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
-  const checksForCurrentDate = () => {
-    return ("0" + currentDate.getDate()).slice(-2)
+  for (let i = 0; i < recentDates.length; i++) {
+    dayIndex.push(i)
   }
+
 
   return (
     <>
@@ -410,27 +410,11 @@ const ShiftScheduling = () => {
                         <th style={{ borderRight: "1px solid grey" }}>
                           Scheduled Shift
                         </th>
-                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[0].includes(checksForCurrentDate()) && "#ddd" }}>
-                          {recentDates[0]}
-                        </th>
-                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[1].includes(checksForCurrentDate()) && "#ddd" }}>
-                          {recentDates[1]}
-                        </th>
-                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[2].includes(checksForCurrentDate()) && "#ddd" }}>
-                          {recentDates[2]}
-                        </th>
-                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[3].includes(checksForCurrentDate()) && "#ddd" }}>
-                          {recentDates[3]}
-                        </th>
-                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[4].includes(checksForCurrentDate()) && "#ddd" }}>
-                          {recentDates[4]}
-                        </th>
-                        <th style={{ borderRight: "1px solid grey", backgroundColor: recentDates[5].includes(checksForCurrentDate()) && "#ddd" }}>
-                          {recentDates[5]}
-                        </th>
-                        <th style={{ backgroundColor: recentDates[6].includes(checksForCurrentDate()) && "#ddd" }}>
-                          {recentDates[6]}
-                        </th>
+                        {recentDates?.map((data, index) => {
+                          return (
+                            <th style={{borderRight: "1px solid grey", backgroundColor: daysToBackUp === dayIndex[index] && "#ddd"}} key={index}>{data}</th>
+                          )
+                        })}
                       </tr>
                     </thead>
                     <tbody>
