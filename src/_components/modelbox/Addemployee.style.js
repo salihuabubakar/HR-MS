@@ -20,8 +20,15 @@ export const PopupWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  .card-width {
+    width: 400px;
+  } 
+  
   ${mobile} {
     top: 20;
+    .card-width {
+      width: 350px;
+    }
     /* height: 50px;
     overflow-y: auto; */
   }
@@ -43,11 +50,10 @@ export const PopupContainer = styled.div`
   
 `;
 
+
 export const Card = styled.div`
   background-color: #fff;
   border-radius: 4px;
-  max-height: 600px;
-  overflow-y: auto;
   .card-header {
     display: flex;
     justify-content: space-between;
@@ -93,8 +99,13 @@ export const Card = styled.div`
 
   .row- {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .input-generating-field {
   }
 
   .Primary,
@@ -107,6 +118,10 @@ export const Card = styled.div`
   .space-between {
     display: flex;
     justify-content: space-between;
+  }
+
+  .hieght {
+    height: 150px;
   }
 
   .col-sm {
