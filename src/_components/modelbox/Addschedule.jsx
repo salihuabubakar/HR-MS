@@ -91,14 +91,13 @@ const AddSchedule = ({
       <PopupWrapper>
         <PopupOverlay />
         <PopupContainer className="custom-modal" role="dialog">
-          <Card className="" role="document">
+          <Card className="card-width" role="document">
             <div className="card-content">
               <div className="card-header">
                 <h5 className="card-title">
                   {selectedScheduleEvent[selectedDayIndex]?.id
                     ? "Edit Schedule"
-                    : "Add Schedule"
-                  }
+                    : "Add Schedule"}
                 </h5>
                 <div className="btn-container">
                   {selectedScheduleEvent[selectedDayIndex]?.id && (
@@ -123,7 +122,7 @@ const AddSchedule = ({
                 <form>
                   <div className="row-">
                     <div className="col-sm space-between">
-                      <div className="form-group inputText right">
+                      <div className="form-group inputText right hieght">
                         <Select
                           onChange={handleShiftChange}
                           options={shiftLists}
