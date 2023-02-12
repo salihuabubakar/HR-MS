@@ -111,26 +111,26 @@ const AddDepartment = ({
             </div>
             <div className="card-body">
               <form>
-                <div className="form-group">
-                  <label className="label">
+                <div className="form-group form-focus focused">
+                  <label className="focus-label">
                     House Name <span className="text-danger">*</span>
                   </label>
                   <input
                     value={houseName}
                     onChange={(e) => setHouseName(e.target.value)}
-                    className="form-control"
+                    className="form-control floating"
                     type="text"
                     placeholder="House Name"
                   />
                 </div>
-                <div className="form-group">
-                  <label className="label">
+                <div className="form-group form-focus focused">
+                  <label className="focus-label">
                     Manager <span className="text-danger">*</span>
                   </label>
                   <input
                     value={managerName}
                     onChange={(e) => setManagerName(e.target.value)}
-                    className="form-control"
+                    className="form-control floating"
                     type="text"
                     placeholder="Manager"
                   />

@@ -79,7 +79,6 @@ const Designations = () => {
           render: (text, record, index) => (
             <div className="dropdown dropdown-action text-end">
               <a
-                href="#"
                 className="action-icon dropdown-toggle"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -89,14 +88,12 @@ const Designations = () => {
               <div className="dropdown-menu dropdown-menu-right">
                 <a
                   className="dropdown-item"
-                  href="#"
                   onClick={() => handleDesigEdit(record.id, index)}
                 >
                   <i className="fa fa-pencil m-r-5" /> Edit
                 </a>
                 <a
                   className="dropdown-item"
-                  href="#"
                   onClick={() => handleDesigDelete(index)}
                 >
                   <i className="fa fa-trash-o m-r-5" /> Delete
@@ -131,7 +128,6 @@ const Designations = () => {
                   </div>
                   <div className="col-auto float-end ml-auto">
                     <a
-                      href="#"
                       className="btn add-btn"
                       onClick={() => setGlobalState("showModal", true)}
                     >

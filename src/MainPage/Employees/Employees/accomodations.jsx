@@ -88,7 +88,6 @@ const Accomodations = () => {
                   </div>
                   <div className="col-auto float-end ml-auto">
                     <a
-                      href="#"
                       className="btn add-btn"
                       onClick={() => setGlobalState("showModal", true)}
                     >
@@ -117,13 +116,13 @@ const Accomodations = () => {
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                     <input type="text" className="form-control floating" />
-                    <label className="focus-label">Employee ID</label>
+                    <label className="focus-label">House ID</label>
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group form-focus">
                     <input type="text" className="form-control floating" />
-                    <label className="focus-label">Employee Name</label>
+                    <label className="focus-label">House Name</label>
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-3">
@@ -153,7 +152,6 @@ const Accomodations = () => {
                         </div> */}
                         <div className="dropdown profile-action">
                           <a
-                            href="#"
                             className="action-icon dropdown-toggle"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
@@ -163,14 +161,12 @@ const Accomodations = () => {
                           <div className="dropdown-menu dropdown-menu-right">
                             <a
                               className="dropdown-item"
-                              href="#"
                               onClick={() => handleHouseEdit(house.id, index)}
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
                             </a>
                             <a
                               className="dropdown-item"
-                              href="#"
                               onClick={() => handleHouseDelete(index)}
                             >
                               <i className="fa fa-trash-o m-r-5" /> Delete

@@ -14,6 +14,7 @@ import {
 } from "../../../utils/localStorage";
 import SmileImg from "../../../assets/img/smile.png";
 import Select from "react-select";
+import {DesignationDiv} from "./styles";
 
 
 const AllEmployees = () => {
@@ -37,6 +38,12 @@ const AllEmployees = () => {
          backgroundColor: "#FF9B44",
          color: "#262626",
        },
+     }),
+     control: (provided, state) => ({
+       ...provided,
+       background: "#fff",
+       borderColor: "#ddd",
+       height: "48px",
      }),
    };
 
@@ -139,7 +146,6 @@ const AllEmployees = () => {
                   </div>
                   <div className="col-auto float-end ml-auto">
                     <a
-                      href="#"
                       className="btn add-btn"
                       onClick={handleAddEmployee}
                     >
@@ -231,7 +237,6 @@ const AllEmployees = () => {
                         </div>
                         <div className="dropdown profile-action">
                           <a
-                            href="#"
                             className="action-icon dropdown-toggle"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
@@ -241,14 +246,12 @@ const AllEmployees = () => {
                           <div className="dropdown-menu dropdown-menu-right">
                             <a
                               className="dropdown-item"
-                              href="#"
                               onClick={() => handleEditAcct(staff.id, index)}
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
                             </a>
                             <a
                               className="dropdown-item"
-                              href="#"
                               onClick={() => handleDeleteAcct(index)}
                             >
                               <i className="fa fa-trash-o m-r-5" /> Delete

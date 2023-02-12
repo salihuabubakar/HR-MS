@@ -265,22 +265,22 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 <div className="Primary">
                   <h3>Primary</h3>
                   <div className="col-sm">
-                    <div className="right">
-                      <label className="label">Name</label>
+                    <div className="right form-group form-focus focused">
+                      <label className="focus-label">Name</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control floating"
                         placeholder="Name"
                         value={primaryName}
                         onChange={(event) => setPrimaryName(event.target.value)}
                       />
                     </div>
 
-                    <div className="">
-                      <label className="label">Relationship</label>
+                    <div className="form-group form-focus focused">
+                      <label className="focus-label">Relationship</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control floating"
                         placeholder="Relationship"
                         value={primaryRelationship}
                         onChange={(event) =>
@@ -291,11 +291,11 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
                   </div>
 
                   <div className="col-sm">
-                    <div className="right">
-                      <label className="label">Phone Number</label>
+                    <div className="right form-group form-focus focused">
+                      <label className="focus-label">Phone Number</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control floating"
                         placeholder="phone Number"
                         value={primaryPhone1}
                         onChange={(event) =>
@@ -303,12 +303,12 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
                         }
                       />
                     </div>
-                    <div className="">
-                      <label className="label">
+                    <div className="form-group form-focus focused">
+                      <label className="focus-label">
                         Phone Number <span className="text-danger">*</span>
                       </label>
                       <input
-                        className="form-control"
+                        className="form-control floating"
                         type="text"
                         placeholder="Phone Number"
                         value={primaryPhone2}
@@ -323,11 +323,11 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 <div className="Secondary">
                   <h3>Secondary</h3>
                   <div className="col-sm">
-                    <div className="right">
-                      <label className="label">Name</label>
+                    <div className="right form-group form-focus focused">
+                      <label className="focus-label">Name</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control floating"
                         placeholder="Name"
                         value={secondaryName}
                         onChange={(event) =>
@@ -336,11 +336,11 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
                       />
                     </div>
 
-                    <div className="">
-                      <label className="label">Relationship</label>
+                    <div className="form-group form-focus focused">
+                      <label className="focus-label">Relationship</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control floating"
                         placeholder="Relationship"
                         value={secondaryRelationship}
                         onChange={(event) =>
@@ -351,11 +351,11 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
                   </div>
 
                   <div className="col-sm">
-                    <div className="right">
-                      <label className="label">Phone Number</label>
+                    <div className="right form-group form-focus focused">
+                      <label className="focus-label">Phone Number</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control floating"
                         placeholder="phone Number"
                         value={secondaryPhone1}
                         onChange={(event) =>
@@ -363,12 +363,12 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
                         }
                       />
                     </div>
-                    <div className="">
-                      <label className="label">
+                    <div className="form-group form-focus focused">
+                      <label className="focus-label">
                         Phone Number <span className="text-danger">*</span>
                       </label>
                       <input
-                        className="form-control"
+                        className="form-control floating"
                         type="text"
                         placeholder="Phone Number"
                         value={secondaryPhone2}

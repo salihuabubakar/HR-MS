@@ -7,6 +7,8 @@ import {
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 
+import { HtmlDateInput } from "./styles";
+
 const AddEducationInformation = ({
   dispatchEduInfo,
   eduInformationIndex,
@@ -101,7 +103,6 @@ const AddEducationInformation = ({
             <div className="btn-container">
               {idIsTrue && (
                 <button
-                  style={{ backgroundColor: "#ff9b44", border: "none" }}
                   className="delete"
                   type="submit"
                   onClick={handleDelete}
@@ -110,7 +111,6 @@ const AddEducationInformation = ({
                 </button>
               )}
               <button
-                style={{ backgroundColor: "#ff9b44", border: "none" }}
                 className="closeX"
                 type="button"
                 onClick={() =>
@@ -143,11 +143,11 @@ const AddEducationInformation = ({
                         )}
                       </h3>
                       <div className="col-sm">
-                        <div className="right">
-                          <label className="label">Institute</label>
+                        <div className="right form-group form-focus focused">
+                          <label className="focus-label">Institute</label>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control floating"
                             placeholder="Institute"
                             name="institution"
                             value={value?.institution}
@@ -157,11 +157,11 @@ const AddEducationInformation = ({
                           />
                         </div>
 
-                        <div className="">
-                          <label className="label">Degree</label>
+                        <div className="form-group form-focus focused">
+                          <label className="focus-label">Degree</label>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control floating"
                             placeholder="Degree"
                             name="degree"
                             value={value?.degree}
@@ -173,11 +173,11 @@ const AddEducationInformation = ({
                       </div>
 
                       <div className="col-sm">
-                        <div className="right">
-                          <label className="label">Starting Date</label>
-                          <input
+                        <div className="right form-group form-focus focused">
+                          <label className="focus-label">Starting Date</label>
+                          <HtmlDateInput
                             type="date"
-                            className="form-control datetimepicker"
+                            className="form-control floating datetimepicker"
                             placeholder="Starting Date"
                             name="startingDate"
                             value={value?.startingDate}
@@ -186,12 +186,12 @@ const AddEducationInformation = ({
                             }}
                           />
                         </div>
-                        <div className="">
-                          <label className="label">
+                        <div className="form-group form-focus focused">
+                          <label className="focus-label">
                             Complete Date <span className="text-danger">*</span>
                           </label>
-                          <input
-                            className="form-control datetimepicker"
+                          <HtmlDateInput
+                            className="form-control floating datetimepicker"
                             type="date"
                             placeholder="Complete Date"
                             name="completeDate"

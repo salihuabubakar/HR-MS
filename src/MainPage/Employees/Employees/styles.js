@@ -54,3 +54,10 @@ export const Body = styled.div`
     }
   }
 `;
+
+export const DesignationDiv = styled.div`
+  ${mobile} {
+    margin-bottom: 15px;
+    z-index: 500;
+  }
+`;

@@ -6,6 +6,7 @@ import {
   Card,
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
+import { HtmlDateInput } from "./styles";
 
 const AddExpModal = ({
   dispatchExpInfo,
@@ -120,7 +121,6 @@ const AddExpModal = ({
             <div className="btn-container">
               {idIsTrue && (
                 <button
-                  style={{ backgroundColor: "#ff9b44", border: "none" }}
                   className="delete"
                   type="submit"
                   onClick={handleDelete}
@@ -129,7 +129,6 @@ const AddExpModal = ({
                 </button>
               )}
               <button
-                style={{ backgroundColor: "#ff9b44", border: "none" }}
                 className="closeX"
                 type="button"
                 onClick={() => setGlobalState("showExperienceModal", false)}
@@ -160,11 +159,11 @@ const AddExpModal = ({
                         )}
                       </h3>
                       <div className="col-sm">
-                        <div className="right">
-                          <label className="label">Company Name</label>
+                        <div className="right form-group form-focus focused">
+                          <label className="focus-label">Company Name</label>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control floating"
                             placeholder="Company Name"
                             name="companyName"
                             value={value?.companyName}
@@ -174,11 +173,11 @@ const AddExpModal = ({
                           />
                         </div>
 
-                        <div className="">
-                          <label className="label">Location</label>
+                        <div className="form-group form-focus focused">
+                          <label className="focus-label">Location</label>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control floating"
                             placeholder="Location"
                             name="location"
                             value={value?.location}
@@ -190,11 +189,11 @@ const AddExpModal = ({
                       </div>
 
                       <div className="col-sm">
-                        <div className="right">
-                          <label className="label">Job Position</label>
+                        <div className="right form-group form-focus focused">
+                          <label className="focus-label">Job Position</label>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control floating"
                             placeholder="Job Position"
                             name="jobPosition"
                             value={value?.jobPosition}
@@ -203,12 +202,12 @@ const AddExpModal = ({
                             }}
                           />
                         </div>
-                        <div className="">
-                          <label className="label">
+                        <div className="form-group form-focus focused margin-top">
+                          <label className="focus-label">
                             Period From <span className="text-danger">*</span>
                           </label>
-                          <input
-                            className="form-control datetimepicker"
+                          <HtmlDateInput
+                            className="form-control floating datetimepicker"
                             type="date"
                             placeholder="Period From"
                             name="periodFrom"
@@ -221,12 +220,12 @@ const AddExpModal = ({
                       </div>
 
                       <div className="col-sm">
-                        <div className="">
-                          <label className="label">
+                        <div className="form-group form-focus focused margin-top">
+                          <label className="focus-label">
                             Period To <span className="text-danger">*</span>
                           </label>
-                          <input
-                            className="form-control datetimepicker"
+                          <HtmlDateInput
+                            className="form-control floating datetimepicker"
                             type="date"
                             placeholder="Period To"
                             name="periodTo"

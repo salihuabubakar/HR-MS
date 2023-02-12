@@ -41,6 +41,12 @@ const Employeeslist = () => {
         color: "#262626",
       },
     }),
+    control: (provided, state) => ({
+      ...provided,
+      background: "#fff",
+      borderColor: "#ddd",
+      height: "48px",
+    }),
   };
 
    const [designation, setDesignation] = useState("");
@@ -166,7 +172,6 @@ const Employeeslist = () => {
               render: (text, record, index) => (
                 <div className="dropdown dropdown-action text-end">
                   <a
-                    href="#"
                     className="action-icon dropdown-toggle"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -176,14 +181,12 @@ const Employeeslist = () => {
                   <div className="dropdown-menu dropdown-menu-right">
                     <a
                       className="dropdown-item"
-                      href="#"
                       onClick={() => handleEditAcct(record.id, index)}
                     >
                       <i className="fa fa-pencil m-r-5" /> Edit
                     </a>
                     <a
                       className="dropdown-item"
-                      href="#"
                       onClick={() => handleDeleteAcct(index)}
                     >
                       <i className="fa fa-trash-o m-r-5" /> Delete
@@ -218,7 +221,6 @@ const Employeeslist = () => {
                   </div>
                   <div className="col-auto float-end ml-auto">
                     <a
-                      href="#"
                       className="btn add-btn"
                       onClick={() => setGlobalState("showModal", true)}
                     >

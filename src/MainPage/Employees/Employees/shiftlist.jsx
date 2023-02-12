@@ -95,7 +95,6 @@ const ShiftList = () => {
         render: (text, record, index) => (
           <div className="dropdown dropdown-action">
             <a
-              href="#"
               className="action-icon dropdown-toggle"
               data-bs-toggle="dropdown"
               aria-expanded="false"

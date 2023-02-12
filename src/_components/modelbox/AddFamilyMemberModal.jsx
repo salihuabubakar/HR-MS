@@ -6,6 +6,7 @@ import {
   Card,
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
+import { HtmlDateInput } from "./styles";
 
 const AddFamilyMemberModal = ({
   dispatchFamilyMemb,
@@ -113,7 +114,6 @@ const AddFamilyMemberModal = ({
             <div className="btn-container">
               {idIsTrue && (
                 <button
-                  style={{ backgroundColor: "#ff9b44", border: "none" }}
                   className="delete"
                   type="submit"
                   onClick={handleDelete}
@@ -122,7 +122,6 @@ const AddFamilyMemberModal = ({
                 </button>
               )}
               <button
-                style={{ backgroundColor: "#ff9b44", border: "none" }}
                 className="closeX"
                 type="button"
                 onClick={() => setGlobalState("showFamilyMenberModal", false)}
@@ -153,11 +152,11 @@ const AddFamilyMemberModal = ({
                         )}
                       </h3>
                       <div className="col-sm">
-                        <div className="right">
-                          <label className="label">Name</label>
+                        <div className="right form-group form-focus focused">
+                          <label className="focus-label">Name</label>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control floating"
                             placeholder="Name"
                             name="name"
                             value={value?.name}
@@ -167,11 +166,11 @@ const AddFamilyMemberModal = ({
                           />
                         </div>
 
-                        <div className="">
-                          <label className="label">Relationship</label>
+                        <div className="form-group form-focus focused">
+                          <label className="focus-label">Relationship</label>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control floating"
                             placeholder="Relationship"
                             name="relationship"
                             value={value?.relationship}
@@ -183,11 +182,11 @@ const AddFamilyMemberModal = ({
                       </div>
 
                       <div className="col-sm">
-                        <div className="right">
-                          <label className="label">Date Of Birth</label>
-                          <input
+                        <div className="right form-group form-focus focused margin-top">
+                          <label className="focus-label">Date Of Birth</label>
+                          <HtmlDateInput
                             type="date"
-                            className="form-control datetimepicker"
+                            className="form-control floating datetimepicker"
                             placeholder="Date Of Birth"
                             name="dateOfBirth"
                             value={value?.dateOfBirth}
@@ -196,12 +195,12 @@ const AddFamilyMemberModal = ({
                             }}
                           />
                         </div>
-                        <div className="">
-                          <label className="label">
+                        <div className="form-group form-focus focused">
+                          <label className="focus-label">
                             Phone <span className="text-danger">*</span>
                           </label>
                           <input
-                            className="form-control"
+                            className="form-control floating"
                             type="text"
                             placeholder="Phone"
                             name="phone"

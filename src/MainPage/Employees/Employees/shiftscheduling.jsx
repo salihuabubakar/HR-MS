@@ -9,7 +9,7 @@ import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import Smile from "../../../assets/img/smile.png";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
-import { Body } from "./styles.js";
+import { Body, DesignationDiv } from "./styles.js";
 import {
   initDept,
   savedDeptReducer,
@@ -22,7 +22,6 @@ import {
   initScheduleEvent,
   savedScheduleEventReducer,
 } from "../../../utils/localStorage";
-import "./styles.js"
 import "regenerator-runtime/runtime";
 
 
@@ -105,6 +104,12 @@ const ShiftScheduling = () => {
         backgroundColor: "#FF9B44",
         color: "#262626",
       },
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      background: "#fff",
+      borderColor: "#ddd",
+      height: "48px",
     }),
   };
   const departments = [];
@@ -325,7 +330,7 @@ const ShiftScheduling = () => {
                   <label className="focus-label">Employee</label>
                 </div>
               </div>
-              <div className="col-sm-6 col-md-3">
+              <DesignationDiv className="col-sm-6 col-md-3">
                 <div className="field">
                   <Select
                     onChange={handleDeptChange}
@@ -334,7 +339,7 @@ const ShiftScheduling = () => {
                     placeholder="Select Department"
                   />
                 </div>
-              </div>
+              </DesignationDiv>
               <div className="col-sm-6 col-md-2">
                 <div className="form-group form-focus focused">
                   <div>
