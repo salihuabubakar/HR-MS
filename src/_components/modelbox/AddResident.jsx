@@ -60,14 +60,14 @@ const AddResident = ({
             </div>
             <div className="card-body">
               <form>
-                <div className="form-group">
-                  <label className="label">
+                <div className="form-group form-focus focused">
+                  <label className="focus-label">
                     Resident Name <span className="text-danger">*</span>
                   </label>
                   <input
                     value={residentName}
                     onChange={(e) => setResidentName(e.target.value)}
-                    className="form-control"
+                    className="form-control floating"
                     type="text"
                     placeholder="Resident Name"
                   />

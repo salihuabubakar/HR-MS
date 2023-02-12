@@ -10,6 +10,10 @@ import {
   initHouse,
   savedHouseReducer,
 } from "../../../../utils/localStorage";
+import { HtmlDateInput } from "./styles";
+
+
+
 const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
   const [selectedUserAccount] = useGlobalState("selectedUserAccount");
   const [depts] = useReducer(savedDeptReducer, [], initDept);
@@ -272,6 +276,13 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
           color: "#262626",
         },
       }),
+      control: (provided, state) => ({
+       ...provided,
+       background: "#fff",
+       borderColor: "#ddd",
+       height: "45px",
+      //  width: "190px"
+     }),
     };
 
     const departments = [];
@@ -338,22 +349,22 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 </div>
 
                 <div className="col-sm">
-                  <div className="right">
-                    <label className="label">First Name</label>
+                  <div className="right form-group form-focus focused">
+                    <label className="focus-label">First Name</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control floating"
                       value={firstName}
                       onChange={(event) => setFirstName(event.target.value)}
                       placeholder="First Name"
                     />
                   </div>
 
-                  <div className="">
-                    <label className="label">Last Name</label>
+                  <div className="form-group form-focus focused">
+                    <label className="focus-label">Last Name</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control floating"
                       value={lastName}
                       onChange={(event) => setLastName(event.target.value)}
                       placeholder="last Name"
@@ -362,11 +373,11 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 </div>
 
                 <div className="col-sm">
-                  <div className="right">
-                    <label className="label">Birth Date</label>
+                  <div className="right form-group form-focus focused">
+                    <label className="focus-label">Birth of Date</label>
                     <div>
-                      <input
-                        className="form-control datetimepicker"
+                      <HtmlDateInput
+                        className="form-control floating datetimepicker"
                         type="date"
                         value={dOB}
                         onChange={handleDateOfBirth}
@@ -376,31 +387,34 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                   </div>
 
                   <div className="">
-                    <label className="label">Gender</label>
+                    {/* <label className="label">Gender</label> */}
                     <select className="select form-control">
-                      <option value="male selected">Male</option>
+                      <option disabled value="Select Gender">
+                        Select Gender
+                      </option>
+                      <option value="male">Male</option>
                       <option value="female">Female</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="col-sm">
-                  <div className="right">
-                    <label className="label">Address</label>
+                  <div className="right form-group form-focus focused">
+                    <label className="focus-label">Address</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control floating"
                       value={address}
                       onChange={(event) => setAddress(event.target.value)}
                       placeholder="Address"
                     />
                   </div>
 
-                  <div className="">
-                    <label className="label">State</label>
+                  <div className="form-group form-focus focused">
+                    <label className="focus-label">State</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control floating"
                       value={state}
                       onChange={(event) => setState(event.target.value)}
                       placeholder="state"
@@ -409,22 +423,22 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 </div>
 
                 <div className="col-sm">
-                  <div className="right">
-                    <label className="label">Country</label>
+                  <div className="right form-group form-focus focused">
+                    <label className="focus-label">Country</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control floating"
                       value={country}
                       onChange={(event) => setCountry(event.target.value)}
                       placeholder="country"
                     />
                   </div>
 
-                  <div className="">
-                    <label className="label">Pin Code</label>
+                  <div className="form-group form-focus focused">
+                    <label className="focus-label">Pin Code</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control floating"
                       value={pinCode}
                       onChange={(event) => setPinCode(event.target.value)}
                       placeholder="Pin Code"
@@ -433,11 +447,11 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 </div>
 
                 <div className="col-sm">
-                  <div className="right">
-                    <label className="label">Phone Number</label>
+                  <div className="right form-group form-focus focused">
+                    <label className="focus-label">Phone Number</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control floating"
                       value={phoneNo}
                       onChange={(event) => setPhoneNo(event.target.value)}
                       placeholder="phone Number"
@@ -445,9 +459,9 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                   </div>
 
                   <div className="">
-                    <label className="label">
+                    {/* <label className="label">
                       Department <span className="text-danger">*</span>
-                    </label>
+                    </label> */}
                     <Select
                       defaultValue={
                         selectedUserAccount[emIndex]?.dept
@@ -466,10 +480,22 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 </div>
 
                 <div className="col-sm">
-                  <div className="right">
+                  {/* <div className="">
                     <label className="label">
-                      Designation <span className="text-danger">*</span>
+                      Reports To <span className="text-danger">*</span>
                     </label>
+                    <select className="select">
+                      <option>-</option>
+                      <option>Wilmer Deluna</option>
+                      <option>Lesley Grauer</option>
+                      <option>Jeffery Lalor</option>
+                    </select>
+                  </div> */}
+
+                  <div className="right">
+                    {/* <label className="label">
+                      Designation <span className="text-danger">*</span>
+                    </label> */}
                     <Select
                       defaultValue={
                         selectedUserAccount[emIndex]?.designation
@@ -484,18 +510,6 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                       styles={customSelectStyles}
                       placeholder="Select Designation"
                     />
-                  </div>
-
-                  <div className="">
-                    <label className="label">
-                      Reports To <span className="text-danger">*</span>
-                    </label>
-                    <select className="select">
-                      <option>-</option>
-                      <option>Wilmer Deluna</option>
-                      <option>Lesley Grauer</option>
-                      <option>Jeffery Lalor</option>
-                    </select>
                   </div>
                 </div>
               </div>

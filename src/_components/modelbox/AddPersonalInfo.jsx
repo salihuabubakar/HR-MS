@@ -10,6 +10,9 @@ import {
   useGlobalState,
 } from "../../context/GlobalState";
 import Select from "react-select";
+
+import {HtmlDateInput} from "./styles"
+
 const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
   const [selectedUserAccount] = useGlobalState("selectedUserAccount");
 
@@ -268,22 +271,22 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
             <form>
               <div className="row-">
                 <div className="col-sm">
-                  <div className="right">
-                    <label className="label">Passport No</label>
+                  <div className="right form-group form-focus focused">
+                    <label className="focus-label">Passport No</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control floating"
                       placeholder="Passport No"
                       value={passPortNo}
                       onChange={(event) => setPassportNo(event.target.value)}
                     />
                   </div>
 
-                  <div className="">
-                    <label className="label">Passport Expiry Date</label>
-                    <input
+                  <div className="form-group form-focus focused">
+                    <label className="focus-label">Passport Expiry Date</label>
+                    <HtmlDateInput
                       type="date"
-                      className="form-control datetimepicker"
+                      className="form-control floating datetimepicker"
                       placeholder="Passport Expiry Date"
                       value={passportExpiryDate}
                       onChange={handlePassExpire}
@@ -292,23 +295,23 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 </div>
 
                 <div className="col-sm">
-                  <div className="right">
-                    <label className="label">Phone Number</label>
+                  <div className="right form-group form-focus focused">
+                    <label className="focus-label">Phone Number</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control floating"
                       placeholder="phone Number"
                       value={phoneNo}
                       onChange={(event) => setPhoneNo(event.target.value)}
                     />
                   </div>
 
-                  <div className="">
-                    <label className="label">
+                  <div className="form-group form-focus focused">
+                    <label className="focus-label">
                       Nationality <span className="text-danger">*</span>
                     </label>
                     <input
-                      className="form-control"
+                      className="form-control floating"
                       type="text"
                       placeholder="Nationality"
                       value={country}
@@ -318,11 +321,11 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 </div>
 
                 <div className="col-sm">
-                  <div className="right">
-                    <label className="label">Religion</label>
+                  <div className="right form-group form-focus focused">
+                    <label className="focus-label">Religion</label>
                     <div>
                       <input
-                        className="form-control"
+                        className="form-control floating"
                         type="text"
                         placeholder="Religion"
                         value={religion}
@@ -332,9 +335,9 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                   </div>
 
                   <div className="">
-                    <label className="label">
+                    {/* <label className="label">
                       Marital status <span className="text-danger">*</span>
-                    </label>
+                    </label> */}
                     <select
                       defaultValue="Select Status"
                       className="select form-control"
@@ -346,10 +349,10 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 </div>
 
                 <div className="col-sm">
-                  <div className="right">
-                    <label className="label">Employment of spouse</label>
+                  <div className="right form-group form-focus focused">
+                    <label className="focus-label">Employment of spouse</label>
                     <input
-                      className="form-control"
+                      className="form-control floating"
                       type="text"
                       placeholder="Employment of spouse"
                       value={emSpouse}
@@ -357,10 +360,10 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                     />
                   </div>
 
-                  <div className="">
-                    <label>No. of children </label>
+                  <div className="form-group form-focus focused">
+                    <label className="focus-label">No. of children </label>
                     <input
-                      className="form-control"
+                      className="form-control floating"
                       type="text"
                       placeholder="No. of children"
                       value={noChildren}

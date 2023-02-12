@@ -59,14 +59,14 @@ const AddDepartment = ({
             </div>
             <div className="card-body">
               <form>
-                <div className="form-group">
-                  <label className="label">
+                <div className="form-group form-focus focused">
+                  <label className="focus-label">
                     Department Name <span className="text-danger">*</span>
                   </label>
                   <input
                     value={deptName}
                     onChange={(e) => setDeptName(e.target.value)}
-                    className="form-control"
+                    className="form-control floating"
                     type="text"
                     placeholder="Department Name"
                   />

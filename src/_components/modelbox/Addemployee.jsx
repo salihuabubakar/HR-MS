@@ -15,6 +15,7 @@ import {
   PopupContainer,
   Card,
 } from "./Addemployee.style";
+import { HtmlDateInput } from "./styles";
 
 const Addemployee = ({
   dispatchUserAcct,
@@ -278,6 +279,12 @@ const Addemployee = ({
         color: "#262626",
       },
     }),
+    control: (provided, state) => ({
+      ...provided,
+      background: "#fff",
+      borderColor: "#ddd",
+      height: "50px",
+    }),
   };
 
   const companyOptions = [
@@ -336,82 +343,82 @@ const Addemployee = ({
                 <form>
                   <div className="row-">
                     <div className="col-sm">
-                      <div className="right">
-                        <label className="label">
+                      <div className="right form-group form-focus focused margin-top">
+                        <label className="focus-label">
                           First Name <span className="text-danger">*</span>
                         </label>
                         <input
                           value={firstName}
                           onChange={(event) => setFirstName(event.target.value)}
-                          className="form-control"
+                          className="form-control floating"
                           type="text"
                           placeholder="First Name"
                         />
                       </div>
-                      <div className="">
-                        <label className="label">Last Name</label>
+                      <div className="form-group form-focus focused margin-top">
+                        <label className="focus-label">Last Name</label>
                         <input
                           value={lastName}
                           onChange={(event) => setLastName(event.target.value)}
-                          className="form-control"
+                          className="form-control floating"
                           type="text"
                           placeholder="Last Name"
                         />
                       </div>
                     </div>
                     <div className="col-sm">
-                      <div className="right">
-                        <label className="label">
+                      <div className="right form-group form-focus focused margin-top">
+                        <label className="focus-label">
                           Username <span className="text-danger">*</span>
                         </label>
                         <input
                           value={userName}
                           onChange={(event) => setUserName(event.target.value)}
-                          className="form-control"
+                          className="form-control floating"
                           type="text"
                           placeholder="Username"
                         />
                       </div>
-                      <div className="">
-                        <label className="label">
+                      <div className="form-group form-focus focused margin-top">
+                        <label className="focus-label">
                           Email <span className="text-danger">*</span>
                         </label>
                         <input
                           value={email}
                           onChange={(event) => setEmail(event.target.value)}
-                          className="form-control"
+                          className="form-control floatng"
                           type="email"
                           placeholder="Email"
                         />
                       </div>
                     </div>
                     <div className="col-sm">
-                      <div className="right">
-                        <label className="label">Password</label>
+                      <div className="right form-group form-focus focused margin-top">
+                        <label className="focus-label">Password</label>
                         <input
                           value={password}
                           onChange={(event) => setPassword(event.target.value)}
-                          className="form-control"
+                          className="form-control floating"
                           type="password"
                           placeholder="Password"
                         />
                       </div>
-                      <div className="">
-                        <label className="label">Confirm Password</label>
+                      <div className="form-group form-focus focused margin-top">
+                        <label className="focus-label">Confirm Password</label>
                         <input
                           value={confirmPassword}
                           onChange={(event) =>
                             setConfirmPassword(event.target.value)
                           }
-                          className="form-control"
+                          className="form-control floating"
                           type="password"
                           placeholder="Confirm Password"
                         />
                       </div>
                     </div>
                     <div className="col-sm">
-                      <div className="right">
-                        <label className="label">
+                      <div className="right form-group form-focus focused margin-top">
+                        <label className="focus-label">
                           Employee ID <span className="text-danger">*</span>
                         </label>
                         <input
@@ -420,17 +427,17 @@ const Addemployee = ({
                             setEmployeeId(event.target.value)
                           }
                           type="text"
-                          className="form-control"
+                          className="form-control floating"
                           placeholder="Employee ID"
                         />
                       </div>
-                      <div className="">
-                        <label className="label">
+                      <div className="form-group form-focus focused margin-top">
+                        <label className="focus-label">
                           Joining Date <span className="text-danger">*</span>
                         </label>
                         <div>
-                          <input
-                            className=" datetimepicker"
+                          <HtmlDateInput
+                            className=" datetimepicker floating form-control"
                             type="date"
                             value={joinDate}
                             onChange={(event) =>
@@ -442,18 +449,18 @@ const Addemployee = ({
                       </div>
                     </div>
                     <div className="col-sm">
-                      <div className="right">
-                        <label className="label">Phone </label>
+                      <div className="right form-group form-focus focused margin-top">
+                        <label className="focus-label">Phone </label>
                         <input
                           value={phoneNo}
                           onChange={(event) => setPhoneNo(event.target.value)}
-                          className="form-control"
+                          className="form-control floating"
                           type="text"
                           placeholder="Phone"
                         />
                       </div>
                       <div className="">
-                        <label className="label">Company</label>
+                        {/* <label className="label">Company</label> */}
                         <Select
                           defaultValue={
                             selectedUserAccount[indexToEdit]?.company
@@ -472,9 +479,9 @@ const Addemployee = ({
                     </div>
                     <div className="col-sm">
                       <div className="right">
-                        <label className="label">
+                        {/* <label className="label">
                           Department <span className="text-danger">*</span>
-                        </label>
+                        </label> */}
                         <Select
                           defaultValue={
                             selectedUserAccount[indexToEdit]?.dept
@@ -491,9 +498,9 @@ const Addemployee = ({
                         />
                       </div>
                       <div className="">
-                        <label className="label">
+                        {/* <label className="label">
                           Designation <span className="text-danger">*</span>
-                        </label>
+                        </label> */}
                         <Select
                           defaultValue={
                             selectedUserAccount[indexToEdit]?.designation
