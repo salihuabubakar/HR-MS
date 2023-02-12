@@ -69,4 +69,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### Host Testing
 
-open[hr-ms.vercel.app](hr-ms.vercel.app) to view the web app.
+open [hr-ms.vercel.app](hr-ms.vercel.app) to view the web app.
