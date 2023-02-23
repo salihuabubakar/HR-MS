@@ -144,7 +144,13 @@ const ServiceWorker = () => {
                 >
                   <div className="profile-widget">
                     <div className="profile-img">
-                      <Link to="#" className="avatar">
+                      <Link
+                        to={{
+                          pathname: "/app/serviceWork/serviceWorkerProfile",
+                          state: { id: id, index: index },
+                        }}
+                        className="avatar"
+                      >
                         <img src={SmileImg} alt="" />
                       </Link>
                     </div>
@@ -172,7 +178,14 @@ const ServiceWorker = () => {
                       </div>
                     </div>
                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                      <Link to="#">{residentName}</Link>
+                      <Link
+                        to={{
+                          pathname: "/app/serviceWork/serviceWorkerProfile",
+                          state: { id: id, index: index },
+                        }}
+                      >
+                        {residentName}
+                      </Link>
                     </h4>
                   </div>
                 </div>
