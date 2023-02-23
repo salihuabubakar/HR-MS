@@ -10,6 +10,7 @@ import "../../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
 import AddHouse from "../../../_components/modelbox/AddHouse";
+import HouseImg from "../../../assets/img/house.png";
 
 const Housing = () => {
   const [house, dispatchHouse] = useReducer(savedHouseReducer, [], initHouse);
@@ -61,6 +62,32 @@ const Housing = () => {
     {
       title: "House",
       dataIndex: "houseName",
+      render: (text, record, index) => {
+        const { id, houseName } = record;
+        return (
+          <React.Fragment>
+            <h2 className="table-avatar">
+              <Link
+                to={{
+                  pathname: "/app/employee/houseProfile",
+                  state: { id: id, index: index },
+                }}
+                className="avatar"
+              >
+                <img alt="" src={HouseImg} />
+              </Link>
+              <Link
+                to={{
+                  pathname: "/app/employee/houseProfile",
+                  state: { id: id, index: index },
+                }}
+              >
+                {houseName}
+              </Link>
+            </h2>
+          </React.Fragment>
+        );
+      },
       // sorter: (a, b) => a.name.length - b.name.length,
     },
     {

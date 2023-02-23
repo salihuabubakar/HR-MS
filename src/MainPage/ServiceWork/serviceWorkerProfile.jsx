@@ -12,7 +12,7 @@ import {
   savedResidentReducer,
 } from "../../utils/localStorage";
 
-const EmployeeProfile = () => {
+const serviceWorkerProfile = () => {
   const location = useLocation();
   const serviceWorkerId = location?.state?.id;
   const serviceWorkerIndex = location?.state?.index;
@@ -221,4 +221,4 @@ const EmployeeProfile = () => {
     </div>
   );
   }
-export default EmployeeProfile;
+export default serviceWorkerProfile;
