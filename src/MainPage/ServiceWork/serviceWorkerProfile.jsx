@@ -12,7 +12,7 @@ import {
   savedResidentReducer,
 } from "../../utils/localStorage";
 
-const EmployeeProfile = () => {
+const serviceWorkerProfile = () => {
   const location = useLocation();
   const serviceWorkerId = location?.state?.id;
   const serviceWorkerIndex = location?.state?.index;
@@ -67,7 +67,7 @@ const EmployeeProfile = () => {
           <div className="page-header">
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Reseident Profile</h3>
+                <h3 className="page-title">Resident Profile</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
                     <Link to="/app/serviceWork/serviceWorker">Residents</Link>
@@ -221,4 +221,4 @@ const EmployeeProfile = () => {
     </div>
   );
   }
-export default EmployeeProfile;
+export default serviceWorkerProfile;

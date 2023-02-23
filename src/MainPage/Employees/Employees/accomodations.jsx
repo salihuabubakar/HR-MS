@@ -8,6 +8,7 @@ import Sidebar from '../../../initialpage/Sidebar/sidebar'
 import { setGlobalState, useGlobalState } from '../../../context/GlobalState';
 import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
 import SmileImg from "../../../assets/img/smile.png";
+import HouseImg from "../../../assets/img/house.png";
 import Select from "react-select";
 import AddHouse from "../../../_components/modelbox/AddHouse";
 
@@ -142,14 +143,17 @@ const Accomodations = () => {
                       className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
                     >
                       <div className="profile-widget">
-                        {/* <div className="profile-img">
+                        <div className="profile-img">
                           <Link
-                            to="/app/profile/employee-profile"
+                            to={{
+                              pathname: "/app/employee/houseProfile",
+                              state: { id: id, index: index },
+                            }}
                             className="avatar"
                           >
-                            <img src={SmileImg} alt="" />
+                            <img src={HouseImg} alt="" />
                           </Link>
-                        </div> */}
+                        </div>
                         <div className="dropdown profile-action">
                           <a
                             className="action-icon dropdown-toggle"
@@ -174,14 +178,19 @@ const Accomodations = () => {
                           </div>
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <Link to="#">
+                          <Link
+                            to={{
+                              pathname: "/app/employee/houseProfile",
+                              state: { id: id, index: index },
+                            }}
+                          >
                             {houseName}
                           </Link>
                         </h4>
                         <div className="small text-muted">
                           Manager: {managerName}
                         </div>
-                        {employee?.length}
+                        {/* {employee?.length} */}
                       </div>
                     </div>
                   );
