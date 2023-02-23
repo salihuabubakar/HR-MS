@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
@@ -117,17 +116,38 @@ const Employeeslist = () => {
             {
               title: "Name",
               dataIndex: "name",
-              render: (text, record) => (
-                <h2 className="table-avatar">
-                  <Link to="/app/profile/employee-profile" className="avatar">
-                    <img alt="" src={SmileImg} />
-                  </Link>
-                  <Link to="/app/profile/employee-profile">
-                    {record.firstName} {record.lastName}{" "}
-                    <span>{record.designation.label}</span>
-                  </Link>
-                </h2>
-              ),
+              render: (text, record, index) => {
+                const {
+                  id,
+                  firstName,
+                  lastName,
+                  designation
+                } = record;
+                return (
+                  <React.Fragment>
+                    <h2 className="table-avatar">
+                      <Link
+                        to={{
+                          pathname: "/app/profile/employee-profile",
+                          state: { id: id, index: index },
+                        }}
+                        className="avatar"
+                      >
+                        <img alt="" src={SmileImg} />
+                      </Link>
+                      <Link
+                        to={{
+                          pathname: "/app/profile/employee-profile",
+                          state: { id: id, index: index },
+                        }}
+                      >
+                        {firstName} {lastName}{" "}
+                        <span>{designation?.label}</span>
+                      </Link>
+                    </h2>
+                  </React.Fragment>
+                )
+              }
               // sorter: (a, b) => a.name.length - b.name.length,
             },
             {

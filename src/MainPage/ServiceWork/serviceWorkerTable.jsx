@@ -68,6 +68,32 @@ const ServiceWorkerTable = () => {
     {
       title: "Resident",
       dataIndex: "residentName",
+      render: (text, record, index) => {
+        const { id, residentName } = record;
+        return (
+          <React.Fragment>
+            <h2 className="table-avatar">
+              <Link
+                to={{
+                  pathname: "/app/serviceWork/serviceWorkerProfile",
+                  state: { id: id, index: index },
+                }}
+                className="avatar"
+              >
+                <img alt="" src={SmileImg} />
+              </Link>
+              <Link
+                to={{
+                  pathname: "/app/serviceWork/serviceWorkerProfile",
+                  state: { id: id, index: index },
+                }}
+              >
+                {residentName}
+              </Link>
+            </h2>
+          </React.Fragment>
+        );
+      },
       // sorter: (a, b) => a.name.length - b.name.length,
     },
     {
