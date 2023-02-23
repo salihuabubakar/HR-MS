@@ -90,7 +90,7 @@ const houseProfile = () => {
                     <div className="card-body">
                       <div className="">
                         <div className="profile-img">
-                          <a href="#">
+                          <a>
                             <img
                               style={{ width: "80px" }}
                               alt=""

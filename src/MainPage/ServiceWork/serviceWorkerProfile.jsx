@@ -85,7 +85,7 @@ const serviceWorkerProfile = () => {
                   <div className="profile-view">
                     <div className="profile-img-wrap">
                       <div className="profile-img">
-                        <a href="#">
+                        <a>
                           <img alt="" src={SmileImg} />
                         </a>
                       </div>

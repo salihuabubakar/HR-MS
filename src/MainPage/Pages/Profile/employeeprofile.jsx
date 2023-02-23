@@ -260,7 +260,7 @@ const EmployeeProfile = () => {
                   <div className="profile-view">
                     <div className="profile-img-wrap">
                       <div className="profile-img">
-                        <a href="#">
+                        <a>
                           <img alt="" src={image} />
                         </a>
                       </div>
@@ -288,13 +288,13 @@ const EmployeeProfile = () => {
                             <li>
                               <div className="title">Phone:</div>
                               <div className="text">
-                                <a href="">{phoneNo}</a>
+                                <a>{phoneNo}</a>
                               </div>
                             </li>
                             <li>
                               <div className="title">Email:</div>
                               <div className="text">
-                                <a href="">{email}</a>
+                                <a>{email}</a>
                               </div>
                             </li>
                             <li>
@@ -730,7 +730,6 @@ const EmployeeProfile = () => {
                           <a
                             data-bs-target="#edit_project"
                             data-bs-toggle="modal"
-                            href="#"
                             className="dropdown-item"
                           >
                             <i className="fa fa-pencil m-r-5" /> Edit
