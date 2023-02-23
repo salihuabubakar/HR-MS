@@ -67,7 +67,7 @@ const serviceWorkerProfile = () => {
           <div className="page-header">
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Reseident Profile</h3>
+                <h3 className="page-title">Resident Profile</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
                     <Link to="/app/serviceWork/serviceWorker">Residents</Link>
