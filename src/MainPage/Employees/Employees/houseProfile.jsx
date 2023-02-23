@@ -112,7 +112,9 @@ const houseProfile = () => {
                         <li>
                           <div className="title">Number of employees</div>
                           <div className="text">
-                            {totalHouseEmployees?.length}
+                            {totalHouseEmployees?.length
+                              ? totalHouseEmployees?.length
+                              : "0"}
                           </div>
                         </li>
                       </ul>
@@ -123,18 +125,20 @@ const houseProfile = () => {
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">List of employees</h3>
-                      {totalHouseEmployees?.map((employees, index) => {
-                        const {label, value} = employees;
-                        return (
-                          <React.Fragment key={value}>
-                            <ul className="personal-info">
-                              <li>
-                                <div className="text">{label}</div>
-                              </li>
-                            </ul>
-                          </React.Fragment>
-                        );
-                      })}
+                      {totalHouseEmployees ? totalHouseEmployees?.map(
+                        (employees, index) => {
+                          const { label, value } = employees;
+                          return (
+                            <React.Fragment key={value}>
+                              <ul className="personal-info">
+                                <li>
+                                  <div className="text">{label}</div>
+                                </li>
+                              </ul>
+                            </React.Fragment>
+                          );
+                        }
+                      ) : "Ops! No employees in the house."}
                     </div>
                   </div>
                 </div>
