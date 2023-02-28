@@ -26,7 +26,9 @@ import Employees from '../MainPage/Employees';
 import Projects from '../MainPage/Employees/Projects';
 import Employee from '../MainPage/Employees/Employees';
 //Service Worker
-import ServiceWork from "../MainPage/ServiceWork"
+import ServiceWork from "../MainPage/ServiceWork";
+// Task Management
+import TaskManager from "../MainPage/TaskManagement";
 
 export default [
   {
@@ -44,6 +46,10 @@ export default [
   {
     path: "employees",
     component: Employees,
+  },
+  {
+    path: "taskmanagement",
+    component: TaskManager,
   },
   {
     path: "serviceWork",

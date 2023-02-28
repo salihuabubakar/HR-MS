@@ -25,3 +25,25 @@ export const HtmlSelectInput = styled.input`
     width: 100%;
   }
 `;
+
+export const RadioBtn = styled.div`
+  display: flex;
+  input[type="radio"] {
+    -webkit-appearance: none;
+  }
+  label {
+    height: 100%;
+    width: 100%;
+    border: 1px solid #ddd;
+    position: relative;
+    color: #808080;
+    font-weight: 900;
+    transition: 0.5s;
+    cursor: pointer;
+    padding: 2px;
+  }
+  input[type="radio"]:checked + label {
+    background-color: #ff9b44;
+    color: #ffffff;
+  }
+`;

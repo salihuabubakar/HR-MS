@@ -95,6 +95,12 @@ export const Card = styled.div`
         display: none;
       }
     }
+    .radio-label {
+      ${mobile} {
+        font-size: 9px;
+        display: block;
+      }
+    }
   }
 
   .row- {

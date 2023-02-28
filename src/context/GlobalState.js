@@ -20,6 +20,8 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedExperienceModal: [],
   showFamilyMenberModal: false,
   selectedFamilyMemberInfo: [],
+  showTaskModal: false,
+  selectedTaskInfo: [],
 });
 
 export {setGlobalState, useGlobalState}

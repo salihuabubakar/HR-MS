@@ -10,14 +10,14 @@ import ServiceWorkerProfile from "./serviceWorkerProfile";
 
 const ServiceRoute = ({ match }) => (
   <Switch>
-    <Redirect exact from={`${match.url}/`} to={`${match.url}/serviceWorker`} />
-    <Route path={`${match.url}/serviceWorker`} component={ServiceWorker} />
+    <Redirect exact from={`${match.url}/`} to={`${match.url}/service-worker`} />
+    <Route path={`${match.url}/service-worker`} component={ServiceWorker} />
     <Route
-      path={`${match.url}/serviceWorkerTable`}
+      path={`${match.url}/service-worker-table`}
       component={ServiceWorkerTable}
     />
     <Route
-      path={`${match.url}/serviceWorkerProfile`}
+      path={`${match.url}/service-worker-profile`}
       component={ServiceWorkerProfile}
     />
   </Switch>

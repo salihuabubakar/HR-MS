@@ -68,6 +68,7 @@ const AddShift = ({
   };
 
   const handleStartTimeChange = (newValue) => {
+    let newTime;
     //  const hours = newValue;
     //  let date = new Date(hours).toLocaleString();
     //  date = date.split(" ").splice(1).join(" ");
@@ -75,11 +76,16 @@ const AddShift = ({
     //  const minutes = newValue.toString().padStart(2, "0");
     //  const textValue = hours + ":" + minutes;
     //  console.log("dateString", textValue);
-    setStartTime(newValue.$d);
+    newTime= newValue.$d;
+    setStartTime(
+      newTime.toString().slice(0, 21) + newTime.toString().slice(24)
+    );
   };
 
   const handleEndTimeChange = (newValue) => {
-    setEndTime(newValue.$d);
+    let newTime;
+    newTime = newValue.$d;
+    setEndTime(newTime.toString().slice(0, 21) + newTime.toString().slice(24));
   };
 
   const handleSelectedDateChange = (newValue) => {
@@ -192,6 +198,7 @@ const AddShift = ({
                           <TimePicker
                             label="Start Time"
                             value={startTime}
+                            // value={setSeconds(value, 0)}
                             onChange={handleStartTimeChange}
                             renderInput={(params) => <TextField {...params} />}
                           />

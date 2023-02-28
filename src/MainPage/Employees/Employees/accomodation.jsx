@@ -69,7 +69,7 @@ const Housing = () => {
             <h2 className="table-avatar">
               <Link
                 to={{
-                  pathname: "/app/employee/houseProfile",
+                  pathname: "/app/employee/house-profile",
                   state: { id: id, index: index },
                 }}
                 className="avatar"
@@ -78,7 +78,7 @@ const Housing = () => {
               </Link>
               <Link
                 to={{
-                  pathname: "/app/employee/houseProfile",
+                  pathname: "/app/employee/house-profile",
                   state: { id: id, index: index },
                 }}
               >
