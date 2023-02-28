@@ -128,8 +128,15 @@ const TaskManager = () => {
           </div>
           {/* Search Filter */}
           <div className="row staff-grid-row">
-            {taskList?.map((user, index) => {
-              const { id, taskTitle, description, employee, taskType, timeAllocated } = user;
+            {taskList ? taskList?.map((user, index) => {
+              const {
+                id,
+                taskTitle,
+                description,
+                employee,
+                taskType,
+                timeAllocated,
+              } = user;
               return (
                 <div key={id} className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
                   <div className="card">
@@ -187,17 +194,20 @@ const TaskManager = () => {
                       </div>
                       <div className="project-members m-b-15">
                         <div>Team:</div>
-                        <ul style={{display: "flex", flexDirection: "column"}} className="team-members">
+                        <ul
+                          style={{ display: "flex", flexDirection: "column" }}
+                          className="team-members"
+                        >
                           {employee?.map((user, index) => {
-                            const {value, label} = user;
+                            const { value, label } = user;
                             return (
-                              <li key={value}>  
-                                <a data-bs-toggle="tooltip" title="John Doe">    
-                                  <img alt="" src={SmileImg} />  
-                                </a>  
+                              <li key={value}>
+                                <a data-bs-toggle="tooltip" title="John Doe">
+                                  <img alt="" src={SmileImg} />
+                                </a>
                                 {label}
                               </li>
-                            )
+                            );
                           })}
                         </ul>
                       </div>
@@ -213,7 +223,7 @@ const TaskManager = () => {
                   </div>
                 </div>
               );
-            })}
+            }) : "No task available"}
           </div>
         </div>
 
