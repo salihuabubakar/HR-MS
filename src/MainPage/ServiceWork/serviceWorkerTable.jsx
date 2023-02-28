@@ -75,7 +75,7 @@ const ServiceWorkerTable = () => {
             <h2 className="table-avatar">
               <Link
                 to={{
-                  pathname: "/app/serviceWork/serviceWorkerProfile",
+                  pathname: "/app/servicework/service-worker-profile",
                   state: { id: id, index: index },
                 }}
                 className="avatar"
@@ -84,7 +84,7 @@ const ServiceWorkerTable = () => {
               </Link>
               <Link
                 to={{
-                  pathname: "/app/serviceWork/serviceWorkerProfile",
+                  pathname: "/app/servicework/service-worker-profile",
                   state: { id: id, index: index },
                 }}
               >
@@ -157,13 +157,13 @@ const ServiceWorkerTable = () => {
                 </a>
                 <div className="view-icons">
                   <Link
-                    to="/app/serviceWork/serviceWorker"
+                    to="/app/serviceWork/service-worker"
                     className="grid-view btn btn-link"
                   >
                     <i className="fa fa-th" />
                   </Link>
                   <Link
-                    to="/app/serviceWork/serviceWorkerTable"
+                    to="/app/servicework/service-worker-table"
                     className="list-view btn btn-link active"
                   >
                     <i className="fa fa-bars" />

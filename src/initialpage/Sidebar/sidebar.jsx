@@ -404,28 +404,59 @@ const toggleLevelThree = (value) => {
                 <li className="submenu">
                   <a
                     // data-bs-toggle="dropdown"
-                    className={isSideMenu == "serviceWork" ? "subdrop" : ""}
+                    className={isSideMenu == "taskmanagement" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(
-                        isSideMenu == "serviceWork" ? "" : "serviceWork"
+                        isSideMenu == "taskmanagement" ? "" : "taskmanagement"
+                      )
+                    }
+                  >
+                    <i className="la la-dashboard" />{" "}
+                    <span> Task Management</span>{" "}
+                    <span className="menu-arrow" />
+                  </a>
+                  {isSideMenu == "taskmanagement" ? (
+                    <ul>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("task-manager") ? "active" : ""
+                          }
+                          to="/app/taskmanagement/task-manager"
+                        >
+                          Task Manager
+                        </Link>
+                      </li>
+                    </ul>
+                  ) : (
+                    ""
+                  )}
+                </li>
+                <li className="submenu">
+                  <a
+                    // data-bs-toggle="dropdown"
+                    className={isSideMenu == "servicework" ? "subdrop" : ""}
+                    onClick={() =>
+                      toggleSidebar(
+                        isSideMenu == "servicework" ? "" : "servicework"
                       )
                     }
                   >
                     <i className="la la-user" /> <span> Service Worker</span>{" "}
                     <span className="menu-arrow" />
                   </a>
-                  {isSideMenu == "serviceWork" ? (
+                  {isSideMenu == "servicework" ? (
                     <ul>
                       <li>
                         <Link
                           className={
-                            pathname.includes("serviceWorker")
+                            pathname.includes("service-worker")
                               ? "active"
-                              : pathname.includes("serviceWorkerTable")
+                              : pathname.includes("service-worker-table")
                               ? "active"
                               : ""
                           }
-                          to="/app/serviceWork/serviceWorker"
+                          to="/app/servicework/service-worker"
                         >
                           Residents
                         </Link>

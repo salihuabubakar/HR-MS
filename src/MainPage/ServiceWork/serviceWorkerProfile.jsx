@@ -70,7 +70,7 @@ const serviceWorkerProfile = () => {
                 <h3 className="page-title">Resident Profile</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/app/serviceWork/serviceWorker">Residents</Link>
+                    <Link to="/app/servicework/service-worker">Residents</Link>
                   </li>
                   <li className="breadcrumb-item active">Profile</li>
                 </ul>
@@ -185,7 +185,6 @@ const serviceWorkerProfile = () => {
               id="emp_profile"
               className="pro-overview tab-pane fade show active"
             >
-
               <div className="row">
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">

@@ -146,7 +146,7 @@ const Accomodations = () => {
                         <div className="profile-img">
                           <Link
                             to={{
-                              pathname: "/app/employee/houseProfile",
+                              pathname: "/app/employee/house-profile",
                               state: { id: id, index: index },
                             }}
                             className="avatar"
@@ -180,7 +180,7 @@ const Accomodations = () => {
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link
                             to={{
-                              pathname: "/app/employee/houseProfile",
+                              pathname: "/app/employee/house-profile",
                               state: { id: id, index: index },
                             }}
                           >

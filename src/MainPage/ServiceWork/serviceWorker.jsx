@@ -96,13 +96,13 @@ const ServiceWorker = () => {
                 </a>
                 <div className="view-icons">
                   <Link
-                    to="/app/serviceWork/serviceWorker"
+                    to="/app/servicework/service-worker"
                     className="grid-view btn btn-link active"
                   >
                     <i className="fa fa-th" />
                   </Link>
                   <Link
-                    to="/app/serviceWork/serviceWorkerTable"
+                    to="/app/servicework/service-worker-table"
                     className="list-view btn btn-link"
                   >
                     <i className="fa fa-bars" />
@@ -146,7 +146,7 @@ const ServiceWorker = () => {
                     <div className="profile-img">
                       <Link
                         to={{
-                          pathname: "/app/serviceWork/serviceWorkerProfile",
+                          pathname: "/app/servicework/service-worker-profile",
                           state: { id: id, index: index },
                         }}
                         className="avatar"
@@ -180,7 +180,7 @@ const ServiceWorker = () => {
                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                       <Link
                         to={{
-                          pathname: "/app/serviceWork/serviceWorkerProfile",
+                          pathname: "/app/servicework/service-worker-profile",
                           state: { id: id, index: index },
                         }}
                       >
