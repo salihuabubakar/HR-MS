@@ -64,6 +64,8 @@ const AddTask = ({
   );
 
   //  const isEdit = () => !!(deptIdToEdit && depts[indexToEdit]);
+  let manager = "Salihu";
+  let taskStatus = "In-progress"
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -73,6 +75,8 @@ const AddTask = ({
       timeAllocated,
       employee,
       description,
+      manager,
+      taskStatus,
       id,
     };
     if (selectedTaskInfo[indexToEdit]?.id) {

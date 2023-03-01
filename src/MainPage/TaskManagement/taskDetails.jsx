@@ -1,0 +1,658 @@
+import React, { useEffect, useState, useMemo, useReducer } from "react";
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
+import {
+  Avatar_16,
+  Avatar_02,
+  Avatar_05,
+  Avatar_09,
+  Avatar_10,
+  Avatar_11,
+  Avatar_01,
+  PlaceHolder,
+} from "../../Entryfile/imagepath";
+import Header from "../../initialpage/Sidebar/header";
+import Sidebar from "../../initialpage/Sidebar/sidebar";
+import Editproject from "../../_components/modelbox/Editproject";
+import { setGlobalState, useGlobalState } from "../../context/GlobalState";
+import { initTask, savedTaskReducer, initSubTask, savedSubTaskReducer } from "../../utils/localStorage";
+import SmileImg from "../../assets/img/smile.png";
+import { useParams, useLocation } from "react-router-dom";
+import { Span } from "./style";
+
+const TaskDetails = () => {
+    const location = useLocation();
+    const selecetedTaskId = location?.state?.id;
+
+    const [tasks, dispatchTasks] = useReducer(savedTaskReducer, [], initTask);
+
+    useEffect(() => {
+      localStorage.setItem("task", JSON.stringify(tasks));
+    }, [tasks]);
+
+    const [taskList, setTaskList] = useState();
+    useEffect(() => {
+      setTaskList(tasks);
+    }, [tasks]);
+
+    const [subTaskTitle, dispatchSubTaskTitle] = useReducer(
+      savedSubTaskReducer,
+      [],
+      initSubTask
+    );
+
+    useEffect(() => {
+      localStorage.setItem("subTask", JSON.stringify(subTaskTitle));
+    }, [subTaskTitle]);
+
+    const [subTaskTitleArray, setSubTaskTitleArray] = useState();
+    useEffect(() => {
+      setSubTaskTitleArray(subTaskTitle);
+    }, [subTaskTitle]);
+
+    const [menu, setMenu] = useState(false);
+    const [indexToEdit, setIndexToEdit] = useState(0);
+
+    const handleTaskEdit = (id, index) => {
+      setIndexToEdit(index);
+      setGlobalState("showTaskModal", true);
+      setGlobalState("selectedTaskInfo", tasks);
+    };
+
+    const selectedTask = taskList?.find((task) => task?.id === selecetedTaskId);
+
+    const taskId = selectedTask?.id;
+    const taskTitle = selectedTask?.taskTitle;
+    const taskType = selectedTask?.taskType;
+    const timeAllocated = selectedTask?.timeAllocated;
+    const taskDescription = selectedTask?.description;
+    const totalAssignedEmployees = selectedTask?.employee;
+    const managerName = selectedTask?.manager;
+    const taskStatus = selectedTask?.taskStatus;
+
+
+    const [subTask, setSubTask] = useState("");
+    const [subTaskId, setSubTaskId] = useState(Date.now());
+
+    console.log("checking...", subTask)
+
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const subTaskInfo = {
+        subTaskId,
+        taskId,
+        selecetedTaskId,
+        subTask,
+      };
+      // if (subTaskId) {
+      //   dispatchSubTaskTitle({ type: "update", payload: subTaskInfo });
+      // } else {
+      dispatchSubTaskTitle({ type: "push", payload: subTaskInfo });
+      // }
+      e.reset()
+    };
+
+    const handleSubTaskDelete = async (index) => {
+      dispatchSubTaskTitle({
+        type: "delete",
+        payload: subTaskTitle[index],
+      });
+    };
+
+
+    const toggleMobileMenu = () => {
+      setMenu(!menu);
+    };
+
+  useEffect(() => {
+    if ($(".select").length > 0) {
+      $(".select").select2({
+        minimumResultsForSearch: -1,
+        width: "100%",
+      });
+    }
+  });
+  return (
+    <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+      <Header onMenuClick={(value) => toggleMobileMenu()} />
+      <Sidebar />
+      <div className="page-wrapper">
+        <Helmet>
+          <title>Task Details - HRMS Admin</title>
+          <meta name="description" content="Login page" />
+        </Helmet>
+        {/* Page Content */}
+        <div className="content container-fluid">
+          {/* Page Header */}
+          <div className="page-header">
+            <div className="row align-items-center">
+              <div className="col">
+                <h3 className="page-title">Task Details</h3>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/app/main/dashboard">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Task Manager</li>
+                </ul>
+              </div>
+              <div className="col-auto float-end ml-auto">
+                <a
+                  href="#"
+                  className="btn add-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#edit_project"
+                >
+                  <i className="fa fa-plus" /> Edit Task
+                </a>
+              </div>
+            </div>
+          </div>
+          {/* /Page Header */}
+          <div className="row">
+            <div className="col-lg-8 col-xl-9">
+              <div className="card">
+                <div className="card-body">
+                  <div className="project-title">
+                    <h5 className="card-title">{taskTitle}</h5>
+                  </div>
+                  <p>{taskDescription}</p>
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title m-b-20">Uploaded image files</h5>
+                  <div className="row">
+                    <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
+                      <div className="uploaded-box">
+                        <div className="uploaded-img">
+                          <img src={PlaceHolder} className="img-fluid" alt="" />
+                        </div>
+                        <div className="uploaded-img-name">demo.png</div>
+                      </div>
+                    </div>
+                    <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
+                      <div className="uploaded-box">
+                        <div className="uploaded-img">
+                          <img src={PlaceHolder} className="img-fluid" alt="" />
+                        </div>
+                        <div className="uploaded-img-name">demo.png</div>
+                      </div>
+                    </div>
+                    <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
+                      <div className="uploaded-box">
+                        <div className="uploaded-img">
+                          <img src={PlaceHolder} className="img-fluid" alt="" />
+                        </div>
+                        <div className="uploaded-img-name">demo.png</div>
+                      </div>
+                    </div>
+                    <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
+                      <div className="uploaded-box">
+                        <div className="uploaded-img">
+                          <img src={PlaceHolder} className="img-fluid" alt="" />
+                        </div>
+                        <div className="uploaded-img-name">demo.png</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title m-b-20">Uploaded files</h5>
+                  <ul className="files-list">
+                    <li>
+                      <div className="files-cont">
+                        <div className="file-type">
+                          <span className="files-icon">
+                            <i className="fa fa-file-pdf-o" />
+                          </span>
+                        </div>
+                        <div className="files-info">
+                          <span className="file-name text-ellipsis">
+                            <a
+                              href="#"
+                              onClick={(event) => event.preventDefault()}
+                            >
+                              AHA Selfcare Mobile Application Test-Cases.xls
+                            </a>
+                          </span>
+                          <span className="file-author">
+                            <a
+                              href="#"
+                              onClick={(event) => event.preventDefault()}
+                            >
+                              John Doe
+                            </a>
+                          </span>{" "}
+                          <span className="file-date">May 31st at 6:53 PM</span>
+                          <div className="file-size">Size: 14.8Mb</div>
+                        </div>
+                        <ul className="files-action">
+                          <li className="dropdown dropdown-action">
+                            <a
+                              href=""
+                              className="dropdown-toggle btn btn-link"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i className="material-icons">more_horiz</i>
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <a className="dropdown-item" href="">
+                                Download
+                              </a>
+                              <a
+                                className="dropdown-item"
+                                data-bs-toggle="modal"
+                                data-bs-target="#share_files"
+                              >
+                                Share
+                              </a>
+                              <a className="dropdown-item" href="">
+                                Delete
+                              </a>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="files-cont">
+                        <div className="file-type">
+                          <span className="files-icon">
+                            <i className="fa fa-file-pdf-o" />
+                          </span>
+                        </div>
+                        <div className="files-info">
+                          <span className="file-name text-ellipsis">
+                            <a
+                              href="#"
+                              onClick={(event) => event.preventDefault()}
+                            >
+                              AHA Selfcare Mobile Application Test-Cases.xls
+                            </a>
+                          </span>
+                          <span className="file-author">
+                            <a
+                              href="#"
+                              onClick={(event) => event.preventDefault()}
+                            >
+                              Richard Miles
+                            </a>
+                          </span>{" "}
+                          <span className="file-date">May 31st at 6:53 PM</span>
+                          <div className="file-size">Size: 14.8Mb</div>
+                        </div>
+                        <ul className="files-action">
+                          <li className="dropdown dropdown-action">
+                            <a
+                              href=""
+                              className="dropdown-toggle btn btn-link"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i className="material-icons">more_horiz</i>
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <a className="dropdown-item" href="">
+                                Download
+                              </a>
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                data-bs-toggle="modal"
+                                data-bs-target="#share_files"
+                              >
+                                Share
+                              </a>
+                              <a className="dropdown-item" href="">
+                                Delete
+                              </a>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="project-task">
+                <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      href="#all_tasks"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                    >
+                      All Tasks
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#pending_tasks"
+                      data-bs-toggle="tab"
+                      aria-expanded="false"
+                    >
+                      Pending Tasks
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#completed_tasks"
+                      data-bs-toggle="tab"
+                      aria-expanded="false"
+                    >
+                      Completed Tasks
+                    </a>
+                  </li>
+                </ul>
+                <div className="tab-content">
+                  <div className="tab-pane show active" id="all_tasks">
+                    <div className="task-wrapper">
+                      <div className="task-list-container">
+                        <div className="task-list-body">
+                          <ul id="task-list">
+                            <li className="task">
+                              <form>
+                                <div className="task-container">
+                                  <input
+                                    style={{border: "none", width: "100%"}}
+                                    value={subTask}
+                                    onChange={(e) => setSubTask(e.target.value)}
+                                    className="task-label"
+                                    placeholder="Add Task"
+                                  />
+                                  <span className="task-action-btn task-btn-right">
+                                    <span
+                                      className="action-circle large"
+                                      title="Add Task"
+                                      onClick={handleSubmit}
+                                    >
+                                      <i className="material-icons">add</i>
+                                    </span>
+                                  </span>
+                                </div>
+                              </form>
+                            </li>
+                            {subTaskTitleArray ? subTaskTitleArray?.map((subtasks, index) => {
+                              const { subTaskId, taskId, selecetedTaskId, subTask} = subtasks;
+                              if (taskId == selecetedTaskId) {
+                                return (
+                                  <li key={index} className="task">
+                                    <div className="task-container">
+                                      <span className="task-action-btn task-check">
+                                        <span
+                                          className="action-circle large complete-btn"
+                                          title="Mark Complete"
+                                        >
+                                          <i className="material-icons">
+                                            check
+                                          </i>
+                                        </span>
+                                      </span>
+                                      <span className="task-label">
+                                        {subTask}
+                                      </span>
+                                      <span className="task-action-btn task-btn-right">
+                                        {/* <span
+                                          className="action-circle large"
+                                          title="Update"
+                                          onClick={() =>
+                                            handleSubTaskEdit(subTaskId, index)
+                                          }
+                                        >
+                                          <i className="material-icons">
+                                            person_add
+                                          </i>
+                                        </span> */}
+                                        <span
+                                          className="action-circle large delete-btn"
+                                          title="Delete Task"
+                                          onClick={() =>
+                                            handleSubTaskDelete(index)
+                                          }
+                                        >
+                                          <i className="material-icons">
+                                            delete
+                                          </i>
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </li>
+                                );
+                              }
+                            }) : "No sub tasks available"}
+                            {/* <li className="task">
+                              <div className="task-container">
+                                <span className="task-action-btn task-check">
+                                  <span
+                                    className="action-circle large complete-btn"
+                                    title="Mark Complete"
+                                  >
+                                    <i className="material-icons">check</i>
+                                  </span>
+                                </span>
+                                <span className="task-label">
+                                  Patient appointment booking
+                                </span>
+                                <span className="task-action-btn task-btn-right">
+                                  <span
+                                    className="action-circle large"
+                                    title="Assign"
+                                  >
+                                    <i className="material-icons">person_add</i>
+                                  </span>
+                                  <span
+                                    className="action-circle large delete-btn"
+                                    title="Delete Task"
+                                  >
+                                    <i className="material-icons">delete</i>
+                                  </span>
+                                </span>
+                              </div>
+                            </li> */}
+                            {/* <li className="completed task">
+                              <div className="task-container">
+                                <span className="task-action-btn task-check">
+                                  <span
+                                    className="action-circle large complete-btn"
+                                    title="Mark Complete"
+                                  >
+                                    <i className="material-icons">check</i>
+                                  </span>
+                                </span>
+                                <span className="task-label">
+                                  Doctor available module
+                                </span>
+                                <span className="task-action-btn task-btn-right">
+                                  <span
+                                    className="action-circle large"
+                                    title="Assign"
+                                  >
+                                    <i className="material-icons">person_add</i>
+                                  </span>
+                                  <span
+                                    className="action-circle large delete-btn"
+                                    title="Delete Task"
+                                  >
+                                    <i className="material-icons">delete</i>
+                                  </span>
+                                </span>
+                              </div>
+                            </li> */}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tab-pane" id="pending_tasks" />
+                  <div className="tab-pane" id="completed_tasks" />
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-xl-3">
+              <div className="card">
+                <div className="card-body">
+                  <h6 className="card-title m-b-15">Project details</h6>
+                  <table className="table table-striped table-border">
+                    <tbody>
+                      <tr>
+                        <td>Task Type:</td>
+                        <td className="text-end">{taskType}</td>
+                      </tr>
+                      <tr>
+                        <td>Total Hours:</td>
+                        <td className="text-end">{timeAllocated}hr</td>
+                      </tr>
+                      <tr>
+                        <td>Created:</td>
+                        <td className="text-end">25 Feb, 2019</td>
+                      </tr>
+                      <tr>
+                        <td>Deadline:</td>
+                        <td className="text-end">12 Jun, 2019</td>
+                      </tr>
+                      <tr>
+                        <td>Priority:</td>
+                        <td className="text-end">
+                          <div className="btn-group">
+                            <a
+                              href="#"
+                              className="badge badge-danger dropdown-toggle"
+                              data-bs-toggle="dropdown"
+                            >
+                              Highest{" "}
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <a className="dropdown-item" href="#">
+                                <i className="fa fa-dot-circle-o text-danger" />{" "}
+                                High priority
+                              </a>
+                              <a className="dropdown-item" href="#">
+                                <i className="fa fa-dot-circle-o text-primary" />{" "}
+                                Medium priority
+                              </a>
+                              <a className="dropdown-item" href="#">
+                                <i className="fa fa-dot-circle-o text-success" />{" "}
+                                Low priority
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Created by:</td>
+                        <td className="text-end">
+                          <Link onClick={(event) => event.preventDefault()}>
+                            {managerName}
+                          </Link>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Status:</td>
+                        <td className="text-end">{taskStatus}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p className="m-b-5">
+                    Progress <span className="text-success float-end">40%</span>
+                  </p>
+                  <div className="progress progress-xs mb-0">
+                    <div
+                      className="progress-bar bg-success"
+                      role="progressbar"
+                      data-bs-toggle="tooltip"
+                      title="40%"
+                      style={{ width: "40%" }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="card project-user">
+                <div className="card-body">
+                  <h6 className="card-title m-b-20">Assigned Leader </h6>
+                  <ul className="list-box">
+                    <li>
+                      <Link onClick={(event) => event.preventDefault()}>
+                        <div className="list-item">
+                          <div className="list-left">
+                            <span className="avatar">
+                              <img alt="" src={SmileImg} />
+                            </span>
+                          </div>
+                          <div className="list-body">
+                            <span className="message-author">
+                              {managerName}
+                            </span>
+                            <div className="clearfix" />
+                            <span className="message-content">Team Leader</span>
+                          </div>
+                        </div>
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="card project-user">
+                <div className="card-body">
+                  <h6 className="card-title m-b-20">
+                    Assigned Team
+                    {/* <button
+                      type="button"
+                      className="float-end btn btn-primary btn-sm"
+                      data-bs-toggle="modal"
+                      data-bs-target="#assign_user"
+                    >
+                      <i className="fa fa-plus" /> Update
+                    </button> */}
+                  </h6>
+                  <ul className="list-box">
+                    {totalAssignedEmployees
+                      ? totalAssignedEmployees?.map((user, index) => {
+                          const { value, label } = user;
+                          return (
+                            <li>
+                              <Link onClick={(event) => event.preventDefault()}>
+                                <div className="list-item">
+                                  <div className="list-left">
+                                    <span className="avatar">
+                                      <img alt="" src={SmileImg} />
+                                    </span>
+                                  </div>
+                                  <div className="list-body">
+                                    <span className="message-author">
+                                      {label}
+                                    </span>
+                                    <div className="clearfix" />
+                                    <span className="message-content">
+                                      Web Designer
+                                    </span>
+                                  </div>
+                                </div>
+                              </Link>
+                            </li>
+                          );
+                        })
+                      : "No Team assigned"}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* /Page Content */}
+        {/* /Assign User Modal */}
+        {/* Edit Project Modal */}
+        <Editproject />
+        {/* /Edit Project Modal */}
+      </div>
+    </div>
+  );
+};
+
+export default TaskDetails;
