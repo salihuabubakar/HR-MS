@@ -94,6 +94,25 @@ export const savedTaskReducer = (state, { type, payload }) => {
   }
 };
 
+export const initSubTask = () => {
+  const storageEvents = localStorage.getItem("subTask");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedSubTaskReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((house) => (house.id === payload.id ? payload : house));
+    case "delete":
+      return state.filter((house) => house.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};
+
 
 export const initResident = () => {
   const storageEvents = localStorage.getItem("resident");

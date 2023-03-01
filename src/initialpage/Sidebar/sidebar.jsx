@@ -420,9 +420,13 @@ const toggleLevelThree = (value) => {
                       <li>
                         <Link
                           className={
-                            pathname.includes("task-manager") ? "active" : ""
+                            pathname.includes("task-manager-table")
+                              ? "active"
+                              : pathname.includes("task-manager-table")
+                              ? "active"
+                              : ""
                           }
-                          to="/app/taskmanagement/task-manager"
+                          to="/app/taskmanagement/task-manager-table"
                         >
                           Task Manager
                         </Link>

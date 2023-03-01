@@ -100,6 +100,12 @@ const TaskManager = () => {
                   >
                     <i className="fa fa-th" />
                   </Link>
+                  <Link
+                    to="/app/taskmanagement/task-manager-table"
+                    className="list-view btn btn-link"
+                  >
+                    <i className="fa fa-bars" />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -128,102 +134,120 @@ const TaskManager = () => {
           </div>
           {/* Search Filter */}
           <div className="row staff-grid-row">
-            {taskList ? taskList?.map((user, index) => {
-              const {
-                id,
-                taskTitle,
-                description,
-                employee,
-                taskType,
-                timeAllocated,
-              } = user;
-              return (
-                <div key={id} className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                  <div className="card">
-                    <div className="card-body">
-                      <div className="dropdown profile-action">
-                        <a
-                          aria-expanded="false"
-                          data-bs-toggle="dropdown"
-                          className="action-icon dropdown-toggle"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            onClick={() => handleTaskEdit(id, index)}
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            onClick={() => handleTaskDelete(index)}
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                      <h4 className="project-title">
-                        <Link
-                          to={{
-                            pathname: "/app/taskmanagement/task-manager",
-                            state: { id: id, index: index },
-                          }}
-                        >
-                          {taskTitle}
-                        </Link>
-                      </h4>
-                      <small className="block text-ellipsis m-b-15">
-                        <Span
-                          className="text-xs"
-                          style={{
-                            backgroundColor:
-                              taskType == "Paid Task" ? "#55CE63" : "#ff9b44",
-                          }}
-                        >
-                          {taskType}
-                        </Span>
-                      </small>
-                      <p className="text-muted">{description}</p>
-                      <div className="pro-deadline m-b-15">
-                        <div className="sub-title">Time Allocated:</div>
-                        <div className="text-muted">
-                          {timeAllocated ? timeAllocated + "hr" : "-"}
-                        </div>
-                      </div>
-                      <div className="project-members m-b-15">
-                        <div>Team:</div>
-                        <ul
-                          style={{ display: "flex", flexDirection: "column" }}
-                          className="team-members"
-                        >
-                          {employee?.map((user, index) => {
-                            const { value, label } = user;
-                            return (
-                              <li key={value}>
-                                <a data-bs-toggle="tooltip" title="John Doe">
-                                  <img alt="" src={SmileImg} />
-                                </a>
-                                {label}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                      <div className="pro-deadline m-b-15">
-                        <div className="text-muted">
-                          <span className="completed">
-                            <input checked type="checkbox" name="check" id="" />{" "}
-                            Marked as completed
-                          </span>
+            {taskList
+              ? taskList?.map((user, index) => {
+                  const {
+                    id,
+                    taskTitle,
+                    description,
+                    employee,
+                    taskType,
+                    timeAllocated,
+                  } = user;
+                  return (
+                    <div
+                      key={id}
+                      className="col-lg-4 col-sm-6 col-md-4 col-xl-3"
+                    >
+                      <div className="card">
+                        <div className="card-body">
+                          <div className="dropdown profile-action">
+                            <a
+                              aria-expanded="false"
+                              data-bs-toggle="dropdown"
+                              className="action-icon dropdown-toggle"
+                            >
+                              <i className="material-icons">more_vert</i>
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <a
+                                className="dropdown-item"
+                                onClick={() => handleTaskEdit(id, index)}
+                              >
+                                <i className="fa fa-pencil m-r-5" /> Edit
+                              </a>
+                              <a
+                                className="dropdown-item"
+                                onClick={() => handleTaskDelete(index)}
+                              >
+                                <i className="fa fa-trash-o m-r-5" /> Delete
+                              </a>
+                            </div>
+                          </div>
+                          <h4 className="project-title">
+                            <Link
+                              to={{
+                                pathname: "/app/taskmanagement/task-manager",
+                                state: { id: id, index: index },
+                              }}
+                            >
+                              {taskTitle}
+                            </Link>
+                          </h4>
+                          <small className="block text-ellipsis m-b-15">
+                            <Span
+                              className="text-xs"
+                              style={{
+                                backgroundColor:
+                                  taskType == "Paid Task"
+                                    ? "#55CE63"
+                                    : "#ff9b44",
+                              }}
+                            >
+                              {taskType}
+                            </Span>
+                          </small>
+                          <p className="text-muted">{description}</p>
+                          <div className="pro-deadline m-b-15">
+                            <div className="sub-title">Time Allocated:</div>
+                            <div className="text-muted">
+                              {timeAllocated ? timeAllocated + "hr" : "-"}
+                            </div>
+                          </div>
+                          <div className="project-members m-b-15">
+                            <div>Team:</div>
+                            <ul
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                              className="team-members"
+                            >
+                              {employee?.map((user, index) => {
+                                const { value, label } = user;
+                                return (
+                                  <li key={value}>
+                                    <a
+                                      data-bs-toggle="tooltip"
+                                      title="John Doe"
+                                    >
+                                      <img alt="" src={SmileImg} />
+                                    </a>
+                                    {label}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                          <div className="pro-deadline m-b-15">
+                            <div className="text-muted">
+                              <span className="completed">
+                                <input
+                                  checked
+                                  type="checkbox"
+                                  name="check"
+                                  id=""
+                                />{" "}
+                                Marked as completed
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              );
-            }) : "No task available"}
+                  );
+                })
+              : "No task available"}
           </div>
         </div>
 
