@@ -203,7 +203,7 @@ const TaskDetails = () => {
                   </h5>
                   <div className="row">
                     {taskImages?.map((img, index) => {
-                      const { id, image, selecetedTaskId, taskId } = img;
+                      const { id, image, imageName, selecetedTaskId, taskId } = img;
                       if (taskId == selecetedTaskId) {
                         return (
                           <div
@@ -225,7 +225,9 @@ const TaskDetails = () => {
                               <div className="uploaded-img">
                                 <img src={image} className="img-fluid" alt="" />
                               </div>
-                              <div className="uploaded-img-name">demo.png</div>
+                              <div className="uploaded-img-name">
+                                {imageName}
+                              </div>
                             </div>
                           </div>
                         );

@@ -21,6 +21,12 @@ const AddSubTask = ({
       : ""
   );
 
+  const [imageName, setImageName] = useState(
+    selectedTaskImage[indexToEdit]?.imageName
+      ? selectedTaskImage[indexToEdit]?.imageName
+      : ""
+  );
+
   const [id, setId] = useState(
     selectedTaskImage[indexToEdit]?.id
       ? selectedTaskImage[indexToEdit]?.id
@@ -28,7 +34,10 @@ const AddSubTask = ({
   );
 
   const imageOnChange = (event) => {
-    setImage(URL.createObjectURL(event.target.files[0]));
+    const file = event.target.files[0];
+    let path = URL.createObjectURL(event.target.files[0]);
+    setImage(path);
+    setImageName(file.name);
   };
 
   const handleSubmit = (e) => {
@@ -38,6 +47,7 @@ const AddSubTask = ({
       taskId,
       selecetedTaskId,
       image,
+      imageName,
     };
     if (selectedTaskImage[indexToEdit]?.id) {
       dispatchTaskImage({ type: "update", payload: taskImage });
