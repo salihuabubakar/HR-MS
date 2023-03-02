@@ -201,9 +201,16 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
       : ""
   );
-  const imageOnChange = (event) => {
-    setImage(URL.createObjectURL(event.target.files[0]));
-  };
+   const imageOnChange = (event) => {
+     const file = event.target.files[0];
+     const reader = new FileReader();
+     reader.readAsDataURL(file);
+     reader.onload = () => {
+       const base64Image = reader.result;
+       setImage(base64Image);
+      //  setImage(URL.createObjectURL(event.target.files[0]));
+     };
+   };
   const handleSubmit = (e) => {
     e.preventDefault();
     const emergencyContact = {
@@ -334,8 +341,16 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
             <form>
               <div className="row-">
                 <div className="col-sm">
-                  <div className="profile-img-wrap edit-img">
-                    <img className="inline-block" src={image} alt="user" />
+                  <div
+                    style={{ borderRadius: "5px" }}
+                    className="profile-img-wrap edit-img"
+                  >
+                    <img
+                      style={{ borderRadius: "5px" }}
+                      className="inline-block"
+                      src={image}
+                      alt="user"
+                    />
                     <div className="fileupload btn">
                       <span className="btn-text">edit</span>
                       <input

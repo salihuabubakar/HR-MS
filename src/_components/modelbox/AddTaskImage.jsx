@@ -35,8 +35,12 @@ const AddSubTask = ({
 
   const imageOnChange = (event) => {
     const file = event.target.files[0];
-    let path = URL.createObjectURL(event.target.files[0]);
-    setImage(path);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64Image = reader.result;
+      setImage(base64Image);
+    };
     setImageName(file.name);
   };
 
