@@ -22,6 +22,10 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedFamilyMemberInfo: [],
   showTaskModal: false,
   selectedTaskInfo: [],
+  showSubTaskModal: false,
+  selectedSubTaskInfo: [],
+  showTaskImageModal: false,
+  selectedTaskImage: []
 });
 
 export {setGlobalState, useGlobalState}
