@@ -106,7 +106,12 @@ const AddTask = ({
 
   const users = [];
   employeeAccts?.map((user) => {
-    users.push({ value: user.id, label: user.firstName + " " + user.lastName });
+    users.push({
+      value: user.id,
+      label: user.firstName + " " + user.lastName,
+      image: user.image,
+      designation: user.designation
+    });
   });
 
   return (

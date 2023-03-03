@@ -26,6 +26,10 @@ const AddDepartment = ({
    setEmployeeAccts(userAcct);
  }, [userAcct]);
 
+ const [image, setImage] = useState(
+   selectedHouse[indexToEdit]?.image ? selectedHouse[indexToEdit]?.image : ""
+ );
+
   const [houseName, setHouseName] = useState(
     selectedHouse[indexToEdit]?.houseName
       ? selectedHouse[indexToEdit]?.houseName
@@ -53,6 +57,7 @@ const AddDepartment = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     const house = {
+      image,
       houseName,
       employee,
       managerName,
@@ -85,8 +90,23 @@ const AddDepartment = ({
 
   const users = [];
   employeeAccts?.map((user) => {
-    users.push({ value: user.id, label: user.firstName + " " + user.lastName });
+    users.push({
+      value: user.id,
+      label: user.firstName + " " + user.lastName,
+      image: user.image,
+    });
   });
+
+  const imageOnChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64Image = reader.result;
+      setImage(base64Image);
+    };
+  };
+
 
 
   return (
@@ -111,6 +131,28 @@ const AddDepartment = ({
             </div>
             <div className="card-body">
               <form>
+                <div className="col-sm">
+                  <div
+                    style={{ borderRadius: "5px" }}
+                    className="profile-img-wrap edit-img"
+                  >
+                    <img
+                      style={{ borderRadius: "5px" }}
+                      className="inline-block"
+                      src={image}
+                      alt="image"
+                    />
+                    <div className="fileupload btn">
+                      <span className="btn-text">Upload</span>
+                      <input
+                        className="upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={imageOnChange}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div className="form-group form-focus focused">
                   <label className="focus-label">
                     House Name <span className="text-danger">*</span>

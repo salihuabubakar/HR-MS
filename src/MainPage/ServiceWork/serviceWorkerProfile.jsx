@@ -36,6 +36,7 @@ const serviceWorkerProfile = () => {
   );
 
   const residentId = selectedResident?.id;
+  const image = selectedResident?.image;
   const residentName = selectedResident?.residentName;
 
   useEffect( ()=>{
@@ -86,7 +87,7 @@ const serviceWorkerProfile = () => {
                     <div className="profile-img-wrap">
                       <div className="profile-img">
                         <a>
-                          <img alt="" src={SmileImg} />
+                          <img alt="" src={image} />
                         </a>
                       </div>
                     </div>

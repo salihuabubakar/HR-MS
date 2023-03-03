@@ -117,7 +117,7 @@ const TaskManagerTable = () => {
         return (
           <React.Fragment>
             {employee?.map((user, index) => {
-              const { value, label } = user;
+              const { value, label, image } = user;
               return (
                 <h2 key={value} className="table-avatar">
                   <Link
@@ -128,8 +128,22 @@ const TaskManagerTable = () => {
                     className="avatar"
                     data-bs-toggle="tooltip"
                     title={label}
+                    style={{
+                      borderRadius: "5px",
+                      backgroundColor: "#00000000",
+                      height: "100%",
+                    }}
                   >
-                    <img alt="" src={SmileImg} />
+                    <img
+                      style={{
+                        width: "30px",
+                        borderRadius: "50px",
+                        backgroundColor: "#00000000",
+                        height: "30px",
+                      }}
+                      alt=""
+                      src={image}
+                    />
                   </Link>
                   <Link
                     to={{

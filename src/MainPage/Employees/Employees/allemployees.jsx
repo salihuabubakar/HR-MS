@@ -205,6 +205,7 @@ const AllEmployees = () => {
                 {employeeAccts?.map((staff, index) => {
                   const {
                     id,
+                    image,
                     company,
                     confirmPassword,
                     dept,
@@ -231,8 +232,13 @@ const AllEmployees = () => {
                               state: { id: id, index: index },
                             }}
                             className="avatar"
+                            style={{ borderRadius: "5px", backgroundColor: "#00000000", height: "100%" }}
                           >
-                            <img src={SmileImg} alt="" />
+                            <img
+                              style={{ borderRadius: "5px", width: "80px", height: "80px" }}
+                              src={image}
+                              alt=""
+                            />
                           </Link>
                         </div>
                         <div className="dropdown profile-action">

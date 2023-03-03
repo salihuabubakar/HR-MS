@@ -136,7 +136,7 @@ const Accomodations = () => {
               {/* Search Filter */}
               <div className="row staff-grid-row">
                 {houseList?.map((house, index) => {
-                  const { id, houseName, employee, managerName } = house;
+                  const { id, image, houseName, employee, managerName } = house;
                   return (
                     <div
                       key={id}
@@ -150,8 +150,20 @@ const Accomodations = () => {
                               state: { id: id, index: index },
                             }}
                             className="avatar"
+                            style={{
+                              borderRadius: "5px",
+                              backgroundColor: "#00000000",
+                            }}
                           >
-                            <img src={HouseImg} alt="" />
+                            <img
+                              style={{
+                                borderRadius: "5px",
+                                width: "80px",
+                                height: "80px",
+                              }}
+                              src={image}
+                              alt=""
+                            />
                           </Link>
                         </div>
                         <div className="dropdown profile-action">
