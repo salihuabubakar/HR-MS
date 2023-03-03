@@ -79,7 +79,7 @@ const SelectDept = () => {
           {/* Search Filter */}
           <div className="row staff-grid-row">
             {houseList?.map((house) => {
-              const { id, houseName, employee, managerName } = house;
+              const { id, image, houseName, employee, managerName } = house;
               return (
                 <div
                   key={id}
@@ -92,8 +92,22 @@ const SelectDept = () => {
                         state: { id: id },
                       }}
                       className="avatar"
+                      style={{
+                        borderRadius: "5px",
+                        backgroundColor: "#00000000",
+                        height: "100%",
+                        marginRight: "40px"
+                      }}
                     >
-                      <img alt="" src={HouseImg} />
+                      <img
+                        style={{
+                          borderRadius: "5px",
+                          width: "80px",
+                          height: "80px",
+                        }}
+                        alt=""
+                        src={image}
+                      />
                     </Link>
                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                       <Link

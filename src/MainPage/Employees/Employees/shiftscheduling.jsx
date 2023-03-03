@@ -434,14 +434,22 @@ const ShiftScheduling = () => {
                     <tbody>
                       {selectedHouse?.employee ? selectedHouse?.employee.map(
                         (staff, index) => {
-                          const { value, label } = staff;
+                          const { value, label, image } = staff;
                           return (
                             <Fragment key={index}>
                               <tr>
                                 <td>
                                   <h2 className="table-avatar">
                                     <a className="avatar">
-                                      <img src={Smile} />
+                                      <img
+                                        style={{
+                                          width: "40px",
+                                          height: "40px",
+                                          borderRadius: "50px",
+                                          backgroundColor: "#00000000",
+                                        }}
+                                        src={image}
+                                      />
                                     </a>
                                     <a style={{ color: "#ff9b44" }}>
                                       {label}

@@ -63,7 +63,7 @@ const Housing = () => {
       title: "House",
       dataIndex: "houseName",
       render: (text, record, index) => {
-        const { id, houseName } = record;
+        const { id, houseName, image } = record;
         return (
           <React.Fragment>
             <h2 className="table-avatar">
@@ -73,8 +73,17 @@ const Housing = () => {
                   state: { id: id, index: index },
                 }}
                 className="avatar"
+                style={{
+                  borderRadius: "5px",
+                  backgroundColor: "#00000000",
+                  height: "100%",
+                }}
               >
-                <img alt="" src={HouseImg} />
+                <img
+                  style={{ width: "40px", height: "40px" }}
+                  alt=""
+                  src={image}
+                />
               </Link>
               <Link
                 to={{

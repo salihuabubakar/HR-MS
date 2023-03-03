@@ -221,9 +221,9 @@ const TaskDetails = () => {
                                 >
                                   <i className="fa fa-trash-o" />
                                 </a>
-                              </span>
+                              </span> <br />
                               <div className="uploaded-img">
-                                <img src={image} className="img-fluid" alt="" />
+                                <img style={{maxWidth: "264px", maxHeight: "184px", width: "100%", height: "100%", borderRadius: "3px"}} src={image} className="img-fluid" alt="" />
                               </div>
                               <div className="uploaded-img-name">
                                 {imageName}
@@ -726,7 +726,7 @@ const TaskDetails = () => {
                   <ul className="list-box">
                     {totalAssignedEmployees
                       ? totalAssignedEmployees?.map((user, index) => {
-                          const { value, label } = user;
+                          const { value, label, image, designation } = user;
                           return (
                             <li>
                               <Link
@@ -735,8 +735,22 @@ const TaskDetails = () => {
                               >
                                 <div className="list-item">
                                   <div className="list-left">
-                                    <span className="avatar">
-                                      <img alt="" src={SmileImg} />
+                                    <span
+                                      style={{
+                                        borderRadius: "5px",
+                                        backgroundColor: "#00000000",
+                                        height: "100%",
+                                      }}
+                                      className="avatar"
+                                    >
+                                      <img
+                                        style={{
+                                          width: "30px",
+                                          height: "30px",
+                                        }}
+                                        alt=""
+                                        src={image}
+                                      />
                                     </span>
                                   </div>
                                   <div className="list-body">
@@ -745,7 +759,7 @@ const TaskDetails = () => {
                                     </span>
                                     <div className="clearfix" />
                                     <span className="message-content">
-                                      Web Designer
+                                      {designation?.label}
                                     </span>
                                   </div>
                                 </div>

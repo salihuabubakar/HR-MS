@@ -119,6 +119,7 @@ const Employeeslist = () => {
               render: (text, record, index) => {
                 const {
                   id,
+                  image,
                   firstName,
                   lastName,
                   designation
@@ -132,8 +133,13 @@ const Employeeslist = () => {
                           state: { id: id, index: index },
                         }}
                         className="avatar"
+                        style={{
+                          borderRadius: "5px",
+                          backgroundColor: "#00000000",
+                          height: "100%"
+                        }}
                       >
-                        <img alt="" src={SmileImg} />
+                        <img style={{width: "40px", height: "40px"}} alt="" src={image} />
                       </Link>
                       <Link
                         to={{
@@ -141,12 +147,11 @@ const Employeeslist = () => {
                           state: { id: id, index: index },
                         }}
                       >
-                        {firstName} {lastName}{" "}
-                        <span>{designation?.label}</span>
+                        {firstName} {lastName} <span>{designation?.label}</span>
                       </Link>
                     </h2>
                   </React.Fragment>
-                )
+                );
               }
               // sorter: (a, b) => a.name.length - b.name.length,
             },

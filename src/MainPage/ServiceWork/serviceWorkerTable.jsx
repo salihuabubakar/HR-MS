@@ -69,7 +69,7 @@ const ServiceWorkerTable = () => {
       title: "Resident",
       dataIndex: "residentName",
       render: (text, record, index) => {
-        const { id, residentName } = record;
+        const { id, image, residentName } = record;
         return (
           <React.Fragment>
             <h2 className="table-avatar">
@@ -79,8 +79,17 @@ const ServiceWorkerTable = () => {
                   state: { id: id, index: index },
                 }}
                 className="avatar"
+                style={{
+                  borderRadius: "5px",
+                  backgroundColor: "#00000000",
+                  height: "100%",
+                }}
               >
-                <img alt="" src={SmileImg} />
+                <img
+                  style={{ width: "40px", height: "40px" }}
+                  alt=""
+                  src={image}
+                />
               </Link>
               <Link
                 to={{

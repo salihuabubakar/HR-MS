@@ -34,6 +34,7 @@ const houseProfile = () => {
   const selectedHouse = house?.find((house) => house?.id === houseID);
 
   const HouseId = selectedHouse?.id;
+  const image = selectedHouse?.image;
   const HouseName = selectedHouse?.houseName;
   const totalHouseEmployees = selectedHouse?.employee;
   const managerName = selectedHouse?.managerName;
@@ -70,7 +71,7 @@ const houseProfile = () => {
                 <h3 className="page-title">House Profile</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/app/serviceWork/serviceWorker">House</Link>
+                    <Link to="/app/employee/accomodations">House</Link>
                   </li>
                   <li className="breadcrumb-item active">Profile</li>
                 </ul>
@@ -92,9 +93,14 @@ const houseProfile = () => {
                         <div className="profile-img">
                           <a>
                             <img
-                              style={{ width: "80px" }}
+                              className="inline-block"
+                              style={{
+                                borderRadius: "5px",
+                                width: "80px",
+                                height: "80px",
+                              }}
                               alt=""
-                              src={HouseImg}
+                              src={image}
                             />
                           </a>
                         </div>
@@ -125,20 +131,31 @@ const houseProfile = () => {
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">List of employees</h3>
-                      {totalHouseEmployees ? totalHouseEmployees?.map(
-                        (employees, index) => {
-                          const { label, value } = employees;
-                          return (
-                            <React.Fragment key={value}>
-                              <ul className="personal-info">
-                                <li>
-                                  <div className="text">{label}</div>
-                                </li>
-                              </ul>
-                            </React.Fragment>
-                          );
-                        }
-                      ) : "Ops! No employees in the house."}
+                      {totalHouseEmployees
+                        ? totalHouseEmployees?.map((employees, index) => {
+                            const { label, value, image } = employees;
+                            return (
+                              <React.Fragment key={value}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">
+                                      <img
+                                        style={{
+                                          width: "30px",
+                                          height: "30px",
+                                          borderRadius: "50px",
+                                        }}
+                                        alt=""
+                                        src={image}
+                                      />{" "}
+                                      {label}
+                                    </span>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          })
+                        : "Ops! No employees in the house."}
                     </div>
                   </div>
                 </div>

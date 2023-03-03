@@ -23,10 +23,26 @@ const AddResident = ({
     selectedResident[indexToEdit]?.id ? selectedResident[indexToEdit]?.id : Date.now()
   );
 
+  const [image, setImage] = useState(
+    selectedResident[indexToEdit]?.image
+      ? selectedResident[indexToEdit]?.image
+      : ""
+  );
+  const imageOnChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64Image = reader.result;
+      setImage(base64Image);
+    };
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const residents = {
       residentName,
+      image,
       id,
     };
     if (selectedResident[indexToEdit]?.id) {
@@ -60,6 +76,28 @@ const AddResident = ({
             </div>
             <div className="card-body">
               <form>
+                <div className="col-sm">
+                  <div
+                    style={{ borderRadius: "5px" }}
+                    className="profile-img-wrap edit-img"
+                  >
+                    <img
+                      style={{ borderRadius: "5px" }}
+                      className="inline-block"
+                      src={image}
+                      alt="image"
+                    />
+                    <div className="fileupload btn">
+                      <span className="btn-text">Upload</span>
+                      <input
+                        className="upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={imageOnChange}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div className="form-group form-focus focused">
                   <label className="focus-label">
                     Resident Name <span className="text-danger">*</span>

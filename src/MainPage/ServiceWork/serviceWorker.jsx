@@ -136,7 +136,7 @@ const ServiceWorker = () => {
           {/* Search Filter */}
           <div className="row staff-grid-row">
             {residentList?.map((user, index) => {
-              const { id, residentName } = user;
+              const { id, image, residentName } = user;
               return (
                 <div
                   key={id}
@@ -150,8 +150,21 @@ const ServiceWorker = () => {
                           state: { id: id, index: index },
                         }}
                         className="avatar"
+                        style={{
+                          borderRadius: "5px",
+                          backgroundColor: "#00000000",
+                          height: "100%",
+                        }}
                       >
-                        <img src={SmileImg} alt="" />
+                        <img
+                          style={{
+                            borderRadius: "5px",
+                            width: "80px",
+                            height: "80px",
+                          }}
+                          src={image}
+                          alt=""
+                        />
                       </Link>
                     </div>
                     <div className="dropdown profile-action">
