@@ -2,14 +2,12 @@ import React, { useEffect, useState, useMemo, useReducer } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import {
-  Avatar_16,
-  Avatar_02,
-  Avatar_05,
-  Avatar_09,
-  Avatar_10,
-  Avatar_11,
-  Avatar_01,
   PlaceHolder,
+  Attachment,
+  Avatar_05,
+  Avatar_02,
+  Avatar_13,
+  Avatar_16,
 } from "../../Entryfile/imagepath";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
@@ -29,6 +27,7 @@ import { Span } from "./style";
 import AddSubTask from "../../_components/modelbox/AddSubTask";
 import AddTaskImage from "../../_components/modelbox/AddTaskImage"
 import { async } from "regenerator-runtime";
+import CommentSection from "./component";
 
 const TaskDetails = () => {
     const location = useLocation();
@@ -188,6 +187,7 @@ const TaskDetails = () => {
                   <p>{taskDescription}</p>
                 </div>
               </div>
+              <CommentSection />
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title m-b-20">
@@ -203,7 +203,8 @@ const TaskDetails = () => {
                   </h5>
                   <div className="row">
                     {taskImages?.map((img, index) => {
-                      const { id, image, imageName, selecetedTaskId, taskId } = img;
+                      const { id, image, imageName, selecetedTaskId, taskId } =
+                        img;
                       if (taskId == selecetedTaskId) {
                         return (
                           <div
@@ -221,9 +222,21 @@ const TaskDetails = () => {
                                 >
                                   <i className="fa fa-trash-o" />
                                 </a>
-                              </span> <br />
+                              </span>{" "}
+                              <br />
                               <div className="uploaded-img">
-                                <img style={{maxWidth: "264px", maxHeight: "184px", width: "100%", height: "100%", borderRadius: "3px"}} src={image} className="img-fluid" alt="" />
+                                <img
+                                  style={{
+                                    maxWidth: "264px",
+                                    maxHeight: "184px",
+                                    width: "100%",
+                                    height: "100%",
+                                    borderRadius: "3px",
+                                  }}
+                                  src={image}
+                                  className="img-fluid"
+                                  alt=""
+                                />
                               </div>
                               <div className="uploaded-img-name">
                                 {imageName}
