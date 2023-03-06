@@ -95,11 +95,16 @@ const TaskDetails = () => {
     const taskId = selectedTask?.id;
     const taskTitle = selectedTask?.taskTitle;
     const taskType = selectedTask?.taskType;
+    const taskPriority = selectedTask?.taskPriority?.label;
     const timeAllocated = selectedTask?.timeAllocated;
     const taskDescription = selectedTask?.description;
     const totalAssignedEmployees = selectedTask?.employee;
     const managerName = selectedTask?.manager;
     const taskStatus = selectedTask?.taskStatus;
+    const dateCreated = selectedTask?.dateCreated;
+
+    console.log("selectedTaskId..", selecetedTaskId);
+    console.log("taskId..", taskId);
 
 
     const handleSubTaskEdit = (index) => {
@@ -618,7 +623,16 @@ const TaskDetails = () => {
                     <tbody>
                       <tr>
                         <td>Task Type:</td>
-                        <td className="text-end">{taskType}</td>
+                        <td
+                          style={{
+                            backgroundColor:
+                              taskType == "Paid Task" ? "#55CE63" : "#ff9b44",
+                            color: "#fff",
+                          }}
+                          className="text-end"
+                        >
+                          {taskType}
+                        </td>
                       </tr>
                       <tr>
                         <td>Total Hours:</td>
@@ -626,38 +640,25 @@ const TaskDetails = () => {
                       </tr>
                       <tr>
                         <td>Created:</td>
-                        <td className="text-end">25 Feb, 2019</td>
+                        <td className="text-end">{dateCreated}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td>Deadline:</td>
                         <td className="text-end">12 Jun, 2019</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td>Priority:</td>
-                        <td className="text-end">
-                          <div className="btn-group">
-                            <a
-                              href="#"
-                              className="badge badge-danger dropdown-toggle"
-                              data-bs-toggle="dropdown"
-                            >
-                              Highest{" "}
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="#">
-                                <i className="fa fa-dot-circle-o text-danger" />{" "}
-                                High priority
-                              </a>
-                              <a className="dropdown-item" href="#">
-                                <i className="fa fa-dot-circle-o text-primary" />{" "}
-                                Medium priority
-                              </a>
-                              <a className="dropdown-item" href="#">
-                                <i className="fa fa-dot-circle-o text-success" />{" "}
-                                Low priority
-                              </a>
-                            </div>
-                          </div>
+                        <td
+                          style={{
+                            backgroundColor:
+                              (taskPriority == "highest" && "#f62d51") ||
+                              (taskPriority == "medium" && "#ff9b44") ||
+                              (taskPriority == "low" && "#55CE63"),
+                            color: "#fff",
+                          }}
+                          className="text-end"
+                        >
+                          {taskPriority}
                         </td>
                       </tr>
                       <tr>
@@ -673,7 +674,16 @@ const TaskDetails = () => {
                       </tr>
                       <tr>
                         <td>Status:</td>
-                        <td className="text-end">{taskStatus}</td>
+                        <td
+                          style={{
+                            backgroundColor:
+                              taskStatus == "In-progress" && "#55CE63",
+                            color: "#fff",
+                          }}
+                          className="text-end"
+                        >
+                          {taskStatus}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

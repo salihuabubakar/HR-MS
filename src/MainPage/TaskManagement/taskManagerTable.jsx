@@ -163,8 +163,52 @@ const TaskManagerTable = () => {
       dataIndex: "timeAllocated",
     },
     {
+      title: "Date Created",
+      dataIndex: "dateCreated",
+    },
+    {
+      title: "Priority",
+      dataIndex: "taskPriority",
+      render: (text, record, index) => {
+        const { taskPriority } = record;
+        const { value, label } = taskPriority;
+        return (
+          <h2
+            style={{
+              backgroundColor:
+                (label == "highest" && "#f62d51") ||
+                (label == "medium" && "#ff9b44") ||
+                (label == "low" && "#55CE63"),
+              color: "#fff",
+              padding: "5px",
+              borderRadius: "5px",
+            }}
+            className="table-avatar"
+          >
+            {label}
+          </h2>
+        );
+      },
+    },
+    {
       title: "Status",
       dataIndex: "taskStatus",
+      render: (text, record, index) => {
+        const { taskStatus } = record;
+        return (
+          <h2
+            style={{
+              backgroundColor: taskStatus == "In-progress" && "#55CE63",
+              color: "#fff",
+              padding: "5px",
+              borderRadius: "5px",
+            }}
+            className="table-avatar"
+          >
+            {taskStatus}
+          </h2>
+        );
+      },
     },
     {
       title: "Action",
