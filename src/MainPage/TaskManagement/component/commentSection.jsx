@@ -29,7 +29,6 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
   const today = new Date();
   const options = { month: "long", day: "numeric", year: "numeric" };
   const formattedDate = today.toLocaleDateString("en-US", options);
-  const conpareDate = today.toLocaleDateString("en-US", options);
 
   const date = new Date();
   const hours = date.getHours().toString().padStart(2, "0");
@@ -83,11 +82,11 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                   const { id, commentValue, time, formattedDate } = comment;
                   return (
                     <div key={id} className="chats">
-                      {index === 0(
-                          <div className="chat-line">
-                            <span className="chat-date">{formattedDate}</span>
-                          </div>
-                        )}
+                      {index === 0 && (
+                        <div className="chat-line">
+                          <span className="chat-date">{formattedDate}</span>
+                        </div>
+                      )}
                       <div className="chat chat-right">
                         <div className="chat-avatar">
                           <Link to="#" className="avatar">
