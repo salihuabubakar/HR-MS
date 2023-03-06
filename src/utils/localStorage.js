@@ -132,6 +132,25 @@ export const savedTaskImageReducer = (state, { type, payload }) => {
   }
 };
 
+export const initComment = () => {
+  const storageEvents = localStorage.getItem("comment");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedCommentReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((comment) => (comment.id === payload.id ? payload : comment));
+    case "delete":
+      return state.filter((comment) => comment.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};
+
 
 export const initResident = () => {
   const storageEvents = localStorage.getItem("resident");

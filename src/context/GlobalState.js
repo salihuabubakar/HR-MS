@@ -25,7 +25,8 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showSubTaskModal: false,
   selectedSubTaskInfo: [],
   showTaskImageModal: false,
-  selectedTaskImage: []
+  selectedTaskImage: [],
+  selectedComment: [],
 });
 
 export {setGlobalState, useGlobalState}
