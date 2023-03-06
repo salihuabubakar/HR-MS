@@ -104,50 +104,59 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
             <div>
               <div className="chat-box">
                 {comments?.map((comment, index) => {
-                  const { id, commentValue, currentTime, formattedDate } =
-                    comment;
-                  return (
-                    <div key={index} className="chats">
-                      {index === 0 && (
-                        <div className="chat-line">
-                          <span className="chat-date">{formattedDate}</span>
+                  const {
+                    id,
+                    commentValue,
+                    currentTime,
+                    formattedDate,
+                    selecetedTaskId,
+                    taskId,
+                  } = comment;
+                  if (selecetedTaskId == taskId) {
+                    return (
+                      <div key={index} className="chats">
+                        {index === 0 && (
+                          <div className="chat-line">
+                            <span className="chat-date">{formattedDate}</span>
+                          </div>
+                        )}
+                        <div className="chat chat-right">
+                          <div className="chat-avatar">
+                            <Link to="#" className="avatar">
+                              <img alt="" src={SmileImg} />
+                            </Link>
+                          </div>
+                          <div className="chat-body">
+                            <div className="chat-bubble">
+                              <div className="chat-content">
+                                <p>{commentValue}</p>
+                                <span className="chat-time">{currentTime}</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      )}
-                      <div className="chat chat-right">
-                        <div className="chat-avatar">
-                          <Link to="#" className="avatar">
-                            <img alt="" src={SmileImg} />
-                          </Link>
-                        </div>
-                        <div className="chat-body">
-                          <div className="chat-bubble">
-                            <div className="chat-content">
-                              <p>{commentValue}</p>
-                              <span className="chat-time">{currentTime}</span>
+                        <div className="chat chat-left">
+                          <div className="chat-avatar">
+                            <Link
+                              to="/app/profile/employee-profile"
+                              className="avatar"
+                            >
+                              <img alt="" src={Logo} />
+                            </Link>
+                          </div>
+                          <div className="chat-body">
+                            <div className="chat-bubble">
+                              <div className="chat-content">
+                                <p>Hi, work in progress!</p>
+                                <span className="chat-time">8:35 am</span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="chat chat-left">
-                        <div className="chat-avatar">
-                          <Link
-                            to="/app/profile/employee-profile"
-                            className="avatar"
-                          >
-                            <img alt="" src={Logo} />
-                          </Link>
-                        </div>
-                        <div className="chat-body">
-                          <div className="chat-bubble">
-                            <div className="chat-content">
-                              <p>Hi, work in progress!</p>
-                              <span className="chat-time">8:35 am</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
+                    );
+                  }
+                  
                 })}
               </div>
             </div>
