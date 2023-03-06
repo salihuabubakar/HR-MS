@@ -164,16 +164,6 @@ const TaskDetails = () => {
                   <li className="breadcrumb-item active">Task Manager</li>
                 </ul>
               </div>
-              <div className="col-auto float-end ml-auto">
-                <a
-                  href="#"
-                  className="btn add-btn"
-                  data-bs-toggle="modal"
-                  data-bs-target="#edit_project"
-                >
-                  <i className="fa fa-plus" /> Edit Task
-                </a>
-              </div>
             </div>
           </div>
           {/* /Page Header */}

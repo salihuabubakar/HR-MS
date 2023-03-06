@@ -10,8 +10,8 @@ import TaskManagerDetails from "./taskDetails"
 
 const ServiceRoute = ({ match }) => (
   <Switch>
-    <Redirect exact from={`${match.url}/`} to={`${match.url}/task-manager`} />
-    <Route path={`${match.url}/task-manager`} component={TaskManager} />
+    <Redirect exact from={`${match.url}/`} to={`${match.url}/task-manager-table`} />
+    {/* <Route path={`${match.url}/task-manager`} component={TaskManager} /> */}
     <Route path={`${match.url}/task-manager-table`} component={TaskManagerTable} />
     <Route path={`${match.url}/task-manager-detail`} component={TaskManagerDetails} />
   </Switch>
