@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useReducer} from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Card } from "./style";
-import {
-  Avatar_05,
-} from "../../../Entryfile/imagepath";
+import { Avatar_05 } from "../../../Entryfile/imagepath";
 import SmileImg from "../../../assets/img/smile.png";
 import Logo from "../../../assets/img/circle-logo.png";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
@@ -28,13 +26,16 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
 
   const today = new Date();
   const options = { month: "long", day: "numeric", year: "numeric" };
-  const formattedDate = today.toLocaleDateString("en-US", options);
+  const formattedDate = today.toLocaleDateString("en-GB", options);
 
-  const date = new Date();
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const [currentTime, setCurrentTime] = useState();
+  useEffect(() => {
+    const intervalID = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString("en-GB", { hour12: false }).slice(0, 5));
+    }, 1000);
+    return () => clearInterval(intervalID);
+  }, []);
 
-  const [time] = useState(`${hours}:${minutes}`);
   const [commentValue, setCommentValue] = useState("");
   const [id] = useState(Date.now());
 
@@ -43,7 +44,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
     const commentDetails = {
       id,
       commentValue,
-      time,
+      currentTime,
       selecetedTaskId,
       taskId,
       formattedDate,
@@ -59,6 +60,11 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
     });
   };
 
+  const handleClearChat = () => {
+    localStorage.removeItem("comment");
+    window.location.reload();
+  };
+
   return (
     <Card className="card">
       <div className="fixed-header">
@@ -68,6 +74,25 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
               <Link to="/app/profile/employee-profile">
                 <span>Comment Section</span>{" "}
               </Link>
+              <div className="float-end">
+                <div className="dropdown profile-action">
+                  <a
+                    aria-expanded="false"
+                    data-bs-toggle="dropdown"
+                    className="action-icon dropdown-toggle"
+                  >
+                    <i className="material-icons">more_vert</i>
+                  </a>
+                  <div className="dropdown-menu dropdown-menu-right">
+                    <a
+                      className="dropdown-item"
+                      onClick={() => handleClearChat()}
+                    >
+                      Clear chat
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -79,9 +104,10 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
             <div>
               <div className="chat-box">
                 {comments?.map((comment, index) => {
-                  const { id, commentValue, time, formattedDate } = comment;
+                  const { id, commentValue, currentTime, formattedDate } =
+                    comment;
                   return (
-                    <div key={id} className="chats">
+                    <div key={index} className="chats">
                       {index === 0 && (
                         <div className="chat-line">
                           <span className="chat-date">{formattedDate}</span>
@@ -97,19 +123,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                           <div className="chat-bubble">
                             <div className="chat-content">
                               <p>{commentValue}</p>
-                              <span className="chat-time">{time}</span>
-                            </div>
-                            <div className="chat-action-btns">
-                              <ul>
-                                <li>
-                                  <a
-                                    onClick={() => handleDeleteComment(index)}
-                                    className="del-msg"
-                                  >
-                                    <i className="fa fa-trash-o" />
-                                  </a>
-                                </li>
-                              </ul>
+                              <span className="chat-time">{currentTime}</span>
                             </div>
                           </div>
                         </div>
@@ -171,4 +185,4 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
   );
 };
 
-export default CommentSection
+export default CommentSection;
