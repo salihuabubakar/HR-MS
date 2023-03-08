@@ -45,7 +45,6 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
       id,
       commentValue,
       currentTime,
-      selecetedTaskId,
       taskId,
       formattedDate,
     };
@@ -109,10 +108,9 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                     commentValue,
                     currentTime,
                     formattedDate,
-                    selecetedTaskId,
-                    taskId,
+                    taskId: taskIdInComment,
                   } = comment;
-                  if (selecetedTaskId == taskId) {
+                  if (selecetedTaskId === taskIdInComment) {
                     return (
                       <div key={index} className="chats">
                         {index === 0 && (
