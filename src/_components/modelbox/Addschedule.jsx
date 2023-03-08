@@ -10,12 +10,12 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 
 const AddSchedule = ({
   employeeId,
-  employeeSelectedIndex,
   dispatchSchedule,
   selecteDay,
   selectedDayIndex,
   shiftList,
   schedule,
+  houseId,
 }) => {
   const [selectedScheduleEvent] = useGlobalState("selectedScheduleEvent");
 
@@ -36,8 +36,8 @@ const AddSchedule = ({
     const schedule = {
       shifts,
       employeeId,
-      employeeSelectedIndex,
       selecteDay,
+      houseId,
       id,
     };
     if (selectedScheduleEvent[selectedDayIndex]?.id) {
@@ -75,16 +75,19 @@ const AddSchedule = ({
       label:
         shift.title +
         " " +
-        new Date(shift.startTime).toLocaleString().split(" ").splice(1).join(" ") +
+        new Date(shift.startTime)
+          .toLocaleString()
+          .split(" ")
+          .splice(1)
+          .join(" ") +
         " - " +
         new Date(shift.endTime).toLocaleString().split(" ").splice(1).join(" "),
     });
   });
 
-    const handleShiftChange = (event) => {
-      setShifts(event)
-    };
-
+  const handleShiftChange = (event) => {
+    setShifts(event);
+  };
 
   return (
     <>
