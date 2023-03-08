@@ -170,10 +170,11 @@ const TaskManagerTable = () => {
       title: "Priority",
       dataIndex: "taskPriority",
       render: (text, record, index) => {
-        const { taskPriority } = record;
-        const { value, label } = taskPriority;
+        const { taskPriority, id } = record;
+        const { label } = taskPriority;
         return (
           <h2
+          key={id}
             style={{
               backgroundColor:
                 (label == "highest" && "#f62d51") ||
