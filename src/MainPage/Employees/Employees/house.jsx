@@ -14,14 +14,6 @@ const SelectDept = () => {
     setHouseList(house);
   }, [house]);
 
-
-  // const numberOfEmployeeInAParticularHouse = employeeAccts?.find((staff) => { staff.accomodation.value === getHouseId });
-  // console.log(
-  //   "numberOfEmployeeInAParticularHouse",
-  //   numberOfEmployeeInAParticularHouse
-  // );
-
-
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
