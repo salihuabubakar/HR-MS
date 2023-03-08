@@ -201,9 +201,9 @@ const TaskDetails = () => {
                   </h5>
                   <div className="row">
                     {taskImages?.map((img, index) => {
-                      const { id, image, imageName, selecetedTaskId, taskId } =
+                      const { id, image, imageName, taskId: taskIdInImage } =
                         img;
-                      if (taskId == selecetedTaskId) {
+                      if (taskIdInImage == selecetedTaskId) {
                         return (
                           <div
                             key={id}
@@ -418,12 +418,11 @@ const TaskDetails = () => {
                               ? subTaskTitleArray?.map((subtasks, index) => {
                                   const {
                                     id,
-                                    taskId,
-                                    selecetedTaskId,
+                                    taskId: taskIdInSubTask,
                                     subTask,
                                     checkToComplete,
                                   } = subtasks;
-                                  if (taskId == selecetedTaskId) {
+                                  if (taskIdInSubTask == selecetedTaskId) {
                                     return (
                                       <li
                                         key={id}
@@ -489,12 +488,11 @@ const TaskDetails = () => {
                               ? subTaskTitleArray?.map((subtasks, index) => {
                                   const {
                                     id,
-                                    taskId,
-                                    selecetedTaskId,
+                                    taskId: taskIdInSubTask,
                                     subTask,
                                     checkToComplete,
                                   } = subtasks;
-                                  if (checkToComplete != true) {
+                                  if (checkToComplete != true && taskIdInSubTask == selecetedTaskId) {
                                     return (
                                       <li key={id} className="task">
                                         <div className="task-container">
@@ -555,12 +553,11 @@ const TaskDetails = () => {
                               ? subTaskTitleArray?.map((subtasks, index) => {
                                   const {
                                     id,
-                                    taskId,
-                                    selecetedTaskId,
+                                    taskId: taskIdInSubTask,
                                     subTask,
                                     checkToComplete,
                                   } = subtasks;
-                                  if (checkToComplete == true) {
+                                  if (checkToComplete == true && taskIdInSubTask == selecetedTaskId) {
                                     return (
                                       <li key={id} className="completed">
                                         <div className="task-container">

@@ -11,7 +11,6 @@ const AddSubTask = ({
   dispatchTaskImage,
   indexToEdit,
   taskId,
-  selecetedTaskId,
 }) => {
   const [selectedTaskImage] = useGlobalState("selectedTaskImage");
 
@@ -49,7 +48,6 @@ const AddSubTask = ({
     const taskImage = {
       id,
       taskId,
-      selecetedTaskId,
       image,
       imageName,
     };

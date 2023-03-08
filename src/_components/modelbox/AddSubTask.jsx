@@ -11,7 +11,6 @@ const AddSubTask = ({
   dispatchSubTaskTitle,
   indexToEdit,
   taskId,
-  selecetedTaskId
 }) => {
   const [selectedSubTaskInfo] = useGlobalState("selectedSubTaskInfo");
 
@@ -41,7 +40,6 @@ const AddSubTask = ({
     const subTaskInfo = {
       id,
       taskId,
-      selecetedTaskId,
       subTask,
       checkToComplete,
     };
