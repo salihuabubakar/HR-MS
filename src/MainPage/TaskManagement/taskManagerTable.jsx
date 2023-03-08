@@ -171,22 +171,21 @@ const TaskManagerTable = () => {
       dataIndex: "taskPriority",
       render: (text, record, index) => {
         const { taskPriority, id } = record;
-        const { label } = taskPriority;
         return (
           <h2
-          key={id}
+            key={id}
             style={{
               backgroundColor:
-                (label == "highest" && "#f62d51") ||
-                (label == "medium" && "#ff9b44") ||
-                (label == "low" && "#55CE63"),
+                (taskPriority?.label == "highest" && "#f62d51") ||
+                (taskPriority?.label == "medium" && "#ff9b44") ||
+                (taskPriority?.label == "low" && "#55CE63"),
               color: "#fff",
               padding: "5px",
               borderRadius: "5px",
             }}
             className="table-avatar"
           >
-            {label}
+            {taskPriority?.label}
           </h2>
         );
       },
