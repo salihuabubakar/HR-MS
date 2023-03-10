@@ -102,8 +102,11 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
               <Link to="/app/profile/employee-profile">
                 <span>Comment Section</span>{" "}
               </Link>
-              <div className="float-end">
-                <div className="dropdown profile-action">
+              <div style={{ position: "relative" }} className="float-start">
+                <div
+                  style={{ position: "absolute", left: "160px", top: "0px" }}
+                  className="dropdown profile-action"
+                >
                   <a
                     aria-expanded="false"
                     data-bs-toggle="dropdown"
@@ -145,11 +148,11 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                         {(index === 0 ||
                           formattedDate !== currentFormatedDate ||
                           formattedDate == currentFormatedDate) && (
-                            <div className="chat-line">
-                              <span className="chat-date">
-                                {currentFormatedDate}
-                              </span>
-                            </div>
+                          <div className="chat-line">
+                            <span className="chat-date">
+                              {currentFormatedDate}
+                            </span>
+                          </div>
                         )}
                         <div className="chat chat-right">
                           <div className="chat-avatar">
