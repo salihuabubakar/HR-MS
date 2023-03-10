@@ -145,13 +145,11 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                         {(index === 0 ||
                           formattedDate !== currentFormatedDate ||
                           formattedDate == currentFormatedDate) && (
-                            formattedDate == currentFormatedDate ? null : (
-                              <div className="chat-line">
-                                <span className="chat-date">
-                                  {currentFormatedDate}
-                                </span>
-                              </div>
-                            )
+                            <div className="chat-line">
+                              <span className="chat-date">
+                                {currentFormatedDate}
+                              </span>
+                            </div>
                         )}
                         <div className="chat chat-right">
                           <div className="chat-avatar">
