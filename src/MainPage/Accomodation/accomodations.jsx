@@ -1,16 +1,16 @@
 import React, {useEffect, useState, useMemo, useReducer } from 'react';
 import { Helmet } from "react-helmet";
 import { Link, withRouter } from "react-router-dom";
-import  Addemployee from "../../../_components/modelbox/Addemployee"
-import  Editemployee from "../../../_components/modelbox/Editemployee"
-import Header from '../../../initialpage/Sidebar/header'
-import Sidebar from '../../../initialpage/Sidebar/sidebar'
-import { setGlobalState, useGlobalState } from '../../../context/GlobalState';
-import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
-import SmileImg from "../../../assets/img/smile.png";
-import HouseImg from "../../../assets/img/house.png";
+import  Addemployee from "../../_components/modelbox/Addemployee"
+import  Editemployee from "../../_components/modelbox/Editemployee"
+import Header from '../../initialpage/Sidebar/header'
+import Sidebar from '../../initialpage/Sidebar/sidebar'
+import { setGlobalState, useGlobalState } from '../../context/GlobalState';
+import { initHouse, savedHouseReducer } from "../../utils/localStorage";
+import SmileImg from "../../assets/img/smile.png";
+import HouseImg from "../../assets/img/house.png";
 import Select from "react-select";
-import AddHouse from "../../../_components/modelbox/AddHouse";
+import AddHouse from "../../_components/modelbox/AddHouse";
 
 
 const Accomodations = () => {
@@ -96,13 +96,13 @@ const Accomodations = () => {
                     </a>
                     <div className="view-icons">
                       <Link
-                        to="/app/employee/accomodations"
+                        to="/app/accomodation/accomodations"
                         className="grid-view btn btn-link active"
                       >
                         <i className="fa fa-th" />
                       </Link>
                       <Link
-                        to="/app/employee/accomodation"
+                        to="/app/accomodation/accomodation"
                         className="list-view btn btn-link"
                       >
                         <i className="fa fa-bars" />
@@ -146,7 +146,7 @@ const Accomodations = () => {
                         <div className="profile-img">
                           <Link
                             to={{
-                              pathname: "/app/employee/house-profile",
+                              pathname: "/app/accomodation/house-profile",
                               state: { id: id, index: index },
                             }}
                             className="avatar"
@@ -192,7 +192,7 @@ const Accomodations = () => {
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link
                             to={{
-                              pathname: "/app/employee/house-profile",
+                              pathname: "/app/accomodation/house-profile",
                               state: { id: id, index: index },
                             }}
                           >

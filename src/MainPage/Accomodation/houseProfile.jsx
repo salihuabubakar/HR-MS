@@ -1,20 +1,20 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import Header from "../../../initialpage/Sidebar/header";
-import Sidebar from "../../../initialpage/Sidebar/sidebar";
+import Header from "../../initialpage/Sidebar/header";
+import Sidebar from "../../initialpage/Sidebar/sidebar";
 import {
   Avatar_02,
   Avatar_05,
   Avatar_09,
   Avatar_10,
   Avatar_16,
-} from "../../../Entryfile/imagepath";
-import SmileImg from "../../../assets/img/smile.png";
+} from "../../Entryfile/imagepath";
+import SmileImg from "../../assets/img/smile.png";
 import { useParams, useLocation } from "react-router-dom";
-import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
-import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
-import HouseImg from "../../../assets/img/house.png";
+import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { initHouse, savedHouseReducer } from "../../utils/localStorage";
+import HouseImg from "../../assets/img/house.png";
 
 const houseProfile = () => {
   const location = useLocation();
@@ -71,7 +71,7 @@ const houseProfile = () => {
                 <h3 className="page-title">House Profile</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/app/employee/accomodations">House</Link>
+                    <Link to="/app/accomodation/accomodations">House</Link>
                   </li>
                   <li className="breadcrumb-item active">Profile</li>
                 </ul>

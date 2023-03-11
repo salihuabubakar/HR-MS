@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useReducer, Fragment } from "react";
 import { Helmet } from "react-helmet";
 import { Link, withRouter } from 'react-router-dom';
-import  AddShift from "../../../_components/modelbox/AddShift"
-import AddSchedule from "../../../_components/modelbox/Addschedule";
+import  AddShift from "../../_components/modelbox/AddShift"
+import AddSchedule from "../../_components/modelbox/Addschedule";
 import { useLocation } from "react-router-dom";
 import Select from "react-select";
-import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
-import Smile from "../../../assets/img/smile.png";
-import Header from "../../../initialpage/Sidebar/header";
-import Sidebar from "../../../initialpage/Sidebar/sidebar";
-import { Body, DesignationDiv } from "./styles.js";
+import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import Smile from "../../assets/img/smile.png";
+import Header from "../../initialpage/Sidebar/header";
+import Sidebar from "../../initialpage/Sidebar/sidebar";
+import { Body, DesignationDiv } from "../Employees/Employees/styles";
 import {
   initDept,
   savedDeptReducer,
@@ -21,7 +21,7 @@ import {
   savedHouseReducer,
   initScheduleEvent,
   savedScheduleEventReducer,
-} from "../../../utils/localStorage";
+} from "../../utils/localStorage";
 import "regenerator-runtime/runtime";
 
 
@@ -291,7 +291,7 @@ const ShiftScheduling = () => {
                       <Link to="/app/main/dashboard">Dashboard</Link>
                     </li>
                     <li className="breadcrumb-item">
-                      <Link to="/app/employee/house">House</Link>
+                      <Link to="/app/shiftschedule/house">House</Link>
                     </li>
                     <li className="breadcrumb-item active">
                       Shift Scheduling : {houseName}
@@ -300,7 +300,7 @@ const ShiftScheduling = () => {
                 </div>
                 <div className="col-auto float-end ml-auto">
                   <Link
-                    to="/app/employee/shift-list"
+                    to="/app/shiftschedule/shift-list"
                     className="btn add-btn m-r-5"
                   >
                     Shifts
@@ -533,7 +533,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleTuesDayShift(index, value)
+                                      handleTuesDayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -601,7 +601,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleWednesdayShift(index, value)
+                                      handleWednesdayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -669,7 +669,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleThursdayShift(index, value)
+                                      handleThursdayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -735,7 +735,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleFridayShift(index, value)
+                                      handleFridayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -801,7 +801,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handlSaturdayShift(index, value)
+                                      handlSaturdayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -867,7 +867,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleSundayShift(index, value)
+                                      handleSundayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
