@@ -533,7 +533,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleTuesDayShift(index, value)
+                                      handleTuesDayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -601,7 +601,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleWednesdayShift(index, value)
+                                      handleWednesdayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -669,7 +669,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleThursdayShift(index, value)
+                                      handleThursdayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -735,7 +735,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleFridayShift(index, value)
+                                      handleFridayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -801,7 +801,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handlSaturdayShift(index, value)
+                                      handlSaturdayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
@@ -867,7 +867,7 @@ const ShiftScheduling = () => {
                                   <td
                                     className="tool-tip"
                                     onClick={() =>
-                                      handleSundayShift(index, value)
+                                      handleSundayShift(value)
                                     }
                                   >
                                     <span className="tool-tip-text">
