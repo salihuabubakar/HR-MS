@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
-import Header from "../../../initialpage/Sidebar/header";
-import Sidebar from "../../../initialpage/Sidebar/sidebar";
+import Header from "../../initialpage/Sidebar/header";
+import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
-import {itemRender,onShowSizeChange} from "../../paginationfunction"
-import "../../antdstyle.css"
-import  AddShift from "../../../_components/modelbox/AddShift"
-import { useGlobalState, setGlobalState} from '../../../context/GlobalState';
+import {itemRender,onShowSizeChange} from "../paginationfunction"
+import "../antdstyle.css"
+import  AddShift from "../../_components/modelbox/AddShift"
+import { useGlobalState, setGlobalState} from '../../context/GlobalState';
 import {
   initShiftList,
   savedShiftListReducer
-} from "../../../utils/localStorage";
+} from "../../utils/localStorage";
 
 const ShiftList = () => {
 

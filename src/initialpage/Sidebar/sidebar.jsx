@@ -320,16 +320,6 @@ const toggleLevelThree = (value) => {
                           Designations
                         </Link>
                       </li>
-                      <li>
-                        <Link
-                          className={
-                            pathname.includes("accomodations") ? "active" : ""
-                          }
-                          to="/app/employee/accomodations"
-                        >
-                          Accomodation
-                        </Link>
-                      </li>
                       {/* <li>
                         <Link
                           className={
@@ -342,7 +332,7 @@ const toggleLevelThree = (value) => {
                       </li> */}
                       {/* <li><Link className={pathname.includes('shift-scheduling') || pathname.includes('shift-list') ?"active" :""} 
                         to="/app/employee/shift-scheduling">Shift &amp; Schedule</Link></li> */}
-                      <li className="submenu">
+                      {/* <li className="submenu">
                         <a
                           // data-bs-toggle="dropdown"
                           className={
@@ -385,7 +375,7 @@ const toggleLevelThree = (value) => {
                         ) : (
                           ""
                         )}
-                      </li>
+                      </li> */}
                       {/* <li>
                         <Link
                           className={
@@ -404,6 +394,69 @@ const toggleLevelThree = (value) => {
                 <li className="submenu">
                   <a
                     // data-bs-toggle="dropdown"
+                    className={isSideMenu == "accomodations" ? "subdrop" : ""}
+                  >
+                    <i className="la la-home" />
+                    <Link
+                      className={
+                        pathname.includes("accomodations")
+                          ? "active"
+                          : pathname.includes("accomodation")
+                          ? "active"
+                          : ""
+                      }
+                      to="/app/accomodation/accomodations"
+                    >
+                      Accomodation
+                    </Link>
+                    
+                  </a>
+                </li>
+                <li className="submenu">
+                  <a
+                    // data-bs-toggle="dropdown"
+                    className={isSideMenu == "shiftschedule" ? "subdrop" : ""}
+                    onClick={() =>
+                      toggleSidebar(
+                        isSideMenu == "shiftschedule" ? "" : "shiftschedule"
+                      )
+                    }
+                  >
+                    <i className="la la-cogs" />{" "}
+                    <span> Shift &amp; Schedule</span>{" "}
+                    <span className="menu-arrow" />
+                  </a>
+                  {isSideMenu == "shiftschedule" ? (
+                    <ul>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("shift-list") ? "active" : ""
+                          }
+                          
+                          to="/app/shiftschedule/shift-list"
+                        >
+                          Shifts
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("house") ? "active" : ""
+                          }
+                          to="/app/shiftschedule/house"
+                        >
+                          Select House
+                        </Link>
+                      </li>
+                    </ul>
+                  ) : (
+                    ""
+                  )}
+                </li>
+                <li className="submenu">
+                  <a
+                    // data-bs-toggle="dropdown"
                     className={isSideMenu == "taskmanagement" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(
@@ -411,7 +464,7 @@ const toggleLevelThree = (value) => {
                       )
                     }
                   >
-                    <i className="la la-dashboard" />{" "}
+                    <i className="la la-chart-bar" />{" "}
                     <span> Task Management</span>{" "}
                     <span className="menu-arrow" />
                   </a>

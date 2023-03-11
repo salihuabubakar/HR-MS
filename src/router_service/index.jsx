@@ -29,6 +29,10 @@ import Employee from '../MainPage/Employees/Employees';
 import ServiceWork from "../MainPage/ServiceWork";
 // Task Management
 import TaskManager from "../MainPage/TaskManagement";
+// Accomodation
+import Accomodation from '../MainPage/Accomodation';
+// ShiftSchedule
+import ShiftSchedule from '../MainPage/Shiftschedule';
 
 export default [
   {
@@ -46,6 +50,14 @@ export default [
   {
     path: "employees",
     component: Employees,
+  },
+  {
+    path: "accomodation",
+    component: Accomodation,
+  },
+  {
+    path: "shiftschedule",
+    component: ShiftSchedule,
   },
   {
     path: "taskmanagement",

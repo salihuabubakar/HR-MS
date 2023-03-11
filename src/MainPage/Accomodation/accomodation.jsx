@@ -1,16 +1,16 @@
 import React, { useState, useReducer, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import Header from "../../../initialpage/Sidebar/header";
-import Sidebar from "../../../initialpage/Sidebar/sidebar";
+import Header from "../../initialpage/Sidebar/header";
+import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { Table } from "antd";
 import "antd/dist/antd.css";
-import { itemRender, onShowSizeChange } from "../../paginationfunction";
-import "../../antdstyle.css";
-import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
-import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
-import AddHouse from "../../../_components/modelbox/AddHouse";
-import HouseImg from "../../../assets/img/house.png";
+import { itemRender, onShowSizeChange } from "../paginationfunction";
+import "../antdstyle.css";
+import { setGlobalState, useGlobalState } from "../../context/GlobalState";
+import { initHouse, savedHouseReducer } from "../../utils/localStorage";
+import AddHouse from "../../_components/modelbox/AddHouse";
+import HouseImg from "../../assets/img/house.png";
 
 const Housing = () => {
   const [house, dispatchHouse] = useReducer(savedHouseReducer, [], initHouse);
@@ -69,7 +69,7 @@ const Housing = () => {
             <h2 className="table-avatar">
               <Link
                 to={{
-                  pathname: "/app/employee/house-profile",
+                  pathname: "/app/accomodation/house-profile",
                   state: { id: id, index: index },
                 }}
                 className="avatar"
@@ -87,7 +87,7 @@ const Housing = () => {
               </Link>
               <Link
                 to={{
-                  pathname: "/app/employee/house-profile",
+                  pathname: "/app/accomodation/house-profile",
                   state: { id: id, index: index },
                 }}
               >
@@ -160,13 +160,13 @@ const Housing = () => {
                 </a>
                 <div className="view-icons">
                   <Link
-                    to="/app/employee/accomodations"
+                    to="/app/accomodation/accomodations"
                     className="grid-view btn btn-link"
                   >
                     <i className="fa fa-th" />
                   </Link>
                   <Link
-                    to="/app/employee/accomodation"
+                    to="/app/accomodation/accomodation"
                     className="list-view btn btn-link active"
                   >
                     <i className="fa fa-bars" />

@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import Header from "../../../initialpage/Sidebar/header";
-import Sidebar from "../../../initialpage/Sidebar/sidebar";
-import { initHouse, savedHouseReducer } from "../../../utils/localStorage";
-import HouseImg from "../../../assets/img/house.png";
+import Header from "../../initialpage/Sidebar/header";
+import Sidebar from "../../initialpage/Sidebar/sidebar";
+import { initHouse, savedHouseReducer } from "../../utils/localStorage";
+import HouseImg from "../../assets/img/house.png";
 
 const SelectDept = () => {
   const [menu, setMenu] = useState(false);
@@ -80,7 +80,7 @@ const SelectDept = () => {
                   <div className="profile-widget">
                     <Link
                       to={{
-                        pathname: "/app/employee/shift-scheduling",
+                        pathname: "/app/shiftschedule/shift-scheduling",
                         state: { id: id },
                       }}
                       className="avatar"
@@ -104,7 +104,7 @@ const SelectDept = () => {
                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                       <Link
                         to={{
-                          pathname: "/app/employee/shift-scheduling",
+                          pathname: "/app/shiftschedule/shift-scheduling",
                           state: { id: id },
                         }}
                       >
