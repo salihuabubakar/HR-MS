@@ -28,6 +28,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
   const options = { month: "long", day: "numeric", year: "numeric" };
   const formattedDate = today.toLocaleDateString("en-GB", options);
 
+
   const [currentTime, setCurrentTime] = useState();
   useEffect(() => {
     const intervalID = setInterval(() => {
@@ -63,6 +64,34 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
     localStorage.removeItem("comment");
     window.location.reload();
   };
+
+  // const [dataArray, setDataArray] = useState([
+  //   "Apple",
+  //   "Banana",
+  //   "Banana",
+  //   "Orange",
+  //   "Apple",
+  //   "Grape",
+  //   "salihu",
+  //   "salihu"
+  // ]);
+  // const [uniqueDataArray, setUniqueDataArray] = useState([]);
+
+  // const handleFilterData = () => {
+  //   const uniqueData = [...new Set(dataArray)];
+  //   setUniqueDataArray(uniqueData);
+  // };
+
+  //   return (
+  //   <div>
+  //     <button onClick={handleFilterData}>Filter Data</button>
+  //     <ul>
+  //       {uniqueDataArray.map((data, index) => (
+  //         <li key={index}>{data}</li>
+  //       ))}
+  //     </ul>
+  //   </div>
+  // );
 
   return (
     <Card className="card">
@@ -107,16 +136,22 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                     id,
                     commentValue,
                     currentTime,
-                    formattedDate,
+                    formattedDate: currentFormatedDate,
                     taskId: taskIdInComment,
                   } = comment;
                   if (selecetedTaskId === taskIdInComment) {
                     return (
                       <div key={index} className="chats">
-                        {index === 0 && (
-                          <div className="chat-line">
-                            <span className="chat-date">{formattedDate}</span>
-                          </div>
+                        {(index === 0 ||
+                          formattedDate !== currentFormatedDate ||
+                          formattedDate == currentFormatedDate) && (
+                            formattedDate == currentFormatedDate ? null : (
+                              <div className="chat-line">
+                                <span className="chat-date">
+                                  {currentFormatedDate}
+                                </span>
+                              </div>
+                            )
                         )}
                         <div className="chat chat-right">
                           <div className="chat-avatar">
@@ -154,7 +189,6 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                       </div>
                     );
                   }
-                  
                 })}
               </div>
             </div>
