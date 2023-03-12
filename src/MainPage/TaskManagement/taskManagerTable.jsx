@@ -176,16 +176,26 @@ const TaskManagerTable = () => {
             key={id}
             style={{
               backgroundColor:
-                (taskPriority?.label == "highest" && "#f62d51") ||
+                (taskPriority?.label == "low" && "#f62d51") ||
                 (taskPriority?.label == "medium" && "#ff9b44") ||
-                (taskPriority?.label == "low" && "#55CE63"),
+                (taskPriority?.label == "highest" && "#55CE63"),
               color: "#fff",
               padding: "5px",
               borderRadius: "5px",
             }}
             className="table-avatar"
           >
-            {taskPriority?.label}
+            <Link
+              style={{
+                color: "#fff",
+              }}
+              to={{
+                pathname: "/app/taskmanagement/task-manager-detail",
+                state: { id: id, index: index },
+              }}
+            >
+              {taskPriority?.label}
+            </Link>
           </h2>
         );
       },
@@ -194,18 +204,34 @@ const TaskManagerTable = () => {
       title: "Status",
       dataIndex: "taskStatus",
       render: (text, record, index) => {
-        const { taskStatus } = record;
+        const { taskStatus, id } = record;
         return (
           <h2
             style={{
-              backgroundColor: taskStatus == "In-progress" && "#55CE63",
+              backgroundColor:
+                (taskStatus?.label == "finish" && "#55CE63") ||
+                (taskStatus?.label == "middle" && "#ff9b44") ||
+                (taskStatus?.label == "start" && "#f62d51"),
               color: "#fff",
               padding: "5px",
               borderRadius: "5px",
             }}
             className="table-avatar"
           >
-            {taskStatus}
+            <Link
+              style={{
+                color: "#fff",
+              }}
+              to={{
+                pathname: "/app/taskmanagement/task-manager-detail",
+                state: { id: id, index: index },
+              }}
+            >
+              {((taskStatus?.label == "start" ||
+                taskStatus?.label == "middle") &&
+                "In-progress") ||
+                (taskStatus?.label == "finish" && "Completed")}
+            </Link>
           </h2>
         );
       },
