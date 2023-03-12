@@ -32,3 +32,24 @@ export const Span = styled.span`
     box-shadow: 0 15px 45px rgb(24, 249, 141, 0.2);
   }
 `;
+
+export const DivContainer = styled.div`
+  .bg-complete {
+    background-color: #55ce63;
+  }
+  .bg-middle {
+    background-color: #ff9b44;
+  }
+  .bg-start {
+    background-color: #f62d51;
+  }
+  .color-complete {
+    color: #55ce63;
+  }
+  .color-middle {
+    color: #ff9b44;
+  }
+  .color-start {
+    color: #f62d51;
+  }
+`;

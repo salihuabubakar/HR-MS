@@ -23,7 +23,7 @@ import {
 } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
 import { useParams, useLocation } from "react-router-dom";
-import { Span } from "./style";
+import { Span, DivContainer } from "./style";
 import AddSubTask from "../../_components/modelbox/AddSubTask";
 import AddTaskImage from "../../_components/modelbox/AddTaskImage"
 import { async } from "regenerator-runtime";
@@ -100,7 +100,7 @@ const TaskDetails = () => {
     const taskDescription = selectedTask?.description;
     const totalAssignedEmployees = selectedTask?.employee;
     const managerName = selectedTask?.manager;
-    const taskStatus = selectedTask?.taskStatus;
+    const taskStatus = selectedTask?.taskStatus?.label;
     const dateCreated = selectedTask?.dateCreated;
 
     console.log("selectedTaskId..", selecetedTaskId);
@@ -147,7 +147,7 @@ const TaskDetails = () => {
     }
   });
   return (
-    <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+    <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
       <Header onMenuClick={(value) => toggleMobileMenu()} />
       <Sidebar />
       <div className="page-wrapper">
@@ -182,6 +182,256 @@ const TaskDetails = () => {
                   <p>{taskDescription}</p>
                 </div>
               </div>
+              <div className="project-task">
+                <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      href="#all_tasks"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                    >
+                      <span
+                        className="action-circle large"
+                        style={{ marginRight: "10px" }}
+                        title="Add Task"
+                        onClick={() => setGlobalState("showSubTaskModal", true)}
+                      >
+                        <i className="material-icons">add</i>
+                      </span>
+                      All Tasks
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#pending_tasks"
+                      data-bs-toggle="tab"
+                      aria-expanded="false"
+                    >
+                      Pending Tasks
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#completed_tasks"
+                      data-bs-toggle="tab"
+                      aria-expanded="false"
+                    >
+                      Completed Tasks
+                    </a>
+                  </li>
+                </ul>
+                <div className="tab-content">
+                  <div className="tab-pane show active" id="all_tasks">
+                    <div className="task-wrapper">
+                      <div className="task-list-container">
+                        <div className="task-list-body">
+                          <ul id="task-list">
+                            {subTaskTitleArray
+                              ? subTaskTitleArray?.map((subtasks, index) => {
+                                  const {
+                                    id,
+                                    taskId: taskIdInSubTask,
+                                    subTask,
+                                    checkToComplete,
+                                  } = subtasks;
+                                  if (taskIdInSubTask == selecetedTaskId) {
+                                    return (
+                                      <li
+                                        key={id}
+                                        className={
+                                          checkToComplete ? "completed" : "task"
+                                        }
+                                      >
+                                        <div className="task-container">
+                                          <span className="task-action-btn task-check">
+                                            <span
+                                              className="action-circle large complete-btn"
+                                              title="Mark Complete"
+                                            >
+                                              <i className="material-icons">
+                                                check
+                                              </i>
+                                            </span>
+                                          </span>
+                                          <span className="task-label">
+                                            {subTask}
+                                          </span>
+                                          <span className="task-action-btn ">
+                                            <span
+                                              className="action-circle large"
+                                              title="Update"
+                                              onClick={() =>
+                                                handleSubTaskEdit(index)
+                                              }
+                                            >
+                                              <i className="material-icons">
+                                                person_add
+                                              </i>
+                                            </span>
+                                            <span
+                                              className="action-circle large delete-btn"
+                                              title="Delete Task"
+                                              onClick={() =>
+                                                handleSubTaskDelete(index)
+                                              }
+                                            >
+                                              <i className="material-icons">
+                                                delete
+                                              </i>
+                                            </span>
+                                          </span>
+                                        </div>
+                                      </li>
+                                    );
+                                  }
+                                })
+                              : "No sub tasks available"}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tab-pane" id="pending_tasks">
+                    <div className="task-wrapper">
+                      <div className="task-list-container">
+                        <div className="task-list-body">
+                          <ul id="task-list">
+                            {subTaskTitleArray
+                              ? subTaskTitleArray?.map((subtasks, index) => {
+                                  const {
+                                    id,
+                                    taskId: taskIdInSubTask,
+                                    subTask,
+                                    checkToComplete,
+                                  } = subtasks;
+                                  if (
+                                    checkToComplete != true &&
+                                    taskIdInSubTask == selecetedTaskId
+                                  ) {
+                                    return (
+                                      <li key={id} className="task">
+                                        <div className="task-container">
+                                          <span className="task-action-btn task-check">
+                                            <span
+                                              className="action-circle large complete-btn"
+                                              title="Mark Complete"
+                                            >
+                                              <i className="material-icons">
+                                                check
+                                              </i>
+                                            </span>
+                                          </span>
+                                          <span className="task-label">
+                                            {subTask}
+                                          </span>
+                                          <span className="task-action-btn ">
+                                            <span
+                                              className="action-circle large"
+                                              title="Update"
+                                              onClick={() =>
+                                                handleSubTaskEdit(index)
+                                              }
+                                            >
+                                              <i className="material-icons">
+                                                person_add
+                                              </i>
+                                            </span>
+                                            <span
+                                              className="action-circle large delete-btn"
+                                              title="Delete Task"
+                                              onClick={() =>
+                                                handleSubTaskDelete(index)
+                                              }
+                                            >
+                                              <i className="material-icons">
+                                                delete
+                                              </i>
+                                            </span>
+                                          </span>
+                                        </div>
+                                      </li>
+                                    );
+                                  }
+                                })
+                              : "No sub tasks available"}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tab-pane" id="completed_tasks">
+                    <div className="task-wrapper">
+                      <div className="task-list-container">
+                        <div className="task-list-body">
+                          <ul id="task-list">
+                            {subTaskTitleArray
+                              ? subTaskTitleArray?.map((subtasks, index) => {
+                                  const {
+                                    id,
+                                    taskId: taskIdInSubTask,
+                                    subTask,
+                                    checkToComplete,
+                                  } = subtasks;
+                                  if (
+                                    checkToComplete == true &&
+                                    taskIdInSubTask == selecetedTaskId
+                                  ) {
+                                    return (
+                                      <li key={id} className="completed">
+                                        <div className="task-container">
+                                          <span className="task-action-btn task-check">
+                                            <span
+                                              className="action-circle large complete-btn"
+                                              title="Mark Complete"
+                                            >
+                                              <i className="material-icons">
+                                                check
+                                              </i>
+                                            </span>
+                                          </span>
+                                          <span className="task-label">
+                                            {subTask}
+                                          </span>
+                                          <span className="task-action-btn ">
+                                            <span
+                                              className="action-circle large"
+                                              title="Update"
+                                              onClick={() =>
+                                                handleSubTaskEdit(index)
+                                              }
+                                            >
+                                              <i className="material-icons">
+                                                person_add
+                                              </i>
+                                            </span>
+                                            <span
+                                              className="action-circle large delete-btn"
+                                              title="Delete Task"
+                                              onClick={() =>
+                                                handleSubTaskDelete(index)
+                                              }
+                                            >
+                                              <i className="material-icons">
+                                                delete
+                                              </i>
+                                            </span>
+                                          </span>
+                                        </div>
+                                      </li>
+                                    );
+                                  }
+                                })
+                              : "No sub tasks available"}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <CommentSection
                 selecetedTaskId={selecetedTaskId}
                 taskId={taskId}
@@ -201,8 +451,12 @@ const TaskDetails = () => {
                   </h5>
                   <div className="row">
                     {taskImages?.map((img, index) => {
-                      const { id, image, imageName, taskId: taskIdInImage } =
-                        img;
+                      const {
+                        id,
+                        image,
+                        imageName,
+                        taskId: taskIdInImage,
+                      } = img;
                       if (taskIdInImage == selecetedTaskId) {
                         return (
                           <div
@@ -367,250 +621,6 @@ const TaskDetails = () => {
                   </ul>
                 </div>
               </div>
-              <div className="project-task">
-                <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
-                  <li className="nav-item">
-                    <a
-                      className="nav-link active"
-                      href="#all_tasks"
-                      data-bs-toggle="tab"
-                      aria-expanded="true"
-                    >
-                      <span
-                        className="action-circle large"
-                        style={{ marginRight: "10px" }}
-                        title="Add Task"
-                        onClick={() => setGlobalState("showSubTaskModal", true)}
-                      >
-                        <i className="material-icons">add</i>
-                      </span>
-                      All Tasks
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      href="#pending_tasks"
-                      data-bs-toggle="tab"
-                      aria-expanded="false"
-                    >
-                      Pending Tasks
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      href="#completed_tasks"
-                      data-bs-toggle="tab"
-                      aria-expanded="false"
-                    >
-                      Completed Tasks
-                    </a>
-                  </li>
-                </ul>
-                <div className="tab-content">
-                  <div className="tab-pane show active" id="all_tasks">
-                    <div className="task-wrapper">
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {subTaskTitleArray
-                              ? subTaskTitleArray?.map((subtasks, index) => {
-                                  const {
-                                    id,
-                                    taskId: taskIdInSubTask,
-                                    subTask,
-                                    checkToComplete,
-                                  } = subtasks;
-                                  if (taskIdInSubTask == selecetedTaskId) {
-                                    return (
-                                      <li
-                                        key={id}
-                                        className={
-                                          checkToComplete ? "completed" : "task"
-                                        }
-                                      >
-                                        <div className="task-container">
-                                          <span className="task-action-btn task-check">
-                                            <span
-                                              className="action-circle large complete-btn"
-                                              title="Mark Complete"
-                                            >
-                                              <i className="material-icons">
-                                                check
-                                              </i>
-                                            </span>
-                                          </span>
-                                          <span className="task-label">
-                                            {subTask}
-                                          </span>
-                                          <span className="task-action-btn ">
-                                            <span
-                                              className="action-circle large"
-                                              title="Update"
-                                              onClick={() =>
-                                                handleSubTaskEdit(index)
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                person_add
-                                              </i>
-                                            </span>
-                                            <span
-                                              className="action-circle large delete-btn"
-                                              title="Delete Task"
-                                              onClick={() =>
-                                                handleSubTaskDelete(index)
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                delete
-                                              </i>
-                                            </span>
-                                          </span>
-                                        </div>
-                                      </li>
-                                    );
-                                  }
-                                })
-                              : "No sub tasks available"}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="tab-pane" id="pending_tasks">
-                    <div className="task-wrapper">
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {subTaskTitleArray
-                              ? subTaskTitleArray?.map((subtasks, index) => {
-                                  const {
-                                    id,
-                                    taskId: taskIdInSubTask,
-                                    subTask,
-                                    checkToComplete,
-                                  } = subtasks;
-                                  if (checkToComplete != true && taskIdInSubTask == selecetedTaskId) {
-                                    return (
-                                      <li key={id} className="task">
-                                        <div className="task-container">
-                                          <span className="task-action-btn task-check">
-                                            <span
-                                              className="action-circle large complete-btn"
-                                              title="Mark Complete"
-                                            >
-                                              <i className="material-icons">
-                                                check
-                                              </i>
-                                            </span>
-                                          </span>
-                                          <span className="task-label">
-                                            {subTask}
-                                          </span>
-                                          <span className="task-action-btn ">
-                                            <span
-                                              className="action-circle large"
-                                              title="Update"
-                                              onClick={() =>
-                                                handleSubTaskEdit(index)
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                person_add
-                                              </i>
-                                            </span>
-                                            <span
-                                              className="action-circle large delete-btn"
-                                              title="Delete Task"
-                                              onClick={() =>
-                                                handleSubTaskDelete(index)
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                delete
-                                              </i>
-                                            </span>
-                                          </span>
-                                        </div>
-                                      </li>
-                                    );
-                                  }
-                                })
-                              : "No sub tasks available"}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="tab-pane" id="completed_tasks">
-                    <div className="task-wrapper">
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {subTaskTitleArray
-                              ? subTaskTitleArray?.map((subtasks, index) => {
-                                  const {
-                                    id,
-                                    taskId: taskIdInSubTask,
-                                    subTask,
-                                    checkToComplete,
-                                  } = subtasks;
-                                  if (checkToComplete == true && taskIdInSubTask == selecetedTaskId) {
-                                    return (
-                                      <li key={id} className="completed">
-                                        <div className="task-container">
-                                          <span className="task-action-btn task-check">
-                                            <span
-                                              className="action-circle large complete-btn"
-                                              title="Mark Complete"
-                                            >
-                                              <i className="material-icons">
-                                                check
-                                              </i>
-                                            </span>
-                                          </span>
-                                          <span className="task-label">
-                                            {subTask}
-                                          </span>
-                                          <span className="task-action-btn ">
-                                            <span
-                                              className="action-circle large"
-                                              title="Update"
-                                              onClick={() =>
-                                                handleSubTaskEdit(index)
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                person_add
-                                              </i>
-                                            </span>
-                                            <span
-                                              className="action-circle large delete-btn"
-                                              title="Delete Task"
-                                              onClick={() =>
-                                                handleSubTaskDelete(index)
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                delete
-                                              </i>
-                                            </span>
-                                          </span>
-                                        </div>
-                                      </li>
-                                    );
-                                  }
-                                })
-                              : "No sub tasks available"}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
             <div className="col-lg-4 col-xl-3">
               <div className="card">
@@ -648,9 +658,9 @@ const TaskDetails = () => {
                         <td
                           style={{
                             backgroundColor:
-                              (taskPriority == "highest" && "#f62d51") ||
+                              (taskPriority == "highest" && "#55CE63") ||
                               (taskPriority == "medium" && "#ff9b44") ||
-                              (taskPriority == "low" && "#55CE63"),
+                              (taskPriority == "low" && "#f62d51"),
                             color: "#fff",
                           }}
                           className="text-end"
@@ -673,27 +683,55 @@ const TaskDetails = () => {
                         <td>Status:</td>
                         <td
                           style={{
-                            backgroundColor:
-                              taskStatus == "In-progress" && "#55CE63",
                             color: "#fff",
                           }}
-                          className="text-end"
+                          className={
+                            (taskStatus == "start" && " text-end bg-start") ||
+                            (taskStatus == "middle" && "text-end bg-middle") ||
+                            (taskStatus == "finish" && "text-end bg-complete")
+                          }
                         >
-                          {taskStatus}
+                          {(taskStatus == "start" && "In-progress(start)") ||
+                            (taskStatus == "middle" && "In-progress(middle)") ||
+                            (taskStatus == "finish" && "Completed")}
                         </td>
                       </tr>
                     </tbody>
                   </table>
                   <p className="m-b-5">
-                    Progress <span className="text-success float-end">40%</span>
+                    Progress
+                    <span
+                      className= {
+                        (taskStatus == "start" && "float-end color-start") ||
+                        (taskStatus == "middle" && "float-end color-middle") ||
+                        (taskStatus == "finish" && "float-end color-complete")
+                      }
+                    >
+                      {(taskStatus == "start" && "30%") ||
+                        (taskStatus == "middle" && "60%") ||
+                        (taskStatus == "finish" && "100%")}
+                    </span>
                   </p>
                   <div className="progress progress-xs mb-0">
                     <div
-                      className="progress-bar bg-success"
+                      className={
+                        (taskStatus == "start" && "progress-bar bg-start") ||
+                        (taskStatus == "middle" && "progress-bar bg-middle") ||
+                        (taskStatus == "finish" && "progress-bar bg-complete")
+                      }
                       role="progressbar"
                       data-bs-toggle="tooltip"
-                      title="40%"
-                      style={{ width: "40%" }}
+                      title={
+                        (taskStatus == "start" && "30%") ||
+                        (taskStatus == "middle" && "60%") ||
+                        (taskStatus == "finish" && "100%")
+                      }
+                      style={{
+                        width:
+                          (taskStatus == "start" && "30%") ||
+                          (taskStatus == "middle" && "60%") ||
+                          (taskStatus == "finish" && "100%"),
+                      }}
                     />
                   </div>
                 </div>
@@ -811,7 +849,7 @@ const TaskDetails = () => {
         <Editproject />
         {/* /Edit Project Modal */}
       </div>
-    </div>
+    </DivContainer>
   );
 };
 

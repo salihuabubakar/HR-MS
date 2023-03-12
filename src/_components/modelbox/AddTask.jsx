@@ -65,6 +65,12 @@ const AddTask = ({
       : ""
   );
 
+  const [taskStatus, setTaskStatus] = useState(
+    selectedTaskInfo[indexToEdit]?.taskStatus
+      ? selectedTaskInfo[indexToEdit]?.taskStatus
+      : ""
+  );
+
   const [manager, setManager] = useState(
     selectedTaskInfo[indexToEdit]?.manager
       ? selectedTaskInfo[indexToEdit]?.manager
@@ -75,7 +81,7 @@ const AddTask = ({
     selectedTaskInfo[indexToEdit]?.id ? selectedTaskInfo[indexToEdit]?.id : Date.now()
   );
 
-  let taskStatus = "In-progress";
+  // let taskStatus = "In-progress";
 
   const priorityOptions = [
     { value: 1, label: "highest" },
@@ -85,6 +91,16 @@ const AddTask = ({
 
   const handlePriorityChange = (event) => {
     setTaskPriority(event);
+  };
+
+    const statusOptions = [
+      { value: 1, label: "start" },
+      { value: 2, label: "middle" },
+      { value: 3, label: "finish" },
+    ];
+
+  const handleStatusChange = (event) => {
+    setTaskStatus(event);
   };
 
   const today = new Date();
@@ -265,6 +281,25 @@ const AddTask = ({
                       options={priorityOptions}
                       styles={customSelectStyles}
                       placeholder="Select Priority"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="label radio-label">
+                      Task Status <span className="text-danger">*</span>
+                    </label>
+                    <Select
+                      defaultValue={
+                        selectedTaskInfo
+                          ? {
+                              value: taskStatus?.value,
+                              label: taskStatus?.label,
+                            }
+                          : "Select Status"
+                      }
+                      onChange={handleStatusChange}
+                      options={statusOptions}
+                      styles={customSelectStyles}
+                      placeholder="Select Status"
                     />
                   </div>
                   <div className="form-group">
