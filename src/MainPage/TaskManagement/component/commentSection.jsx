@@ -102,7 +102,7 @@ const CommentForm = ({ onSubmit }) => {
 };
 
 // App component renders the CommentList and CommentForm components
-const CommentSection = ({ taskId, selecetedTaskId }) => {
+const App = () => {
   const [comments, setComments] = useState([]);
 
   const handleCommentSubmit = (newComment) => {
@@ -117,7 +117,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
           replies: [
             ...comment.replies,
             {
-              author: "You",
+              author: 'You',
               text: replyText,
               id: Date.now(),
             },
@@ -125,13 +125,11 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
         };
       }
       return comment;
-    });
-  };
+   
+    })}
+  } 
 
-  return <CommentForm />;
-}; 
-
-const App = ({ taskId, selecetedTaskId }) => {
+const CommentSection = ({ taskId, selecetedTaskId }) => {
   
 
   return (
