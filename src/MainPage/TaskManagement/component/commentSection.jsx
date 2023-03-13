@@ -8,90 +8,131 @@ import Logo from "../../../assets/img/circle-logo.png";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import { initComment, savedCommentReducer } from "../../../utils/localStorage";
 
-const CommentSection = ({ taskId, selecetedTaskId }) => {
-  const [comment, dispatchComments] = useReducer(
-    savedCommentReducer,
-    [],
-    initComment
-  );
+// Comment component represents each individual comment
+const Comment = ({ comment, onReply }) => {
+  const [showReplyForm, setShowReplyForm] = useState(false);
+  const [replyText, setReplyText] = useState('');
 
-  useEffect(() => {
-    localStorage.setItem("comment", JSON.stringify(comment));
-  }, [comment]);
-
-  const [comments, setComments] = useState();
-  useEffect(() => {
-    setComments(comment);
-  }, [comment]);
-
-  const today = new Date();
-  const options = { month: "long", day: "numeric", year: "numeric" };
-  const formattedDate = today.toLocaleDateString("en-GB", options);
-
-
-  const [currentTime, setCurrentTime] = useState();
-  useEffect(() => {
-    const intervalID = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString("en-GB", { hour12: false }).slice(0, 5));
-    }, 1000);
-    return () => clearInterval(intervalID);
-  }, []);
-
-  const [commentValue, setCommentValue] = useState("");
-  const [id] = useState(Date.now());
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const commentDetails = {
-      id,
-      commentValue,
-      currentTime,
-      taskId,
-      formattedDate,
-    };
-    dispatchComments({ type: "push", payload: commentDetails });
-    setCommentValue("");
+  const handleReply = () => {
+    setShowReplyForm(!showReplyForm);
   };
 
-  const handleDeleteComment = (index) => {
-    dispatchComments({
-      type: "delete",
-      payload: comment[index],
+  const handleReplySubmit = (event) => {
+    event.preventDefault();
+    onReply(replyText);
+    setReplyText('');
+    setShowReplyForm(false);
+  };
+
+  return (
+    <div className="comment">
+      <div className="comment-author">{comment.author}</div>
+      <div className="comment-text">{comment.text}</div>
+      <button className="comment-reply" onClick={handleReply}>
+        Reply
+      </button>
+      {showReplyForm && (
+        <form onSubmit={handleReplySubmit}>
+          <input
+            type="text"
+            placeholder="Type your reply here"
+            value={replyText}
+            onChange={(event) => setReplyText(event.target.value)}
+          />
+          <button type="submit">Submit</button>
+        </form>
+      )}
+      {comment.replies && (
+        <div className="comment-replies">
+          {comment.replies.map((reply) => (
+            <Comment key={reply.id} comment={reply} onReply={onReply} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// CommentList component displays a list of comments
+const CommentList = ({ comments, onReply }) => {
+  return (
+    <div className="comment-list">
+      {comments.map((comment) => (
+        <Comment key={comment.id} comment={comment} onReply={onReply} />
+      ))}
+    </div>
+  );
+};
+
+
+// CommentForm component allows users to submit new comments
+const CommentForm = ({ onSubmit }) => {
+  const [author, setAuthor] = useState('');
+  const [text, setText] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onSubmit({
+      author: author,
+      text: text,
+      replies: [],
+      id: Date.now(),
+    });
+    setAuthor('');
+    setText('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Your name"
+        value={author}
+        onChange={(event) => setAuthor(event.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Type your comment here"
+        value={text}
+        onChange={(event) => setText(event.target.value)}
+      />
+      <button type="submit">Post Comment</button>
+    </form>
+  );
+};
+
+// App component renders the CommentList and CommentForm components
+const CommentSection = ({ taskId, selecetedTaskId }) => {
+  const [comments, setComments] = useState([]);
+
+  const handleCommentSubmit = (newComment) => {
+    setComments([...comments, newComment]);
+  };
+
+  const handleReplySubmit = (parentId, replyText) => {
+    const updatedComments = comments.map((comment) => {
+      if (comment.id === parentId) {
+        return {
+          ...comment,
+          replies: [
+            ...comment.replies,
+            {
+              author: "You",
+              text: replyText,
+              id: Date.now(),
+            },
+          ],
+        };
+      }
+      return comment;
     });
   };
 
-  const handleClearChat = () => {
-    localStorage.removeItem("comment");
-    window.location.reload();
-  };
+  return <CommentForm />;
+}; 
 
-  // const [dataArray, setDataArray] = useState([
-  //   "Apple",
-  //   "Banana",
-  //   "Banana",
-  //   "Orange",
-  //   "Apple",
-  //   "Grape",
-  //   "salihu",
-  //   "salihu"
-  // ]);
-  // const [uniqueDataArray, setUniqueDataArray] = useState([]);
-
-  // const handleFilterData = () => {
-  //   const uniqueData = [...new Set(dataArray)];
-  //   setUniqueDataArray(uniqueData);
-  // };
-
-  //   return (
-  //   <div>
-  //     <button onClick={handleFilterData}>Filter Data</button>
-  //     <ul>
-  //       {uniqueDataArray.map((data, index) => (
-  //         <li key={index}>{data}</li>
-  //       ))}
-  //     </ul>
-  //   </div>
-  // );
+const App = ({ taskId, selecetedTaskId }) => {
+  
 
   return (
     <Card className="card">
@@ -102,28 +143,6 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
               <Link to="/app/profile/employee-profile">
                 <span>Comment Section</span>{" "}
               </Link>
-              <div style={{ position: "relative" }} className="float-start">
-                <div
-                  style={{ position: "absolute", left: "160px", top: "0px" }}
-                  className="dropdown profile-action"
-                >
-                  <a
-                    aria-expanded="false"
-                    data-bs-toggle="dropdown"
-                    className="action-icon dropdown-toggle"
-                  >
-                    <i className="material-icons">more_vert</i>
-                  </a>
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <a
-                      className="dropdown-item"
-                      onClick={() => handleClearChat()}
-                    >
-                      Clear chat
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -134,63 +153,29 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
           <div>
             <div>
               <div className="chat-box">
-                {comments?.map((comment, index) => {
-                  const {
-                    id,
-                    commentValue,
-                    currentTime,
-                    formattedDate: currentFormatedDate,
-                    taskId: taskIdInComment,
-                  } = comment;
-                  if (selecetedTaskId === taskIdInComment) {
-                    return (
-                      <div key={index} className="chats">
-                        {(index === 0 ||
-                          formattedDate !== currentFormatedDate ||
-                          formattedDate == currentFormatedDate) && (
-                          <div className="chat-line">
-                            <span className="chat-date">
-                              {currentFormatedDate}
-                            </span>
-                          </div>
-                        )}
-                        <div className="chat chat-right">
-                          <div className="chat-avatar">
-                            <Link to="#" className="avatar">
-                              <img alt="" src={SmileImg} />
-                            </Link>
-                          </div>
-                          <div className="chat-body">
-                            <div className="chat-bubble">
-                              <div className="chat-content">
-                                <p>{commentValue}</p>
-                                <span className="chat-time">{currentTime}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="chat chat-left">
-                          <div className="chat-avatar">
-                            <Link
-                              to="/app/profile/employee-profile"
-                              className="avatar"
-                            >
-                              <img alt="" src={Logo} />
-                            </Link>
-                          </div>
-                          <div className="chat-body">
-                            <div className="chat-bubble">
-                              <div className="chat-content">
-                                <p>Hi, work in progress!</p>
-                                <span className="chat-time">8:35 am</span>
-                              </div>
-                            </div>
+                <div className="chats">
+                  <div className="chat chat-left">
+                    <div className="chat-avatar">
+                      <Link
+                        to="/app/profile/employee-profile"
+                        className="avatar"
+                      >
+                        <img alt="" src={Logo} />
+                      </Link>
+                    </div>
+                    <div className="chat-body">
+                      <div className="chat-bubble">
+                        <div className="chat-content">
+                          <p>Hi, work in progress!</p>
+                          <div style={{ display: "flex" }}>
+                            <span className="chat-time">2hr</span>
+                            <span style={{ color: "#888888", fontWeight: "bolder", cursor: "pointer", textDecoration: "underline", marginLeft: "5px" }} className="chat-time">Reply</span>
                           </div>
                         </div>
                       </div>
-                    );
-                  }
-                })}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -201,12 +186,15 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
         <div className="message-bar">
           <div className="message-inner">
             <div className="message-area">
-              <form onSubmit={handleSubmit} className="input-group">
+              <form
+                // onSubmit={handleSubmit}
+                className="input-group"
+              >
                 <textarea
                   className="form-control"
                   placeholder="Type message..."
-                  value={commentValue}
-                  onChange={(e) => setCommentValue(e.target.value)}
+                  // value={commentValue}
+                  // onChange={(e) => setCommentValue(e.target.value)}
                   name="comment"
                 />
                 <span className="input-group-append">
