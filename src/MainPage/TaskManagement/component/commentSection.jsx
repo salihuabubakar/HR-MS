@@ -5,132 +5,64 @@ import { Card } from "./style";
 import { Avatar_05 } from "../../../Entryfile/imagepath";
 import SmileImg from "../../../assets/img/smile.png";
 import Logo from "../../../assets/img/circle-logo.png";
-import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
-import { initComment, savedCommentReducer } from "../../../utils/localStorage";
-
-// Comment component represents each individual comment
-const Comment = ({ comment, onReply }) => {
-  const [showReplyForm, setShowReplyForm] = useState(false);
-  const [replyText, setReplyText] = useState('');
-
-  const handleReply = () => {
-    setShowReplyForm(!showReplyForm);
-  };
-
-  const handleReplySubmit = (event) => {
-    event.preventDefault();
-    onReply(replyText);
-    setReplyText('');
-    setShowReplyForm(false);
-  };
-
-  return (
-    <div className="comment">
-      <div className="comment-author">{comment.author}</div>
-      <div className="comment-text">{comment.text}</div>
-      <button className="comment-reply" onClick={handleReply}>
-        Reply
-      </button>
-      {showReplyForm && (
-        <form onSubmit={handleReplySubmit}>
-          <input
-            type="text"
-            placeholder="Type your reply here"
-            value={replyText}
-            onChange={(event) => setReplyText(event.target.value)}
-          />
-          <button type="submit">Submit</button>
-        </form>
-      )}
-      {comment.replies && (
-        <div className="comment-replies">
-          {comment.replies.map((reply) => (
-            <Comment key={reply.id} comment={reply} onReply={onReply} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-// CommentList component displays a list of comments
-const CommentList = ({ comments, onReply }) => {
-  return (
-    <div className="comment-list">
-      {comments.map((comment) => (
-        <Comment key={comment.id} comment={comment} onReply={onReply} />
-      ))}
-    </div>
-  );
-};
-
-
-// CommentForm component allows users to submit new comments
-const CommentForm = ({ onSubmit }) => {
-  const [author, setAuthor] = useState('');
-  const [text, setText] = useState('');
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    onSubmit({
-      author: author,
-      text: text,
-      replies: [],
-      id: Date.now(),
-    });
-    setAuthor('');
-    setText('');
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Your name"
-        value={author}
-        onChange={(event) => setAuthor(event.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Type your comment here"
-        value={text}
-        onChange={(event) => setText(event.target.value)}
-      />
-      <button type="submit">Post Comment</button>
-    </form>
-  );
-};
-
-// App component renders the CommentList and CommentForm components
-const App = () => {
-  const [comments, setComments] = useState([]);
-
-  const handleCommentSubmit = (newComment) => {
-    setComments([...comments, newComment]);
-  };
-
-  const handleReplySubmit = (parentId, replyText) => {
-    const updatedComments = comments.map((comment) => {
-      if (comment.id === parentId) {
-        return {
-          ...comment,
-          replies: [
-            ...comment.replies,
-            {
-              author: 'You',
-              text: replyText,
-              id: Date.now(),
-            },
-          ],
-        };
-      }
-      return comment;
-   
-    })}
-  } 
 
 const CommentSection = ({ taskId, selecetedTaskId }) => {
-  
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [replyText, setReplyText] = useState("");
+  const [activeCommentId, setActiveCommentId] = useState("");
+
+  useEffect(() => {
+    const storedComments = JSON.parse(localStorage.getItem("comments"));
+    if (storedComments) {
+      setComments(storedComments);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("comments", JSON.stringify(comments));
+  }, [comments]);
+
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    if (commentText.trim() !== "") {
+      setComments([
+        ...comments,
+        {
+          id: new Date().getTime(),
+          text: commentText,
+          replies: [],
+          taskId,
+        },
+      ]);
+      setCommentText("");
+    }
+  };
+
+  const handleReplySubmit = (e) => {
+    e.preventDefault();
+    if (replyText.trim() !== "") {
+      setComments((prevComments) =>
+        prevComments.map((comment) => {
+          if (comment.id === activeCommentId) {
+            return {
+              ...comment,
+              replies: [
+                ...comment.replies,
+                {
+                  id: new Date().getTime(),
+                  text: replyText,
+                },
+              ],
+            };
+          }
+          return comment;
+        })
+      );
+      setReplyText("");
+      setActiveCommentId("");
+    }
+  };
 
   return (
     <Card className="card">
@@ -145,66 +77,136 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
           </div>
         </div>
       </div>
-
+      <div className="chat-footer">
+        <div className="message-bar">
+          <div className="message-inner">
+            <div className="message-area">
+              <form onSubmit={handleCommentSubmit} className="input-group">
+                <textarea
+                  className="form-control"
+                  placeholder="Type message..."
+                  id="comment"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  name="comment"
+                />
+                <span className="input-group-append">
+                  <button className="btn btn-custom" type="submit">
+                    <i className="fa fa-send" />
+                  </button>
+                </span>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="chat-div">
         <div className="chat-content chat-box-height">
           <div>
             <div>
               <div className="chat-box">
-                <div className="chats">
-                  <div className="chat chat-left">
-                    <div className="chat-avatar">
-                      <Link
-                        to="/app/profile/employee-profile"
-                        className="avatar"
-                      >
-                        <img alt="" src={Logo} />
-                      </Link>
-                    </div>
-                    <div className="chat-body">
-                      <div className="chat-bubble">
-                        <div className="chat-content">
-                          <p>Hi, work in progress!</p>
-                          <div style={{ display: "flex" }}>
-                            <span className="chat-time">2hr</span>
-                            <span style={{ color: "#888888", fontWeight: "bolder", cursor: "pointer", textDecoration: "underline", marginLeft: "5px" }} className="chat-time">Reply</span>
+                {comments?.map((comment, index) => {
+                  const { id, text, replies, taskId } = comment;
+                  if(taskId === selecetedTaskId) {
+                    return (
+                      <div key={id} className="chats">
+                        <div className="chat chat-left">
+                          <div className="chat-avatar">
+                            <Link
+                              to="/app/profile/employee-profile"
+                              className="avatar"
+                            >
+                              <img alt="" src={Logo} />
+                            </Link>
+                          </div>
+                          <div className="chat-body">
+                            <div className="chat-bubble">
+                              <div className="chat-content">
+                                <p>{text}</p>
+                                <div style={{ display: "flex" }}>
+                                  <span className="chat-time">2hr</span>
+                                  <span
+                                    className="chat-time reply-btn"
+                                    onClick={() => setActiveCommentId(id)}
+                                  >
+                                    Reply
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
+                        {activeCommentId === id && (
+                          <div className="message-bar activeForm">
+                            <div className="message-inner">
+                              <div className="message-area">
+                                <form
+                                  // onSubmit={handleReplySubmit}
+                                  className="input-group"
+                                >
+                                  <textarea
+                                    className="form-control"
+                                    placeholder="Leave a reply"
+                                    id="reply"
+                                    value={replyText}
+                                    onChange={(e) =>
+                                      setReplyText(e.target.value)
+                                    }
+                                    name="comment"
+                                  />
+                                </form>
+                                <div className="input-group-append-">
+                                  <button
+                                    onClick={handleReplySubmit}
+                                    className="btn btn-custom btn-send"
+                                    type="submit"
+                                  >
+                                    <i className="fa fa-send" />
+                                  </button>
+                                  <button
+                                    onClick={() => setActiveCommentId(null)}
+                                    type="button"
+                                    className="btn btn-custom"
+                                  >
+                                    <i className="fa fa-times-circle" />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        <div className="replies">
+                          {replies?.map((reply) => {
+                            const { id, text: replies } = reply;
+                            return (
+                              <div key={id} className="chat chat-left">
+                                <div className="chat-avatar">
+                                  <Link
+                                    to="/app/profile/employee-profile"
+                                    className="avatar reply-avatar"
+                                  >
+                                    <img alt="" src={SmileImg} />
+                                  </Link>
+                                </div>
+                                <div className="chat-body">
+                                  <div className="chat-bubble">
+                                    <div className="chat-content">
+                                      <p>{replies}</p>
+                                      <div>
+                                        <span className="chat-time">2hr</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
+                    );
+                  }
+                })}
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="chat-footer">
-        <div className="message-bar">
-          <div className="message-inner">
-            <div className="message-area">
-              <form
-                // onSubmit={handleSubmit}
-                className="input-group"
-              >
-                <textarea
-                  className="form-control"
-                  placeholder="Type message..."
-                  // value={commentValue}
-                  // onChange={(e) => setCommentValue(e.target.value)}
-                  name="comment"
-                />
-                <span className="input-group-append">
-                  <button
-                    // onClick={handleSubmit}
-                    className="btn btn-custom"
-                    type="submit"
-                  >
-                    <i className="fa fa-send" />
-                  </button>
-                </span>
-              </form>
             </div>
           </div>
         </div>

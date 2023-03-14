@@ -686,9 +686,9 @@ const TaskDetails = () => {
                             color: "#fff",
                           }}
                           className={
-                            (taskStatus == "start" && " text-end bg-start") ||
-                            (taskStatus == "middle" && "text-end bg-middle") ||
-                            (taskStatus == "finish" && "text-end bg-complete")
+                            (taskStatus == "start" ? " text-end bg-start" : undefined) ||
+                            (taskStatus == "middle" ? "text-end bg-middle": undefined) ||
+                            (taskStatus == "finish" ? "text-end bg-complete": undefined)
                           }
                         >
                           {(taskStatus == "start" && "In-progress(start)") ||
@@ -702,9 +702,9 @@ const TaskDetails = () => {
                     Progress
                     <span
                       className= {
-                        (taskStatus == "start" && "float-end color-start") ||
-                        (taskStatus == "middle" && "float-end color-middle") ||
-                        (taskStatus == "finish" && "float-end color-complete")
+                        (taskStatus == "start" ? "float-end color-start" : undefined) ||
+                        (taskStatus == "middle" ? "float-end color-middle" : undefined) ||
+                        (taskStatus == "finish" ? "float-end color-complete" : undefined)
                       }
                     >
                       {(taskStatus == "start" && "30%") ||
@@ -715,16 +715,16 @@ const TaskDetails = () => {
                   <div className="progress progress-xs mb-0">
                     <div
                       className={
-                        (taskStatus == "start" && "progress-bar bg-start") ||
-                        (taskStatus == "middle" && "progress-bar bg-middle") ||
-                        (taskStatus == "finish" && "progress-bar bg-complete")
+                        (taskStatus == "start" ? "progress-bar bg-start" : undefined) ||
+                        (taskStatus == "middle" ? "progress-bar bg-middle" : undefined) ||
+                        (taskStatus == "finish" ? "progress-bar bg-complete" : undefined)
                       }
                       role="progressbar"
                       data-bs-toggle="tooltip"
                       title={
-                        (taskStatus == "start" && "30%") ||
-                        (taskStatus == "middle" && "60%") ||
-                        (taskStatus == "finish" && "100%")
+                        (taskStatus == "start" ? "30%" : undefined) ||
+                        (taskStatus == "middle" ? "60%" : undefined) ||
+                        (taskStatus == "finish" ? "100%" : undefined)
                       }
                       style={{
                         width:
@@ -779,7 +779,7 @@ const TaskDetails = () => {
                       ? totalAssignedEmployees?.map((user, index) => {
                           const { value, label, image, designation } = user;
                           return (
-                            <li>
+                            <li key={value}>
                               <Link
                                 to=""
                                 onClick={(event) => event.preventDefault()}
