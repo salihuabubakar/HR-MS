@@ -239,158 +239,179 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
     // }
     // setGlobalState("showModal", false);
   };
-
   return (
-    <PopupWrapper className=" custom-modal" role="dialog">
-      <PopupOverlay />
-      <PopupContainer className="" role="document">
-        <Card className="card-content">
-          <div className="card-header">
-            <h5 className="card-title">Emergency Contact</h5>
-            <div className="btn-container">
-              <button
-                className="closeX"
-                type="button"
-                onClick={() =>
-                  setGlobalState("showEmergencyContactModal", false)
-                }
-              >
-                <span>×</span>
-              </button>
+    <>
+      <PopupWrapper>
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="card-title">Emergency Contact</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() =>
+                      setGlobalState("showEmergencyContactModal", false)
+                    }
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      <div className="row Primary">
+                        <h5 className="section-title">Primary</h5>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="focus-label">Name</label>
+                            <input
+                              type="text"
+                              className="form-control floating"
+                              placeholder="Name"
+                              value={primaryName}
+                              onChange={(event) =>
+                                setPrimaryName(event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="focus-label">Relationship</label>
+                            <input
+                              type="text"
+                              className="form-control floating"
+                              placeholder="Relationship"
+                              value={primaryRelationship}
+                              onChange={(event) =>
+                                setPrimaryRelationship(event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              phone Number1{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control floating"
+                              placeholder="phone Number1"
+                              value={primaryPhone1}
+                              onChange={(event) =>
+                                setPrimaryPhone1(event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              phone Number2{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Phone Number2"
+                              value={primaryPhone2}
+                              onChange={(event) =>
+                                setPrimaryPhone2(event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row Secondary">
+                        <h5 className="section-title">Secondary</h5>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="focus-label">Name</label>
+                            <input
+                              type="text"
+                              className="form-control floating"
+                              placeholder="Name"
+                              value={secondaryName}
+                              onChange={(event) =>
+                                setSecondaryName(event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="focus-label">Relationship</label>
+                            <input
+                              type="text"
+                              className="form-control floating"
+                              placeholder="Relationship"
+                              value={secondaryRelationship}
+                              onChange={(event) =>
+                                setSecondaryRelationship(event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              phone Number1{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control floating"
+                              placeholder="phone Number1"
+                              value={secondaryPhone1}
+                              onChange={(event) =>
+                                setSecondaryPhone1(event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              phone Number2{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Phone Number2"
+                              value={secondaryPhone2}
+                              onChange={(event) =>
+                                setSecondaryPhone2(event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {selectedUserAccount[emIndex]?.id ? "Update" : "Save"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="card-body">
-            <form>
-              <div className="row-">
-                <div className="Primary">
-                  <h3>Primary</h3>
-                  <div className="col-sm">
-                    <div className="right form-group form-focus focused">
-                      <label className="focus-label">Name</label>
-                      <input
-                        type="text"
-                        className="form-control floating"
-                        placeholder="Name"
-                        value={primaryName}
-                        onChange={(event) => setPrimaryName(event.target.value)}
-                      />
-                    </div>
-
-                    <div className="form-group form-focus focused">
-                      <label className="focus-label">Relationship</label>
-                      <input
-                        type="text"
-                        className="form-control floating"
-                        placeholder="Relationship"
-                        value={primaryRelationship}
-                        onChange={(event) =>
-                          setPrimaryRelationship(event.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-sm">
-                    <div className="right form-group form-focus focused">
-                      <label className="focus-label">Phone Number</label>
-                      <input
-                        type="text"
-                        className="form-control floating"
-                        placeholder="phone Number"
-                        value={primaryPhone1}
-                        onChange={(event) =>
-                          setPrimaryPhone1(event.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="form-group form-focus focused">
-                      <label className="focus-label">
-                        Phone Number <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control floating"
-                        type="text"
-                        placeholder="Phone Number"
-                        value={primaryPhone2}
-                        onChange={(event) =>
-                          setPrimaryPhone2(event.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="Secondary">
-                  <h3>Secondary</h3>
-                  <div className="col-sm">
-                    <div className="right form-group form-focus focused">
-                      <label className="focus-label">Name</label>
-                      <input
-                        type="text"
-                        className="form-control floating"
-                        placeholder="Name"
-                        value={secondaryName}
-                        onChange={(event) =>
-                          setSecondaryName(event.target.value)
-                        }
-                      />
-                    </div>
-
-                    <div className="form-group form-focus focused">
-                      <label className="focus-label">Relationship</label>
-                      <input
-                        type="text"
-                        className="form-control floating"
-                        placeholder="Relationship"
-                        value={secondaryRelationship}
-                        onChange={(event) =>
-                          setSecondaryRelationship(event.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-sm">
-                    <div className="right form-group form-focus focused">
-                      <label className="focus-label">Phone Number</label>
-                      <input
-                        type="text"
-                        className="form-control floating"
-                        placeholder="phone Number"
-                        value={secondaryPhone1}
-                        onChange={(event) =>
-                          setSecondaryPhone1(event.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="form-group form-focus focused">
-                      <label className="focus-label">
-                        Phone Number <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control floating"
-                        type="text"
-                        placeholder="Phone Number"
-                        value={secondaryPhone2}
-                        onChange={(event) =>
-                          setSecondaryPhone2(event.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="submit-btn">
-                <button onClick={handleSubmit} className="submit-Btn">
-                  {selectedUserAccount[emIndex]?.id ? "Update" : "Save"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </Card>
-      </PopupContainer>
-    </PopupWrapper>
+          </PopupContainer>
+        </PopupOverlay>
+      </PopupWrapper>
+    </>
   );
 };
 

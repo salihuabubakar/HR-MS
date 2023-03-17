@@ -45,7 +45,19 @@ export const PopupContainer = styled.div`
   margin: 20px;
   margin-top: 150px;
   ${mobile} {
-    margin-top: 1000px;
+    margin-top: 900px;
+  }
+
+  .Primary,
+  .Secondary {
+    border: 1px solid grey;
+    margin: 5px 0;
+    padding: 2px;
+
+    .section-title {
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
   }
 `;
 

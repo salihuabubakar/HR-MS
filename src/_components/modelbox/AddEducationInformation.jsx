@@ -90,142 +90,163 @@ const AddEducationInformation = ({
   };
 
   return (
-    <PopupWrapper className=" custom-modal" role="dialog">
-      <PopupOverlay />
-      <PopupContainer className="" role="document">
-        <Card className="card-content">
-          <div className="card-header">
-            <h5 className="card-title">
-              {idIsTrue
-                ? "Edit Education Information"
-                : "Add Education Information"}
-            </h5>
-            <div className="btn-container">
-              {idIsTrue && (
-                <button
-                  className="delete"
-                  type="submit"
-                  onClick={handleDelete}
-                >
-                  Delete
-                </button>
-              )}
-              <button
-                className="closeX"
-                type="button"
-                onClick={() =>
-                  setGlobalState("showEducationInformationModal", false)
-                }
-              >
-                <span>×</span>
-              </button>
-            </div>
-          </div>
-          <div className="card-body">
-            <form>
-              <div className="row-">
-                {inputFields.map((value, index) => {
-                  return (
-                    <div key={index} className="Primary">
-                      <h3>
-                        Education Information
-                        {idIsTrue ? (
-                          ""
-                        ) : (
-                          <span>
-                            <a
-                              className="delete-icon"
-                              onClick={() => removeFields(index)}
-                            >
-                              <i className="fa fa-trash-o" />
-                            </a>
-                          </span>
-                        )}
-                      </h3>
-                      <div className="col-sm">
-                        <div className="right form-group form-focus focused">
-                          <label className="focus-label">Institute</label>
-                          <input
-                            type="text"
-                            className="form-control floating"
-                            placeholder="Institute"
-                            name="institution"
-                            value={value?.institution}
-                            onChange={(event) => {
-                              handleInputChange(index, event);
-                            }}
-                          />
-                        </div>
-
-                        <div className="form-group form-focus focused">
-                          <label className="focus-label">Degree</label>
-                          <input
-                            type="text"
-                            className="form-control floating"
-                            placeholder="Degree"
-                            name="degree"
-                            value={value?.degree}
-                            onChange={(event) => {
-                              handleInputChange(index, event);
-                            }}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-sm">
-                        <div className="right form-group form-focus focused">
-                          <label className="focus-label">Starting Date</label>
-                          <HtmlDateInput
-                            type="date"
-                            className="form-control floating datetimepicker"
-                            placeholder="Starting Date"
-                            name="startingDate"
-                            value={value?.startingDate}
-                            onChange={(event) => {
-                              handleInputChange(index, event);
-                            }}
-                          />
-                        </div>
-                        <div className="form-group form-focus focused">
-                          <label className="focus-label">
-                            Complete Date <span className="text-danger">*</span>
-                          </label>
-                          <HtmlDateInput
-                            className="form-control floating datetimepicker"
-                            type="date"
-                            placeholder="Complete Date"
-                            name="completeDate"
-                            value={value?.completeDate}
-                            onChange={(event) => {
-                              handleInputChange(index, event);
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              {!idIsTrue ? (
-                <div className="add-more" onClick={addFields}>
-                  <a>
-                    <i className="fa fa-plus-circle" /> Add More Field
-                  </a>
+    <>
+      <PopupWrapper>
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="card-title">
+                    {idIsTrue
+                      ? "Edit Education Information"
+                      : "Add Education Information"}
+                  </h5>
+                  {idIsTrue && (
+                    <button
+                      style={{
+                        border: "none",
+                        backgroundColor: "transparent",
+                        marginBottom: "15px",
+                      }}
+                      className="delete-icon"
+                      type="button"
+                      onClick={handleDelete}
+                    >
+                      <i className="fa fa-trash-o" />
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() =>
+                      setGlobalState("showEducationInformationModal", false)
+                    }
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
                 </div>
-              ) : (
-                ""
-              )}
-
-              <div className="submit-btn">
-                <button onClick={handleSubmit} className="submit-Btn">
-                  {idIsTrue ? "Update" : "Save"}
-                </button>
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      {inputFields.map((value, index) => {
+                        return (
+                          <div key={index} className="row Primary">
+                            <h5 className="section-title">
+                              Education Information
+                              {idIsTrue ? (
+                                ""
+                              ) : (
+                                <span>
+                                  <a
+                                    className="delete-icon"
+                                    onClick={() => removeFields(index)}
+                                  >
+                                    <i className="fa fa-trash-o" />
+                                  </a>
+                                </span>
+                              )}
+                            </h5>
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                                <label className="focus-label">Institute</label>
+                                <input
+                                  type="text"
+                                  className="form-control floating"
+                                  placeholder="Institute"
+                                  name="institution"
+                                  value={value?.institution}
+                                  onChange={(event) => {
+                                    handleInputChange(index, event);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                                <label className="focus-label">Degree</label>
+                                <input
+                                  type="text"
+                                  className="form-control floating"
+                                  placeholder="Degree"
+                                  name="degree"
+                                  value={value?.degree}
+                                  onChange={(event) => {
+                                    handleInputChange(index, event);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                                <label className="col-form-label">
+                                  Starting Date
+                                </label>
+                                <div>
+                                  <input
+                                    type="date"
+                                    className="form-control floating datetimepicker"
+                                    placeholder="Starting Date"
+                                    name="startingDate"
+                                    value={value?.startingDate}
+                                    onChange={(event) => {
+                                      handleInputChange(index, event);
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-sm-6">
+                              <div className="form-group">
+                                <label className="col-form-label">
+                                  Complete Date
+                                </label>
+                                <div>
+                                  <input
+                                    className="form-control floating datetimepicker"
+                                    type="date"
+                                    placeholder="Complete Date"
+                                    name="completeDate"
+                                    value={value?.completeDate}
+                                    onChange={(event) => {
+                                      handleInputChange(index, event);
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {!idIsTrue ? (
+                      <div className="add-more" onClick={addFields}>
+                        <a>
+                          <i className="fa fa-plus-circle" /> Add More Field
+                        </a>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {idIsTrue ? "Update" : "Save"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </form>
-          </div>
-        </Card>
-      </PopupContainer>
-    </PopupWrapper>
+            </div>
+          </PopupContainer>
+        </PopupOverlay>
+      </PopupWrapper>
+    </>
   );
 };
 export default AddEducationInformation;

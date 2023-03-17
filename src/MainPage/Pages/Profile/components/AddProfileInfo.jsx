@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { PopupWrapper, PopupContainer, PopupOverlay, Card } from '../../../../_components/modelbox/Addemployee.style';
+import { PopupWrapper, PopupContainer, PopupOverlay } from '../../../../_components/modelbox/Addemployee.style';
 import { setGlobalState, useGlobalState } from '../../../../context/GlobalState';
 import Select from "react-select";
 import {
@@ -7,8 +7,6 @@ import {
   savedDeptReducer,
   initDesignation,
   savedDesignationReducer,
-  initHouse,
-  savedHouseReducer,
 } from "../../../../utils/localStorage";
 import { HtmlDateInput } from "./styles";
 
@@ -309,202 +307,226 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
     setDOB(d);
   };
   return (
-    <PopupWrapper className=" custom-modal" role="dialog">
-      <PopupOverlay />
-      <PopupContainer className="" role="document">
-        <Card className="card-content">
-          <div className="card-header">
-            <h5 className="card-title">Profile Information</h5>
-            <div className="btn-container">
-              <button
-                className="closeX"
-                type="button"
-                onClick={() => setGlobalState("showProfileModal", false)}
-              >
-                <span>×</span>
-              </button>
-            </div>
-          </div>
-          <div className="card-body">
-            <form>
-              <div className="row-">
-
-                <div className="col-sm">
-                  <div className="right form-group form-focus focused">
-                    <label className="focus-label">First Name</label>
-                    <input
-                      type="text"
-                      className="form-control floating"
-                      value={firstName}
-                      onChange={(event) => setFirstName(event.target.value)}
-                      placeholder="First Name"
-                    />
-                  </div>
-
-                  <div className="form-group form-focus focused">
-                    <label className="focus-label">Last Name</label>
-                    <input
-                      type="text"
-                      className="form-control floating"
-                      value={lastName}
-                      onChange={(event) => setLastName(event.target.value)}
-                      placeholder="last Name"
-                    />
-                  </div>
+    <>
+      <PopupWrapper>
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="card-title">Profile Information</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => setGlobalState("showProfileModal", false)}
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
                 </div>
-
-                <div className="col-sm">
-                  <div className="right form-group form-focus focused">
-                    <label className="focus-label">Birth of Date</label>
-                    <div>
-                      <HtmlDateInput
-                        className="form-control floating datetimepicker"
-                        type="date"
-                        value={dOB}
-                        onChange={handleDateOfBirth}
-                        placeholder="Date of Birth"
-                      />
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      {/* <div className="col-sm-12">
+                        <div
+                          style={{ borderRadius: "5px" }}
+                          className="profile-img-wrap edit-img"
+                        >
+                          <img
+                            style={{ borderRadius: "5px" }}
+                            className="inline-block"
+                            src={image}
+                            alt="user"
+                          />
+                          <div className="fileupload btn">
+                            <span className="btn-text">edit</span>
+                            <input
+                              className="upload"
+                              type="file"
+                              accept="image/*"
+                              onChange={imageOnChange}
+                            />
+                          </div>
+                        </div>
+                      </div> */}
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="focus-label">First Name</label>
+                          <input
+                            type="text"
+                            className="form-control floating"
+                            value={firstName}
+                            onChange={(event) =>
+                              setFirstName(event.target.value)
+                            }
+                            placeholder="First Name"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="focus-label">Last Name</label>
+                          <input
+                            type="text"
+                            className="form-control floating"
+                            value={lastName}
+                            onChange={(event) =>
+                              setLastName(event.target.value)
+                            }
+                            placeholder="last Name"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Birth of Date
+                          </label>
+                          <div>
+                            <input
+                              className="form-control datetimepicker"
+                              type="date"
+                              value={dOB}
+                              onChange={handleDateOfBirth}
+                              placeholder="Date of Birth"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Gender</label>
+                          <select className="select">
+                            <option value={0}>Male</option>
+                            <option value={1}>Female</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Address <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control floating"
+                            value={address}
+                            onChange={(event) => setAddress(event.target.value)}
+                            placeholder="Address"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            State <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control floating"
+                            value={state}
+                            onChange={(event) => setState(event.target.value)}
+                            placeholder="state"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Country</label>
+                          <input
+                            type="text"
+                            className="form-control floating"
+                            value={country}
+                            onChange={(event) => setCountry(event.target.value)}
+                            placeholder="country"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Pin code</label>
+                          <input
+                            type="text"
+                            className="form-control floating"
+                            value={pinCode}
+                            onChange={(event) => setPinCode(event.target.value)}
+                            placeholder="Pin Code"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Phone Number</label>
+                          <input
+                            type="text"
+                            className="form-control floating"
+                            value={phoneNo}
+                            onChange={(event) => setPhoneNo(event.target.value)}
+                            placeholder="phone Number"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Department <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={
+                              selectedUserAccount[emIndex]?.dept
+                                ? {
+                                    value: userAcct[emIndex].dept.value,
+                                    label: userAcct[emIndex].dept.label,
+                                  }
+                                : "Select Department"
+                            }
+                            onChange={handleDeptChange}
+                            options={departments}
+                            styles={customSelectStyles}
+                            placeholder="Select Department"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Designation <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={
+                              selectedUserAccount[emIndex]?.designation
+                                ? {
+                                    value: userAcct[emIndex].designation.value,
+                                    label: userAcct[emIndex].designation.label,
+                                  }
+                                : "Select Designation"
+                            }
+                            onChange={handleRoleChange}
+                            options={roles}
+                            styles={customSelectStyles}
+                            placeholder="Select Designation"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="">
-                    {/* <label className="label">Gender</label> */}
-                    <select className="select form-control">
-                      <option disabled value="Select Gender">
-                        Select Gender
-                      </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="col-sm">
-                  <div className="right form-group form-focus focused">
-                    <label className="focus-label">Address</label>
-                    <input
-                      type="text"
-                      className="form-control floating"
-                      value={address}
-                      onChange={(event) => setAddress(event.target.value)}
-                      placeholder="Address"
-                    />
-                  </div>
-
-                  <div className="form-group form-focus focused">
-                    <label className="focus-label">State</label>
-                    <input
-                      type="text"
-                      className="form-control floating"
-                      value={state}
-                      onChange={(event) => setState(event.target.value)}
-                      placeholder="state"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-sm">
-                  <div className="right form-group form-focus focused">
-                    <label className="focus-label">Country</label>
-                    <input
-                      type="text"
-                      className="form-control floating"
-                      value={country}
-                      onChange={(event) => setCountry(event.target.value)}
-                      placeholder="country"
-                    />
-                  </div>
-
-                  <div className="form-group form-focus focused">
-                    <label className="focus-label">Pin Code</label>
-                    <input
-                      type="text"
-                      className="form-control floating"
-                      value={pinCode}
-                      onChange={(event) => setPinCode(event.target.value)}
-                      placeholder="Pin Code"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-sm">
-                  <div className="right form-group form-focus focused">
-                    <label className="focus-label">Phone Number</label>
-                    <input
-                      type="text"
-                      className="form-control floating"
-                      value={phoneNo}
-                      onChange={(event) => setPhoneNo(event.target.value)}
-                      placeholder="phone Number"
-                    />
-                  </div>
-
-                  <div className="">
-                    {/* <label className="label">
-                      Department <span className="text-danger">*</span>
-                    </label> */}
-                    <Select
-                      defaultValue={
-                        selectedUserAccount[emIndex]?.dept
-                          ? {
-                              value: userAcct[emIndex].dept.value,
-                              label: userAcct[emIndex].dept.label,
-                            }
-                          : "Select Department"
-                      }
-                      onChange={handleDeptChange}
-                      options={departments}
-                      styles={customSelectStyles}
-                      placeholder="Select Department"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-sm">
-                  {/* <div className="">
-                    <label className="label">
-                      Reports To <span className="text-danger">*</span>
-                    </label>
-                    <select className="select">
-                      <option>-</option>
-                      <option>Wilmer Deluna</option>
-                      <option>Lesley Grauer</option>
-                      <option>Jeffery Lalor</option>
-                    </select>
-                  </div> */}
-
-                  <div className="right">
-                    {/* <label className="label">
-                      Designation <span className="text-danger">*</span>
-                    </label> */}
-                    <Select
-                      defaultValue={
-                        selectedUserAccount[emIndex]?.designation
-                          ? {
-                              value: userAcct[emIndex].designation.value,
-                              label: userAcct[emIndex].designation.label,
-                            }
-                          : "Select Designation"
-                      }
-                      onChange={handleRoleChange}
-                      options={roles}
-                      styles={customSelectStyles}
-                      placeholder="Select Designation"
-                    />
-                  </div>
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {selectedUserAccount[emIndex]?.id ? "Update" : "Save"}
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
-
-              <div className="submit-btn">
-                <button onClick={handleSubmit} className="submit-Btn">
-                  {selectedUserAccount[emIndex]?.id ? "Update" : "Save"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </Card>
-      </PopupContainer>
-    </PopupWrapper>
+            </div>
+          </PopupContainer>
+        </PopupOverlay>
+      </PopupWrapper>
+    </>
   );
 };
 
