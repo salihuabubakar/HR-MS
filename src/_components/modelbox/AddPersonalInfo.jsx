@@ -251,138 +251,165 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
     setPassportExpiryDate(d);
   };
   return (
-    <PopupWrapper className=" custom-modal" role="dialog">
-      <PopupOverlay />
-      <PopupContainer className="" role="document">
-        <Card className="card-content">
-          <div className="card-header">
-            <h5 className="card-title">Personal Information</h5>
-            <div className="btn-container">
-              <button
-                className="closeX"
-                type="button"
-                onClick={() => setGlobalState("showPersonalInfoModal", false)}
-              >
-                <span>×</span>
-              </button>
-            </div>
-          </div>
-          <div className="card-body">
-            <form>
-              <div className="row-">
-                <div className="col-sm">
-                  <div className="right form-group form-focus focused">
-                    <label className="focus-label">Passport No</label>
-                    <input
-                      type="text"
-                      className="form-control floating"
-                      placeholder="Passport No"
-                      value={passPortNo}
-                      onChange={(event) => setPassportNo(event.target.value)}
-                    />
-                  </div>
-
-                  <div className="form-group form-focus focused">
-                    <label className="focus-label">Passport Expiry Date</label>
-                    <HtmlDateInput
-                      type="date"
-                      className="form-control floating datetimepicker"
-                      placeholder="Passport Expiry Date"
-                      value={passportExpiryDate}
-                      onChange={handlePassExpire}
-                    />
-                  </div>
+    <>
+      <PopupWrapper>
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="card-title">Personal Information</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() =>
+                      setGlobalState("showPersonalInfoModal", false)
+                    }
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
                 </div>
-
-                <div className="col-sm">
-                  <div className="right form-group form-focus focused">
-                    <label className="focus-label">Phone Number</label>
-                    <input
-                      type="text"
-                      className="form-control floating"
-                      placeholder="phone Number"
-                      value={phoneNo}
-                      onChange={(event) => setPhoneNo(event.target.value)}
-                    />
-                  </div>
-
-                  <div className="form-group form-focus focused">
-                    <label className="focus-label">
-                      Nationality <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      className="form-control floating"
-                      type="text"
-                      placeholder="Nationality"
-                      value={country}
-                      onChange={(event) => setCountry(event.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-sm">
-                  <div className="right form-group form-focus focused">
-                    <label className="focus-label">Religion</label>
-                    <div>
-                      <input
-                        className="form-control floating"
-                        type="text"
-                        placeholder="Religion"
-                        value={religion}
-                        onChange={(event) => setReligion(event.target.value)}
-                      />
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="focus-label">Passport No</label>
+                          <input
+                            type="text"
+                            className="form-control floating"
+                            placeholder="Passport No"
+                            value={passPortNo}
+                            onChange={(event) =>
+                              setPassportNo(event.target.value)
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Passport Expiry Date
+                          </label>
+                          <div>
+                            <input
+                              type="date"
+                              className="form-control floating datetimepicker"
+                              placeholder="Passport Expiry Date"
+                              value={passportExpiryDate}
+                              onChange={handlePassExpire}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="focus-label">Phone Number</label>
+                          <input
+                            type="text"
+                            className="form-control floating"
+                            placeholder="phone Number"
+                            value={phoneNo}
+                            onChange={(event) => setPhoneNo(event.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Nationality</label>
+                          <div>
+                            <input
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Nationality"
+                              value={country}
+                              onChange={(event) =>
+                                setCountry(event.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Religion <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Religion"
+                            value={religion}
+                            onChange={(event) =>
+                              setReligion(event.target.value)
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Marital Status
+                          </label>
+                          <select className="select">
+                            <option value={0}>Single</option>
+                            <option value={1}>Married</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Employment of spouse{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Employment of spouse"
+                            value={emSpouse}
+                            onChange={(event) =>
+                              setEmSpouse(event.target.value)
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            No. of children
+                          </label>
+                          <input
+                            className="form-control floating"
+                            type="text"
+                            placeholder="No. of children"
+                            value={noChildren}
+                            onChange={(event) =>
+                              setNoChildren(event.target.value)
+                            }
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="">
-                    {/* <label className="label">
-                      Marital status <span className="text-danger">*</span>
-                    </label> */}
-                    <select
-                      defaultValue="Select Status"
-                      className="select form-control"
-                    >
-                      <option>Single</option>
-                      <option>Married</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="col-sm">
-                  <div className="right form-group form-focus focused">
-                    <label className="focus-label">Employment of spouse</label>
-                    <input
-                      className="form-control floating"
-                      type="text"
-                      placeholder="Employment of spouse"
-                      value={emSpouse}
-                      onChange={(event) => setEmSpouse(event.target.value)}
-                    />
-                  </div>
-
-                  <div className="form-group form-focus focused">
-                    <label className="focus-label">No. of children </label>
-                    <input
-                      className="form-control floating"
-                      type="text"
-                      placeholder="No. of children"
-                      value={noChildren}
-                      onChange={(event) => setNoChildren(event.target.value)}
-                    />
-                  </div>
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {selectedUserAccount[emIndex]?.id ? "Update" : "Save"}
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
-
-              <div className="submit-btn">
-                <button onClick={handleSubmit} className="submit-Btn">
-                  {selectedUserAccount[emIndex]?.id ? "Update" : "Save"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </Card>
-      </PopupContainer>
-    </PopupWrapper>
+            </div>
+          </PopupContainer>
+        </PopupOverlay>
+      </PopupWrapper>
+    </>
   );
 };
 

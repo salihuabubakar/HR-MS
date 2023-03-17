@@ -257,9 +257,7 @@ const AllEmployees = () => {
                           <div className="dropdown-menu dropdown-menu-right">
                             <a
                               className="dropdown-item"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_employee"
-                              // onClick={() => handleEditAcct(staff.id, index)}
+                              onClick={() => handleEditAcct(staff.id, index)}
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
                             </a>
@@ -299,8 +297,6 @@ const AllEmployees = () => {
                 userAcct={userAcct}
               />
             )}
-
-            <Editemployee />
 
             <div
               className="modal custom-modal fade"
