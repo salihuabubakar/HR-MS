@@ -17,4 +17,5 @@ export const HeaderContainer = styled.div`
   ${mobile} {
     /* z-index: -1; */
   }
+  z-index: 1;
 `;

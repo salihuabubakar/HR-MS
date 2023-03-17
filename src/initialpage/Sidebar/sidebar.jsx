@@ -2,6 +2,7 @@ import React, { useEffect,useState} from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { HeaderContainer } from './style';
 
  
 const Sidebar = (props) => {
@@ -34,7 +35,7 @@ const toggleLevelThree = (value) => {
     let pathname = props?.location?.pathname;
 
     return (
-      <div className="sidebar" id="sidebar">
+      <HeaderContainer className="sidebar" id="sidebar">
         <Scrollbars
           autoHide
           autoHideTimeout={1000}
@@ -1762,7 +1763,7 @@ const toggleLevelThree = (value) => {
             </div>
           </div>
         </Scrollbars>
-      </div>
+      </HeaderContainer>
     );
    
 }

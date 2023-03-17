@@ -145,10 +145,7 @@ const AllEmployees = () => {
                     </ul>
                   </div>
                   <div className="col-auto float-end ml-auto">
-                    <a
-                      className="btn add-btn"
-                      onClick={handleAddEmployee}
-                    >
+                    <a className="btn add-btn" onClick={handleAddEmployee}>
                       <i className="fa fa-plus" /> Add Employee
                     </a>
                     <div className="view-icons">
@@ -232,10 +229,18 @@ const AllEmployees = () => {
                               state: { id: id, index: index },
                             }}
                             className="avatar"
-                            style={{ borderRadius: "5px", backgroundColor: "#00000000", height: "100%" }}
+                            style={{
+                              borderRadius: "5px",
+                              backgroundColor: "#00000000",
+                              height: "100%",
+                            }}
                           >
                             <img
-                              style={{ borderRadius: "5px", width: "80px", height: "80px" }}
+                              style={{
+                                borderRadius: "5px",
+                                width: "80px",
+                                height: "80px",
+                              }}
                               src={image}
                               alt=""
                             />
@@ -252,7 +257,9 @@ const AllEmployees = () => {
                           <div className="dropdown-menu dropdown-menu-right">
                             <a
                               className="dropdown-item"
-                              onClick={() => handleEditAcct(staff.id, index)}
+                              data-bs-toggle="modal"
+                              data-bs-target="#edit_employee"
+                              // onClick={() => handleEditAcct(staff.id, index)}
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
                             </a>
@@ -292,6 +299,8 @@ const AllEmployees = () => {
                 userAcct={userAcct}
               />
             )}
+
+            <Editemployee />
 
             <div
               className="modal custom-modal fade"

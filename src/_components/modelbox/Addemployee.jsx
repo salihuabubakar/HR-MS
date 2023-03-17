@@ -337,30 +337,32 @@ const Addemployee = ({
     <>
       {/* Add Employee Modal */}
       <PopupWrapper>
-        <PopupOverlay />
-        <PopupContainer className="custom-modal" role="dialog">
-          <Card className="" role="document">
-            <div className="card-content">
-              <div className="card-header">
-                <h5 className="card-title">
-                  {selectedUserAccount[indexToEdit]?.id
-                    ? "Edit Employee"
-                    : "Add Employee"}
-                </h5>
-                <div className="btn-container">
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="card-title">
+                    {selectedUserAccount[indexToEdit]?.id
+                      ? "Edit Employee"
+                      : "Add Employee"}
+                  </h5>
                   <button
                     type="button"
-                    className="closeX"
+                    className="close"
+                    // className="closeX"
                     onClick={() => setGlobalState("showModal", false)}
                   >
                     <span aria-hidden="true">×</span>
                   </button>
                 </div>
-              </div>
-              <div className="card-body">
-                <form>
-                  <div className="row-">
-                    <div className="col-sm">
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      <div className="col-sm-12">
                       <div
                         style={{ borderRadius: "5px" }}
                         className="profile-img-wrap edit-img"
@@ -382,379 +384,222 @@ const Addemployee = ({
                         </div>
                       </div>
                     </div>
-                    <div className="col-sm">
-                      <div className="right form-group form-focus focused margin-top">
-                        <label className="focus-label">
-                          First Name <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          value={firstName}
-                          onChange={(event) => setFirstName(event.target.value)}
-                          className="form-control floating"
-                          type="text"
-                          placeholder="First Name"
-                        />
-                      </div>
-                      <div className="form-group form-focus focused margin-top">
-                        <label className="focus-label">Last Name</label>
-                        <input
-                          value={lastName}
-                          onChange={(event) => setLastName(event.target.value)}
-                          className="form-control floating"
-                          type="text"
-                          placeholder="Last Name"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm">
-                      <div className="right form-group form-focus focused margin-top">
-                        <label className="focus-label">
-                          Username <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          value={userName}
-                          onChange={(event) => setUserName(event.target.value)}
-                          className="form-control floating"
-                          type="text"
-                          placeholder="Username"
-                        />
-                      </div>
-                      <div className="form-group form-focus focused margin-top">
-                        <label className="focus-label">
-                          Email <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          value={email}
-                          onChange={(event) => setEmail(event.target.value)}
-                          className="form-control floatng"
-                          type="email"
-                          placeholder="Email"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm">
-                      <div className="right form-group form-focus focused margin-top">
-                        <label className="focus-label">Password</label>
-                        <input
-                          value={password}
-                          onChange={(event) => setPassword(event.target.value)}
-                          className="form-control floating"
-                          type="password"
-                          placeholder="Password"
-                        />
-                      </div>
-                      <div className="form-group form-focus focused margin-top">
-                        <label className="focus-label">Confirm Password</label>
-                        <input
-                          value={confirmPassword}
-                          onChange={(event) =>
-                            setConfirmPassword(event.target.value)
-                          }
-                          className="form-control floating"
-                          type="password"
-                          placeholder="Confirm Password"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm">
-                      <div className="right form-group form-focus focused margin-top">
-                        <label className="focus-label">
-                          Employee ID <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          value={employeeId}
-                          onChange={(event) =>
-                            setEmployeeId(event.target.value)
-                          }
-                          type="text"
-                          className="form-control floating"
-                          placeholder="Employee ID"
-                        />
-                      </div>
-                      <div className="form-group form-focus focused margin-top">
-                        <label className="focus-label">
-                          Joining Date <span className="text-danger">*</span>
-                        </label>
-                        <div>
-                          <HtmlDateInput
-                            className=" datetimepicker floating form-control"
-                            type="date"
-                            value={joinDate}
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            First Name <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={firstName}
                             onChange={(event) =>
-                              setJoinDate(event.target.value)
+                              setFirstName(event.target.value)
                             }
-                            placeholder="Joining Date"
+                            className="form-control floating"
+                            type="text"
+                            placeholder="First Name"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Last Name</label>
+                          <input
+                            value={lastName}
+                            onChange={(event) =>
+                              setLastName(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Last Name"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Username <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={userName}
+                            onChange={(event) =>
+                              setUserName(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Username"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Email <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={email}
+                            onChange={(event) => setEmail(event.target.value)}
+                            className="form-control floatng"
+                            type="email"
+                            placeholder="Email"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Password</label>
+                          <input
+                            value={password}
+                            onChange={(event) =>
+                              setPassword(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="password"
+                            placeholder="Password"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Confirm Password
+                          </label>
+                          <input
+                            value={confirmPassword}
+                            onChange={(event) =>
+                              setConfirmPassword(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="password"
+                            placeholder="Confirm Password"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Employee ID <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={employeeId}
+                            onChange={(event) =>
+                              setEmployeeId(event.target.value)
+                            }
+                            type="text"
+                            className="form-control floating"
+                            placeholder="Employee ID"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Joining Date <span className="text-danger">*</span>
+                          </label>
+                          <div>
+                            <input
+                              className="form-control datetimepicker"
+                              type="date"
+                              value={joinDate}
+                              onChange={(event) =>
+                                setJoinDate(event.target.value)
+                              }
+                              placeholder="Joining Date"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Phone </label>
+                          <input
+                            value={phoneNo}
+                            onChange={(event) => setPhoneNo(event.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Phone"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Company</label>
+                          <Select
+                            defaultValue={
+                              selectedUserAccount[indexToEdit]?.company
+                                ? {
+                                    value: userAcct[indexToEdit].company.value,
+                                    label: userAcct[indexToEdit].company.label,
+                                  }
+                                : "Select Company"
+                            }
+                            onChange={handleCompanyChange}
+                            options={companyOptions}
+                            styles={customSelectStyles}
+                            placeholder="Select Company"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Department <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={
+                              selectedUserAccount[indexToEdit]?.dept
+                                ? {
+                                    value: userAcct[indexToEdit].dept.value,
+                                    label: userAcct[indexToEdit].dept.label,
+                                  }
+                                : "Select Department"
+                            }
+                            onChange={handleDeptChange}
+                            options={departments}
+                            styles={customSelectStyles}
+                            placeholder="Select Department"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Designation <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={
+                              selectedUserAccount[indexToEdit]?.designation
+                                ? {
+                                    value:
+                                      userAcct[indexToEdit].designation.value,
+                                    label:
+                                      userAcct[indexToEdit].designation.label,
+                                  }
+                                : "Select Designation"
+                            }
+                            onChange={handleRoleChange}
+                            options={roles}
+                            styles={customSelectStyles}
+                            placeholder="Select Designation"
                           />
                         </div>
                       </div>
                     </div>
-                    <div className="col-sm">
-                      <div className="right form-group form-focus focused margin-top">
-                        <label className="focus-label">Phone </label>
-                        <input
-                          value={phoneNo}
-                          onChange={(event) => setPhoneNo(event.target.value)}
-                          className="form-control floating"
-                          type="text"
-                          placeholder="Phone"
-                        />
-                      </div>
-                      <div className="">
-                        {/* <label className="label">Company</label> */}
-                        <Select
-                          defaultValue={
-                            selectedUserAccount[indexToEdit]?.company
-                              ? {
-                                  value: userAcct[indexToEdit].company.value,
-                                  label: userAcct[indexToEdit].company.label,
-                                }
-                              : "Select Company"
-                          }
-                          onChange={handleCompanyChange}
-                          options={companyOptions}
-                          styles={customSelectStyles}
-                          placeholder="Select Company"
-                        />
-                      </div>
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {selectedUserAccount[indexToEdit]?.id
+                          ? "Update"
+                          : "Save"}
+                      </button>
                     </div>
-                    <div className="col-sm">
-                      <div className="right">
-                        {/* <label className="label">
-                          Department <span className="text-danger">*</span>
-                        </label> */}
-                        <Select
-                          defaultValue={
-                            selectedUserAccount[indexToEdit]?.dept
-                              ? {
-                                  value: userAcct[indexToEdit].dept.value,
-                                  label: userAcct[indexToEdit].dept.label,
-                                }
-                              : "Select Department"
-                          }
-                          onChange={handleDeptChange}
-                          options={departments}
-                          styles={customSelectStyles}
-                          placeholder="Select Department"
-                        />
-                      </div>
-                      <div className="">
-                        {/* <label className="label">
-                          Designation <span className="text-danger">*</span>
-                        </label> */}
-                        <Select
-                          defaultValue={
-                            selectedUserAccount[indexToEdit]?.designation
-                              ? {
-                                  value:
-                                    userAcct[indexToEdit].designation.value,
-                                  label:
-                                    userAcct[indexToEdit].designation.label,
-                                }
-                              : "Select Designation"
-                          }
-                          onChange={handleRoleChange}
-                          options={roles}
-                          styles={customSelectStyles}
-                          placeholder="Select Designation"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  {/* <div className="table-responsive m-t-15">
-                  <table className="table table-striped custom-table">
-                    <thead>
-                      <tr>
-                        <th>Module Permission</th>
-                        <th className="text-center">Read</th>
-                        <th className="text-center">Write</th>
-                        <th className="text-center">Create</th>
-                        <th className="text-center">Delete</th>
-                        <th className="text-center">Import</th>
-                        <th className="text-center">Export</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr key={1}>
-                        <td>Holidays</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr key={2}>
-                        <td>Leaves</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr key={3}>
-                        <td>Clients</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr key={4}>
-                        <td>Projects</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr key={5}>
-                        <td>Tasks</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr key={6}>
-                        <td>Chats</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr key={7}>
-                        <td>Assets</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr key={8}>
-                        <td>Timing Sheets</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div> */}
-                  <div className="submit-btn">
-                    <button onClick={handleSubmit} className="submit-Btn">
-                      {selectedUserAccount[indexToEdit]?.id ? "Update" : "Save"}
-                    </button>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
-          </Card>
-        </PopupContainer>
+          </PopupContainer>
+        </PopupOverlay>
       </PopupWrapper>
       {/* /Add Employee Modal */}
     </>
