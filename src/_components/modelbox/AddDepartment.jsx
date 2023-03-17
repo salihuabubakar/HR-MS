@@ -64,7 +64,7 @@ const AddDepartment = ({
                     <div className="row">
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="col-form-label">
+                          <label className="label">
                             Department Name{" "}
                             <span className="text-danger">*</span>
                           </label>

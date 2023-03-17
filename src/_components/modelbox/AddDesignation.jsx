@@ -107,7 +107,7 @@ const AddDepartment = ({
                 <div className="modal-body">
                   <form>
                     <div className="row">
-                      <div className="col-sm-6">
+                      <div className="col-sm-12">
                         <div className="form-group">
                           <label className="label">
                             Designation Name{" "}
@@ -122,7 +122,7 @@ const AddDepartment = ({
                           />
                         </div>
                       </div>
-                      <div className="col-sm-6">
+                      <div className="col-sm-12">
                         <div className="form-group">
                           <label className="label">
                             Select Department{" "}

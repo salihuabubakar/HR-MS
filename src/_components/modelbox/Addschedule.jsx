@@ -92,72 +92,86 @@ const AddSchedule = ({
   return (
     <>
       <PopupWrapper>
-        <PopupOverlay />
-        <PopupContainer className="custom-modal" role="dialog">
-          <Card className="card-width" role="document">
-            <div className="card-content">
-              <div className="card-header">
-                <h5 className="card-title">
-                  {selectedScheduleEvent[selectedDayIndex]?.id
-                    ? "Edit Schedule"
-                    : "Add Schedule"}
-                </h5>
-                <div className="btn-container">
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div style={{position: "relative"}} className="card-header">
+                  <h5 className="card-title">
+                    {selectedScheduleEvent[selectedDayIndex]?.id
+                      ? "Edit Schedule"
+                      : "Add Schedule"}
+                  </h5>
                   {selectedScheduleEvent[selectedDayIndex]?.id && (
                     <button
-                      className="delete"
-                      type="submit"
+                      style={{
+                        border: "none",
+                        backgroundColor: "transparent",
+                        position: "absolute",
+                        top: "5px",
+                        right: "50px",
+                      }}
+                      className="delete-icon"
+                      type="button"
                       onClick={handleDeleteEvent}
                     >
-                      Delete
+                      <i className="fa fa-trash-o" />
                     </button>
                   )}
                   <button
-                    className="closeX"
                     type="button"
+                    className="close"
                     onClick={() => setGlobalState("showAddSchedul", false)}
                   >
-                    <span>×</span>
+                    <span aria-hidden="true">×</span>
                   </button>
                 </div>
-              </div>
-              <div className="card-body">
-                <form>
-                  <div className="row-">
-                    <div className="col-sm space-between">
-                      <div className="form-group inputText right hieght">
-                        <Select
-                          onChange={handleShiftChange}
-                          options={shiftLists}
-                          styles={customSelectStyles}
-                          placeholder="Select Shift"
-                          defaultValue={
-                            selectedScheduleEvent[selectedDayIndex]?.shifts
-                              ? {
-                                  value:
-                                    schedule[selectedDayIndex].shifts.value,
-                                  label:
-                                    schedule[selectedDayIndex].shifts.label,
-                                }
-                              : "Select Shift"
-                          }
-                        />
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          <label className="label">
+                            Select Shift <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            onChange={handleShiftChange}
+                            options={shiftLists}
+                            styles={customSelectStyles}
+                            placeholder="Select Shift"
+                            defaultValue={
+                              selectedScheduleEvent[selectedDayIndex]?.shifts
+                                ? {
+                                    value:
+                                      schedule[selectedDayIndex].shifts.value,
+                                    label:
+                                      schedule[selectedDayIndex].shifts.label,
+                                  }
+                                : "Select Shift"
+                            }
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="submit-btn" onClick={handleSubmit}>
-                    <button className="submit-Btn">
-                      {selectedScheduleEvent[selectedDayIndex]?.id
-                        ? "Update"
-                        : "Save"}
-                    </button>
-                  </div>
-                </form>
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {selectedScheduleEvent[selectedDayIndex]?.id
+                          ? "Update"
+                          : "Save"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-          </Card>
-        </PopupContainer>
+          </PopupContainer>
+        </PopupOverlay>
       </PopupWrapper>
     </>
   );

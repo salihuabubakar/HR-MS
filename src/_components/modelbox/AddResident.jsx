@@ -53,74 +53,85 @@ const AddResident = ({
     setGlobalState("showModal", false);
   };
   return (
-    <PopupWrapper>
-      <PopupOverlay />
-      <PopupContainer className=" custom-modal" role="dialog">
-        <Card className="" role="document">
-          <div className="card-content">
-            <div className="card-header">
-              <h5 className="card-title">
-                {selectedResident[indexToEdit]?.id
-                  ? "Edit Resident"
-                  : "Add Resident"}
-              </h5>
-              <div className="btn-container">
-                <button
-                  type="button"
-                  className="closeX"
-                  onClick={() => setGlobalState("showModal", false)}
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-            </div>
-            <div className="card-body">
-              <form>
-                <div className="col-sm">
-                  <div
-                    style={{ borderRadius: "5px" }}
-                    className="profile-img-wrap edit-img"
+    <>
+      <PopupWrapper>
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="card-title">
+                    {selectedResident[indexToEdit]?.id
+                      ? "Edit Resident"
+                      : "Add Resident"}
+                  </h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => setGlobalState("showModal", false)}
                   >
-                    <img
-                      style={{ borderRadius: "5px" }}
-                      className="inline-block"
-                      src={image}
-                      alt="image"
-                    />
-                    <div className="fileupload btn">
-                      <span className="btn-text">Upload</span>
-                      <input
-                        className="upload"
-                        type="file"
-                        accept="image/*"
-                        onChange={imageOnChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="form-group form-focus focused">
-                  <label className="focus-label">
-                    Resident Name <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    value={residentName}
-                    onChange={(e) => setResidentName(e.target.value)}
-                    className="form-control floating"
-                    type="text"
-                    placeholder="Resident Name"
-                  />
-                </div>
-                <div className="submit-btn">
-                  <button onClick={handleSubmit} className="submit-Btn">
-                    {selectedResident[indexToEdit]?.id ? "Update" : "Save"}
+                    <span aria-hidden="true">×</span>
                   </button>
                 </div>
-              </form>
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      <div className="col-sm-12">
+                        <div
+                          style={{ borderRadius: "5px" }}
+                          className="profile-img-wrap edit-img"
+                        >
+                          <img
+                            style={{ borderRadius: "5px" }}
+                            className="inline-block"
+                            src={image}
+                            alt="image"
+                          />
+                          <div className="fileupload btn">
+                            <span className="btn-text">Upload</span>
+                            <input
+                              className="upload"
+                              type="file"
+                              accept="image/*"
+                              onChange={imageOnChange}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          <label className="label">
+                            Resident Name <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={residentName}
+                            onChange={(e) => setResidentName(e.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Resident Name"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {selectedResident[indexToEdit]?.id ? "Update" : "Save"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </div>
-        </Card>
-      </PopupContainer>
-    </PopupWrapper>
+          </PopupContainer>
+        </PopupOverlay>
+      </PopupWrapper>
+    </>
   );
 };
 

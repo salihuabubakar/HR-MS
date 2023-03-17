@@ -32,7 +32,8 @@ export const RadioBtn = styled.div`
     -webkit-appearance: none;
   }
   label {
-    height: 100%;
+    height: 45px;
+    border-radius: 4px;
     width: 100%;
     border: 1px solid #ddd;
     position: relative;
