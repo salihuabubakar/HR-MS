@@ -81,71 +81,88 @@ const AddDepartment = ({
   };
 
   return (
-    <PopupWrapper>
-      <PopupOverlay />
-      <PopupContainer className=" custom-modal" role="dialog">
-        <Card className="" role="document">
-          <div className="card-content">
-            <div className="card-header">
-              <h5 className="card-title">
-                {selectedDesignation[indexToEdit]?.id
-                  ? "Edit Designation"
-                  : "Add Designation"}
-              </h5>
-              <div className="btn-container">
-                <button
-                  type="button"
-                  className="closeX"
-                  onClick={() => setGlobalState("showModal", false)}
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-            </div>
-            <div className="card-body">
-              <form>
-                <div className="form-group form-focus focused">
-                  <label className="focus-label">
-                    Designation Name <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    value={desigName}
-                    onChange={(e) => setDesigName(e.target.value)}
-                    className="form-control floating"
-                    type="text"
-                    placeholder="Designation Name"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="label">
-                    Department <span className="text-danger">*</span>
-                  </label>
-                  <Select
-                    defaultValue={
-                      selectedDesignation[indexToEdit]?.dept
-                        ? {
-                            value: desig[indexToEdit].dept.value,
-                            label: desig[indexToEdit].dept.label,
-                          }
-                        : "Select Department"
-                    }
-                    onChange={handleDeptChange}
-                    options={departments}
-                    styles={customSelectStyles}
-                    placeholder="Select Department"
-                  />
-                </div>
-                <div className="submit-btn">
-                  <button onClick={handleSubmit} className="submit-Btn">
-                    {selectedDesignation[indexToEdit]?.id ? "Update" : "Save"}
+    <>
+      <PopupWrapper>
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="card-title">
+                    {selectedDesignation[indexToEdit]?.id
+                      ? "Edit Designation"
+                      : "Add Designation"}
+                  </h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => setGlobalState("showModal", false)}
+                  >
+                    <span aria-hidden="true">×</span>
                   </button>
                 </div>
-              </form>
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Designation Name{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={desigName}
+                            onChange={(e) => setDesigName(e.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Designation Name"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Select Department{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={
+                              selectedDesignation[indexToEdit]?.dept
+                                ? {
+                                    value: desig[indexToEdit].dept.value,
+                                    label: desig[indexToEdit].dept.label,
+                                  }
+                                : "Select Department"
+                            }
+                            onChange={handleDeptChange}
+                            options={departments}
+                            styles={customSelectStyles}
+                            placeholder="Select Department"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {selectedDesignation[indexToEdit]?.id
+                          ? "Update"
+                          : "Save"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </div>
-        </Card>
-      </PopupContainer>
-    </PopupWrapper>
+          </PopupContainer>
+        </PopupOverlay>
+      </PopupWrapper>
+    </>
   );
 };
 
