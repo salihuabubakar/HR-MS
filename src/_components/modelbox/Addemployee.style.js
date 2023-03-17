@@ -59,6 +59,10 @@ export const PopupContainer = styled.div`
       text-transform: uppercase;
     }
   }
+
+  .time-picker {
+    width: 100%;
+  }
 `;
 
 

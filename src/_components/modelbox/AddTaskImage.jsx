@@ -60,62 +60,71 @@ const AddSubTask = ({
   };
 
   return (
-    <PopupWrapper>
-      <PopupOverlay />
-      <PopupContainer className=" custom-modal" role="dialog">
-        <Card className="" role="document">
-          <div className="card-content">
-            <div className="card-header">
-              <h5 className="card-title">
-                {selectedTaskImage[indexToEdit]?.id
-                  ? "Edit Image"
-                  : "Add Image"}
-              </h5>
-              <div className="btn-container">
-                <button
-                  className="closeX"
-                  type="button"
-                  onClick={() => setGlobalState("showTaskImageModal", false)}
-                >
-                  <span>×</span>
-                </button>
-              </div>
-            </div>
-            <div className="card-body">
-              <form>
-                <div className="col-sm">
-                  <div
-                    style={{ borderRadius: "5px" }}
-                    className="profile-img-wrap edit-img"
+    <>
+      <PopupWrapper>
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="card-title">
+                    {selectedTaskImage[indexToEdit]?.id
+                      ? "Edit Image"
+                      : "Add Image"}
+                  </h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => setGlobalState("showTaskImageModal", false)}
                   >
-                    <img
-                      style={{ borderRadius: "5px" }}
-                      className="inline-block"
-                      src={image}
-                      alt="image"
-                    />
-                    <div className="fileupload btn">
-                      <span className="btn-text">Upload</span>
-                      <input
-                        className="upload"
-                        type="file"
-                        accept="image/*"
-                        onChange={imageOnChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="submit-btn">
-                  <button onClick={handleSubmit} className="submit-Btn">
-                    {selectedTaskImage[indexToEdit]?.id ? "Update" : "Save"}
+                    <span aria-hidden="true">×</span>
                   </button>
                 </div>
-              </form>
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      <div className="col-sm-12">
+                        <div
+                          style={{ borderRadius: "5px" }}
+                          className="profile-img-wrap edit-img"
+                        >
+                          <img
+                            style={{ borderRadius: "5px" }}
+                            className="inline-block"
+                            src={image}
+                            alt="image"
+                          />
+                          <div className="fileupload btn">
+                            <span className="btn-text">Upload</span>
+                            <input
+                              className="upload"
+                              type="file"
+                              accept="image/*"
+                              onChange={imageOnChange}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {selectedTaskImage[indexToEdit]?.id ? "Update" : "Save"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </div>
-        </Card>
-      </PopupContainer>
-    </PopupWrapper>
+          </PopupContainer>
+        </PopupOverlay>
+      </PopupWrapper>
+    </>
   );
 };
 

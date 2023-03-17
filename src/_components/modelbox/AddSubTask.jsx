@@ -52,71 +52,90 @@ const AddSubTask = ({
   };
 
   return (
-    <PopupWrapper>
-      <PopupOverlay />
-      <PopupContainer className=" custom-modal" role="dialog">
-        <Card className="" role="document">
-          <div className="card-content">
-            <div className="card-header">
-              <h5 className="card-title">
-                {selectedSubTaskInfo[indexToEdit]?.id
-                  ? "Edit Task"
-                  : "Add Task"}
-              </h5>
-              <div className="btn-container">
-                <button
-                  className="closeX"
-                  type="button"
-                  onClick={() => setGlobalState("showSubTaskModal", false)}
-                >
-                  <span>×</span>
-                </button>
-              </div>
-            </div>
-            <div className="card-body">
-              <form>
-                <div className="form-group form-focus focused">
-                  <label className="focus-label">
-                    Task <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    value={subTask}
-                    onChange={(e) => setSubTask(e.target.value)}
-                    className="form-control floating"
-                    type="text"
-                    placeholder="SubTask"
-                  />
-                </div>
-                {selectedSubTaskInfo[indexToEdit]?.id && (
-                  <div className="form-group form-focus focused">
-                    <input
-                      checked={
-                        selectedSubTaskInfo[indexToEdit]?.id
-                          ? checkToComplete
-                          : ""
-                      }
-                      type="checkbox"
-                      name="check"
-                      id=""
-                      value={checkToComplete}
-                      onChange={(e) => setCheckToComplete(e.target.checked)}
-                    />{" "}
-                    {selectedSubTaskInfo[indexToEdit]?.checkToComplete
-                      ? "Marked as completed"
-                      : "Mark as completed"}
-                  </div>
-                )}
-                <div className="submit-btn">
-                  <button onClick={handleSubmit} className="submit-Btn">
-                    {selectedSubTaskInfo[indexToEdit]?.id ? "Update" : "Save"}
+    <>
+      <PopupWrapper>
+        <PopupOverlay>
+          <PopupContainer className="custom-modal" role="dialog">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="card-title">
+                    {selectedSubTaskInfo[indexToEdit]?.id
+                      ? "Edit Task"
+                      : "Add Task"}
+                  </h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => setGlobalState("showSubTaskModal", false)}
+                  >
+                    <span aria-hidden="true">×</span>
                   </button>
                 </div>
-              </form>
+                <div className="modal-body">
+                  <form>
+                    <div className="row">
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          <label className="label">
+                            Task <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={subTask}
+                            onChange={(e) => setSubTask(e.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="SubTask"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          {selectedSubTaskInfo[indexToEdit]?.id && (
+                            <div className="form-group form-focus focused">
+                              <input
+                                checked={
+                                  selectedSubTaskInfo[indexToEdit]?.id
+                                    ? checkToComplete
+                                    : ""
+                                }
+                                type="checkbox"
+                                name="check"
+                                id=""
+                                value={checkToComplete}
+                                onChange={(e) =>
+                                  setCheckToComplete(e.target.checked)
+                                }
+                              />{" "}
+                              {selectedSubTaskInfo[indexToEdit]?.checkToComplete
+                                ? "Marked as completed"
+                                : "Mark as completed"}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="submit-section">
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary submit-btn"
+                      >
+                        {selectedSubTaskInfo[indexToEdit]?.id
+                          ? "Update"
+                          : "Save"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </div>
-        </Card>
-      </PopupContainer>
-    </PopupWrapper>
+          </PopupContainer>
+        </PopupOverlay>
+      </PopupWrapper>
+    </>
   );
 };
 
