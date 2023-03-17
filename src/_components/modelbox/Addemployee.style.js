@@ -11,43 +11,42 @@ export const media = {
 const { smallScreenLaptop, mobile, tablet, bigMobile } = media;
 
 export const PopupWrapper = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   position: fixed;
-  top: 30px;
+  top: 0;
   left: 0;
-  z-index: 11;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   .card-width {
     width: 400px;
-  } 
-  
-  ${mobile} {
-    top: 20;
-    .card-width {
-      width: 350px;
-    }
-    /* height: 50px;
-    overflow-y: auto; */
   }
 `;
 
 export const PopupOverlay = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: inherit;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+  
 `;
 
 export const PopupContainer = styled.div`
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   border-radius: 8px;
-  
+  margin: 20px;
+  margin-top: 150px;
+  ${mobile} {
+    margin-top: 1000px;
+  }
 `;
 
 
