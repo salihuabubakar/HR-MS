@@ -243,7 +243,11 @@ const AddEmergencyContact = ({ dispatchUserAcct, userAcct, emIndex }) => {
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer
+            bigForm="lessBigForm"
+            className="custom-modal"
+            role="dialog"
+          >
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

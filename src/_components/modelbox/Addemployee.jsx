@@ -338,7 +338,11 @@ const Addemployee = ({
       {/* Add Employee Modal */}
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer
+            bigForm="bigForm"
+            className="custom-modal"
+            role="dialog"
+          >
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -363,27 +367,27 @@ const Addemployee = ({
                   <form>
                     <div className="row">
                       <div className="col-sm-12">
-                      <div
-                        style={{ borderRadius: "5px" }}
-                        className="profile-img-wrap edit-img"
-                      >
-                        <img
+                        <div
                           style={{ borderRadius: "5px" }}
-                          className="inline-block"
-                          src={image}
-                          alt="user"
-                        />
-                        <div className="fileupload btn">
-                          <span className="btn-text">edit</span>
-                          <input
-                            className="upload"
-                            type="file"
-                            accept="image/*"
-                            onChange={imageOnChange}
+                          className="profile-img-wrap edit-img"
+                        >
+                          <img
+                            style={{ borderRadius: "5px" }}
+                            className="inline-block"
+                            src={image}
+                            alt="user"
                           />
+                          <div className="fileupload btn">
+                            <span className="btn-text">edit</span>
+                            <input
+                              className="upload"
+                              type="file"
+                              accept="image/*"
+                              onChange={imageOnChange}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">

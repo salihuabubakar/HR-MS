@@ -42,10 +42,15 @@ export const PopupContainer = styled.div`
   align-items: center;
   flex-direction: column;
   border-radius: 8px;
-  margin: 20px;
+  margin: 10px;
   margin-top: 150px;
   ${mobile} {
-    margin-top: 900px;
+    margin-top: ${(props) =>
+      props.bigForm === "bigForm"
+        ? "900px"
+        : props.bigForm === "lessBigForm"
+        ? "600px"
+        : null};
   }
 
   .Primary,
