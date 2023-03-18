@@ -255,7 +255,7 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer
-            bigForm="lessBigForm"
+            top={true}
             className="custom-modal"
             role="dialog"
           >
