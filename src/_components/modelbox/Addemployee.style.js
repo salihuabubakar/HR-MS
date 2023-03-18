@@ -33,26 +33,25 @@ export const PopupOverlay = styled.div`
   justify-content: center;
   overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.8);
-  
+  position: relative;
 `;
 
 export const PopupContainer = styled.div`
+  position: absolute;
+  top: ${(props) => (props.top ? "30px" : null)};
+  left: ${(props) => (props.left ? "0" : null)};
+  right: ${(props) => (props.right ? "0" : null)};
+  margin-left: ${(props) => (props.marginLeft ? "auto" : null)};
+  margin-right: ${(props) => (props.marginRight ? "auto" : null)};
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   border-radius: 8px;
-  margin: 10px;
-  margin-top: 150px;
+  margin: 10px 0;
   ${mobile} {
-    margin-top: ${(props) =>
-      props.bigForm === "bigForm"
-        ? "900px"
-        : props.bigForm === "lessBigForm"
-        ? "600px"
-        : null};
+    top: ${(props) => (props.top ? "5px" : null)};
   }
-
   .Primary,
   .Secondary {
     border: 1px solid grey;

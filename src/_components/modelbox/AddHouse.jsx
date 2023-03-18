@@ -113,7 +113,11 @@ const AddDepartment = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer
+            top={true}
+            className="custom-modal"
+            role="dialog"
+          >
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

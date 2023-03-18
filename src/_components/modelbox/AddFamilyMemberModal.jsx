@@ -106,7 +106,11 @@ const AddFamilyMemberModal = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer
+            top={true}
+            className="custom-modal"
+            role="dialog"
+          >
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -120,7 +124,11 @@ const AddFamilyMemberModal = ({
                   </h5>
                   {idIsTrue && (
                     <button
-                      style={{border: "none", backgroundColor: "transparent", marginBottom: "15px"}}
+                      style={{
+                        border: "none",
+                        backgroundColor: "transparent",
+                        marginBottom: "15px",
+                      }}
                       className="delete-icon"
                       type="button"
                       onClick={handleDelete}

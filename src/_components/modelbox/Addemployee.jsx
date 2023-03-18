@@ -339,7 +339,7 @@ const Addemployee = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer
-            bigForm="bigForm"
+            top={true}
             className="custom-modal"
             role="dialog"
           >
