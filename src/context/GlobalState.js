@@ -9,6 +9,8 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedScheduleEvent: [],
   selectedShiftList: [],
   selectedProfileInfo: [],
+  deleteModal: false,
+  deleteImg: false,
   showModal: false,
   showProfileModal: false,
   showPersonalInfoModal: false,

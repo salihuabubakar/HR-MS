@@ -9,6 +9,7 @@ import {itemRender,onShowSizeChange} from "../paginationfunction"
 import "../antdstyle.css"
 import  AddShift from "../../_components/modelbox/AddShift"
 import { useGlobalState, setGlobalState} from '../../context/GlobalState';
+import DeleteModal from "../../_components/modelbox/DeleteModal";
 import {
   initShiftList,
   savedShiftListReducer
@@ -17,6 +18,7 @@ import {
 const ShiftList = () => {
 
   const [showModal] = useGlobalState("showModal");
+  const [deleteModal] = useGlobalState("deleteModal");
 
     const [menu, setMenu] = useState(false);
     const toggleMobileMenu = () => {
@@ -52,10 +54,8 @@ const ShiftList = () => {
     };
 
     const handleShiftToDelete = async (index) => {
-      dispatchShift({
-        type: "delete",
-        payload: shift[index],
-      });
+      setIndexToEdit(index);
+      setGlobalState("deleteModal", true);
     };
 
     const columns = [
@@ -191,43 +191,14 @@ const ShiftList = () => {
           )}
           {/* /Add Schedule Modal */}
           {/* Delete Shift Modal */}
-          <div
-            className="modal custom-modal fade"
-            id="delete_employee"
-            role="dialog"
-          >
-            <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content">
-                <div className="modal-body">
-                  <div className="form-header">
-                    <h3>Delete Shift</h3>
-                    <p>Are you sure want to delete?</p>
-                  </div>
-                  <div className="modal-btn delete-action">
-                    <div className="row">
-                      <div className="col-6">
-                        <a
-                          href="javascript:void(0);"
-                          className="btn btn-primary continue-btn"
-                        >
-                          Delete
-                        </a>
-                      </div>
-                      <div className="col-6">
-                        <a
-                          href="javascript:void(0);"
-                          data-bs-dismiss="modal"
-                          className="btn btn-primary cancel-btn"
-                        >
-                          Cancel
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {deleteModal && (
+            <DeleteModal
+              deleteAction={dispatchShift}
+              indexToDelete={indexToEdit}
+              dispatch={shift}
+              modalTitle={"Shift"}
+            />
+          )}
           {/* /Delete Employee Modal */}
         </>
       );

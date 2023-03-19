@@ -28,6 +28,7 @@ import AddSubTask from "../../_components/modelbox/AddSubTask";
 import AddTaskImage from "../../_components/modelbox/AddTaskImage"
 import { async } from "regenerator-runtime";
 import CommentSection from "./component";
+import DeleteModal from "../../_components/modelbox/DeleteModal";
 
 const TaskDetails = () => {
     const location = useLocation();
@@ -35,6 +36,8 @@ const TaskDetails = () => {
 
     const [showSubTaskModal] = useGlobalState("showSubTaskModal");
     const [showTaskImageModal] = useGlobalState("showTaskImageModal");
+    const [deleteModal] = useGlobalState("deleteModal");
+    const [deleteImg] = useGlobalState("deleteImg");
 
     const [tasks, dispatchTasks] = useReducer(savedTaskReducer, [], initTask);
 
@@ -89,6 +92,7 @@ const TaskDetails = () => {
 
     const [menu, setMenu] = useState(false);
     const [indexToEdit, setIndexToEdit] = useState(0);
+    const [imgIndex, setImgIndex] = useState(0);
 
     const selectedTask = taskList?.find((task) => task?.id === selecetedTaskId);
 
@@ -113,25 +117,15 @@ const TaskDetails = () => {
       setGlobalState("selectedSubTaskInfo", subTaskTitle);
     };
 
-    const handleSubTaskDelete = async (index) => {
-      dispatchSubTaskTitle({
-        type: "delete",
-        payload: subTaskTitle[index],
-      });
-    };
-
-    const handleTaskImageEdit = (index) => {
+    const handleSubTaskDelete = (index) => {
       setIndexToEdit(index);
-      setGlobalState("showTaskImageModal", true);
-      setGlobalState("selectedTaskImage", taskImage);
+      setGlobalState("deleteModal", true);
     };
 
-    const handleDeleteImage = async (index) => {
-      dispatchTaskImage({
-        type: "delete",
-        payload: taskImage[index],
-      });
-    }
+    const handleDeleteImage = (index) => {
+      setIndexToEdit(index);
+      setGlobalState("deleteImg", true);
+    };
 
 
     const toggleMobileMenu = () => {
@@ -686,9 +680,15 @@ const TaskDetails = () => {
                             color: "#fff",
                           }}
                           className={
-                            (taskStatus == "start" ? " text-end bg-start" : undefined) ||
-                            (taskStatus == "middle" ? "text-end bg-middle": undefined) ||
-                            (taskStatus == "finish" ? "text-end bg-complete": undefined)
+                            (taskStatus == "start"
+                              ? " text-end bg-start"
+                              : undefined) ||
+                            (taskStatus == "middle"
+                              ? "text-end bg-middle"
+                              : undefined) ||
+                            (taskStatus == "finish"
+                              ? "text-end bg-complete"
+                              : undefined)
                           }
                         >
                           {(taskStatus == "start" && "In-progress(start)") ||
@@ -701,10 +701,16 @@ const TaskDetails = () => {
                   <p className="m-b-5">
                     Progress
                     <span
-                      className= {
-                        (taskStatus == "start" ? "float-end color-start" : undefined) ||
-                        (taskStatus == "middle" ? "float-end color-middle" : undefined) ||
-                        (taskStatus == "finish" ? "float-end color-complete" : undefined)
+                      className={
+                        (taskStatus == "start"
+                          ? "float-end color-start"
+                          : undefined) ||
+                        (taskStatus == "middle"
+                          ? "float-end color-middle"
+                          : undefined) ||
+                        (taskStatus == "finish"
+                          ? "float-end color-complete"
+                          : undefined)
                       }
                     >
                       {(taskStatus == "start" && "30%") ||
@@ -715,9 +721,15 @@ const TaskDetails = () => {
                   <div className="progress progress-xs mb-0">
                     <div
                       className={
-                        (taskStatus == "start" ? "progress-bar bg-start" : undefined) ||
-                        (taskStatus == "middle" ? "progress-bar bg-middle" : undefined) ||
-                        (taskStatus == "finish" ? "progress-bar bg-complete" : undefined)
+                        (taskStatus == "start"
+                          ? "progress-bar bg-start"
+                          : undefined) ||
+                        (taskStatus == "middle"
+                          ? "progress-bar bg-middle"
+                          : undefined) ||
+                        (taskStatus == "finish"
+                          ? "progress-bar bg-complete"
+                          : undefined)
                       }
                       role="progressbar"
                       data-bs-toggle="tooltip"
@@ -834,6 +846,14 @@ const TaskDetails = () => {
             selecetedTaskId={selecetedTaskId}
           />
         )}
+        {deleteImg && (
+          <DeleteModal
+            deleteAction={dispatchTaskImage}
+            indexToDelete={indexToEdit}
+            dispatch={taskImage}
+            modalTitle={"Image file"}
+          />
+        )}
         {showSubTaskModal && (
           <AddSubTask
             dispatchSubTaskTitle={dispatchSubTaskTitle}
@@ -843,11 +863,14 @@ const TaskDetails = () => {
             selecetedTaskId={selecetedTaskId}
           />
         )}
-        {/* /Page Content */}
-        {/* /Assign User Modal */}
-        {/* Edit Project Modal */}
-        <Editproject />
-        {/* /Edit Project Modal */}
+        {deleteModal && (
+          <DeleteModal
+            deleteAction={dispatchSubTaskTitle}
+            indexToDelete={indexToEdit}
+            dispatch={subTaskTitle}
+            modalTitle={"SubTask"}
+          />
+        )}
       </div>
     </DivContainer>
   );

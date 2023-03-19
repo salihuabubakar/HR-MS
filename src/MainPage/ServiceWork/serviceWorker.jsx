@@ -10,6 +10,7 @@ import {
   savedResidentReducer,
 } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
+import DeleteModal from "../../_components/modelbox/DeleteModal";
 
 const ServiceWorker = () => {
   const [residents, dispatchResidents] = useReducer(
@@ -18,6 +19,7 @@ const ServiceWorker = () => {
     initResident
   );
   const [showModal] = useGlobalState("showModal");
+  const [deleteModal] = useGlobalState("deleteModal");
 
   useEffect(() => {
     localStorage.setItem("resident", JSON.stringify(residents));
@@ -44,11 +46,9 @@ const ServiceWorker = () => {
     setGlobalState("selectedResident", residents);
   };
 
-  const handleResidentDelete = async (index) => {
-    dispatchResidents({
-      type: "delete",
-      payload: residents[index],
-    });
+  const handleResidentDelete = (index) => {
+    setIndexToEdit(index);
+    setGlobalState("deleteModal", true);
   };
 
   const toggleMobileMenu = () => {
@@ -214,41 +214,14 @@ const ServiceWorker = () => {
           />
         )}
 
-        <div
-          className="modal custom-modal fade"
-          id="delete_employee"
-          role="dialog"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-body">
-                <div className="form-header">
-                  <h3>Delete Employee</h3>
-                  <p>Are you sure want to delete?</p>
-                </div>
-                <div className="modal-btn delete-action">
-                  <div className="row">
-                    <div className="col-6">
-                      <a href="" className="btn btn-primary continue-btn">
-                        Delete
-                      </a>
-                    </div>
-                    <div className="col-6">
-                      <a
-                        href=""
-                        data-bs-dismiss="modal"
-                        className="btn btn-primary cancel-btn"
-                      >
-                        Cancel
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* /Delete Employee Modal */}
+        {deleteModal && (
+          <DeleteModal
+            deleteAction={dispatchResidents}
+            indexToDelete={indexToEdit}
+            dispatch={residents}
+            modalTitle={"Resident"}
+          />
+        )}
       </div>
     </div>
   );

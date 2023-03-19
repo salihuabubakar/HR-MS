@@ -6,8 +6,8 @@ import {
   Card,
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
-import { HtmlDateInput } from "./styles";
 
+import DeleteModal from "./DeleteModal";
 const AddFamilyMemberModal = ({
   dispatchFamilyMemb,
   familyMembInformationIndex,
@@ -16,6 +16,7 @@ const AddFamilyMemberModal = ({
   familyMembfieldIndex,
 }) => {
   const [selectedFamilyMemberInfo] = useGlobalState("selectedFamilyMemberInfo");
+  const [deleteModal] = useGlobalState("deleteModal");
   const [inputFields, setInputFields] = useState([
     {
       name: selectedFamilyMemberInfo[familyMembInformationIndex]?.inputFields[
@@ -72,11 +73,7 @@ const AddFamilyMemberModal = ({
   };
 
   const handleDelete = () => {
-    dispatchFamilyMemb({
-      type: "delete",
-      payload: selectedFamilyMemberInfo[familyMembInformationIndex],
-    });
-    setGlobalState("showFamilyMenberModal", false);
+    setGlobalState("deleteModal", true);
   };
 
   const handleInputChange = (index, event) => {
@@ -106,11 +103,7 @@ const AddFamilyMemberModal = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer
-            top={true}
-            className="custom-modal"
-            role="dialog"
-          >
+          <PopupContainer top={true} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -158,12 +151,14 @@ const AddFamilyMemberModal = ({
                                 ""
                               ) : (
                                 <span>
-                                  <a
-                                    className="delete-icon"
-                                    onClick={() => removeFields(index)}
-                                  >
-                                    <i className="fa fa-trash-o" />
-                                  </a>
+                                  {index != 0 && (
+                                    <a
+                                      className="delete-icon"
+                                      onClick={() => removeFields(index)}
+                                    >
+                                      <i className="fa fa-trash-o" />
+                                    </a>
+                                  )}
                                 </span>
                               )}
                             </h5>
@@ -264,6 +259,14 @@ const AddFamilyMemberModal = ({
           </PopupContainer>
         </PopupOverlay>
       </PopupWrapper>
+      {deleteModal && (
+        <DeleteModal
+          deleteAction={dispatchFamilyMemb}
+          indexToDelete={familyMembInformationIndex}
+          dispatch={selectedFamilyMemberInfo}
+          modalTitle={"Family Info"}
+        />
+      )}
     </>
   );
 };
