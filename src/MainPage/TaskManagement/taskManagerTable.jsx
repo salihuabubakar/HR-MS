@@ -12,10 +12,12 @@ import { initTask, savedTaskReducer } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
 import { Span } from "./style";
 import AddTask from "../../_components/modelbox/AddTask";
+import DeleteModal from "../../_components/modelbox/DeleteModal";
 
 const TaskManagerTable = () => {
   const [tasks, dispatchTasks] = useReducer(savedTaskReducer, [], initTask);
   const [showTaskModal] = useGlobalState("showTaskModal");
+  const [deleteModal] = useGlobalState("deleteModal");
 
   useEffect(() => {
     localStorage.setItem("task", JSON.stringify(tasks));
@@ -40,11 +42,9 @@ const TaskManagerTable = () => {
     setGlobalState("selectedTaskInfo", tasks);
   };
 
-  const handleTaskDelete = async (index) => {
-    dispatchTasks({
-      type: "delete",
-      payload: tasks[index],
-    });
+  const handleTaskDelete = (index) => {
+    setIndexToEdit(index);
+    setGlobalState("deleteModal", true);
   };
 
   const toggleMobileMenu = () => {
@@ -329,40 +329,14 @@ const TaskManagerTable = () => {
         )}
         {/* /Add Department Modal */}
         {/* Delete Department Modal */}
-        <div
-          className="modal custom-modal fade"
-          id="delete_department"
-          role="dialog"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-body">
-                <div className="form-header">
-                  <h3>Delete Department</h3>
-                  <p>Are you sure want to delete?</p>
-                </div>
-                <div className="modal-btn delete-action">
-                  <div className="row">
-                    <div className="col-6">
-                      <a href="" className="btn btn-primary continue-btn">
-                        Delete
-                      </a>
-                    </div>
-                    <div className="col-6">
-                      <a
-                        href=""
-                        data-bs-dismiss="modal"
-                        className="btn btn-primary cancel-btn"
-                      >
-                        Cancel
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {deleteModal && (
+          <DeleteModal
+            deleteAction={dispatchTasks}
+            indexToDelete={indexToEdit}
+            dispatch={tasks}
+            modalTitle={"Task"}
+          />
+        )}
         {/* /Delete Department Modal */}
       </div>
     </div>

@@ -11,12 +11,14 @@ import SmileImg from "../../assets/img/smile.png";
 import HouseImg from "../../assets/img/house.png";
 import Select from "react-select";
 import AddHouse from "../../_components/modelbox/AddHouse";
+import DeleteModal from '../../_components/modelbox/DeleteModal';
 
 
 const Accomodations = () => {
 
   const [house, dispatchHouse] = useReducer(savedHouseReducer, [], initHouse);
   const [showModal] = useGlobalState("showModal");
+  const [deleteModal] = useGlobalState("deleteModal");
 
   useEffect(() => {
     localStorage.setItem("house", JSON.stringify(house));
@@ -44,11 +46,9 @@ const Accomodations = () => {
     setGlobalState("selectedHouse", house);
   };
 
-  const handleHouseDelete = async (index) => {
-    dispatchHouse({
-      type: "delete",
-      payload: house[index],
-    });
+  const handleHouseDelete = (index) => {
+    setIndexToEdit(index);
+    setGlobalState("deleteModal", true);
   };
 
   const toggleMobileMenu = () => {
@@ -219,41 +219,14 @@ const Accomodations = () => {
               />
             )}
 
-            <div
-              className="modal custom-modal fade"
-              id="delete_employee"
-              role="dialog"
-            >
-              <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                  <div className="modal-body">
-                    <div className="form-header">
-                      <h3>Delete Employee</h3>
-                      <p>Are you sure want to delete?</p>
-                    </div>
-                    <div className="modal-btn delete-action">
-                      <div className="row">
-                        <div className="col-6">
-                          <a href="" className="btn btn-primary continue-btn">
-                            Delete
-                          </a>
-                        </div>
-                        <div className="col-6">
-                          <a
-                            href=""
-                            data-bs-dismiss="modal"
-                            className="btn btn-primary cancel-btn"
-                          >
-                            Cancel
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* /Delete Employee Modal */}
+            {deleteModal && (
+              <DeleteModal
+                deleteAction={dispatchHouse}
+                indexToDelete={indexToEdit}
+                dispatch={house}
+                modalTitle={"House"}
+              />
+            )}
           </div>
         </div>
       );

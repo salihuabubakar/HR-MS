@@ -15,6 +15,7 @@ import {
 import SmileImg from "../../../assets/img/smile.png";
 import Select from "react-select";
 import {DesignationDiv} from "./styles";
+import DeleteModal from '../../../_components/modelbox/DeleteModal';
 
 
 const AllEmployees = () => {
@@ -51,6 +52,7 @@ const AllEmployees = () => {
 
    const [designation, setDesignation] = useState("");
     const [showModal] = useGlobalState("showModal");
+    const [deleteModal] = useGlobalState("deleteModal");
 
   const roles = [];
   desigList?.map((role) => {
@@ -100,11 +102,9 @@ const AllEmployees = () => {
     setGlobalState("selectedUserAccount", userAcct);
   };
 
-   const handleDeleteAcct = async (index) => {
-     dispatchUserAcct({
-       type: "delete",
-       payload: userAcct[index],
-     });
+   const handleDeleteAcct = (index) => {
+    setIndexToEdit(index);
+    setGlobalState("deleteModal", true);
    };
 
 
@@ -297,42 +297,14 @@ const AllEmployees = () => {
                 userAcct={userAcct}
               />
             )}
-
-            <div
-              className="modal custom-modal fade"
-              id="delete_employee"
-              role="dialog"
-            >
-              <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                  <div className="modal-body">
-                    <div className="form-header">
-                      <h3>Delete Employee</h3>
-                      <p>Are you sure want to delete?</p>
-                    </div>
-                    <div className="modal-btn delete-action">
-                      <div className="row">
-                        <div className="col-6">
-                          <a href="" className="btn btn-primary continue-btn">
-                            Delete
-                          </a>
-                        </div>
-                        <div className="col-6">
-                          <a
-                            href=""
-                            data-bs-dismiss="modal"
-                            className="btn btn-primary cancel-btn"
-                          >
-                            Cancel
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* /Delete Employee Modal */}
+            {deleteModal && (
+              <DeleteModal
+                deleteAction={dispatchUserAcct}
+                indexToDelete={indexToEdit}
+                dispatch={userAcct}
+                modalTitle={"Employee"}
+              />
+            )}
           </div>
         </div>
       );

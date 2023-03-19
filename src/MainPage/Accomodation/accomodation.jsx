@@ -11,10 +11,12 @@ import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import { initHouse, savedHouseReducer } from "../../utils/localStorage";
 import AddHouse from "../../_components/modelbox/AddHouse";
 import HouseImg from "../../assets/img/house.png";
+import DeleteModal from "../../_components/modelbox/DeleteModal";
 
 const Housing = () => {
   const [house, dispatchHouse] = useReducer(savedHouseReducer, [], initHouse);
   const [showModal] = useGlobalState("showModal");
+  const [deleteModal] = useGlobalState("deleteModal");
 
   useEffect(() => {
     localStorage.setItem("house", JSON.stringify(house));
@@ -41,11 +43,9 @@ const Housing = () => {
     setGlobalState("selectedHouse", house);
   };
 
-  const handleDeptDelete = async (index) => {
-    dispatchHouse({
-      type: "delete",
-      payload: house[index],
-    });
+  const handleHouseDelete = (index) => {
+    setIndexToEdit(index);
+    setGlobalState("deleteModal", true);
   };
 
 
@@ -119,7 +119,7 @@ const Housing = () => {
             </a>
             <a
               className="dropdown-item"
-              onClick={() => handleDeptDelete(index)}
+              onClick={() => handleHouseDelete(index)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -211,40 +211,14 @@ const Housing = () => {
         )}
         {/* /Add Department Modal */}
         {/* Delete Department Modal */}
-        <div
-          className="modal custom-modal fade"
-          id="delete_department"
-          role="dialog"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-body">
-                <div className="form-header">
-                  <h3>Delete Department</h3>
-                  <p>Are you sure want to delete?</p>
-                </div>
-                <div className="modal-btn delete-action">
-                  <div className="row">
-                    <div className="col-6">
-                      <a href="" className="btn btn-primary continue-btn">
-                        Delete
-                      </a>
-                    </div>
-                    <div className="col-6">
-                      <a
-                        href=""
-                        data-bs-dismiss="modal"
-                        className="btn btn-primary cancel-btn"
-                      >
-                        Cancel
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {deleteModal && (
+          <DeleteModal
+            deleteAction={dispatchHouse}
+            indexToDelete={indexToEdit}
+            dispatch={house}
+            modalTitle={"House"}
+          />
+        )}
         {/* /Delete Department Modal */}
       </div>
     </div>

@@ -11,6 +11,7 @@ import { designations } from '../../../utils/localDate';
 import AddDesignation from '../../../_components/modelbox/AddDesignation';
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import { initDesignation, savedDesignationReducer } from "../../../utils/localStorage";
+import DeleteModal from "../../../_components/modelbox/DeleteModal";
 
 const Designations = () => {
   const [desig, dispatchDesignation] = useReducer(
@@ -19,6 +20,7 @@ const Designations = () => {
     initDesignation
   );
   const [showModal] = useGlobalState("showModal");
+  const [deleteModal] = useGlobalState("deleteModal");
 
   useEffect(() => {
     localStorage.setItem("designation", JSON.stringify(desig));
@@ -45,11 +47,9 @@ const Designations = () => {
     setGlobalState("selectedDesignation", desig);
   };
 
-  const handleDesigDelete = async (index) => {
-    dispatchDesignation({
-      type: "delete",
-      payload: desig[index],
-    });
+  const handleDesigDelete = (index) => {
+    setIndexToEdit(index);
+    setGlobalState("deleteModal", true);
   };
 
 	const toggleMobileMenu = () => {
@@ -172,42 +172,15 @@ const Designations = () => {
               />
             )}
             {/* /Add Designation Modal */}
-            {/* Delete Designation Modal */}
-            <div
-              className="modal custom-modal fade"
-              id="delete_designation"
-              role="dialog"
-            >
-              <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                  <div className="modal-body">
-                    <div className="form-header">
-                      <h3>Delete Designation</h3>
-                      <p>Are you sure want to delete?</p>
-                    </div>
-                    <div className="modal-btn delete-action">
-                      <div className="row">
-                        <div className="col-6">
-                          <a href="" className="btn btn-primary continue-btn">
-                            Delete
-                          </a>
-                        </div>
-                        <div className="col-6">
-                          <a
-                            href=""
-                            data-bs-dismiss="modal"
-                            className="btn btn-primary cancel-btn"
-                          >
-                            Cancel
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* /Delete Designation Modal */}
+            {deleteModal && (
+              <DeleteModal
+                deleteAction={dispatchDesignation}
+                indexToDelete={indexToEdit}
+                dispatch={desig}
+                modalTitle={"Designation"}
+              />
+            )}
+            {/* /Delete Department Modal */}
           </div>
         </div>
       );

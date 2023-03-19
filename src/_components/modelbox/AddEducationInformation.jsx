@@ -6,6 +6,7 @@ import {
   Card,
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
+import DeleteModal from "./DeleteModal";
 
 import { HtmlDateInput } from "./styles";
 
@@ -17,6 +18,7 @@ const AddEducationInformation = ({
   fieldIndex
 }) => {
   const [selectedEducationalInfo] = useGlobalState("selectedEducationalInfo");
+  const [deleteModal] = useGlobalState("deleteModal");
   const [inputFields, setInputFields] = useState([
     {
       institution: selectedEducationalInfo[eduInformationIndex]?.inputFields[fieldIndex]?.institution 
@@ -59,11 +61,7 @@ const AddEducationInformation = ({
   };
 
   const handleDelete = () => {
-    dispatchEduInfo({
-      type: "delete",
-      payload: selectedEducationalInfo[eduInformationIndex],
-    });
-    setGlobalState("showEducationInformationModal", false);
+    setGlobalState("deleteModal", true);
   };
 
   const handleInputChange = (index, event) => {
@@ -93,11 +91,7 @@ const AddEducationInformation = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer
-            top={true}
-            className="custom-modal"
-            role="dialog"
-          >
+          <PopupContainer top={true} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -145,12 +139,14 @@ const AddEducationInformation = ({
                                 ""
                               ) : (
                                 <span>
-                                  <a
-                                    className="delete-icon"
-                                    onClick={() => removeFields(index)}
-                                  >
-                                    <i className="fa fa-trash-o" />
-                                  </a>
+                                  {index != 0 && (
+                                    <a
+                                      className="delete-icon"
+                                      onClick={() => removeFields(index)}
+                                    >
+                                      <i className="fa fa-trash-o" />
+                                    </a>
+                                  )}
                                 </span>
                               )}
                             </h5>
@@ -250,6 +246,14 @@ const AddEducationInformation = ({
           </PopupContainer>
         </PopupOverlay>
       </PopupWrapper>
+      {deleteModal && (
+        <DeleteModal
+          deleteAction={dispatchEduInfo}
+          indexToDelete={eduInformationIndex}
+          dispatch={selectedEducationalInfo}
+          modalTitle={"Education Info"}
+        />
+      )}
     </>
   );
 };

@@ -10,10 +10,12 @@ import "../../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import { initDept, savedDeptReducer } from "../../../utils/localStorage";
 import AddDepartment from "../../../_components/modelbox/AddDepartment";
+import DeleteModal from "../../../_components/modelbox/DeleteModal";
 
 const Department = () => {
   const [depts, dispatchDepts] = useReducer(savedDeptReducer, [], initDept);
   const [showModal] = useGlobalState("showModal");
+  const [deleteModal] = useGlobalState("deleteModal");
 
   useEffect(() => {
     localStorage.setItem("dept", JSON.stringify(depts));
@@ -40,11 +42,9 @@ const Department = () => {
     setGlobalState("selectedDept", depts);
   };
 
-  const handleDeptDelete = async (index) => {
-    dispatchDepts({
-      type: "delete",
-      payload: depts[index],
-    });
+  const handleDeptDelete = (index) => {
+    setIndexToEdit(index);
+    setGlobalState("deleteModal", true);
   };
 
 
@@ -161,40 +161,14 @@ const Department = () => {
         )}
         {/* /Add Department Modal */}
         {/* Delete Department Modal */}
-        <div
-          className="modal custom-modal fade"
-          id="delete_department"
-          role="dialog"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-body">
-                <div className="form-header">
-                  <h3>Delete Department</h3>
-                  <p>Are you sure want to delete?</p>
-                </div>
-                <div className="modal-btn delete-action">
-                  <div className="row">
-                    <div className="col-6">
-                      <a href="" className="btn btn-primary continue-btn">
-                        Delete
-                      </a>
-                    </div>
-                    <div className="col-6">
-                      <a
-                        href=""
-                        data-bs-dismiss="modal"
-                        className="btn btn-primary cancel-btn"
-                      >
-                        Cancel
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {deleteModal && (
+          <DeleteModal
+            deleteAction={dispatchDepts}
+            indexToDelete={indexToEdit}
+            dispatch={depts}
+            modalTitle={"Department"}
+          />
+        )}
         {/* /Delete Department Modal */}
       </div>
     </div>

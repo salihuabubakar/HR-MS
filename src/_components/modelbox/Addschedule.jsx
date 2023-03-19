@@ -7,6 +7,7 @@ import {
 } from "./Addemployee.style";
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import DeleteModal from "./DeleteModal";
 
 const AddSchedule = ({
   employeeId,
@@ -18,6 +19,7 @@ const AddSchedule = ({
   houseId,
 }) => {
   const [selectedScheduleEvent] = useGlobalState("selectedScheduleEvent");
+  const [deleteModal] = useGlobalState("deleteModal");
 
   const [shifts, setShifts] = useState(
     selectedScheduleEvent[selectedDayIndex]?.shifts
@@ -47,12 +49,8 @@ const AddSchedule = ({
     }
     setGlobalState("showAddSchedul", false);
   };
-  const handleDeleteEvent = () => {
-    dispatchSchedule({
-      type: "delete",
-      payload: selectedScheduleEvent[selectedDayIndex],
-    });
-    setGlobalState("showAddSchedul", false);
+  const handleDeleteEvent = () => {  
+    setGlobalState("deleteModal", true);
   };
 
   const customSelectStyles = {
@@ -99,7 +97,7 @@ const AddSchedule = ({
               role="document"
             >
               <div className="modal-content">
-                <div style={{position: "relative"}} className="card-header">
+                <div style={{ position: "relative" }} className="card-header">
                   <h5 className="card-title">
                     {selectedScheduleEvent[selectedDayIndex]?.id
                       ? "Edit Schedule"
@@ -173,6 +171,14 @@ const AddSchedule = ({
           </PopupContainer>
         </PopupOverlay>
       </PopupWrapper>
+      {deleteModal && (
+        <DeleteModal
+          deleteAction={dispatchSchedule}
+          indexToDelete={selectedDayIndex}
+          dispatch={selectedScheduleEvent}
+          modalTitle={"Schedule"}
+        />
+      )}
     </>
   );
 };
