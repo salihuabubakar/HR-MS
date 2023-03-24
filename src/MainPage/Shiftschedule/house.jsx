@@ -33,7 +33,7 @@ const SelectDept = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Employee - HRMS Admin Template</title>
+          <title>Select House - HRMS Admin Template</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

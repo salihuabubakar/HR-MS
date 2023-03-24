@@ -231,7 +231,7 @@ const Employeeslist = () => {
           <Sidebar />
           <div className="page-wrapper">
             <Helmet>
-              <title>Employeeslist - HRMS Admin Template</title>
+              <title>Employee List - HRMS Admin Template</title>
               <meta name="description" content="Login page" />
             </Helmet>
             {/* Page Content */}

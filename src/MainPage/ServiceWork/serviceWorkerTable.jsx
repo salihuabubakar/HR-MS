@@ -140,7 +140,7 @@ const ServiceWorkerTable = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Department - HRMS Admin Template</title>
+          <title>Residents - HRMS Admin Template</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

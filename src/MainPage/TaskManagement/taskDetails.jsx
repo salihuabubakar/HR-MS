@@ -158,7 +158,9 @@ const TaskDetails = () => {
                 <h3 className="page-title">Task Details</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
+                    <Link to="/app/taskmanagement/task-manager-table">
+                      All Tasks
+                    </Link>
                   </li>
                   <li className="breadcrumb-item active">Task Manager</li>
                 </ul>
