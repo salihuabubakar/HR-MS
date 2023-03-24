@@ -9,7 +9,7 @@ import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 
 import DeleteModal from "./DeleteModal";
 const AddFamilyMemberModal = ({
-  dispatchFamilyMemb,
+  dispatchFamilyMemberInfo,
   familyMembInformationIndex,
   emid,
   emIndex,
@@ -65,9 +65,9 @@ const AddFamilyMemberModal = ({
       inputFields,
     };
     if (idIsTrue) {
-      dispatchFamilyMemb({ type: "update", payload: educationalInfo });
+      dispatchFamilyMemberInfo({ type: "update", payload: educationalInfo });
     } else {
-      dispatchFamilyMemb({ type: "push", payload: educationalInfo });
+      dispatchFamilyMemberInfo({ type: "push", payload: educationalInfo });
     }
     setGlobalState("showFamilyMenberModal", false);
   };
@@ -261,7 +261,7 @@ const AddFamilyMemberModal = ({
       </PopupWrapper>
       {deleteModal && (
         <DeleteModal
-          deleteAction={dispatchFamilyMemb}
+          deleteAction={dispatchFamilyMemberInfo}
           indexToDelete={familyMembInformationIndex}
           dispatch={selectedFamilyMemberInfo}
           modalTitle={"Family Info"}

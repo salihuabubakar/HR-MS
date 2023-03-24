@@ -108,15 +108,15 @@ const EmployeeProfile = () => {
   }, [expInfo]);
 
 
-  const [familyMemb, dispatchFamilyMemb] = useReducer(
+  const [familyMemberInfo, dispatchFamilyMemberInfo] = useReducer(
     savedFamilyMemberReducer,
     [],
     initFamilyMemberInfo
   );
 
   useEffect(() => {
-    localStorage.setItem("familyMemb", JSON.stringify(familyMemb));
-  }, [familyMemb]);
+    localStorage.setItem("familyMemberInfo", JSON.stringify(familyMemberInfo));
+  }, [familyMemberInfo]);
   useEffect(() => {
     if (!showFamilyMenberModal) {
       setGlobalState("selectedFamilyMemberInfo", "");
@@ -125,8 +125,8 @@ const EmployeeProfile = () => {
 
   const [familyMembArray, setFamilyMembArray] = useState();
   useEffect(() => {
-    setFamilyMembArray(familyMemb);
-  }, [familyMemb]);
+    setFamilyMembArray(familyMemberInfo);
+  }, [familyMemberInfo]);
 
   const [acctIdToEdit, setAcctIdToEdit] = useState("");
 
@@ -182,7 +182,7 @@ const EmployeeProfile = () => {
 
   const editFamilyMemberInfo = (fieldsIndex, index) => {
     setGlobalState("showFamilyMenberModal", true);
-    setGlobalState("selectedFamilyMemberInfo", familyMemb);
+    setGlobalState("selectedFamilyMemberInfo", familyMemberInfo);
     setFamilyMembExpInformationIndex(index);
     setFamilyMembFieldIndex(fieldsIndex);
   };
@@ -529,12 +529,7 @@ const EmployeeProfile = () => {
                           </thead>
                           <tbody>
                             {familyMembArray?.map((family, index) => {
-                              const {
-                                id,
-                                emIndex,
-                                emid,
-                                inputFields,
-                              } = family;
+                              const { id, emIndex, emid, inputFields } = family;
                               if (emid == emId) {
                                 return (
                                   <React.Fragment key={id}>
@@ -1460,7 +1455,7 @@ const EmployeeProfile = () => {
         {showFamilyMenberModal && (
           <>
             <AddFamilyMemberModal
-              dispatchFamilyMemb={dispatchFamilyMemb}
+              dispatchFamilyMemberInfo={dispatchFamilyMemberInfo}
               emIndex={emIndex}
               familyMembInformationIndex={familyMembInformationIndex}
               emid={emid}
