@@ -119,7 +119,7 @@ const Employeeslist = () => {
               render: (text, record, index) => {
                 const {
                   id,
-                  image,
+                  profileInfo,
                   firstName,
                   lastName,
                   designation
@@ -136,10 +136,14 @@ const Employeeslist = () => {
                         style={{
                           borderRadius: "5px",
                           backgroundColor: "#00000000",
-                          height: "100%"
+                          height: "100%",
                         }}
                       >
-                        <img style={{width: "40px", height: "40px"}} alt="" src={image} />
+                        <img
+                          style={{ width: "40px", height: "40px" }}
+                          alt=""
+                          src={profileInfo?.image}
+                        />
                       </Link>
                       <Link
                         to={{

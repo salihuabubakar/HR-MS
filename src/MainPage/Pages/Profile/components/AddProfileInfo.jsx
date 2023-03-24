@@ -72,9 +72,9 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
         : ""
     );
 
-    const [image] = useState(
-      selectedUserAccount[emIndex]?.image
-        ? selectedUserAccount[emIndex]?.image
+    const [image, setImage] = useState(
+      selectedUserAccount[emIndex]?.profileInfo?.image
+        ? selectedUserAccount[emIndex]?.profileInfo?.image
         : ""
     );
 
@@ -214,6 +214,7 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       },
     };
     const profileInfo = {
+      image,
       address,
       state,
       country,
@@ -229,7 +230,6 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
     };
     const userAccount = {
       id,
-      image,
       firstName,
       lastName,
       userName,
@@ -306,6 +306,18 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
     console.log("date: ", d);
     setDOB(d);
   };
+
+   const imageOnChange = (event) => {
+     const file = event.target.files[0];
+     const reader = new FileReader();
+     reader.readAsDataURL(file);
+     reader.onload = () => {
+       const base64Image = reader.result;
+       setImage(base64Image);
+       //  setImage(URL.createObjectURL(event.target.files[0]));
+     };
+   };
+
   return (
     <>
       <PopupWrapper>
@@ -333,7 +345,7 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                 <div className="modal-body">
                   <form>
                     <div className="row">
-                      {/* <div className="col-sm-12">
+                      <div className="col-sm-12">
                         <div
                           style={{ borderRadius: "5px" }}
                           className="profile-img-wrap edit-img"
@@ -354,7 +366,7 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                             />
                           </div>
                         </div>
-                      </div> */}
+                      </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="focus-label">First Name</label>

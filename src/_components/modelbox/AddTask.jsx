@@ -151,8 +151,8 @@ const AddTask = ({
     users.push({
       value: user.id,
       label: user.firstName + " " + user.lastName,
-      image: user.image,
-      designation: user.designation
+      image: user.profileInfo?.image,
+      designation: user.designation,
     });
   });
 

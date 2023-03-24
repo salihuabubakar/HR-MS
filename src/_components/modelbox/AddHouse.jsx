@@ -93,7 +93,7 @@ const AddDepartment = ({
     users.push({
       value: user.id,
       label: user.firstName + " " + user.lastName,
-      image: user.image,
+      image: user.profileInfo?.image,
     });
   });
 

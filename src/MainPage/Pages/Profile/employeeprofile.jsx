@@ -188,7 +188,7 @@ const EmployeeProfile = () => {
   };
 
   const emId = selectedEmployee?.id;
-  const image = selectedEmployee?.image;
+  const image = selectedEmployee?.profileInfo?.image;
   const firstName = selectedEmployee?.firstName;
   const lastName = selectedEmployee?.lastName;
   const email = selectedEmployee?.email;
