@@ -42,12 +42,6 @@ const Addemployee = ({
     setDesignationList(desig);
   }, [desig]);
 
-  const [image, setImage] = useState(
-    selectedUserAccount[indexToEdit]?.image
-      ? selectedUserAccount[indexToEdit]?.image
-      : ""
-  );
-
   const [firstName, setFirstName] = useState(
     selectedUserAccount[indexToEdit]?.firstName
       ? selectedUserAccount[indexToEdit]?.firstName
@@ -114,11 +108,11 @@ const Addemployee = ({
     : Date.now()
   );
 
-  // const [image] = useState(
-  //   selectedUserAccount[indexToEdit]?.profileInfo?.image
-  //     ? selectedUserAccount[indexToEdit]?.profileInfo?.image
-  //     : ""
-  // );
+  const [image] = useState(
+    selectedUserAccount[indexToEdit]?.profileInfo?.image
+      ? selectedUserAccount[indexToEdit]?.profileInfo?.image
+      : ""
+  );
   const [address] = useState(
     selectedUserAccount[indexToEdit]?.profileInfo?.address
       ? selectedUserAccount[indexToEdit]?.profileInfo?.address
@@ -250,7 +244,6 @@ const Addemployee = ({
     };
     const userAccount = {
       id,
-      image,
       firstName,
       lastName,
       userName,
@@ -322,17 +315,6 @@ const Addemployee = ({
     setDesignation(event);
   };
 
-  const imageOnChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const base64Image = reader.result;
-      setImage(base64Image);
-      //  setImage(URL.createObjectURL(event.target.files[0]));
-    };
-  };
-
   return (
     <>
       {/* Add Employee Modal */}
@@ -366,28 +348,6 @@ const Addemployee = ({
                 <div className="modal-body">
                   <form>
                     <div className="row">
-                      <div className="col-sm-12">
-                        <div
-                          style={{ borderRadius: "5px" }}
-                          className="profile-img-wrap edit-img"
-                        >
-                          <img
-                            style={{ borderRadius: "5px" }}
-                            className="inline-block"
-                            src={image}
-                            alt="user"
-                          />
-                          <div className="fileupload btn">
-                            <span className="btn-text">edit</span>
-                            <input
-                              className="upload"
-                              type="file"
-                              accept="image/*"
-                              onChange={imageOnChange}
-                            />
-                          </div>
-                        </div>
-                      </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">

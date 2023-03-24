@@ -202,7 +202,7 @@ const AllEmployees = () => {
                 {employeeAccts?.map((staff, index) => {
                   const {
                     id,
-                    image,
+                    profileInfo,
                     company,
                     confirmPassword,
                     dept,
@@ -241,7 +241,7 @@ const AllEmployees = () => {
                                 width: "80px",
                                 height: "80px",
                               }}
-                              src={image}
+                              src={profileInfo?.image}
                               alt=""
                             />
                           </Link>
