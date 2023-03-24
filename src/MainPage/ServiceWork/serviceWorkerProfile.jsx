@@ -59,7 +59,7 @@ const serviceWorkerProfile = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Employee Profile - HRMS admin Template</title>
+          <title>Resident Profile - HRMS admin Template</title>
           <meta name="description" content="Reactify Blank Page" />
         </Helmet>
         {/* Page Content */}

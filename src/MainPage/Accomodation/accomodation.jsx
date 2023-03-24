@@ -134,7 +134,7 @@ const Housing = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Department - HRMS Admin Template</title>
+          <title>Accomodation List - HRMS Admin Template</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

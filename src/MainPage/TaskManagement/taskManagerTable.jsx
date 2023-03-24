@@ -271,7 +271,7 @@ const TaskManagerTable = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Department - HRMS Admin Template</title>
+          <title>Task Manager - HRMS Admin Template</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}
