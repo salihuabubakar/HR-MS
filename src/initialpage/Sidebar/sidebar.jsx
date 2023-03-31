@@ -7,11 +7,17 @@ import { HeaderContainer } from './style';
  
 const Sidebar = (props) => {
 
+const [isActiveLink, setIsActiveLink] = useState()
+
   
 const [isSideMenu, setSideMenu] = useState("")
 const [level2Menu, setLevel2Menu] = useState("")
 const [level3Menu, setLevel3Menu] = useState("")
 const [isDashboardOpen, setIsDashboardOpen] = useState(false)
+
+const activeLink = (value) => {
+  setIsActiveLink(value);
+}
 
 const toggleSidebar = (value) => {
   setSideMenu(value);
@@ -59,7 +65,14 @@ const toggleLevelThree = (value) => {
                     className={isSideMenu == "dashboard" ? "subdrop" : ""}
                     onClick={handleDashboard}
                   >
-                    <i className="la la-dashboard" /> <span> Dashboard</span>{" "}
+                    <i className="la la-dashboard" />
+                    <span
+                      onClick={() => activeLink("Dashboard")}
+                      className={isActiveLink == "Dashboard" && "noti-dot"}
+                    >
+                      {" "}
+                      Dashboard
+                    </span>{" "}
                     <span className="menu-arrow" />
                   </a>
                   {isSideMenu == "dashboard" ? (
@@ -219,7 +232,13 @@ const toggleLevelThree = (value) => {
                     }
                   >
                     <i className="la la-user" />{" "}
-                    <span className="noti-dot"> Employees</span>{" "}
+                    <span
+                      onClick={() => activeLink("Employees")}
+                      className={isActiveLink == "Employees" && "noti-dot"}
+                    >
+                      {" "}
+                      Employees
+                    </span>{" "}
                     <span className="menu-arrow" />
                   </a>
                   {isSideMenu == "employee" ? (
@@ -399,18 +418,12 @@ const toggleLevelThree = (value) => {
                   >
                     <i className="la la-home" />
                     <Link
-                      className={
-                        pathname.includes("accomodations")
-                          ? "active"
-                          : pathname.includes("accomodation")
-                          ? "active"
-                          : ""
-                      }
+                      onClick={() => activeLink("Accomodation")}
+                      className={isActiveLink == "Accomodation" && "noti-dot"}
                       to="/app/accomodation/accomodations"
                     >
                       Accomodation
                     </Link>
-                    
                   </a>
                 </li>
                 <li className="submenu">
@@ -424,7 +437,13 @@ const toggleLevelThree = (value) => {
                     }
                   >
                     <i className="la la-cogs" />{" "}
-                    <span> Shift &amp; Schedule</span>{" "}
+                    <span
+                      onClick={() => activeLink("Shift&Schedule")}
+                      className={isActiveLink == "Shift&Schedule" && "noti-dot"}
+                    >
+                      {" "}
+                      Shift &amp; Schedule
+                    </span>{" "}
                     <span className="menu-arrow" />
                   </a>
                   {isSideMenu == "shiftschedule" ? (
@@ -434,7 +453,6 @@ const toggleLevelThree = (value) => {
                           className={
                             pathname.includes("shift-list") ? "active" : ""
                           }
-                          
                           to="/app/shiftschedule/shift-list"
                         >
                           Shifts
@@ -442,9 +460,7 @@ const toggleLevelThree = (value) => {
                       </li>
                       <li>
                         <Link
-                          className={
-                            pathname.includes("house") ? "active" : ""
-                          }
+                          className={pathname.includes("house") ? "active" : ""}
                           to="/app/shiftschedule/house"
                         >
                           Select House
@@ -466,7 +482,13 @@ const toggleLevelThree = (value) => {
                     }
                   >
                     <i className="la la-chart-bar" />{" "}
-                    <span> Task Management</span>{" "}
+                    <span
+                      onClick={() => activeLink("TaskManagement")}
+                      className={isActiveLink == "TaskManagement" && "noti-dot"}
+                    >
+                      {" "}
+                      Task Management
+                    </span>
                     <span className="menu-arrow" />
                   </a>
                   {isSideMenu == "taskmanagement" ? (
@@ -500,7 +522,14 @@ const toggleLevelThree = (value) => {
                       )
                     }
                   >
-                    <i className="la la-user" /> <span> Service Worker</span>{" "}
+                    <i className="la la-user" />
+                    <span
+                      onClick={() => activeLink("ServiceWorker")}
+                      className={isActiveLink == "ServiceWorker" && "noti-dot"}
+                    >
+                      {" "}
+                      Service Worker
+                    </span>{" "}
                     <span className="menu-arrow" />
                   </a>
                   {isSideMenu == "servicework" ? (
