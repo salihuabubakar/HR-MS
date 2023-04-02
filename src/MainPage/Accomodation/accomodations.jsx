@@ -12,6 +12,7 @@ import HouseImg from "../../assets/img/house.png";
 import Select from "react-select";
 import AddHouse from "../../_components/modelbox/AddHouse";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
+import DefaultImage from "../../assets/img/placeholder.jpg";
 
 
 const Accomodations = () => {
@@ -161,7 +162,7 @@ const Accomodations = () => {
                                 width: "80px",
                                 height: "80px",
                               }}
-                              src={image}
+                              src={image ? image : DefaultImage}
                               alt=""
                             />
                           </Link>

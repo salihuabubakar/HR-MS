@@ -16,7 +16,7 @@ import {
   initDesignation,
   savedDesignationReducer
 } from "../../../utils/localStorage";
-import SmileImg from "../../../assets/img/smile.png";
+import DefaultImage from "../../../assets/img/placeholder.jpg";
 import Select from "react-select";
 
 const Employeeslist = () => {
@@ -142,7 +142,11 @@ const Employeeslist = () => {
                         <img
                           style={{ width: "40px", height: "40px" }}
                           alt=""
-                          src={profileInfo?.image}
+                          src={
+                            profileInfo?.image
+                              ? profileInfo?.image
+                              : DefaultImage
+                          }
                         />
                       </Link>
                       <Link

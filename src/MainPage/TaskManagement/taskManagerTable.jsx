@@ -10,6 +10,7 @@ import "../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import { initTask, savedTaskReducer } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 import { Span } from "./style";
 import AddTask from "../../_components/modelbox/AddTask";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
@@ -142,7 +143,7 @@ const TaskManagerTable = () => {
                         height: "30px",
                       }}
                       alt=""
-                      src={image}
+                      src={image ? image : DefaultImage}
                     />
                   </Link>
                   <Link

@@ -11,6 +11,7 @@ import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import { initHouse, savedHouseReducer } from "../../utils/localStorage";
 import AddHouse from "../../_components/modelbox/AddHouse";
 import HouseImg from "../../assets/img/house.png";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 
 const Housing = () => {
@@ -82,7 +83,7 @@ const Housing = () => {
                 <img
                   style={{ width: "40px", height: "40px" }}
                   alt=""
-                  src={image}
+                  src={image ? image : DefaultImage}
                 />
               </Link>
               <Link

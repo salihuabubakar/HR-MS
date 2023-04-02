@@ -22,6 +22,7 @@ import {
   savedTaskImageReducer,
 } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 import { useParams, useLocation } from "react-router-dom";
 import { Span, DivContainer } from "./style";
 import AddSubTask from "../../_components/modelbox/AddSubTask";
@@ -814,7 +815,7 @@ const TaskDetails = () => {
                                           height: "30px",
                                         }}
                                         alt=""
-                                        src={image}
+                                        src={image ? image : DefaultImage}
                                       />
                                     </span>
                                   </div>

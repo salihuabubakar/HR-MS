@@ -5,6 +5,7 @@ import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { initHouse, savedHouseReducer } from "../../utils/localStorage";
 import HouseImg from "../../assets/img/house.png";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 
 const SelectDept = () => {
   const [menu, setMenu] = useState(false);
@@ -88,7 +89,7 @@ const SelectDept = () => {
                         borderRadius: "5px",
                         backgroundColor: "#00000000",
                         height: "100%",
-                        marginRight: "40px"
+                        marginRight: "40px",
                       }}
                     >
                       <img
@@ -98,7 +99,7 @@ const SelectDept = () => {
                           height: "80px",
                         }}
                         alt=""
-                        src={image}
+                        src={image ? image : DefaultImage}
                       />
                     </Link>
                     <h4 className="user-name m-t-10 mb-0 text-ellipsis">

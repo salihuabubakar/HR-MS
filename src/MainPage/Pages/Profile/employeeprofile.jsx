@@ -24,6 +24,7 @@ import {
 } from "../../../utils/localStorage";
 import AddEmergencyContact from '../../../_components/modelbox/AddEmergencyContact';
 import AddEducationInformation from '../../../_components/modelbox/AddEducationInformation';
+import DefaultImage from "../../../assets/img/placeholder.jpg";
 
 const EmployeeProfile = () => {
 
@@ -261,7 +262,7 @@ const EmployeeProfile = () => {
                     <div className="profile-img-wrap">
                       <div className="profile-img">
                         <a>
-                          <img alt="" src={image} />
+                          <img alt="" src={image ? image : DefaultImage} />
                         </a>
                       </div>
                     </div>
