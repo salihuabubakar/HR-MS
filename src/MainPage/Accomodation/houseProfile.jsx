@@ -15,6 +15,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { initHouse, savedHouseReducer } from "../../utils/localStorage";
 import HouseImg from "../../assets/img/house.png";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 
 const houseProfile = () => {
   const location = useLocation();
@@ -100,7 +101,7 @@ const houseProfile = () => {
                                 height: "80px",
                               }}
                               alt=""
-                              src={image}
+                              src={image ? image : DefaultImage}
                             />
                           </a>
                         </div>
@@ -146,7 +147,7 @@ const houseProfile = () => {
                                           borderRadius: "50px",
                                         }}
                                         alt=""
-                                        src={image}
+                                        src={image ? image : DefaultImage}
                                       />{" "}
                                       {label}
                                     </span>

@@ -68,7 +68,7 @@ const toggleLevelThree = (value) => {
                     <i className="la la-dashboard" />
                     <span
                       onClick={() => activeLink("Dashboard")}
-                      className={isActiveLink == "Dashboard" && "noti-dot"}
+                      className={isActiveLink == "Dashboard" ? "noti-dot" : ""}
                     >
                       {" "}
                       Dashboard
@@ -102,127 +102,6 @@ const toggleLevelThree = (value) => {
                     ""
                   )}
                 </li>
-                {/* <li className="submenu">
-                  <a
-                    href="#"
-                    className={isSideMenu == "apps" ? "subdrop" : ""}
-                    onClick={() =>
-                      toggleSidebar(isSideMenu == "apps" ? "" : "apps")
-                    }
-                  >
-                    <i className="la la-cube" /> <span> Apps</span>{" "}
-                    <span className="menu-arrow" />
-                  </a>
-                  {isSideMenu == "apps" ? (
-                    <ul>
-                      <li>
-                        <Link
-                          onClick={() =>
-                            localStorage.setItem("minheight", "true")
-                          }
-                          to="/conversation/chat"
-                        >
-                          Chat
-                        </Link>
-                      </li>
-                      <li className="submenu">
-                        <a
-                          href="#"
-                          className={level2Menu == "calls" ? "subdrop" : ""}
-                          onClick={() =>
-                            toggleLvelTwo(level2Menu == "calls" ? "" : "calls")
-                          }
-                        >
-                          <span> Calls</span> <span className="menu-arrow" />
-                        </a>
-                        {level2Menu == "calls" ? (
-                          <ul>
-                            <li>
-                              <Link
-                                onClick={() =>
-                                  localStorage.setItem("minheight", "true")
-                                }
-                                to="/conversation/voice-call"
-                              >
-                                Voice Call
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                onClick={() =>
-                                  localStorage.setItem("minheight", "true")
-                                }
-                                to="/conversation/video-call"
-                              >
-                                Video Call
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                onClick={() =>
-                                  localStorage.setItem("minheight", "true")
-                                }
-                                to="/conversation/outgoing-call"
-                              >
-                                Outgoing Call
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                onClick={() =>
-                                  localStorage.setItem("minheight", "true")
-                                }
-                                to="/conversation/incoming-call"
-                              >
-                                Incoming Call
-                              </Link>
-                            </li>
-                          </ul>
-                        ) : (
-                          ""
-                        )}
-                      </li>
-                      <li>
-                        <Link
-                          className={
-                            pathname.includes("apps/calendar") ? "active" : ""
-                          }
-                          to="/app/apps/calendar"
-                        >
-                          Calendar
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          onClick={() =>
-                            localStorage.setItem("minheight", "true")
-                          }
-                          className={
-                            pathname.includes("contacts") ? "active" : ""
-                          }
-                          to="/app/apps/contacts"
-                        >
-                          Contacts
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/email/inbox">Email</Link>
-                      </li>
-                      <li>
-                        <Link
-                          className={
-                            pathname.includes("file-manager") ? "active" : ""
-                          }
-                          to="/app/apps/file-manager"
-                        >
-                          File Manager
-                        </Link>
-                      </li>
-                    </ul>
-                  ) : (
-                    ""
-                  )}
-                </li> */}
                 <li className="submenu">
                   <a
                     // data-bs-toggle="dropdown"
@@ -234,7 +113,7 @@ const toggleLevelThree = (value) => {
                     <i className="la la-user" />{" "}
                     <span
                       onClick={() => activeLink("Employees")}
-                      className={isActiveLink == "Employees" && "noti-dot"}
+                      className={isActiveLink == "Employees" ? "noti-dot" : ""}
                     >
                       {" "}
                       Employees
@@ -257,69 +136,6 @@ const toggleLevelThree = (value) => {
                           All Employees
                         </Link>
                       </li>
-                      {/* <li>
-                        <Link
-                          className={
-                            pathname.includes("holidays") ? "active" : ""
-                          }
-                          to="/app/employee/holidays"
-                        >
-                          Holidays
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          className={
-                            pathname.includes("es-admin") ? "active" : ""
-                          }
-                          to="/app/employee/leaves-admin"
-                        >
-                          Leaves (Admin){" "}
-                          <span className="badge badge-pill bg-primary float-end">
-                            1
-                          </span>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          className={
-                            pathname.includes("ves-employee") ? "active" : ""
-                          }
-                          to="/app/employee/leaves-employee"
-                        >
-                          Leaves (Employee)
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          className={
-                            pathname.includes("e-settings") ? "active" : ""
-                          }
-                          to="/app/employee/leave-settings"
-                        >
-                          Leave Settings
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          className={
-                            pathname.includes("nce-admin") ? "active" : ""
-                          }
-                          to="/app/employee/attendance-admin"
-                        >
-                          Attendance (Admin)
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          className={
-                            pathname.includes("ce-employee") ? "active" : ""
-                          }
-                          to="/app/employee/attendance-employee"
-                        >
-                          Attendance (Employee)
-                        </Link>
-                      </li> */}
                       <li>
                         <Link
                           className={
@@ -340,72 +156,6 @@ const toggleLevelThree = (value) => {
                           Designations
                         </Link>
                       </li>
-                      {/* <li>
-                        <Link
-                          className={
-                            pathname.includes("timesheet") ? "active" : ""
-                          }
-                          to="/app/employee/timesheet"
-                        >
-                          Timesheet
-                        </Link>
-                      </li> */}
-                      {/* <li><Link className={pathname.includes('shift-scheduling') || pathname.includes('shift-list') ?"active" :""} 
-                        to="/app/employee/shift-scheduling">Shift &amp; Schedule</Link></li> */}
-                      {/* <li className="submenu">
-                        <a
-                          // data-bs-toggle="dropdown"
-                          className={
-                            level2Menu == "Shift&Schedule" ? "subdrop" : ""
-                          }
-                          onClick={() =>
-                            toggleLvelTwo(
-                              level2Menu == "Shift&Schedule"
-                                ? ""
-                                : "Shift&Schedule"
-                            )
-                          }
-                        >
-                          <span>Shift &amp; Schedule</span>{" "}
-                          <span className="menu-arrow" />
-                        </a>
-                        {level2Menu == "Shift&Schedule" ? (
-                          <ul>
-                            <li>
-                              <Link
-                                className={
-                                  pathname.includes("shift") ? "active" : ""
-                                }
-                                to="/app/employee/shift-list"
-                              >
-                                Shifts
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                className={
-                                  pathname.includes("house") ? "active" : ""
-                                }
-                                to="/app/employee/house"
-                              >
-                                Select House
-                              </Link>
-                            </li>
-                          </ul>
-                        ) : (
-                          ""
-                        )}
-                      </li> */}
-                      {/* <li>
-                        <Link
-                          className={
-                            pathname.includes("overtime") ? "active" : ""
-                          }
-                          to="/app/employee/overtime"
-                        >
-                          Overtime
-                        </Link>
-                      </li> */}
                     </ul>
                   ) : (
                     ""
@@ -419,7 +169,7 @@ const toggleLevelThree = (value) => {
                     <i className="la la-home" />
                     <Link
                       onClick={() => activeLink("Accomodation")}
-                      className={isActiveLink == "Accomodation" && "noti-dot"}
+                      className={isActiveLink == "Accomodation" ? "noti-dot" : ""}
                       to="/app/accomodation/accomodations"
                     >
                       Accomodation
@@ -439,7 +189,7 @@ const toggleLevelThree = (value) => {
                     <i className="la la-cogs" />{" "}
                     <span
                       onClick={() => activeLink("Shift&Schedule")}
-                      className={isActiveLink == "Shift&Schedule" && "noti-dot"}
+                      className={isActiveLink == "Shift&Schedule" ? "noti-dot" : ""}
                     >
                       {" "}
                       Shift &amp; Schedule
@@ -484,7 +234,7 @@ const toggleLevelThree = (value) => {
                     <i className="la la-chart-bar" />{" "}
                     <span
                       onClick={() => activeLink("TaskManagement")}
-                      className={isActiveLink == "TaskManagement" && "noti-dot"}
+                      className={isActiveLink == "TaskManagement" ? "noti-dot" : ""}
                     >
                       {" "}
                       Task Management
@@ -525,7 +275,7 @@ const toggleLevelThree = (value) => {
                     <i className="la la-user" />
                     <span
                       onClick={() => activeLink("ServiceWorker")}
-                      className={isActiveLink == "ServiceWorker" && "noti-dot"}
+                      className={isActiveLink == "ServiceWorker" ? "noti-dot" : ""}
                     >
                       {" "}
                       Service Worker

@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Smile from "../../assets/img/smile.png";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { Body, DesignationDiv } from "../Employees/Employees/styles";
@@ -440,7 +441,7 @@ const ShiftScheduling = () => {
                                             borderRadius: "50px",
                                             backgroundColor: "#00000000",
                                           }}
-                                          src={image}
+                                          src={image ? image : DefaultImage}
                                         />
                                       </a>
                                       <a style={{ color: "#ff9b44" }}>
@@ -529,9 +530,7 @@ const ShiftScheduling = () => {
                             ) : ( */}
                                   <td
                                     className="tool-tip"
-                                    onClick={() =>
-                                      handleTuesDayShift(value)
-                                    }
+                                    onClick={() => handleTuesDayShift(value)}
                                   >
                                     <span className="tool-tip-text">
                                       <a>
@@ -597,9 +596,7 @@ const ShiftScheduling = () => {
                             ) : ( */}
                                   <td
                                     className="tool-tip"
-                                    onClick={() =>
-                                      handleWednesdayShift(value)
-                                    }
+                                    onClick={() => handleWednesdayShift(value)}
                                   >
                                     <span className="tool-tip-text">
                                       <a>
@@ -665,9 +662,7 @@ const ShiftScheduling = () => {
                             ) : ( */}
                                   <td
                                     className="tool-tip"
-                                    onClick={() =>
-                                      handleThursdayShift(value)
-                                    }
+                                    onClick={() => handleThursdayShift(value)}
                                   >
                                     <span className="tool-tip-text">
                                       <a>
@@ -731,9 +726,7 @@ const ShiftScheduling = () => {
                             ) : ( */}
                                   <td
                                     className="tool-tip"
-                                    onClick={() =>
-                                      handleFridayShift(value)
-                                    }
+                                    onClick={() => handleFridayShift(value)}
                                   >
                                     <span className="tool-tip-text">
                                       <a>
@@ -797,9 +790,7 @@ const ShiftScheduling = () => {
                             ) : ( */}
                                   <td
                                     className="tool-tip"
-                                    onClick={() =>
-                                      handlSaturdayShift(value)
-                                    }
+                                    onClick={() => handlSaturdayShift(value)}
                                   >
                                     <span className="tool-tip-text">
                                       <a>
@@ -863,9 +854,7 @@ const ShiftScheduling = () => {
                             ) : ( */}
                                   <td
                                     className="tool-tip"
-                                    onClick={() =>
-                                      handleSundayShift(value)
-                                    }
+                                    onClick={() => handleSundayShift(value)}
                                   >
                                     <span className="tool-tip-text">
                                       <a>

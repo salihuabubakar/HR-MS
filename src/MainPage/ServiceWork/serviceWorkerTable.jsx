@@ -14,6 +14,7 @@ import {
   savedResidentReducer,
 } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 
 const ServiceWorkerTable = () => {
@@ -88,7 +89,7 @@ const ServiceWorkerTable = () => {
                 <img
                   style={{ width: "40px", height: "40px" }}
                   alt=""
-                  src={image}
+                  src={image ? image : DefaultImage}
                 />
               </Link>
               <Link

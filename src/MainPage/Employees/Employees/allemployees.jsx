@@ -13,6 +13,7 @@ import {
   savedDesignationReducer,
 } from "../../../utils/localStorage";
 import SmileImg from "../../../assets/img/smile.png";
+import DefaultImage from "../../../assets/img/placeholder.jpg";
 import Select from "react-select";
 import {DesignationDiv} from "./styles";
 import DeleteModal from '../../../_components/modelbox/DeleteModal';
@@ -241,7 +242,11 @@ const AllEmployees = () => {
                                 width: "80px",
                                 height: "80px",
                               }}
-                              src={profileInfo?.image}
+                              src={
+                                profileInfo?.image
+                                  ? profileInfo?.image
+                                  : DefaultImage
+                              }
                               alt=""
                             />
                           </Link>

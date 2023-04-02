@@ -10,6 +10,7 @@ import {
   savedResidentReducer,
 } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 
 const ServiceWorker = () => {
@@ -162,7 +163,7 @@ const ServiceWorker = () => {
                             width: "80px",
                             height: "80px",
                           }}
-                          src={image}
+                          src={image ? image : DefaultImage}
                           alt=""
                         />
                       </Link>

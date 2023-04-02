@@ -6,6 +6,7 @@ import Sidebar from '../../initialpage/Sidebar/sidebar';
 import {Avatar_02,Avatar_05,Avatar_09,Avatar_10,Avatar_16 } from '../../Entryfile/imagepath'
 import SmileImg from "../../assets/img/smile.png";
 import { useParams, useLocation } from "react-router-dom";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 import { useGlobalState, setGlobalState } from '../../context/GlobalState';
 import {
   initResident,
@@ -87,7 +88,7 @@ const serviceWorkerProfile = () => {
                     <div className="profile-img-wrap">
                       <div className="profile-img">
                         <a>
-                          <img alt="" src={image} />
+                          <img alt="" src={image ? image : DefaultImage} />
                         </a>
                       </div>
                     </div>
