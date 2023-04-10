@@ -94,9 +94,11 @@ const AddTask = ({
   };
 
     const statusOptions = [
-      { value: 1, label: "start" },
-      { value: 2, label: "middle" },
-      { value: 3, label: "finish" },
+      { value: 1, label: "not-started" },
+      { value: 2, label: "started" },
+      { value: 3, label: "middle" },
+      { value: 4, label: "rounding-up" },
+      { value: 5, label: "completed" },
     ];
 
   const handleStatusChange = (event) => {
