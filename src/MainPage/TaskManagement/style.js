@@ -34,22 +34,35 @@ export const Span = styled.span`
 `;
 
 export const DivContainer = styled.div`
-  .bg-complete {
-    background-color: #55ce63;
+  .bg-not-started {
+    background-color: red;
+  }
+  .bg-started {
+    background-color: #f20d91;
   }
   .bg-middle {
     background-color: #ff9b44;
   }
-  .bg-start {
-    background-color: #f62d51;
+  .bg-rounding-up {
+    background-color: #73ab00;
   }
-  .color-complete {
-    color: #55ce63;
+  .bg-completed {
+    background-color: #55ce63;
+  }
+  
+  .color-not-started {
+    color: red;
+  }
+  .color-started {
+    color: #f20d91;
   }
   .color-middle {
     color: #ff9b44;
   }
-  .color-start {
-    color: #f62d51;
+  .color-rounding-up {
+    color: #73ab00;
+  }
+  .color-completed {
+    color: #55ce63;
   }
 `;

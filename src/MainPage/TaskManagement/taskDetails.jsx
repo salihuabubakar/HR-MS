@@ -683,20 +683,30 @@ const TaskDetails = () => {
                             color: "#fff",
                           }}
                           className={
-                            (taskStatus == "start"
-                              ? " text-end bg-start"
+                            (taskStatus == "not-started"
+                              ? " text-end bg-not-started"
+                              : undefined) ||
+                            (taskStatus == "started"
+                              ? "text-end bg-started"
                               : undefined) ||
                             (taskStatus == "middle"
                               ? "text-end bg-middle"
                               : undefined) ||
-                            (taskStatus == "finish"
-                              ? "text-end bg-complete"
+                            (taskStatus == "rounding-up"
+                              ? "text-end bg-rounding-up"
+                              : undefined) ||
+                            (taskStatus == "completed"
+                              ? "text-end bg-completed"
                               : undefined)
                           }
                         >
-                          {(taskStatus == "start" && "In-progress(start)") ||
-                            (taskStatus == "middle" && "In-progress(middle)") ||
-                            (taskStatus == "finish" && "Completed")}
+                          {(taskStatus == "not-started" && "Not started") ||
+                            (taskStatus == "started" &&
+                              "In-progress(Started)") ||
+                            (taskStatus == "middle" && "In-progress(Middle)") ||
+                            (taskStatus == "rounding-up" &&
+                              "In-progress(Rounding up)") ||
+                            (taskStatus == "completed" && "Completed")}
                         </td>
                       </tr>
                     </tbody>
@@ -705,47 +715,65 @@ const TaskDetails = () => {
                     Progress
                     <span
                       className={
-                        (taskStatus == "start"
-                          ? "float-end color-start"
+                        (taskStatus == "not-started"
+                          ? "float-end color-not-started"
+                          : undefined) ||
+                        (taskStatus == "started"
+                          ? "float-end color-started"
                           : undefined) ||
                         (taskStatus == "middle"
                           ? "float-end color-middle"
                           : undefined) ||
-                        (taskStatus == "finish"
-                          ? "float-end color-complete"
+                        (taskStatus == "rounding-up"
+                          ? "float-end color-rounding-up"
+                          : undefined) ||
+                        (taskStatus == "completed"
+                          ? "float-end color-completed"
                           : undefined)
                       }
                     >
-                      {(taskStatus == "start" && "30%") ||
-                        (taskStatus == "middle" && "60%") ||
-                        (taskStatus == "finish" && "100%")}
+                      {(taskStatus == "not-started" && "0%") ||
+                        (taskStatus == "started" && "25%") ||
+                        (taskStatus == "middle" && "50%") ||
+                        (taskStatus == "rounding-up" && "75%") ||
+                        (taskStatus == "completed" && "100%")}
                     </span>
                   </p>
                   <div className="progress progress-xs mb-0">
                     <div
                       className={
-                        (taskStatus == "start"
-                          ? "progress-bar bg-start"
+                        (taskStatus == "not-started"
+                          ? " progress-bar bg-not-started"
+                          : undefined) ||
+                        (taskStatus == "started"
+                          ? "progress-bar bg-started"
                           : undefined) ||
                         (taskStatus == "middle"
                           ? "progress-bar bg-middle"
                           : undefined) ||
-                        (taskStatus == "finish"
-                          ? "progress-bar bg-complete"
+                        (taskStatus == "rounding-up"
+                          ? "progress-bar bg-rounding-up"
+                          : undefined) ||
+                        (taskStatus == "completed"
+                          ? "progress-bar bg-completed"
                           : undefined)
                       }
                       role="progressbar"
                       data-bs-toggle="tooltip"
                       title={
-                        (taskStatus == "start" ? "30%" : undefined) ||
-                        (taskStatus == "middle" ? "60%" : undefined) ||
-                        (taskStatus == "finish" ? "100%" : undefined)
+                        (taskStatus == "not-started" ? "0%" : undefined) ||
+                        (taskStatus == "started" ? "25%" : undefined) ||
+                        (taskStatus == "middle" ? "50%" : undefined) ||
+                        (taskStatus == "rounding-up" ? "75%" : undefined) ||
+                        (taskStatus == "completed" && "100%")
                       }
                       style={{
                         width:
-                          (taskStatus == "start" && "30%") ||
-                          (taskStatus == "middle" && "60%") ||
-                          (taskStatus == "finish" && "100%"),
+                          (taskStatus == "not-started" && "0%") ||
+                          (taskStatus == "started" && "25%") ||
+                          (taskStatus == "middle" && "50%") ||
+                          (taskStatus == "rounding-up" && "75%") ||
+                          (taskStatus == "completed" && "100%")
                       }}
                     />
                   </div>

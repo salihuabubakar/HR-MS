@@ -210,9 +210,11 @@ const TaskManagerTable = () => {
           <h2
             style={{
               backgroundColor:
-                (taskStatus?.label == "finish" && "#55CE63") ||
+                (taskStatus?.label == "not-started" && "red") ||
+                (taskStatus?.label == "started" && "#f20d91") ||
                 (taskStatus?.label == "middle" && "#ff9b44") ||
-                (taskStatus?.label == "start" && "#f62d51"),
+                (taskStatus?.label == "rounding-up" && "#73AB00") ||
+                (taskStatus?.label == "completed" && "#55CE63"),
               color: "#fff",
               padding: "5px",
               borderRadius: "5px",
@@ -228,10 +230,12 @@ const TaskManagerTable = () => {
                 state: { id: id, index: index },
               }}
             >
-              {((taskStatus?.label == "start" ||
-                taskStatus?.label == "middle") &&
-                "In-progress") ||
-                (taskStatus?.label == "finish" && "Completed")}
+              {(taskStatus?.label == "not-started" && "Not started") ||
+                (taskStatus?.label == "started" && "Started") ||
+                (taskStatus?.label == "middle" && "Middle") ||
+                (taskStatus?.label == "rounding-up" && "Rounding up") ||
+                (taskStatus?.label == "completed" && "Completed")
+              }
             </Link>
           </h2>
         );
