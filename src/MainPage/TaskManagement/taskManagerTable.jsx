@@ -177,7 +177,7 @@ const TaskManagerTable = () => {
             key={id}
             style={{
               backgroundColor:
-                (taskPriority?.label == "low" && "#f62d51") ||
+                (taskPriority?.label == "low" && "red") ||
                 (taskPriority?.label == "medium" && "#ff9b44") ||
                 (taskPriority?.label == "highest" && "#55CE63"),
               color: "#fff",

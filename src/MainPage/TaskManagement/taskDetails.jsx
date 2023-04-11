@@ -27,6 +27,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { Span, DivContainer } from "./style";
 import AddSubTask from "../../_components/modelbox/AddSubTask";
 import AddTaskImage from "../../_components/modelbox/AddTaskImage"
+import AddTask from "../../_components/modelbox/AddTask";
 import { async } from "regenerator-runtime";
 import CommentSection from "./component";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
@@ -34,7 +35,8 @@ import DeleteModal from "../../_components/modelbox/DeleteModal";
 const TaskDetails = () => {
     const location = useLocation();
     const selecetedTaskId = location?.state?.id;
-
+    const selectedTaskIndex = location?.state?.index;
+    const [showTaskModal] = useGlobalState("showTaskModal");
     const [showSubTaskModal] = useGlobalState("showSubTaskModal");
     const [showTaskImageModal] = useGlobalState("showTaskImageModal");
     const [deleteModal] = useGlobalState("deleteModal");
@@ -93,6 +95,7 @@ const TaskDetails = () => {
 
     const [menu, setMenu] = useState(false);
     const [indexToEdit, setIndexToEdit] = useState(0);
+    const [taskIndexToEdit, setTaskIndexToEdit] = useState(0);
     const [imgIndex, setImgIndex] = useState(0);
 
     const selectedTask = taskList?.find((task) => task?.id === selecetedTaskId);
@@ -109,8 +112,15 @@ const TaskDetails = () => {
     const dateCreated = selectedTask?.dateCreated;
 
     console.log("selectedTaskId..", selecetedTaskId);
+    console.log("selectedTaskIndex..", selectedTaskIndex);
     console.log("taskId..", taskId);
 
+
+    const handleTaskEdit = (index) => {
+      setTaskIndexToEdit(index);
+      setGlobalState("showTaskModal", true);
+      setGlobalState("selectedTaskInfo", tasks);
+    }
 
     const handleSubTaskEdit = (index) => {
       setIndexToEdit(index);
@@ -165,6 +175,14 @@ const TaskDetails = () => {
                   </li>
                   <li className="breadcrumb-item active">Task Manager</li>
                 </ul>
+              </div>
+              <div className="col-auto float-end ml-auto">
+                <a
+                  className="btn add-btn"
+                  onClick={() => handleTaskEdit(selectedTaskIndex)}
+                >
+                  <i className="fa fa-edit" /> Edit Task
+                </a>
               </div>
             </div>
           </div>
@@ -773,7 +791,7 @@ const TaskDetails = () => {
                           (taskStatus == "started" && "25%") ||
                           (taskStatus == "middle" && "50%") ||
                           (taskStatus == "rounding-up" && "75%") ||
-                          (taskStatus == "completed" && "100%")
+                          (taskStatus == "completed" && "100%"),
                       }}
                     />
                   </div>
@@ -900,6 +918,12 @@ const TaskDetails = () => {
             indexToDelete={indexToEdit}
             dispatch={subTaskTitle}
             modalTitle={"SubTask"}
+          />
+        )}
+        {showTaskModal && (
+          <AddTask
+            dispatchTasks={dispatchTasks}
+            indexToEdit={taskIndexToEdit}
           />
         )}
       </div>
