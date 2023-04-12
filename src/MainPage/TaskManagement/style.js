@@ -49,7 +49,7 @@ export const DivContainer = styled.div`
   .bg-completed {
     background-color: #55ce63;
   }
-  
+
   .color-not-started {
     color: red;
   }
@@ -64,5 +64,12 @@ export const DivContainer = styled.div`
   }
   .color-completed {
     color: #55ce63;
+  }
+  .resident-image {
+    width: 25px;
+    border-radius: 50px;
+    height: 25px;
+    margin: 0;
+    padding: 0;
   }
 `;

@@ -250,6 +250,7 @@ const TaskDetails = () => {
                                     id,
                                     taskId: taskIdInSubTask,
                                     subTask,
+                                    resident,
                                     checkToComplete,
                                   } = subtasks;
                                   if (taskIdInSubTask == selecetedTaskId) {
@@ -272,7 +273,30 @@ const TaskDetails = () => {
                                             </span>
                                           </span>
                                           <span className="task-label">
-                                            {subTask}
+                                            <span style={{marginRight: "5px"}}>{subTask}</span>
+                                            {resident ? resident?.map(
+                                              (resident, index) => {
+                                                const { label, image } =
+                                                  resident;
+                                                return (
+                                                  <span
+                                                    key={index}
+                                                    data-bs-toggle="tooltip"
+                                                    title={label}
+                                                  >
+                                                    <img
+                                                      src={
+                                                        image
+                                                          ? image
+                                                          : DefaultImage
+                                                      }
+                                                      alt="user Image"
+                                                      className="resident-image"
+                                                    />
+                                                  </span>
+                                                );
+                                              }
+                                            ): null}
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
@@ -320,6 +344,7 @@ const TaskDetails = () => {
                                     id,
                                     taskId: taskIdInSubTask,
                                     subTask,
+                                    resident,
                                     checkToComplete,
                                   } = subtasks;
                                   if (
@@ -340,7 +365,36 @@ const TaskDetails = () => {
                                             </span>
                                           </span>
                                           <span className="task-label">
-                                            {subTask}
+                                            <span
+                                              style={{ marginRight: "5px" }}
+                                            >
+                                              {subTask}
+                                            </span>
+                                            {resident
+                                              ? resident?.map(
+                                                  (resident, index) => {
+                                                    const { label, image } =
+                                                      resident;
+                                                    return (
+                                                      <span
+                                                        key={index}
+                                                        data-bs-toggle="tooltip"
+                                                        title={label}
+                                                      >
+                                                        <img
+                                                          src={
+                                                            image
+                                                              ? image
+                                                              : DefaultImage
+                                                          }
+                                                          alt="user Image"
+                                                          className="resident-image"
+                                                        />
+                                                      </span>
+                                                    );
+                                                  }
+                                                )
+                                              : null}
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
@@ -388,6 +442,7 @@ const TaskDetails = () => {
                                     id,
                                     taskId: taskIdInSubTask,
                                     subTask,
+                                    resident,
                                     checkToComplete,
                                   } = subtasks;
                                   if (
@@ -408,7 +463,36 @@ const TaskDetails = () => {
                                             </span>
                                           </span>
                                           <span className="task-label">
-                                            {subTask}
+                                            <span
+                                              style={{ marginRight: "5px" }}
+                                            >
+                                              {subTask}
+                                            </span>
+                                            {resident
+                                              ? resident?.map(
+                                                  (resident, index) => {
+                                                    const { label, image } =
+                                                      resident;
+                                                    return (
+                                                      <span
+                                                        key={index}
+                                                        data-bs-toggle="tooltip"
+                                                        title={label}
+                                                      >
+                                                        <img
+                                                          src={
+                                                            image
+                                                              ? image
+                                                              : DefaultImage
+                                                          }
+                                                          alt="user Image"
+                                                          className="resident-image"
+                                                        />
+                                                      </span>
+                                                    );
+                                                  }
+                                                )
+                                              : null}
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
