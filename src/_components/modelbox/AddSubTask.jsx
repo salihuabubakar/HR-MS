@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import {
+  initResident,
+  savedResidentReducer,
+} from "../../utils/localStorage";
+import Select from "react-select";
 
 const AddSubTask = ({
   dispatchSubTaskTitle,
@@ -14,12 +18,25 @@ const AddSubTask = ({
 }) => {
   const [selectedSubTaskInfo] = useGlobalState("selectedSubTaskInfo");
 
-  console.log("datas...", selectedSubTaskInfo)
-  console.log("index...", indexToEdit);
+  const [residentAcct, dispatchResidentAcct] = useReducer(
+    savedResidentReducer,
+    [],
+    initResident
+  );
+  const [residentAccts, setResidentAccts] = useState();
+  useEffect(() => {
+    setResidentAccts(residentAcct);
+  }, [residentAcct]);
 
   const [subTask, setSubTask] = useState(
     selectedSubTaskInfo[indexToEdit]?.subTask
       ? selectedSubTaskInfo[indexToEdit]?.subTask
+      : ""
+  );
+
+  const [resident, setResident] = useState(
+    selectedSubTaskInfo[indexToEdit]?.resident
+      ? selectedSubTaskInfo[indexToEdit]?.resident
       : ""
   );
 
@@ -41,6 +58,7 @@ const AddSubTask = ({
       id,
       taskId,
       subTask,
+      resident,
       checkToComplete,
     };
     if (selectedSubTaskInfo[indexToEdit]?.id) {
@@ -50,6 +68,32 @@ const AddSubTask = ({
     }
     setGlobalState("showSubTaskModal", false);
   };
+
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
+
+  const handleResidentChange = (event) => {
+    setResident(event);
+  };
+
+  const residents = [];
+  residentAccts?.map((resident) => {
+    residents.push({
+      value: resident.id,
+      label: resident.residentName,
+      image: resident.image,
+    });
+  });
 
   return (
     <>
@@ -83,12 +127,41 @@ const AddSubTask = ({
                           <label className="label">
                             Task <span className="text-danger">*</span>
                           </label>
-                          <input
+                          <textarea
+                            className="form-control floating"
+                            name="description"
+                            placeholder="SubTask"
                             value={subTask}
                             onChange={(e) => setSubTask(e.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="SubTask"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          <label className="label">
+                            Select Service Worker{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={[
+                              selectedSubTaskInfo[indexToEdit]?.resident[0],
+                              selectedSubTaskInfo[indexToEdit]?.resident[1],
+                              selectedSubTaskInfo[indexToEdit]?.resident[2],
+                              selectedSubTaskInfo[indexToEdit]?.resident[3],
+                              selectedSubTaskInfo[indexToEdit]?.resident[4],
+                              selectedSubTaskInfo[indexToEdit]?.resident[5],
+                              selectedSubTaskInfo[indexToEdit]?.resident[6],
+                              selectedSubTaskInfo[indexToEdit]?.resident[7],
+                              selectedSubTaskInfo[indexToEdit]?.resident[8],
+                              selectedSubTaskInfo[indexToEdit]?.resident[9],
+                              selectedSubTaskInfo[indexToEdit]?.resident[10],
+                            ]}
+                            onChange={handleResidentChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={residents}
+                            styles={customSelectStyles}
+                            placeholder="Select Resident"
                           />
                         </div>
                       </div>
