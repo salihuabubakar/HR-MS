@@ -113,7 +113,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                         <div className="chat chat-left">
                           <div className="chat-avatar">
                             <Link
-                              to="/app/profile/employee-profile"
+                              onClick={(e) => e.preventDefault()}
                               className="avatar"
                             >
                               <img alt="" src={Logo} />
@@ -182,7 +182,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                               <div key={id} className="chat chat-left">
                                 <div className="chat-avatar">
                                   <Link
-                                    to="/app/profile/employee-profile"
+                                    onClick={(e) => e.preventDefault()}
                                     className="avatar reply-avatar"
                                   >
                                     <img alt="" src={SmileImg} />
