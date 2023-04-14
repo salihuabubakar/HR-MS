@@ -199,7 +199,7 @@ const TaskDetails = () => {
                   <p>{taskDescription}</p>
                 </div>
               </div>
-              <div className="project-task">
+              <div style={{marginBottom: "20px"}} className="project-task">
                 <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                   <li className="nav-item">
                     <a
@@ -311,7 +311,7 @@ const TaskDetails = () => {
                                                 <>
                                                   <br />
                                                   <span>
-                                                    <h6 style={{ fontSize: "9px", margin: "0" }}>
+                                                    <h6 style={{ fontSize: "9px", margin: "3px 0 0 0" }}>
                                                       Date Created: {dateCreated}
                                                     </h6>
                                                     <h6 style={{ fontSize: "9px", margin: "0" }}>
@@ -371,6 +371,8 @@ const TaskDetails = () => {
                                     taskId: taskIdInSubTask,
                                     subTask,
                                     resident,
+                                    dateCreated, 
+                                    dateUpdated,
                                     checkToComplete,
                                   } = subtasks;
                                   if (
@@ -421,13 +423,26 @@ const TaskDetails = () => {
                                                   }
                                                 )
                                               : null}
+                                              {dateCreated && dateUpdated ? (
+                                                <>
+                                                  <br />
+                                                  <span>
+                                                    <h6 style={{ fontSize: "9px", margin: "3px 0 0 0" }}>
+                                                      Date Created: {dateCreated}
+                                                    </h6>
+                                                    <h6 style={{ fontSize: "9px", margin: "0" }}>
+                                                      Date Updated: {dateUpdated}
+                                                    </h6>
+                                                  </span>
+                                                </>
+                                              ) : null}
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
                                               className="action-circle large"
                                               title="Update"
                                               onClick={() =>
-                                                handleSubTaskEdit(index)
+                                                handleSubTaskEdit(index, dateCreated)
                                               }
                                             >
                                               <i className="material-icons">
@@ -469,6 +484,8 @@ const TaskDetails = () => {
                                     taskId: taskIdInSubTask,
                                     subTask,
                                     resident,
+                                    dateCreated,
+                                    dateUpdated,
                                     checkToComplete,
                                   } = subtasks;
                                   if (
@@ -519,13 +536,26 @@ const TaskDetails = () => {
                                                   }
                                                 )
                                               : null}
+                                              {dateCreated && dateUpdated ? (
+                                                <>
+                                                  <br />
+                                                  <span>
+                                                    <h6 style={{ fontSize: "9px", margin: "3px 0 0 0" }}>
+                                                      Date Created: {dateCreated}
+                                                    </h6>
+                                                    <h6 style={{ fontSize: "9px", margin: "0" }}>
+                                                      Date Updated: {dateUpdated}
+                                                    </h6>
+                                                  </span>
+                                                </>
+                                              ) : null}
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
                                               className="action-circle large"
                                               title="Update"
                                               onClick={() =>
-                                                handleSubTaskEdit(index)
+                                                handleSubTaskEdit(index, dateCreated)
                                               }
                                             >
                                               <i className="material-icons">
