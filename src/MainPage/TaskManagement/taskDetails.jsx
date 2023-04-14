@@ -97,6 +97,7 @@ const TaskDetails = () => {
     const [indexToEdit, setIndexToEdit] = useState(0);
     const [taskIndexToEdit, setTaskIndexToEdit] = useState(0);
     const [imgIndex, setImgIndex] = useState(0);
+    const [dateTimeCreated, setDateTimeCreated] = useState("");
 
     const selectedTask = taskList?.find((task) => task?.id === selecetedTaskId);
 
@@ -114,7 +115,7 @@ const TaskDetails = () => {
     console.log("selectedTaskId..", selecetedTaskId);
     console.log("selectedTaskIndex..", selectedTaskIndex);
     console.log("taskId..", taskId);
-
+    console.log("dateTimeCreated..", dateTimeCreated);
 
     const handleTaskEdit = (index) => {
       setTaskIndexToEdit(index);
@@ -122,8 +123,9 @@ const TaskDetails = () => {
       setGlobalState("selectedTaskInfo", tasks);
     }
 
-    const handleSubTaskEdit = (index) => {
+    const handleSubTaskEdit = (index, dateCreated) => {
       setIndexToEdit(index);
+      setDateTimeCreated(dateCreated);
       setGlobalState("showSubTaskModal", true);
       setGlobalState("selectedSubTaskInfo", subTaskTitle);
     };
@@ -251,6 +253,8 @@ const TaskDetails = () => {
                                     taskId: taskIdInSubTask,
                                     subTask,
                                     resident,
+                                    dateCreated,
+                                    dateUpdated,
                                     checkToComplete,
                                   } = subtasks;
                                   if (taskIdInSubTask == selecetedTaskId) {
@@ -273,37 +277,55 @@ const TaskDetails = () => {
                                             </span>
                                           </span>
                                           <span className="task-label">
-                                            <span style={{marginRight: "5px"}}>{subTask}</span>
-                                            {resident ? resident?.map(
-                                              (resident, index) => {
-                                                const { label, image } =
-                                                  resident;
-                                                return (
-                                                  <span
-                                                    key={index}
-                                                    data-bs-toggle="tooltip"
-                                                    title={label}
-                                                  >
-                                                    <img
-                                                      src={
-                                                        image
-                                                          ? image
-                                                          : DefaultImage
-                                                      }
-                                                      alt="user Image"
-                                                      className="resident-image"
-                                                    />
-                                                  </span>
-                                                );
-                                              }
-                                            ): null}
+                                            <span
+                                              style={{ marginRight: "5px" }}
+                                            >
+                                              {subTask}
+                                            </span>
+                                            {resident
+                                              ? resident?.map(
+                                                  (resident, index) => {
+                                                    const { label, image } =
+                                                      resident;
+                                                    return (
+                                                      <span
+                                                        key={index}
+                                                        data-bs-toggle="tooltip"
+                                                        title={label}
+                                                      >
+                                                        <img
+                                                          src={
+                                                            image
+                                                              ? image
+                                                              : DefaultImage
+                                                          }
+                                                          alt="user Image"
+                                                          className="resident-image"
+                                                        />
+                                                      </span>
+                                                    );
+                                                  }
+                                                )
+                                              : null}
+                                            <br />
+                                            <span>
+                                              <h6>
+                                                Date Created: {dateCreated}
+                                              </h6>
+                                              <h6>
+                                                Date Updated: {dateUpdated}
+                                              </h6>
+                                            </span>
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
                                               className="action-circle large"
                                               title="Update"
                                               onClick={() =>
-                                                handleSubTaskEdit(index)
+                                                handleSubTaskEdit(
+                                                  index,
+                                                  dateCreated
+                                                )
                                               }
                                             >
                                               <i className="material-icons">
@@ -994,6 +1016,7 @@ const TaskDetails = () => {
             subTaskTitle={subTaskTitle}
             taskId={taskId}
             selecetedTaskId={selecetedTaskId}
+            dateTimeCreated={dateTimeCreated}
           />
         )}
         {deleteModal && (
