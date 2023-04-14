@@ -15,6 +15,7 @@ const AddSubTask = ({
   dispatchSubTaskTitle,
   indexToEdit,
   taskId,
+  dateTimeCreated,
 }) => {
   const [selectedSubTaskInfo] = useGlobalState("selectedSubTaskInfo");
 
@@ -52,10 +53,29 @@ const AddSubTask = ({
       : Date.now()
   );
 
+  const [dateCreated, setDateCreated] = useState();
+
+  const today = new Date();
+  const options = { month: "long", day: "numeric", year: "numeric" };
+  const permanentDate = today.toLocaleDateString("en-GB", options);
+
+  useEffect(() => {
+      if (dateTimeCreated) {
+        setDateCreated(dateTimeCreated);
+      } else {
+        setDateCreated(permanentDate);
+      }
+    },[]
+  );
+
+  let dateUpdated = permanentDate;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const subTaskInfo = {
       id,
+      dateCreated,
+      dateUpdated,
       taskId,
       subTask,
       resident,
