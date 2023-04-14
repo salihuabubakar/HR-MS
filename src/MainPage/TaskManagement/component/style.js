@@ -38,4 +38,8 @@ export const Card = styled.div`
     width: 25px;
     height: 25px;
   }
+
+  .chats {
+    padding: 0 15px;
+  }
 `;
