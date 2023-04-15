@@ -307,15 +307,19 @@ const TaskDetails = () => {
                                                   }
                                                 )
                                               : null}
-                                            <br />
-                                            <span>
-                                              <h6>
-                                                Date Created: {dateCreated}
-                                              </h6>
-                                              <h6>
-                                                Date Updated: {dateUpdated}
-                                              </h6>
-                                            </span>
+                                              {dateCreated && dateUpdated ? (
+                                                <>
+                                                  <br />
+                                                  <span>
+                                                    <h6 style={{ fontSize: "9px", margin: "0" }}>
+                                                      Date Created: {dateCreated}
+                                                    </h6>
+                                                    <h6 style={{ fontSize: "9px", margin: "0" }}>
+                                                      Date Updated: {dateUpdated}
+                                                    </h6>
+                                                  </span>
+                                                </>
+                                              ) : null}
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
