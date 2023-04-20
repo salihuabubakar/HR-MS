@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useReducer } from "react";
-import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Card } from "./style";
-import { Avatar_05 } from "../../../Entryfile/imagepath";
 import SmileImg from "../../../assets/img/smile.png";
 import Logo from "../../../assets/img/circle-logo.png";
 
@@ -33,6 +31,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
           text: commentText,
           replies: [],
           taskId,
+          name: "commentName",
         },
       ]);
       setCommentText("");
@@ -52,6 +51,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                 {
                   id: new Date().getTime(),
                   text: replyText,
+                  name: "replyName",
                 },
               ],
             };
@@ -70,7 +70,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
         <div className="navbar">
           <div className="user-details me-auto">
             <div className="user-info float-start">
-              <Link to="/app/profile/employee-profile">
+              <Link onClick={(e) => e.preventDefault()}>
                 <span>Comment Section</span>{" "}
               </Link>
             </div>
@@ -106,8 +106,8 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
             <div>
               <div className="chat-box">
                 {comments?.map((comment, index) => {
-                  const { id, text, replies, taskId } = comment;
-                  if(taskId === selecetedTaskId) {
+                  const { id, text, replies, taskId, name } = comment;
+                  if (taskId === selecetedTaskId) {
                     return (
                       <div key={id} className="chats">
                         <div className="chat chat-left">
@@ -122,6 +122,9 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                           <div className="chat-body">
                             <div className="chat-bubble">
                               <div className="chat-content">
+                                <span className="chat-time">
+                                  {name ? name : null}
+                                </span>
                                 <p>{text}</p>
                                 <div style={{ display: "flex" }}>
                                   <span className="chat-time">2hr</span>
@@ -177,7 +180,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                         )}
                         <div className="replies">
                           {replies?.map((reply) => {
-                            const { id, text: replies } = reply;
+                            const { id, text: replies, name } = reply;
                             return (
                               <div key={id} className="chat chat-left">
                                 <div className="chat-avatar">
@@ -191,6 +194,9 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                                 <div className="chat-body">
                                   <div className="chat-bubble">
                                     <div className="chat-content">
+                                      <span className="chat-time">
+                                        {name ? name : null}
+                                      </span>
                                       <p>{replies}</p>
                                       <div>
                                         <span className="chat-time">2hr</span>
