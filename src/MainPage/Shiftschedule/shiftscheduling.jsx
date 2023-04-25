@@ -137,8 +137,10 @@ const ShiftScheduling = () => {
 
   // Create a new date object and set it to the current date
   let currentDate = new Date();
-  new Date(
-    currentDate.setDate(dateCounter === 0 ? currentDate.getDate() : dateCounter)
+  currentDate.setDate(
+    dateCounter === 0
+      ? currentDate.getDate()
+      : currentDate.getDate() + dateCounter * 7
   );
 
   // Set the first day of the week (0 = Sunday, 1 = Monday, etc.)
@@ -176,12 +178,20 @@ const ShiftScheduling = () => {
     recentDates.push(dayName + " " + dayFigure + " " + month);
   }
 
-  const checksForCurrentDate = () => {
-    if (daysToBackUp === recentDates[daysToBackUp])
-      return ("0" + currentDate.getDate()).slice(-2);
+  for (let i = 0; i < recentDates.length; i++) {
+    dayIndex.push(i);
+  }
+
+  // Function to handle the navigation buttons
+  const handleNavigation = (direction) => {
+    if (direction === "prev") {
+      setDateCounter((prevCounter) => prevCounter - 1);
+    } else if (direction === "next") {
+      setDateCounter((prevCounter) => prevCounter + 1);
+    } else {
+      setDateCounter(0);
+    }
   };
-
-
 
   const [employeeId, setEmployeeId] = useState();
   const [selecteDay, setSelectedDay] = useState();
@@ -263,10 +273,6 @@ const ShiftScheduling = () => {
     setSelectedDayIndex(index);
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
-
-  for (let i = 0; i < recentDates.length; i++) {
-    dayIndex.push(i)
-  }
 
 
   return (
@@ -371,28 +377,26 @@ const ShiftScheduling = () => {
               }}
             >
               <button
-                onClick={() => setDateCounter((prev) => prev - 7)}
+                onClick={() => handleNavigation("prev")}
                 style={{ border: "none", marginRight: "10px" }}
                 className="btn btn-success btn-block w-10"
               >
                 Prev Week
               </button>
               <button
-                onClick={() => setDateCounter((prev) => prev * 0)}
+                onClick={() => handleNavigation("current")}
                 className="btn btn-success btn-block w-10"
                 style={{
                   border: "none",
-                  opacity: recentDates.includes(
-                    ("0" + currentDate.getDate()).slice(-2)
-                  )
-                    ? "0.5"
-                    : "1",
+                  opacity: dateCounter === 0 ? "0.3" : "1",
+                  cursor: dateCounter === 0 ? "not-allowed" : "pointer",
+                  color: dateCounter === 0 ? "black" : "white",
                 }}
               >
                 Current Week
               </button>
               <button
-                onClick={() => setDateCounter((prev) => prev + 7)}
+                onClick={() => handleNavigation("next")}
                 style={{ border: "none", marginLeft: "10px" }}
                 className="btn btn-success btn-block w-10"
               >
