@@ -9,11 +9,18 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
   const [commentText, setCommentText] = useState("");
   const [replyText, setReplyText] = useState("");
   const [activeCommentId, setActiveCommentId] = useState("");
+  const [admin, setAdmin] = useState("");
+  const [user, setUser] = useState("");
+
+  const AdminAccount = localStorage.getItem("email");
 
   useEffect(() => {
     const storedComments = JSON.parse(localStorage.getItem("comments"));
     if (storedComments) {
       setComments(storedComments);
+    }
+    if (AdminAccount) {
+      setAdmin(AdminAccount);
     }
   }, []);
 
@@ -31,7 +38,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
           text: commentText,
           replies: [],
           taskId,
-          name: "commentName",
+          admin: admin,
         },
       ]);
       setCommentText("");
@@ -51,7 +58,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                 {
                   id: new Date().getTime(),
                   text: replyText,
-                  name: "replyName",
+                  admin: admin,
                 },
               ],
             };
@@ -106,7 +113,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
             <div>
               <div className="chat-box">
                 {comments?.map((comment, index) => {
-                  const { id, text, replies, taskId, name } = comment;
+                  const { id, text, replies, taskId, admin } = comment;
                   if (taskId === selecetedTaskId) {
                     return (
                       <div key={id} className="chats">
@@ -123,7 +130,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                             <div className="chat-bubble">
                               <div className="chat-content">
                                 <span className="chat-time">
-                                  {name ? name : null}
+                                  {admin ? admin : "other user"}
                                 </span>
                                 <p>{text}</p>
                                 <div style={{ display: "flex" }}>
@@ -180,7 +187,7 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                         )}
                         <div className="replies">
                           {replies?.map((reply) => {
-                            const { id, text: replies, name } = reply;
+                            const { id, text: replies, admin } = reply;
                             return (
                               <div key={id} className="chat chat-left">
                                 <div className="chat-avatar">
@@ -188,14 +195,14 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                                     onClick={(e) => e.preventDefault()}
                                     className="avatar reply-avatar"
                                   >
-                                    <img alt="" src={SmileImg} />
+                                    <img alt="" src={AdminAccount ? Logo : SmileImg} />
                                   </Link>
                                 </div>
                                 <div className="chat-body">
                                   <div className="chat-bubble">
                                     <div className="chat-content">
                                       <span className="chat-time">
-                                        {name ? name : null}
+                                        {admin ? admin : "other user"}
                                       </span>
                                       <p>{replies}</p>
                                       <div>
