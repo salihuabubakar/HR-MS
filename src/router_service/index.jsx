@@ -1,4 +1,3 @@
-
 //main
 import Dashboard from '../MainPage/Main/Dashboard';
 import Apps from '../MainPage/Main/Apps';
@@ -6,24 +5,11 @@ import Apps from '../MainPage/Main/Apps';
 import UIinterface from '../MainPage/UIinterface';
 //Pages
 import ProfilePage from '../MainPage/Pages/Profile';
-import Subscription from '../MainPage/Pages/Subscription';
-import Pages from '../MainPage/Pages/Pages';
-//Administrator
-import Administrator from '../MainPage/Administration';
-//Performance
-import Performance from '../MainPage/Performance';
-import Goals from '../MainPage/Performance/Goals';
-import Performances from '../MainPage/Performance/Performance';
-import Training from '../MainPage/Performance/Training';
 //HR
-import HR from '../MainPage/HR';
-import Reports from '../MainPage/HR/Reports';
-import Sales from '../MainPage/HR/Sales';
-import Accounts from '../MainPage/HR/Accounts';
-import Payroll from '../MainPage/HR/Payroll';
+import Payroll from '../MainPage/Payroll';
+import Administration from '../MainPage/Administration';
 //Employees
 import Employees from '../MainPage/Employees';
-import Projects from '../MainPage/Employees/Projects';
 import Employee from '../MainPage/Employees/Employees';
 //Service Worker
 import ServiceWork from "../MainPage/ServiceWork";
@@ -68,10 +54,6 @@ export default [
     component: ServiceWork,
   },
   {
-    path: "projects",
-    component: Projects,
-  },
-  {
     path: "ui-interface",
     component: UIinterface,
   },
@@ -80,51 +62,11 @@ export default [
     component: ProfilePage,
   },
   {
-    path: "subscription",
-    component: Subscription,
-  },
-  {
-    path: "pages",
-    component: Pages,
-  },
-  {
-    path: "administrator",
-    component: Administrator,
-  },
-  {
-    path: "performance",
-    component: Performance,
-  },
-  {
-    path: "goals",
-    component: Goals,
-  },
-  {
-    path: "performances",
-    component: Performances,
-  },
-  {
-    path: "training",
-    component: Training,
-  },
-  {
-    path: "hr",
-    component: HR,
-  },
-  {
-    path: "reports",
-    component: Reports,
-  },
-  {
-    path: "sales",
-    component: Sales,
-  },
-  {
-    path: "accounts",
-    component: Accounts,
-  },
-  {
     path: "payroll",
     component: Payroll,
+  },
+  {
+    path: "administration",
+    component: Administration,
   },
 ];
