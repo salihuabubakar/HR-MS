@@ -2,12 +2,12 @@
 import React, { useState,useEffect } from 'react';
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
-import {Avatar_02, Avatar_09, Avatar_10, Avatar_05, Avatar_11, Avatar_12, Avatar_13, } from "../../../Entryfile/imagepath"
+import {Avatar_02, Avatar_09, Avatar_10, Avatar_05, Avatar_11, Avatar_12, Avatar_13, } from "../../Entryfile/imagepath"
 
    import { Table } from 'antd';
    import 'antd/dist/antd.css';
-   import {itemRender,onShowSizeChange} from "../../paginationfunction"
-   import "../../antdstyle.css"
+   import {itemRender,onShowSizeChange} from "../paginationfunction"
+   import "../antdstyle.css"
 
 const EmployeeSalary = () => {
 
