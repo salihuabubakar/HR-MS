@@ -327,7 +327,6 @@ const Employeeslist = () => {
                       // bordered
                       dataSource={employeeAccts}
                       rowKey={(staff) => staff.id}
-                      onChange={console.log("change")}
                     />
                   </div>
                 </div>

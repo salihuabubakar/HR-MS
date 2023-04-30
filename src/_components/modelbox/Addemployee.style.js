@@ -67,6 +67,17 @@ export const PopupContainer = styled.div`
   .time-picker {
     width: 100%;
   }
+
+  .fontStyle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff9b44;
+
+    ${mobile} {
+      display: none;
+    }
+  }
+
 `;
 
 

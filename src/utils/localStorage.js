@@ -265,3 +265,22 @@ export const savedFamilyMemberReducer = (state, { type, payload }) => {
       throw new Error();
   }
 };
+
+export const initSalary = () => {
+  const storageEvents = localStorage.getItem("staffSalary");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedSalaryReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((salary) => (salary.id === payload.id ? payload : salary));
+    case "delete":
+      return state.filter((salary) => salary.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};
