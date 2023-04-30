@@ -1,17 +1,8 @@
 import React, { useEffect, useState, useMemo, useReducer } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import {
-  PlaceHolder,
-  Attachment,
-  Avatar_05,
-  Avatar_02,
-  Avatar_13,
-  Avatar_16,
-} from "../../Entryfile/imagepath";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
-import Editproject from "../../_components/modelbox/Editproject";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import {
   initTask,

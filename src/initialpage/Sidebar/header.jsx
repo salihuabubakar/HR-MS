@@ -16,6 +16,7 @@ import Applogo from "../../assets/img/circle-logo.png"
 import AddminProfile from "../../MainPage/Pages/Profile/AddminProfile";
 
 import {HeaderContainer} from "./style"
+import { preventDefault } from "fullcalendar";
 
 const Header = (props) => {
   const history = useHistory();
@@ -141,7 +142,7 @@ const Header = (props) => {
             <div className="noti-content">
               <ul className="notification-list">
                 <li className="notification-message">
-                  <Link to="/app/administrator/activities">
+                  <Link onClick={(e) => preventDefault()}>
                     <div className="media">
                       <span className="avatar">
                         <img alt="" src={Avatar_02} />
@@ -164,7 +165,7 @@ const Header = (props) => {
                 <li className="notification-message">
                   <Link
                     // onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/app/administrator/activities"
+                    onClick={(e) => e.preventDefault()}
                   >
                     <div className="media">
                       <span className="avatar">
@@ -190,7 +191,7 @@ const Header = (props) => {
             <div className="topnav-dropdown-footer">
               <Link
                 // onClick={() => localStorage.setItem("minheight", "true")}
-                to="/app/administrator/activities"
+                onClick={(e) => e.preventDefault()}
               >
                 View all Notifications
               </Link>
@@ -227,6 +228,7 @@ const Header = (props) => {
                   <Link
                     // onClick={() => localStorage.setItem("minheight", "true")}
                     to="/conversation/chat"
+                    onClick={(e) => e.preventDefault()}
                   >
                     <div className="list-item">
                       <div className="list-left">
@@ -249,6 +251,7 @@ const Header = (props) => {
                   <Link
                     // onClick={() => localStorage.setItem("minheight", "true")}
                     to="/conversation/chat"
+                    onClick={(e) => e.preventDefault()}
                   >
                     <div className="list-item">
                       <div className="list-left">
@@ -273,10 +276,7 @@ const Header = (props) => {
               </ul>
             </div>
             <div className="topnav-dropdown-footer">
-              <Link
-                onClick={() => localStorage.setItem("minheight", "true")}
-                to="/conversation/chat"
-              >
+              <Link to="/conversation/chat" onClick={(e) => e.preventDefault()}>
                 View all Messages
               </Link>
             </div>
