@@ -1,15 +1,11 @@
 //main
 import Dashboard from '../MainPage/Main/Dashboard';
-import Apps from '../MainPage/Main/Apps';
-//UI Interface
-import UIinterface from '../MainPage/UIinterface';
 //Pages
 import ProfilePage from '../MainPage/Pages/Profile';
 //HR
 import Payroll from '../MainPage/Payroll';
 import Administration from '../MainPage/Administration';
 //Employees
-import Employees from '../MainPage/Employees';
 import Employee from '../MainPage/Employees/Employees';
 //Service Worker
 import ServiceWork from "../MainPage/ServiceWork";
@@ -26,16 +22,8 @@ export default [
     component: Dashboard,
   },
   {
-    path: "apps",
-    component: Apps,
-  },
-  {
     path: "employee",
     component: Employee,
-  },
-  {
-    path: "employees",
-    component: Employees,
   },
   {
     path: "accomodation",
@@ -52,10 +40,6 @@ export default [
   {
     path: "serviceWork",
     component: ServiceWork,
-  },
-  {
-    path: "ui-interface",
-    component: UIinterface,
   },
   {
     path: "profile",
