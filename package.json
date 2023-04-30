@@ -80,6 +80,7 @@
     "react-sticky": "^6.0.3",
     "react-sticky-box": "^0.9.3",
     "react-summernote": "^2.0.2",
+    "react-to-print": "^2.14.12",
     "reactstrap": "^8.5.1",
     "recharts": "^1.8.5",
     "regenerator-runtime": "^0.13.10",

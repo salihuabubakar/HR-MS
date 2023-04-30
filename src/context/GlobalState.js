@@ -29,6 +29,8 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showTaskImageModal: false,
   selectedTaskImage: [],
   selectedComment: [],
+  showSalaryModal: false,
+  selectedSalary: [],
 });
 
 export {setGlobalState, useGlobalState}
