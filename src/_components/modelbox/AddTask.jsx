@@ -9,6 +9,8 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import {
   initUserAccount,
   savedUserAccountReducer,
+  initResident,
+  savedResidentReducer,
 } from "../../utils/localStorage";
 import Select from "react-select";
 import { RadioBtn } from "./styles";
@@ -19,7 +21,7 @@ const AddTask = ({
 }) => {
   const [selectedTaskInfo] = useGlobalState("selectedTaskInfo");
 
-  const [userAcct, dispatchUserAcct] = useReducer(
+  const [userAcct] = useReducer(
     savedUserAccountReducer,
     [],
     initUserAccount
@@ -28,6 +30,16 @@ const AddTask = ({
   useEffect(() => {
     setEmployeeAccts(userAcct);
   }, [userAcct]);
+
+  const [residentAcct] = useReducer(
+    savedResidentReducer,
+    [],
+    initResident
+  );
+  const [residentAccts, setResidentAccts] = useState();
+  useEffect(() => {
+    setResidentAccts(residentAcct);
+  }, [residentAcct]);
 
   const [taskTitle, setTaskTitle] = useState(
     selectedTaskInfo[indexToEdit]?.taskTitle
@@ -77,6 +89,12 @@ const AddTask = ({
       : ""
   );
 
+  const [resident, setResident] = useState(
+    selectedTaskInfo[indexToEdit]?.resident
+      ? selectedTaskInfo[indexToEdit]?.resident
+      : ""
+  );
+
   const [id, setId] = useState(
     selectedTaskInfo[indexToEdit]?.id ? selectedTaskInfo[indexToEdit]?.id : Date.now()
   );
@@ -116,6 +134,7 @@ const AddTask = ({
       taskType,
       timeAllocated,
       employee,
+      resident,
       description,
       manager,
       taskStatus,
@@ -158,15 +177,24 @@ const AddTask = ({
     });
   });
 
+  const handleResidentChange = (event) => {
+    setResident(event);
+  };
+
+  const residents = [];
+  residentAccts?.map((resident) => {
+    residents.push({
+      value: resident.id,
+      label: resident.residentName,
+      image: resident.image,
+    });
+  });
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer
-            top={true}
-            className="custom-modal"
-            role="dialog"
-          >
+          <PopupContainer top={true} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -349,6 +377,35 @@ const AddTask = ({
                             options={users}
                             styles={customSelectStyles}
                             placeholder="Select Employees"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Select Service Worker{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={[
+                              selectedTaskInfo[indexToEdit]?.resident[0],
+                              selectedTaskInfo[indexToEdit]?.resident[1],
+                              selectedTaskInfo[indexToEdit]?.resident[2],
+                              selectedTaskInfo[indexToEdit]?.resident[3],
+                              selectedTaskInfo[indexToEdit]?.resident[4],
+                              selectedTaskInfo[indexToEdit]?.resident[5],
+                              selectedTaskInfo[indexToEdit]?.resident[6],
+                              selectedTaskInfo[indexToEdit]?.resident[7],
+                              selectedTaskInfo[indexToEdit]?.resident[8],
+                              selectedTaskInfo[indexToEdit]?.resident[9],
+                              selectedTaskInfo[indexToEdit]?.resident[10],
+                            ]}
+                            onChange={handleResidentChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={residents}
+                            styles={customSelectStyles}
+                            placeholder="Select Resident"
                           />
                         </div>
                       </div>
