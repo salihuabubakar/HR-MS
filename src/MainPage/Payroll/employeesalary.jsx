@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useMemo, useReducer } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
-import {Avatar_02, Avatar_09, Avatar_10, Avatar_05, Avatar_11, Avatar_12, Avatar_13, } from "../../Entryfile/imagepath";
 import AddSalary from '../../_components/modelbox/AddSalary';
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import { initSalary, savedSalaryReducer } from "../../utils/localStorage";

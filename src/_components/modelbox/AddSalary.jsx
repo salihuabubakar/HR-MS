@@ -11,7 +11,6 @@ import {
   PopupContainer,
   Card,
 } from "./Addemployee.style";
-import { HtmlDateInput } from "./styles";
 
 const AddSalary = ({ dispatchSalary, indexToEdit }) => {
   const [selectedSalary] = useGlobalState("selectedSalary");
