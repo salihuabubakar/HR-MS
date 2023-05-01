@@ -159,7 +159,7 @@ const EmployeeSalary = () => {
     },
 
     {
-      title: "Salary",
+      title: "Monthly Pay",
       dataIndex: "salary",
       render: (text, record) => <span>${text}</span>,
       sorter: (a, b) => a.salary.length - b.salary.length,
