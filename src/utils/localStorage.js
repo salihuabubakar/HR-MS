@@ -284,3 +284,24 @@ export const savedSalaryReducer = (state, { type, payload }) => {
       throw new Error();
   }
 };
+
+export const initUsers = () => {
+  const storageEvents = localStorage.getItem("users");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedUsersReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((users) =>
+        users.id === payload.id ? payload : users
+      );
+    case "delete":
+      return state.filter((users) => users.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};

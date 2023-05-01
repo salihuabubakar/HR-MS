@@ -31,6 +31,8 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedComment: [],
   showSalaryModal: false,
   selectedSalary: [],
+  showUsersModal: false,
+  selectedUsers: [],
 });
 
 export {setGlobalState, useGlobalState}
