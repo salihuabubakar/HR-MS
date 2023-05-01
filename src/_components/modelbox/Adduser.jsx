@@ -245,6 +245,19 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
+                          <label>
+                            Employee ID <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={employeeId}
+                            onChange={(e) => setEmployeeId(e.target.value)}
+                            type="text"
+                            className="form-control floating"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
                           <label className="col-form-label">
                             Select Role <span className="text-danger">*</span>
                           </label>
@@ -269,19 +282,6 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             options={companyOptions}
                             styles={customSelectStyles}
                             placeholder="Select Company"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label>
-                            Employee ID <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={employeeId}
-                            onChange={(e) => setEmployeeId(e.target.value)}
-                            type="text"
-                            className="form-control floating"
                           />
                         </div>
                       </div>
