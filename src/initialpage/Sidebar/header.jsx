@@ -50,13 +50,27 @@ const Header = (props) => {
         </span>
       </a>
       {/* Header Title */}
-      <div className="page-title-box">
-        {/* <h3>PEEPAL TREE</h3> */}
+      <div
+        style={{
+          width: "28%",
+          position: "relative",
+          bottom: "5px",
+        }}
+        className="page-title-box"
+      >
+        {/* <h3>
+          PEEPAL TREE
+        </h3> */}
         <img
           src={
             "https://peepaltree.co.uk/wp-content/uploads/2021/02/Header-logo-800px.png"
           }
-          style={{ width: "25%" }}
+          style={{
+            maxWidth: "45%",
+            width: "100%",
+            position: "relative",
+            left: "20%",
+          }}
           alt=""
         />
       </div>
