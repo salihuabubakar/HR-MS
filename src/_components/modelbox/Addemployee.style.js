@@ -78,6 +78,15 @@ export const PopupContainer = styled.div`
     }
   }
 
+  .repeat-btn {
+    margin-right: 5px;
+    background-color: #55ce63;
+    border-color: #55ce63;
+
+    :hover {
+      background-color: #559e68;
+    }
+  }
 `;
 
 
