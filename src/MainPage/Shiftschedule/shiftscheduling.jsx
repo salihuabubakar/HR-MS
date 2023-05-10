@@ -511,6 +511,7 @@ const ShiftScheduling = () => {
               handleSundayShift={handleSundayShift}
               handleSundayShiftIndex={handleSundayShiftIndex}
               scheduleEvent={scheduleEvent}
+              DefaultImage={DefaultImage}
             />
             {/* /Content End */}
           </div>
