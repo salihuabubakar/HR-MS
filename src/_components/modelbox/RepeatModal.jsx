@@ -7,17 +7,22 @@ import {
 } from "./Addemployee.style";
 import { Checkbox } from "antd";
 
-const RepeatModal = ({ event, setDayInWeeks, dispatchSchedule }) => {
+const RepeatModal = ({ event, dispatchSchedule }) => {
 
   const [selectedDays, setSelectedDays] = useState([]);
+  const [dayInWeeks, setDayInWeeks] = useState([]);
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
     if (checked) {
       setSelectedDays((prevSelectedDays) => [...prevSelectedDays, value]);
+      setDayInWeeks((prevSelectedDays) => [...prevSelectedDays, value]);
     } else {
       setSelectedDays((prevSelectedDays) =>
+        prevSelectedDays.filter((day) => day !== value)
+      );
+      setDayInWeeks((prevSelectedDays) =>
         prevSelectedDays.filter((day) => day !== value)
       );
     }
@@ -27,7 +32,6 @@ const RepeatModal = ({ event, setDayInWeeks, dispatchSchedule }) => {
     e.preventDefault();
     const newShifts = [];
     const repeatDays = selectedDays.join(",");
-    setDayInWeeks(selectedDays);
     repeatDays.split(",").forEach((day) => {
       const newShift = { ...event, selectedDay: day, id: Date.now() };
       newShifts.push(newShift);
@@ -121,7 +125,10 @@ const RepeatModal = ({ event, setDayInWeeks, dispatchSchedule }) => {
                   <div className="modal-body">
                     <div className="form-header">
                       <h3>Repeat Shift</h3>
-                      <p>Select day(s) to repeat shift</p>
+                      <p>
+                        Select day(s) to repeat shift:{" "}
+                        {dayInWeeks.length > 0 && (<span>{dayInWeeks.join(", ")}</span>)}
+                      </p>
                     </div>
                     <div className="row">
                       <div
@@ -132,6 +139,13 @@ const RepeatModal = ({ event, setDayInWeeks, dispatchSchedule }) => {
                         }}
                         className="col-sm-12"
                       >
+                        <button
+                          onClick={() => handleNavigation("prev")}
+                          style={{ border: "none", marginRight: "10px" }}
+                          className="btn btn-success btn-block w-10"
+                        >
+                          {"<"}
+                        </button>
                         <button
                           onClick={() => handleNavigation("current")}
                           className="btn btn-success btn-block w-10"

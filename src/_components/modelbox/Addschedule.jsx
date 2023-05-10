@@ -48,8 +48,6 @@ const AddSchedule = ({
     (isIdExist || isSubIdExist) ? (isIdExist || isSubIdExist) : Date.now()
   );
 
-  const [dayInWeeks, setDayInWeeks] = useState([]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const scheduleE = {
@@ -150,9 +148,6 @@ const AddSchedule = ({
                 </div>
                 <div className="modal-body">
                   <form>
-                    {dayInWeeks.length > 0 && (
-                      <p>Repeat shift on {dayInWeeks.join(", ")}</p>
-                    )}
                     <div className="row">
                       <div className="col-sm-12">
                         <div className="form-group">
@@ -215,7 +210,6 @@ const AddSchedule = ({
       )}
       {repeatModal && (
         <RepeatModal
-          setDayInWeeks={setDayInWeeks}
           dispatchSchedule={dispatchSchedule}
           event={event}
         />
