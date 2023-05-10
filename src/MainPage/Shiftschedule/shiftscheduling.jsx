@@ -24,6 +24,7 @@ import {
   savedScheduleEventReducer,
 } from "../../utils/localStorage";
 import "regenerator-runtime/runtime";
+import { daysInWeek } from "date-fns";
 
 
 const ShiftScheduling = () => {
@@ -194,8 +195,10 @@ const ShiftScheduling = () => {
   };
 
   const [employeeId, setEmployeeId] = useState();
-  const [selecteDay, setSelectedDay] = useState();
-  const [selectedDayIndex, setSelectedDayIndex] = useState();
+  const [selectedDay, setSelectedDay] = useState();
+  const [selectedDayIndex, setSelectedDayIndex] = useState(null);
+  const [selectedDayIndex2, setSelectedDayIndex2] = useState(null);
+  const [event, setEvent] = useState();
 
   const handleMondayShift = (value) => {
     setEmployeeId(value);
@@ -203,8 +206,14 @@ const ShiftScheduling = () => {
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleMondayShiftIndex = (index) => {
+  const handleMondayShiftIndex = (shifts, employeeId, houseId, index, indexID2) => {
     setSelectedDayIndex(index);
+    setSelectedDayIndex2(indexID2);
+    setEvent({
+      shifts,
+      employeeId,
+      houseId,
+    });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -214,8 +223,20 @@ const ShiftScheduling = () => {
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleTuesdayShiftIndex = (index) => {
+  const handleTuesdayShiftIndex = (
+    shifts,
+    employeeId,
+    houseId,
+    index,
+    indexID2
+  ) => {
     setSelectedDayIndex(index);
+    setSelectedDayIndex2(indexID2);
+    setEvent({
+      shifts,
+      employeeId,
+      houseId,
+    });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -225,8 +246,20 @@ const ShiftScheduling = () => {
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleWednesdayShiftIndex = (index) => {
+  const handleWednesdayShiftIndex = (
+    shifts,
+    employeeId,
+    houseId,
+    index,
+    indexID2
+  ) => {
     setSelectedDayIndex(index);
+    setSelectedDayIndex2(indexID2);
+    setEvent({
+      shifts,
+      employeeId,
+      houseId,
+    });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -236,8 +269,20 @@ const ShiftScheduling = () => {
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleThursdayShiftIndex = (index) => {
+  const handleThursdayShiftIndex = (
+    shifts,
+    employeeId,
+    houseId,
+    index,
+    indexID2
+  ) => {
     setSelectedDayIndex(index);
+    setSelectedDayIndex2(indexID2);
+    setEvent({
+      shifts,
+      employeeId,
+      houseId,
+    });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -247,8 +292,20 @@ const ShiftScheduling = () => {
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleFridayShiftIndex = (index) => {
+  const handleFridayShiftIndex = (
+    shifts,
+    employeeId,
+    houseId,
+    index,
+    indexID2
+  ) => {
     setSelectedDayIndex(index);
+    setSelectedDayIndex2(indexID2);
+    setEvent({
+      shifts,
+      employeeId,
+      houseId,
+    });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -258,8 +315,20 @@ const ShiftScheduling = () => {
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleSaturdayShiftIndex = (index) => {
+  const handleSaturdayShiftIndex = (
+    shifts,
+    employeeId,
+    houseId,
+    index,
+    indexID2
+  ) => {
     setSelectedDayIndex(index);
+    setSelectedDayIndex2(indexID2);
+    setEvent({
+      shifts,
+      employeeId,
+      houseId,
+    });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -269,11 +338,54 @@ const ShiftScheduling = () => {
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleSundayShiftIndex = (index) => {
+  const handleSundayShiftIndex = (
+    shifts,
+    employeeId,
+    houseId,
+    index,
+    indexID2
+  ) => {
     setSelectedDayIndex(index);
+    setSelectedDayIndex2(indexID2);
+    setEvent({
+      shifts,
+      employeeId,
+      houseId,
+    });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
+  const Shifts = ({
+    label,
+    id,
+    employeeId,
+    houseId,
+    shifts,
+    handleDayShiftIndex,
+    indexID,
+    indexID2,
+  }) => {
+    return (
+      <div
+        onClick={() =>
+          handleDayShiftIndex(shifts, employeeId, houseId, indexID, indexID2)
+        }
+        key={id}
+        className="user-add-shedule-list"
+      >
+        <h2>
+          <a
+            style={{
+              border: "2px dashed #1eb53a",
+            }}
+          >
+            <span>{shifts.label}</span>
+            <span className="userrole-info">Web Designer - {label}</span>
+          </a>
+        </h2>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -454,20 +566,6 @@ const ShiftScheduling = () => {
                                       </a>
                                     </h2>
                                   </td>
-
-                                  {/* {shiftEvents?.length === 0 ? ( */}
-                                  {/* <td
-                                onClick={() => handleMondayShift(index, value)}
-                              >
-                                <div className="user-add-shedule-list">
-                                  <a>
-                                    <span>
-                                      <i className="fa fa-plus" />
-                                    </span>
-                                  </a>
-                                </div>
-                              </td> */}
-                                  {/* ) : ( */}
                                   <td
                                     className="tool-tip"
                                     onClick={() => handleMondayShift(value)}
@@ -480,58 +578,70 @@ const ShiftScheduling = () => {
                                       </a>
                                     </span>
                                     {scheduleEvent?.map((events, indexID) => {
-                                      const {
-                                        id,
-                                        selecteDay,
-                                        houseId: houseIdInSchedule,
-                                        employeeId: eId,
-                                        shifts,
-                                      } = events;
-                                      if (
-                                        houseIdInSchedule == houseId &&
-                                        value === eId &&
-                                        selecteDay === recentDates[0]
-                                      ) {
-                                        return (
-                                          <div
-                                            onClick={() =>
-                                              handleMondayShiftIndex(indexID)
+                                      if (Array.isArray(events)) {
+                                        return events.map(
+                                          (nestedEvents, indexID2) => {
+                                            const {
+                                              id,
+                                              employeeId,
+                                              houseId,
+                                              selectedDay,
+                                              shifts,
+                                            } = nestedEvents;
+                                            if (
+                                              houseId == houseId &&
+                                              value === employeeId &&
+                                              selectedDay === recentDates[0]
+                                            ) {
+                                              return (
+                                                <>
+                                                  <Shifts
+                                                    id={id}
+                                                    employeeId={employeeId}
+                                                    houseId={houseId}
+                                                    shifts={shifts}
+                                                    handleDayShiftIndex={
+                                                      handleMondayShiftIndex
+                                                    }
+                                                    indexID={indexID}
+                                                    indexID2={indexID2}
+                                                    label={label}
+                                                  />
+                                                </>
+                                              );
                                             }
-                                            key={id}
-                                            className="user-add-shedule-list"
-                                          >
-                                            <h2>
-                                              <a
-                                                style={{
-                                                  border: "2px dashed #1eb53a",
-                                                }}
-                                              >
-                                                <span>{shifts.label}</span>
-                                                <span className="userrole-info">
-                                                  Web Designer - {label}
-                                                </span>
-                                              </a>
-                                            </h2>
-                                          </div>
+                                          }
                                         );
+                                      } else {
+                                        const {
+                                          id,
+                                          employeeId,
+                                          houseId,
+                                          selectedDay,
+                                          shifts,
+                                        } = events;
+                                        if (
+                                          houseId == houseId &&
+                                          value === employeeId &&
+                                          selectedDay === recentDates[0]
+                                        ) {
+                                          return (
+                                            <Shifts
+                                              id={id}
+                                              employeeId={employeeId}
+                                              houseId={houseId}
+                                              shifts={shifts}
+                                              handleDayShiftIndex={
+                                                handleMondayShiftIndex
+                                              }
+                                              indexID={indexID}
+                                              label={label}
+                                            />
+                                          );
+                                        }
                                       }
                                     })}
                                   </td>
-                                  {/* )} */}
-
-                                  {/* {shiftEvents?.length === 0 ? (
-                              <td
-                                onClick={() => handleTuesDayShift(index, value)}
-                              >
-                                <div className="user-add-shedule-list">
-                                  <a>
-                                    <span>
-                                      <i className="fa fa-plus" />
-                                    </span>
-                                  </a>
-                                </div>
-                              </td>
-                            ) : ( */}
                                   <td
                                     className="tool-tip"
                                     onClick={() => handleTuesDayShift(value)}
@@ -544,60 +654,70 @@ const ShiftScheduling = () => {
                                       </a>
                                     </span>
                                     {scheduleEvent?.map((events, indexID) => {
-                                      const {
-                                        id,
-                                        selecteDay,
-                                        houseId: houseIdInSchedule,
-                                        employeeId: eId,
-                                        shifts,
-                                      } = events;
-                                      if (
-                                        houseIdInSchedule == houseId &&
-                                        value === eId &&
-                                        selecteDay === recentDates[1]
-                                      ) {
-                                        return (
-                                          <div
-                                            onClick={() =>
-                                              handleTuesdayShiftIndex(indexID)
+                                      if (Array.isArray(events)) {
+                                        return events.map(
+                                          (nestedEvents, indexID2) => {
+                                            const {
+                                              id,
+                                              employeeId,
+                                              houseId,
+                                              selectedDay,
+                                              shifts,
+                                            } = nestedEvents;
+                                            if (
+                                              houseId == houseId &&
+                                              value === employeeId &&
+                                              selectedDay === recentDates[1]
+                                            ) {
+                                              return (
+                                                <>
+                                                  <Shifts
+                                                    id={id}
+                                                    employeeId={employeeId}
+                                                    houseId={houseId}
+                                                    shifts={shifts}
+                                                    handleDayShiftIndex={
+                                                      handleTuesdayShiftIndex
+                                                    }
+                                                    indexID={indexID}
+                                                    indexID2={indexID2}
+                                                    label={label}
+                                                  />
+                                                </>
+                                              );
                                             }
-                                            key={id}
-                                            className="user-add-shedule-list"
-                                          >
-                                            <h2>
-                                              <a
-                                                style={{
-                                                  border: "2px dashed #1eb53a",
-                                                }}
-                                              >
-                                                <span>{shifts.label}</span>
-                                                <span className="userrole-info">
-                                                  Web Designer - {label}
-                                                </span>
-                                              </a>
-                                            </h2>
-                                          </div>
+                                          }
                                         );
+                                      } else {
+                                        const {
+                                          id,
+                                          employeeId,
+                                          houseId,
+                                          selectedDay,
+                                          shifts,
+                                        } = events;
+                                        if (
+                                          houseId == houseId &&
+                                          value === employeeId &&
+                                          selectedDay === recentDates[1]
+                                        ) {
+                                          return (
+                                            <Shifts
+                                              id={id}
+                                              employeeId={employeeId}
+                                              houseId={houseId}
+                                              shifts={shifts}
+                                              handleDayShiftIndex={
+                                                handleTuesdayShiftIndex
+                                              }
+                                              indexID={indexID}
+                                              label={label}
+                                            />
+                                          );
+                                        }
                                       }
                                     })}
                                   </td>
-                                  {/* )} */}
-
-                                  {/* {shiftEvents?.length === 0 ? (
-                              <td
-                                onClick={() =>
-                                  handleWednesdayShift(index, value)
-                                }
-                              >
-                                <div className="user-add-shedule-list">
-                                  <a>
-                                    <span>
-                                      <i className="fa fa-plus" />
-                                    </span>
-                                  </a>
-                                </div>
-                              </td>
-                            ) : ( */}
                                   <td
                                     className="tool-tip"
                                     onClick={() => handleWednesdayShift(value)}
@@ -610,60 +730,70 @@ const ShiftScheduling = () => {
                                       </a>
                                     </span>
                                     {scheduleEvent?.map((events, indexID) => {
-                                      const {
-                                        id,
-                                        houseId: houseIdInSchedule,
-                                        selecteDay,
-                                        employeeId: eId,
-                                        shifts,
-                                      } = events;
-                                      if (
-                                        houseIdInSchedule == houseId &&
-                                        value === eId &&
-                                        selecteDay === recentDates[2]
-                                      ) {
-                                        return (
-                                          <div
-                                            onClick={() =>
-                                              handleWednesdayShiftIndex(indexID)
+                                      if (Array.isArray(events)) {
+                                        return events.map(
+                                          (nestedEvents, indexID2) => {
+                                            const {
+                                              id,
+                                              employeeId,
+                                              houseId,
+                                              selectedDay,
+                                              shifts,
+                                            } = nestedEvents;
+                                            if (
+                                              houseId == houseId &&
+                                              value === employeeId &&
+                                              selectedDay === recentDates[2]
+                                            ) {
+                                              return (
+                                                <>
+                                                  <Shifts
+                                                    id={id}
+                                                    employeeId={employeeId}
+                                                    houseId={houseId}
+                                                    shifts={shifts}
+                                                    handleDayShiftIndex={
+                                                      handleWednesdayShiftIndex
+                                                    }
+                                                    indexID={indexID}
+                                                    indexID2={indexID2}
+                                                    label={label}
+                                                  />
+                                                </>
+                                              );
                                             }
-                                            key={id}
-                                            className="user-add-shedule-list"
-                                          >
-                                            <h2>
-                                              <a
-                                                style={{
-                                                  border: "2px dashed #1eb53a",
-                                                }}
-                                              >
-                                                <span>{shifts.label}</span>
-                                                <span className="userrole-info">
-                                                  Web Designer - {label}
-                                                </span>
-                                              </a>
-                                            </h2>
-                                          </div>
+                                          }
                                         );
+                                      } else {
+                                        const {
+                                          id,
+                                          employeeId,
+                                          houseId,
+                                          selectedDay,
+                                          shifts,
+                                        } = events;
+                                        if (
+                                          houseId == houseId &&
+                                          value === employeeId &&
+                                          selectedDay === recentDates[2]
+                                        ) {
+                                          return (
+                                            <Shifts
+                                              id={id}
+                                              employeeId={employeeId}
+                                              houseId={houseId}
+                                              shifts={shifts}
+                                              handleDayShiftIndex={
+                                                handleWednesdayShiftIndex
+                                              }
+                                              indexID={indexID}
+                                              label={label}
+                                            />
+                                          );
+                                        }
                                       }
                                     })}
                                   </td>
-                                  {/* )} */}
-
-                                  {/* {shiftEvents?.length === 0 ? (
-                              <td
-                                onClick={() =>
-                                  handleThursdayShift(index, value)
-                                }
-                              >
-                                <div className="user-add-shedule-list">
-                                  <a>
-                                    <span>
-                                      <i className="fa fa-plus" />
-                                    </span>
-                                  </a>
-                                </div>
-                              </td>
-                            ) : ( */}
                                   <td
                                     className="tool-tip"
                                     onClick={() => handleThursdayShift(value)}
@@ -676,58 +806,70 @@ const ShiftScheduling = () => {
                                       </a>
                                     </span>
                                     {scheduleEvent?.map((events, indexID) => {
-                                      const {
-                                        id,
-                                        selecteDay,
-                                        houseId: houseIdInSchedule,
-                                        employeeId: eId,
-                                        shifts,
-                                      } = events;
-                                      if (
-                                        houseIdInSchedule == houseId &&
-                                        value === eId &&
-                                        selecteDay === recentDates[3]
-                                      ) {
-                                        return (
-                                          <div
-                                            onClick={() =>
-                                              handleThursdayShiftIndex(indexID)
+                                      if (Array.isArray(events)) {
+                                        return events.map(
+                                          (nestedEvents, indexID2) => {
+                                            const {
+                                              id,
+                                              employeeId,
+                                              houseId,
+                                              selectedDay,
+                                              shifts,
+                                            } = nestedEvents;
+                                            if (
+                                              houseId == houseId &&
+                                              value === employeeId &&
+                                              selectedDay === recentDates[3]
+                                            ) {
+                                              return (
+                                                <>
+                                                  <Shifts
+                                                    id={id}
+                                                    employeeId={employeeId}
+                                                    houseId={houseId}
+                                                    shifts={shifts}
+                                                    handleDayShiftIndex={
+                                                      handleThursdayShiftIndex
+                                                    }
+                                                    indexID={indexID}
+                                                    indexID2={indexID2}
+                                                    label={label}
+                                                  />
+                                                </>
+                                              );
                                             }
-                                            key={id}
-                                            className="user-add-shedule-list"
-                                          >
-                                            <h2>
-                                              <a
-                                                style={{
-                                                  border: "2px dashed #1eb53a",
-                                                }}
-                                              >
-                                                <span>{shifts.label}</span>
-                                                <span className="userrole-info">
-                                                  Web Designer - {label}
-                                                </span>
-                                              </a>
-                                            </h2>
-                                          </div>
+                                          }
                                         );
+                                      } else {
+                                        const {
+                                          id,
+                                          employeeId,
+                                          houseId,
+                                          selectedDay,
+                                          shifts,
+                                        } = events;
+                                        if (
+                                          houseId == houseId &&
+                                          value === employeeId &&
+                                          selectedDay === recentDates[3]
+                                        ) {
+                                          return (
+                                            <Shifts
+                                              id={id}
+                                              employeeId={employeeId}
+                                              houseId={houseId}
+                                              shifts={shifts}
+                                              handleDayShiftIndex={
+                                                handleThursdayShiftIndex
+                                              }
+                                              indexID={indexID}
+                                              label={label}
+                                            />
+                                          );
+                                        }
                                       }
                                     })}
                                   </td>
-                                  {/* )} */}
-
-                                  {/* {shiftEvents?.length === 0 ? (
-                              <td
-                                onClick={() => handleFridayShift(index, value)}
-                              >
-                                <div className="user-add-shedule-list">
-                                  <a>
-                                    <span>
-                                      <i className="fa fa-plus" />
-                                    </span>
-                                  </a>
-                                </div>
-                              </td>
-                            ) : ( */}
                                   <td
                                     className="tool-tip"
                                     onClick={() => handleFridayShift(value)}
@@ -740,58 +882,70 @@ const ShiftScheduling = () => {
                                       </a>
                                     </span>
                                     {scheduleEvent?.map((events, indexID) => {
-                                      const {
-                                        id,
-                                        selecteDay,
-                                        houseId: houseIdInSchedule,
-                                        employeeId: eId,
-                                        shifts,
-                                      } = events;
-                                      if (
-                                        houseIdInSchedule == houseId &&
-                                        value === eId &&
-                                        selecteDay === recentDates[4]
-                                      ) {
-                                        return (
-                                          <div
-                                            onClick={() =>
-                                              handleFridayShiftIndex(indexID)
+                                      if (Array.isArray(events)) {
+                                        return events.map(
+                                          (nestedEvents, indexID2) => {
+                                            const {
+                                              id,
+                                              employeeId,
+                                              houseId,
+                                              selectedDay,
+                                              shifts,
+                                            } = nestedEvents;
+                                            if (
+                                              houseId == houseId &&
+                                              value === employeeId &&
+                                              selectedDay === recentDates[4]
+                                            ) {
+                                              return (
+                                                <>
+                                                  <Shifts
+                                                    id={id}
+                                                    employeeId={employeeId}
+                                                    houseId={houseId}
+                                                    shifts={shifts}
+                                                    handleDayShiftIndex={
+                                                      handleFridayShiftIndex
+                                                    }
+                                                    indexID={indexID}
+                                                    indexID2={indexID2}
+                                                    label={label}
+                                                  />
+                                                </>
+                                              );
                                             }
-                                            key={id}
-                                            className="user-add-shedule-list"
-                                          >
-                                            <h2>
-                                              <a
-                                                style={{
-                                                  border: "2px dashed #1eb53a",
-                                                }}
-                                              >
-                                                <span>{shifts.label}</span>
-                                                <span className="userrole-info">
-                                                  Web Designer - {label}
-                                                </span>
-                                              </a>
-                                            </h2>
-                                          </div>
+                                          }
                                         );
+                                      } else {
+                                        const {
+                                          id,
+                                          employeeId,
+                                          houseId,
+                                          selectedDay,
+                                          shifts,
+                                        } = events;
+                                        if (
+                                          houseId == houseId &&
+                                          value === employeeId &&
+                                          selectedDay === recentDates[4]
+                                        ) {
+                                          return (
+                                            <Shifts
+                                              id={id}
+                                              employeeId={employeeId}
+                                              houseId={houseId}
+                                              shifts={shifts}
+                                              handleDayShiftIndex={
+                                                handleFridayShiftIndex
+                                              }
+                                              indexID={indexID}
+                                              label={label}
+                                            />
+                                          );
+                                        }
                                       }
                                     })}
                                   </td>
-                                  {/* )} */}
-
-                                  {/* {shiftEvents?.length === 0 ? (
-                              <td
-                                onClick={() => handlSaturdayShift(index, value)}
-                              >
-                                <div className="user-add-shedule-list">
-                                  <a>
-                                    <span>
-                                      <i className="fa fa-plus" />
-                                    </span>
-                                  </a>
-                                </div>
-                              </td>
-                            ) : ( */}
                                   <td
                                     className="tool-tip"
                                     onClick={() => handlSaturdayShift(value)}
@@ -804,58 +958,70 @@ const ShiftScheduling = () => {
                                       </a>
                                     </span>
                                     {scheduleEvent?.map((events, indexID) => {
-                                      const {
-                                        id,
-                                        selecteDay,
-                                        houseId: houseIdInSchedule,
-                                        employeeId: eId,
-                                        shifts,
-                                      } = events;
-                                      if (
-                                        houseIdInSchedule == houseId &&
-                                        value === eId &&
-                                        selecteDay === recentDates[5]
-                                      ) {
-                                        return (
-                                          <div
-                                            onClick={() =>
-                                              handleSaturdayShiftIndex(indexID)
+                                      if (Array.isArray(events)) {
+                                        return events.map(
+                                          (nestedEvents, indexID2) => {
+                                            const {
+                                              id,
+                                              employeeId,
+                                              houseId,
+                                              selectedDay,
+                                              shifts,
+                                            } = nestedEvents;
+                                            if (
+                                              houseId == houseId &&
+                                              value === employeeId &&
+                                              selectedDay === recentDates[5]
+                                            ) {
+                                              return (
+                                                <>
+                                                  <Shifts
+                                                    id={id}
+                                                    employeeId={employeeId}
+                                                    houseId={houseId}
+                                                    shifts={shifts}
+                                                    handleDayShiftIndex={
+                                                      handleSaturdayShiftIndex
+                                                    }
+                                                    indexID={indexID}
+                                                    indexID2={indexID2}
+                                                    label={label}
+                                                  />
+                                                </>
+                                              );
                                             }
-                                            key={id}
-                                            className="user-add-shedule-list"
-                                          >
-                                            <h2>
-                                              <a
-                                                style={{
-                                                  border: "2px dashed #1eb53a",
-                                                }}
-                                              >
-                                                <span>{shifts.label}</span>
-                                                <span className="userrole-info">
-                                                  Web Designer - {label}
-                                                </span>
-                                              </a>
-                                            </h2>
-                                          </div>
+                                          }
                                         );
+                                      } else {
+                                        const {
+                                          id,
+                                          employeeId,
+                                          houseId,
+                                          selectedDay,
+                                          shifts,
+                                        } = events;
+                                        if (
+                                          houseId == houseId &&
+                                          value === employeeId &&
+                                          selectedDay === recentDates[5]
+                                        ) {
+                                          return (
+                                            <Shifts
+                                              id={id}
+                                              employeeId={employeeId}
+                                              houseId={houseId}
+                                              shifts={shifts}
+                                              handleDayShiftIndex={
+                                                handleSaturdayShiftIndex
+                                              }
+                                              indexID={indexID}
+                                              label={label}
+                                            />
+                                          );
+                                        }
                                       }
                                     })}
                                   </td>
-                                  {/* )} */}
-
-                                  {/* {shiftEvents?.length === 0 ? (
-                              <td
-                                onClick={() => handleSundayShift(index, value)}
-                              >
-                                <div className="user-add-shedule-list">
-                                  <a>
-                                    <span>
-                                      <i className="fa fa-plus" />
-                                    </span>
-                                  </a>
-                                </div>
-                              </td>
-                            ) : ( */}
                                   <td
                                     className="tool-tip"
                                     onClick={() => handleSundayShift(value)}
@@ -868,40 +1034,67 @@ const ShiftScheduling = () => {
                                       </a>
                                     </span>
                                     {scheduleEvent?.map((events, indexID) => {
-                                      const {
-                                        id,
-                                        selecteDay,
-                                        houseId: houseIdInSchedule,
-                                        employeeId: eId,
-                                        shifts,
-                                      } = events;
-                                      if (
-                                        houseIdInSchedule == houseId &&
-                                        value === eId &&
-                                        selecteDay === recentDates[6]
-                                      ) {
-                                        return (
-                                          <div
-                                            onClick={() =>
-                                              handleSundayShiftIndex(indexID)
+                                      if (Array.isArray(events)) {
+                                        return events.map(
+                                          (nestedEvents, indexID2) => {
+                                            const {
+                                              id,
+                                              employeeId,
+                                              houseId,
+                                              selectedDay,
+                                              shifts,
+                                            } = nestedEvents;
+                                            if (
+                                              houseId == houseId &&
+                                              value === employeeId &&
+                                              selectedDay === recentDates[6]
+                                            ) {
+                                              return (
+                                                <>
+                                                  <Shifts
+                                                    id={id}
+                                                    employeeId={employeeId}
+                                                    houseId={houseId}
+                                                    shifts={shifts}
+                                                    handleDayShiftIndex={
+                                                      handleSundayShiftIndex
+                                                    }
+                                                    indexID={indexID}
+                                                    indexID2={indexID2}
+                                                    label={label}
+                                                  />
+                                                </>
+                                              );
                                             }
-                                            key={id}
-                                            className="user-add-shedule-list"
-                                          >
-                                            <h2>
-                                              <a
-                                                style={{
-                                                  border: "2px dashed #1eb53a",
-                                                }}
-                                              >
-                                                <span>{shifts.label}</span>
-                                                <span className="userrole-info">
-                                                  Web Designer - {label}
-                                                </span>
-                                              </a>
-                                            </h2>
-                                          </div>
+                                          }
                                         );
+                                      } else {
+                                        const {
+                                          id,
+                                          employeeId,
+                                          houseId,
+                                          selectedDay,
+                                          shifts,
+                                        } = events;
+                                        if (
+                                          houseId == houseId &&
+                                          value === employeeId &&
+                                          selectedDay === recentDates[6]
+                                        ) {
+                                          return (
+                                            <Shifts
+                                              id={id}
+                                              employeeId={employeeId}
+                                              houseId={houseId}
+                                              shifts={shifts}
+                                              handleDayShiftIndex={
+                                                handleSundayShiftIndex
+                                              }
+                                              indexID={indexID}
+                                              label={label}
+                                            />
+                                          );
+                                        }
                                       }
                                     })}
                                   </td>
@@ -928,11 +1121,13 @@ const ShiftScheduling = () => {
         <AddSchedule
           employeeId={employeeId}
           dispatchSchedule={dispatchSchedule}
-          selecteDay={selecteDay}
+          selectedDay={selectedDay}
           selectedDayIndex={selectedDayIndex}
           shiftList={shiftList}
+          event={event}
           schedule={schedule}
           houseId={houseId}
+          selectedDayIndex2={selectedDayIndex2}
         />
       )}
     </>

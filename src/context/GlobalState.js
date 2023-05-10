@@ -10,6 +10,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedShiftList: [],
   selectedProfileInfo: [],
   deleteModal: false,
+  repeatModal: false,
   deleteImg: false,
   showModal: false,
   showProfileModal: false,
