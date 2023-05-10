@@ -24,6 +24,7 @@ class WeeklyComponent extends React.Component {
       handleSundayShift,
       handleSundayShiftIndex,
       scheduleEvent,
+      DefaultImage,
     } = this.props;
 
 
