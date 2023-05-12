@@ -41,13 +41,10 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
   };
 
   const [dateCounter, setDateCounter] = useState(0);
-  const [activeCurrentDate, setActiveCurrentDate] = useState([]);
   let recentDates = [];
   let dayIndex = [];
 
-  let isCurrentDateTrue;
 
-  // Create a new date object and set it to the current date
   let currentDate = new Date();
   currentDate.setDate(
     dateCounter === 0
@@ -55,23 +52,18 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
       : currentDate.getDate() + dateCounter * 7
   );
 
-  // Set the first day of the week (0 = Sunday, 1 = Monday, etc.)
   let firstDayOfWeek = 1;
 
-  // Calculate the day of the week for the current date
   let currentDayOfWeek = currentDate.getDay();
 
-  // Calculate the number of days to back up to the first day of the week
   let daysToBackUp = (currentDayOfWeek + 7 - firstDayOfWeek) % 7;
 
-  // Back up to the first day of the week
   let firstDateOfWeek = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
     currentDate.getDate() - daysToBackUp
   );
 
-  // Create an array of date objects for the current week
   let dates = [firstDateOfWeek];
   for (var i = 1; i < 7; i++) {
     var nextDate = new Date(
@@ -82,7 +74,6 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
     dates.push(nextDate);
   }
 
-  // Create a week calendar using the date objects
   for (var i = 0; i < dates.length; i++) {
     let dayName = dates[i].toString().slice(0, 3);
     let dayFigure = dates[i].toString().slice(8, 10);
@@ -94,7 +85,6 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
     dayIndex.push(i);
   }
 
-  // Function to handle the navigation buttons
   const handleNavigation = (direction) => {
     if (direction === "prev") {
       setDateCounter((prevCounter) => prevCounter - 1);
