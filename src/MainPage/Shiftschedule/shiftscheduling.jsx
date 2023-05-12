@@ -138,7 +138,6 @@ const ShiftScheduling = () => {
 
   let today = new Date();
 
-  // Create a new date object and set it to the current date
   let currentDate = new Date();
   currentDate.setDate(
     dateCounter === 0
@@ -146,23 +145,18 @@ const ShiftScheduling = () => {
       : currentDate.getDate() + dateCounter * 7
   );
 
-  // Set the first day of the week (0 = Sunday, 1 = Monday, etc.)
   let firstDayOfWeek = 1;
 
-  // Calculate the day of the week for the current date
   let currentDayOfWeek = currentDate.getDay();
 
-  // Calculate the number of days to back up to the first day of the week
   let daysToBackUp = (currentDayOfWeek + 7 - firstDayOfWeek) % 7;
 
-  // Back up to the first day of the week
   let firstDateOfWeek = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
     currentDate.getDate() - daysToBackUp
   );
 
-  // Create an array of date objects for the current week
   let dates = [firstDateOfWeek];
   for (var i = 1; i < 7; i++) {
     var nextDate = new Date(
@@ -173,20 +167,16 @@ const ShiftScheduling = () => {
     dates.push(nextDate);
   }
 
-  // Create a week calendar using the date objects
   for (var i = 0; i < dates.length; i++) {
     let dayName = dates[i].toString().slice(0, 3);
     let dayFigure = dates[i].toString().slice(8, 10);
     let month = dates[i].toString().slice(4, 7);
-    // Check if the current date matches today's date
     if (
       dates[i].getDate() === today.getDate() &&
       dates[i].getMonth() === today.getMonth() &&
       dates[i].getFullYear() === today.getFullYear()
     ) {
-      // Set isCurrentDateTrue to true if the current date matches today's date
       isCurrentDateTrue = true;
-      // Add the index of the current date to the activeCurrentDate array
       activeCurrentDate.push(i);
     }
     recentDates.push(dayName + " " + dayFigure + " " + month);
@@ -196,7 +186,6 @@ const ShiftScheduling = () => {
     dayIndex.push(i);
   }
 
-  // Function to handle the navigation buttons
   const handleNavigation = (direction) => {
     if (direction === "prev") {
       setDateCounter((prevCounter) => prevCounter - 1);
