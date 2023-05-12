@@ -130,11 +130,12 @@ const ShiftScheduling = () => {
   });
 
   const [dateCounter, setDateCounter] = useState(0);
-  const [activeCurrentDate, setActiveCurrentDate] = useState([]);
   let recentDates = [];
   let dayIndex = [];
-
   let isCurrentDateTrue;
+  let activeCurrentDate = [];
+
+  let today = new Date();
 
   // Create a new date object and set it to the current date
   let currentDate = new Date();
@@ -176,6 +177,17 @@ const ShiftScheduling = () => {
     let dayName = dates[i].toString().slice(0, 3);
     let dayFigure = dates[i].toString().slice(8, 10);
     let month = dates[i].toString().slice(4, 7);
+    // Check if the current date matches today's date
+    if (
+      dates[i].getDate() === today.getDate() &&
+      dates[i].getMonth() === today.getMonth() &&
+      dates[i].getFullYear() === today.getFullYear()
+    ) {
+      // Set isCurrentDateTrue to true if the current date matches today's date
+      isCurrentDateTrue = true;
+      // Add the index of the current date to the activeCurrentDate array
+      activeCurrentDate.push(i);
+    }
     recentDates.push(dayName + " " + dayFigure + " " + month);
   }
 
@@ -206,14 +218,16 @@ const ShiftScheduling = () => {
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleMondayShiftIndex = (shifts, employeeId, houseId, index, indexID2) => {
+  const handleMondayShiftIndex = (
+    shifts,
+    employeeId,
+    houseId,
+    index,
+    indexID2
+  ) => {
     setSelectedDayIndex(index);
     setSelectedDayIndex2(indexID2);
-    setEvent({
-      shifts,
-      employeeId,
-      houseId,
-    });
+    setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -232,11 +246,7 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setSelectedDayIndex2(indexID2);
-    setEvent({
-      shifts,
-      employeeId,
-      houseId,
-    });
+    setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -255,11 +265,7 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setSelectedDayIndex2(indexID2);
-    setEvent({
-      shifts,
-      employeeId,
-      houseId,
-    });
+    setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -278,11 +284,7 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setSelectedDayIndex2(indexID2);
-    setEvent({
-      shifts,
-      employeeId,
-      houseId,
-    });
+    setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -301,11 +303,7 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setSelectedDayIndex2(indexID2);
-    setEvent({
-      shifts,
-      employeeId,
-      houseId,
-    });
+    setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -324,11 +322,7 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setSelectedDayIndex2(indexID2);
-    setEvent({
-      shifts,
-      employeeId,
-      houseId,
-    });
+    setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -347,11 +341,7 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setSelectedDayIndex2(indexID2);
-    setEvent({
-      shifts,
-      employeeId,
-      houseId,
-    });
+    setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
 
@@ -530,7 +520,7 @@ const ShiftScheduling = () => {
                               style={{
                                 borderRight: "1px solid grey",
                                 backgroundColor:
-                                  daysToBackUp === dayIndex[index] && "#ddd",
+                                  data === recentDates[activeCurrentDate] && "#ddd",
                               }}
                               key={index}
                             >
