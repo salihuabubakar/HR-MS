@@ -6,23 +6,27 @@ import {
   PopupContainer,
 } from "./Addemployee.style";
 import { Checkbox } from "antd";
+import { useDateWeeklyCalendarCounter } from "../../utils/calendarCustomeHook";
 
 const RepeatModal = ({ event, dispatchSchedule }) => {
 
+  const {
+    dateCounter,
+    recentDates,
+    activeCurrentDate,
+    dayMonthYear,
+    handleNavigation,
+  } = useDateWeeklyCalendarCounter();
+
   const [selectedDays, setSelectedDays] = useState([]);
-  const [dayInWeeks, setDayInWeeks] = useState([]);
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
     if (checked) {
       setSelectedDays((prevSelectedDays) => [...prevSelectedDays, value]);
-      setDayInWeeks((prevSelectedDays) => [...prevSelectedDays, value]);
     } else {
       setSelectedDays((prevSelectedDays) =>
-        prevSelectedDays.filter((day) => day !== value)
-      );
-      setDayInWeeks((prevSelectedDays) =>
         prevSelectedDays.filter((day) => day !== value)
       );
     }
@@ -37,62 +41,8 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
       newShifts.push(newShift);
     });
     dispatchSchedule({ type: "push", payload: newShifts });
+    // dispatchSchedule({ type: "push", payload: { shifts: newShifts, employeeId, houseId } });
     setGlobalState("repeatModal", false);
-  };
-
-  const [dateCounter, setDateCounter] = useState(0);
-  let recentDates = [];
-  let dayIndex = [];
-
-
-  let currentDate = new Date();
-  currentDate.setDate(
-    dateCounter === 0
-      ? currentDate.getDate()
-      : currentDate.getDate() + dateCounter * 7
-  );
-
-  let firstDayOfWeek = 1;
-
-  let currentDayOfWeek = currentDate.getDay();
-
-  let daysToBackUp = (currentDayOfWeek + 7 - firstDayOfWeek) % 7;
-
-  let firstDateOfWeek = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    currentDate.getDate() - daysToBackUp
-  );
-
-  let dates = [firstDateOfWeek];
-  for (var i = 1; i < 7; i++) {
-    var nextDate = new Date(
-      firstDateOfWeek.getFullYear(),
-      firstDateOfWeek.getMonth(),
-      firstDateOfWeek.getDate() + i
-    );
-    dates.push(nextDate);
-  }
-
-  for (var i = 0; i < dates.length; i++) {
-    let dayName = dates[i].toString().slice(0, 3);
-    let dayFigure = dates[i].toString().slice(8, 10);
-    let month = dates[i].toString().slice(4, 7);
-    recentDates.push(dayName + " " + dayFigure + " " + month);
-  }
-
-  for (let i = 0; i < recentDates.length; i++) {
-    dayIndex.push(i);
-  }
-
-  const handleNavigation = (direction) => {
-    if (direction === "prev") {
-      setDateCounter((prevCounter) => prevCounter - 1);
-    } else if (direction === "next") {
-      setDateCounter((prevCounter) => prevCounter + 1);
-    } else {
-      setDateCounter(0);
-    }
   };
 
   return (
@@ -117,7 +67,9 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                       <h3>Repeat Shift</h3>
                       <p>
                         Select day(s) to repeat shift:{" "}
-                        {dayInWeeks.length > 0 && (<span>{dayInWeeks.join(", ")}</span>)}
+                        {selectedDays.length > 0 && (
+                          <span>{selectedDays.join(", ")}</span>
+                        )}
                       </p>
                     </div>
                     <div className="row">

@@ -13,6 +13,7 @@ const AddSchedule = ({
   employeeId,
   dispatchSchedule,
   selectedDay,
+  selectedDayMonthYear,
   selectedDayIndex,
   shiftList,
   houseId,
@@ -44,9 +45,16 @@ const AddSchedule = ({
     (isShiftExist || isSubShiftExist) ? (isShiftExist || isSubShiftExist) : ""
   );
 
+  // const [shifts, setShifts] = useState((isShiftExist || isSubShiftExist) ?? "");
+
   const [id, setId] = useState(
     (isIdExist || isSubIdExist) ? (isIdExist || isSubIdExist) : Date.now()
   );
+
+  // const [id, setId] = useState(
+  //   (isIdExist || isSubIdExist) ?? Date.now()
+  // );
+
 
   const handleSubmit = (e) => {
     e.preventDefault();

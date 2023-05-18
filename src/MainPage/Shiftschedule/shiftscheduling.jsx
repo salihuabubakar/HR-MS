@@ -14,18 +14,20 @@ import { Body, DesignationDiv } from "../Employees/Employees/styles";
 import {
   initDept,
   savedDeptReducer,
-  initUserAccount,
-  savedUserAccountReducer,
   initShiftList,
   savedShiftListReducer,
   initHouse,
   savedHouseReducer,
   initScheduleEvent,
   savedScheduleEventReducer,
+  initUserAccount,
+  savedUserAccountReducer,
 } from "../../utils/localStorage";
 import "regenerator-runtime/runtime";
 import { useReactToPrint } from "react-to-print";
 import WeeklyComponent from "./weeklyComponent";
+import MonthlyComponent from "./monthlyComponent";
+import { useDateWeeklyCalendarCounter, useDateMonthlyCalendarCounter } from "../../utils/calendarCustomeHook";
 
 
 const ShiftScheduling = () => {
@@ -36,6 +38,24 @@ const ShiftScheduling = () => {
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
+
+  const {
+    dateCounter,
+    recentDates,
+    activeCurrentDate,
+    handleNavigation,
+  } = useDateWeeklyCalendarCounter();
+
+  const {
+    handleNavigation: monthlyNavigation,
+    dateCounter: monthCounter,
+    dayNames,
+    currentMonthName,
+    currentYear,
+    tableData,
+  } = useDateMonthlyCalendarCounter();
+
+  const [views, setViews] = useState("weeklyView" || "monthlyView")
 
   const [showModal] = useGlobalState("showModal");
   const [showAddSchedul] = useGlobalState("showAddSchedul");
@@ -130,71 +150,20 @@ const ShiftScheduling = () => {
     }
   });
 
-  const [dateCounter, setDateCounter] = useState(0);
-  let recentDates = [];
-  let dayIndex = [];
-  let isCurrentDateTrue;
-  let activeCurrentDate = [];
-
-  let today = new Date();
-
-  let currentDate = new Date();
-  currentDate.setDate(
-    dateCounter === 0
-      ? currentDate.getDate()
-      : currentDate.getDate() + dateCounter * 7
+  const [userAcct] = useReducer(
+    savedUserAccountReducer,
+    [],
+    initUserAccount
   );
 
-  let firstDayOfWeek = 1;
+  useEffect(() => {
+    localStorage.setItem("userAccount", JSON.stringify(userAcct));
+  }, [userAcct])
 
-  let currentDayOfWeek = currentDate.getDay();
-
-  let daysToBackUp = (currentDayOfWeek + 7 - firstDayOfWeek) % 7;
-
-  let firstDateOfWeek = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    currentDate.getDate() - daysToBackUp
-  );
-
-  let dates = [firstDateOfWeek];
-  for (var i = 1; i < 7; i++) {
-    var nextDate = new Date(
-      firstDateOfWeek.getFullYear(),
-      firstDateOfWeek.getMonth(),
-      firstDateOfWeek.getDate() + i
-    );
-    dates.push(nextDate);
-  }
-
-  for (var i = 0; i < dates.length; i++) {
-    let dayName = dates[i].toString().slice(0, 3);
-    let dayFigure = dates[i].toString().slice(8, 10);
-    let month = dates[i].toString().slice(4, 7);
-    if (
-      dates[i].getDate() === today.getDate() &&
-      dates[i].getMonth() === today.getMonth() &&
-      dates[i].getFullYear() === today.getFullYear()
-    ) {
-      isCurrentDateTrue = true;
-      activeCurrentDate.push(i);
-    }
-    recentDates.push(dayName + " " + dayFigure + " " + month);
-  }
-
-  for (let i = 0; i < recentDates.length; i++) {
-    dayIndex.push(i);
-  }
-
-  const handleNavigation = (direction) => {
-    if (direction === "prev") {
-      setDateCounter((prevCounter) => prevCounter - 1);
-    } else if (direction === "next") {
-      setDateCounter((prevCounter) => prevCounter + 1);
-    } else {
-      setDateCounter(0);
-    }
-  };
+  const [employeeAccts, setEmployeeAccts] = useState();
+  useEffect(() => {
+    setEmployeeAccts(userAcct);
+  }, [userAcct]);
 
   const [employeeId, setEmployeeId] = useState();
   const [selectedDay, setSelectedDay] = useState();
@@ -336,8 +305,13 @@ const ShiftScheduling = () => {
   };
 
   const componentRef = useRef();
-  const handlePrint = useReactToPrint({
+  const handleWeeklyCalendarPrint = useReactToPrint({
     content: () => componentRef.current,
+  });
+
+  const monthlyCalendarComponentRef = useRef();
+  const handleMonthlyCalendarPrint = useReactToPrint({
+    content: () => monthlyCalendarComponentRef.current,
   });
 
   return (
@@ -381,6 +355,24 @@ const ShiftScheduling = () => {
                     {" "}
                     Add Shifts
                   </a>
+                  {views === "weeklyView" && (
+                    <a
+                      className="btn add-btn m-r-5"
+                      onClick={() => setViews("monthlyView")}
+                    >
+                      {" "}
+                      Monthly View
+                    </a>
+                  )}
+                  {views === "monthlyView" && (
+                    <a
+                      className="btn add-btn m-r-5"
+                      onClick={() => setViews("weeklyView")}
+                    >
+                      {" "}
+                      Weekly View
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -440,7 +432,14 @@ const ShiftScheduling = () => {
                 justifyContent: "flex-start",
               }}
             >
-              <button onClick={handlePrint} className="btn btn-white">
+              <button
+                onClick={
+                  views === "weeklyView"
+                    ? handleWeeklyCalendarPrint
+                    : handleMonthlyCalendarPrint
+                }
+                className="btn btn-white"
+              >
                 <i className="fa fa-print fa-lg" /> Print
               </button>
             </div>
@@ -452,56 +451,104 @@ const ShiftScheduling = () => {
               }}
             >
               <button
-                onClick={() => handleNavigation("prev")}
+                onClick={() =>
+                  views === "weeklyView"
+                    ? handleNavigation("prev")
+                    : monthlyNavigation("prev")
+                }
                 style={{ border: "none", marginRight: "10px" }}
                 className="btn btn-success btn-block w-10"
               >
-                Prev Week
+                Prev {views === "weeklyView" ? "Week" : "Month"}
               </button>
               <button
-                onClick={() => handleNavigation("current")}
+                onClick={() =>
+                  views === "weeklyView"
+                    ? handleNavigation("current")
+                    : monthlyNavigation("current")
+                }
                 className="btn btn-success btn-block w-10"
                 style={{
                   border: "none",
-                  opacity: dateCounter === 0 ? "0.3" : "1",
-                  cursor: dateCounter === 0 ? "not-allowed" : "pointer",
-                  color: dateCounter === 0 ? "black" : "white",
+                  opacity:
+                    views === "weeklyView"
+                      ? dateCounter === 0
+                        ? "0.3"
+                        : "1"
+                      : monthCounter === 0
+                      ? "0.3"
+                      : "1",
+                  cursor:
+                    views === "weeklyView"
+                      ? dateCounter === 0
+                        ? "not-allowed"
+                        : "pointer"
+                      : monthCounter === 0
+                      ? "not-allowed"
+                      : "pointer",
+                  color:
+                    views === "weeklyView"
+                      ? dateCounter === 0
+                        ? "black"
+                        : "white"
+                      : monthCounter === 0
+                      ? "black"
+                      : "white",
                 }}
               >
-                Current Week
+                Current {views === "weeklyView" ? "Week" : "Month"}
               </button>
               <button
-                onClick={() => handleNavigation("next")}
+                onClick={() =>
+                  views === "weeklyView"
+                    ? handleNavigation("next")
+                    : monthlyNavigation("next")
+                }
                 style={{ border: "none", marginLeft: "10px" }}
                 className="btn btn-success btn-block w-10"
               >
-                Next Week
+                Next {views === "weeklyView" ? "Week" : "Month"}
               </button>
             </div>
-            <WeeklyComponent
-              activeCurrentDate={activeCurrentDate}
-              recentDates={recentDates}
-              ref={componentRef}
-              selectedHouse={selectedHouse}
-              houseId={houseId}
-              employeeId={employeeId}
-              handleMondayShift={handleMondayShift}
-              handleMondayShiftIndex={handleMondayShiftIndex}
-              handleTuesDayShift={handleTuesDayShift}
-              handleTuesdayShiftIndex={handleTuesdayShiftIndex}
-              handleWednesdayShift={handleWednesdayShift}
-              handleWednesdayShiftIndex={handleWednesdayShiftIndex}
-              handleThursdayShift={handleThursdayShift}
-              handleThursdayShiftIndex={handleThursdayShiftIndex}
-              handleFridayShift={handleFridayShift}
-              handleFridayShiftIndex={handleFridayShiftIndex}
-              handlSaturdayShift={handlSaturdayShift}
-              handleSaturdayShiftIndex={handleSaturdayShiftIndex}
-              handleSundayShift={handleSundayShift}
-              handleSundayShiftIndex={handleSundayShiftIndex}
-              scheduleEvent={scheduleEvent}
-              DefaultImage={DefaultImage}
-            />
+            {views === "weeklyView" && (
+              <WeeklyComponent
+                activeCurrentDate={activeCurrentDate}
+                recentDates={recentDates}
+                ref={componentRef}
+                selectedHouse={selectedHouse}
+                houseId={houseId}
+                handleMondayShift={handleMondayShift}
+                handleMondayShiftIndex={handleMondayShiftIndex}
+                handleTuesDayShift={handleTuesDayShift}
+                handleTuesdayShiftIndex={handleTuesdayShiftIndex}
+                handleWednesdayShift={handleWednesdayShift}
+                handleWednesdayShiftIndex={handleWednesdayShiftIndex}
+                handleThursdayShift={handleThursdayShift}
+                handleThursdayShiftIndex={handleThursdayShiftIndex}
+                handleFridayShift={handleFridayShift}
+                handleFridayShiftIndex={handleFridayShiftIndex}
+                handlSaturdayShift={handlSaturdayShift}
+                handleSaturdayShiftIndex={handleSaturdayShiftIndex}
+                handleSundayShift={handleSundayShift}
+                handleSundayShiftIndex={handleSundayShiftIndex}
+                scheduleEvent={scheduleEvent}
+                DefaultImage={DefaultImage}
+              />
+            )}
+            {views === "monthlyView" && (
+              <MonthlyComponent
+                dayNames={dayNames}
+                currentMonthName={currentMonthName}
+                currentYear={currentYear}
+                DefaultImage={DefaultImage}
+                tableData={tableData}
+                selectedHouse={selectedHouse}
+                houseId={houseId}
+                scheduleEvent={scheduleEvent}
+                employeeAccts={employeeAccts}
+                ref={monthlyCalendarComponentRef}
+              />
+            )}
             {/* /Content End */}
           </div>
           {/* /Page Content */}

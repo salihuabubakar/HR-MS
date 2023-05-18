@@ -197,11 +197,17 @@ export const initScheduleEvent = () => {
 };
 
 export const savedScheduleEventReducer = (state, { type, payload }) => {
+// export const savedScheduleEventReducer = (state, { type, { houseId = "", employeeId = "", shifts = [], shift } }) => {
   switch (type) {
     case "push":
       return [...state, payload];
+      // state[houseId][employeeId].push(shifts)
+      // return [...state]
     case "update":
       return state.map((evt) => (evt.id === payload.id ? payload : evt));
+      // const current = state[houseId][employeeId]
+      // state[houseId][employeeId] = current.map() 
+      // return [...state]
     case "delete":
       return state.filter((evt) => evt.id !== payload.id);
     default:
@@ -219,6 +225,7 @@ export const savedEduInfoReducer = (state, { type, payload }) => {
   switch (type) {
     case "push":
       return [...state, payload];
+      // state[pay]
     case "update":
       return state.map((info) => (info.id === payload.id ? payload : info));
     case "delete":
