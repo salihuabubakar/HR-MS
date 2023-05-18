@@ -7,8 +7,7 @@ class WeeklyComponent extends React.Component {
       recentDates,
       activeCurrentDate,
       selectedHouse,
-      houseId,
-      employeeId,
+      houseId: accomodationId,
       handleMondayShift,
       handleMondayShiftIndex,
       handleTuesDayShift,
@@ -141,7 +140,7 @@ class WeeklyComponent extends React.Component {
                                         shifts,
                                       } = nestedEvents;
                                       if (
-                                        houseId == houseId &&
+                                        houseId == accomodationId &&
                                         value === employeeId &&
                                         selectedDay === recentDates[0]
                                       ) {
@@ -173,7 +172,7 @@ class WeeklyComponent extends React.Component {
                                     shifts,
                                   } = events;
                                   if (
-                                    houseId == houseId &&
+                                    houseId == accomodationId &&
                                     value === employeeId &&
                                     selectedDay === recentDates[0]
                                   ) {
@@ -217,7 +216,7 @@ class WeeklyComponent extends React.Component {
                                         shifts,
                                       } = nestedEvents;
                                       if (
-                                        houseId == houseId &&
+                                        houseId == accomodationId &&
                                         value === employeeId &&
                                         selectedDay === recentDates[1]
                                       ) {
@@ -249,7 +248,7 @@ class WeeklyComponent extends React.Component {
                                     shifts,
                                   } = events;
                                   if (
-                                    houseId == houseId &&
+                                    houseId == accomodationId &&
                                     value === employeeId &&
                                     selectedDay === recentDates[1]
                                   ) {
@@ -293,7 +292,7 @@ class WeeklyComponent extends React.Component {
                                         shifts,
                                       } = nestedEvents;
                                       if (
-                                        houseId == houseId &&
+                                        houseId == accomodationId &&
                                         value === employeeId &&
                                         selectedDay === recentDates[2]
                                       ) {
@@ -325,7 +324,7 @@ class WeeklyComponent extends React.Component {
                                     shifts,
                                   } = events;
                                   if (
-                                    houseId == houseId &&
+                                    houseId == accomodationId &&
                                     value === employeeId &&
                                     selectedDay === recentDates[2]
                                   ) {
@@ -369,7 +368,7 @@ class WeeklyComponent extends React.Component {
                                         shifts,
                                       } = nestedEvents;
                                       if (
-                                        houseId == houseId &&
+                                        houseId == accomodationId &&
                                         value === employeeId &&
                                         selectedDay === recentDates[3]
                                       ) {
@@ -401,7 +400,7 @@ class WeeklyComponent extends React.Component {
                                     shifts,
                                   } = events;
                                   if (
-                                    houseId == houseId &&
+                                    houseId == accomodationId &&
                                     value === employeeId &&
                                     selectedDay === recentDates[3]
                                   ) {
@@ -445,7 +444,7 @@ class WeeklyComponent extends React.Component {
                                         shifts,
                                       } = nestedEvents;
                                       if (
-                                        houseId == houseId &&
+                                        houseId == accomodationId &&
                                         value === employeeId &&
                                         selectedDay === recentDates[4]
                                       ) {
@@ -477,7 +476,7 @@ class WeeklyComponent extends React.Component {
                                     shifts,
                                   } = events;
                                   if (
-                                    houseId == houseId &&
+                                    houseId == accomodationId &&
                                     value === employeeId &&
                                     selectedDay === recentDates[4]
                                   ) {
@@ -521,7 +520,7 @@ class WeeklyComponent extends React.Component {
                                         shifts,
                                       } = nestedEvents;
                                       if (
-                                        houseId == houseId &&
+                                        houseId == accomodationId &&
                                         value === employeeId &&
                                         selectedDay === recentDates[5]
                                       ) {
@@ -553,7 +552,7 @@ class WeeklyComponent extends React.Component {
                                     shifts,
                                   } = events;
                                   if (
-                                    houseId == houseId &&
+                                    houseId == accomodationId &&
                                     value === employeeId &&
                                     selectedDay === recentDates[5]
                                   ) {
@@ -597,7 +596,7 @@ class WeeklyComponent extends React.Component {
                                         shifts,
                                       } = nestedEvents;
                                       if (
-                                        houseId == houseId &&
+                                        houseId == accomodationId &&
                                         value === employeeId &&
                                         selectedDay === recentDates[6]
                                       ) {
@@ -629,7 +628,7 @@ class WeeklyComponent extends React.Component {
                                     shifts,
                                   } = events;
                                   if (
-                                    houseId == houseId &&
+                                    houseId == accomodationId &&
                                     value === employeeId &&
                                     selectedDay === recentDates[6]
                                   ) {
