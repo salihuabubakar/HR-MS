@@ -7,6 +7,7 @@ import {
 } from "./Addemployee.style";
 import { Checkbox } from "antd";
 import { useDateWeeklyCalendarCounter } from "../../utils/calendarCustomeHook";
+import { RepeatModalContainer } from "../../MainPage/Employees/Employees/styles";
 
 const RepeatModal = ({ event, dispatchSchedule }) => {
 
@@ -50,7 +51,7 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div className="custom-modal" role="dialog">
+            <RepeatModalContainer className="custom-modal" role="dialog">
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">
@@ -63,7 +64,8 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <div className="form-header">
+                    <div className="form-header"
+                    >
                       <h3>Repeat Shift</h3>
                       <p>
                         Select day(s) to repeat shift:{" "}
@@ -73,13 +75,7 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                       </p>
                     </div>
                     <div className="row">
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        className="col-sm-12"
+                      <div className="col-sm-12 nav-btn"
                       >
                         <button
                           onClick={() => handleNavigation("prev")}
@@ -109,17 +105,15 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                           {">"}
                         </button>
                       </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                        className="col-sm-12"
+                      <div className="col-sm-12 check-box-div"
                       >
                         {recentDates?.map((data, index) => {
                           return (
                             <Checkbox
+                              style={{
+                                width: "50%",
+                                marginLeft: index === 0 && "8px",
+                              }}
                               key={index}
                               value={data}
                               onChange={handleCheckboxChange}
@@ -142,7 +136,7 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </RepeatModalContainer>
           </PopupContainer>
         </PopupOverlay>
       </PopupWrapper>

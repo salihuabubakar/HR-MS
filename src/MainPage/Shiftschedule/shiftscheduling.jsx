@@ -10,7 +10,12 @@ import Smile from "../../assets/img/smile.png";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
-import { Body, DesignationDiv } from "../Employees/Employees/styles";
+import {
+  Body,
+  DesignationDiv,
+  NavContainer,
+  NavButton,
+} from "../Employees/Employees/styles";
 import {
   initDept,
   savedDeptReducer,
@@ -426,90 +431,52 @@ const ShiftScheduling = () => {
               </div>
             </div>
             {/* Search Filter */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-              }}
-            >
-              <button
-                onClick={
-                  views === "weeklyView"
-                    ? handleWeeklyCalendarPrint
-                    : handleMonthlyCalendarPrint
-                }
-                className="btn btn-white"
-              >
-                <i className="fa fa-print fa-lg" /> Print
-              </button>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                marginBottom: "15px",
-              }}
-            >
-              <button
-                onClick={() =>
-                  views === "weeklyView"
-                    ? handleNavigation("prev")
-                    : monthlyNavigation("prev")
-                }
-                style={{ border: "none", marginRight: "10px" }}
-                className="btn btn-success btn-block w-10"
-              >
-                Prev {views === "weeklyView" ? "Week" : "Month"}
-              </button>
-              <button
-                onClick={() =>
-                  views === "weeklyView"
-                    ? handleNavigation("current")
-                    : monthlyNavigation("current")
-                }
-                className="btn btn-success btn-block w-10"
-                style={{
-                  border: "none",
-                  opacity:
-                    views === "weeklyView"
-                      ? dateCounter === 0
-                        ? "0.3"
-                        : "1"
-                      : monthCounter === 0
-                      ? "0.3"
-                      : "1",
-                  cursor:
-                    views === "weeklyView"
-                      ? dateCounter === 0
-                        ? "not-allowed"
-                        : "pointer"
-                      : monthCounter === 0
-                      ? "not-allowed"
-                      : "pointer",
-                  color:
-                    views === "weeklyView"
-                      ? dateCounter === 0
-                        ? "black"
-                        : "white"
-                      : monthCounter === 0
-                      ? "black"
-                      : "white",
-                }}
-              >
-                Current {views === "weeklyView" ? "Week" : "Month"}
-              </button>
-              <button
-                onClick={() =>
-                  views === "weeklyView"
-                    ? handleNavigation("next")
-                    : monthlyNavigation("next")
-                }
-                style={{ border: "none", marginLeft: "10px" }}
-                className="btn btn-success btn-block w-10"
-              >
-                Next {views === "weeklyView" ? "Week" : "Month"}
-              </button>
-            </div>
+            <NavContainer>
+              <div className="print-btn-div">
+                <NavButton
+                  onClick={
+                    views === "weeklyView" ? handleWeeklyCalendarPrint : handleMonthlyCalendarPrint
+                  }
+                  className="btn btn-white print-btn"
+                >
+                  <i className="fa fa-print fa-lg" /> Print
+                </NavButton>
+              </div>
+              <div className="nav-btn-div">
+                <NavButton
+                  onClick={() =>
+                    views === "weeklyView" ? handleNavigation("prev") : monthlyNavigation("prev")
+                  }
+                  className="btn btn-success"
+                >
+                  Prev {views === "weeklyView" ? "Week" : "Month"}
+                </NavButton>
+                <NavButton
+                  onClick={() =>
+                    views === "weeklyView" ? handleNavigation("current") : monthlyNavigation("current")
+                  }
+                  className="btn btn-success"
+                  style={{
+                    opacity:
+                      views === "weeklyView" ?  (dateCounter === 0 ? "0.3" : "1") : (monthCounter === 0 ? "0.3" : "1"),
+                    cursor:
+                      views === "weeklyView" ? (dateCounter === 0   ? "not-allowed"  : "pointer") : (monthCounter === 0 ? "not-allowed" : "pointer"),
+                    color:
+                      views === "weeklyView" ? (dateCounter === 0   ? "black"  : "white") : (monthCounter === 0 ? "black" : "white"),
+                  }}
+                >
+                  Current {views === "weeklyView" ? "Week" : "Month"}
+                </NavButton>
+                <NavButton
+                  onClick={() =>
+                    views === "weeklyView" ? handleNavigation("next") : monthlyNavigation("next")
+                  }
+                  className="btn btn-success"
+                >
+                  Next {views === "weeklyView" ? "Week" : "Month"}
+                </NavButton>
+              </div>
+            </NavContainer>
             {views === "weeklyView" && (
               <WeeklyComponent
                 activeCurrentDate={activeCurrentDate}
