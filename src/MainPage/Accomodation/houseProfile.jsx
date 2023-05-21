@@ -82,10 +82,7 @@ const houseProfile = () => {
           {/* /Page Header */}
           <div className="tab-content">
             {/* Profile Info Tab */}
-            <div
-              id="emp_profile"
-              className="pro-overview tab-pane fade show active"
-            >
+            <div>
               <div className="row">
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
@@ -163,6 +160,215 @@ const houseProfile = () => {
               </div>
             </div>
             {/* /Profile Info Tab */}
+          </div>
+          <div className="card tab-box">
+            <div className="row user-tabs">
+              <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                <ul className="nav nav-tabs nav-tabs-bottom">
+                  <li className="nav-item">
+                    <a
+                      href="#emp_profile"
+                      data-bs-toggle="tab"
+                      className="nav-link active"
+                    >
+                      Service Worker
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      href="#document_upload"
+                      data-bs-toggle="tab"
+                      className="nav-link"
+                    >
+                      Document Upload
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="tab-content">
+            {/* Profile Info Tab */}
+            <div
+              id="emp_profile"
+              className="pro-overview tab-pane fade show active"
+            >
+              <div className="row">
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        Personal Informations{" "}
+                        <a className="edit-icon">
+                          <i className="fa fa-pencil" />
+                        </a>
+                      </h3>
+                      <ul className="personal-info">
+                        <li>
+                          <div className="title">Passport No.</div>
+                          <div className="text">{"passPortNo"}</div>
+                        </li>
+                        <li>
+                          <div className="title">Passport Exp Date.</div>
+                          <div className="text">{"passportExpiryDate"}</div>
+                        </li>
+                        <li>
+                          <div className="title">Tel</div>
+                          <div className="text">
+                            <a href="">{"phoneNo"}</a>
+                          </div>
+                        </li>
+                        <li>
+                          <div className="title">Nationality</div>
+                          <div className="text">{"country"}</div>
+                        </li>
+                        <li>
+                          <div className="title">Religion</div>
+                          <div className="text">{"religion"}</div>
+                        </li>
+                        <li>
+                          <div className="title">Marital status</div>
+                          <div className="text">Singles</div>
+                        </li>
+                        <li>
+                          <div className="title">Employment of spouse</div>
+                          <div className="text">{"emSpouse"}</div>
+                        </li>
+                        <li>
+                          <div className="title">No. of children</div>
+                          <div className="text">{"noChildren"}</div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* /Profile Info Tab */}
+            {/* Document Upload Tab */}
+            <div className="tab-pane fade" id="document_upload">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title m-b-20">Uploaded files</h5>
+                  <ul className="files-list">
+                    <li>
+                      <div className="files-cont">
+                        <div className="file-type">
+                          <span className="files-icon">
+                            <i className="fa fa-file-pdf-o" />
+                          </span>
+                        </div>
+                        <div className="files-info">
+                          <span className="file-name text-ellipsis">
+                            <a
+                              href="#"
+                              onClick={(event) => event.preventDefault()}
+                            >
+                              AHA Selfcare Mobile Application Test-Cases.xls
+                            </a>
+                          </span>
+                          <span className="file-author">
+                            <a
+                              href="#"
+                              onClick={(event) => event.preventDefault()}
+                            >
+                              John Doe
+                            </a>
+                          </span>{" "}
+                          <span className="file-date">May 31st at 6:53 PM</span>
+                          <div className="file-size">Size: 14.8Mb</div>
+                        </div>
+                        <ul className="files-action">
+                          <li className="dropdown dropdown-action">
+                            <a
+                              href=""
+                              className="dropdown-toggle btn btn-link"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i className="material-icons">more_horiz</i>
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <a className="dropdown-item" href="">
+                                Download
+                              </a>
+                              <a
+                                className="dropdown-item"
+                                data-bs-toggle="modal"
+                                data-bs-target="#share_files"
+                              >
+                                Share
+                              </a>
+                              <a className="dropdown-item" href="">
+                                Delete
+                              </a>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="files-cont">
+                        <div className="file-type">
+                          <span className="files-icon">
+                            <i className="fa fa-file-pdf-o" />
+                          </span>
+                        </div>
+                        <div className="files-info">
+                          <span className="file-name text-ellipsis">
+                            <a
+                              href="#"
+                              onClick={(event) => event.preventDefault()}
+                            >
+                              AHA Selfcare Mobile Application Test-Cases.xls
+                            </a>
+                          </span>
+                          <span className="file-author">
+                            <a
+                              href="#"
+                              onClick={(event) => event.preventDefault()}
+                            >
+                              Richard Miles
+                            </a>
+                          </span>{" "}
+                          <span className="file-date">May 31st at 6:53 PM</span>
+                          <div className="file-size">Size: 14.8Mb</div>
+                        </div>
+                        <ul className="files-action">
+                          <li className="dropdown dropdown-action">
+                            <a
+                              href=""
+                              className="dropdown-toggle btn btn-link"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i className="material-icons">more_horiz</i>
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <a className="dropdown-item" href="">
+                                Download
+                              </a>
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                data-bs-toggle="modal"
+                                data-bs-target="#share_files"
+                              >
+                                Share
+                              </a>
+                              <a className="dropdown-item" href="">
+                                Delete
+                              </a>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            {/* /Document Upload Tab */}
           </div>
         </div>
       </div>
