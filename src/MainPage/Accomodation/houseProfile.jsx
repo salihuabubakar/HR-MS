@@ -198,47 +198,11 @@ const houseProfile = () => {
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Personal Informations{" "}
+                        Service Workers{" "}
                         <a className="edit-icon">
                           <i className="fa fa-pencil" />
                         </a>
                       </h3>
-                      <ul className="personal-info">
-                        <li>
-                          <div className="title">Passport No.</div>
-                          <div className="text">{"passPortNo"}</div>
-                        </li>
-                        <li>
-                          <div className="title">Passport Exp Date.</div>
-                          <div className="text">{"passportExpiryDate"}</div>
-                        </li>
-                        <li>
-                          <div className="title">Tel</div>
-                          <div className="text">
-                            <a href="">{"phoneNo"}</a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="title">Nationality</div>
-                          <div className="text">{"country"}</div>
-                        </li>
-                        <li>
-                          <div className="title">Religion</div>
-                          <div className="text">{"religion"}</div>
-                        </li>
-                        <li>
-                          <div className="title">Marital status</div>
-                          <div className="text">Singles</div>
-                        </li>
-                        <li>
-                          <div className="title">Employment of spouse</div>
-                          <div className="text">{"emSpouse"}</div>
-                        </li>
-                        <li>
-                          <div className="title">No. of children</div>
-                          <div className="text">{"noChildren"}</div>
-                        </li>
-                      </ul>
                     </div>
                   </div>
                 </div>
