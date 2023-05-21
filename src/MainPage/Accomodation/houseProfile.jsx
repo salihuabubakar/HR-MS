@@ -198,10 +198,7 @@ const houseProfile = () => {
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Service Workers{" "}
-                        <a className="edit-icon">
-                          <i className="fa fa-pencil" />
-                        </a>
+                        Service Workers
                       </h3>
                     </div>
                   </div>
