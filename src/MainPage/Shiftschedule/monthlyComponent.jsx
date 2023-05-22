@@ -147,9 +147,9 @@ class MonthlyComponent extends React.Component {
                             isCurrentMonth,
                             dayName,
                             dayFigure,
-                            isActiveDay,
                             month,
                             year,
+                            isCurrentDateTrue,
                           } = day;
                           return (
                             <>
@@ -163,9 +163,9 @@ class MonthlyComponent extends React.Component {
                                     )
                                   }
                                   style={{
-                                    // backgroundColor: isActiveDay ? "#9BA4B5" : "",
-                                    // borderRadius: isActiveDay && "50px",
-                                    // padding: isActiveDay && "3px",
+                                    backgroundColor: isCurrentDateTrue && "#9BA4B5",
+                                    borderRadius: isCurrentDateTrue && "50px",
+                                    padding: isCurrentDateTrue && "3px",
                                     opacity: !isCurrentMonth && "0.7",
                                   }}
                                 >

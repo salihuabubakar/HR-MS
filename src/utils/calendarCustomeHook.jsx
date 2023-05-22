@@ -84,7 +84,7 @@ export const useDateWeeklyCalendarCounter = () => {
 export const useDateMonthlyCalendarCounter = () => {
   const [dateCounter, setDateCounter] = useState(0);
   let currentDate = new Date();
-  let isActiveDay;
+  let isCurrentDateTrue;
   currentDate.setMonth(currentDate.getMonth() + dateCounter);
 
   let numDays = new Date(
@@ -127,18 +127,18 @@ export const useDateMonthlyCalendarCounter = () => {
     const month = dates[i].toString().slice(4, 7);
     const year = dates[i].toString().slice(11, 15);
     let isCurrentMonth = dates[i].getMonth() === currentDate.getMonth();
-    isActiveDay =
-      dates[i].getDate() === currentDate.getDate() &&
-      isCurrentMonth &&
-      dates[i].getMonth() === currentDate.getMonth();
+    isCurrentDateTrue =
+      dates[i].getDate() === new Date().getDate() &&
+      dates[i].getMonth() === new Date().getMonth() &&
+      dates[i].getFullYear() === new Date().getFullYear();
 
     weekData.push({
       dayName,
       dayFigure,
       isCurrentMonth,
-      isActiveDay,
       month,
       year,
+      isCurrentDateTrue,
     });
 
     if ((i + 1) % 7 === 0) {
