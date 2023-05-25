@@ -173,7 +173,6 @@ const ShiftScheduling = () => {
   const [employeeId, setEmployeeId] = useState();
   const [selectedDay, setSelectedDay] = useState();
   const [selectedDayIndex, setSelectedDayIndex] = useState(null);
-  const [selectedDayIndex2, setSelectedDayIndex2] = useState(null);
   const [event, setEvent] = useState();
 
   const handleMondayShift = (value) => {
@@ -187,10 +186,8 @@ const ShiftScheduling = () => {
     employeeId,
     houseId,
     index,
-    indexID2
   ) => {
     setSelectedDayIndex(index);
-    setSelectedDayIndex2(indexID2);
     setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -206,10 +203,8 @@ const ShiftScheduling = () => {
     employeeId,
     houseId,
     index,
-    indexID2
   ) => {
     setSelectedDayIndex(index);
-    setSelectedDayIndex2(indexID2);
     setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -225,10 +220,8 @@ const ShiftScheduling = () => {
     employeeId,
     houseId,
     index,
-    indexID2
   ) => {
     setSelectedDayIndex(index);
-    setSelectedDayIndex2(indexID2);
     setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -244,10 +237,8 @@ const ShiftScheduling = () => {
     employeeId,
     houseId,
     index,
-    indexID2
   ) => {
     setSelectedDayIndex(index);
-    setSelectedDayIndex2(indexID2);
     setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -263,10 +254,8 @@ const ShiftScheduling = () => {
     employeeId,
     houseId,
     index,
-    indexID2
   ) => {
     setSelectedDayIndex(index);
-    setSelectedDayIndex2(indexID2);
     setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -282,10 +271,8 @@ const ShiftScheduling = () => {
     employeeId,
     houseId,
     index,
-    indexID2
   ) => {
     setSelectedDayIndex(index);
-    setSelectedDayIndex2(indexID2);
     setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -301,10 +288,8 @@ const ShiftScheduling = () => {
     employeeId,
     houseId,
     index,
-    indexID2
   ) => {
     setSelectedDayIndex(index);
-    setSelectedDayIndex2(indexID2);
     setEvent({ shifts, employeeId, houseId });
     setGlobalState("selectedScheduleEvent", scheduleEvent);
   };
@@ -534,7 +519,6 @@ const ShiftScheduling = () => {
           event={event}
           schedule={schedule}
           houseId={houseId}
-          selectedDayIndex2={selectedDayIndex2}
         />
       )}
     </>

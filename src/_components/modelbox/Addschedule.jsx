@@ -13,48 +13,31 @@ const AddSchedule = ({
   employeeId,
   dispatchSchedule,
   selectedDay,
-  selectedDayMonthYear,
   selectedDayIndex,
   shiftList,
   houseId,
   event,
-  selectedDayIndex2,
 }) => {
   const [selectedScheduleEvent] = useGlobalState("selectedScheduleEvent");
   const [deleteModal] = useGlobalState("deleteModal");
   const [repeatModal] = useGlobalState("repeatModal");
 
   let isIdExist;
-  let isSubIdExist;
   let isShiftExist;
-  let isSubShiftExist;
 
-  if (selectedScheduleEvent && selectedDayIndex !== undefined && (selectedDayIndex2 === undefined || selectedDayIndex2 !== undefined)) {
-      isIdExist = selectedScheduleEvent[selectedDayIndex]?.id;
-      isShiftExist = selectedScheduleEvent[selectedDayIndex]?.shifts;
-      isSubIdExist = selectedScheduleEvent[selectedDayIndex][selectedDayIndex2]?.id;
-      isSubShiftExist = selectedScheduleEvent[selectedDayIndex][selectedDayIndex2]?.shifts;
+  if (
+    selectedScheduleEvent &&
+    selectedDayIndex !== undefined
+  ) {
+    isIdExist = selectedScheduleEvent[selectedDayIndex]?.id;
+    isShiftExist = selectedScheduleEvent[selectedDayIndex]?.shifts;
   } else {
-      isIdExist = "";
-      isSubIdExist = "";
-      isShiftExist = "";
-      isSubShiftExist = "";
+    isIdExist = "";
+    isShiftExist = "";
   }
 
-  const [shifts, setShifts] = useState(
-    (isShiftExist || isSubShiftExist) ? (isShiftExist || isSubShiftExist) : ""
-  );
-
-  // const [shifts, setShifts] = useState((isShiftExist || isSubShiftExist) ?? "");
-
-  const [id, setId] = useState(
-    (isIdExist || isSubIdExist) ? (isIdExist || isSubIdExist) : Date.now()
-  );
-
-  // const [id, setId] = useState(
-  //   (isIdExist || isSubIdExist) ?? Date.now()
-  // );
-
+  const [shifts, setShifts] = useState(isShiftExist ? isShiftExist: "");
+  const [id] = useState( isIdExist ? isIdExist : Date.now());
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,7 +48,7 @@ const AddSchedule = ({
       houseId,
       id,
     };
-    if (isIdExist || isSubIdExist) {
+    if (isIdExist) {
       dispatchSchedule({ type: "update", payload: scheduleE });
     } else {
       dispatchSchedule({ type: "push", payload: scheduleE });
@@ -126,11 +109,11 @@ const AddSchedule = ({
               <div className="modal-content">
                 <div style={{ position: "relative" }} className="card-header">
                   <h5 className="card-title">
-                    {isIdExist || isSubIdExist
+                    {isIdExist
                       ? "Edit Schedule"
                       : "Add Schedule"}
                   </h5>
-                  {(isIdExist || isSubIdExist) && (
+                  {isIdExist && (
                     <button
                       style={{
                         border: "none",
@@ -168,14 +151,12 @@ const AddSchedule = ({
                             styles={customSelectStyles}
                             placeholder="Select Shift"
                             defaultValue={
-                              isShiftExist || isSubShiftExist
+                              isShiftExist
                                 ? {
                                     value:
-                                      isShiftExist?.value ||
-                                      isSubShiftExist?.value,
+                                      isShiftExist?.value,
                                     label:
-                                      isShiftExist?.label ||
-                                      isSubShiftExist?.label,
+                                      isShiftExist?.label,
                                   }
                                 : "Select Shift"
                             }
@@ -184,7 +165,7 @@ const AddSchedule = ({
                       </div>
                     </div>
                     <div className="submit-section">
-                      {(isIdExist || isSubIdExist) && (
+                      {isIdExist && (
                         <button
                           onClick={handleRepeatShift}
                           className="btn btn-primary repeat-btn"
@@ -197,7 +178,7 @@ const AddSchedule = ({
                         onClick={handleSubmit}
                         className="btn btn-primary submit-btn"
                       >
-                        {isIdExist || isSubIdExist ? "Update" : "Save"}
+                        {isIdExist ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>
@@ -212,15 +193,11 @@ const AddSchedule = ({
           deleteAction={dispatchSchedule}
           indexToDelete={selectedDayIndex}
           dispatch={selectedScheduleEvent}
-          selectedDayIndex2={selectedDayIndex2}
           modalTitle={"Schedule"}
         />
       )}
       {repeatModal && (
-        <RepeatModal
-          dispatchSchedule={dispatchSchedule}
-          event={event}
-        />
+        <RepeatModal dispatchSchedule={dispatchSchedule} event={event} />
       )}
     </>
   );

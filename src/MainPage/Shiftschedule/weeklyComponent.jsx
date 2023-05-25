@@ -35,7 +35,6 @@ class WeeklyComponent extends React.Component {
         shifts,
         handleDayShiftIndex,
         indexID,
-        indexID2,
       }) => {
         return (
           <div
@@ -45,7 +44,6 @@ class WeeklyComponent extends React.Component {
                 employeeId,
                 houseId,
                 indexID,
-                indexID2
               )
             }
             key={id}
@@ -129,41 +127,6 @@ class WeeklyComponent extends React.Component {
                                 </a>
                               </span>
                               {scheduleEvent?.map((events, indexID) => {
-                                if (Array.isArray(events)) {
-                                  return events.map(
-                                    (nestedEvents, indexID2) => {
-                                      const {
-                                        id,
-                                        employeeId,
-                                        houseId,
-                                        selectedDay,
-                                        shifts,
-                                      } = nestedEvents;
-                                      if (
-                                        houseId == accomodationId &&
-                                        value === employeeId &&
-                                        selectedDay === recentDates[0]
-                                      ) {
-                                        return (
-                                          <>
-                                            <Shifts
-                                              id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
-                                              handleDayShiftIndex={
-                                                handleMondayShiftIndex
-                                              }
-                                              indexID={indexID}
-                                              indexID2={indexID2}
-                                              label={label}
-                                            />
-                                          </>
-                                        );
-                                      }
-                                    }
-                                  );
-                                } else {
                                   const {
                                     id,
                                     employeeId,
@@ -190,7 +153,6 @@ class WeeklyComponent extends React.Component {
                                       />
                                     );
                                   }
-                                }
                               })}
                             </td>
                             <td
@@ -205,41 +167,6 @@ class WeeklyComponent extends React.Component {
                                 </a>
                               </span>
                               {scheduleEvent?.map((events, indexID) => {
-                                if (Array.isArray(events)) {
-                                  return events.map(
-                                    (nestedEvents, indexID2) => {
-                                      const {
-                                        id,
-                                        employeeId,
-                                        houseId,
-                                        selectedDay,
-                                        shifts,
-                                      } = nestedEvents;
-                                      if (
-                                        houseId == accomodationId &&
-                                        value === employeeId &&
-                                        selectedDay === recentDates[1]
-                                      ) {
-                                        return (
-                                          <>
-                                            <Shifts
-                                              id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
-                                              handleDayShiftIndex={
-                                                handleTuesdayShiftIndex
-                                              }
-                                              indexID={indexID}
-                                              indexID2={indexID2}
-                                              label={label}
-                                            />
-                                          </>
-                                        );
-                                      }
-                                    }
-                                  );
-                                } else {
                                   const {
                                     id,
                                     employeeId,
@@ -266,7 +193,6 @@ class WeeklyComponent extends React.Component {
                                       />
                                     );
                                   }
-                                }
                               })}
                             </td>
                             <td
@@ -281,41 +207,6 @@ class WeeklyComponent extends React.Component {
                                 </a>
                               </span>
                               {scheduleEvent?.map((events, indexID) => {
-                                if (Array.isArray(events)) {
-                                  return events.map(
-                                    (nestedEvents, indexID2) => {
-                                      const {
-                                        id,
-                                        employeeId,
-                                        houseId,
-                                        selectedDay,
-                                        shifts,
-                                      } = nestedEvents;
-                                      if (
-                                        houseId == accomodationId &&
-                                        value === employeeId &&
-                                        selectedDay === recentDates[2]
-                                      ) {
-                                        return (
-                                          <>
-                                            <Shifts
-                                              id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
-                                              handleDayShiftIndex={
-                                                handleWednesdayShiftIndex
-                                              }
-                                              indexID={indexID}
-                                              indexID2={indexID2}
-                                              label={label}
-                                            />
-                                          </>
-                                        );
-                                      }
-                                    }
-                                  );
-                                } else {
                                   const {
                                     id,
                                     employeeId,
@@ -342,7 +233,6 @@ class WeeklyComponent extends React.Component {
                                       />
                                     );
                                   }
-                                }
                               })}
                             </td>
                             <td
@@ -357,41 +247,6 @@ class WeeklyComponent extends React.Component {
                                 </a>
                               </span>
                               {scheduleEvent?.map((events, indexID) => {
-                                if (Array.isArray(events)) {
-                                  return events.map(
-                                    (nestedEvents, indexID2) => {
-                                      const {
-                                        id,
-                                        employeeId,
-                                        houseId,
-                                        selectedDay,
-                                        shifts,
-                                      } = nestedEvents;
-                                      if (
-                                        houseId == accomodationId &&
-                                        value === employeeId &&
-                                        selectedDay === recentDates[3]
-                                      ) {
-                                        return (
-                                          <>
-                                            <Shifts
-                                              id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
-                                              handleDayShiftIndex={
-                                                handleThursdayShiftIndex
-                                              }
-                                              indexID={indexID}
-                                              indexID2={indexID2}
-                                              label={label}
-                                            />
-                                          </>
-                                        );
-                                      }
-                                    }
-                                  );
-                                } else {
                                   const {
                                     id,
                                     employeeId,
@@ -418,7 +273,6 @@ class WeeklyComponent extends React.Component {
                                       />
                                     );
                                   }
-                                }
                               })}
                             </td>
                             <td
@@ -433,41 +287,6 @@ class WeeklyComponent extends React.Component {
                                 </a>
                               </span>
                               {scheduleEvent?.map((events, indexID) => {
-                                if (Array.isArray(events)) {
-                                  return events.map(
-                                    (nestedEvents, indexID2) => {
-                                      const {
-                                        id,
-                                        employeeId,
-                                        houseId,
-                                        selectedDay,
-                                        shifts,
-                                      } = nestedEvents;
-                                      if (
-                                        houseId == accomodationId &&
-                                        value === employeeId &&
-                                        selectedDay === recentDates[4]
-                                      ) {
-                                        return (
-                                          <>
-                                            <Shifts
-                                              id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
-                                              handleDayShiftIndex={
-                                                handleFridayShiftIndex
-                                              }
-                                              indexID={indexID}
-                                              indexID2={indexID2}
-                                              label={label}
-                                            />
-                                          </>
-                                        );
-                                      }
-                                    }
-                                  );
-                                } else {
                                   const {
                                     id,
                                     employeeId,
@@ -494,7 +313,6 @@ class WeeklyComponent extends React.Component {
                                       />
                                     );
                                   }
-                                }
                               })}
                             </td>
                             <td
@@ -509,41 +327,6 @@ class WeeklyComponent extends React.Component {
                                 </a>
                               </span>
                               {scheduleEvent?.map((events, indexID) => {
-                                if (Array.isArray(events)) {
-                                  return events.map(
-                                    (nestedEvents, indexID2) => {
-                                      const {
-                                        id,
-                                        employeeId,
-                                        houseId,
-                                        selectedDay,
-                                        shifts,
-                                      } = nestedEvents;
-                                      if (
-                                        houseId == accomodationId &&
-                                        value === employeeId &&
-                                        selectedDay === recentDates[5]
-                                      ) {
-                                        return (
-                                          <>
-                                            <Shifts
-                                              id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
-                                              handleDayShiftIndex={
-                                                handleSaturdayShiftIndex
-                                              }
-                                              indexID={indexID}
-                                              indexID2={indexID2}
-                                              label={label}
-                                            />
-                                          </>
-                                        );
-                                      }
-                                    }
-                                  );
-                                } else {
                                   const {
                                     id,
                                     employeeId,
@@ -570,7 +353,6 @@ class WeeklyComponent extends React.Component {
                                       />
                                     );
                                   }
-                                }
                               })}
                             </td>
                             <td
@@ -585,41 +367,6 @@ class WeeklyComponent extends React.Component {
                                 </a>
                               </span>
                               {scheduleEvent?.map((events, indexID) => {
-                                if (Array.isArray(events)) {
-                                  return events.map(
-                                    (nestedEvents, indexID2) => {
-                                      const {
-                                        id,
-                                        employeeId,
-                                        houseId,
-                                        selectedDay,
-                                        shifts,
-                                      } = nestedEvents;
-                                      if (
-                                        houseId == accomodationId &&
-                                        value === employeeId &&
-                                        selectedDay === recentDates[6]
-                                      ) {
-                                        return (
-                                          <>
-                                            <Shifts
-                                              id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
-                                              handleDayShiftIndex={
-                                                handleSundayShiftIndex
-                                              }
-                                              indexID={indexID}
-                                              indexID2={indexID2}
-                                              label={label}
-                                            />
-                                          </>
-                                        );
-                                      }
-                                    }
-                                  );
-                                } else {
                                   const {
                                     id,
                                     employeeId,
@@ -646,7 +393,6 @@ class WeeklyComponent extends React.Component {
                                       />
                                     );
                                   }
-                                }
                               })}
                             </td>
                             {/* )} */}

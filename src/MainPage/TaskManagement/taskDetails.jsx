@@ -9,19 +9,20 @@ import {
   savedTaskReducer,
   initSubTask,
   savedSubTaskReducer,
-  initTaskImage,
-  savedTaskImageReducer,
+  initFileUpload,
+  savedFileUploadReducer,
 } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import { useParams, useLocation } from "react-router-dom";
 import { Span, DivContainer } from "./style";
 import AddSubTask from "../../_components/modelbox/AddSubTask";
-import AddTaskImage from "../../_components/modelbox/AddTaskImage"
 import AddTask from "../../_components/modelbox/AddTask";
 import { async } from "regenerator-runtime";
 import CommentSection from "./component";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
+import FileUpload from "../../_components/fileUploader";
+import fileSize from "file-size";
 
 const TaskDetails = () => {
     const location = useLocation();
@@ -29,9 +30,8 @@ const TaskDetails = () => {
     const selectedTaskIndex = location?.state?.index;
     const [showTaskModal] = useGlobalState("showTaskModal");
     const [showSubTaskModal] = useGlobalState("showSubTaskModal");
-    const [showTaskImageModal] = useGlobalState("showTaskImageModal");
     const [deleteModal] = useGlobalState("deleteModal");
-    const [deleteImg] = useGlobalState("deleteImg");
+    const [deleteFile] = useGlobalState("deleteFile");
 
     const [tasks, dispatchTasks] = useReducer(savedTaskReducer, [], initTask);
 
@@ -43,26 +43,6 @@ const TaskDetails = () => {
     useEffect(() => {
       setTaskList(tasks);
     }, [tasks]);
-
-    const [taskImage, dispatchTaskImage] = useReducer(
-      savedTaskImageReducer,
-      [],
-      initTaskImage
-    );
-
-    useEffect(() => {
-      localStorage.setItem("taskImage", JSON.stringify(taskImage));
-    }, [taskImage]);
-    useEffect(() => {
-      if (!showTaskImageModal) {
-        setGlobalState("selectedTaskImage", "");
-      }
-    }, [showTaskImageModal]);
-
-    const [taskImages, setTaskImages] = useState();
-    useEffect(() => {
-      setTaskImages(taskImage);
-    }, [taskImage]);
 
     const [subTaskTitle, dispatchSubTaskTitle] = useReducer(
       savedSubTaskReducer,
@@ -126,14 +106,34 @@ const TaskDetails = () => {
       setGlobalState("deleteModal", true);
     };
 
-    const handleDeleteImage = (index) => {
-      setIndexToEdit(index);
-      setGlobalState("deleteImg", true);
-    };
-
 
     const toggleMobileMenu = () => {
       setMenu(!menu);
+    };
+
+    const [files, dispatchFiles] = useReducer(
+      savedFileUploadReducer,
+      [],
+      initFileUpload
+    );
+
+    useEffect(() => {
+      localStorage.setItem("fileUploaded", JSON.stringify(files));
+    }, [files]);
+
+    const [filesList, setFilesList] = useState();
+    useEffect(() => {
+      setFilesList(files);
+    }, [files]);
+
+    const selectedTaskDocument = filesList?.find(
+      (file) => file?.uniqueID === selecetedTaskId
+    );
+    const selectedTaskDocumentId = selectedTaskDocument?.uniqueID;
+    
+    const handleFileDelete = (index) => {
+      setIndexToEdit(index);
+      setGlobalState("deleteFile", true);
     };
 
   useEffect(() => {
@@ -190,7 +190,7 @@ const TaskDetails = () => {
                   <p>{taskDescription}</p>
                 </div>
               </div>
-              <div style={{marginBottom: "20px"}} className="project-task">
+              <div style={{ marginBottom: "20px" }} className="project-task">
                 <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                   <li className="nav-item">
                     <a
@@ -298,19 +298,29 @@ const TaskDetails = () => {
                                                   }
                                                 )
                                               : null}
-                                              {dateCreated && dateUpdated ? (
-                                                <>
-                                                  <br />
-                                                  <span>
-                                                    <h6 style={{ fontSize: "9px", margin: "3px 0 0 0" }}>
-                                                      Date Created: {dateCreated}
-                                                    </h6>
-                                                    <h6 style={{ fontSize: "9px", margin: "0" }}>
-                                                      Date Updated: {dateUpdated}
-                                                    </h6>
-                                                  </span>
-                                                </>
-                                              ) : null}
+                                            {dateCreated && dateUpdated ? (
+                                              <>
+                                                <br />
+                                                <span>
+                                                  <h6
+                                                    style={{
+                                                      fontSize: "9px",
+                                                      margin: "3px 0 0 0",
+                                                    }}
+                                                  >
+                                                    Date Created: {dateCreated}
+                                                  </h6>
+                                                  <h6
+                                                    style={{
+                                                      fontSize: "9px",
+                                                      margin: "0",
+                                                    }}
+                                                  >
+                                                    Date Updated: {dateUpdated}
+                                                  </h6>
+                                                </span>
+                                              </>
+                                            ) : null}
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
@@ -362,7 +372,7 @@ const TaskDetails = () => {
                                     taskId: taskIdInSubTask,
                                     subTask,
                                     resident,
-                                    dateCreated, 
+                                    dateCreated,
                                     dateUpdated,
                                     checkToComplete,
                                   } = subtasks;
@@ -414,26 +424,39 @@ const TaskDetails = () => {
                                                   }
                                                 )
                                               : null}
-                                              {dateCreated && dateUpdated ? (
-                                                <>
-                                                  <br />
-                                                  <span>
-                                                    <h6 style={{ fontSize: "9px", margin: "3px 0 0 0" }}>
-                                                      Date Created: {dateCreated}
-                                                    </h6>
-                                                    <h6 style={{ fontSize: "9px", margin: "0" }}>
-                                                      Date Updated: {dateUpdated}
-                                                    </h6>
-                                                  </span>
-                                                </>
-                                              ) : null}
+                                            {dateCreated && dateUpdated ? (
+                                              <>
+                                                <br />
+                                                <span>
+                                                  <h6
+                                                    style={{
+                                                      fontSize: "9px",
+                                                      margin: "3px 0 0 0",
+                                                    }}
+                                                  >
+                                                    Date Created: {dateCreated}
+                                                  </h6>
+                                                  <h6
+                                                    style={{
+                                                      fontSize: "9px",
+                                                      margin: "0",
+                                                    }}
+                                                  >
+                                                    Date Updated: {dateUpdated}
+                                                  </h6>
+                                                </span>
+                                              </>
+                                            ) : null}
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
                                               className="action-circle large"
                                               title="Update"
                                               onClick={() =>
-                                                handleSubTaskEdit(index, dateCreated)
+                                                handleSubTaskEdit(
+                                                  index,
+                                                  dateCreated
+                                                )
                                               }
                                             >
                                               <i className="material-icons">
@@ -527,26 +550,39 @@ const TaskDetails = () => {
                                                   }
                                                 )
                                               : null}
-                                              {dateCreated && dateUpdated ? (
-                                                <>
-                                                  <br />
-                                                  <span>
-                                                    <h6 style={{ fontSize: "9px", margin: "3px 0 0 0" }}>
-                                                      Date Created: {dateCreated}
-                                                    </h6>
-                                                    <h6 style={{ fontSize: "9px", margin: "0" }}>
-                                                      Date Updated: {dateUpdated}
-                                                    </h6>
-                                                  </span>
-                                                </>
-                                              ) : null}
+                                            {dateCreated && dateUpdated ? (
+                                              <>
+                                                <br />
+                                                <span>
+                                                  <h6
+                                                    style={{
+                                                      fontSize: "9px",
+                                                      margin: "3px 0 0 0",
+                                                    }}
+                                                  >
+                                                    Date Created: {dateCreated}
+                                                  </h6>
+                                                  <h6
+                                                    style={{
+                                                      fontSize: "9px",
+                                                      margin: "0",
+                                                    }}
+                                                  >
+                                                    Date Updated: {dateUpdated}
+                                                  </h6>
+                                                </span>
+                                              </>
+                                            ) : null}
                                           </span>
                                           <span className="task-action-btn ">
                                             <span
                                               className="action-circle large"
                                               title="Update"
                                               onClick={() =>
-                                                handleSubTaskEdit(index, dateCreated)
+                                                handleSubTaskEdit(
+                                                  index,
+                                                  dateCreated
+                                                )
                                               }
                                             >
                                               <i className="material-icons">
@@ -584,186 +620,92 @@ const TaskDetails = () => {
               />
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title m-b-20">
-                    Uploaded image files{" "}
-                    <span
-                      className="action-circle large"
-                      style={{ marginRight: "10px" }}
-                      title="Upload Image"
-                      onClick={() => setGlobalState("showTaskImageModal", true)}
-                    >
-                      <i className="material-icons">add</i>
-                    </span>
-                  </h5>
-                  <div className="row">
-                    {taskImages?.map((img, index) => {
-                      const {
-                        id,
-                        image,
-                        imageName,
-                        taskId: taskIdInImage,
-                      } = img;
-                      if (taskIdInImage == selecetedTaskId) {
-                        return (
-                          <div
-                            key={id}
-                            className="col-md-3 col-sm-4 col-lg-4 col-xl-3"
-                          >
-                            <div className="uploaded-box">
-                              {/* <span onClick={() => handleTaskImageEdit(index)}>
-                                Edit
-                              </span> */}
-                              <span>
-                                <a
-                                  className="delete-icon"
-                                  onClick={() => handleDeleteImage(index)}
-                                >
-                                  <i className="fa fa-trash-o" />
-                                </a>
-                              </span>{" "}
-                              <br />
-                              <div className="uploaded-img">
-                                <img
-                                  style={{
-                                    maxWidth: "264px",
-                                    maxHeight: "184px",
-                                    width: "100%",
-                                    height: "100%",
-                                    borderRadius: "3px",
-                                  }}
-                                  src={image}
-                                  className="img-fluid"
-                                  alt=""
-                                />
-                              </div>
-                              <div className="uploaded-img-name">
-                                {imageName}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-                    })}
-                  </div>
+                  <h5 className="card-title m-b-20">Upload files</h5>
+                  <FileUpload
+                    dispatchFiles={dispatchFiles}
+                    uniqueID={selecetedTaskId}
+                  />
                 </div>
               </div>
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title m-b-20">Uploaded files</h5>
                   <ul className="files-list">
-                    <li>
-                      <div className="files-cont">
-                        <div className="file-type">
-                          <span className="files-icon">
-                            <i className="fa fa-file-pdf-o" />
-                          </span>
-                        </div>
-                        <div className="files-info">
-                          <span className="file-name text-ellipsis">
-                            <a
-                              href="#"
-                              onClick={(event) => event.preventDefault()}
-                            >
-                              AHA Selfcare Mobile Application Test-Cases.xls
-                            </a>
-                          </span>
-                          <span className="file-author">
-                            <a
-                              href="#"
-                              onClick={(event) => event.preventDefault()}
-                            >
-                              John Doe
-                            </a>
-                          </span>{" "}
-                          <span className="file-date">May 31st at 6:53 PM</span>
-                          <div className="file-size">Size: 14.8Mb</div>
-                        </div>
-                        <ul className="files-action">
-                          <li className="dropdown dropdown-action">
-                            <a
-                              href=""
-                              className="dropdown-toggle btn btn-link"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              <i className="material-icons">more_horiz</i>
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="">
-                                Download
-                              </a>
-                              <a
-                                className="dropdown-item"
-                                data-bs-toggle="modal"
-                                data-bs-target="#share_files"
-                              >
-                                Share
-                              </a>
-                              <a className="dropdown-item" href="">
-                                Delete
-                              </a>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="files-cont">
-                        <div className="file-type">
-                          <span className="files-icon">
-                            <i className="fa fa-file-pdf-o" />
-                          </span>
-                        </div>
-                        <div className="files-info">
-                          <span className="file-name text-ellipsis">
-                            <a
-                              href="#"
-                              onClick={(event) => event.preventDefault()}
-                            >
-                              AHA Selfcare Mobile Application Test-Cases.xls
-                            </a>
-                          </span>
-                          <span className="file-author">
-                            <a
-                              href="#"
-                              onClick={(event) => event.preventDefault()}
-                            >
-                              Richard Miles
-                            </a>
-                          </span>{" "}
-                          <span className="file-date">May 31st at 6:53 PM</span>
-                          <div className="file-size">Size: 14.8Mb</div>
-                        </div>
-                        <ul className="files-action">
-                          <li className="dropdown dropdown-action">
-                            <a
-                              href=""
-                              className="dropdown-toggle btn btn-link"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              <i className="material-icons">more_horiz</i>
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="">
-                                Download
-                              </a>
-                              <a
-                                className="dropdown-item"
-                                href="#"
-                                data-bs-toggle="modal"
-                                data-bs-target="#share_files"
-                              >
-                                Share
-                              </a>
-                              <a className="dropdown-item" href="">
-                                Delete
-                              </a>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
+                    {filesList?.length > 0 &&
+                    selectedTaskDocumentId === selecetedTaskId
+                      ? filesList?.map((file, index) => {
+                          const { name, size, type, data, id, uniqueID } = file;
+                          if (uniqueID === selecetedTaskId) {
+                            return (
+                              <li key={id}>
+                                <div className="files-cont">
+                                  {type && type.startsWith("image/") ? (
+                                    <img
+                                      className="img-preview"
+                                      src={data}
+                                      alt="Preview"
+                                    />
+                                  ) : (
+                                    <>
+                                      <div className="file-type">
+                                        <span className="files-icon">
+                                          <i className="fa fa-file-pdf-o" />
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
+                                  <div className="files-info">
+                                    <span className="file-name text-ellipsis">
+                                      <a
+                                        href="#"
+                                        onClick={(event) =>
+                                          event.preventDefault()
+                                        }
+                                      >
+                                        {name}
+                                      </a>
+                                    </span>
+                                    <div className="file-size">
+                                      Size: {fileSize(size).human("si")}
+                                    </div>
+                                    <div className="file-size">
+                                      Type: {type}
+                                    </div>
+                                  </div>
+                                  <ul className="files-action">
+                                    <li className="dropdown dropdown-action">
+                                      <a
+                                        className="dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_horiz
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a className="dropdown-item">
+                                          <i className="fa fa-download fa-fw m-r-5" />
+                                          Download
+                                        </a>
+                                        <a
+                                          onClick={() =>
+                                            handleFileDelete(index)
+                                          }
+                                          className="dropdown-item"
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </li>
+                            );
+                          }
+                        })
+                      : "No uploaded file(s) yet"}
                   </ul>
                 </div>
               </div>
@@ -1017,21 +959,12 @@ const TaskDetails = () => {
             </div>
           </div>
         </div>
-        {showTaskImageModal && (
-          <AddTaskImage
-            dispatchTaskImage={dispatchTaskImage}
-            indexToEdit={indexToEdit}
-            subTaskTitle={subTaskTitle}
-            taskId={taskId}
-            selecetedTaskId={selecetedTaskId}
-          />
-        )}
-        {deleteImg && (
+        {deleteFile && (
           <DeleteModal
-            deleteAction={dispatchTaskImage}
+            deleteAction={dispatchFiles}
             indexToDelete={indexToEdit}
-            dispatch={taskImage}
-            modalTitle={"Image file"}
+            dispatch={files}
+            modalTitle={"File"}
           />
         )}
         {showSubTaskModal && (
