@@ -61,7 +61,9 @@ const ShiftList = () => {
     const columns = [
       {
         title: "#",
-        dataIndex: "id",
+        render: (text, record, index) => {
+          return <React.Fragment>{index + 1}</React.Fragment>;
+        },
       },
       {
         title: "Shift Title",

@@ -114,16 +114,17 @@ const Employeeslist = () => {
         
           const columns = [
             {
+              title: "#",
+              render: (text, record, index) => {
+                return <React.Fragment>{index + 1}</React.Fragment>;
+              },
+            },
+            {
               title: "Name",
               dataIndex: "name",
               render: (text, record, index) => {
-                const {
-                  id,
-                  profileInfo,
-                  firstName,
-                  lastName,
-                  designation
-                } = record;
+                const { id, profileInfo, firstName, lastName, designation } =
+                  record;
                 return (
                   <React.Fragment>
                     <h2 className="table-avatar">
@@ -160,7 +161,7 @@ const Employeeslist = () => {
                     </h2>
                   </React.Fragment>
                 );
-              }
+              },
               // sorter: (a, b) => a.name.length - b.name.length,
             },
             {

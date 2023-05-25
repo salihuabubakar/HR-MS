@@ -60,8 +60,9 @@ const Designations = () => {
       const columns = [
         {
           title: "#",
-          dataIndex: "id",
-          // sorter: (a, b) => a.id.length - b.id.length,
+          render: (text, record, index) => {
+            return <React.Fragment>{index + 1}</React.Fragment>;
+          },
         },
         {
           title: "Department",

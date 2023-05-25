@@ -55,8 +55,9 @@ const TaskManagerTable = () => {
   const columns = [
     {
       title: "#",
-      dataIndex: "id",
-      // sorter: (a, b) => adept_id.length - b.dept_id.length,
+      render: (text, record, index) => {
+        return <React.Fragment>{index + 1}</React.Fragment>;
+      },
     },
     {
       title: "Task Title",
@@ -234,8 +235,7 @@ const TaskManagerTable = () => {
                 (taskStatus?.label == "started" && "Started") ||
                 (taskStatus?.label == "middle" && "Middle") ||
                 (taskStatus?.label == "rounding-up" && "Rounding up") ||
-                (taskStatus?.label == "completed" && "Completed")
-              }
+                (taskStatus?.label == "completed" && "Completed")}
             </Link>
           </h2>
         );

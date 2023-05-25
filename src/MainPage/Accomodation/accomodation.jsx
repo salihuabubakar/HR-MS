@@ -57,8 +57,9 @@ const Housing = () => {
   const columns = [
     {
       title: "#",
-      dataIndex: "id",
-      // sorter: (a, b) => adept_id.length - b.dept_id.length,
+      render: (text, record, index) => {
+        return <React.Fragment>{index + 1}</React.Fragment>;
+      },
     },
     {
       title: "House",

@@ -67,7 +67,6 @@ const TaskDetails = () => {
     const [menu, setMenu] = useState(false);
     const [indexToEdit, setIndexToEdit] = useState(0);
     const [taskIndexToEdit, setTaskIndexToEdit] = useState(0);
-    const [imgIndex, setImgIndex] = useState(0);
     const [dateTimeCreated, setDateTimeCreated] = useState("");
 
     const selectedTask = taskList?.find((task) => task?.id === selecetedTaskId);

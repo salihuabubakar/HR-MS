@@ -68,6 +68,12 @@ const EmployeeSalary = () => {
 
   const columns = [
     {
+      title: "#",
+      render: (text, record, index) => {
+        return <React.Fragment>{index + 1}</React.Fragment>;
+      },
+    },
+    {
       title: "Name",
       dataIndex: "employee",
       render: (text, record, index) => {
