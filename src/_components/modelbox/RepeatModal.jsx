@@ -37,12 +37,18 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
     e.preventDefault();
     const newShifts = [];
     const repeatDays = selectedDays.join(",");
-    repeatDays.split(",").forEach((day) => {
-      const newShift = { ...event, selectedDay: day, id: Date.now() };
+    repeatDays.split(",").forEach((day, index) => {
+      const newShift = { ...event, selectedDay: day, id: Date.now() + index };
       newShifts.push(newShift);
     });
-    dispatchSchedule({ type: "push", payload: newShifts });
-    // dispatchSchedule({ type: "push", payload: { shifts: newShifts, employeeId, houseId } });
+    const newShiftEvent = newShifts.map((shift) => ({
+      shifts: shift.shifts,
+      employeeId: shift.employeeId,
+      selectedDay: shift.selectedDay,
+      houseId: shift.houseId,
+      id: shift.id,
+    }));
+    dispatchSchedule({ type: "push", payload: newShiftEvent });
     setGlobalState("repeatModal", false);
   };
 

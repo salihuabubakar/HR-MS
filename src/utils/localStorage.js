@@ -113,25 +113,6 @@ export const savedSubTaskReducer = (state, { type, payload }) => {
   }
 };
 
-export const initTaskImage = () => {
-  const storageEvents = localStorage.getItem("taskImage");
-  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
-  return parsedEvents;
-};
-
-export const savedTaskImageReducer = (state, { type, payload }) => {
-  switch (type) {
-    case "push":
-      return [...state, payload];
-    case "update":
-      return state.map((house) => (house.id === payload.id ? payload : house));
-    case "delete":
-      return state.filter((house) => house.id !== payload.id);
-    default:
-      throw new Error();
-  }
-};
-
 export const initResident = () => {
   const storageEvents = localStorage.getItem("resident");
   const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
@@ -197,23 +178,44 @@ export const initScheduleEvent = () => {
 };
 
 export const savedScheduleEventReducer = (state, { type, payload }) => {
-// export const savedScheduleEventReducer = (state, { type, { houseId = "", employeeId = "", shifts = [], shift } }) => {
   switch (type) {
     case "push":
-      return [...state, payload];
-      // state[houseId][employeeId].push(shifts)
-      // return [...state]
+      if (Array.isArray(payload)) {
+        return [...state, ...payload];
+      } else {
+        return [...state, payload];
+      }
     case "update":
       return state.map((evt) => (evt.id === payload.id ? payload : evt));
-      // const current = state[houseId][employeeId]
-      // state[houseId][employeeId] = current.map() 
-      // return [...state]
     case "delete":
       return state.filter((evt) => evt.id !== payload.id);
     default:
       throw new Error();
   }
 };
+
+
+
+
+export const initFileUpload = () => {
+  const storageEvents = localStorage.getItem("fileUploaded");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedFileUploadReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, ...payload]; // Spread the payload array to push each file individually
+    case "update":
+      return state.map((info) => (info.id === payload.id ? payload : info));
+    case "delete":
+      return state.filter((info) => info.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};
+
 
 export const initEduInfo = () => {
   const storageEvents = localStorage.getItem("eduInfo");

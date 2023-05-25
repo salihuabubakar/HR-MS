@@ -20,7 +20,6 @@ class MonthlyComponent extends React.Component {
       employeeId,
       houseId,
       shiftIndex,
-      nestedShiftIndex,
       weekIndex,
       dayIndex,
       dayFigure
@@ -30,7 +29,6 @@ class MonthlyComponent extends React.Component {
         employeeId,
         houseId,
         shiftIndex,
-        nestedShiftIndex,
         weekIndex,
         dayIndex,
         dayFigure,
@@ -57,7 +55,6 @@ class MonthlyComponent extends React.Component {
       shifts,
       handleDayShiftIndex,
       shiftIndex,
-      nestedShiftIndex,
       weekIndex,
       dayIndex,
       dayFigure,
@@ -71,7 +68,6 @@ class MonthlyComponent extends React.Component {
                 employeeId,
                 houseId,
                 shiftIndex,
-                nestedShiftIndex,
                 weekIndex,
                 dayIndex,
                 dayFigure
@@ -178,53 +174,6 @@ class MonthlyComponent extends React.Component {
                                       <Fragment key={value}>
                                         {scheduleEvent?.map(
                                           (shift, shiftIndex) => {
-                                            if (Array.isArray(shift)) {
-                                              return shift.map(
-                                                (
-                                                  nestedShift,
-                                                  nestedShiftIndex
-                                                ) => {
-                                                  const {
-                                                    id,
-                                                    employeeId,
-                                                    houseId,
-                                                    selectedDay,
-                                                    shifts,
-                                                  } = nestedShift;
-                                                  if (
-                                                    selectedDay ==
-                                                      dayName +
-                                                        " " +
-                                                        dayFigure +
-                                                        " " +
-                                                        month &&
-                                                    value == employeeId &&
-                                                    houseId == accomodationId
-                                                  ) {
-                                                    return (
-                                                      <Shifts
-                                                        id={id}
-                                                        employeeId={employeeId}
-                                                        houseId={houseId}
-                                                        shifts={shifts}
-                                                        handleDayShiftIndex={
-                                                          handleDayShiftIndex
-                                                        }
-                                                        shiftIndex={shiftIndex}
-                                                        nestedShiftIndex={
-                                                          nestedShiftIndex
-                                                        }
-                                                        label={label}
-                                                        image={image}
-                                                        weekIndex={weekIndex}
-                                                        dayIndex={dayIndex}
-                                                        dayFigure={dayFigure}
-                                                      />
-                                                    );
-                                                  }
-                                                }
-                                              );
-                                            } else {
                                               const {
                                                 id,
                                                 employeeId,
@@ -260,7 +209,6 @@ class MonthlyComponent extends React.Component {
                                                   />
                                                 );
                                               }
-                                            }
                                           }
                                         )}
                                       </Fragment>

@@ -10,6 +10,7 @@ import AddPersonalInfo from '../../../_components/modelbox/AddPersonalInfo';
 import AddExpModal from '../../../_components/modelbox/AddExpModal';
 import AddFamilyMemberModal from '../../../_components/modelbox/AddFamilyMemberModal';
 import { useGlobalState, setGlobalState } from '../../../context/GlobalState';
+import fileSize from "file-size";
 import {
   initProfileInfo,
   savedProfileInfoReducer,
@@ -20,14 +21,19 @@ import {
   initExpInfo,
   savedExpInfoReducer,
   initFamilyMemberInfo,
-  savedFamilyMemberReducer
+  savedFamilyMemberReducer,
+  initFileUpload,
+  savedFileUploadReducer,
 } from "../../../utils/localStorage";
 import AddEmergencyContact from '../../../_components/modelbox/AddEmergencyContact';
 import AddEducationInformation from '../../../_components/modelbox/AddEducationInformation';
 import DefaultImage from "../../../assets/img/placeholder.jpg";
+import DeleteModal from '../../../_components/modelbox/DeleteModal';
+import FileUpload from '../../../_components/fileUploader';
 
 const EmployeeProfile = () => {
 
+  const [deleteModal] = useGlobalState("deleteModal");
   const location = useLocation();
   const employeeId = location?.state?.id;
   const emIndex = location?.state?.index;
@@ -211,6 +217,34 @@ const EmployeeProfile = () => {
   const secondaryRelationship = selectedEmployee?.emergencyContact?.secondary?.secondaryRelationship;
   const secondaryPhone1 = selectedEmployee?.emergencyContact?.secondary?.secondaryPhone1;
   const secondaryPhone2 = selectedEmployee?.emergencyContact?.secondary?.secondaryPhone2;
+
+
+  const [files, dispatchFiles] = useReducer(
+    savedFileUploadReducer,
+    [],
+    initFileUpload
+  );
+
+  useEffect(() => {
+    localStorage.setItem("fileUploaded", JSON.stringify(files));
+  }, [files]);
+
+  const [filesList, setFilesList] = useState();
+  useEffect(() => {
+    setFilesList(files);
+  }, [files]);
+
+  const selectedEmployeeDocument = filesList?.find(
+    (file) => file?.uniqueID === employeeId
+  );
+  const selectedEmployeeDocumentId = selectedEmployeeDocument?.uniqueID;
+
+  const [indexToEdit, setIndexToEdit] = useState(0);
+
+  const handleFileDelete = (index) => {
+    setIndexToEdit(index);
+    setGlobalState("deleteModal", true);
+  };
 
 
   useEffect( ()=>{
@@ -819,121 +853,93 @@ const EmployeeProfile = () => {
             <div className="tab-pane fade" id="document_upload">
               <div className="card">
                 <div className="card-body">
+                  <h5 className="card-title m-b-20">Upload files</h5>
+                  <FileUpload
+                    dispatchFiles={dispatchFiles}
+                    uniqueID={employeeId}
+                  />
+                </div>
+              </div>
+
+              <div className="card">
+                <div className="card-body">
                   <h5 className="card-title m-b-20">Uploaded files</h5>
                   <ul className="files-list">
-                    <li>
-                      <div className="files-cont">
-                        <div className="file-type">
-                          <span className="files-icon">
-                            <i className="fa fa-file-pdf-o" />
-                          </span>
-                        </div>
-                        <div className="files-info">
-                          <span className="file-name text-ellipsis">
-                            <a
-                              href="#"
-                              onClick={(event) => event.preventDefault()}
-                            >
-                              AHA Selfcare Mobile Application Test-Cases.xls
-                            </a>
-                          </span>
-                          <span className="file-author">
-                            <a
-                              href="#"
-                              onClick={(event) => event.preventDefault()}
-                            >
-                              John Doe
-                            </a>
-                          </span>{" "}
-                          <span className="file-date">May 31st at 6:53 PM</span>
-                          <div className="file-size">Size: 14.8Mb</div>
-                        </div>
-                        <ul className="files-action">
-                          <li className="dropdown dropdown-action">
-                            <a
-                              href=""
-                              className="dropdown-toggle btn btn-link"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              <i className="material-icons">more_horiz</i>
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="">
-                                Download
-                              </a>
-                              <a
-                                className="dropdown-item"
-                                data-bs-toggle="modal"
-                                data-bs-target="#share_files"
-                              >
-                                Share
-                              </a>
-                              <a className="dropdown-item" href="">
-                                Delete
-                              </a>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="files-cont">
-                        <div className="file-type">
-                          <span className="files-icon">
-                            <i className="fa fa-file-pdf-o" />
-                          </span>
-                        </div>
-                        <div className="files-info">
-                          <span className="file-name text-ellipsis">
-                            <a
-                              href="#"
-                              onClick={(event) => event.preventDefault()}
-                            >
-                              AHA Selfcare Mobile Application Test-Cases.xls
-                            </a>
-                          </span>
-                          <span className="file-author">
-                            <a
-                              href="#"
-                              onClick={(event) => event.preventDefault()}
-                            >
-                              Richard Miles
-                            </a>
-                          </span>{" "}
-                          <span className="file-date">May 31st at 6:53 PM</span>
-                          <div className="file-size">Size: 14.8Mb</div>
-                        </div>
-                        <ul className="files-action">
-                          <li className="dropdown dropdown-action">
-                            <a
-                              href=""
-                              className="dropdown-toggle btn btn-link"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              <i className="material-icons">more_horiz</i>
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a className="dropdown-item" href="">
-                                Download
-                              </a>
-                              <a
-                                className="dropdown-item"
-                                href="#"
-                                data-bs-toggle="modal"
-                                data-bs-target="#share_files"
-                              >
-                                Share
-                              </a>
-                              <a className="dropdown-item" href="">
-                                Delete
-                              </a>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
+                    {filesList?.length > 0 &&
+                    selectedEmployeeDocumentId === employeeId
+                      ? filesList?.map((file, index) => {
+                          const { name, size, type, data, id, uniqueID } = file;
+                          if (uniqueID === employeeId) {
+                            return (
+                              <li key={id}>
+                                <div className="files-cont">
+                                  {type && type.startsWith("image/") ? (
+                                    <img
+                                      className="img-preview"
+                                      src={data}
+                                      alt="Preview"
+                                    />
+                                  ) : (
+                                    <>
+                                      <div className="file-type">
+                                        <span className="files-icon">
+                                          <i className="fa fa-file-pdf-o" />
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
+                                  <div className="files-info">
+                                    <span className="file-name text-ellipsis">
+                                      <a
+                                        href="#"
+                                        onClick={(event) =>
+                                          event.preventDefault()
+                                        }
+                                      >
+                                        {name}
+                                      </a>
+                                    </span>
+                                    <div className="file-size">
+                                      Size: {fileSize(size).human("si")}
+                                    </div>
+                                    <div className="file-size">
+                                      Type: {type}
+                                    </div>
+                                  </div>
+                                  <ul className="files-action">
+                                    <li className="dropdown dropdown-action">
+                                      <a
+                                        className="dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_horiz
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a className="dropdown-item">
+                                          <i className="fa fa-download fa-fw m-r-5" />
+                                          Download
+                                        </a>
+                                        <a
+                                          onClick={() =>
+                                            handleFileDelete(index)
+                                          }
+                                          className="dropdown-item"
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </li>
+                            );
+                          }
+                        })
+                      : "No uploaded file(s) yet"}
                   </ul>
                 </div>
               </div>
@@ -942,6 +948,15 @@ const EmployeeProfile = () => {
           </div>
         </div>
         {/* /Page Content */}
+
+        {deleteModal && (
+          <DeleteModal
+            deleteAction={dispatchFiles}
+            indexToDelete={indexToEdit}
+            dispatch={files}
+            modalTitle={"File"}
+          />
+        )}
 
         {/* Profile Modal */}
         {showProfileModal && (
