@@ -67,6 +67,12 @@ const Users = () => {
 
     const columns = [
       {
+        title: "#",
+        render: (text, record, index) => {
+          return <React.Fragment>{index + 1}</React.Fragment>;
+        },
+      },
+      {
         title: "Name",
         dataIndex: "name",
         render: (text, record) => (
