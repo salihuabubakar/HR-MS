@@ -78,6 +78,7 @@ const TaskDetails = () => {
     const timeAllocated = selectedTask?.timeAllocated;
     const taskDescription = selectedTask?.description;
     const totalAssignedEmployees = selectedTask?.employee;
+    const totalAssignedServiceWorkers = selectedTask?.resident;
     const managerName = selectedTask?.manager;
     const taskStatus = selectedTask?.taskStatus?.label;
     const dateCreated = selectedTask?.dateCreated;
@@ -945,6 +946,54 @@ const TaskDetails = () => {
                                     <span className="message-content">
                                       {designation?.label}
                                     </span>
+                                  </div>
+                                </div>
+                              </Link>
+                            </li>
+                          );
+                        })
+                      : "No Team assigned"}
+                  </ul>
+                </div>
+              </div>
+              <div className="card project-user">
+                <div className="card-body">
+                  <h6 className="card-title m-b-20">Service Workers</h6>
+                  <ul className="list-box">
+                    {totalAssignedServiceWorkers
+                      ? totalAssignedServiceWorkers?.map((user, index) => {
+                          const { value, label, image, } = user;
+                          return (
+                            <li key={value}>
+                              <Link
+                                to=""
+                                onClick={(event) => event.preventDefault()}
+                              >
+                                <div className="list-item">
+                                  <div className="list-left">
+                                    <span
+                                      style={{
+                                        borderRadius: "5px",
+                                        backgroundColor: "#00000000",
+                                        height: "100%",
+                                      }}
+                                      className="avatar"
+                                    >
+                                      <img
+                                        style={{
+                                          width: "30px",
+                                          height: "30px",
+                                        }}
+                                        alt=""
+                                        src={image ? image : DefaultImage}
+                                      />
+                                    </span>
+                                  </div>
+                                  <div className="list-body">
+                                    <span className="message-author">
+                                      {label}
+                                    </span>
+                                    <div className="clearfix" />
                                   </div>
                                 </div>
                               </Link>
