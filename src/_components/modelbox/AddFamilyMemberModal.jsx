@@ -58,17 +58,21 @@ const AddFamilyMemberModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const educationalInfo = {
-      id,
-      emIndex,
-      emid,
-      inputFields,
-    };
-    if (idIsTrue) {
-      dispatchFamilyMemberInfo({ type: "update", payload: educationalInfo });
-    } else {
-      dispatchFamilyMemberInfo({ type: "push", payload: educationalInfo });
-    }
+    inputFields.forEach((field, i) => {
+      const educationalInfo = {
+        id: idIsTrue ? id : Date.now() + i,
+        emIndex,
+        emid,
+        inputFields: [field],
+      };
+
+      if (idIsTrue) {
+        dispatchFamilyMemberInfo({ type: "update", payload: educationalInfo });
+      } else {
+        dispatchFamilyMemberInfo({ type: "push", payload: educationalInfo });
+      }
+    });
+    
     setGlobalState("showFamilyMenberModal", false);
   };
 

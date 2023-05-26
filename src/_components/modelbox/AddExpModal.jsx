@@ -63,17 +63,20 @@ const AddExpModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const educationalInfo = {
-      id,
-      emIndex,
-      emid,
-      inputFields,
-    };
-    if (idIsTrue) {
-      dispatchExpInfo({ type: "update", payload: educationalInfo });
-    } else {
-      dispatchExpInfo({ type: "push", payload: educationalInfo });
-    }
+    inputFields.forEach((field, i) => {
+      const educationalInfo = {
+        id: idIsTrue ? id : Date.now() + i,
+        emIndex,
+        emid,
+        inputFields: [field],
+      };
+
+      if (idIsTrue) {
+        dispatchExpInfo({ type: "update", payload: educationalInfo });
+      } else {
+        dispatchExpInfo({ type: "push", payload: educationalInfo });
+      }
+    });
     setGlobalState("showExperienceModal", false);
   };
 
@@ -100,9 +103,8 @@ const AddExpModal = ({
   };
 
   const removeFields = (index) => {
-    let data = [...inputFields];
-    data.splice(index, 1);
-    setInputFields(data);
+    const updatedFields = inputFields.filter((_, i) => i !== index);
+    setInputFields(updatedFields);
   };
 
   return (

@@ -46,17 +46,20 @@ const AddEducationInformation = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const educationalInfo = {
-      id,
-      emIndex,
-      emid,
-      inputFields,
-    };
-    if (idIsTrue) {
-      dispatchEduInfo({ type: "update", payload: educationalInfo });
-    } else {
-      dispatchEduInfo({ type: "push", payload: educationalInfo });
-    }
+    inputFields.forEach((field, i) => {
+      const educationalInfo = {
+        id: idIsTrue ? id : Date.now() + i,
+        emIndex,
+        emid,
+        inputFields: [field],
+      };
+
+      if (idIsTrue) {
+        dispatchEduInfo({ type: "update", payload: educationalInfo });
+      } else {
+        dispatchEduInfo({ type: "push", payload: educationalInfo });
+      }
+    });
     setGlobalState("showEducationInformationModal", false);
   };
 
