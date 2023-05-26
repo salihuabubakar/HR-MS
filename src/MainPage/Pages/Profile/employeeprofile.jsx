@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import {Avatar_02,Avatar_05,Avatar_09,Avatar_10,Avatar_16 } from '../../../Entryfile/imagepath'
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import AddProfileInfo from './components/AddProfileInfo';
 import AddPersonalInfo from '../../../_components/modelbox/AddPersonalInfo';
 import AddExpModal from '../../../_components/modelbox/AddExpModal';
 import AddFamilyMemberModal from '../../../_components/modelbox/AddFamilyMemberModal';
+import AddFileUploadModal from '../../../_components/modelbox/AddFileUploadModal';
 import { useGlobalState, setGlobalState } from '../../../context/GlobalState';
-import fileSize from "file-size";
 import {
   initProfileInfo,
   savedProfileInfoReducer,
@@ -29,20 +29,19 @@ import AddEmergencyContact from '../../../_components/modelbox/AddEmergencyConta
 import AddEducationInformation from '../../../_components/modelbox/AddEducationInformation';
 import DefaultImage from "../../../assets/img/placeholder.jpg";
 import DeleteModal from '../../../_components/modelbox/DeleteModal';
-import FileUpload from '../../../_components/fileUploader';
 
 const EmployeeProfile = () => {
 
   const [deleteModal] = useGlobalState("deleteModal");
   const location = useLocation();
   const employeeId = location?.state?.id;
-  const emIndex = location?.state?.index;
-  const emid = location?.state?.id;
   const [eduInformationIndex, setEduInformationIndex] = useState(0);
   const [expInformationIndex, setExpInformationIndex] = useState(0);
+  const [fileUploadIndex, setFileUploadIndex] = useState(0);
   const [familyMembInformationIndex, setFamilyMembExpInformationIndex] = useState(0);
   const [fieldIndex, setFieldIndex] = useState(0);
   const [expfieldIndex, setExpFieldIndex] = useState(0);
+  const [fileUploadfieldIndex, setFileUploadfieldIndex] = useState(0);
   const [familyMembfieldIndex, setFamilyMembFieldIndex] = useState(0);
   const [showProfileModal] = useGlobalState("showProfileModal");
   const [showPersonalInfoModal] = useGlobalState("showPersonalInfoModal");
@@ -52,6 +51,7 @@ const EmployeeProfile = () => {
   const [showEducationInformationModal] = useGlobalState("showEducationInformationModal");
   const [showExperienceModal] = useGlobalState("showExperienceModal");
   const [showFamilyMenberModal] = useGlobalState("showFamilyMenberModal");
+  const [showFileUploadModal] = useGlobalState("showFileUploadModal");
 
   const [userAcct, dispatchUserAcct] = useReducer(
     savedUserAccountReducer,
@@ -183,6 +183,17 @@ const EmployeeProfile = () => {
     setExpFieldIndex(fieldsIndex);
   };
 
+  const handleOpeneFileUpload = () => {
+    setGlobalState("showFileUploadModal", true);
+  };
+
+  const handleFileUploadEdit = (fieldsIndex, index) => {
+    setGlobalState("showFileUploadModal", true)
+    setGlobalState("selectedFileUpload", files)
+    setFileUploadIndex(index);
+    setFileUploadfieldIndex(fieldsIndex);
+  };
+
   const handleAddFamilyMember = () => {
     setGlobalState("showFamilyMenberModal", true)
   };
@@ -194,7 +205,6 @@ const EmployeeProfile = () => {
     setFamilyMembFieldIndex(fieldsIndex);
   };
 
-  const emId = selectedEmployee?.id;
   const image = selectedEmployee?.profileInfo?.image;
   const firstName = selectedEmployee?.firstName;
   const lastName = selectedEmployee?.lastName;
@@ -228,6 +238,12 @@ const EmployeeProfile = () => {
   useEffect(() => {
     localStorage.setItem("fileUploaded", JSON.stringify(files));
   }, [files]);
+  useEffect(() => {
+    if (!showFileUploadModal) {
+      setGlobalState("selectedFileUpload", "");
+    }
+  }, [showFileUploadModal]);
+  
 
   const [filesList, setFilesList] = useState();
   useEffect(() => {
@@ -563,8 +579,8 @@ const EmployeeProfile = () => {
                           </thead>
                           <tbody>
                             {familyMembArray?.map((family, index) => {
-                              const { id, emIndex, emid, inputFields } = family;
-                              if (emid == emId) {
+                              const { id, emid, inputFields } = family;
+                              if (emid == employeeId) {
                                 return (
                                   <React.Fragment key={id}>
                                     {inputFields?.map((fields, fieldsIndex) => {
@@ -619,9 +635,9 @@ const EmployeeProfile = () => {
                       <div className="experience-box">
                         <ul className="experience-list">
                           {eduArray?.map((eduDetails, index) => {
-                            const { id, inputFields, emIndex, emid } =
+                            const { id, inputFields, emid } =
                               eduDetails;
-                            if (emid == emId) {
+                            if (emid == employeeId) {
                               return (
                                 <React.Fragment key={id}>
                                   {inputFields?.map((fields, fieldsIndex) => {
@@ -683,9 +699,9 @@ const EmployeeProfile = () => {
                       <div className="experience-box">
                         <ul className="experience-list">
                           {expArray?.map((eduDetails, index) => {
-                            const { id, inputFields, emIndex, emid } =
+                            const { id, inputFields, emid } =
                               eduDetails;
-                            if (emid == emId) {
+                            if (emid == employeeId) {
                               return (
                                 <React.Fragment key={id}>
                                   {inputFields?.map((fields, fieldsIndex) => {
@@ -851,96 +867,98 @@ const EmployeeProfile = () => {
             {/* /Tasks Tab */}
             {/* Document Upload Tab */}
             <div className="tab-pane fade" id="document_upload">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title m-b-20">Upload files</h5>
-                  <FileUpload
-                    dispatchFiles={dispatchFiles}
-                    uniqueID={employeeId}
-                  />
-                </div>
-              </div>
-
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title m-b-20">Uploaded files</h5>
-                  <ul className="files-list">
-                    {filesList?.length > 0 &&
-                    selectedEmployeeDocumentId === employeeId
-                      ? filesList?.map((file, index) => {
-                          const { name, size, type, data, id, uniqueID } = file;
-                          if (uniqueID === employeeId) {
-                            return (
-                              <li key={id}>
-                                <div className="files-cont">
-                                  {type && type.startsWith("image/") ? (
-                                    <img
-                                      className="img-preview"
-                                      src={data}
-                                      alt="Preview"
-                                    />
-                                  ) : (
-                                    <>
-                                      <div className="file-type">
-                                        <span className="files-icon">
-                                          <i className="fa fa-file-pdf-o" />
-                                        </span>
-                                      </div>
-                                    </>
-                                  )}
-                                  <div className="files-info">
-                                    <span className="file-name text-ellipsis">
-                                      <a
-                                        href="#"
-                                        onClick={(event) =>
-                                          event.preventDefault()
+              <div className="row">
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        Upload Files{" "}
+                        <a
+                          onClick={handleOpeneFileUpload}
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="experience-box">
+                        <ul className="experience-list">
+                          {filesList?.length > 0 &&
+                          selectedEmployeeDocumentId === employeeId
+                            ? filesList?.map((file, index) => {
+                                const { id, inputFields, uniqueID } = file;
+                                if (uniqueID == employeeId) {
+                                  return (
+                                    <React.Fragment key={id}>
+                                      {inputFields?.map(
+                                        (fields, fieldsIndex) => {
+                                          const {
+                                            documentName,
+                                            documentNumber,
+                                            documentType,
+                                            expiryDate,
+                                            issueDate,
+                                            fileDetails,
+                                          } = fields;
+                                          return (
+                                            <li key={fieldsIndex}>
+                                              <div className="experience-user">
+                                                <div className="before-circle" />
+                                              </div>
+                                              <div className="experience-content">
+                                                <div className="timeline-content">
+                                                  <a className="name">
+                                                    {documentName}
+                                                    <span
+                                                      className="edit-icon"
+                                                      onClick={() =>
+                                                        handleFileUploadEdit(
+                                                          fieldsIndex,
+                                                          index
+                                                        )
+                                                      }
+                                                    >
+                                                      <i className="fa fa-pencil" />
+                                                    </span>
+                                                  </a>
+                                                  <div>{documentNumber}</div>
+                                                  <span className="time">
+                                                    Type: {documentType}
+                                                  </span>
+                                                  {issueDate && expiryDate ? (
+                                                    <span className="time">
+                                                      Issue Date: {issueDate} -
+                                                      Expiry Date: {expiryDate}
+                                                    </span>
+                                                  ) : null}
+                                                  {fileDetails?.type &&
+                                                  fileDetails?.type?.startsWith(
+                                                    "image/"
+                                                  ) ? (
+                                                    <img
+                                                      className="img-preview"
+                                                      src={fileDetails?.data}
+                                                      alt="Preview"
+                                                    />
+                                                  ) : (
+                                                    <span className="files-icon">
+                                                      <i className="fa fa-file-pdf-o" />
+                                                    </span>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            </li>
+                                          );
                                         }
-                                      >
-                                        {name}
-                                      </a>
-                                    </span>
-                                    <div className="file-size">
-                                      Size: {fileSize(size).human("si")}
-                                    </div>
-                                    <div className="file-size">
-                                      Type: {type}
-                                    </div>
-                                  </div>
-                                  <ul className="files-action">
-                                    <li className="dropdown dropdown-action">
-                                      <a
-                                        className="dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_horiz
-                                        </i>
-                                      </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a className="dropdown-item">
-                                          <i className="fa fa-download fa-fw m-r-5" />
-                                          Download
-                                        </a>
-                                        <a
-                                          onClick={() =>
-                                            handleFileDelete(index)
-                                          }
-                                          className="dropdown-item"
-                                        >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
-                                        </a>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </li>
-                            );
-                          }
-                        })
-                      : "No uploaded file(s) yet"}
-                  </ul>
+                                      )}
+                                    </React.Fragment>
+                                  );
+                                }
+                              })
+                            : "No uploaded file(s) yet"}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -949,22 +967,12 @@ const EmployeeProfile = () => {
         </div>
         {/* /Page Content */}
 
-        {deleteModal && (
-          <DeleteModal
-            deleteAction={dispatchFiles}
-            indexToDelete={indexToEdit}
-            dispatch={files}
-            modalTitle={"File"}
-          />
-        )}
-
         {/* Profile Modal */}
         {showProfileModal && (
           <>
             <AddProfileInfo
               dispatchUserAcct={dispatchUserAcct}
               userAcct={userAcct}
-              emIndex={emIndex}
             />
           </>
         )}
@@ -976,7 +984,6 @@ const EmployeeProfile = () => {
             <AddPersonalInfo
               dispatchUserAcct={dispatchUserAcct}
               userAcct={userAcct}
-              emIndex={emIndex}
             />
           </>
         )}
@@ -988,7 +995,6 @@ const EmployeeProfile = () => {
             <AddEmergencyContact
               dispatchUserAcct={dispatchUserAcct}
               userAcct={userAcct}
-              emIndex={emIndex}
             />
           </>
         )}
@@ -999,9 +1005,8 @@ const EmployeeProfile = () => {
           <>
             <AddEducationInformation
               dispatchEduInfo={dispatchEduInfo}
-              emIndex={emIndex}
               eduInformationIndex={eduInformationIndex}
-              emid={emid}
+              emid={employeeId}
               fieldIndex={fieldIndex}
             />
           </>
@@ -1013,23 +1018,33 @@ const EmployeeProfile = () => {
           <>
             <AddExpModal
               dispatchExpInfo={dispatchExpInfo}
-              emIndex={emIndex}
               expInformationIndex={expInformationIndex}
-              emid={emid}
+              emid={employeeId}
               expfieldIndex={expfieldIndex}
             />
           </>
         )}
         {/* /Experience Modal */}
+        {/* FileUpload Modal */}
+        {showFileUploadModal && (
+          <>
+            <AddFileUploadModal
+              dispatchFiles={dispatchFiles}
+              fileUploadIndex={fileUploadIndex}
+              uniqueID={employeeId}
+              fileUploadfieldIndex={fileUploadfieldIndex}
+            />
+          </>
+        )}
+        {/* /FileUpload Modal */}
 
         {/* Family Info Modal */}
         {showFamilyMenberModal && (
           <>
             <AddFamilyMemberModal
               dispatchFamilyMemberInfo={dispatchFamilyMemberInfo}
-              emIndex={emIndex}
               familyMembInformationIndex={familyMembInformationIndex}
-              emid={emid}
+              emid={employeeId}
               familyMembfieldIndex={familyMembfieldIndex}
             />
           </>

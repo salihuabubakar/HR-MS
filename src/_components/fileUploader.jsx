@@ -101,23 +101,6 @@ const FileUpload = ({ dispatchFiles, uniqueID }) => {
               Size: {fileSize(file.size).human("si")}
             </div>
             <div className="file-size">Type: {file.type}</div>
-            <div>
-              <input
-                className="form-control floating"
-                type="text"
-                placeholder="Task Title1"
-              />
-              <input
-                className="form-control floating"
-                type="text"
-                placeholder="Task Title2"
-              />
-              <input
-                className="form-control floating"
-                type="text"
-                placeholder="Task Title3"
-              />
-            </div>
             <button
               className="removeBtn"
               onClick={() => handleFileCancel(index)}

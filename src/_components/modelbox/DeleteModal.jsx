@@ -20,12 +20,20 @@ const DeleteModal = ({ deleteAction, indexToDelete, dispatch, modalTitle }) => {
     setGlobalState("showFamilyMenberModal", false);
     setGlobalState("showExperienceModal", false);
     setGlobalState("showAddSchedul", false);
-    setGlobalState("deleteFile", false)
+    setGlobalState("deleteFile", false);
+    setGlobalState("showFileUploadModal", false);
+    setGlobalState("deleteSubTask", false);
   };
 
   const handleModalClose = () => {
     setGlobalState("deleteModal", false);
     setGlobalState("deleteFile", false);
+    setGlobalState("showFileUploadModal");
+    setGlobalState("showEducationInformationModal", false);
+    setGlobalState("showFamilyMenberModal", false);
+    setGlobalState("showExperienceModal", false);
+    setGlobalState("showAddSchedul", false);
+    setGlobalState("deleteSubTask", false);
   }
 
   return (

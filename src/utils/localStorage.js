@@ -206,7 +206,8 @@ export const initFileUpload = () => {
 export const savedFileUploadReducer = (state, { type, payload }) => {
   switch (type) {
     case "push":
-      return [...state, ...payload]; // Spread the payload array to push each file individually
+      return [...state, payload];
+      // return [...state, ...payload]; // Spread the payload array to push each file individually
     case "update":
       return state.map((info) => (info.id === payload.id ? payload : info));
     case "delete":
