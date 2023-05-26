@@ -21,17 +21,17 @@ import AddTask from "../../_components/modelbox/AddTask";
 import { async } from "regenerator-runtime";
 import CommentSection from "./component";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
-import FileUpload from "../../_components/fileUploader";
-import fileSize from "file-size";
+import AddFileUploadModal from "../../_components/modelbox/AddFileUploadModal";
 
 const TaskDetails = () => {
     const location = useLocation();
-    const selecetedTaskId = location?.state?.id;
+    const selectedTaskId = location?.state?.id;
     const selectedTaskIndex = location?.state?.index;
     const [showTaskModal] = useGlobalState("showTaskModal");
     const [showSubTaskModal] = useGlobalState("showSubTaskModal");
     const [deleteModal] = useGlobalState("deleteModal");
-    const [deleteFile] = useGlobalState("deleteFile");
+    const [deleteSubTask] = useGlobalState("deleteSubTask");
+    const [showFileUploadModal] = useGlobalState("showFileUploadModal");
 
     const [tasks, dispatchTasks] = useReducer(savedTaskReducer, [], initTask);
 
@@ -69,7 +69,7 @@ const TaskDetails = () => {
     const [taskIndexToEdit, setTaskIndexToEdit] = useState(0);
     const [dateTimeCreated, setDateTimeCreated] = useState("");
 
-    const selectedTask = taskList?.find((task) => task?.id === selecetedTaskId);
+    const selectedTask = taskList?.find((task) => task?.id === selectedTaskId);
 
     const taskId = selectedTask?.id;
     const taskTitle = selectedTask?.taskTitle;
@@ -82,11 +82,6 @@ const TaskDetails = () => {
     const managerName = selectedTask?.manager;
     const taskStatus = selectedTask?.taskStatus?.label;
     const dateCreated = selectedTask?.dateCreated;
-
-    console.log("selectedTaskId..", selecetedTaskId);
-    console.log("selectedTaskIndex..", selectedTaskIndex);
-    console.log("taskId..", taskId);
-    console.log("dateTimeCreated..", dateTimeCreated);
 
     const handleTaskEdit = (index) => {
       setTaskIndexToEdit(index);
@@ -103,7 +98,7 @@ const TaskDetails = () => {
 
     const handleSubTaskDelete = (index) => {
       setIndexToEdit(index);
-      setGlobalState("deleteModal", true);
+      setGlobalState("deleteSubTask", true);
     };
 
 
@@ -120,6 +115,11 @@ const TaskDetails = () => {
     useEffect(() => {
       localStorage.setItem("fileUploaded", JSON.stringify(files));
     }, [files]);
+    useEffect(() => {
+      if (!showFileUploadModal) {
+        setGlobalState("selectedFileUpload", "");
+      }
+    }, [showFileUploadModal]);
 
     const [filesList, setFilesList] = useState();
     useEffect(() => {
@@ -127,14 +127,23 @@ const TaskDetails = () => {
     }, [files]);
 
     const selectedTaskDocument = filesList?.find(
-      (file) => file?.uniqueID === selecetedTaskId
+      (file) => file?.uniqueID === selectedTaskId
     );
     const selectedTaskDocumentId = selectedTaskDocument?.uniqueID;
-    
-    const handleFileDelete = (index) => {
-      setIndexToEdit(index);
-      setGlobalState("deleteFile", true);
-    };
+
+  const [fileUploadIndex, setFileUploadIndex] = useState(0);
+  const [fileUploadfieldIndex, setFileUploadfieldIndex] = useState(0);
+
+  const handleOpeneFileUpload = () => {
+    setGlobalState("showFileUploadModal", true);
+  };
+
+  const handleFileUploadEdit = (fieldsIndex, index) => {
+    setGlobalState("showFileUploadModal", true);
+    setGlobalState("selectedFileUpload", files);
+    setFileUploadIndex(index);
+    setFileUploadfieldIndex(fieldsIndex);
+  };
 
   useEffect(() => {
     if ($(".select").length > 0) {
@@ -248,7 +257,7 @@ const TaskDetails = () => {
                                     dateUpdated,
                                     checkToComplete,
                                   } = subtasks;
-                                  if (taskIdInSubTask == selecetedTaskId) {
+                                  if (taskIdInSubTask == selectedTaskId) {
                                     return (
                                       <li
                                         key={id}
@@ -378,7 +387,7 @@ const TaskDetails = () => {
                                   } = subtasks;
                                   if (
                                     checkToComplete != true &&
-                                    taskIdInSubTask == selecetedTaskId
+                                    taskIdInSubTask == selectedTaskId
                                   ) {
                                     return (
                                       <li key={id} className="task">
@@ -504,7 +513,7 @@ const TaskDetails = () => {
                                   } = subtasks;
                                   if (
                                     checkToComplete == true &&
-                                    taskIdInSubTask == selecetedTaskId
+                                    taskIdInSubTask == selectedTaskId
                                   ) {
                                     return (
                                       <li key={id} className="completed">
@@ -615,98 +624,94 @@ const TaskDetails = () => {
                 </div>
               </div>
               <CommentSection
-                selecetedTaskId={selecetedTaskId}
+                selecetedTaskId={selectedTaskId}
                 taskId={taskId}
               />
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title m-b-20">Upload files</h5>
-                  <FileUpload
-                    dispatchFiles={dispatchFiles}
-                    uniqueID={selecetedTaskId}
-                  />
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title m-b-20">Uploaded files</h5>
-                  <ul className="files-list">
-                    {filesList?.length > 0 &&
-                    selectedTaskDocumentId === selecetedTaskId
-                      ? filesList?.map((file, index) => {
-                          const { name, size, type, data, id, uniqueID } = file;
-                          if (uniqueID === selecetedTaskId) {
-                            return (
-                              <li key={id}>
-                                <div className="files-cont">
-                                  {type && type.startsWith("image/") ? (
-                                    <img
-                                      className="img-preview"
-                                      src={data}
-                                      alt="Preview"
-                                    />
-                                  ) : (
-                                    <>
-                                      <div className="file-type">
-                                        <span className="files-icon">
-                                          <i className="fa fa-file-pdf-o" />
-                                        </span>
-                                      </div>
-                                    </>
-                                  )}
-                                  <div className="files-info">
-                                    <span className="file-name text-ellipsis">
-                                      <a
-                                        href="#"
-                                        onClick={(event) =>
-                                          event.preventDefault()
-                                        }
-                                      >
-                                        {name}
-                                      </a>
-                                    </span>
-                                    <div className="file-size">
-                                      Size: {fileSize(size).human("si")}
-                                    </div>
-                                    <div className="file-size">
-                                      Type: {type}
-                                    </div>
-                                  </div>
-                                  <ul className="files-action">
-                                    <li className="dropdown dropdown-action">
-                                      <a
-                                        className="dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_horiz
-                                        </i>
-                                      </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a className="dropdown-item">
-                                          <i className="fa fa-download fa-fw m-r-5" />
-                                          Download
-                                        </a>
-                                        <a
-                                          onClick={() =>
-                                            handleFileDelete(index)
-                                          }
-                                          className="dropdown-item"
-                                        >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
-                                        </a>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </li>
-                            );
-                          }
-                        })
-                      : "No uploaded file(s) yet"}
-                  </ul>
+              <div className="col-md-12 d-flex">
+                <div className="card profile-box flex-fill">
+                  <div className="card-body">
+                    <h3 className="card-title">
+                      Upload Files{" "}
+                      <a onClick={handleOpeneFileUpload} className="edit-icon">
+                        <i className="fa fa-plus" />
+                      </a>
+                    </h3>
+                    <div className="experience-box">
+                      <ul className="experience-list">
+                        {filesList?.length > 0 &&
+                        selectedTaskDocumentId === selectedTaskId
+                          ? filesList?.map((file, index) => {
+                              const { id, inputFields, uniqueID } = file;
+                              if (uniqueID == selectedTaskId) {
+                                return (
+                                  <React.Fragment key={id}>
+                                    {inputFields?.map((fields, fieldsIndex) => {
+                                      const {
+                                        documentName,
+                                        documentNumber,
+                                        documentType,
+                                        expiryDate,
+                                        issueDate,
+                                        fileDetails,
+                                      } = fields;
+                                      return (
+                                        <li key={fieldsIndex}>
+                                          <div className="experience-user">
+                                            <div className="before-circle" />
+                                          </div>
+                                          <div className="experience-content">
+                                            <div className="timeline-content">
+                                              <a className="name">
+                                                {documentName}
+                                                <span
+                                                  className="edit-icon"
+                                                  onClick={() =>
+                                                    handleFileUploadEdit(
+                                                      fieldsIndex,
+                                                      index
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil" />
+                                                </span>
+                                              </a>
+                                              <div>{documentNumber}</div>
+                                              <span className="time">
+                                                Type: {documentType}
+                                              </span>
+                                              {issueDate && expiryDate ? (
+                                                <span className="time">
+                                                  Issue Date: {issueDate} -
+                                                  Expiry Date: {expiryDate}
+                                                </span>
+                                              ) : null}
+                                              {fileDetails?.type &&
+                                              fileDetails?.type?.startsWith(
+                                                "image/"
+                                              ) ? (
+                                                <img
+                                                  className="img-preview"
+                                                  src={fileDetails?.data}
+                                                  alt="Preview"
+                                                />
+                                              ) : (
+                                                <span className="files-icon">
+                                                  <i className="fa fa-file-pdf-o" />
+                                                </span>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </li>
+                                      );
+                                    })}
+                                  </React.Fragment>
+                                );
+                              }
+                            })
+                          : "No uploaded file(s) yet"}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -962,7 +967,7 @@ const TaskDetails = () => {
                   <ul className="list-box">
                     {totalAssignedServiceWorkers
                       ? totalAssignedServiceWorkers?.map((user, index) => {
-                          const { value, label, image, } = user;
+                          const { value, label, image } = user;
                           return (
                             <li key={value}>
                               <Link
@@ -1007,13 +1012,15 @@ const TaskDetails = () => {
             </div>
           </div>
         </div>
-        {deleteFile && (
-          <DeleteModal
-            deleteAction={dispatchFiles}
-            indexToDelete={indexToEdit}
-            dispatch={files}
-            modalTitle={"File"}
-          />
+        {showFileUploadModal && (
+          <>
+            <AddFileUploadModal
+              dispatchFiles={dispatchFiles}
+              fileUploadIndex={fileUploadIndex}
+              uniqueID={selectedTaskId}
+              fileUploadfieldIndex={fileUploadfieldIndex}
+            />
+          </>
         )}
         {showSubTaskModal && (
           <AddSubTask
@@ -1021,11 +1028,11 @@ const TaskDetails = () => {
             indexToEdit={indexToEdit}
             subTaskTitle={subTaskTitle}
             taskId={taskId}
-            selecetedTaskId={selecetedTaskId}
+            selecetedTaskId={selectedTaskId}
             dateTimeCreated={dateTimeCreated}
           />
         )}
-        {deleteModal && (
+        {deleteSubTask && (
           <DeleteModal
             deleteAction={dispatchSubTaskTitle}
             indexToDelete={indexToEdit}

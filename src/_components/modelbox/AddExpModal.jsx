@@ -13,7 +13,6 @@ const AddExpModal = ({
   dispatchExpInfo,
   expInformationIndex,
   emid,
-  emIndex,
   expfieldIndex,
 }) => {
   const [selectedExperienceModal] = useGlobalState("selectedExperienceModal");
