@@ -163,6 +163,10 @@ const houseProfile = () => {
                               : "0"}
                           </div>
                         </li>
+                        <li>
+                          <div className="title">Number of residents</div>
+                          <div className="text">{totalResidents?.length ? totalResidents?.length : "0"}</div>
+                        </li>
                       </ul>
                     </div>
                   </div>

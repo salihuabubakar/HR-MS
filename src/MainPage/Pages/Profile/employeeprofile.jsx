@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { Fragment, useEffect, useReducer, useState } from 'react';
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
 import Header from "../../../initialpage/Sidebar/header";
@@ -26,11 +26,14 @@ import {
   savedFileUploadReducer,
   initPersonalInfo,
   savedPersonalInfoReducer,
+  initTask,
+  savedTaskReducer,
 } from "../../../utils/localStorage";
 import AddEmergencyContact from '../../../_components/modelbox/AddEmergencyContact';
 import AddEducationInformation from '../../../_components/modelbox/AddEducationInformation';
 import DefaultImage from "../../../assets/img/placeholder.jpg";
 import DeleteModal from '../../../_components/modelbox/DeleteModal';
+import { DivContainer } from '../../TaskManagement/style';
 
 const EmployeeProfile = () => {
   const [deleteModal] = useGlobalState("deleteModal");
@@ -178,6 +181,17 @@ const EmployeeProfile = () => {
   useEffect(() => {
     setPersonalInfoList(personalInfo);
   }, [personalInfo]);
+
+  const [tasks] = useReducer(savedTaskReducer, [], initTask);
+
+  useEffect(() => {
+    localStorage.setItem("task", JSON.stringify(tasks));
+  }, [tasks]);
+
+  const [taskList, setTaskList] = useState();
+  useEffect(() => {
+    setTaskList(tasks);
+  }, [tasks]);
 
   const [acctIdToEdit, setAcctIdToEdit] = useState("");
 
@@ -344,7 +358,7 @@ const EmployeeProfile = () => {
   };
 
   return (
-    <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+    <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
       <Header onMenuClick={() => toggleMobileMenu()} />
       <Sidebar />
       <div className="page-wrapper">
@@ -874,108 +888,270 @@ const EmployeeProfile = () => {
             {/* Tasks Tab */}
             <div className="tab-pane fade" id="emp_tasks">
               <div className="row">
-                <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                  <div className="card">
-                    <div className="card-body">
-                      <div className="dropdown profile-action">
-                        <a
-                          aria-expanded="false"
-                          data-bs-toggle="dropdown"
-                          className="action-icon dropdown-toggle"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            data-bs-target="#edit_project"
-                            data-bs-toggle="modal"
-                            className="dropdown-item"
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            data-bs-target="#delete_project"
-                            data-bs-toggle="modal"
-                            className="dropdown-item"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                      <h4 className="project-title">
-                        <Link to="/app/projects/projects-view">
-                          Office Management
-                        </Link>
-                      </h4>
-                      <small className="block text-ellipsis m-b-15">
-                        <span className="text-xs">1</span>{" "}
-                        <span className="text-muted">open tasks, </span>
-                        <span className="text-xs">9</span>{" "}
-                        <span className="text-muted">tasks completed</span>
-                      </small>
-                      <p className="text-muted">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. When an unknown printer took a
-                        galley of type and scrambled it...
-                      </p>
-                      <div className="pro-deadline m-b-15">
-                        <div className="sub-title">Deadline:</div>
-                        <div className="text-muted">17 Apr 2019</div>
-                      </div>
-                      <div className="project-members m-b-15">
-                        <div>Project Leader :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Jeffery Lalor">
-                              <img alt="" src={Avatar_16} />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="project-members m-b-15">
-                        <div>Team :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Doe">
-                              <img alt="" src={Avatar_02} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Richard Miles">
-                              <img alt="" src={Avatar_09} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Smith">
-                              <img alt="" src={Avatar_10} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Mike Litorus">
-                              <img alt="" src={Avatar_05} />
-                            </a>
-                          </li>
-                          <li>
-                            <a className="all-users">+15</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <p className="m-b-5">
-                        Progress{" "}
-                        <span className="text-success float-end">40%</span>
-                      </p>
-                      <div className="progress progress-xs mb-0">
-                        <div
-                          style={{ width: "40%" }}
-                          data-bs-toggle="tooltip"
-                          role="progressbar"
-                          className="progress-bar bg-success"
-                          data-original-title="40%"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {taskList?.map((task, index) => {
+                  const {
+                    id,
+                    dateCreated,
+                    description,
+                    employee,
+                    manager,
+                    resident,
+                    taskPriority,
+                    taskStatus,
+                    taskType,
+                    taskTitle,
+                    timeAllocated,
+                  } = task;
+                  return (
+                    <Fragment key={id}>
+                      {employee?.map((employee, index) => {
+                        const { value, label, role, image } = employee;
+                        if (value === selectedEmployeeId) {
+                          return (
+                            <>
+                              <div
+                                key={value}
+                                className="col-lg-6 col-sm-12 col-md-6 col-xl-4"
+                              >
+                                <div className="card">
+                                  <div className="card-body">
+                                    <h4 className="project-title">
+                                      <Link
+                                        onClick={(e) => e.preventDefault()}
+                                        to="#"
+                                      >
+                                        {taskTitle}
+                                      </Link>
+                                    </h4>
+                                    <p className="text-muted">{description}</p>
+                                    <small className="block text-ellipsis m-b-15">
+                                      <span className="text-xs">
+                                        Task Type:{" "}
+                                      </span>
+                                      <span
+                                        style={{
+                                          backgroundColor:
+                                            taskType == "Paid Task"
+                                              ? "#55CE63"
+                                              : "#ff9b44",
+                                          color: "#fff",
+                                          padding: "5px",
+                                          borderRadius: "4px",
+                                        }}
+                                        // className="text-muted"
+                                      >
+                                        {taskType ? taskType : "--"}
+                                      </span>{" "}
+                                    </small>
+
+                                    <small className="block text-ellipsis m-b-15">
+                                      <span className="text-xs">
+                                        Task Priority:{" "}
+                                      </span>
+                                      <span
+                                        style={{
+                                          backgroundColor:
+                                            (taskPriority?.label == "low" &&
+                                              "red") ||
+                                            (taskPriority?.label == "medium" &&
+                                              "#ff9b44") ||
+                                            (taskPriority?.label == "highest" &&
+                                              "#55CE63"),
+                                          color: "#fff",
+                                          padding: "5px",
+                                          borderRadius: "4px",
+                                        }}
+                                        // className="text-muted"
+                                      >
+                                        {taskPriority
+                                          ? taskPriority.label
+                                          : "--"}
+                                      </span>{" "}
+                                    </small>
+
+                                    <small className="block text-ellipsis m-b-15">
+                                      <span className="text-xs">
+                                        Task Status:{" "}
+                                      </span>
+                                      <span
+                                        style={{
+                                          backgroundColor:
+                                            (taskStatus?.label ==
+                                              "not-started" &&
+                                              "red") ||
+                                            (taskStatus?.label == "started" &&
+                                              "#f20d91") ||
+                                            (taskStatus?.label == "middle" &&
+                                              "#ff9b44") ||
+                                            (taskStatus?.label ==
+                                              "rounding-up" &&
+                                              "#73AB00") ||
+                                            (taskStatus?.label == "completed" &&
+                                              "#55CE63"),
+                                          color: "#fff",
+                                          padding: "5px",
+                                          borderRadius: "4px",
+                                        }}
+                                        // className="text-muted"
+                                      >
+                                        {taskStatus
+                                          ? (taskStatus?.label ==
+                                              "not-started" &&
+                                              "Not started") ||
+                                            (taskStatus?.label == "started" &&
+                                              "Started") ||
+                                            (taskStatus?.label == "middle" &&
+                                              "Middle") ||
+                                            (taskStatus?.label ==
+                                              "rounding-up" &&
+                                              "Rounding up") ||
+                                            (taskStatus?.label == "completed" &&
+                                              "Completed")
+                                          : "--"}
+                                      </span>{" "}
+                                    </small>
+
+                                    <small className="block text-ellipsis m-b-15">
+                                      <span className="text-xs">
+                                        Date Created:{" "}
+                                      </span>
+                                      <span className="text-muted">
+                                        {dateCreated ? dateCreated : "--"}
+                                      </span>{" "}
+                                    </small>
+
+                                    <small className="block text-ellipsis m-b-15">
+                                      <span className="text-xs">
+                                        Task Manager:{" "}
+                                      </span>
+                                      <span className="text-muted">
+                                        {manager ? manager : "--"}
+                                      </span>{" "}
+                                    </small>
+
+                                    <small className="block text-ellipsis m-b-15">
+                                      <span className="text-xs">
+                                        Time Allocated:{" "}
+                                      </span>
+                                      <span className="text-muted">
+                                        {timeAllocated
+                                          ? timeAllocated + "hr"
+                                          : "--"}
+                                      </span>{" "}
+                                    </small>
+                                    <div className="project-members m-b-15">
+                                      <div>Team:</div>
+                                      <ul className="team-members">
+                                        <li>
+                                          <a
+                                            data-bs-toggle="tooltip"
+                                            title={label}
+                                          >
+                                            <img
+                                              alt=""
+                                              src={image ? image : DefaultImage}
+                                            />
+                                          </a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <p className="m-b-5">
+                                      Progress
+                                      <span
+                                        className={
+                                          (taskStatus?.label == "not-started"
+                                            ? "float-end color-not-started"
+                                            : undefined) ||
+                                          (taskStatus?.label == "started"
+                                            ? "float-end color-started"
+                                            : undefined) ||
+                                          (taskStatus?.label == "middle"
+                                            ? "float-end color-middle"
+                                            : undefined) ||
+                                          (taskStatus?.label == "rounding-up"
+                                            ? "float-end color-rounding-up"
+                                            : undefined) ||
+                                          (taskStatus?.label == "completed"
+                                            ? "float-end color-completed"
+                                            : undefined)
+                                        }
+                                      >
+                                        {(taskStatus?.label == "not-started" &&
+                                          "0%") ||
+                                          (taskStatus?.label == "started" &&
+                                            "25%") ||
+                                          (taskStatus?.label == "middle" &&
+                                            "50%") ||
+                                          (taskStatus?.label == "rounding-up" &&
+                                            "75%") ||
+                                          (taskStatus?.label == "completed" &&
+                                            "100%")}
+                                      </span>
+                                    </p>
+                                    <div className="progress progress-xs mb-0">
+                                      <div
+                                        className={
+                                          (taskStatus?.label == "not-started"
+                                            ? " progress-bar bg-not-started"
+                                            : undefined) ||
+                                          (taskStatus?.label == "started"
+                                            ? "progress-bar bg-started"
+                                            : undefined) ||
+                                          (taskStatus?.label == "middle"
+                                            ? "progress-bar bg-middle"
+                                            : undefined) ||
+                                          (taskStatus?.label == "rounding-up"
+                                            ? "progress-bar bg-rounding-up"
+                                            : undefined) ||
+                                          (taskStatus?.label == "completed"
+                                            ? "progress-bar bg-completed"
+                                            : undefined)
+                                        }
+                                        role="progressbar"
+                                        data-bs-toggle="tooltip"
+                                        title={
+                                          (taskStatus?.label == "not-started"
+                                            ? "0%"
+                                            : undefined) ||
+                                          (taskStatus?.label == "started"
+                                            ? "25%"
+                                            : undefined) ||
+                                          (taskStatus?.label == "middle"
+                                            ? "50%"
+                                            : undefined) ||
+                                          (taskStatus?.label == "rounding-up"
+                                            ? "75%"
+                                            : undefined) ||
+                                          (taskStatus?.label == "completed" &&
+                                            "100%")
+                                        }
+                                        style={{
+                                          width:
+                                            (taskStatus?.label ==
+                                              "not-started" &&
+                                              "0%") ||
+                                            (taskStatus?.label == "started" &&
+                                              "25%") ||
+                                            (taskStatus?.label == "middle" &&
+                                              "50%") ||
+                                            (taskStatus?.label ==
+                                              "rounding-up" &&
+                                              "75%") ||
+                                            (taskStatus?.label == "completed" &&
+                                              "100%"),
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        }
+                      })}
+                    </Fragment>
+                  );
+                })}
               </div>
             </div>
             {/* /Tasks Tab */}
@@ -1167,7 +1343,7 @@ const EmployeeProfile = () => {
         )}
         {/* /Family Info Modal */}
       </div>
-    </div>
+    </DivContainer>
   );
 }
 export default EmployeeProfile;
