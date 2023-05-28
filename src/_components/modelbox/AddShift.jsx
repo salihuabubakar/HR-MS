@@ -12,14 +12,15 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import { v4 as uuidv4 } from "uuid";
+import "./style.css";
 
 const AddShift = ({
   dispatchShift,
   indexToEdit,
 }) => {
   const [selectedShiftList] = useGlobalState("selectedShiftList");
+  const uniqueId = uuidv4();
 
   const [title, setTitle] = useState(
     selectedShiftList[indexToEdit]?.title
@@ -47,11 +48,39 @@ const AddShift = ({
   const [id, setId] = useState(
     selectedShiftList[indexToEdit]?.id
       ? selectedShiftList[indexToEdit]?.id
-      : Date.now()
+      : uniqueId
   );
+
+  const [titleError, setTitleError] = useState("");
+  const [noteError, setNoteError] = useState("");
+  const [startTimeError, setStartTimeError] = useState("");
+  const [endTimeError, setEndTimeError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Validate first name and last name
+    if (title === "") {
+      setTitleError("Title is required.");
+      return;
+    }
+    if (note === "") {
+      setNoteError("Note is required.");
+      return;
+    }
+    if (startTime === "") {
+      setStartTimeError("Start Time is required.");
+      return;
+    }
+    if (endTime === "") {
+      setEndTimeError("End Time is required.");
+      return;
+    }
+
+    // Clear any existing error messages
+    setTitleError("");
+    setNoteError("");
+    setStartTimeError("");
+    setEndTimeError("");
     const shiftList = {
       title,
       note,
@@ -80,17 +109,28 @@ const AddShift = ({
     setStartTime(
       newTime.toString().slice(0, 21) + newTime.toString().slice(24)
     );
+    setStartTimeError("");
   };
 
   const handleEndTimeChange = (newValue) => {
     let newTime;
     newTime = newValue.$d;
     setEndTime(newTime.toString().slice(0, 21) + newTime.toString().slice(24));
+    setEndTimeError("");
   };
 
-  const handleSelectedDateChange = (newValue) => {
-    setSelectedDate(newValue.$d);
-  };
+   const handleTitleChange = (event) => {
+     setTitle(event.target.value);
+     setTitleError("");
+   };
+   const handleNoteChange = (event) => {
+     setNote(event.target.value);
+     setNoteError("");
+   };
+
+  // const handleSelectedDateChange = (newValue) => {
+  //   setSelectedDate(newValue.$d);
+  // };
 
   return (
     <>
@@ -129,8 +169,11 @@ const AddShift = ({
                             className="form-control"
                             placeholder="Title"
                             value={title}
-                            onChange={(event) => setTitle(event.target.value)}
+                            onChange={handleTitleChange}
                           />
+                          {titleError && (
+                            <p className="error-message">{titleError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -143,8 +186,11 @@ const AddShift = ({
                             className="form-control"
                             placeholder="Description"
                             value={note}
-                            onChange={(event) => setNote(event.target.value)}
+                            onChange={handleNoteChange}
                           />
+                          {noteError && (
+                            <p className="error-message">{noteError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -160,6 +206,9 @@ const AddShift = ({
                                 <TextField {...params} />
                               )}
                             />
+                            {startTimeError && (
+                              <p className="error-message">{startTimeError}</p>
+                            )}
                           </LocalizationProvider>
                         </div>
                       </div>
@@ -175,6 +224,9 @@ const AddShift = ({
                                 <TextField {...params} />
                               )}
                             />
+                            {endTimeError && (
+                              <p className="error-message">{endTimeError}</p>
+                            )}
                           </LocalizationProvider>
                         </div>
                       </div>

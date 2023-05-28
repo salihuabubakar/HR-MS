@@ -4,8 +4,12 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import {
   initUserAccount,
   savedUserAccountReducer,
+  initResident,
+  savedResidentReducer,
 } from "../../utils/localStorage";
 import Select from "react-select";
+import { v4 as uuidv4 } from "uuid";
+import "./style.css";
 
 const AddDepartment = ({
   dispatchHouse,
@@ -14,7 +18,7 @@ const AddDepartment = ({
   house
 }) => {
   const [selectedHouse] = useGlobalState("selectedHouse");
-
+  const uniqueId = uuidv4();
      
  const [userAcct, dispatchUserAcct] = useReducer(
    savedUserAccountReducer,
@@ -25,6 +29,12 @@ const AddDepartment = ({
  useEffect(() => {
    setEmployeeAccts(userAcct);
  }, [userAcct]);
+
+ const [residentAcct] = useReducer(savedResidentReducer, [], initResident);
+ const [residentAccts, setResidentAccts] = useState();
+ useEffect(() => {
+   setResidentAccts(residentAcct);
+ }, [residentAcct]);
 
  const [image, setImage] = useState(
    selectedHouse[indexToEdit]?.image ? selectedHouse[indexToEdit]?.image : ""
@@ -48,18 +58,52 @@ const AddDepartment = ({
       : ""
   );
 
+  const [resident, setResident] = useState(
+    selectedHouse[indexToEdit]?.resident
+      ? selectedHouse[indexToEdit]?.resident
+      : ""
+  );
+
   const [id, setId] = useState(
-    selectedHouse[indexToEdit]?.id ? selectedHouse[indexToEdit]?.id : Date.now()
+    selectedHouse[indexToEdit]?.id ? selectedHouse[indexToEdit]?.id : uniqueId
   );
 
   //  const isEdit = () => !!(deptIdToEdit && depts[indexToEdit]);
+  const [houseNameError, setHouseNameError] = useState("");
+  const [managerNameError, setManagerNameError] = useState("");
+  const [employeeError, setEmployeeError] = useState("");
+  const [residentError, setResidentError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Validate first name and last name
+    if (houseName === "") {
+      setHouseNameError("House Name is required.");
+      return;
+    }
+    if (managerName === "") {
+      setManagerNameError("Manager Name is required.");
+      return;
+    }
+    if (employee === "") {
+      setEmployeeError("Employee is required.");
+      return;
+    }
+    if (resident === "") {
+      setResidentError("Resident is required.");
+      return;
+    }
+
+    // Clear any existing error messages
+    setHouseNameError("");
+    setManagerNameError("");
+    setEmployeeError("");
+    setResidentError("");
     const house = {
       image,
       houseName,
       employee,
+      resident,
       managerName,
       id,
     };
@@ -84,16 +128,14 @@ const AddDepartment = ({
       }),
     };
 
-    const handleEmployeeChange = (event) => {
-      setEmployee(event);
-    };
+    
 
   const users = [];
   employeeAccts?.map((user) => {
     users.push({
       value: user.id,
       label: user.firstName + " " + user.lastName,
-      image: user.profileInfo?.image,
+      image: user.photo,
     });
   });
 
@@ -107,17 +149,41 @@ const AddDepartment = ({
     };
   };
 
+    
+
+    const residents = [];
+    residentAccts?.map((resident) => {
+      residents.push({
+        value: resident.id,
+        label: resident.residentName,
+        image: resident.image,
+      });
+    });
+
+    const handleHouseNameChange = (e) => {
+      setHouseName(e.target.value);
+      setHouseNameError("");
+    };
+    const handleManagerNameChange = (e) => {
+      setManagerName(e.target.value);
+      setManagerNameError("");
+    };
+    const handleEmployeeChange = (event) => {
+      setEmployee(event);
+      setEmployeeError("")
+    };
+    const handleResidentChange = (event) => {
+      setResident(event);
+      setResidentError("")
+    };
+
 
 
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer
-            top={true}
-            className="custom-modal"
-            role="dialog"
-          >
+          <PopupContainer top={true} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -169,11 +235,14 @@ const AddDepartment = ({
                           </label>
                           <input
                             value={houseName}
-                            onChange={(e) => setHouseName(e.target.value)}
+                            onChange={handleHouseNameChange}
                             className="form-control floating"
                             type="text"
                             placeholder="House Name"
                           />
+                          {houseNameError && (
+                            <p className="error-message">{houseNameError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -183,17 +252,20 @@ const AddDepartment = ({
                           </label>
                           <input
                             value={managerName}
-                            onChange={(e) => setManagerName(e.target.value)}
+                            onChange={handleManagerNameChange}
                             className="form-control floating"
                             type="text"
                             placeholder="Manager"
                           />
+                          {managerNameError && (
+                            <p className="error-message">{managerNameError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Select Department{" "}
+                            Select Employee{" "}
                             <span className="text-danger">*</span>
                           </label>
                           <Select
@@ -225,6 +297,40 @@ const AddDepartment = ({
                             styles={customSelectStyles}
                             placeholder="Select Staff"
                           />
+                          {employeeError && (
+                            <p className="error-message">{employeeError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Residents <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={[
+                              selectedHouse[indexToEdit]?.resident[0],
+                              selectedHouse[indexToEdit]?.resident[1],
+                              selectedHouse[indexToEdit]?.resident[2],
+                              selectedHouse[indexToEdit]?.resident[3],
+                              selectedHouse[indexToEdit]?.resident[4],
+                              selectedHouse[indexToEdit]?.resident[5],
+                              selectedHouse[indexToEdit]?.resident[6],
+                              selectedHouse[indexToEdit]?.resident[7],
+                              selectedHouse[indexToEdit]?.resident[8],
+                              selectedHouse[indexToEdit]?.resident[9],
+                              selectedHouse[indexToEdit]?.resident[10],
+                            ]}
+                            onChange={handleResidentChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={residents}
+                            styles={customSelectStyles}
+                            placeholder="Select Resident"
+                          />
+                          {residentError && (
+                            <p className="error-message">{residentError}</p>
+                          )}
                         </div>
                       </div>
                     </div>

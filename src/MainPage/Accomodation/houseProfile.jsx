@@ -48,6 +48,7 @@ const houseProfile = () => {
   const HouseName = selectedHouse?.houseName;
   const totalHouseEmployees = selectedHouse?.employee;
   const managerName = selectedHouse?.managerName;
+  const totalResidents = selectedHouse?.resident;
 
   useEffect(() => {
     localStorage.setItem("fileUploaded", JSON.stringify(files));
@@ -212,7 +213,7 @@ const houseProfile = () => {
                       data-bs-toggle="tab"
                       className="nav-link active"
                     >
-                      Service Worker
+                      Residents
                     </a>
                   </li>
                   <li className="nav-item">
@@ -238,7 +239,32 @@ const houseProfile = () => {
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Service Workers</h3>
+                      <h3 className="card-title">Residents</h3>
+                      {totalResidents
+                        ? totalResidents?.map((resident, index) => {
+                            const { label, value, image } = resident;
+                            return (
+                              <React.Fragment key={value}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">
+                                      <img
+                                        style={{
+                                          width: "30px",
+                                          height: "30px",
+                                          borderRadius: "50px",
+                                        }}
+                                        alt=""
+                                        src={image ? image : DefaultImage}
+                                      />{" "}
+                                      {label}
+                                    </span>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          })
+                        : "Ops! No residents in the house."}
                     </div>
                   </div>
                 </div>
