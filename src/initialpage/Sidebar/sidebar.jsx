@@ -272,7 +272,7 @@ const toggleLevelThree = (value) => {
                       }
                     >
                       {" "}
-                      Service Worker
+                      Residents
                     </span>{" "}
                     <span className="menu-arrow" />
                   </a>
@@ -289,7 +289,7 @@ const toggleLevelThree = (value) => {
                           }
                           to="/app/servicework/service-worker"
                         >
-                          Residents
+                          All Residents
                         </Link>
                       </li>
                     </ul>
