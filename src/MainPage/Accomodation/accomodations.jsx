@@ -9,7 +9,6 @@ import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import { initHouse, savedHouseReducer } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
 import HouseImg from "../../assets/img/house.png";
-import Select from "react-select";
 import AddHouse from "../../_components/modelbox/AddHouse";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
 import DefaultImage from "../../assets/img/placeholder.jpg";
@@ -115,19 +114,19 @@ const Accomodations = () => {
               {/* /Page Header */}
               {/* Search Filter */}
               <div className="row filter-row">
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <div className="form-group form-focus">
                     <input type="text" className="form-control floating" />
                     <label className="focus-label">House ID</label>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <div className="form-group form-focus">
                     <input type="text" className="form-control floating" />
                     <label className="focus-label">House Name</label>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <a href="#" className="btn btn-success btn-block w-100">
                     {" "}
                     Search{" "}
@@ -136,7 +135,8 @@ const Accomodations = () => {
               </div>
               {/* Search Filter */}
               <div className="row staff-grid-row">
-                {houseList?.map((house, index) => {
+                {houseList?.length > 0 ? 
+                houseList?.map((house, index) => {
                   const { id, image, houseName, employee, managerName } = house;
                   return (
                     <div
@@ -207,7 +207,7 @@ const Accomodations = () => {
                       </div>
                     </div>
                   );
-                })}
+                }) : "No house available"}
               </div>
             </div>
 
