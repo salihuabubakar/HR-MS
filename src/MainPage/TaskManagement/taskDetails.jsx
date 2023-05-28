@@ -67,7 +67,6 @@ const TaskDetails = () => {
     const [menu, setMenu] = useState(false);
     const [indexToEdit, setIndexToEdit] = useState(0);
     const [taskIndexToEdit, setTaskIndexToEdit] = useState(0);
-    const [dateTimeCreated, setDateTimeCreated] = useState("");
 
     const selectedTask = taskList?.find((task) => task?.id === selectedTaskId);
 
@@ -89,9 +88,8 @@ const TaskDetails = () => {
       setGlobalState("selectedTaskInfo", tasks);
     }
 
-    const handleSubTaskEdit = (index, dateCreated) => {
+    const handleSubTaskEdit = (index) => {
       setIndexToEdit(index);
-      setDateTimeCreated(dateCreated);
       setGlobalState("showSubTaskModal", true);
       setGlobalState("selectedSubTaskInfo", subTaskTitle);
     };
@@ -325,7 +323,7 @@ const TaskDetails = () => {
                                                       margin: "0",
                                                     }}
                                                   >
-                                                    Date Updated: {dateUpdated}
+                                                    last Updated: {dateUpdated}
                                                   </h6>
                                                 </span>
                                               </>
@@ -916,7 +914,7 @@ const TaskDetails = () => {
                   <ul className="list-box">
                     {totalAssignedEmployees
                       ? totalAssignedEmployees?.map((user, index) => {
-                          const { value, label, image, designation } = user;
+                          const { value, label, image, role } = user;
                           return (
                             <li key={value}>
                               <Link
@@ -949,7 +947,7 @@ const TaskDetails = () => {
                                     </span>
                                     <div className="clearfix" />
                                     <span className="message-content">
-                                      {designation?.label}
+                                      {role}
                                     </span>
                                   </div>
                                 </div>
@@ -963,7 +961,7 @@ const TaskDetails = () => {
               </div>
               <div className="card project-user">
                 <div className="card-body">
-                  <h6 className="card-title m-b-20">Service Workers</h6>
+                  <h6 className="card-title m-b-20">Residents</h6>
                   <ul className="list-box">
                     {totalAssignedServiceWorkers
                       ? totalAssignedServiceWorkers?.map((user, index) => {
@@ -1029,7 +1027,6 @@ const TaskDetails = () => {
             subTaskTitle={subTaskTitle}
             taskId={taskId}
             selecetedTaskId={selectedTaskId}
-            dateTimeCreated={dateTimeCreated}
           />
         )}
         {deleteSubTask && (

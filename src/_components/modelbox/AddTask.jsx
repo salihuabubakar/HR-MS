@@ -14,12 +14,15 @@ import {
 } from "../../utils/localStorage";
 import Select from "react-select";
 import { RadioBtn } from "./styles";
+import { v4 as uuidv4 } from "uuid";
+import "./style.css";
 
 const AddTask = ({
   dispatchTasks,
   indexToEdit,
 }) => {
   const [selectedTaskInfo] = useGlobalState("selectedTaskInfo");
+  const uniqueId = uuidv4();
 
   const [userAcct] = useReducer(
     savedUserAccountReducer,
@@ -96,7 +99,19 @@ const AddTask = ({
   );
 
   const [id, setId] = useState(
-    selectedTaskInfo[indexToEdit]?.id ? selectedTaskInfo[indexToEdit]?.id : Date.now()
+    selectedTaskInfo[indexToEdit]?.id
+      ? selectedTaskInfo[indexToEdit]?.id
+      : uniqueId
+  );
+
+  const today = new Date();
+  const options = { month: "long", day: "numeric", year: "numeric" };
+  const now = today.toLocaleDateString("en-GB", options);
+
+  const [dateCreated] = useState(
+    selectedTaskInfo[indexToEdit]?.dateCreated
+      ? selectedTaskInfo[indexToEdit]?.dateCreated
+      : now
   );
 
   // let taskStatus = "In-progress";
@@ -107,9 +122,7 @@ const AddTask = ({
     { value: 3, label: "low" },
   ];
 
-  const handlePriorityChange = (event) => {
-    setTaskPriority(event);
-  };
+  
 
     const statusOptions = [
       { value: 1, label: "not-started" },
@@ -119,16 +132,67 @@ const AddTask = ({
       { value: 5, label: "completed" },
     ];
 
-  const handleStatusChange = (event) => {
-    setTaskStatus(event);
-  };
 
-  const today = new Date();
-  const options = { month: "long", day: "numeric", year: "numeric" };
-  const dateCreated = today.toLocaleDateString("en-GB", options);
+  const [taskTitleError, setTaskTitleError] = useState("");
+  const [taskTypeError, setTaskTypeError] = useState("");
+  const [timeAllocatedError, setTimeAllocatedError] = useState("");
+  const [residentError, setResidentError] = useState("");
+  const [taskStatusError, setTaskStatusError] = useState("");
+  const [managerError, setManagerError] = useState("");
+  const [employeeError, setEmployeeError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [taskPriorityError, setTaskPriorityError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Validate first name and last name
+    if (taskTitle === "") {
+      setTaskTitleError("Task Title is required.");
+      return;
+    }
+    if (manager === "") {
+      setManagerError("Manager is required.");
+      return;
+    }
+    if (taskType === "") {
+      setTaskTypeError("Task Type is required.");
+      return;
+    }
+    if (timeAllocated === "") {
+      setTimeAllocatedError("Allocated Time is required.");
+      return;
+    }
+    if (description === "") {
+      setDescriptionError("Description is required.");
+      return;
+    }
+    if (taskPriority === "") {
+      setTaskPriorityError("Task Priority is required.");
+      return;
+    }
+    if (taskStatus === "") {
+      setTaskStatusError("Task Status is required.");
+      return;
+    }
+    if (employee === "") {
+      setEmployeeError("Employee is required.");
+      return;
+    }
+    if (resident === "") {
+      setResidentError("Resident is required.");
+      return;
+    }
+
+    // Clear any existing error messages
+    setTaskPriorityError("");
+    setTaskTitleError("");
+    setTaskTypeError("");
+    setTimeAllocatedError("");
+    setTaskStatusError("");
+    setDescriptionError("");
+    setManagerError("");
+    setEmployeeError("");
+    setResidentError("");
     const task = {
       taskTitle,
       taskType,
@@ -165,6 +229,7 @@ const AddTask = ({
 
   const handleEmployeeChange = (event) => {
     setEmployee(event);
+    setEmployeeError("")
   };
 
   const users = [];
@@ -172,13 +237,14 @@ const AddTask = ({
     users.push({
       value: user.id,
       label: user.firstName + " " + user.lastName,
-      image: user.profileInfo?.image,
-      designation: user.designation,
+      image: user.photo,
+      role: user.role,
     });
   });
 
   const handleResidentChange = (event) => {
     setResident(event);
+    setResidentError("")
   };
 
   const residents = [];
@@ -189,6 +255,36 @@ const AddTask = ({
       image: resident.image,
     });
   });
+
+  const handleManagerChange = (e) => {
+    setManager(e.target.value);
+    setManagerError("");
+  };
+  const handleTaskTitleChange = (e) => {
+    setTaskTitle(e.target.value);
+    setTaskTitleError("");
+  };
+  const handleTaskTypeChange = (e) => {
+    setTaskType(e.target.value);
+    setTaskTypeError("");
+  };
+  const handleTimeAllocatedChange = (e) => {
+    setTimeAllocated(e.target.value);
+    setTimeAllocatedError("");
+  };
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+    setDescriptionError("");
+  };
+
+  const handlePriorityChange = (event) => {
+    setTaskPriority(event);
+    setTaskPriorityError("");
+  };
+  const handleStatusChange = (event) => {
+    setTaskStatus(event);
+    setTaskStatusError("");
+  };
 
   return (
     <>
@@ -224,11 +320,14 @@ const AddTask = ({
                           </label>
                           <input
                             value={taskTitle}
-                            onChange={(e) => setTaskTitle(e.target.value)}
+                            onChange={handleTaskTitleChange}
                             className="form-control floating"
                             type="text"
                             placeholder="Task Title"
                           />
+                          {taskTitleError && (
+                            <p className="error-message">{taskTitleError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -238,11 +337,14 @@ const AddTask = ({
                           </label>
                           <input
                             value={manager}
-                            onChange={(e) => setManager(e.target.value)}
+                            onChange={handleManagerChange}
                             className="form-control floating"
                             type="text"
-                            placeholder="Task Title"
+                            placeholder="Manager"
                           />
+                          {managerError && (
+                            <p className="error-message">{managerError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -259,7 +361,7 @@ const AddTask = ({
                               // }
                               id="paid"
                               value={"Paid Task"}
-                              onChange={(e) => setTaskType(e.target.value)}
+                              onChange={handleTaskTypeChange}
                             />
                             <label htmlFor="paid">
                               <span>Paid</span>
@@ -269,12 +371,15 @@ const AddTask = ({
                               name="task-type"
                               id="non-paid"
                               value={"Non-Paid Task"}
-                              onChange={(e) => setTaskType(e.target.value)}
+                              onChange={handleTaskTypeChange}
                             />
                             <label htmlFor="non-paid">
                               <span>Non-Paid</span>
                             </label>
                           </RadioBtn>
+                          {taskTypeError && (
+                            <p className="error-message">{taskTypeError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -285,12 +390,17 @@ const AddTask = ({
                           </label>
                           <input
                             value={timeAllocated}
-                            onChange={(e) => setTimeAllocated(e.target.value)}
+                            onChange={handleTimeAllocatedChange}
                             className="form-control floating"
                             type="number"
                             placeholder="Time allocation e.g 5hr"
                             min={0}
                           />
+                          {timeAllocatedError && (
+                            <p className="error-message">
+                              {timeAllocatedError}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-12">
@@ -303,8 +413,11 @@ const AddTask = ({
                             name="description"
                             placeholder="Description"
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            onChange={handleDescriptionChange}
                           />
+                          {descriptionError && (
+                            <p className="error-message">{descriptionError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -327,6 +440,9 @@ const AddTask = ({
                             styles={customSelectStyles}
                             placeholder="Select Priority"
                           />
+                          {taskPriorityError && (
+                            <p className="error-message">{taskPriorityError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -349,6 +465,9 @@ const AddTask = ({
                             styles={customSelectStyles}
                             placeholder="Select Status"
                           />
+                          {taskStatusError && (
+                            <p className="error-message">{taskStatusError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -378,6 +497,9 @@ const AddTask = ({
                             styles={customSelectStyles}
                             placeholder="Select Employees"
                           />
+                          {employeeError && (
+                            <p className="error-message">{employeeError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -407,6 +529,9 @@ const AddTask = ({
                             styles={customSelectStyles}
                             placeholder="Select Resident"
                           />
+                          {residentError && (
+                            <p className="error-message">{residentError}</p>
+                          )}
                         </div>
                       </div>
                     </div>
