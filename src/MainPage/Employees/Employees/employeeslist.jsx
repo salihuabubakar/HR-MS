@@ -13,54 +13,12 @@ import DeleteModal from "../../../_components/modelbox/DeleteModal";
 import {
   initUserAccount,
   savedUserAccountReducer,
-  initDesignation,
-  savedDesignationReducer
 } from "../../../utils/localStorage";
 import DefaultImage from "../../../assets/img/placeholder.jpg";
-import Select from "react-select";
 
 const Employeeslist = () => {
-  const [desig] = useReducer(
-    savedDesignationReducer,
-    [],
-    initDesignation
-  );
-  const [desigList, setDesignationList] = useState();
-  useEffect(() => {
-    setDesignationList(desig);
-  }, [desig]);
-
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-    control: (provided, state) => ({
-      ...provided,
-      background: "#fff",
-      borderColor: "#ddd",
-      height: "48px",
-    }),
-  };
-
-   const [designation, setDesignation] = useState("");
-   const [showModal] = useGlobalState("showModal");
-   const [deleteModal] = useGlobalState("deleteModal");
-
-   const roles = [];
-   desigList?.map((role) => {
-     roles.push({ value: role.id, label: role.desigName });
-   });
-
-   const handleRoleChange = (event) => {
-     setDesignation(event);
-   };
+  const [showModal] = useGlobalState("showModal");
+  const [deleteModal] = useGlobalState("deleteModal");
 
   const [userAcct, dispatchUserAcct] = useReducer(
     savedUserAccountReducer,
@@ -123,7 +81,7 @@ const Employeeslist = () => {
               title: "Name",
               dataIndex: "name",
               render: (text, record, index) => {
-                const { id, profileInfo, firstName, lastName, designation } =
+                const { id, photo, firstName, lastName, role } =
                   record;
                 return (
                   <React.Fragment>
@@ -144,8 +102,8 @@ const Employeeslist = () => {
                           style={{ width: "40px", height: "40px" }}
                           alt=""
                           src={
-                            profileInfo?.image
-                              ? profileInfo?.image
+                            photo
+                              ? photo
                               : DefaultImage
                           }
                         />
@@ -156,7 +114,7 @@ const Employeeslist = () => {
                           state: { id: id, index: index },
                         }}
                       >
-                        {firstName} {lastName} <span>{designation?.label}</span>
+                        {firstName} {lastName} <span>{role}</span>
                       </Link>
                     </h2>
                   </React.Fragment>
@@ -166,7 +124,7 @@ const Employeeslist = () => {
             },
             {
               title: "Employee ID",
-              dataIndex: "employeeId",
+              dataIndex: "employeeNumber",
               // sorter: (a, b) => a.employee_id.length - b.employee_id.length,
             },
 
@@ -178,13 +136,13 @@ const Employeeslist = () => {
 
             {
               title: "Mobile",
-              dataIndex: "phoneNo",
+              dataIndex: "phoneNumber",
               // sorter: (a, b) => a.phoneNo.length - b.mobile.length,
             },
 
             {
               title: "Join Date",
-              dataIndex: "joinDate",
+              dataIndex: "hireDate",
               // sorter: (a, b) => a.joindate.length - b.joindate.length,
             },
             // {
@@ -280,29 +238,19 @@ const Employeeslist = () => {
               {/* /Page Header */}
               {/* Search Filter */}
               <div className="row filter-row">
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <div className="form-group form-focus">
                     <input type="text" className="form-control floating" />
                     <label className="focus-label">Employee ID</label>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <div className="form-group form-focus">
                     <input type="text" className="form-control floating" />
                     <label className="focus-label">Employee Name</label>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus select-focus">
-                    <Select
-                      onChange={handleRoleChange}
-                      options={roles}
-                      styles={customSelectStyles}
-                      placeholder="Select Designation"
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <a href="#" className="btn btn-success btn-block w-100">
                     {" "}
                     Search{" "}

@@ -23,6 +23,8 @@ const DeleteModal = ({ deleteAction, indexToDelete, dispatch, modalTitle }) => {
     setGlobalState("deleteFile", false);
     setGlobalState("showFileUploadModal", false);
     setGlobalState("deleteSubTask", false);
+    setGlobalState("showEmergencyContactModal", false);
+    setGlobalState("showPersonalInfoModal", false)
   };
 
   const handleModalClose = () => {

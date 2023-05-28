@@ -125,95 +125,11 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       ? selectedUserAccount[emIndex]?.id
       : Date.now()
   );
-
-  const [passPortNo] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.passPortNo
-      ? selectedUserAccount[emIndex]?.personalInfo?.passPortNo
-      : ""
-  );
-
-  const [passportExpiryDate] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.passportExpiryDate
-      ? selectedUserAccount[emIndex]?.personalInfo?.passportExpiryDate
-      : ""
-  );
-
-  const [religion] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.religion
-      ? selectedUserAccount[emIndex]?.personalInfo?.religion
-      : ""
-  );
-
-  const [emSpouse] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.emSpouse
-      ? selectedUserAccount[emIndex]?.personalInfo?.emSpouse
-      : ""
-  );
-
-  const [noChildren] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.noChildren
-      ? selectedUserAccount[emIndex]?.personalInfo?.noChildren
-      : ""
-  );
-
-      const [primaryName] = useState(
-      selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
-        ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
-        : ""
-    );
-  const [primaryRelationship] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
-      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
-      : ""
-  );
-  const [primaryPhone1] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
-      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
-      : ""
-  );
-  const [primaryPhone2] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
-      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
-      : ""
-  );
-    const [secondaryName] = useState(
-      selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
-        ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
-        : ""
-    );
-  const [secondaryRelationship] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
-      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
-      : ""
-  );
-  const [secondaryPhone1] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
-      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
-      : ""
-  );
-  const [secondaryPhone2] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
-      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
-      : ""
-  );
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    const emergencyContact = {
-      primary: {
-        primaryName,
-        primaryRelationship,
-        primaryPhone1,
-        primaryPhone2,
-      },
-      secondary: {
-        secondaryName,
-        secondaryRelationship,
-        secondaryPhone1,
-        secondaryPhone2,
-      },
-    };
     const profileInfo = {
+      id,
       image,
       address,
       state,
@@ -221,35 +137,10 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
       dOB,
       pinCode,
     };
-    const personalInfo = {
-      passPortNo,
-      passportExpiryDate,
-      religion,
-      emSpouse,
-      noChildren,
-    };
-    const userAccount = {
-      id,
-      firstName,
-      lastName,
-      userName,
-      email,
-      password,
-      confirmPassword,
-      employeeId,
-      joinDate,
-      phoneNo,
-      company,
-      dept,
-      designation,
-      profileInfo,
-      personalInfo,
-      emergencyContact,
-    };
     if (selectedUserAccount[emIndex]?.id) {
-      dispatchUserAcct({ type: "update", payload: userAccount });
+      dispatchUserAcct({ type: "update", payload: profileInfo });
      } else {
-      dispatchUserAcct({ type: "push", payload: userAccount });
+      dispatchUserAcct({ type: "push", payload: profileInfo });
     }
     setGlobalState("showProfileModal", false);
     // if (selectedProfileInfo[indexToEdit]?.id) {
@@ -314,7 +205,6 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
      reader.onload = () => {
        const base64Image = reader.result;
        setImage(base64Image);
-       //  setImage(URL.createObjectURL(event.target.files[0]));
      };
    };
 

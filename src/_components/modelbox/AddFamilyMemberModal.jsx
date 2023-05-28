@@ -6,15 +6,17 @@ import {
   Card,
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
+import { v4 as uuidv4 } from "uuid";
+import "./style.css";
 
 import DeleteModal from "./DeleteModal";
 const AddFamilyMemberModal = ({
   dispatchFamilyMemberInfo,
   familyMembInformationIndex,
-  emid,
-  emIndex,
+  employeeId,
   familyMembfieldIndex,
 }) => {
+  const uniqueId = uuidv4();
   const [selectedFamilyMemberInfo] = useGlobalState("selectedFamilyMemberInfo");
   const [deleteModal] = useGlobalState("deleteModal");
   const [inputFields, setInputFields] = useState([
@@ -45,6 +47,9 @@ const AddFamilyMemberModal = ({
             familyMembfieldIndex
           ]?.phone
         : "",
+      nameError: "",
+      relationshipError: "",
+      phoneError: "",
     },
   ]);
 
@@ -53,16 +58,47 @@ const AddFamilyMemberModal = ({
   const [id] = useState(
     selectedFamilyMemberInfo[familyMembInformationIndex]?.id
       ? selectedFamilyMemberInfo[familyMembInformationIndex]?.id
-      : Date.now()
+      : uniqueId
   );
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Check for empty fields
+    const isAnyFieldEmpty = inputFields.some(
+      (field) =>
+        field.name.trim() === "" ||
+        field.relationship.trim() === "" ||
+        field.phone.trim() === ""
+    );
+    if (isAnyFieldEmpty) {
+      // Set error for empty fields
+      setInputFields((prevInputFields) =>
+        prevInputFields.map((field) => {
+          const updatedField = { ...field };
+
+          if (field.name.trim() === "") {
+            updatedField.nameError = "Name is required";
+          }
+
+          if (field.relationship.trim() === "") {
+            updatedField.relationshipError = "Relationship is required";
+          }
+
+          if (field.phone.trim() === "") {
+            updatedField.phoneError = "Phone is required";
+          }
+
+          return updatedField;
+        })
+      );
+
+      return;
+    }
+    //Proceed with form submission
     inputFields.forEach((field, i) => {
       const educationalInfo = {
-        id: idIsTrue ? id : Date.now() + i,
-        emIndex,
-        emid,
+        id: idIsTrue ? id : uniqueId + i,
+        employeeId,
         inputFields: [field],
       };
 
@@ -72,7 +108,7 @@ const AddFamilyMemberModal = ({
         dispatchFamilyMemberInfo({ type: "push", payload: educationalInfo });
       }
     });
-    
+
     setGlobalState("showFamilyMenberModal", false);
   };
 
@@ -81,9 +117,20 @@ const AddFamilyMemberModal = ({
   };
 
   const handleInputChange = (index, event) => {
-    let data = [...inputFields];
-    data[index][event.target.name] = event.target.value;
-    setInputFields(data);
+    const { name, value } = event.target;
+
+    setInputFields((prevInputFields) => {
+      const updatedFields = [...prevInputFields];
+      const field = updatedFields[index];
+
+      // Update field value
+      field[name] = value;
+
+      // Clear corresponding error
+      field[`${name}Error`] = "";
+
+      return updatedFields;
+    });
   };
 
   const addFields = () => {
@@ -168,7 +215,9 @@ const AddFamilyMemberModal = ({
                             </h5>
                             <div className="col-sm-6">
                               <div className="form-group">
-                                <label className="focus-label">Name</label>
+                                <label className="focus-label">
+                                  Name <span className="text-danger">*</span>
+                                </label>
                                 <input
                                   type="text"
                                   className="form-control floating"
@@ -179,12 +228,18 @@ const AddFamilyMemberModal = ({
                                     handleInputChange(index, event);
                                   }}
                                 />
+                                {value?.nameError && (
+                                  <span className="error-message">
+                                    {value?.nameError}
+                                  </span>
+                                )}
                               </div>
                             </div>
                             <div className="col-sm-6">
                               <div className="form-group">
                                 <label className="focus-label">
-                                  Relationship
+                                  Relationship{" "}
+                                  <span className="text-danger">*</span>
                                 </label>
                                 <input
                                   type="text"
@@ -196,6 +251,11 @@ const AddFamilyMemberModal = ({
                                     handleInputChange(index, event);
                                   }}
                                 />
+                                {value?.relationshipError && (
+                                  <span className="error-message">
+                                    {value?.relationshipError}
+                                  </span>
+                                )}
                               </div>
                             </div>
                             <div className="col-sm-6">
@@ -214,6 +274,11 @@ const AddFamilyMemberModal = ({
                                     handleInputChange(index, event);
                                   }}
                                 />
+                                {value?.phoneError && (
+                                  <span className="error-message">
+                                    {value?.phoneError}
+                                  </span>
+                                )}
                               </div>
                             </div>
                             <div className="col-sm-6">

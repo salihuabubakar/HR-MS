@@ -9,263 +9,137 @@ import {
   setGlobalState,
   useGlobalState,
 } from "../../context/GlobalState";
-import Select from "react-select";
+import { v4 as uuidv4 } from "uuid";
+import "./style.css";
+import DeleteModal from "./DeleteModal";
 
-import {HtmlDateInput} from "./styles"
+const AddPersonalInfo = ({ dispatchPersonalInfo, indexToEdit, employeeId }) => {
+  const uniqueId = uuidv4();
+  const [selectedPersonalInfo] = useGlobalState("selectedPersonalInfo");
+  const [deleteModal] = useGlobalState("deleteModal");
 
-const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
-  const [selectedUserAccount] = useGlobalState("selectedUserAccount");
+   let isIdExist;
+   let isReligionExist;
+   let isEmployeeSpouseExist;
+   let isNoChildrenExist;
 
-  const [userName] = useState(
-    selectedUserAccount[emIndex]?.userName
-      ? selectedUserAccount[emIndex]?.userName
-      : ""
-  );
-  const [email] = useState(
-    selectedUserAccount[emIndex]?.email
-      ? selectedUserAccount[emIndex]?.email
-      : ""
-  );
-  const [password] = useState(
-    selectedUserAccount[emIndex]?.password
-      ? selectedUserAccount[emIndex]?.password
-      : ""
-  );
-  const [confirmPassword] = useState(
-    selectedUserAccount[emIndex]?.confirmPassword
-      ? selectedUserAccount[emIndex]?.confirmPassword
-      : ""
-  );
-  const [company] = useState(
-    selectedUserAccount[emIndex]?.company
-      ? selectedUserAccount[emIndex]?.company
-      : ""
-  );
-  const [dept] = useState(
-    selectedUserAccount[emIndex]?.dept ? selectedUserAccount[emIndex]?.dept : ""
-  );
-  const [designation] = useState(
-    selectedUserAccount[emIndex]?.designation
-      ? selectedUserAccount[emIndex]?.designation
-      : ""
-  );
-  const [employeeId] = useState(
-    selectedUserAccount[emIndex]?.employeeId
-      ? selectedUserAccount[emIndex]?.employeeId
-      : ""
-  );
-  const [joinDate] = useState(
-    selectedUserAccount[emIndex]?.joinDate
-      ? selectedUserAccount[emIndex]?.joinDate
-      : ""
-  );
+   if (selectedPersonalInfo && indexToEdit !== undefined) {
+     isIdExist = selectedPersonalInfo[indexToEdit]?.id;
+     isReligionExist = selectedPersonalInfo[indexToEdit]?.religion;
+     isEmployeeSpouseExist = selectedPersonalInfo[indexToEdit]?.employeeSpouseEmployment;
+     isNoChildrenExist = selectedPersonalInfo[indexToEdit]?.noChildren;
+   } else {
+     isReligionExist = "";
+     isEmployeeSpouseExist = "";
+     isNoChildrenExist = "";
+     isIdExist = "";
+   }
 
-  const [image] = useState(
-    selectedUserAccount[emIndex]?.profileInfo?.image
-      ? selectedUserAccount[emIndex]?.profileInfo?.image
-      : ""
-  );
 
-  const [firstName] = useState(
-    selectedUserAccount[emIndex]?.firstName
-      ? selectedUserAccount[emIndex]?.firstName
-      : ""
-  );
-  const [lastName] = useState(
-    selectedUserAccount[emIndex]?.lastName
-      ? selectedUserAccount[emIndex]?.lastName
-      : ""
-  );
-  const [address] = useState(
-    selectedUserAccount[emIndex]?.profileInfo?.address
-      ? selectedUserAccount[emIndex]?.profileInfo?.address
-      : ""
-  );
-  const [state] = useState(
-    selectedUserAccount[emIndex]?.profileInfo?.state
-      ? selectedUserAccount[emIndex]?.profileInfo?.state
-      : ""
-  );
-  const [country, setCountry] = useState(
-    selectedUserAccount[emIndex]?.profileInfo?.country
-      ? selectedUserAccount[emIndex]?.profileInfo?.country
-      : ""
-  );
-  const [pinCode] = useState(
-    selectedUserAccount[emIndex]?.profileInfo?.pinCode
-      ? selectedUserAccount[emIndex]?.profileInfo?.pinCode
-      : ""
-  );
-  const [phoneNo, setPhoneNo] = useState(
-    selectedUserAccount[emIndex]?.phoneNo
-      ? selectedUserAccount[emIndex]?.phoneNo
-      : ""
-  );
-  const [dOB] = useState(
-    selectedUserAccount[emIndex]?.profileInfo?.dOB
-      ? selectedUserAccount[emIndex]?.profileInfo?.dOB
-      : ""
-  );
+  const [id] = useState(isIdExist ? isIdExist : uniqueId);
 
-  const [id] = useState(
-    selectedUserAccount[emIndex]?.id
-      ? selectedUserAccount[emIndex]?.id
-      : Date.now()
-  );
-
-  const [passPortNo, setPassportNo] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.passPortNo
-      ? selectedUserAccount[emIndex]?.personalInfo?.passPortNo
-      : ""
-  );
-
-  const [passportExpiryDate, setPassportExpiryDate] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.passportExpiryDate
-      ? selectedUserAccount[emIndex]?.personalInfo?.passportExpiryDate
-      : ""
-  );
 
   const [religion, setReligion] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.religion
-      ? selectedUserAccount[emIndex]?.personalInfo?.religion
-      : ""
+    isReligionExist ? isReligionExist : ""
   );
 
-  const [emSpouse, setEmSpouse] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.emSpouse
-      ? selectedUserAccount[emIndex]?.personalInfo?.emSpouse
-      : ""
+  const [employeeSpouseEmployment, setEmployeeSpouseEmployment] = useState(
+    isEmployeeSpouseExist ? isEmployeeSpouseExist : ""
   );
 
   const [noChildren, setNoChildren] = useState(
-    selectedUserAccount[emIndex]?.personalInfo?.noChildren
-      ? selectedUserAccount[emIndex]?.personalInfo?.noChildren
-      : ""
+    isNoChildrenExist ? isNoChildrenExist : ""
   );
 
-    const [primaryName] = useState(
-      selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
-        ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryName
-        : ""
-    );
-  const [primaryRelationship] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
-      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryRelationship
-      : ""
-  );
-  const [primaryPhone1] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
-      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone1
-      : ""
-  );
-  const [primaryPhone2] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
-      ? selectedUserAccount[emIndex]?.emergencyContact?.primary?.primaryPhone2
-      : ""
-  );
-    const [secondaryName] = useState(
-      selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
-        ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryName
-        : ""
-    );
-  const [secondaryRelationship] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
-      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryRelationship
-      : ""
-  );
-  const [secondaryPhone1] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
-      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone1
-      : ""
-  );
-  const [secondaryPhone2] = useState(
-    selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
-      ? selectedUserAccount[emIndex]?.emergencyContact?.secondary?.secondaryPhone2
-      : ""
-  );
+  const [religionError, setReligionError] = useState("");
+  const [employeeSpouseError, setEmployeeSpouseError] = useState("");
+  const [noChildrenError, setNoChildrenError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const emergencyContact = {
-      primary: {
-        primaryName,
-        primaryRelationship,
-        primaryPhone1,
-        primaryPhone2,
-      },
-      secondary: {
-        secondaryName,
-        secondaryRelationship,
-        secondaryPhone1,
-        secondaryPhone2,
-      },
-    };
+    // Validate first name and last name
+    if (religion === "") {
+      setReligionError("Religion is required.");
+      return;
+    }
+    if (employeeSpouseEmployment === "") {
+      setEmployeeSpouseError("Employee Spouse is required.");
+      return;
+    }
+    if (noChildren === "") {
+      setNoChildrenError("Number of children is required.");
+      return;
+    }
+
+    // Clear any existing error messages
+    setReligionError("");
+    setEmployeeSpouseError("");
+    setNoChildrenError("");
     const personalInfo = {
-      passPortNo,
-      passportExpiryDate,
+      id,
+      employeeId,
       religion,
-      emSpouse,
+      employeeSpouseEmployment,
       noChildren,
     };
-    const profileInfo = {
-      image,
-      address,
-      state,
-      country,
-      dOB,
-      pinCode,
-    };
-    const userAccount = {
-      id,
-      firstName,
-      lastName,
-      userName,
-      email,
-      password,
-      confirmPassword,
-      employeeId,
-      joinDate,
-      phoneNo,
-      company,
-      dept,
-      designation,
-      profileInfo,
-      personalInfo,
-      emergencyContact,
-    };
-    if (selectedUserAccount[emIndex]?.id) {
-      dispatchUserAcct({ type: "update", payload: userAccount });
+    if (isIdExist) {
+      dispatchPersonalInfo({ type: "update", payload: personalInfo });
     } else {
-      dispatchUserAcct({ type: "push", payload: userAccount });
+      dispatchPersonalInfo({ type: "push", payload: personalInfo });
     }
     setGlobalState("showPersonalInfoModal", false);
-    // if (selectedProfileInfo[indexToEdit]?.id) {
-    //   dispatchUserAcct({ type: "update", payload: profileInfo });
-    // }
-    // setGlobalState("showModal", false);
   };
 
-  const handlePassExpire = (event) => {
-    const d = event.target.value;
-    console.log("date: ", d);
-    setPassportExpiryDate(d);
+  const handleReligionChange = (e) => {
+    setReligion(e.target.value);
+    setReligionError("");
   };
+
+  const handleEmployeeSpouseChange = (e) => {
+    setEmployeeSpouseEmployment(e.target.value);
+    setEmployeeSpouseError("");
+  };
+
+  const handleNoChildrenChange = (e) => {
+    setNoChildren(e.target.value);
+    setNoChildrenError("");
+  };
+
+  const handleDelete = () => {
+    setGlobalState("deleteModal", true);
+  };
+
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer
-            top={true}
-            className="custom-modal"
-            role="dialog"
-          >
+          <PopupContainer top={true} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
             >
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="card-title">Personal Information</h5>
+                  <h5 className="card-title">
+                    {isIdExist
+                      ? "Edit Personal Information"
+                      : "Add Personal Information"}
+                  </h5>
+                  {isIdExist && (
+                    <button
+                      style={{
+                        border: "none",
+                        backgroundColor: "transparent",
+                        marginBottom: "15px",
+                      }}
+                      className="delete-icon"
+                      type="button"
+                      onClick={handleDelete}
+                    >
+                      <i className="fa fa-trash-o" />
+                    </button>
+                  )}
                   <button
                     type="button"
                     className="close"
@@ -281,64 +155,6 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="focus-label">Passport No</label>
-                          <input
-                            type="text"
-                            className="form-control floating"
-                            placeholder="Passport No"
-                            value={passPortNo}
-                            onChange={(event) =>
-                              setPassportNo(event.target.value)
-                            }
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Passport Expiry Date
-                          </label>
-                          <div>
-                            <input
-                              type="date"
-                              className="form-control floating datetimepicker"
-                              placeholder="Passport Expiry Date"
-                              value={passportExpiryDate}
-                              onChange={handlePassExpire}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="focus-label">Phone Number</label>
-                          <input
-                            type="text"
-                            className="form-control floating"
-                            placeholder="phone Number"
-                            value={phoneNo}
-                            onChange={(event) => setPhoneNo(event.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Nationality</label>
-                          <div>
-                            <input
-                              className="form-control floating"
-                              type="text"
-                              placeholder="Nationality"
-                              value={country}
-                              onChange={(event) =>
-                                setCountry(event.target.value)
-                              }
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
                           <label className="col-form-label">
                             Religion <span className="text-danger">*</span>
                           </label>
@@ -347,21 +163,11 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                             type="text"
                             placeholder="Religion"
                             value={religion}
-                            onChange={(event) =>
-                              setReligion(event.target.value)
-                            }
+                            onChange={handleReligionChange}
                           />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Marital Status
-                          </label>
-                          <select className="select">
-                            <option value={0}>Single</option>
-                            <option value={1}>Married</option>
-                          </select>
+                          {religionError && (
+                            <p className="error-message">{religionError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -374,27 +180,32 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                             className="form-control floating"
                             type="text"
                             placeholder="Employment of spouse"
-                            value={emSpouse}
-                            onChange={(event) =>
-                              setEmSpouse(event.target.value)
-                            }
+                            value={employeeSpouseEmployment}
+                            onChange={handleEmployeeSpouseChange}
                           />
+                          {employeeSpouseError && (
+                            <p className="error-message">
+                              {employeeSpouseError}
+                            </p>
+                          )}
                         </div>
                       </div>
-                      <div className="col-sm-6">
+                      <div className="col-sm-12">
                         <div className="form-group">
                           <label className="col-form-label">
-                            No. of children
+                            No. of children{" "}
+                            <span className="text-danger">*</span>
                           </label>
                           <input
                             className="form-control floating"
                             type="text"
                             placeholder="No. of children"
                             value={noChildren}
-                            onChange={(event) =>
-                              setNoChildren(event.target.value)
-                            }
+                            onChange={handleNoChildrenChange}
                           />
+                          {noChildrenError && (
+                            <p className="error-message">{noChildrenError}</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -403,7 +214,7 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
                         onClick={handleSubmit}
                         className="btn btn-primary submit-btn"
                       >
-                        {selectedUserAccount[emIndex]?.id ? "Update" : "Save"}
+                        {isIdExist ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>
@@ -413,6 +224,14 @@ const AddPersonalInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
           </PopupContainer>
         </PopupOverlay>
       </PopupWrapper>
+      {deleteModal && (
+        <DeleteModal
+          deleteAction={dispatchPersonalInfo}
+          indexToDelete={indexToEdit}
+          dispatch={selectedPersonalInfo}
+          modalTitle={"Personal Info"}
+        />
+      )}
     </>
   );
 };

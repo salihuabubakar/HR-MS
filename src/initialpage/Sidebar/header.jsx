@@ -240,8 +240,6 @@ const Header = (props) => {
               <ul className="notification-list">
                 <li className="notification-message">
                   <Link
-                    // onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/conversation/chat"
                     onClick={(e) => e.preventDefault()}
                   >
                     <div className="list-item">
@@ -263,8 +261,6 @@ const Header = (props) => {
                 </li>
                 <li className="notification-message">
                   <Link
-                    // onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/conversation/chat"
                     onClick={(e) => e.preventDefault()}
                   >
                     <div className="list-item">
@@ -290,7 +286,7 @@ const Header = (props) => {
               </ul>
             </div>
             <div className="topnav-dropdown-footer">
-              <Link to="/conversation/chat" onClick={(e) => e.preventDefault()}>
+              <Link onClick={(e) => e.preventDefault()}>
                 View all Messages
               </Link>
             </div>

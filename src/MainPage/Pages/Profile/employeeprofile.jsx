@@ -12,8 +12,6 @@ import AddFamilyMemberModal from '../../../_components/modelbox/AddFamilyMemberM
 import AddFileUploadModal from '../../../_components/modelbox/AddFileUploadModal';
 import { useGlobalState, setGlobalState } from '../../../context/GlobalState';
 import {
-  initProfileInfo,
-  savedProfileInfoReducer,
   initUserAccount,
   savedUserAccountReducer,
   initEduInfo,
@@ -22,8 +20,12 @@ import {
   savedExpInfoReducer,
   initFamilyMemberInfo,
   savedFamilyMemberReducer,
+  initEmergencyContactInfo,
+  savedEmergencyContectInfoReducer,
   initFileUpload,
   savedFileUploadReducer,
+  initPersonalInfo,
+  savedPersonalInfoReducer,
 } from "../../../utils/localStorage";
 import AddEmergencyContact from '../../../_components/modelbox/AddEmergencyContact';
 import AddEducationInformation from '../../../_components/modelbox/AddEducationInformation';
@@ -31,14 +33,14 @@ import DefaultImage from "../../../assets/img/placeholder.jpg";
 import DeleteModal from '../../../_components/modelbox/DeleteModal';
 
 const EmployeeProfile = () => {
-
   const [deleteModal] = useGlobalState("deleteModal");
   const location = useLocation();
-  const employeeId = location?.state?.id;
+  const selectedEmployeeId = location?.state?.id;
   const [eduInformationIndex, setEduInformationIndex] = useState(0);
   const [expInformationIndex, setExpInformationIndex] = useState(0);
   const [fileUploadIndex, setFileUploadIndex] = useState(0);
-  const [familyMembInformationIndex, setFamilyMembExpInformationIndex] = useState(0);
+  const [familyMembInformationIndex, setFamilyMembExpInformationIndex] =
+    useState(0);
   const [fieldIndex, setFieldIndex] = useState(0);
   const [expfieldIndex, setExpFieldIndex] = useState(0);
   const [fileUploadfieldIndex, setFileUploadfieldIndex] = useState(0);
@@ -48,7 +50,9 @@ const EmployeeProfile = () => {
   const [showEmergencyContactModal] = useGlobalState(
     "showEmergencyContactModal"
   );
-  const [showEducationInformationModal] = useGlobalState("showEducationInformationModal");
+  const [showEducationInformationModal] = useGlobalState(
+    "showEducationInformationModal"
+  );
   const [showExperienceModal] = useGlobalState("showExperienceModal");
   const [showFamilyMenberModal] = useGlobalState("showFamilyMenberModal");
   const [showFileUploadModal] = useGlobalState("showFileUploadModal");
@@ -93,7 +97,6 @@ const EmployeeProfile = () => {
     setEduArray(eduInfo);
   }, [eduInfo]);
 
-
   const [expInfo, dispatchExpInfo] = useReducer(
     savedExpInfoReducer,
     [],
@@ -113,7 +116,6 @@ const EmployeeProfile = () => {
   useEffect(() => {
     setExpArray(expInfo);
   }, [expInfo]);
-
 
   const [familyMemberInfo, dispatchFamilyMemberInfo] = useReducer(
     savedFamilyMemberReducer,
@@ -135,16 +137,57 @@ const EmployeeProfile = () => {
     setFamilyMembArray(familyMemberInfo);
   }, [familyMemberInfo]);
 
+  const [emergencyContactInfo, dispatchEmergencyContactInfo] = useReducer(
+    savedEmergencyContectInfoReducer,
+    [],
+    initEmergencyContactInfo
+  );
+  useEffect(() => {
+    localStorage.setItem(
+      "emergencyContactInfo",
+      JSON.stringify(emergencyContactInfo)
+    );
+  }, [emergencyContactInfo]);
+  useEffect(() => {
+    if (!showEmergencyContactModal) {
+      setGlobalState("selectedEmergencyContact", "");
+    }
+  }, [showEmergencyContactModal]);
+
+  const [emergencyContactList, setEmergencyContactList] = useState();
+  useEffect(() => {
+    setEmergencyContactList(emergencyContactInfo);
+  }, [emergencyContactInfo]);
+
+  const [personalInfo, dispatchPersonalInfo] = useReducer(
+    savedPersonalInfoReducer,
+    [],
+    initPersonalInfo
+  );
+
+  useEffect(() => {
+    localStorage.setItem("personalInfo", JSON.stringify(personalInfo));
+  }, [personalInfo]);
+  useEffect(() => {
+    if (!showPersonalInfoModal) {
+      setGlobalState("selectedPersonalInfo", "");
+    }
+  }, [showPersonalInfoModal]);
+
+  const [personalInfoList, setPersonalInfoList] = useState();
+  useEffect(() => {
+    setPersonalInfoList(personalInfo);
+  }, [personalInfo]);
+
   const [acctIdToEdit, setAcctIdToEdit] = useState("");
 
-
   const selectedEmployee = employeeAccts?.find(
-    (staff) => staff?.id === employeeId
+    (staff) => staff?.id === selectedEmployeeId
   );
 
   const userAcctDb = () => {
     return setGlobalState("selectedUserAccount", userAcct);
-  }
+  };
 
   const handleEditAcct = () => {
     setGlobalState("showProfileModal", true);
@@ -153,17 +196,17 @@ const EmployeeProfile = () => {
 
   const handlePersonalInfo = () => {
     setGlobalState("showPersonalInfoModal", true);
-    userAcctDb();
   };
 
-  const handleEmergencyContact = () => {
-    setGlobalState("showEmergencyContactModal", true);
-    userAcctDb();
-  }
+  const handlePersonalInfoEdit = (index) => {
+    setGlobalState("showPersonalInfoModal", true);
+    setGlobalState("selectedPersonalInfo", personalInfo);
+    setIndexToEdit(index)
+  };
 
   const handleEducationInfo = () => {
     setGlobalState("showEducationInformationModal", true);
-  }
+  };
 
   const editEduInfo = (fieldsIndex, index) => {
     setGlobalState("showEducationInformationModal", true);
@@ -188,14 +231,18 @@ const EmployeeProfile = () => {
   };
 
   const handleFileUploadEdit = (fieldsIndex, index) => {
-    setGlobalState("showFileUploadModal", true)
-    setGlobalState("selectedFileUpload", files)
+    setGlobalState("showFileUploadModal", true);
+    setGlobalState("selectedFileUpload", files);
     setFileUploadIndex(index);
     setFileUploadfieldIndex(fieldsIndex);
   };
 
   const handleAddFamilyMember = () => {
-    setGlobalState("showFamilyMenberModal", true)
+    setGlobalState("showFamilyMenberModal", true);
+  };
+
+  const handleAddEmergencyContact = () => {
+    setGlobalState("showEmergencyContactModal", true);
   };
 
   const editFamilyMemberInfo = (fieldsIndex, index) => {
@@ -205,29 +252,21 @@ const EmployeeProfile = () => {
     setFamilyMembFieldIndex(fieldsIndex);
   };
 
-  const image = selectedEmployee?.profileInfo?.image;
+  const editEmergencyContactInfo = (index) => {
+    setGlobalState("showEmergencyContactModal", true);
+    setGlobalState("selectedEmergencyContact", emergencyContactInfo);
+    setIndexToEdit(index);
+  };
+
+  const image = selectedEmployee?.photo;
   const firstName = selectedEmployee?.firstName;
   const lastName = selectedEmployee?.lastName;
   const email = selectedEmployee?.email;
-  const phoneNo = selectedEmployee?.phoneNo;
-  const dOB = selectedEmployee?.profileInfo?.dOB;
-  const state = selectedEmployee?.profileInfo?.state;
-  const address = selectedEmployee?.profileInfo?.address;
-  const passPortNo = selectedEmployee?.personalInfo?.passPortNo;
-  const passportExpiryDate = selectedEmployee?.personalInfo?.passportExpiryDate;
-  const religion = selectedEmployee?.personalInfo?.religion;
-  const emSpouse = selectedEmployee?.personalInfo?.emSpouse;
-  const noChildren = selectedEmployee?.personalInfo?.noChildren;
-  const country = selectedEmployee?.profileInfo?.country;
-  const primaryName = selectedEmployee?.emergencyContact?.primary?.primaryName;
-  const primaryPhone1 = selectedEmployee?.emergencyContact?.primary?.primaryPhone1;
-  const primaryPhone2 = selectedEmployee?.emergencyContact?.primary?.primaryPhone2;
-  const primaryRelationship = selectedEmployee?.emergencyContact?.primary?.primaryRelationship;
-  const secondaryName = selectedEmployee?.emergencyContact?.secondary?.secondaryName;
-  const secondaryRelationship = selectedEmployee?.emergencyContact?.secondary?.secondaryRelationship;
-  const secondaryPhone1 = selectedEmployee?.emergencyContact?.secondary?.secondaryPhone1;
-  const secondaryPhone2 = selectedEmployee?.emergencyContact?.secondary?.secondaryPhone2;
-
+  const phoneNo = selectedEmployee?.phoneNumber;
+  const employeeNumber = selectedEmployee?.employeeNumber;
+  const gender = selectedEmployee?.gender;
+  const role = selectedEmployee?.role;
+  const hireDate = selectedEmployee?.hireDate;
 
   const [files, dispatchFiles] = useReducer(
     savedFileUploadReducer,
@@ -243,40 +282,66 @@ const EmployeeProfile = () => {
       setGlobalState("selectedFileUpload", "");
     }
   }, [showFileUploadModal]);
-  
 
   const [filesList, setFilesList] = useState();
   useEffect(() => {
     setFilesList(files);
   }, [files]);
 
+  // SelectedFile
   const selectedEmployeeDocument = filesList?.find(
-    (file) => file?.uniqueID === employeeId
+    (file) => file?.uniqueID === selectedEmployeeId
   );
   const selectedEmployeeDocumentId = selectedEmployeeDocument?.uniqueID;
 
+  // SelectedEducation
+  const selectedEmployeeEducation = eduArray?.find(
+    (qaulification) => qaulification?.employeeId === selectedEmployeeId
+  );
+  const selectedEmployeeEducationId = selectedEmployeeEducation?.employeeId;
+
+  // SelectedExperience
+  const selectedEmployeeExperience = expArray?.find(
+    (experience) => experience?.employeeId === selectedEmployeeId
+  );
+  const selectedEmployeeExperienceId = selectedEmployeeExperience?.employeeId;
+
+  // SelectedFamily
+  const selectedEmployeeFamilyMember = familyMembArray?.find(
+    (fam) => fam?.employeeId === selectedEmployeeId
+  );
+  const selectedEmployeeFamilyMemberId =
+    selectedEmployeeFamilyMember?.employeeId;
+
+  // SelectedEmergencyContact
+  const selectedEmployeeEmergencyContact = emergencyContactList?.find(
+    (contact) => contact?.employeeId === selectedEmployeeId
+  );
+  const selectedEmployeeContactId =
+    selectedEmployeeEmergencyContact?.employeeId;
+
+  // SelectedPersonalInfo
+  const selectedEmployeePersonalInfo = personalInfoList?.find(
+    (personal) => personal?.employeeId === selectedEmployeeId
+  );
+  const selectedEmployeePersonalInfoId =
+    selectedEmployeePersonalInfo?.employeeId;
+
   const [indexToEdit, setIndexToEdit] = useState(0);
 
-  const handleFileDelete = (index) => {
-    setIndexToEdit(index);
-    setGlobalState("deleteModal", true);
-  };
-
-
-  useEffect( ()=>{
-    if($('.select').length > 0) {
-      $('.select').select2({
+  useEffect(() => {
+    if ($(".select").length > 0) {
+      $(".select").select2({
         minimumResultsForSearch: -1,
-        width: '100%'
+        width: "100%",
       });
     }
-  }); 
+  });
 
-    const [menu, setMenu] = useState(false);
-    const toggleMobileMenu = () => {
-      setMenu(!menu);
-    };
-
+  const [menu, setMenu] = useState(false);
+  const toggleMobileMenu = () => {
+    setMenu(!menu);
+  };
 
   return (
     <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -323,13 +388,13 @@ const EmployeeProfile = () => {
                             <h3 className="user-name m-t-0 mb-0">
                               {firstName + " " + lastName}
                             </h3>
-                            <h6 className="text-muted">UI/UX Design Team</h6>
-                            <small className="text-muted">Web Designer</small>
+                            <h6 className="text-muted">{role}</h6>
                             <div className="staff-id">
-                              Employee ID : FT-0001
+                              Employee ID : {employeeNumber}
                             </div>
                             <div className="small doj text-muted">
-                              Date of Join : 1st oct 2022
+                              {/* Date of Join : 1st oct 2022 */}
+                              Date of Join: {hireDate}
                             </div>
                             {/* <div className="staff-msg"><Link onClick={()=>localStorage.setItem("minheight","true")} className="btn btn-custom" to="/conversation/chat">Send Message</Link></div> */}
                           </div>
@@ -350,15 +415,21 @@ const EmployeeProfile = () => {
                             </li>
                             <li>
                               <div className="title">Birthday:</div>
-                              <div className="text">{dOB}</div>
+                              <div className="text">{"dOB"}</div>
                             </li>
                             <li>
                               <div className="title">Address:</div>
-                              <div className="text">{address}</div>
+                              <div className="text">{"address"}</div>
                             </li>
                             <li>
                               <div className="title">Gender:</div>
-                              <div className="text">Male</div>
+                              <div className="text">
+                                {gender == "male"
+                                  ? "Male"
+                                  : gender == "female"
+                                  ? "Female"
+                                  : "Other"}
+                              </div>
                             </li>
                             <li>
                               <div className="title">Reports to:</div>
@@ -375,11 +446,11 @@ const EmployeeProfile = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="pro-edit">
+                    {/* <div className="pro-edit">
                       <a onClick={handleEditAcct} className="edit-icon">
                         <i className="fa fa-pencil" />
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -432,46 +503,55 @@ const EmployeeProfile = () => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Personal Informations{" "}
-                        <a className="edit-icon" onClick={handlePersonalInfo}>
-                          <i className="fa fa-pencil" />
-                        </a>
+                        {personalInfoList?.length > 0 ? null : (
+                          <a className="edit-icon" onClick={handlePersonalInfo}>
+                            <i className="fa fa-pencil" />
+                          </a>
+                        )}
                       </h3>
-                      <ul className="personal-info">
-                        <li>
-                          <div className="title">Passport No.</div>
-                          <div className="text">{passPortNo}</div>
-                        </li>
-                        <li>
-                          <div className="title">Passport Exp Date.</div>
-                          <div className="text">{passportExpiryDate}</div>
-                        </li>
-                        <li>
-                          <div className="title">Tel</div>
-                          <div className="text">
-                            <a href="">{phoneNo}</a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="title">Nationality</div>
-                          <div className="text">{country}</div>
-                        </li>
-                        <li>
-                          <div className="title">Religion</div>
-                          <div className="text">{religion}</div>
-                        </li>
-                        <li>
-                          <div className="title">Marital status</div>
-                          <div className="text">Singles</div>
-                        </li>
-                        <li>
-                          <div className="title">Employment of spouse</div>
-                          <div className="text">{emSpouse}</div>
-                        </li>
-                        <li>
-                          <div className="title">No. of children</div>
-                          <div className="text">{noChildren}</div>
-                        </li>
-                      </ul>
+                      {personalInfoList?.length > 0 &&
+                      selectedEmployeePersonalInfoId === selectedEmployeeId ? (
+                        personalInfoList?.map((data, index) => {
+                          const {
+                            employeeId,
+                            id,
+                            religion,
+                            noChildren,
+                            employeeSpouseEmployment,
+                          } = data;
+                          if (employeeId == selectedEmployeeId) {
+                            return (
+                              <ul
+                                onClick={() => handlePersonalInfoEdit(index)}
+                                style={{
+                                  cursor: "pointer",
+                                }}
+                                key={id}
+                                className="personal-info"
+                              >
+                                <li>
+                                  <div className="title">Religion</div>
+                                  <div className="text">{religion}</div>
+                                </li>
+                                <li>
+                                  <div className="title">
+                                    Employment of spouse
+                                  </div>
+                                  <div className="text">
+                                    {employeeSpouseEmployment}
+                                  </div>
+                                </li>
+                                <li>
+                                  <div className="title">No. of children</div>
+                                  <div className="text">{noChildren}</div>
+                                </li>
+                              </ul>
+                            );
+                          }
+                        })
+                      ) : (
+                        <p>No personal information added yet.</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -483,46 +563,61 @@ const EmployeeProfile = () => {
                         Emergency Contact{" "}
                         <a
                           className="edit-icon"
-                          onClick={handleEmergencyContact}
+                          onClick={handleAddEmergencyContact}
                         >
-                          <i className="fa fa-pencil" />
+                          <i className="fa fa-plus" />
                         </a>
                       </h3>
-                      <h5 className="section-title">Primary</h5>
-                      <ul className="personal-info">
-                        <li>
-                          <div className="title">Name</div>
-                          <div className="text">{primaryName}</div>
-                        </li>
-                        <li>
-                          <div className="title">Relationship</div>
-                          <div className="text">{primaryRelationship}</div>
-                        </li>
-                        <li>
-                          <div className="title">Phone </div>
-                          <div className="text">
-                            {primaryPhone1}, {primaryPhone2}
-                          </div>
-                        </li>
-                      </ul>
-                      <hr />
-                      <h5 className="section-title">Secondary</h5>
-                      <ul className="personal-info">
-                        <li>
-                          <div className="title">Name</div>
-                          <div className="text">{secondaryName}</div>
-                        </li>
-                        <li>
-                          <div className="title">Relationship</div>
-                          <div className="text">{secondaryRelationship}</div>
-                        </li>
-                        <li>
-                          <div className="title">Phone </div>
-                          <div className="text">
-                            {secondaryPhone1}, {secondaryPhone2}
-                          </div>
-                        </li>
-                      </ul>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Relationship</th>
+                              <th>Phone</th>
+                              <th>Optional Phone</th>
+                              <th />
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {emergencyContactList?.length > 0 &&
+                            selectedEmployeeContactId === selectedEmployeeId ? (
+                              emergencyContactList?.map((family, index) => {
+                                const {
+                                  id,
+                                  employeeId,
+                                  name,
+                                  relationship,
+                                  primaryPhone,
+                                  optionalPhone,
+                                } = family;
+                                if (employeeId == selectedEmployeeId) {
+                                  return (
+                                    <tr key={id}>
+                                      <td>{name}</td>
+                                      <td>{relationship}</td>
+                                      <td>{primaryPhone}</td>
+                                      <td>
+                                        {optionalPhone ? optionalPhone : "--"}
+                                      </td>
+                                      <td
+                                        onClick={() =>
+                                          editEmergencyContactInfo(index)
+                                        }
+                                        className="text-end edit-icon"
+                                      >
+                                        <i className="fa fa-pencil" />
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <p>No employee emergency contact added yet.</p>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -578,42 +673,50 @@ const EmployeeProfile = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {familyMembArray?.map((family, index) => {
-                              const { id, emid, inputFields } = family;
-                              if (emid == employeeId) {
-                                return (
-                                  <React.Fragment key={id}>
-                                    {inputFields?.map((fields, fieldsIndex) => {
-                                      const {
-                                        name,
-                                        relationship,
-                                        dateOfBirth,
-                                        phone,
-                                      } = fields;
-                                      return (
-                                        <tr key={fieldsIndex}>
-                                          <td>{name}</td>
-                                          <td>{relationship}</td>
-                                          <td>{dateOfBirth}</td>
-                                          <td>{phone}</td>
-                                          <td
-                                            onClick={() =>
-                                              editFamilyMemberInfo(
-                                                fieldsIndex,
-                                                index
-                                              )
-                                            }
-                                            className="text-end edit-icon"
-                                          >
-                                            <i className="fa fa-pencil" />
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </React.Fragment>
-                                );
-                              }
-                            })}
+                            {familyMembArray?.length > 0 &&
+                            selectedEmployeeFamilyMemberId ===
+                              selectedEmployeeId ? (
+                              familyMembArray?.map((family, index) => {
+                                const { id, employeeId, inputFields } = family;
+                                if (employeeId == selectedEmployeeId) {
+                                  return (
+                                    <React.Fragment key={id}>
+                                      {inputFields?.map(
+                                        (fields, fieldsIndex) => {
+                                          const {
+                                            name,
+                                            relationship,
+                                            dateOfBirth,
+                                            phone,
+                                          } = fields;
+                                          return (
+                                            <tr key={fieldsIndex}>
+                                              <td>{name}</td>
+                                              <td>{relationship}</td>
+                                              <td>{dateOfBirth}</td>
+                                              <td>{phone}</td>
+                                              <td
+                                                onClick={() =>
+                                                  editFamilyMemberInfo(
+                                                    fieldsIndex,
+                                                    index
+                                                  )
+                                                }
+                                                className="text-end edit-icon"
+                                              >
+                                                <i className="fa fa-pencil" />
+                                              </td>
+                                            </tr>
+                                          );
+                                        }
+                                      )}
+                                    </React.Fragment>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <p>No employee family information added yet.</p>
+                            )}
                           </tbody>
                         </table>
                       </div>
@@ -634,53 +737,58 @@ const EmployeeProfile = () => {
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          {eduArray?.map((eduDetails, index) => {
-                            const { id, inputFields, emid } =
-                              eduDetails;
-                            if (emid == employeeId) {
-                              return (
-                                <React.Fragment key={id}>
-                                  {inputFields?.map((fields, fieldsIndex) => {
-                                    const {
-                                      completeDate,
-                                      degree,
-                                      institution,
-                                      startingDate,
-                                    } = fields;
-                                    return (
-                                      <li key={fieldsIndex}>
-                                        <div className="experience-user">
-                                          <div className="before-circle" />
-                                        </div>
-                                        <div className="experience-content">
-                                          <div className="timeline-content">
-                                            <a className="name">
-                                              {institution}
-                                              <span
-                                                className="edit-icon"
-                                                onClick={() =>
-                                                  editEduInfo(
-                                                    fieldsIndex,
-                                                    index
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-pencil" />
-                                              </span>
-                                            </a>
-                                            <div>{degree}</div>
-                                            <span className="time">
-                                              {startingDate} - {completeDate}
-                                            </span>
+                          {eduArray?.length > 0 &&
+                          selectedEmployeeEducationId === selectedEmployeeId ? (
+                            eduArray?.map((eduDetails, index) => {
+                              const { id, inputFields, employeeId } =
+                                eduDetails;
+                              if (employeeId == selectedEmployeeId) {
+                                return (
+                                  <React.Fragment key={id}>
+                                    {inputFields?.map((fields, fieldsIndex) => {
+                                      const {
+                                        completeDate,
+                                        qualification,
+                                        institution,
+                                        startingDate,
+                                      } = fields;
+                                      return (
+                                        <li key={fieldsIndex}>
+                                          <div className="experience-user">
+                                            <div className="before-circle" />
                                           </div>
-                                        </div>
-                                      </li>
-                                    );
-                                  })}
-                                </React.Fragment>
-                              );
-                            }
-                          })}
+                                          <div className="experience-content">
+                                            <div className="timeline-content">
+                                              <a className="name">
+                                                {institution}
+                                                <span
+                                                  className="edit-icon"
+                                                  onClick={() =>
+                                                    editEduInfo(
+                                                      fieldsIndex,
+                                                      index
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil" />
+                                                </span>
+                                              </a>
+                                              <div>{qualification}</div>
+                                              <span className="time">
+                                                {startingDate} - {completeDate}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </li>
+                                      );
+                                    })}
+                                  </React.Fragment>
+                                );
+                              }
+                            })
+                          ) : (
+                            <p>No qualification information added yet.</p>
+                          )}
                         </ul>
                       </div>
                     </div>
@@ -698,57 +806,63 @@ const EmployeeProfile = () => {
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          {expArray?.map((eduDetails, index) => {
-                            const { id, inputFields, emid } =
-                              eduDetails;
-                            if (emid == employeeId) {
-                              return (
-                                <React.Fragment key={id}>
-                                  {inputFields?.map((fields, fieldsIndex) => {
-                                    const {
-                                      companyName,
-                                      location,
-                                      jobPosition,
-                                      periodFrom,
-                                      periodTo,
-                                    } = fields;
-                                    return (
-                                      <li key={fieldsIndex}>
-                                        <div className="experience-user">
-                                          <div className="before-circle" />
-                                        </div>
-                                        <div className="experience-content">
-                                          <div className="timeline-content">
-                                            <a className="name">
-                                              {companyName}
-                                              <span
-                                                className="edit-icon"
-                                                onClick={() =>
-                                                  editEpxInfo(
-                                                    fieldsIndex,
-                                                    index
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-pencil" />
-                                              </span>
-                                            </a>
-                                            <div>{jobPosition}</div>
-                                            <span className="time">
-                                              {location}
-                                            </span>
-                                            <span className="time">
-                                              {periodFrom} - {periodTo}
-                                            </span>
+                          {expArray?.length > 0 &&
+                          selectedEmployeeExperienceId ===
+                            selectedEmployeeId ? (
+                            expArray?.map((eduDetails, index) => {
+                              const { id, inputFields, employeeId } =
+                                eduDetails;
+                              if (employeeId == selectedEmployeeId) {
+                                return (
+                                  <React.Fragment key={id}>
+                                    {inputFields?.map((fields, fieldsIndex) => {
+                                      const {
+                                        companyName,
+                                        location,
+                                        jobPosition,
+                                        periodFrom,
+                                        periodTo,
+                                      } = fields;
+                                      return (
+                                        <li key={fieldsIndex}>
+                                          <div className="experience-user">
+                                            <div className="before-circle" />
                                           </div>
-                                        </div>
-                                      </li>
-                                    );
-                                  })}
-                                </React.Fragment>
-                              );
-                            }
-                          })}
+                                          <div className="experience-content">
+                                            <div className="timeline-content">
+                                              <a className="name">
+                                                {companyName}
+                                                <span
+                                                  className="edit-icon"
+                                                  onClick={() =>
+                                                    editEpxInfo(
+                                                      fieldsIndex,
+                                                      index
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil" />
+                                                </span>
+                                              </a>
+                                              <div>{jobPosition}</div>
+                                              <span className="time">
+                                                {location}
+                                              </span>
+                                              <span className="time">
+                                                {periodFrom} - {periodTo}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </li>
+                                      );
+                                    })}
+                                  </React.Fragment>
+                                );
+                              }
+                            })
+                          ) : (
+                            <p>No experience information added yet.</p>
+                          )}
                         </ul>
                       </div>
                     </div>
@@ -883,78 +997,78 @@ const EmployeeProfile = () => {
                       <div className="experience-box">
                         <ul className="experience-list">
                           {filesList?.length > 0 &&
-                          selectedEmployeeDocumentId === employeeId
-                            ? filesList?.map((file, index) => {
-                                const { id, inputFields, uniqueID } = file;
-                                if (uniqueID == employeeId) {
-                                  return (
-                                    <React.Fragment key={id}>
-                                      {inputFields?.map(
-                                        (fields, fieldsIndex) => {
-                                          const {
-                                            documentName,
-                                            documentNumber,
-                                            documentType,
-                                            expiryDate,
-                                            issueDate,
-                                            fileDetails,
-                                          } = fields;
-                                          return (
-                                            <li key={fieldsIndex}>
-                                              <div className="experience-user">
-                                                <div className="before-circle" />
-                                              </div>
-                                              <div className="experience-content">
-                                                <div className="timeline-content">
-                                                  <a className="name">
-                                                    {documentName}
-                                                    <span
-                                                      className="edit-icon"
-                                                      onClick={() =>
-                                                        handleFileUploadEdit(
-                                                          fieldsIndex,
-                                                          index
-                                                        )
-                                                      }
-                                                    >
-                                                      <i className="fa fa-pencil" />
-                                                    </span>
-                                                  </a>
-                                                  <div>{documentNumber}</div>
-                                                  <span className="time">
-                                                    Type: {documentType}
-                                                  </span>
-                                                  {issueDate && expiryDate ? (
-                                                    <span className="time">
-                                                      Issue Date: {issueDate} -
-                                                      Expiry Date: {expiryDate}
-                                                    </span>
-                                                  ) : null}
-                                                  {fileDetails?.type &&
-                                                  fileDetails?.type?.startsWith(
-                                                    "image/"
-                                                  ) ? (
-                                                    <img
-                                                      className="img-preview"
-                                                      src={fileDetails?.data}
-                                                      alt="Preview"
-                                                    />
-                                                  ) : (
-                                                    <span className="files-icon">
-                                                      <i className="fa fa-file-pdf-o" />
-                                                    </span>
-                                                  )}
-                                                </div>
-                                              </div>
-                                            </li>
-                                          );
-                                        }
-                                      )}
-                                    </React.Fragment>
-                                  );
-                                }
-                              })
-                            : "No uploaded file(s) yet"}
+                          selectedEmployeeDocumentId === selectedEmployeeId ? (
+                            filesList?.map((file, index) => {
+                              const { id, inputFields, uniqueID } = file;
+                              if (uniqueID == selectedEmployeeId) {
+                                return (
+                                  <React.Fragment key={id}>
+                                    {inputFields?.map((fields, fieldsIndex) => {
+                                      const {
+                                        documentName,
+                                        documentNumber,
+                                        documentType,
+                                        expiryDate,
+                                        issueDate,
+                                        fileDetails,
+                                      } = fields;
+                                      return (
+                                        <li key={fieldsIndex}>
+                                          <div className="experience-user">
+                                            <div className="before-circle" />
+                                          </div>
+                                          <div className="experience-content">
+                                            <div className="timeline-content">
+                                              <a className="name">
+                                                {documentName}
+                                                <span
+                                                  className="edit-icon"
+                                                  onClick={() =>
+                                                    handleFileUploadEdit(
+                                                      fieldsIndex,
+                                                      index
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil" />
+                                                </span>
+                                              </a>
+                                              <div>{documentNumber}</div>
+                                              <span className="time">
+                                                Type: {documentType}
+                                              </span>
+                                              {issueDate && expiryDate ? (
+                                                <span className="time">
+                                                  Issue Date: {issueDate} -
+                                                  Expiry Date: {expiryDate}
+                                                </span>
+                                              ) : null}
+                                              {fileDetails?.type &&
+                                              fileDetails?.type?.startsWith(
+                                                "image/"
+                                              ) ? (
+                                                <img
+                                                  className="img-preview"
+                                                  src={fileDetails?.data}
+                                                  alt="Preview"
+                                                />
+                                              ) : (
+                                                <span className="files-icon">
+                                                  <i className="fa fa-file-pdf-o" />
+                                                </span>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </li>
+                                      );
+                                    })}
+                                  </React.Fragment>
+                                );
+                              }
+                            })
+                          ) : (
+                            <p>No uploaded file(s) yet</p>
+                          )}
                         </ul>
                       </div>
                     </div>
@@ -982,8 +1096,9 @@ const EmployeeProfile = () => {
         {showPersonalInfoModal && (
           <>
             <AddPersonalInfo
-              dispatchUserAcct={dispatchUserAcct}
-              userAcct={userAcct}
+              dispatchPersonalInfo={dispatchPersonalInfo}
+              employeeId={selectedEmployeeId}
+              indexToEdit={indexToEdit}
             />
           </>
         )}
@@ -993,8 +1108,9 @@ const EmployeeProfile = () => {
         {showEmergencyContactModal && (
           <>
             <AddEmergencyContact
-              dispatchUserAcct={dispatchUserAcct}
-              userAcct={userAcct}
+              dispatchEmergencyContactInfo={dispatchEmergencyContactInfo}
+              employeeId={selectedEmployeeId}
+              indexToEdit={indexToEdit}
             />
           </>
         )}
@@ -1006,7 +1122,7 @@ const EmployeeProfile = () => {
             <AddEducationInformation
               dispatchEduInfo={dispatchEduInfo}
               eduInformationIndex={eduInformationIndex}
-              emid={employeeId}
+              employeeId={selectedEmployeeId}
               fieldIndex={fieldIndex}
             />
           </>
@@ -1019,7 +1135,7 @@ const EmployeeProfile = () => {
             <AddExpModal
               dispatchExpInfo={dispatchExpInfo}
               expInformationIndex={expInformationIndex}
-              emid={employeeId}
+              employeeId={selectedEmployeeId}
               expfieldIndex={expfieldIndex}
             />
           </>
@@ -1031,7 +1147,7 @@ const EmployeeProfile = () => {
             <AddFileUploadModal
               dispatchFiles={dispatchFiles}
               fileUploadIndex={fileUploadIndex}
-              uniqueID={employeeId}
+              uniqueID={selectedEmployeeId}
               fileUploadfieldIndex={fileUploadfieldIndex}
             />
           </>
@@ -1044,7 +1160,7 @@ const EmployeeProfile = () => {
             <AddFamilyMemberModal
               dispatchFamilyMemberInfo={dispatchFamilyMemberInfo}
               familyMembInformationIndex={familyMembInformationIndex}
-              emid={employeeId}
+              employeeId={selectedEmployeeId}
               familyMembfieldIndex={familyMembfieldIndex}
             />
           </>
@@ -1053,5 +1169,5 @@ const EmployeeProfile = () => {
       </div>
     </div>
   );
-  }
+}
 export default EmployeeProfile;
