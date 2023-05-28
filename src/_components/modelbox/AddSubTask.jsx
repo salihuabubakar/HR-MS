@@ -15,7 +15,6 @@ const AddSubTask = ({
   dispatchSubTaskTitle,
   indexToEdit,
   taskId,
-  dateTimeCreated,
 }) => {
   const [selectedSubTaskInfo] = useGlobalState("selectedSubTaskInfo");
 
@@ -53,29 +52,36 @@ const AddSubTask = ({
       : Date.now()
   );
 
-  const [dateCreated, setDateCreated] = useState();
 
-  const today = new Date();
-  const options = { month: "long", day: "numeric", year: "numeric" };
-  const permanentDate = today.toLocaleDateString("en-GB", options);
+   const today = new Date();
+   const options = { month: "long", day: "numeric", year: "numeric" };
+   const now = today.toLocaleDateString("en-GB", options);
 
-  useEffect(() => {
-      if (dateTimeCreated) {
-        setDateCreated(dateTimeCreated);
-      } else {
-        setDateCreated(permanentDate);
-      }
-    },[]
-  );
+   const [dateCreated] = useState(
+     selectedSubTaskInfo[indexToEdit]?.dateCreated
+       ? selectedSubTaskInfo[indexToEdit]?.dateCreated
+       : now
+   );
 
-  let dateUpdated = permanentDate;
+   const [subTaskError, setSubTaskError] = useState("");
+   const [residentError, setResidentError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (subTask === "") {
+      setSubTaskError("Task is required.");
+      return;
+    }
+    if (resident === "") {
+      setResidentError("Resident is required.");
+      return;
+    }
+    setHouseNameError("");
+    setManagerNameError("");
     const subTaskInfo = {
       id,
       dateCreated,
-      dateUpdated,
+      dateUpdated: now,
       taskId,
       subTask,
       resident,
@@ -104,7 +110,13 @@ const AddSubTask = ({
 
   const handleResidentChange = (event) => {
     setResident(event);
+    setResidentError("")
   };
+
+  const HandleSubTaskChange = (event) => {
+    setSubTask(event.target.value);
+    setSubTaskError("");
+  }
 
   const residents = [];
   residentAccts?.map((resident) => {
@@ -152,8 +164,11 @@ const AddSubTask = ({
                             name="description"
                             placeholder="SubTask"
                             value={subTask}
-                            onChange={(e) => setSubTask(e.target.value)}
+                            onChange={HandleSubTaskChange}
                           />
+                          {subTaskError && (
+                            <p className="error-message">{subTaskError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-12">
@@ -183,6 +198,9 @@ const AddSubTask = ({
                             styles={customSelectStyles}
                             placeholder="Select Resident"
                           />
+                          {residentError && (
+                            <p className="error-message">{residentError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-12">
