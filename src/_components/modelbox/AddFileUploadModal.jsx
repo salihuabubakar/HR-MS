@@ -6,11 +6,11 @@ import {
   Card,
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
-import { HtmlDateInput } from "./styles";
 import DeleteModal from "./DeleteModal";
 import Dropzone from "react-dropzone";
 import fileSize from "file-size";
 import "../style.css"
+import { v4 as uuidv4 } from "uuid";
 
 const AddFileUploadModal = ({
   dispatchFiles,
@@ -18,6 +18,7 @@ const AddFileUploadModal = ({
   uniqueID,
   fileUploadfieldIndex,
 }) => {
+  const uniqueId = uuidv4();
   const [selectedFileUpload] = useGlobalState("selectedFileUpload");
   const [deleteModal] = useGlobalState("deleteModal");
   // const [fileDetails, setFileDetails] = useState(null);
@@ -67,6 +68,8 @@ const AddFileUploadModal = ({
         ? selectedFileUpload[fileUploadIndex]?.inputFields[fileUploadfieldIndex]
             ?.fileDetails
         : "",
+      documentNameError: "",
+      documentTypeError: "",
     },
   ]);
 
@@ -112,9 +115,35 @@ const AddFileUploadModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Check for empty fields
+    const isAnyFieldEmpty = inputFields.some(
+      (field) =>
+        field.documentName.trim() === "" || field.documentType.trim() === ""
+    );
+    if (isAnyFieldEmpty) {
+      // Set error for empty fields
+      setInputFields((prevInputFields) =>
+        prevInputFields.map((field) => {
+          const updatedField = { ...field };
+
+          if (field.documentName.trim() === "") {
+            updatedField.documentNameError = "Document Name is required";
+          }
+
+          if (field.documentType.trim() === "") {
+            updatedField.documentTypeError = "Document Type is required";
+          }
+
+          return updatedField;
+        })
+      );
+
+      return;
+    }
+    //Proceed with form submission
     inputFields.forEach((field, i) => {
       const fileDetail = {
-        id: idIsTrue ? id : Date.now() + i,
+        id: idIsTrue ? id : uniqueId + i,
         uniqueID,
         inputFields: [field],
       };
@@ -133,9 +162,16 @@ const AddFileUploadModal = ({
   };
 
   const handleInputChange = (index, event) => {
-    let data = [...inputFields];
-    data[index][event.target.name] = event.target.value;
-    setInputFields(data);
+    const { name, value } = event.target;
+    setInputFields((prevInputFields) => {
+      const updatedFields = [...prevInputFields];
+      const field = updatedFields[index];
+      // Update field value
+      field[name] = value;
+      // Clear corresponding error
+      field[`${name}Error`] = "";
+      return updatedFields;
+    });
   };
 
   const addFields = () => {
@@ -219,7 +255,7 @@ const AddFileUploadModal = ({
                             <div className="col-sm-6">
                               <div className="form-group">
                                 <label className="focus-label">
-                                  Document Name
+                                  Document Name{" "}
                                   <span className="text-danger">*</span>
                                 </label>
                                 <input
@@ -232,12 +268,17 @@ const AddFileUploadModal = ({
                                     handleInputChange(index, event);
                                   }}
                                 />
+                                {value?.documentNameError && (
+                                  <span className="error-message">
+                                    {value?.documentNameError}
+                                  </span>
+                                )}
                               </div>
                             </div>
                             <div className="col-sm-6">
                               <div className="form-group">
                                 <label className="focus-label">
-                                  Document Type
+                                  Document Type{" "}
                                   <span className="text-danger">*</span>
                                 </label>
                                 <input
@@ -250,6 +291,11 @@ const AddFileUploadModal = ({
                                     handleInputChange(index, event);
                                   }}
                                 />
+                                {value?.documentTypeError && (
+                                  <span className="error-message">
+                                    {value?.documentTypeError}
+                                  </span>
+                                )}
                               </div>
                             </div>
                             <div className="col-sm-6">

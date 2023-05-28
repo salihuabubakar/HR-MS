@@ -2,20 +2,13 @@ import React, { useState, useEffect, useReducer } from "react";
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from '../../context/GlobalState';
 import {
-  initDept,
-  savedDeptReducer,
-  initDesignation,
-  savedDesignationReducer,
-  initHouse,
-  savedHouseReducer
-} from "../../utils/localStorage";
-import {
   PopupWrapper,
   PopupOverlay,
   PopupContainer,
   Card,
 } from "./Addemployee.style";
-import { HtmlDateInput } from "./styles";
+import "./style.css"
+import { v4 as uuidv4 } from "uuid";
 
 const Addemployee = ({
   dispatchUserAcct,
@@ -24,27 +17,31 @@ const Addemployee = ({
   userAcct,
 }) => {
   // const isEdit = () => !!(acctIdToEdit && userAcct[indexToEdit]);
+  const uniqueId = uuidv4();
 
   const [selectedUserAccount] = useGlobalState("selectedUserAccount");
-  const [depts] = useReducer(savedDeptReducer, [], initDept);
-  const [deptList, setDeptList] = useState();
-  useEffect(() => {
-    setDeptList(depts);
-  }, [depts]);
 
-  const [desig] = useReducer(
-    savedDesignationReducer,
-    [],
-    initDesignation
+  let isIdExist;
+
+  if (selectedUserAccount && indexToEdit !== undefined) {
+    isIdExist = selectedUserAccount[indexToEdit]?.id;
+  } else {
+    isIdExist = "";
+  }
+
+  const [employeeNumber, setEmployeeNumber] = useState(
+    selectedUserAccount[indexToEdit]?.employeeNumber
+      ? selectedUserAccount[indexToEdit]?.employeeNumber
+      : ""
   );
-  const [desigList, setDesignationList] = useState();
-  useEffect(() => {
-    setDesignationList(desig);
-  }, [desig]);
-
   const [firstName, setFirstName] = useState(
     selectedUserAccount[indexToEdit]?.firstName
       ? selectedUserAccount[indexToEdit]?.firstName
+      : ""
+  );
+  const [middleName, setMiddleName] = useState(
+    selectedUserAccount[indexToEdit]?.middleName
+      ? selectedUserAccount[indexToEdit]?.middleName
       : ""
   );
   const [lastName, setLastName] = useState(
@@ -52,215 +49,125 @@ const Addemployee = ({
       ? selectedUserAccount[indexToEdit]?.lastName
       : ""
   );
-  const [userName, setUserName] = useState(
-    selectedUserAccount[indexToEdit]?.userName
-      ? selectedUserAccount[indexToEdit]?.userName
+  const [dateOfBirth, setDateOfBirth] = useState(
+    selectedUserAccount[indexToEdit]?.dateOfBirth
+      ? selectedUserAccount[indexToEdit]?.dateOfBirth 
+      : ""
+  );
+  const [gender, setGender] = useState(
+    selectedUserAccount[indexToEdit]?.gender
+     ? selectedUserAccount[indexToEdit]?.gender 
+     : ""
+  );
+  const [maritalStatus, setMaritalStatus] = useState(
+    selectedUserAccount[indexToEdit]?.maritalStatus 
+      ? selectedUserAccount[indexToEdit]?.maritalStatus 
+      : ""
+  );
+  const [nationality, setNationality] = useState(
+    selectedUserAccount[indexToEdit]?.nationality
+      ? selectedUserAccount[indexToEdit]?.nationality 
+      : ""
+  );
+  const [phoneNumber, setPhoneNumber] = useState(
+    selectedUserAccount[indexToEdit]?.phoneNumber
+     ? selectedUserAccount[indexToEdit]?.phoneNumber
       : ""
   );
   const [email, setEmail] = useState(
     selectedUserAccount[indexToEdit]?.email
-      ? selectedUserAccount[indexToEdit]?.email
+     ? selectedUserAccount[indexToEdit]?.email 
+     : ""
+  );
+  const [hireDate, setHireDate] = useState(
+    selectedUserAccount[indexToEdit]?.hireDate 
+    ? selectedUserAccount[indexToEdit]?.hireDate
+     : ""
+  );
+  const [appointmentLetter, setAppointmentLetter] = useState(
+    selectedUserAccount[indexToEdit]?.appointmentLetter
+     ? selectedUserAccount[indexToEdit]?.appointmentLetter
       : ""
   );
-  const [password, setPassword] = useState(
-    selectedUserAccount[indexToEdit]?.password
-      ? selectedUserAccount[indexToEdit]?.password
+  const [role, setRole] = useState(
+    selectedUserAccount[indexToEdit]?.role 
+    ? selectedUserAccount[indexToEdit]?.role 
+    : ""
+  );
+  const [department, setDepartment] = useState(
+    selectedUserAccount[indexToEdit]?.department 
+    ? selectedUserAccount[indexToEdit]?.department
+     :""
+  );
+  const [organisation, setOrganisation] = useState(
+    selectedUserAccount[indexToEdit]?.organisation 
+    ? selectedUserAccount[indexToEdit]?.organisation 
+    : ""
+  );
+  const [salary, setSalary] = useState(
+    selectedUserAccount[indexToEdit]?.salary
+     ? selectedUserAccount[indexToEdit]?.salary
       : ""
   );
-  const [confirmPassword, setConfirmPassword] = useState(
-    selectedUserAccount[indexToEdit]?.confirmPassword
-      ? selectedUserAccount[indexToEdit]?.confirmPassword
+  const [photo, setPhoto] = useState(
+    selectedUserAccount[indexToEdit]?.photo
+     ? selectedUserAccount[indexToEdit]?.photo
       : ""
   );
-  const [employeeId, setEmployeeId] = useState(
-    selectedUserAccount[indexToEdit]?.employeeId
-      ? selectedUserAccount[indexToEdit]?.employeeId
-      : ""
-  );
-  const [joinDate, setJoinDate] = useState(
-    selectedUserAccount[indexToEdit]?.joinDate
-      ? selectedUserAccount[indexToEdit]?.joinDate
-      : ""
-  );
-  const [phoneNo, setPhoneNo] = useState(
-    selectedUserAccount[indexToEdit]?.phoneNo
-      ? selectedUserAccount[indexToEdit]?.phoneNo
-      : ""
-  );
-  const [company, setCompany] = useState(
-    selectedUserAccount[indexToEdit]?.company
-      ? selectedUserAccount[indexToEdit]?.company
-      : ""
-  );
-  const [dept, setDept] = useState(
-    selectedUserAccount[indexToEdit]?.dept
-      ? selectedUserAccount[indexToEdit]?.dept
-      : ""
-  );
-  const [designation, setDesignation] = useState(
-    selectedUserAccount[indexToEdit]?.designation
-      ? selectedUserAccount[indexToEdit]?.designation
-      : ""
-  );
-  const [id] = useState(
-    selectedUserAccount[indexToEdit]?.id
-    ? selectedUserAccount[indexToEdit]?.id
-    : Date.now()
-  );
+  // const [createdDate, setCreatedDate] = useState("");
+  // const [lastUpdate, setLastUpdate] = useState("");
+  // const [createdById, setCreatedById] = useState(0);
+  const [niNumber, setNiNumber] = useState(
+    selectedUserAccount[indexToEdit]?.niNumber
+     ? selectedUserAccount[indexToEdit]?.niNumber 
+     : ""
+  )
+  const [id] = useState(isIdExist ? isIdExist : uniqueId);
 
-  const [image] = useState(
-    selectedUserAccount[indexToEdit]?.profileInfo?.image
-      ? selectedUserAccount[indexToEdit]?.profileInfo?.image
-      : ""
-  );
-  const [address] = useState(
-    selectedUserAccount[indexToEdit]?.profileInfo?.address
-      ? selectedUserAccount[indexToEdit]?.profileInfo?.address
-      : ""
-  );
-  const [state] = useState(
-    selectedUserAccount[indexToEdit]?.profileInfo?.state
-      ? selectedUserAccount[indexToEdit]?.profileInfo?.state
-      : ""
-  );
-  const [country] = useState(
-    selectedUserAccount[indexToEdit]?.profileInfo?.country
-      ? selectedUserAccount[indexToEdit]?.profileInfo?.country
-      : ""
-  );
-  const [pinCode] = useState(
-    selectedUserAccount[indexToEdit]?.profileInfo?.pinCode
-      ? selectedUserAccount[indexToEdit]?.profileInfo?.pinCode
-      : ""
-  );
-  const [dOB] = useState(
-    selectedUserAccount[indexToEdit]?.profileInfo?.dOB
-      ? selectedUserAccount[indexToEdit]?.profileInfo?.dOB
-      : ""
-  );
-
-
-    const [passPortNo] = useState(
-      selectedUserAccount[indexToEdit]?.personalInfo?.passPortNo
-        ? selectedUserAccount[indexToEdit]?.personalInfo?.passPortNo
-        : ""
-    );
-
-  const [passportExpiryDate] = useState(
-    selectedUserAccount[indexToEdit]?.personalInfo?.passportExpiryDate
-      ? selectedUserAccount[indexToEdit]?.personalInfo?.passportExpiryDate
-      : ""
-  );
-
-  const [religion] = useState(
-    selectedUserAccount[indexToEdit]?.personalInfo?.religion
-      ? selectedUserAccount[indexToEdit]?.personalInfo?.religion
-      : ""
-  );
-
-  const [emSpouse] = useState(
-    selectedUserAccount[indexToEdit]?.personalInfo?.emSpouse
-      ? selectedUserAccount[indexToEdit]?.personalInfo?.emSpouse
-      : ""
-  );
-
-  const [noChildren] = useState(
-    selectedUserAccount[indexToEdit]?.personalInfo?.noChildren
-      ? selectedUserAccount[indexToEdit]?.personalInfo?.noChildren
-      : ""
-  );
-
-  const [primaryName] = useState(
-    selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryName
-      ? selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryName
-      : ""
-  );
-  const [primaryRelationship] = useState(
-    selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryRelationship
-      ? selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryRelationship
-      : ""
-  );
-  const [primaryPhone1] = useState(
-    selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryPhone1
-      ? selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryPhone1
-      : ""
-  );
-  const [primaryPhone2] = useState(
-    selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryPhone2
-      ? selectedUserAccount[indexToEdit]?.emergencyContact?.primary?.primaryPhone2
-      : ""
-  );
-    const [secondaryName] = useState(
-      selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryName
-        ? selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryName
-        : ""
-    );
-  const [secondaryRelationship] = useState(
-    selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryRelationship
-      ? selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryRelationship
-      : ""
-  );
-  const [secondaryPhone1] = useState(
-    selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryPhone1
-      ? selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryPhone1
-      : ""
-  );
-  const [secondaryPhone2] = useState(
-    selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryPhone2
-      ? selectedUserAccount[indexToEdit]?.emergencyContact?.secondary?.secondaryPhone2
-      : ""
-  );
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-     const emergencyContact = {
-       primary: {
-         primaryName,
-         primaryRelationship,
-         primaryPhone1,
-         primaryPhone2,
-       },
-       secondary: {
-         secondaryName,
-         secondaryRelationship,
-         secondaryPhone1,
-         secondaryPhone2,
-       },
-     };
-    const personalInfo = {
-      passPortNo,
-      passportExpiryDate,
-      religion,
-      emSpouse,
-      noChildren,
-    };
-    const profileInfo = {
-      image,
-      address,
-      state,
-      country,
-      dOB,
-      pinCode,
-    };
+    // Validate first name and last name
+    if (firstName === "") {
+      setFirstNameError("First name is required.");
+      return;
+    }
+    if (lastName === "") {
+      setLastNameError("Last name is required.");
+      return;
+    }
+
+    // Clear any existing error messages
+    setFirstNameError("");
+    setLastNameError("");
+
     const userAccount = {
       id,
+      employeeNumber,
       firstName,
+      middleName,
       lastName,
-      userName,
+      dateOfBirth,
+      gender,
+      maritalStatus,
+      nationality,
+      phoneNumber,
       email,
-      password,
-      confirmPassword,
-      employeeId,
-      joinDate,
-      phoneNo,
-      company,
-      dept,
-      designation,
-      profileInfo,
-      personalInfo,
-      emergencyContact,
+      hireDate,
+      appointmentLetter,
+      role,
+      department,
+      organisation,
+      salary,
+      photo,
+      // createdDate,
+      // lastUpdate,
+      // createdById,
+      niNumber,
     };
-    if (selectedUserAccount[indexToEdit]?.id) {
+    if (isIdExist) {
       dispatchUserAcct({ type: "update", payload: userAccount });
     } else {
       dispatchUserAcct({ type: "push", payload: userAccount });
@@ -268,63 +175,78 @@ const Addemployee = ({
     setGlobalState("showModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-    control: (provided, state) => ({
-      ...provided,
-      background: "#fff",
-      borderColor: "#ddd",
-      height: "50px",
-    }),
+  const handleFirstNameChange = (e) => {
+    setFirstName(e.target.value);
+    setFirstNameError("");
   };
 
-  const companyOptions = [
-    { value: 1, label: "Global Technologies" },
-    { value: 2, label: "Delta Infotech" },
-    { value: 3, label: "Niger Fintech" },
-  ];
-
-  const departments = [];
-  deptList?.map((dept) => {
-    departments.push({ value: dept.id, label: dept.deptName });
-  });
-
-  const handleCompanyChange = (event) => {
-    setCompany(event);
+  const handleLastNameChange = (e) => {
+    setLastName(e.target.value);
+    setLastNameError("");
   };
 
-  const handleDeptChange = (event) => {
-    setDept(event);
+  const handleGenderChange = (event) => {
+    const data = event.target.value;
+    setGender(data);
   };
 
-  const roles = [];
-  desigList?.map((role) => {
-    roles.push({ value: role.id, label: role.desigName });
-  });
+  const handleDepartmentChange = (event) => {
+    const data = event.target.value;
+    setDepartment(data);
+  };
 
   const handleRoleChange = (event) => {
-    setDesignation(event);
+    const data = event.target.value;
+    setRole(data);
   };
+
+  const handleOrganisationChange = (event) => {
+    const data = event.target.value;
+    setOrganisation(data);
+  };
+
+  const handleMaritalStatusChange = (event) => {
+    const data = event.target.value;
+    setMaritalStatus(data);
+  }
+
+  const appLetterOnChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64File = reader.result;
+      setAppointmentLetter(base64File)
+    };
+  }
+
+
+  const imageOnChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64Image = reader.result;
+      setPhoto(base64Image);
+    };
+  };
+
+  // const [selectedOptions, setSelectedOptions] = useState([]);
+
+  // const handleOptionChange = (event) => {
+  //   const selectedValues = Array.from(
+  //     event.target.selectedOptions,
+  //     (option) => option.value
+  //   );
+  //   setSelectedOptions(selectedValues);
+  // };
 
   return (
     <>
       {/* Add Employee Modal */}
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer
-            top={true}
-            className="custom-modal"
-            role="dialog"
-          >
+          <PopupContainer top={true} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -332,9 +254,7 @@ const Addemployee = ({
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedUserAccount[indexToEdit]?.id
-                      ? "Edit Employee"
-                      : "Add Employee"}
+                    {isIdExist ? "Edit Employee" : "Add Employee"}
                   </h5>
                   <button
                     type="button"
@@ -355,54 +275,166 @@ const Addemployee = ({
                           </label>
                           <input
                             value={firstName}
-                            onChange={(event) =>
-                              setFirstName(event.target.value)
-                            }
+                            onChange={handleFirstNameChange}
                             className="form-control floating"
                             type="text"
                             placeholder="First Name"
                           />
+                          {firstNameError && (
+                            <p className="error-message">{firstNameError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">Last Name</label>
+                          <label className="col-form-label">
+                            Last Name <span className="text-danger">*</span>
+                          </label>
                           <input
                             value={lastName}
-                            onChange={(event) =>
-                              setLastName(event.target.value)
-                            }
+                            onChange={handleLastNameChange}
                             className="form-control floating"
                             type="text"
                             placeholder="Last Name"
                           />
+                          {lastNameError && (
+                            <p className="error-message">{lastNameError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">
-                            Username <span className="text-danger">*</span>
+                            Employee Number
                           </label>
                           <input
-                            value={userName}
+                            value={employeeNumber}
                             onChange={(event) =>
-                              setUserName(event.target.value)
+                              setEmployeeNumber(event.target.value)
                             }
                             className="form-control floating"
                             type="text"
-                            placeholder="Username"
+                            placeholder="Employee Number"
                           />
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
+                          <label className="col-form-label">Middle Name</label>
+                          <input
+                            value={middleName}
+                            onChange={(event) =>
+                              setMiddleName(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Middle Name"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">NI Number</label>
+                          <input
+                            value={niNumber}
+                            onChange={(event) =>
+                              setNiNumber(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="text"
+                            placeholder="NI Number"
+                          />
+                        </div>
+                      </div>
+
+                      {/* <div className="col-sm-6">
+                        <div className="form-group">
                           <label className="col-form-label">
-                            Email <span className="text-danger">*</span>
+                            Select Options
                           </label>
+                          <select
+                            className="select"
+                            multiple
+                            value={selectedOptions}
+                            onChange={handleOptionChange}
+                          >
+                            <option value="">Select</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <option value="option4">Option 4</option>
+                          </select>
+                        </div>
+                      </div> */}
+
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Gender</label>
+                          <select
+                            value={gender}
+                            onChange={handleGenderChange}
+                            className="form-control floating"
+                          >
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Marital Status
+                          </label>
+                          <select
+                            value={maritalStatus}
+                            onChange={handleMaritalStatusChange}
+                            // className="select"
+                            className="form-control floating"
+                          >
+                            <option value="">Select</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widowed">Widowed</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Nationality</label>
+                          <input
+                            value={nationality}
+                            onChange={(event) =>
+                              setNationality(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Nationality"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Phone Number</label>
+                          <input
+                            value={phoneNumber}
+                            onChange={(event) =>
+                              setPhoneNumber(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Phone Number"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Email</label>
                           <input
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
-                            className="form-control floatng"
+                            className="form-control floating"
                             type="email"
                             placeholder="Email"
                           />
@@ -410,140 +442,156 @@ const Addemployee = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">Password</label>
-                          <input
-                            value={password}
-                            onChange={(event) =>
-                              setPassword(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="password"
-                            placeholder="Password"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
                           <label className="col-form-label">
-                            Confirm Password
+                            Date of Birth
                           </label>
                           <input
-                            value={confirmPassword}
+                            value={dateOfBirth}
                             onChange={(event) =>
-                              setConfirmPassword(event.target.value)
+                              setDateOfBirth(event.target.value)
                             }
                             className="form-control floating"
-                            type="password"
-                            placeholder="Confirm Password"
+                            type="date"
+                            placeholder="Date of Birth"
                           />
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Employee ID <span className="text-danger">*</span>
-                          </label>
+                          <label className="col-form-label">Hire Date</label>
                           <input
-                            value={employeeId}
+                            value={hireDate}
                             onChange={(event) =>
-                              setEmployeeId(event.target.value)
+                              setHireDate(event.target.value)
                             }
-                            type="text"
                             className="form-control floating"
-                            placeholder="Employee ID"
+                            type="date"
+                            placeholder="Hire Date"
                           />
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Joining Date <span className="text-danger">*</span>
-                          </label>
-                          <div>
-                            <input
-                              className="form-control datetimepicker"
-                              type="date"
-                              value={joinDate}
-                              onChange={(event) =>
-                                setJoinDate(event.target.value)
-                              }
-                              placeholder="Joining Date"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Phone </label>
-                          <input
-                            value={phoneNo}
-                            onChange={(event) => setPhoneNo(event.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Phone"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Company</label>
-                          <Select
-                            defaultValue={
-                              selectedUserAccount[indexToEdit]?.company
-                                ? {
-                                    value: userAcct[indexToEdit].company.value,
-                                    label: userAcct[indexToEdit].company.label,
-                                  }
-                                : "Select Company"
-                            }
-                            onChange={handleCompanyChange}
-                            options={companyOptions}
-                            styles={customSelectStyles}
-                            placeholder="Select Company"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Department <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={
-                              selectedUserAccount[indexToEdit]?.dept
-                                ? {
-                                    value: userAcct[indexToEdit].dept.value,
-                                    label: userAcct[indexToEdit].dept.label,
-                                  }
-                                : "Select Department"
-                            }
-                            onChange={handleDeptChange}
-                            options={departments}
-                            styles={customSelectStyles}
-                            placeholder="Select Department"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Designation <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={
-                              selectedUserAccount[indexToEdit]?.designation
-                                ? {
-                                    value:
-                                      userAcct[indexToEdit].designation.value,
-                                    label:
-                                      userAcct[indexToEdit].designation.label,
-                                  }
-                                : "Select Designation"
-                            }
+                          <label className="col-form-label">Role</label>
+                          <select
+                            value={role}
                             onChange={handleRoleChange}
-                            options={roles}
-                            styles={customSelectStyles}
-                            placeholder="Select Designation"
+                            className="form-control floating"
+                          >
+                            <option value="">Select</option>
+                            <option value="Hr">Hr</option>
+                            <option value="Director">Director</option>
+                            <option value="Manager">Manager</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Department</label>
+                          <select
+                            value={department}
+                            onChange={handleDepartmentChange}
+                            className="form-control floating"
+                          >
+                            <option value="">Select</option>
+                            <option value="Software">Software</option>
+                            <option value="Hardware">Hardware</option>
+                            <option value="Mechanical">Mechanical</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Organization</label>
+                          <select
+                            value={organisation}
+                            onChange={handleOrganisationChange}
+                            className="form-control floating"
+                          >
+                            <option value="">Select</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Office">Office</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Salary</label>
+                          <input
+                            value={salary}
+                            onChange={(event) => setSalary(event.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Salary"
+                          />
+                        </div>
+                      </div>
+                      {/* <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Created By ID
+                          </label>
+                          <input
+                            value={createdById}
+                            onChange={(event) =>
+                              setCreatedById(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Created By ID"
+                          />
+                        </div>
+                      </div> */}
+                      {/* <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Created Date</label>
+                          <input
+                            value={createdDate}
+                            onChange={(event) =>
+                              setCreatedDate(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="date"
+                            placeholder="Created Date"
+                          />
+                        </div>
+                      </div> */}
+                      {/* <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Last Update</label>
+                          <input
+                            value={lastUpdate}
+                            onChange={(event) =>
+                              setLastUpdate(event.target.value)
+                            }
+                            className="form-control floating"
+                            type="date"
+                            placeholder="Last Update"
+                          />
+                        </div>
+                      </div> */}
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Appointment Letter
+                          </label>
+                          <input
+                            className="form-control floating"
+                            type="file"
+                            accept=".pdf, .doc, .docx"
+                            onChange={appLetterOnChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Photo</label>
+                          <input
+                            className="form-control floating"
+                            type="file"
+                            accept="image/*"
+                            onChange={imageOnChange}
                           />
                         </div>
                       </div>
@@ -553,9 +601,7 @@ const Addemployee = ({
                         onClick={handleSubmit}
                         className="btn btn-primary submit-btn"
                       >
-                        {selectedUserAccount[indexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                        {isIdExist ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>

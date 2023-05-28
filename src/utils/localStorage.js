@@ -276,6 +276,25 @@ export const savedFamilyMemberReducer = (state, { type, payload }) => {
   }
 };
 
+export const initEmergencyContactInfo = () => {
+  const storageEvents = localStorage.getItem("emergencyContactInfo");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedEmergencyContectInfoReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((info) => (info.id === payload.id ? payload : info));
+    case "delete":
+      return state.filter((info) => info.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};
+
 export const initSalary = () => {
   const storageEvents = localStorage.getItem("staffSalary");
   const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
@@ -311,6 +330,26 @@ export const savedUsersReducer = (state, { type, payload }) => {
       );
     case "delete":
       return state.filter((users) => users.id !== payload.id);
+    default:
+      throw new Error();
+  }
+};
+
+
+export const initPersonalInfo = () => {
+  const storageEvents = localStorage.getItem("personalInfo");
+  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+  return parsedEvents;
+};
+
+export const savedPersonalInfoReducer = (state, { type, payload }) => {
+  switch (type) {
+    case "push":
+      return [...state, payload];
+    case "update":
+      return state.map((info) => (info.id === payload.id ? payload : info));
+    case "delete":
+      return state.filter((info) => info.id !== payload.id);
     default:
       throw new Error();
   }

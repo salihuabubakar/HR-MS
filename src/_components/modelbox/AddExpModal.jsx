@@ -6,15 +6,16 @@ import {
   Card,
 } from "../../_components/modelbox/Addemployee.style";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
-import { HtmlDateInput } from "./styles";
 import DeleteModal from "./DeleteModal";
+import { v4 as uuidv4 } from "uuid";
 
 const AddExpModal = ({
   dispatchExpInfo,
   expInformationIndex,
-  emid,
+  employeeId,
   expfieldIndex,
 }) => {
+  const uniqueId = uuidv4();
   const [selectedExperienceModal] = useGlobalState("selectedExperienceModal");
   const [deleteModal] = useGlobalState("deleteModal");
   const [inputFields, setInputFields] = useState([
@@ -22,33 +23,43 @@ const AddExpModal = ({
       companyName: selectedExperienceModal[expInformationIndex]?.inputFields[
         expfieldIndex
       ]?.companyName
-        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
-            ?.companyName
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[
+            expfieldIndex
+          ]?.companyName
         : "",
       location: selectedExperienceModal[expInformationIndex]?.inputFields[
         expfieldIndex
       ]?.location
-        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
-            ?.location
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[
+            expfieldIndex
+          ]?.location
         : "",
       jobPosition: selectedExperienceModal[expInformationIndex]?.inputFields[
         expfieldIndex
       ]?.jobPosition
-        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
-            ?.jobPosition
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[
+            expfieldIndex
+          ]?.jobPosition
         : "",
       periodFrom: selectedExperienceModal[expInformationIndex]?.inputFields[
         expfieldIndex
       ]?.periodFrom
-        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
-            ?.periodFrom
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[
+            expfieldIndex
+          ]?.periodFrom
         : "",
       periodTo: selectedExperienceModal[expInformationIndex]?.inputFields[
         expfieldIndex
       ]?.periodTo
-        ? selectedExperienceModal[expInformationIndex]?.inputFields[expfieldIndex]
-            ?.periodTo
+        ? selectedExperienceModal[expInformationIndex]?.inputFields[
+            expfieldIndex
+          ]?.periodTo
         : "",
+      companyNameError: "",
+      locationError: "",
+      jobPositionError: "",
+      periodFromError: "",
+      periodToError: "",
     },
   ]);
 
@@ -57,16 +68,57 @@ const AddExpModal = ({
   const [id] = useState(
     selectedExperienceModal[expInformationIndex]?.id
       ? selectedExperienceModal[expInformationIndex]?.id
-      : Date.now()
+      : uniqueId
   );
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Check for empty fields
+    const isAnyFieldEmpty = inputFields.some(
+      (field) =>
+        field.companyName.trim() === "" ||
+        field.location.trim() === "" ||
+        field.jobPosition.trim() === "" ||
+        field.periodFrom.trim() === "" ||
+        field.periodTo.trim() === ""
+    );
+    if (isAnyFieldEmpty) {
+      // Set error for empty fields
+      setInputFields((prevInputFields) =>
+        prevInputFields.map((field) => {
+          const updatedField = { ...field };
+
+          if (field.companyName.trim() === "") {
+            updatedField.companyNameError = "Company Name is required";
+          }
+
+          if (field.location.trim() === "") {
+            updatedField.locationError = "Location is required";
+          }
+
+          if (field.jobPosition.trim() === "") {
+            updatedField.jobPositionError = "Job Position is required";
+          }
+
+          if (field.periodFrom.trim() === "") {
+            updatedField.periodFromError = "Period From is required";
+          }
+
+          if (field.periodTo.trim() === "") {
+            updatedField.periodToError = "Period To is required";
+          }
+
+          return updatedField;
+        })
+      );
+
+      return;
+    }
+    //Proceed with form submission
     inputFields.forEach((field, i) => {
       const educationalInfo = {
-        id: idIsTrue ? id : Date.now() + i,
-        emIndex,
-        emid,
+        id: idIsTrue ? id : uniqueId + i,
+        employeeId,
         inputFields: [field],
       };
 
@@ -83,11 +135,22 @@ const AddExpModal = ({
     setGlobalState("deleteModal", true);
   };
 
-  const handleInputChange = (index, event) => {
-    let data = [...inputFields];
-    data[index][event.target.name] = event.target.value;
-    setInputFields(data);
-  };
+   const handleInputChange = (index, event) => {
+     const { name, value } = event.target;
+
+     setInputFields((prevInputFields) => {
+       const updatedFields = [...prevInputFields];
+       const field = updatedFields[index];
+
+       // Update field value
+       field[name] = value;
+
+       // Clear corresponding error
+       field[`${name}Error`] = "";
+
+       return updatedFields;
+     });
+   };
 
   const addFields = () => {
     let newfield = {
@@ -182,6 +245,11 @@ const AddExpModal = ({
                                     handleInputChange(index, event);
                                   }}
                                 />
+                                {value?.companyNameError && (
+                                  <span className="error-message">
+                                    {value?.companyNameError}
+                                  </span>
+                                )}
                               </div>
                             </div>
                             <div className="col-sm-6">
@@ -197,23 +265,11 @@ const AddExpModal = ({
                                     handleInputChange(index, event);
                                   }}
                                 />
-                              </div>
-                            </div>
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                                <label className="focus-label">
-                                  Job Position
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control floating"
-                                  placeholder="Job Position"
-                                  name="jobPosition"
-                                  value={value?.jobPosition}
-                                  onChange={(event) => {
-                                    handleInputChange(index, event);
-                                  }}
-                                />
+                                {value?.locationError && (
+                                  <span className="error-message">
+                                    {value?.locationError}
+                                  </span>
+                                )}
                               </div>
                             </div>
                             <div className="col-sm-6">
@@ -232,6 +288,11 @@ const AddExpModal = ({
                                       handleInputChange(index, event);
                                     }}
                                   />
+                                  {value?.periodFromError && (
+                                    <span className="error-message">
+                                      {value?.periodFromError}
+                                    </span>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -251,7 +312,34 @@ const AddExpModal = ({
                                       handleInputChange(index, event);
                                     }}
                                   />
+                                  {value?.periodToError && (
+                                    <span className="error-message">
+                                      {value?.periodToError}
+                                    </span>
+                                  )}
                                 </div>
+                              </div>
+                            </div>
+                            <div className="col-sm-12">
+                              <div className="form-group">
+                                <label className="focus-label">
+                                  Job Position
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control floating"
+                                  placeholder="Job Position"
+                                  name="jobPosition"
+                                  value={value?.jobPosition}
+                                  onChange={(event) => {
+                                    handleInputChange(index, event);
+                                  }}
+                                />
+                                {value?.jobPositionError && (
+                                  <span className="error-message">
+                                    {value?.jobPositionError}
+                                  </span>
+                                )}
                               </div>
                             </div>
                           </div>

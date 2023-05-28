@@ -8,61 +8,14 @@ import { setGlobalState, useGlobalState } from '../../../context/GlobalState';
 import {
   initUserAccount,
   savedUserAccountReducer,
-  initDesignation,
-  savedDesignationReducer,
 } from "../../../utils/localStorage";
-import SmileImg from "../../../assets/img/smile.png";
 import DefaultImage from "../../../assets/img/placeholder.jpg";
-import Select from "react-select";
-import {DesignationDiv} from "./styles";
 import DeleteModal from '../../../_components/modelbox/DeleteModal';
 
 
 const AllEmployees = () => {
-  const [desig] = useReducer(
-    savedDesignationReducer,
-    [],
-    initDesignation
-  );
-  const [desigList, setDesignationList] = useState();
-  useEffect(() => {
-    setDesignationList(desig);
-  }, [desig]);
-
-   const customSelectStyles = {
-     option: (provided, state) => ({
-       ...provided,
-       cursor: "pointer",
-       backgroundColor: state.isSelected && "#FF9B44",
-       color: state.isSelected && "#262626",
-       "&:hover": {
-         backgroundColor: "#FF9B44",
-         color: "#262626",
-       },
-     }),
-     control: (provided, state) => ({
-       ...provided,
-       background: "#fff",
-       borderColor: "#ddd",
-       height: "48px",
-     }),
-   };
-
-   
-
-   const [designation, setDesignation] = useState("");
-    const [showModal] = useGlobalState("showModal");
-    const [deleteModal] = useGlobalState("deleteModal");
-
-  const roles = [];
-  desigList?.map((role) => {
-    roles.push({ value: role.id, label: role.desigName });
-  });
-
-   const handleRoleChange = (event) => {
-     setDesignation(event);
-   };
-
+  const [showModal] = useGlobalState("showModal");
+  const [deleteModal] = useGlobalState("deleteModal");
 
   const [userAcct, dispatchUserAcct] = useReducer(
     savedUserAccountReducer,
@@ -168,29 +121,19 @@ const AllEmployees = () => {
               {/* /Page Header */}
               {/* Search Filter */}
               <div className="row filter-row">
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <div className="form-group form-focus">
                     <input type="text" className="form-control floating" />
                     <label className="focus-label">Employee ID</label>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <div className="form-group form-focus">
                     <input type="text" className="form-control floating" />
                     <label className="focus-label">Employee Name</label>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group form-focus select-focus">
-                    <Select
-                      onChange={handleRoleChange}
-                      options={roles}
-                      styles={customSelectStyles}
-                      placeholder="Select Designation"
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <a href="#" className="btn btn-success btn-block w-100">
                     {" "}
                     Search{" "}
@@ -202,19 +145,10 @@ const AllEmployees = () => {
                 {employeeAccts?.map((staff, index) => {
                   const {
                     id,
-                    profileInfo,
-                    company,
-                    confirmPassword,
-                    dept,
-                    designation,
-                    email,
-                    employeeId,
+                    photo,
                     firstName,
-                    joinDate,
                     lastName,
-                    password,
-                    phoneNo,
-                    userName,
+                    role,
                   } = staff;
                   return (
                     <div
@@ -242,8 +176,8 @@ const AllEmployees = () => {
                                 height: "80px",
                               }}
                               src={
-                                profileInfo?.image
-                                  ? profileInfo?.image
+                                photo
+                                  ? photo
                                   : DefaultImage
                               }
                               alt=""
@@ -284,7 +218,7 @@ const AllEmployees = () => {
                           </Link>
                         </h4>
                         <div className="small text-muted">
-                          {designation?.label}
+                          {role}
                         </div>
                       </div>
                     </div>
