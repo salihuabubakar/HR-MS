@@ -211,13 +211,15 @@ const Addemployee = ({
   }
 
   const appLetterOnChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const base64File = reader.result;
-      setAppointmentLetter(base64File)
-    };
+    // const file = event.target.files[0];
+    // const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.onload = () => {
+    //   const base64File = reader.result;
+    //   setAppointmentLetter(base64File)
+    // };
+    const data = event.target.value;
+    setAppointmentLetter(data)
   }
 
 
@@ -543,45 +545,21 @@ const Addemployee = ({
                           />
                         </div>
                       </div> */}
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Created Date</label>
-                          <input
-                            value={createdDate}
-                            onChange={(event) =>
-                              setCreatedDate(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="date"
-                            placeholder="Created Date"
-                          />
-                        </div>
-                      </div> */}
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Last Update</label>
-                          <input
-                            value={lastUpdate}
-                            onChange={(event) =>
-                              setLastUpdate(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="date"
-                            placeholder="Last Update"
-                          />
-                        </div>
-                      </div> */}
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">
                             Appointment Letter
                           </label>
-                          <input
-                            className="form-control floating"
-                            type="file"
-                            accept=".pdf, .doc, .docx"
+                          <select
+                            value={appointmentLetter}
                             onChange={appLetterOnChange}
-                          />
+                            className="form-control floating"
+                          >
+                            <option value="">Select</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Office">Office</option>
+                          </select>
                         </div>
                       </div>
                       <div className="col-sm-6">
