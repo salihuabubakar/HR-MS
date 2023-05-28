@@ -55,7 +55,7 @@ const AddDepartment = ({
     } else {
       dispatchDesignation({ type: "push", payload: house });
     }
-    setGlobalState("showModal", false);
+    setGlobalState("showDesignationModal", false);
   };
 
   const customSelectStyles = {
@@ -99,7 +99,9 @@ const AddDepartment = ({
                   <button
                     type="button"
                     className="close"
-                    onClick={() => setGlobalState("showModal", false)}
+                    onClick={() =>
+                      setGlobalState("showDesignationModal", false)
+                    }
                   >
                     <span aria-hidden="true">×</span>
                   </button>

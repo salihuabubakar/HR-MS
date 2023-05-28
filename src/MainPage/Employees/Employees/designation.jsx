@@ -19,42 +19,38 @@ const Designations = () => {
     [],
     initDesignation
   );
-  const [showModal] = useGlobalState("showModal");
-  const [deleteModal] = useGlobalState("deleteModal");
+  const [showDesignationModal] = useGlobalState("showDesignationModal");
+  const [deleteDesignationModal] = useGlobalState("deleteDesignationModal");
 
   useEffect(() => {
     localStorage.setItem("designation", JSON.stringify(desig));
   }, [desig]);
   useEffect(() => {
-    if (!showModal) {
+    if (!showDesignationModal) {
       setGlobalState("selectedDesignation", "");
     }
-  }, [showModal]);
+  }, [showDesignationModal]);
 
   const [desigList, setDesignationList] = useState();
   useEffect(() => {
     setDesignationList(desig);
   }, [desig]);
 
-  const [menu, setMenu] = useState(false)
   const [indexToEdit, setIndexToEdit] = useState(0);
   const [desigIdToEdit, setDesignationIdToEdit] = useState("");
 
   const handleDesigEdit = (id, index) => {
     setDesignationIdToEdit(id);
     setIndexToEdit(index);
-    setGlobalState("showModal", true);
+    setGlobalState("showDesignationModal", true);
     setGlobalState("selectedDesignation", desig);
   };
 
   const handleDesigDelete = (index) => {
     setIndexToEdit(index);
-    setGlobalState("deleteModal", true);
+    setGlobalState("deleteDesignationModal", true);
   };
 
-	const toggleMobileMenu = () => {
-		setMenu(!menu)
-	  }
 
 
       const columns = [
@@ -105,84 +101,69 @@ const Designations = () => {
         },
       ];
       return (
-        <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-          <Header onMenuClick={(value) => toggleMobileMenu()} />
-          <Sidebar />
-          <div className="page-wrapper">
-            <Helmet>
-              <title>Designations - HRMS Admin Template</title>
-              <meta name="description" content="Login page" />
-            </Helmet>
-            {/* Page Content */}
-            <div className="content container-fluid">
-              {/* Page Header */}
-              <div className="page-header">
-                <div className="row align-items-center">
-                  <div className="col">
-                    <h3 className="page-title">Designations</h3>
-                    <ul className="breadcrumb">
-                      <li className="breadcrumb-item">
-                        <Link to="/app/main/dashboard">Dashboard</Link>
-                      </li>
-                      <li className="breadcrumb-item active">Designations</li>
-                    </ul>
-                  </div>
-                  <div className="col-auto float-end ml-auto">
-                    <a
-                      className="btn add-btn"
-                      onClick={() => setGlobalState("showModal", true)}
-                    >
-                      <i className="fa fa-plus" /> Add Designation
-                    </a>
-                  </div>
+        <div>
+          {/* Page Content */}
+          <div className="content container-fluid">
+            {/* Page Header */}
+            <div className="page-header">
+              <div className="row align-items-center">
+                <div className="col">
+                  <h3 className="page-title">Designations</h3>
                 </div>
-              </div>
-              {/* /Page Header */}
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="table-responsive">
-                    <Table
-                      className="table-striped"
-                      pagination={{
-                        total: desigList?.length,
-                        showTotal: (total, range) =>
-                          `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                        showSizeChanger: true,
-                        onShowSizeChange: onShowSizeChange,
-                        itemRender: itemRender,
-                      }}
-                      style={{ overflowX: "auto" }}
-                      columns={columns}
-                      // bordered
-                      dataSource={desigList}
-                      rowKey={(desig) => desig.id}
-                      onChange={console.log("change")}
-                    />
-                  </div>
+                <div className="col-auto float-end ml-auto">
+                  <a
+                    className="btn add-btn"
+                    onClick={() => setGlobalState("showDesignationModal", true)}
+                  >
+                    <i className="fa fa-plus" /> Add Designation
+                  </a>
                 </div>
               </div>
             </div>
-            {/* /Page Content */}
-            {/* Add Designation Modal */}
-            {showModal && (
-              <AddDesignation
-                dispatchDesignation={dispatchDesignation}
-                indexToEdit={indexToEdit}
-                desigIdToEdit={desigIdToEdit}
-                desig={desig}
-              />
-            )}
-            {/* /Add Designation Modal */}
-            {deleteModal && (
-              <DeleteModal
-                deleteAction={dispatchDesignation}
-                indexToDelete={indexToEdit}
-                dispatch={desig}
-                modalTitle={"Designation"}
-              />
-            )}
-            {/* /Delete Department Modal */}
+            {/* /Page Header */}
+            <div className="row">
+              <div className="col-md-12">
+                <div className="table-responsive">
+                  <Table
+                    className="table-striped"
+                    pagination={{
+                      total: desigList?.length,
+                      showTotal: (total, range) =>
+                        `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                      showSizeChanger: true,
+                      onShowSizeChange: onShowSizeChange,
+                      itemRender: itemRender,
+                    }}
+                    style={{ overflowX: "auto" }}
+                    columns={columns}
+                    // bordered
+                    dataSource={desigList}
+                    rowKey={(desig) => desig.id}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
+          {/* /Page Content */}
+          {/* Add Designation Modal */}
+          {showDesignationModal && (
+            <AddDesignation
+              dispatchDesignation={dispatchDesignation}
+              indexToEdit={indexToEdit}
+              desigIdToEdit={desigIdToEdit}
+              desig={desig}
+            />
+          )}
+          {/* /Add Designation Modal */}
+          {deleteDesignationModal && (
+            <DeleteModal
+              deleteAction={dispatchDesignation}
+              indexToDelete={indexToEdit}
+              dispatch={desig}
+              modalTitle={"Designation"}
+            />
+          )}
+          {/* /Delete Department Modal */}
         </div>
       );
 }

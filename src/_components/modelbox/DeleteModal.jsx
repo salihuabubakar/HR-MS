@@ -24,7 +24,8 @@ const DeleteModal = ({ deleteAction, indexToDelete, dispatch, modalTitle }) => {
     setGlobalState("showFileUploadModal", false);
     setGlobalState("deleteSubTask", false);
     setGlobalState("showEmergencyContactModal", false);
-    setGlobalState("showPersonalInfoModal", false)
+    setGlobalState("showPersonalInfoModal", false);
+    setGlobalState("deleteDesignationModal", false)
   };
 
   const handleModalClose = () => {
@@ -36,6 +37,7 @@ const DeleteModal = ({ deleteAction, indexToDelete, dispatch, modalTitle }) => {
     setGlobalState("showExperienceModal", false);
     setGlobalState("showAddSchedul", false);
     setGlobalState("deleteSubTask", false);
+    setGlobalState("deleteDesignationModal", false);
   }
 
   return (

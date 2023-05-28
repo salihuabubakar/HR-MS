@@ -15,6 +15,8 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   repeatModal: false,
   deleteFile: false,
   deleteSubTask: false,
+  showDesignationModal: false,
+  deleteDesignationModal: false,
   showModal: false,
   showProfileModal: false,
   showPersonalInfoModal: false,

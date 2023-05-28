@@ -31,7 +31,6 @@ const Department = () => {
     setDeptList(depts);
   }, [depts]);
 
-  const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState(0);
   const [deptIdToEdit, setDeptIdToEdit] = useState("");
 
@@ -47,10 +46,6 @@ const Department = () => {
     setGlobalState("deleteModal", true);
   };
 
-
-  const toggleMobileMenu = () => {
-    setMenu(!menu);
-  };
 
   const columns = [
     {
@@ -98,14 +93,7 @@ const Department = () => {
     },
   ];
   return (
-    <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-      <Header onMenuClick={() => toggleMobileMenu()} />
-      <Sidebar />
-      <div className="page-wrapper">
-        <Helmet>
-          <title>Department - HRMS Admin Template</title>
-          <meta name="description" content="Login page" />
-        </Helmet>
+    <div>
         {/* Page Content */}
         <div className="content container-fluid">
           {/* Page Header */}
@@ -113,12 +101,6 @@ const Department = () => {
             <div className="row align-items-center">
               <div className="col">
                 <h3 className="page-title">Department</h3>
-                <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Department</li>
-                </ul>
               </div>
               <div className="col-auto float-end ml-auto">
                 <a
@@ -175,9 +157,8 @@ const Department = () => {
           />
         )}
         {/* /Delete Department Modal */}
-      </div>
     </div>
   );
 };
 
-export default withRouter(Department);
+export default Department;
