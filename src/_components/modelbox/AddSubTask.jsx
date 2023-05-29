@@ -76,8 +76,8 @@ const AddSubTask = ({
       setResidentError("Resident is required.");
       return;
     }
-    setHouseNameError("");
-    setManagerNameError("");
+    setSubTaskError("");
+    setResidentError("");
     const subTaskInfo = {
       id,
       dateCreated,

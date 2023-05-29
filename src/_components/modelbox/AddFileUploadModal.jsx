@@ -17,6 +17,7 @@ const AddFileUploadModal = ({
   fileUploadIndex,
   uniqueID,
   fileUploadfieldIndex,
+  selectedTaskId,
 }) => {
   const uniqueId = uuidv4();
   const [selectedFileUpload] = useGlobalState("selectedFileUpload");
@@ -70,13 +71,16 @@ const AddFileUploadModal = ({
         : "",
       documentNameError: "",
       documentTypeError: "",
+      documentDescriptionError: "",
     },
   ]);
 
   const handleFileDrop = async (index, acceptedFiles) => {
     const selectedFile = acceptedFiles[0];
+    // const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    const maxSize = 1048576; // 1MB in bytes
     if (selectedFile) {
-      if (selectedFile.size <= 1048576) {
+      if (selectedFile.size <= maxSize) {
         const fileData = await readFileAsBlob(selectedFile);
         const updatedInputFields = [...inputFields]; // Create a copy of inputFields array
         updatedInputFields[index].fileDetails = {
@@ -116,29 +120,53 @@ const AddFileUploadModal = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     // Check for empty fields
-    const isAnyFieldEmpty = inputFields.some(
-      (field) =>
-        field.documentName.trim() === "" || field.documentType.trim() === ""
-    );
-    if (isAnyFieldEmpty) {
-      // Set error for empty fields
-      setInputFields((prevInputFields) =>
-        prevInputFields.map((field) => {
-          const updatedField = { ...field };
-
-          if (field.documentName.trim() === "") {
-            updatedField.documentNameError = "Document Name is required";
-          }
-
-          if (field.documentType.trim() === "") {
-            updatedField.documentTypeError = "Document Type is required";
-          }
-
-          return updatedField;
-        })
+    if(selectedTaskId != uniqueID) {
+      const isAnyFieldEmpty = inputFields.some(
+        (field) =>
+          field.documentName.trim() === "" || field.documentType.trim() === ""
       );
+      if (isAnyFieldEmpty) {
+        // Set error for empty fields
+        setInputFields((prevInputFields) =>
+          prevInputFields.map((field) => {
+            const updatedField = { ...field };
 
-      return;
+            if (field.documentName.trim() === "") {
+              updatedField.documentNameError = "Document Name is required";
+            }
+
+            if (field.documentType.trim() === "") {
+              updatedField.documentTypeError = "Document Type is required";
+            }
+
+            return updatedField;
+          })
+        );
+
+        return;
+      }
+    };
+    
+    if(selectedTaskId == uniqueID) {
+      const isAnyFieldEmpty = inputFields.some(
+        (field) => field.documentDescription.trim() === ""
+      );
+      if (isAnyFieldEmpty) {
+        // Set error for empty fields
+        setInputFields((prevInputFields) =>
+          prevInputFields.map((field) => {
+            const updatedField = { ...field };
+
+            if (field.documentDescription.trim() === "") {
+              updatedField.documentDescriptionError = "Description is required";
+            }
+
+            return updatedField;
+          })
+        );
+
+        return;
+      }
     }
     //Proceed with form submission
     inputFields.forEach((field, i) => {
@@ -252,108 +280,119 @@ const AddFileUploadModal = ({
                                 </span>
                               )}
                             </h5>
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                                <label className="focus-label">
-                                  Document Name{" "}
-                                  <span className="text-danger">*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control floating"
-                                  placeholder="Document Name"
-                                  name="documentName"
-                                  value={value?.documentName}
-                                  onChange={(event) => {
-                                    handleInputChange(index, event);
-                                  }}
-                                />
-                                {value?.documentNameError && (
-                                  <span className="error-message">
-                                    {value?.documentNameError}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                                <label className="focus-label">
-                                  Document Type{" "}
-                                  <span className="text-danger">*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control floating"
-                                  placeholder="e.g passport, drivers license"
-                                  name="documentType"
-                                  value={value?.documentType}
-                                  onChange={(event) => {
-                                    handleInputChange(index, event);
-                                  }}
-                                />
-                                {value?.documentTypeError && (
-                                  <span className="error-message">
-                                    {value?.documentTypeError}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                                <label className="col-form-label">
-                                  Issue Date
-                                </label>
-                                <div>
-                                  <input
-                                    className="form-control floating datetimepicker"
-                                    type="date"
-                                    placeholder="Issue Date"
-                                    name="issueDate"
-                                    value={value?.issueDate}
-                                    onChange={(event) => {
-                                      handleInputChange(index, event);
-                                    }}
-                                  />
+                            {selectedTaskId != uniqueID ? (
+                              <>
+                                <div className="col-sm-6">
+                                  <div className="form-group">
+                                    <label className="focus-label">
+                                      Document Name{" "}
+                                      <span className="text-danger">*</span>
+                                    </label>
+                                    <input
+                                      type="text"
+                                      className="form-control floating"
+                                      placeholder="Document Name"
+                                      name="documentName"
+                                      value={value?.documentName}
+                                      onChange={(event) => {
+                                        handleInputChange(index, event);
+                                      }}
+                                    />
+                                    {value?.documentNameError && (
+                                      <span className="error-message">
+                                        {value?.documentNameError}
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                                <label className="col-form-label">
-                                  Expiry Date
-                                </label>
-                                <div>
-                                  <input
-                                    className="form-control floating datetimepicker"
-                                    type="date"
-                                    placeholder="Expiry Date"
-                                    name="expiryDate"
-                                    value={value?.expiryDate}
-                                    onChange={(event) => {
-                                      handleInputChange(index, event);
-                                    }}
-                                  />
+                                <div className="col-sm-6">
+                                  <div className="form-group">
+                                    <label className="focus-label">
+                                      Document Type{" "}
+                                      <span className="text-danger">*</span>
+                                    </label>
+                                    <input
+                                      type="text"
+                                      className="form-control floating"
+                                      placeholder="e.g passport, drivers license"
+                                      name="documentType"
+                                      value={value?.documentType}
+                                      onChange={(event) => {
+                                        handleInputChange(index, event);
+                                      }}
+                                    />
+                                    {value?.documentTypeError && (
+                                      <span className="error-message">
+                                        {value?.documentTypeError}
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div className="col-sm-6">
-                              <div className="form-group">
-                                <label className="focus-label">
-                                  Document Number
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control floating"
-                                  placeholder="Document Number"
-                                  name="documentNumber"
-                                  value={value?.documentNumber}
-                                  onChange={(event) => {
-                                    handleInputChange(index, event);
-                                  }}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-sm-6">
+                                <div className="col-sm-6">
+                                  <div className="form-group">
+                                    <label className="col-form-label">
+                                      Issue Date
+                                    </label>
+                                    <div>
+                                      <input
+                                        className="form-control floating datetimepicker"
+                                        type="date"
+                                        placeholder="Issue Date"
+                                        name="issueDate"
+                                        value={value?.issueDate}
+                                        onChange={(event) => {
+                                          handleInputChange(index, event);
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-sm-6">
+                                  <div className="form-group">
+                                    <label className="col-form-label">
+                                      Expiry Date
+                                    </label>
+                                    <div>
+                                      <input
+                                        className="form-control floating datetimepicker"
+                                        type="date"
+                                        placeholder="Expiry Date"
+                                        name="expiryDate"
+                                        value={value?.expiryDate}
+                                        onChange={(event) => {
+                                          handleInputChange(index, event);
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-sm-6">
+                                  <div className="form-group">
+                                    <label className="focus-label">
+                                      Document Number
+                                    </label>
+                                    <input
+                                      type="text"
+                                      className="form-control floating"
+                                      placeholder="Document Number"
+                                      name="documentNumber"
+                                      value={value?.documentNumber}
+                                      onChange={(event) => {
+                                        handleInputChange(index, event);
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              </>
+                            ) : null}
+
+                            <div
+                              className={
+                                selectedTaskId != uniqueID
+                                  ? "col-sm-6"
+                                  : "col-sm-12"
+                              }
+                            >
                               <div className="form-group">
                                 <label className="label">Description </label>
                                 <textarea
@@ -364,7 +403,20 @@ const AddFileUploadModal = ({
                                   onChange={(event) => {
                                     handleInputChange(index, event);
                                   }}
+                                  style={{
+                                    height:
+                                      selectedTaskId == uniqueID
+                                        ? "120px"
+                                        : null,
+                                  }}
                                 />
+                                {selectedTaskId == uniqueID ? (
+                                  value?.documentDescriptionError && (
+                                  <span className="error-message">
+                                    {value?.documentDescriptionError}
+                                  </span>
+                                )
+                                ) : null}
                               </div>
                             </div>
                             <div className="col-sm-12">
