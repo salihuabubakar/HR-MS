@@ -218,7 +218,7 @@ const AllEmployees = () => {
                           </Link>
                         </h4>
                         <div className="small text-muted">
-                          {role}
+                          {role ? role : "--"}
                         </div>
                       </div>
                     </div>

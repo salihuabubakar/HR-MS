@@ -309,6 +309,49 @@ const houseProfile = () => {
                                             issueDate,
                                             fileDetails,
                                           } = fields;
+
+                                          const handleFileDownload = () => {
+                                            const dataUrlParts =
+                                              fileDetails.data.split(",");
+                                            const base64Data = dataUrlParts[1];
+                                            const mimeType = dataUrlParts[0]
+                                              .split(":")[1]
+                                              .split(";")[0];
+
+                                            const byteCharacters =
+                                              atob(base64Data);
+                                            const byteNumbers = new Array(
+                                              byteCharacters.length
+                                            );
+
+                                            for (
+                                              let i = 0;
+                                              i < byteCharacters.length;
+                                              i++
+                                            ) {
+                                              byteNumbers[i] =
+                                                byteCharacters.charCodeAt(i);
+                                            }
+
+                                            const byteArray = new Uint8Array(
+                                              byteNumbers
+                                            );
+                                            const blob = new Blob([byteArray], {
+                                              type: mimeType,
+                                            });
+
+                                            const url =
+                                              URL.createObjectURL(blob);
+                                            const a =
+                                              document.createElement("a");
+                                            a.href = url;
+                                            a.download = fileDetails.name;
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            document.body.removeChild(a);
+                                            URL.revokeObjectURL(url);
+                                          };
+
                                           return (
                                             <li key={fieldsIndex}>
                                               <div className="experience-user">
@@ -318,17 +361,42 @@ const houseProfile = () => {
                                                 <div className="timeline-content">
                                                   <a className="name">
                                                     {documentName}
-                                                    <span
-                                                      className="edit-icon"
-                                                      onClick={() =>
-                                                        handleFileUploadEdit(
-                                                          fieldsIndex,
-                                                          index
-                                                        )
-                                                      }
-                                                    >
-                                                      <i className="fa fa-pencil" />
-                                                    </span>
+                                                    <div className="dropdown profile-action">
+                                                      <a
+                                                        className="action-icon dropdown-toggle"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false"
+                                                      >
+                                                        <i className="material-icons">
+                                                          more_vert
+                                                        </i>
+                                                      </a>
+                                                      <div className="dropdown-menu dropdown-menu-right">
+                                                        <a
+                                                          className="dropdown-item"
+                                                          onClick={() =>
+                                                            handleFileUploadEdit(
+                                                              fieldsIndex,
+                                                              index
+                                                            )
+                                                          }
+                                                        >
+                                                          <i className="fa fa-pencil m-r-5" />{" "}
+                                                          Edit
+                                                        </a>
+                                                        <a
+                                                          className="dropdown-item"
+                                                          onClick={() =>
+                                                            handleFileDownload(
+                                                              index
+                                                            )
+                                                          }
+                                                        >
+                                                          <i className="fa fa-download m-r-5" />{" "}
+                                                          Download
+                                                        </a>
+                                                      </div>
+                                                    </div>
                                                   </a>
                                                   <div>{documentNumber}</div>
                                                   <span className="time">

@@ -414,6 +414,7 @@ const AddTask = ({
                             placeholder="Description"
                             value={description}
                             onChange={handleDescriptionChange}
+                            style={{height: "120px"}}
                           />
                           {descriptionError && (
                             <p className="error-message">{descriptionError}</p>
