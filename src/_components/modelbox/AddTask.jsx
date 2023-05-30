@@ -286,6 +286,30 @@ const AddTask = ({
     setTaskStatusError("");
   };
 
+  const getEmployeeDefaultValues = (employeeData) => {
+    if (Array.isArray(employeeData)) {
+      return employeeData.map((employee) => ({
+        value: employee.value,
+        label: employee.label,
+        image: employee.photo,
+        role: employee.role,
+      }));
+    }
+    return [];
+  };
+
+  const getResidentefaultValues = (residentData) => {
+    if (Array.isArray(residentData)) {
+      return residentData.map((resident) => ({
+        value: resident.value,
+        label: resident.label,
+        image: resident.image,
+      }));
+    }
+    return [];
+  };
+
+
   return (
     <>
       <PopupWrapper>
@@ -414,7 +438,7 @@ const AddTask = ({
                             placeholder="Description"
                             value={description}
                             onChange={handleDescriptionChange}
-                            style={{height: "120px"}}
+                            style={{ height: "120px" }}
                           />
                           {descriptionError && (
                             <p className="error-message">{descriptionError}</p>
@@ -478,19 +502,9 @@ const AddTask = ({
                             <span className="text-danger">*</span>
                           </label>
                           <Select
-                            defaultValue={[
-                              selectedTaskInfo[indexToEdit]?.employee[0],
-                              selectedTaskInfo[indexToEdit]?.employee[1],
-                              selectedTaskInfo[indexToEdit]?.employee[2],
-                              selectedTaskInfo[indexToEdit]?.employee[3],
-                              selectedTaskInfo[indexToEdit]?.employee[4],
-                              selectedTaskInfo[indexToEdit]?.employee[5],
-                              selectedTaskInfo[indexToEdit]?.employee[6],
-                              selectedTaskInfo[indexToEdit]?.employee[7],
-                              selectedTaskInfo[indexToEdit]?.employee[8],
-                              selectedTaskInfo[indexToEdit]?.employee[9],
-                              selectedTaskInfo[indexToEdit]?.employee[10],
-                            ]}
+                            defaultValue={getEmployeeDefaultValues(
+                              selectedTaskInfo[indexToEdit]?.employee
+                            )}
                             onChange={handleEmployeeChange}
                             isMulti
                             closeMenuOnSelect={false}
@@ -506,23 +520,13 @@ const AddTask = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Select Service Worker{" "}
+                            Select Resident{" "}
                             <span className="text-danger">*</span>
                           </label>
                           <Select
-                            defaultValue={[
-                              selectedTaskInfo[indexToEdit]?.resident[0],
-                              selectedTaskInfo[indexToEdit]?.resident[1],
-                              selectedTaskInfo[indexToEdit]?.resident[2],
-                              selectedTaskInfo[indexToEdit]?.resident[3],
-                              selectedTaskInfo[indexToEdit]?.resident[4],
-                              selectedTaskInfo[indexToEdit]?.resident[5],
-                              selectedTaskInfo[indexToEdit]?.resident[6],
-                              selectedTaskInfo[indexToEdit]?.resident[7],
-                              selectedTaskInfo[indexToEdit]?.resident[8],
-                              selectedTaskInfo[indexToEdit]?.resident[9],
-                              selectedTaskInfo[indexToEdit]?.resident[10],
-                            ]}
+                            defaultValue={getResidentefaultValues(
+                              selectedTaskInfo[indexToEdit]?.resident
+                            )}
                             onChange={handleResidentChange}
                             isMulti
                             closeMenuOnSelect={false}

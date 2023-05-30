@@ -402,7 +402,7 @@ const EmployeeProfile = () => {
                             <h3 className="user-name m-t-0 mb-0">
                               {firstName + " " + lastName}
                             </h3>
-                            <h6 className="text-muted">{role}</h6>
+                            <h6 className="text-muted">{role?.label}</h6>
                             <div className="staff-id">
                               Employee ID : {employeeNumber}
                             </div>

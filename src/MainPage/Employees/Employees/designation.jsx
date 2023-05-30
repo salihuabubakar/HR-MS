@@ -67,7 +67,7 @@ const Designations = () => {
           // sorter: (a, b) => a.department.length - b.department.length,
         },
         {
-          title: "Designation",
+          title: "Role",
           dataIndex: "desigName",
           // sorter: (a, b) => a.designation.length - b.designation.length,
         },
@@ -108,14 +108,14 @@ const Designations = () => {
             <div className="page-header">
               <div className="row align-items-center">
                 <div className="col">
-                  <h3 className="page-title">Designations</h3>
+                  <h3 className="page-title">Role</h3>
                 </div>
                 <div className="col-auto float-end ml-auto">
                   <a
                     className="btn add-btn"
                     onClick={() => setGlobalState("showDesignationModal", true)}
                   >
-                    <i className="fa fa-plus" /> Add Designation
+                    <i className="fa fa-plus" /> Add Role
                   </a>
                 </div>
               </div>
@@ -151,7 +151,6 @@ const Designations = () => {
               dispatchDesignation={dispatchDesignation}
               indexToEdit={indexToEdit}
               desigIdToEdit={desigIdToEdit}
-              desig={desig}
             />
           )}
           {/* /Add Designation Modal */}
@@ -160,7 +159,7 @@ const Designations = () => {
               deleteAction={dispatchDesignation}
               indexToDelete={indexToEdit}
               dispatch={desig}
-              modalTitle={"Designation"}
+              modalTitle={"Role"}
             />
           )}
           {/* /Delete Department Modal */}

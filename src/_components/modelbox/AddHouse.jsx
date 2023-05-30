@@ -64,7 +64,7 @@ const AddDepartment = ({
       : ""
   );
 
-  const [id, setId] = useState(
+  const [id] = useState(
     selectedHouse[indexToEdit]?.id ? selectedHouse[indexToEdit]?.id : uniqueId
   );
 
@@ -76,7 +76,6 @@ const AddDepartment = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validate first name and last name
     if (houseName === "") {
       setHouseNameError("House Name is required.");
       return;
@@ -115,20 +114,18 @@ const AddDepartment = ({
     setGlobalState("showModal", false);
   };
 
-    const customSelectStyles = {
-      option: (provided, state) => ({
-        ...provided,
-        cursor: "pointer",
-        backgroundColor: state.isSelected && "#FF9B44",
-        color: state.isSelected && "#262626",
-        "&:hover": {
-          backgroundColor: "#FF9B44",
-          color: "#262626",
-        },
-      }),
-    };
-
-    
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
 
   const users = [];
   employeeAccts?.map((user) => {
@@ -151,32 +148,55 @@ const AddDepartment = ({
 
     
 
-    const residents = [];
-    residentAccts?.map((resident) => {
-      residents.push({
-        value: resident.id,
-        label: resident.residentName,
-        image: resident.image,
-      });
+  const residents = [];
+  residentAccts?.map((resident) => {
+    residents.push({
+      value: resident.id,
+      label: resident.residentName,
+      image: resident.image,
     });
+  });
 
-    const handleHouseNameChange = (e) => {
-      setHouseName(e.target.value);
-      setHouseNameError("");
-    };
-    const handleManagerNameChange = (e) => {
-      setManagerName(e.target.value);
-      setManagerNameError("");
-    };
-    const handleEmployeeChange = (event) => {
-      setEmployee(event);
-      setEmployeeError("")
-    };
-    const handleResidentChange = (event) => {
-      setResident(event);
-      setResidentError("")
-    };
+  const handleHouseNameChange = (e) => {
+    setHouseName(e.target.value);
+    setHouseNameError("");
+  };
+  const handleManagerNameChange = (e) => {
+    setManagerName(e.target.value);
+    setManagerNameError("");
+  };
+  const handleEmployeeChange = (event) => {
+    setEmployee(event);
+    setEmployeeError("")
+  };
+  const handleResidentChange = (event) => {
+    setResident(event);
+    setResidentError("")
+  };
 
+
+const getEmployeeDefaultValues = (employeeData) => {
+  if (Array.isArray(employeeData)) {
+    return employeeData.map((employee) => ({
+      value: employee.value,
+      label: employee.label,
+      image: employee.photo,
+      role: employee.role,
+    }));
+  }
+  return [];
+}
+
+const getResidentefaultValues = (residentData) => {
+  if (Array.isArray(residentData)) {
+    return residentData.map((resident) => ({
+      value: resident.value,
+      label: resident.label,
+      image: resident.image,
+    }));
+  }
+  return [];
+};
 
 
   return (
@@ -269,27 +289,9 @@ const AddDepartment = ({
                             <span className="text-danger">*</span>
                           </label>
                           <Select
-                            defaultValue={[
-                              selectedHouse[indexToEdit]?.employee[0],
-                              selectedHouse[indexToEdit]?.employee[1],
-                              selectedHouse[indexToEdit]?.employee[2],
-                              selectedHouse[indexToEdit]?.employee[3],
-                              selectedHouse[indexToEdit]?.employee[4],
-                              selectedHouse[indexToEdit]?.employee[5],
-                              selectedHouse[indexToEdit]?.employee[6],
-                              selectedHouse[indexToEdit]?.employee[7],
-                              selectedHouse[indexToEdit]?.employee[8],
-                              selectedHouse[indexToEdit]?.employee[9],
-                              selectedHouse[indexToEdit]?.employee[10],
-                            ]}
-                            // defaultValue={
-                            //   selectedHouse[indexToEdit]?.employee
-                            //     ? {
-                            //         value: house[indexToEdit].employee?.map(value => value.value),
-                            //         label: house[indexToEdit].employee?.map(label => label.label),
-                            //       }
-                            //     : "Select Staff"
-                            // }
+                            defaultValue={getEmployeeDefaultValues(
+                              selectedHouse[indexToEdit]?.employee
+                            )}
                             onChange={handleEmployeeChange}
                             isMulti
                             closeMenuOnSelect={false}
@@ -308,19 +310,9 @@ const AddDepartment = ({
                             Residents <span className="text-danger">*</span>
                           </label>
                           <Select
-                            defaultValue={[
-                              selectedHouse[indexToEdit]?.resident[0],
-                              selectedHouse[indexToEdit]?.resident[1],
-                              selectedHouse[indexToEdit]?.resident[2],
-                              selectedHouse[indexToEdit]?.resident[3],
-                              selectedHouse[indexToEdit]?.resident[4],
-                              selectedHouse[indexToEdit]?.resident[5],
-                              selectedHouse[indexToEdit]?.resident[6],
-                              selectedHouse[indexToEdit]?.resident[7],
-                              selectedHouse[indexToEdit]?.resident[8],
-                              selectedHouse[indexToEdit]?.resident[9],
-                              selectedHouse[indexToEdit]?.resident[10],
-                            ]}
+                            defaultValue={getResidentefaultValues(
+                              selectedHouse[indexToEdit]?.resident
+                            )}
                             onChange={handleResidentChange}
                             isMulti
                             closeMenuOnSelect={false}

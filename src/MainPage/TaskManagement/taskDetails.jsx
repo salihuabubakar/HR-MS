@@ -1022,7 +1022,7 @@ const TaskDetails = () => {
                                     </span>
                                     <div className="clearfix" />
                                     <span className="message-content">
-                                      {role}
+                                      {role?.label}
                                     </span>
                                   </div>
                                 </div>

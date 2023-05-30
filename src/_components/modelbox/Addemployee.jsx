@@ -9,15 +9,35 @@ import {
 } from "./Addemployee.style";
 import "./style.css"
 import { v4 as uuidv4 } from "uuid";
+import {
+  initDept,
+  savedDeptReducer,
+  initDesignation,
+  savedDesignationReducer,
+} from "../../utils/localStorage";
 
 const Addemployee = ({
   dispatchUserAcct,
   indexToEdit,
-  // acctIdToEdit,
   userAcct,
 }) => {
   // const isEdit = () => !!(acctIdToEdit && userAcct[indexToEdit]);
   const uniqueId = uuidv4();
+  const [depts] = useReducer(savedDeptReducer, [], initDept);
+  const [deptList, setDeptList] = useState();
+  useEffect(() => {
+    setDeptList(depts);
+  }, [depts]);
+
+  const [desig] = useReducer(
+    savedDesignationReducer,
+    [],
+    initDesignation
+  );
+  const [desigList, setDesignationList] = useState();
+  useEffect(() => {
+    setDesignationList(desig);
+  }, [desig]);
 
   const [selectedUserAccount] = useGlobalState("selectedUserAccount");
 
@@ -175,6 +195,19 @@ const Addemployee = ({
     setGlobalState("showModal", false);
   };
 
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
+
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
     setFirstNameError("");
@@ -190,14 +223,23 @@ const Addemployee = ({
     setGender(data);
   };
 
+  const departments = [];
+  deptList?.map((dept) => {
+    departments.push({ value: dept.id, label: dept.deptName });
+  });
+
   const handleDepartmentChange = (event) => {
-    const data = event.target.value;
-    setDepartment(data);
+    setDepartment(event);
   };
 
+
+  const roles = [];
+  desigList?.map((role) => {
+    roles.push({ value: role.id, label: role.desigName });
+  });
+
   const handleRoleChange = (event) => {
-    const data = event.target.value;
-    setRole(data);
+    setRole(event);
   };
 
   const handleOrganisationChange = (event) => {
@@ -232,16 +274,6 @@ const Addemployee = ({
       setPhoto(base64Image);
     };
   };
-
-  // const [selectedOptions, setSelectedOptions] = useState([]);
-
-  // const handleOptionChange = (event) => {
-  //   const selectedValues = Array.from(
-  //     event.target.selectedOptions,
-  //     (option) => option.value
-  //   );
-  //   setSelectedOptions(selectedValues);
-  // };
 
   return (
     <>
@@ -349,26 +381,6 @@ const Addemployee = ({
                         </div>
                       </div>
 
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Select Options
-                          </label>
-                          <select
-                            className="select"
-                            multiple
-                            value={selectedOptions}
-                            onChange={handleOptionChange}
-                          >
-                            <option value="">Select</option>
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                            <option value="option4">Option 4</option>
-                          </select>
-                        </div>
-                      </div> */}
-
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">Gender</label>
@@ -399,6 +411,7 @@ const Addemployee = ({
                             <option value="Single">Single</option>
                             <option value="Married">Married</option>
                             <option value="Widowed">Widowed</option>
+                            <option value="Divorced">Divorced</option>
                           </select>
                         </div>
                       </div>
@@ -474,36 +487,6 @@ const Addemployee = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">Role</label>
-                          <select
-                            value={role}
-                            onChange={handleRoleChange}
-                            className="form-control floating"
-                          >
-                            <option value="">Select</option>
-                            <option value="Hr">Hr</option>
-                            <option value="Director">Director</option>
-                            <option value="Manager">Manager</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Department</label>
-                          <select
-                            value={department}
-                            onChange={handleDepartmentChange}
-                            className="form-control floating"
-                          >
-                            <option value="">Select</option>
-                            <option value="Software">Software</option>
-                            <option value="Hardware">Hardware</option>
-                            <option value="Mechanical">Mechanical</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
                           <label className="col-form-label">Organization</label>
                           <select
                             value={organisation}
@@ -529,22 +512,6 @@ const Addemployee = ({
                           />
                         </div>
                       </div>
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Created By ID
-                          </label>
-                          <input
-                            value={createdById}
-                            onChange={(event) =>
-                              setCreatedById(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Created By ID"
-                          />
-                        </div>
-                      </div> */}
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">
@@ -570,6 +537,52 @@ const Addemployee = ({
                             type="file"
                             accept="image/*"
                             onChange={imageOnChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Department</label>
+                          <Select
+                            onChange={handleDepartmentChange}
+                            options={departments}
+                            styles={customSelectStyles}
+                            placeholder="Select Department"
+                            defaultValue={
+                              selectedUserAccount[indexToEdit]?.department
+                                ? {
+                                    value:
+                                      selectedUserAccount[indexToEdit]
+                                        .department.value,
+                                    label:
+                                      selectedUserAccount[indexToEdit]
+                                        .department.label,
+                                  }
+                                : "Select Department"
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Role</label>
+                          <Select
+                            onChange={handleRoleChange}
+                            options={roles}
+                            styles={customSelectStyles}
+                            placeholder="Select Role"
+                            defaultValue={
+                              selectedUserAccount[indexToEdit]?.role
+                                ? {
+                                    value:
+                                      selectedUserAccount[indexToEdit]?.role
+                                        ?.value,
+                                    label:
+                                      selectedUserAccount[indexToEdit]?.role
+                                        ?.label,
+                                  }
+                                : "Select Role"
+                            }
                           />
                         </div>
                       </div>

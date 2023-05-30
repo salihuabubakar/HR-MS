@@ -8,16 +8,16 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
 import { initDept, savedDeptReducer } from "../../utils/localStorage";
-
+import { v4 as uuidv4 } from "uuid";
 
 const AddDepartment = ({
   dispatchDesignation,
   indexToEdit,
   // houseIdToEdit,
-  desig,
 }) => {
   const [selectedDesignation] = useGlobalState("selectedDesignation");
-   const [depts, dispatchDepts] = useReducer(savedDeptReducer, [], initDept);
+  const uniqueId = uuidv4();
+   const [depts] = useReducer(savedDeptReducer, [], initDept);
    const [deptList, setDeptList] = useState();
    useEffect(() => {
      setDeptList(depts);
@@ -32,7 +32,7 @@ const AddDepartment = ({
   const [id, setId] = useState(
     selectedDesignation[indexToEdit]?.id
       ? selectedDesignation[indexToEdit]?.id
-      : Date.now()
+      : uniqueId
   );
 
   const [dept, setDept] = useState(
@@ -42,9 +42,23 @@ const AddDepartment = ({
   );
 
   //  const isEdit = () => !!(deptIdToEdit && depts[indexToEdit]);
+  const [deptNameError, setDeptNameError] = useState("");
+  const [roleError, setRoleError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (desigName === "") {
+      setRoleError("Role is required.");
+      return;
+    }
+    if (dept === "") {
+      setDeptNameError("Department is required.");
+      return;
+    }
+
+    // Clear any existing error messages
+    setRoleError("");
+    setDeptNameError("");
     const house = {
       desigName,
       id,
@@ -78,6 +92,12 @@ const AddDepartment = ({
 
   const handleDeptChange = (event) => {
     setDept(event);
+    setDeptNameError("");
+  };
+
+  const handleRoleChange = (event) => {
+    setDesigName(event.target.value);
+    setRoleError("");
   };
 
   return (
@@ -93,8 +113,8 @@ const AddDepartment = ({
                 <div className="modal-header">
                   <h5 className="card-title">
                     {selectedDesignation[indexToEdit]?.id
-                      ? "Edit Designation"
-                      : "Add Designation"}
+                      ? "Edit Role"
+                      : "Add Role"}
                   </h5>
                   <button
                     type="button"
@@ -112,16 +132,18 @@ const AddDepartment = ({
                       <div className="col-sm-12">
                         <div className="form-group">
                           <label className="label">
-                            Designation Name{" "}
-                            <span className="text-danger">*</span>
+                            Role <span className="text-danger">*</span>
                           </label>
                           <input
                             value={desigName}
-                            onChange={(e) => setDesigName(e.target.value)}
+                            onChange={handleRoleChange}
                             className="form-control floating"
                             type="text"
-                            placeholder="Designation Name"
+                            placeholder="Role"
                           />
+                          {roleError && (
+                            <p className="error-message">{roleError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-12">
@@ -134,8 +156,12 @@ const AddDepartment = ({
                             defaultValue={
                               selectedDesignation[indexToEdit]?.dept
                                 ? {
-                                    value: desig[indexToEdit].dept.value,
-                                    label: desig[indexToEdit].dept.label,
+                                    value:
+                                      selectedDesignation[indexToEdit].dept
+                                        .value,
+                                    label:
+                                      selectedDesignation[indexToEdit].dept
+                                        .label,
                                   }
                                 : "Select Department"
                             }
@@ -144,6 +170,9 @@ const AddDepartment = ({
                             styles={customSelectStyles}
                             placeholder="Select Department"
                           />
+                          {deptNameError && (
+                            <p className="error-message">{deptNameError}</p>
+                          )}
                         </div>
                       </div>
                     </div>
