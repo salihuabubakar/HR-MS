@@ -226,7 +226,7 @@ const EmployeeSalary = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Salary - HRMS Admin Template</title>
+          <title>Salary - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

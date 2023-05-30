@@ -238,7 +238,6 @@ const EmployeeProfile = () => {
   };
    const adminId = location?.state?.id;
 
-   console.log("adminId", adminId);
    const user = localStorage.getItem("email");
 
 
@@ -248,7 +247,7 @@ const EmployeeProfile = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Employee Profile - HRMS admin Template</title>
+          <title>Admin Profile - Peepal Tree HRMS</title>
           <meta name="description" content="Reactify Blank Page" />
         </Helmet>
         {/* Page Content */}
@@ -284,9 +283,7 @@ const EmployeeProfile = () => {
                       <div className="row">
                         <div className="col-md-5">
                           <div className="profile-info-left">
-                            <h3 className="user-name m-t-0 mb-0">
-                              Admin
-                            </h3>
+                            <h3 className="user-name m-t-0 mb-0">Admin</h3>
                             <h6 className="text-muted">UI/UX Design Team</h6>
                             <small className="text-muted">Web Designer</small>
                             <div className="staff-id">

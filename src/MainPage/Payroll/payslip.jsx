@@ -71,7 +71,7 @@ const Payslip = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Payslip - HRMS Admin Template</title>
+          <title>Payslip - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

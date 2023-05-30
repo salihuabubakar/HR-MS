@@ -69,7 +69,7 @@ const TaskManager = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Employee - HRMS Admin Template</title>
+          <title>Employee - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

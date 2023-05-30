@@ -130,7 +130,7 @@ const ShiftList = () => {
             <Sidebar />
             <div className="page-wrapper">
               <Helmet>
-                <title>Shift List - HRMS Admin Template</title>
+                <title>Shift - Peepal Tree HRMS</title>
                 <meta name="description" content="Login page" />
               </Helmet>
               {/* Page Content */}

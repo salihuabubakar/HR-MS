@@ -102,7 +102,7 @@ const houseProfile = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Accomodation Profile - HRMS admin Template</title>
+          <title>Accomodation Profile - Peepal Tree HRMS</title>
           <meta name="description" content="Reactify Blank Page" />
         </Helmet>
         {/* Page Content */}
@@ -165,7 +165,11 @@ const houseProfile = () => {
                         </li>
                         <li>
                           <div className="title">Number of residents</div>
-                          <div className="text">{totalResidents?.length ? totalResidents?.length : "0"}</div>
+                          <div className="text">
+                            {totalResidents?.length
+                              ? totalResidents?.length
+                              : "0"}
+                          </div>
                         </li>
                       </ul>
                     </div>

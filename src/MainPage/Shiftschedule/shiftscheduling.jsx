@@ -312,7 +312,7 @@ const ShiftScheduling = () => {
         <Sidebar />
         <Body className="page-wrapper">
           <Helmet>
-            <title>Shift &amp; Schedule - Peepal Tree</title>
+            <title>Shift &amp; Schedule - Peepal Tree HRMS</title>
             <meta name="description" content="Login page" />
           </Helmet>
           {/* Page Content */}
@@ -420,7 +420,9 @@ const ShiftScheduling = () => {
               <div className="print-btn-div">
                 <NavButton
                   onClick={
-                    views === "weeklyView" ? handleWeeklyCalendarPrint : handleMonthlyCalendarPrint
+                    views === "weeklyView"
+                      ? handleWeeklyCalendarPrint
+                      : handleMonthlyCalendarPrint
                   }
                   className="btn btn-white print-btn"
                 >
@@ -430,7 +432,9 @@ const ShiftScheduling = () => {
               <div className="nav-btn-div">
                 <NavButton
                   onClick={() =>
-                    views === "weeklyView" ? handleNavigation("prev") : monthlyNavigation("prev")
+                    views === "weeklyView"
+                      ? handleNavigation("prev")
+                      : monthlyNavigation("prev")
                   }
                   className="btn btn-success"
                 >
@@ -438,23 +442,45 @@ const ShiftScheduling = () => {
                 </NavButton>
                 <NavButton
                   onClick={() =>
-                    views === "weeklyView" ? handleNavigation("current") : monthlyNavigation("current")
+                    views === "weeklyView"
+                      ? handleNavigation("current")
+                      : monthlyNavigation("current")
                   }
                   className="btn btn-success"
                   style={{
                     opacity:
-                      views === "weeklyView" ?  (dateCounter === 0 ? "0.3" : "1") : (monthCounter === 0 ? "0.3" : "1"),
+                      views === "weeklyView"
+                        ? dateCounter === 0
+                          ? "0.3"
+                          : "1"
+                        : monthCounter === 0
+                        ? "0.3"
+                        : "1",
                     cursor:
-                      views === "weeklyView" ? (dateCounter === 0   ? "not-allowed"  : "pointer") : (monthCounter === 0 ? "not-allowed" : "pointer"),
+                      views === "weeklyView"
+                        ? dateCounter === 0
+                          ? "not-allowed"
+                          : "pointer"
+                        : monthCounter === 0
+                        ? "not-allowed"
+                        : "pointer",
                     color:
-                      views === "weeklyView" ? (dateCounter === 0   ? "black"  : "white") : (monthCounter === 0 ? "black" : "white"),
+                      views === "weeklyView"
+                        ? dateCounter === 0
+                          ? "black"
+                          : "white"
+                        : monthCounter === 0
+                        ? "black"
+                        : "white",
                   }}
                 >
                   Current {views === "weeklyView" ? "Week" : "Month"}
                 </NavButton>
                 <NavButton
                   onClick={() =>
-                    views === "weeklyView" ? handleNavigation("next") : monthlyNavigation("next")
+                    views === "weeklyView"
+                      ? handleNavigation("next")
+                      : monthlyNavigation("next")
                   }
                   className="btn btn-success"
                 >

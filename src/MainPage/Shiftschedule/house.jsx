@@ -34,7 +34,7 @@ const SelectDept = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Select House - HRMS Admin Template</title>
+          <title>Select House - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}
@@ -71,58 +71,59 @@ const SelectDept = () => {
           </div>
           {/* Search Filter */}
           <div className="row staff-grid-row">
-            {houseList?.length > 0 ? 
-            houseList?.map((house) => {
-              const { id, image, houseName, employee, managerName } = house;
-              return (
-                <div
-                  key={id}
-                  className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
-                >
-                  <div className="profile-widget">
-                    <Link
-                      to={{
-                        pathname: "/app/shiftschedule/shift-scheduling",
-                        state: { id: id },
-                      }}
-                      className="avatar"
-                      style={{
-                        borderRadius: "5px",
-                        backgroundColor: "#00000000",
-                        height: "100%",
-                        marginRight: "40px",
-                      }}
+            {houseList?.length > 0
+              ? houseList?.map((house) => {
+                  const { id, image, houseName, employee, managerName } = house;
+                  return (
+                    <div
+                      key={id}
+                      className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
                     >
-                      <img
-                        style={{
-                          borderRadius: "5px",
-                          width: "80px",
-                          height: "80px",
-                        }}
-                        alt=""
-                        src={image ? image : DefaultImage}
-                      />
-                    </Link>
-                    <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                      <Link
-                        to={{
-                          pathname: "/app/shiftschedule/shift-scheduling",
-                          state: { id: id },
-                        }}
-                      >
-                        {houseName}
-                      </Link>
-                    </h4>
-                    <p className="small text-muted">
-                      House Manager: {managerName}
-                    </p>
-                    <div className="small text-muted">
-                      {"Number of staffs: " + employee?.length}
+                      <div className="profile-widget">
+                        <Link
+                          to={{
+                            pathname: "/app/shiftschedule/shift-scheduling",
+                            state: { id: id },
+                          }}
+                          className="avatar"
+                          style={{
+                            borderRadius: "5px",
+                            backgroundColor: "#00000000",
+                            height: "100%",
+                            marginRight: "40px",
+                          }}
+                        >
+                          <img
+                            style={{
+                              borderRadius: "5px",
+                              width: "80px",
+                              height: "80px",
+                            }}
+                            alt=""
+                            src={image ? image : DefaultImage}
+                          />
+                        </Link>
+                        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
+                          <Link
+                            to={{
+                              pathname: "/app/shiftschedule/shift-scheduling",
+                              state: { id: id },
+                            }}
+                          >
+                            {houseName}
+                          </Link>
+                        </h4>
+                        <p className="small text-muted">
+                          House Manager: {managerName}
+                        </p>
+                        <div className="small text-muted">
+                          {"Number of staffs: " + employee?.length}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            }) : "No house available."}
+                  );
+                })
+              : "No house available."}
           </div>
         </div>
       </div>

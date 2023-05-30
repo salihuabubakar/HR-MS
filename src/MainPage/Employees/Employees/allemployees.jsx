@@ -80,7 +80,7 @@ const AllEmployees = () => {
           <Sidebar />
           <div className="page-wrapper">
             <Helmet>
-              <title>Employee - HRMS Admin Template</title>
+              <title>Employee - Peepal Tree HRMS</title>
               <meta name="description" content="Login page" />
             </Helmet>
             {/* Page Content */}
@@ -143,13 +143,7 @@ const AllEmployees = () => {
               {/* Search Filter */}
               <div className="row staff-grid-row">
                 {employeeAccts?.map((staff, index) => {
-                  const {
-                    id,
-                    photo,
-                    firstName,
-                    lastName,
-                    role,
-                  } = staff;
+                  const { id, photo, firstName, lastName, role } = staff;
                   return (
                     <div
                       key={id}
@@ -175,11 +169,7 @@ const AllEmployees = () => {
                                 width: "80px",
                                 height: "80px",
                               }}
-                              src={
-                                photo
-                                  ? photo
-                                  : DefaultImage
-                              }
+                              src={photo ? photo : DefaultImage}
                               alt=""
                             />
                           </Link>
