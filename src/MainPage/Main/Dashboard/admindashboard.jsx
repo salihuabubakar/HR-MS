@@ -37,14 +37,14 @@ const AdminDashboard = () => {
   
 const [menu, setMenu] = useState(false)
 
-	const toggleMobileMenu = () => {
-		setMenu(!menu)
-	  }
+const toggleMobileMenu = () => {
+	setMenu(!menu)
+  }
 
-  useEffect( ()=>{
+  useEffect( () => {
     let firstload = localStorage.getItem("firstload")
     if(firstload === "true"){
-        setTimeout(function() {
+        setTimeout( () => {
           window.location.reload(1)
           localStorage.removeItem("firstload")
         },1000)
@@ -59,7 +59,7 @@ const [menu, setMenu] = useState(false)
           <Sidebar />
           <div className="page-wrapper">
             <Helmet>
-              <title>Dashboard - HRMS Admin Template</title>
+              <title>Dashboard - Peepal Tree HRMS</title>
               <meta name="description" content="Dashboard" />
             </Helmet>
             {/* Page Content */}

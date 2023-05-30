@@ -363,7 +363,7 @@ const EmployeeProfile = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Employee Profile - HRMS admin Template</title>
+          <title>Employee Profile - Peepal Tree HRMS</title>
           <meta name="description" content="Reactify Blank Page" />
         </Helmet>
         {/* Page Content */}

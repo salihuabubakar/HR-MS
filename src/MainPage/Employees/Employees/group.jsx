@@ -19,7 +19,7 @@ const Group = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Group - HRMS Admin Template</title>
+          <title>Group - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

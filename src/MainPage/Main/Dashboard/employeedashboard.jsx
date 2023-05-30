@@ -15,18 +15,16 @@ const EmployeeDashboard = () => {
 
 	const toggleMobileMenu = () => {
 		setMenu(!menu)
-	  }
+	}
 
       return (
-
-        <div className={`main-wrapper ${menu ? 'slide-nav': ''}`}> 
-          
+        <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
           <Header onMenuClick={(value) => toggleMobileMenu()} />
-          <Sidebar /> 
-        <div className="page-wrapper"> 
+          <Sidebar />
+          <div className="page-wrapper">
             <Helmet>
-                <title>Dashboard - HRMS Admin Template</title>
-                <meta name="description" content="Dashboard"/>					
+              <title>Dashboard - Peepal Tree HRMS</title>
+              <meta name="description" content="Dashboard" />
             </Helmet>
             {/* Page Content */}
             <div className="content container-fluid">
@@ -58,7 +56,9 @@ const EmployeeDashboard = () => {
                               <p>Richard Miles is off sick today</p>
                             </div>
                             <div className="dash-card-avatars">
-                              <div className="e-avatar"><img src={Avatar_09} alt="" /></div>
+                              <div className="e-avatar">
+                                <img src={Avatar_09} alt="" />
+                              </div>
                             </div>
                           </div>
                         </a>
@@ -73,7 +73,9 @@ const EmployeeDashboard = () => {
                               <p>You are away today</p>
                             </div>
                             <div className="dash-card-avatars">
-                              <div className="e-avatar"><img src={Avatar_02} alt="" /></div>
+                              <div className="e-avatar">
+                                <img src={Avatar_02} alt="" />
+                              </div>
                             </div>
                           </div>
                         </a>
@@ -88,7 +90,9 @@ const EmployeeDashboard = () => {
                               <p>You are working from home today</p>
                             </div>
                             <div className="dash-card-avatars">
-                              <div className="e-avatar"><img src={Avatar_02} alt="" /></div>
+                              <div className="e-avatar">
+                                <img src={Avatar_02} alt="" />
+                              </div>
                             </div>
                           </div>
                         </a>
@@ -108,8 +112,12 @@ const EmployeeDashboard = () => {
                               <p>2 people will be away tomorrow</p>
                             </div>
                             <div className="dash-card-avatars">
-                              <a href="#" className="e-avatar"><img src={Avatar_04} alt="" /></a>
-                              <a href="#" className="e-avatar"><img src={Avatar_08} alt="" /></a>
+                              <a href="#" className="e-avatar">
+                                <img src={Avatar_04} alt="" />
+                              </a>
+                              <a href="#" className="e-avatar">
+                                <img src={Avatar_08} alt="" />
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -129,8 +137,12 @@ const EmployeeDashboard = () => {
                               <p>2 people are going to be away</p>
                             </div>
                             <div className="dash-card-avatars">
-                              <a href="#" className="e-avatar"><img src={Avatar_05} alt="" /></a>
-                              <a href="#" className="e-avatar"><img src={Avatar_07} alt="" /></a>
+                              <a href="#" className="e-avatar">
+                                <img src={Avatar_05} alt="" />
+                              </a>
+                              <a href="#" className="e-avatar">
+                                <img src={Avatar_07} alt="" />
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -142,10 +154,12 @@ const EmployeeDashboard = () => {
                               <i className="fa fa-user-plus" />
                             </div>
                             <div className="dash-card-content">
-                              <p>Your first day is going to be  on Thursday</p>
+                              <p>Your first day is going to be on Thursday</p>
                             </div>
                             <div className="dash-card-avatars">
-                              <div className="e-avatar"><img src={Avatar_02} alt="" /></div>
+                              <div className="e-avatar">
+                                <img src={Avatar_02} alt="" />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -157,7 +171,7 @@ const EmployeeDashboard = () => {
                               <i className="fa fa-calendar" />
                             </div>
                             <div className="dash-card-content">
-                              <p>It's Spring Bank Holiday  on Monday</p>
+                              <p>It's Spring Bank Holiday on Monday</p>
                             </div>
                           </div>
                         </a>
@@ -205,7 +219,9 @@ const EmployeeDashboard = () => {
                             </div>
                           </div>
                           <div className="request-btn">
-                            <a className="btn btn-primary" href="#">Apply Leave</a>
+                            <a className="btn btn-primary" href="#">
+                              Apply Leave
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -225,7 +241,9 @@ const EmployeeDashboard = () => {
                             </div>
                           </div>
                           <div className="request-btn">
-                            <a className="btn btn-primary" href="#">Apply Time Off</a>
+                            <a className="btn btn-primary" href="#">
+                              Apply Time Off
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -234,7 +252,9 @@ const EmployeeDashboard = () => {
                       <h5 className="dash-title">Upcoming Holiday</h5>
                       <div className="card">
                         <div className="card-body text-center">
-                          <h4 className="holiday-title mb-0">Mon 20 May 2019 - Ramzan</h4>
+                          <h4 className="holiday-title mb-0">
+                            Mon 20 May 2019 - Ramzan
+                          </h4>
                         </div>
                       </div>
                     </section>
@@ -244,7 +264,7 @@ const EmployeeDashboard = () => {
             </div>
             {/* /Page Content */}
           </div>
-        </div> 
+        </div>
       );
   }
 

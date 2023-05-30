@@ -185,7 +185,7 @@ const Users = () => {
         <Sidebar />
         <div className="page-wrapper">
           <Helmet>
-            <title>Users - HRMS Admin Template</title>
+            <title>Users - Peepal Tree HRMS</title>
             <meta name="description" content="Login page" />
           </Helmet>
           {/* Page Content */}

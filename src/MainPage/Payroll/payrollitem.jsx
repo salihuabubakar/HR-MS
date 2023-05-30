@@ -16,7 +16,7 @@ const PayrollItems = () => {
       return ( 
          <div className="page-wrapper">
          <Helmet>
-             <title>Payroll Items - HRMS Admin Template</title>
+             <title>Payroll Items - Peepal Tree HRMS</title>
              <meta name="description" content="Login page"/>					
          </Helmet>
          {/* Page Content */}

@@ -142,7 +142,7 @@ const ServiceWorkerTable = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Residents - HRMS Admin Template</title>
+          <title>Residents - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

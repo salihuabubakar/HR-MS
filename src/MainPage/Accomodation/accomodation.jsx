@@ -136,7 +136,7 @@ const Housing = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Accomodation List - HRMS Admin Template</title>
+          <title>Accomodation - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

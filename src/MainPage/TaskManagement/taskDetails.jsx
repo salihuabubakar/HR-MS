@@ -157,7 +157,7 @@ const TaskDetails = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Task Details - HRMS Admin</title>
+          <title>Task Details - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}
