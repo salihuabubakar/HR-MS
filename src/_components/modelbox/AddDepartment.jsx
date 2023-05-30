@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { v4 as uuidv4 } from "uuid";
 
 const AddDepartment = ({ 
   dispatchDepts, 
@@ -9,6 +10,7 @@ const AddDepartment = ({
   // depts 
 }) => {
   const [selectedDept] = useGlobalState("selectedDept");
+  const uniqueId = uuidv4();
 
   const [deptName, setDeptName] = useState(
     selectedDept[indexToEdit]?.deptName
@@ -16,14 +18,22 @@ const AddDepartment = ({
       : ""
   );
 
-  const [id, setId] = useState(
-    selectedDept[indexToEdit]?.id ? selectedDept[indexToEdit]?.id : Date.now()
+  const [id] = useState(
+    selectedDept[indexToEdit]?.id ? selectedDept[indexToEdit]?.id : uniqueId
   );
+  const [deptNameError, setDeptNameError] = useState("");
 
   //  const isEdit = () => !!(deptIdToEdit && depts[indexToEdit]);
 
    const handleSubmit = (e) => {
      e.preventDefault();
+     if (deptName === "") {
+       setDeptNameError("Department is required.");
+       return;
+     }
+
+     // Clear any existing error messages
+     setDeptNameError("");
      const department = {
        deptName,
        id,
@@ -35,6 +45,11 @@ const AddDepartment = ({
      }
      setGlobalState("showModal", false);
    };
+   
+   const handleDeptNameChange = (event) => {
+    setDeptName(event.target.value);
+    setDeptNameError("")
+   }
   return (
     <>
       <PopupWrapper>
@@ -70,11 +85,14 @@ const AddDepartment = ({
                           </label>
                           <input
                             value={deptName}
-                            onChange={(e) => setDeptName(e.target.value)}
+                            onChange={handleDeptNameChange}
                             className="form-control floating"
                             type="text"
                             placeholder="Department Name"
                           />
+                          {deptNameError && (
+                            <p className="error-message">{deptNameError}</p>
+                          )}
                         </div>
                       </div>
                     </div>
