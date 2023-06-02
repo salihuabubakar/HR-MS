@@ -111,38 +111,34 @@ const Review = () => {
         const { id, employee } = record;
         return (
           <React.Fragment>
-            {employee?.map((user, index) => {
-              const { value, label, image, role } = user;
-              return (
-                <h2 key={value} className="table-avatar">
-                  <Link
-                    onClick={(e) => e.preventDefault()}
-                    className="avatar"
-                    data-bs-toggle="tooltip"
-                    title={label}
-                    style={{
-                      borderRadius: "5px",
-                      backgroundColor: "#00000000",
-                      height: "100%",
-                    }}
-                  >
-                    <img
-                      style={{
-                        width: "30px",
-                        borderRadius: "50px",
-                        backgroundColor: "#00000000",
-                        height: "30px",
-                      }}
-                      alt=""
-                      src={image ? image : DefaultImage}
-                    />
-                  </Link>
-                  <Link onClick={(e) => e.preventDefault()}>
-                    {label} <span>{role ? role?.label : "--"}</span>
-                  </Link>
-                </h2>
-              );
-            })}
+            <h2 key={value} className="table-avatar">
+              <Link
+                onClick={(e) => e.preventDefault()}
+                className="avatar"
+                data-bs-toggle="tooltip"
+                title={employee?.label}
+                style={{
+                  borderRadius: "5px",
+                  backgroundColor: "#00000000",
+                  height: "100%",
+                }}
+              >
+                <img
+                  style={{
+                    width: "30px",
+                    borderRadius: "50px",
+                    backgroundColor: "#00000000",
+                    height: "30px",
+                  }}
+                  alt=""
+                  src={employee?.image ? employee?.image : DefaultImage}
+                />
+              </Link>
+              <Link onClick={(e) => e.preventDefault()}>
+                {employee?.label}{" "}
+                <span>{employee?.role ? employee?.role?.label : "--"}</span>
+              </Link>
+            </h2>
           </React.Fragment>
         );
       },
