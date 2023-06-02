@@ -133,7 +133,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
@@ -190,7 +191,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
@@ -247,7 +249,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
@@ -304,7 +307,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
@@ -361,7 +365,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
@@ -418,7 +423,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
@@ -475,7 +481,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
@@ -532,7 +539,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
@@ -589,7 +597,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
@@ -646,7 +655,8 @@ const Contacts = () => {
                                 <div className="contact-cont">
                                   <div className="float-start user-img">
                                     <Link
-                                      to="/app/profile/employee-profile"
+                                      // to="/app/profile/employee-profile"
+                                      onClick={(e) => e.preventDefault()}
                                       className="avatar"
                                     >
                                       <img
