@@ -21,6 +21,8 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showProfileModal: false,
   showPersonalInfoModal: false,
   selectedPersonalInfo: [],
+  showAddReviewModal: false,
+  selectedReviewInfo: [],
   showAddSchedul: false,
   showEmergencyContactModal: false,
   selectedEmergencyContact: [],

@@ -101,11 +101,7 @@ const Employeeslist = () => {
                         <img
                           style={{ width: "40px", height: "40px" }}
                           alt=""
-                          src={
-                            photo
-                              ? photo
-                              : DefaultImage
-                          }
+                          src={photo ? photo : DefaultImage}
                         />
                       </Link>
                       <Link
@@ -114,7 +110,8 @@ const Employeeslist = () => {
                           state: { id: id, index: index },
                         }}
                       >
-                        {firstName} {lastName} <span>{role}</span>
+                        {firstName} {lastName}{" "}
+                        <span>{role ? role?.label : "--"}</span>
                       </Link>
                     </h2>
                   </React.Fragment>
