@@ -111,7 +111,7 @@ const Review = () => {
         const { id, employee } = record;
         return (
           <React.Fragment>
-            <h2 key={value} className="table-avatar">
+            <h2 className="table-avatar">
               <Link
                 onClick={(e) => e.preventDefault()}
                 className="avatar"
