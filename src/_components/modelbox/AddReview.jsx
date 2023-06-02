@@ -237,18 +237,6 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit }) => {
   };
 
 
-  const getEmployeeDefaultValues = (employeeData) => {
-    if (Array.isArray(employeeData)) {
-      return employeeData.map((employee) => ({
-        value: employee.value,
-        label: employee.label,
-        image: employee.photo,
-        role: employee.role,
-      }));
-    }
-    return [];
-  };
-
   return (
     <>
       <PopupWrapper>
@@ -283,12 +271,15 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit }) => {
                             <span className="text-danger">*</span>
                           </label>
                           <Select
-                            defaultValue={getEmployeeDefaultValues(
-                              selectedReviewInfo[indexToEdit]?.employee
-                            )}
+                            defaultValue={
+                              selectedReviewInfo
+                                ? {
+                                    value: employee?.value,
+                                    label: employee?.label,
+                                  }
+                                : "Select Employee"
+                            }
                             onChange={handleEmployeeChange}
-                            isMulti
-                            closeMenuOnSelect={false}
                             options={users}
                             styles={customSelectStyles}
                             placeholder="Select Employees"
