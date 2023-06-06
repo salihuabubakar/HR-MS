@@ -24,7 +24,7 @@ const useDataFetching = () => {
         setShowSkeleton(false);
       } catch (error) {
         console.error("Error:", error);
-        setError("Network error occured.");
+        setError(error);
         setIsLoading(false);
         setShowSkeleton(false);
       }
