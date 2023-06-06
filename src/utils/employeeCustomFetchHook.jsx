@@ -16,7 +16,7 @@ const useDataFetching = () => {
         setShowSkeleton(true);
 
         const response = await axios.get(
-          "http://34.125.221.156/employee/?format=json"
+          "https://34.125.221.156/employee/?format=json"
         );
 
         setData(response.data);
