@@ -627,7 +627,11 @@ const EmployeeProfile = () => {
                                 }
                               })
                             ) : (
-                              <p>No employee emergency contact added yet.</p>
+                              <tr>
+                                <td>
+                                  No employee emergency contact added yet.
+                                </td>
+                              </tr>
                             )}
                           </tbody>
                         </table>
@@ -729,7 +733,11 @@ const EmployeeProfile = () => {
                                 }
                               })
                             ) : (
-                              <p>No employee family information added yet.</p>
+                              <tr>
+                                <td>
+                                  No employee family information added yet.
+                                </td>
+                              </tr>
                             )}
                           </tbody>
                         </table>

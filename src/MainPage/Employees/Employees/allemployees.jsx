@@ -11,18 +11,29 @@ import {
 } from "../../../utils/localStorage";
 import DefaultImage from "../../../assets/img/placeholder.jpg";
 import DeleteModal from '../../../_components/modelbox/DeleteModal';
+import useDataFetching from '../../../utils/employeeCustomFetchHook';
+import "./style.css";
+import AllEmployee from './AllEmployee';
+import AllEmployeeList from './AllEmployeeList';
+import Profile from './Profile';
+import { DivContainer } from '../../TaskManagement/style';
+import axios from "axios";
 
 
 const AllEmployees = () => {
   const [showModal] = useGlobalState("showModal");
   const [deleteModal] = useGlobalState("deleteModal");
+  const [tab, setTab] = useState("employeeAll" || "employeeList" || "employeeProfile");
+  const [getEmployeeId, setGetEmployeeId] = useState(null)
+  const { data, isLoading, error, showSkeleton } = useDataFetching();
+  const [getSelectedData, setGetSelectedData] = useState();
+
 
   const [userAcct, dispatchUserAcct] = useReducer(
     savedUserAccountReducer,
     [],
     initUserAccount
   );
-
 
   useEffect(() => {
     localStorage.setItem("userAccount", JSON.stringify(userAcct));
@@ -60,7 +71,6 @@ const AllEmployees = () => {
     setGlobalState("deleteModal", true);
    };
 
-
 	const toggleMobileMenu = () => {
 		setMenu(!menu)
 	  }
@@ -72,10 +82,24 @@ const AllEmployees = () => {
           width: '100%'
         });
       }
-    });  
+    });
+
+  useEffect(() => {
+    const fetchEmployeeSelectedData = async () => {
+      try {
+        const response = await axios.get(
+          `http://34.125.221.156/employee/${getEmployeeId}?format=json`
+        );
+        setGetSelectedData(response.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    getEmployeeId != null ? fetchEmployeeSelectedData() : null;
+  }, [getEmployeeId]);
 
       return (
-        <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+        <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
           <Header onMenuClick={(value) => toggleMobileMenu()} />
           <Sidebar />
           <div className="page-wrapper">
@@ -87,134 +111,117 @@ const AllEmployees = () => {
             <div className="content container-fluid">
               {/* Page Header */}
               <div className="page-header">
-                <div className="row align-items-center">
-                  <div className="col">
-                    <h3 className="page-title">Employee</h3>
-                    <ul className="breadcrumb">
-                      <li className="breadcrumb-item">
-                        <Link to="/app/main/dashboard">Dashboard</Link>
-                      </li>
-                      <li className="breadcrumb-item active">Employee</li>
-                    </ul>
-                  </div>
-                  <div className="col-auto float-end ml-auto">
-                    <a className="btn add-btn" onClick={handleAddEmployee}>
-                      <i className="fa fa-plus" /> Add Employee
-                    </a>
-                    <div className="view-icons">
-                      <Link
-                        to="/app/employee/allemployees"
-                        className="grid-view btn btn-link active"
-                      >
-                        <i className="fa fa-th" />
-                      </Link>
-                      <Link
-                        to="/app/employee/employees-list"
-                        className="list-view btn btn-link"
-                      >
-                        <i className="fa fa-bars" />
-                      </Link>
+                {tab == "employeeProfile" ? (
+                  <>
+                    <div className="row">
+                      <div className="col-sm-12">
+                        <h3 className="page-title">Profile</h3>
+                        <ul className="breadcrumb">
+                          <li className="breadcrumb-item">
+                            <a onClick={() => setTab("employeeAll")}>
+                              All Employees
+                            </a>
+                          </li>
+                          <li className="breadcrumb-item active">Profile</li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              {/* /Page Header */}
-              {/* Search Filter */}
-              <div className="row filter-row">
-                <div className="col-sm-6 col-md-4">
-                  <div className="form-group form-focus">
-                    <input type="text" className="form-control floating" />
-                    <label className="focus-label">Employee ID</label>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4">
-                  <div className="form-group form-focus">
-                    <input type="text" className="form-control floating" />
-                    <label className="focus-label">Employee Name</label>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4">
-                  <a href="#" className="btn btn-success btn-block w-100">
-                    {" "}
-                    Search{" "}
-                  </a>
-                </div>
-              </div>
-              {/* Search Filter */}
-              <div className="row staff-grid-row">
-                {employeeAccts?.map((staff, index) => {
-                  const { id, photo, firstName, lastName, role } = staff;
-                  return (
-                    <div
-                      key={id}
-                      className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
-                    >
-                      <div className="profile-widget">
-                        <div className="profile-img">
-                          <Link
-                            to={{
-                              pathname: "/app/profile/employee-profile",
-                              state: { id: id, index: index },
-                            }}
-                            className="avatar"
-                            style={{
-                              borderRadius: "5px",
-                              backgroundColor: "#00000000",
-                              height: "100%",
-                            }}
-                          >
-                            <img
-                              style={{
-                                borderRadius: "5px",
-                                width: "80px",
-                                height: "80px",
-                              }}
-                              src={photo ? photo : DefaultImage}
-                              alt=""
-                            />
-                          </Link>
-                        </div>
-                        <div className="dropdown profile-action">
+                  </>
+                ) : (
+                  <>
+                    <div className="row align-items-center">
+                      <div className="col">
+                        <h3 className="page-title">Employee</h3>
+                        <ul className="breadcrumb">
+                          <li className="breadcrumb-item">
+                            <Link to="/app/main/dashboard">Dashboard</Link>
+                          </li>
+                          <li className="breadcrumb-item active">Employee</li>
+                        </ul>
+                      </div>
+                      <div className="col-auto float-end ml-auto">
+                        <a className="btn add-btn" onClick={handleAddEmployee}>
+                          <i className="fa fa-plus" /> Add Employee
+                        </a>
+                        <div className="view-icons">
                           <a
-                            className="action-icon dropdown-toggle"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
+                            onClick={() => setTab("employeeAll")}
+                            className={`grid-view btn btn-link ${
+                              tab == `employeeAll` ? `active` : null
+                            }`}
                           >
-                            <i className="material-icons">more_vert</i>
+                            <i className="fa fa-th" />
                           </a>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <a
-                              className="dropdown-item"
-                              onClick={() => handleEditAcct(staff.id, index)}
-                            >
-                              <i className="fa fa-pencil m-r-5" /> Edit
-                            </a>
-                            <a
-                              className="dropdown-item"
-                              onClick={() => handleDeleteAcct(index)}
-                            >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                            </a>
-                          </div>
-                        </div>
-                        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <Link
-                            to={{
-                              pathname: "/app/profile/employee-profile",
-                              state: { id: id, index: index },
-                            }}
+                          <a
+                            onClick={() => setTab("employeeList")}
+                            className={`list-view btn btn-link ${
+                              tab == `employeeList` ? `active` : null
+                            }`}
                           >
-                            {firstName + " " + lastName}
-                          </Link>
-                        </h4>
-                        <div className="small text-muted">
-                          {role ? role?.label : "--"}
+                            <i className="fa fa-bars" />
+                          </a>
                         </div>
                       </div>
                     </div>
-                  );
-                })}
+                  </>
+                )}
               </div>
+              {/* /Page Header */}
+              {tab != "employeeProfile" ? (
+                <>
+                  {/* Search Filter */}
+                  <div className="row filter-row">
+                    <div className="col-sm-6 col-md-4">
+                      <div className="form-group form-focus">
+                        <input type="text" className="form-control floating" />
+                        <label className="focus-label">Employee ID</label>
+                      </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4">
+                      <div className="form-group form-focus">
+                        <input type="text" className="form-control floating" />
+                        <label className="focus-label">Employee Name</label>
+                      </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4">
+                      <a href="#" className="btn btn-success btn-block w-100">
+                        {" "}
+                        Search{" "}
+                      </a>
+                    </div>
+                  </div>
+                  {/* Search Filter */}
+                </>
+              ) : null}
+              {tab == "employeeAll" && (
+                <AllEmployee
+                  data={data}
+                  isLoading={isLoading}
+                  showSkeleton={showSkeleton}
+                  error={error}
+                  handleEditAcct={handleEditAcct}
+                  handleDeleteAcct={handleDeleteAcct}
+                  DefaultImage={DefaultImage}
+                  setTab={setTab}
+                  setGetEmployeeId={setGetEmployeeId}
+                />
+              )}
+              {tab == "employeeList" && (
+                <AllEmployeeList
+                  handleEditAcct={handleEditAcct}
+                  handleDeleteAcct={handleDeleteAcct}
+                  DefaultImage={DefaultImage}
+                  data={data}
+                  setTab={setTab}
+                  setGetEmployeeId={setGetEmployeeId}
+                />
+              )}
+              {tab == "employeeProfile" && (
+                <Profile
+                  getSelectedData={getSelectedData}
+                  DefaultImage={DefaultImage}
+                />
+              )}
             </div>
 
             {showModal && (
@@ -234,7 +241,7 @@ const AllEmployees = () => {
               />
             )}
           </div>
-        </div>
+        </DivContainer>
       );
   }
 
