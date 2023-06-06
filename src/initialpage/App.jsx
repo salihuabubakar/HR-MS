@@ -20,7 +20,7 @@ const App = ({ match, location }) => {
 
   return (
     <Switch>
-      <Redirect exact from={`${match.url}/`} to={`${match.url}/login`} />
+      <Redirect exact path="/" from={`${match.url}/`} to={`${match.url}/login`} />
       <Route path="/login" component={LoginPage} />
       <Route path="/forgotpassword" component={ForgotPassword} />
       <Route path="/register" component={RegistrationPage} />
