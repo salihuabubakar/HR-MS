@@ -541,7 +541,7 @@ const Profile = ({
               </div>
             </div>
 
-            <div className="col-md-12 d-flex">
+            <div className="col-md-6 d-flex">
               <div className="card profile-box flex-fill">
                 <div className="card-body">
                   <h3 className="card-title">Organisation</h3>
