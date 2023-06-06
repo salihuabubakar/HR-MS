@@ -13,14 +13,27 @@ import Settinglayout from "./Sidebar/Settinglayout";
 import Error404 from "../MainPage/Pages/ErrorPage/error404";
 import Error500 from "../MainPage/Pages/ErrorPage/error500";
 
-import 'Assets/css/font-awesome.min.css';
+import "Assets/css/font-awesome.min.css";
 
 const App = ({ match, location }) => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+
+  useEffect(() => {
+    // Check if user is not logged in and on the main URL
+    if (!isLoggedIn && location.pathname === "/") {
+      setRedirectToLogin(true);
+    }
+  }, [isLoggedIn, location.pathname]);
+
+  if (redirectToLogin) {
+    return <Redirect to="/login" />;
+  }
+
   return (
     <Switch>
-      <Redirect exact path="/" from={`${match.url}/`} to={`${match.url}/login`} />
+      <Route exact path="/" render={() => <Redirect to="/login" />} />
       <Route path="/login" component={LoginPage} />
       <Route path="/forgotpassword" component={ForgotPassword} />
       <Route path="/register" component={RegistrationPage} />
