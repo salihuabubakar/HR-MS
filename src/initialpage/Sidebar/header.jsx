@@ -156,7 +156,10 @@ const Header = (props) => {
             <div className="noti-content">
               <ul className="notification-list">
                 <li className="notification-message">
-                  <Link onClick={(e) => preventDefault()}>
+                  <Link
+                    to="/app/main/dashboard"
+                    onClick={(e) => preventDefault()}
+                  >
                     <div className="media">
                       <span className="avatar">
                         <img alt="" src={Avatar_02} />
@@ -180,6 +183,7 @@ const Header = (props) => {
                   <Link
                     // onClick={() => localStorage.setItem("minheight", "true")}
                     onClick={(e) => e.preventDefault()}
+                    to="/app/main/dashboard"
                   >
                     <div className="media">
                       <span className="avatar">
@@ -206,6 +210,7 @@ const Header = (props) => {
               <Link
                 // onClick={() => localStorage.setItem("minheight", "true")}
                 onClick={(e) => e.preventDefault()}
+                to="/app/main/dashboard"
               >
                 View all Notifications
               </Link>
@@ -241,6 +246,7 @@ const Header = (props) => {
                 <li className="notification-message">
                   <Link
                     onClick={(e) => e.preventDefault()}
+                    to="/app/main/dashboard"
                   >
                     <div className="list-item">
                       <div className="list-left">
@@ -261,6 +267,7 @@ const Header = (props) => {
                 </li>
                 <li className="notification-message">
                   <Link
+                    to="/app/main/dashboard"
                     onClick={(e) => e.preventDefault()}
                   >
                     <div className="list-item">
@@ -286,7 +293,10 @@ const Header = (props) => {
               </ul>
             </div>
             <div className="topnav-dropdown-footer">
-              <Link onClick={(e) => e.preventDefault()}>
+              <Link
+                to="/app/main/dashboard"
+                onClick={(e) => e.preventDefault()}
+              >
                 View all Messages
               </Link>
             </div>
