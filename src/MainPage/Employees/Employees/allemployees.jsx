@@ -27,6 +27,8 @@ const AllEmployees = () => {
   const [getEmployeeId, setGetEmployeeId] = useState(null)
   const { data, isLoading, error, showSkeleton } = useDataFetching();
   const [getSelectedData, setGetSelectedData] = useState();
+  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
+  const [skeletonLoading, setSkeletonLoading] = useState(false);
 
 
   const [userAcct, dispatchUserAcct] = useReducer(
@@ -87,12 +89,18 @@ const AllEmployees = () => {
   useEffect(() => {
     const fetchEmployeeSelectedData = async () => {
       try {
+        setIsSelectedLoading(true);
+        setSkeletonLoading(true);
         const response = await axios.get(
           `https://34.125.221.156/employee/${getEmployeeId}?format=json`
         );
         setGetSelectedData(response.data);
+        setIsSelectedLoading(false);
+        setSkeletonLoading(false);
       } catch (error) {
         console.error("Error:", error);
+        setIsSelectedLoading(false);
+        setSkeletonLoading(false);
       }
     };
     getEmployeeId != null ? fetchEmployeeSelectedData() : null;
@@ -220,6 +228,8 @@ const AllEmployees = () => {
                 <Profile
                   getSelectedData={getSelectedData}
                   DefaultImage={DefaultImage}
+                  isSelectedLoading={isSelectedLoading}
+                  skeletonLoading={skeletonLoading}
                 />
               )}
             </div>

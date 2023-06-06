@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import moment from "moment";
 
-const Profile = ({ getSelectedData, DefaultImage }) => {
+const Profile = ({ 
+  getSelectedData, 
+  DefaultImage, 
+  isSelectedLoading,
+  skeletonLoading 
+}) => {
 
   const selectedEmployeeId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
@@ -48,27 +53,40 @@ const Profile = ({ getSelectedData, DefaultImage }) => {
                 </div>
                 <div className="profile-basic">
                   <div className="row">
-                    <div className="col-md-5">
-                      <div className="profile-info-left">
-                        <h3 className="user-name m-t-0 mb-0">
-                          {`${first_name} ${middle_name} ${last_name}`}
-                        </h3>
-                        <h6 className="text-muted">Role: {role?.role_name}</h6>
-                        <div className="small doj text-muted">
-                          Employee ID : {employee_number}
-                        </div>
-                        <div className="small doj text-muted">
-                          NI Number : {ni_numbber}
-                        </div>
-                        <div className="small doj text-muted">
-                          Date of Join:{" "}
-                          {moment(hire_date).format("DD MMM YYYY")}
-                        </div>
-                        <div className="small doj text-muted">
-                          Nationality : {nationality}
+                    {isSelectedLoading || skeletonLoading ? (
+                      <div className="skeleton-container1">
+                        <div className="skeleton-content1">
+                          <div className="skeleton-line1"></div>
+                          <div className="skeleton-line2"></div>
+                          <div className="skeleton-line3"></div>
+                          <div className="skeleton-line4"></div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <>
+                        <div className="col-md-5">
+                          <div className="profile-info-left">
+                            <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
+                            <h6 className="text-muted">
+                              Role: {role?.role_name}
+                            </h6>
+                            <div className="small doj text-muted">
+                              Employee ID : {employee_number}
+                            </div>
+                            <div className="small doj text-muted">
+                              NI Number : {ni_numbber}
+                            </div>
+                            <div className="small doj text-muted">
+                              Date of Join:{" "}
+                              {moment(hire_date).format("DD MMM YYYY")}
+                            </div>
+                            <div className="small doj text-muted">
+                              Nationality : {nationality}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
                     <div className="col-md-7">
                       <ul className="personal-info">
                         <li>
@@ -1107,12 +1125,14 @@ const Profile = ({ getSelectedData, DefaultImage }) => {
                                       <i className="fa fa-file-pdf-o" />
                                     </span>
                                   )} */}
-                                  Document: {document != null ?
-                                     (
-                                      <span className="files-icon">
-                                        <i className="fa fa-file-pdf-o" />
-                                      </span>
-                                    ) : "Null"}
+                                  Document:{" "}
+                                  {document != null ? (
+                                    <span className="files-icon">
+                                      <i className="fa fa-file-pdf-o" />
+                                    </span>
+                                  ) : (
+                                    "Null"
+                                  )}
                                 </div>
                               </div>
                             </li>

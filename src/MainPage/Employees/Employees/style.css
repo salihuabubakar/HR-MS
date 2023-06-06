@@ -56,3 +56,70 @@
 .skeleton-line {
   animation: skeleton-loading 1.5s infinite;
 }
+
+
+
+.skeleton-container1 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.skeleton-avatar1 {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 10px;
+}
+
+.skeleton-content1 {
+  flex: 1;
+}
+
+.skeleton-line1 {
+  height: 20px;
+  width: 40%;
+  margin-bottom: 8px;
+  background-color: #ccc;
+}
+
+.skeleton-line2 {
+  height: 15px;
+  width: 30%;
+  margin-bottom: 8px;
+  background-color: #ccc;
+}
+
+.skeleton-line3 {
+  height: 15px;
+  width: 30%;
+  margin-bottom: 8px;
+  background-color: #ccc;
+}
+
+.skeleton-line4 {
+  height: 12px;
+  width: 20%;
+  margin-bottom: 8px;
+  background-color: #ccc;
+}
+
+/* Animation */
+@keyframes skeleton-loading {
+  0% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0.4;
+  }
+}
+
+.skeleton-lin1 {
+  animation: skeleton-loading 1.5s infinite;
+}
