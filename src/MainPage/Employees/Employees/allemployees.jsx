@@ -92,7 +92,7 @@ const AllEmployees = () => {
         setIsSelectedLoading(true);
         setSkeletonLoading(true);
         const response = await axios.get(
-          `https://34.125.221.156/employee/${getEmployeeId}?format=json`
+          `https://www.jakago.com.ng/employee/${getEmployeeId}?format=json`
         );
         setGetSelectedData(response.data);
         setIsSelectedLoading(false);
