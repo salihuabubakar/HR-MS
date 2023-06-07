@@ -36,7 +36,7 @@ const AllEmployee = ({
           {data ? (
             <>
               {data?.map((staff, index) => {
-                const { id, photo, first_name, last_name, role } = staff;
+                const { id, photo, first_name, middle_name, last_name, role } = staff;
                 return (
                   <div
                     key={id}
@@ -99,7 +99,7 @@ const AllEmployee = ({
                           // }}
                           onClick={() => handleEmployeeProfilePage(id, index)}
                         >
-                          {first_name + " " + last_name}
+                          {`${first_name} ${middle_name ? middle_name : "--"} ${last_name}`}
                         </a>
                       </h4>
                       <div className="small text-muted">

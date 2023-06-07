@@ -30,7 +30,7 @@ const AllEmployeeList = ({
     {
       title: "Name",
       render: (text, record, index) => {
-        const { id, photo, first_name, last_name, role } = record;
+        const { id, photo, first_name, middle_name, last_name, role } = record;
         return (
           <React.Fragment>
             <h2 className="table-avatar">
@@ -60,7 +60,7 @@ const AllEmployeeList = ({
                 // }}
                 onClick={() => handleEmployeeProfilePage(id, index)}
               >
-                {first_name} {last_name}{" "}
+                {`${first_name} ${middle_name ? middle_name : "--"} ${last_name}`}{" "}
                 <span>{role ? role?.role_name : "--"}</span>
               </a>
             </h2>
