@@ -549,24 +549,6 @@ const Profile = ({
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Role</h3>
-                      <ul className="personal-info">
-                        <li>
-                          <div className="title">Role Name</div>
-                          <div className="text">{role?.role_name}</div>
-                        </li>
-                        <li>
-                          <div className="title">Description</div>
-                          <div className="text">{role?.description}</div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
                       <h3 className="card-title">Department</h3>
                       <ul className="personal-info">
                         <li>
@@ -695,9 +677,7 @@ const Profile = ({
                               <li>
                                 <div className="title">Contract File</div>
                                 <div className="text">
-                                  {contract_file != null
-                                    ? review_manager
-                                    : "--"}
+                                  {contract_file != null ? contract_file : "--"}
                                 </div>
                               </li>
                             </ul>

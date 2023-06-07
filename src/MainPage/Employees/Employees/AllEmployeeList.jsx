@@ -30,7 +30,8 @@ const AllEmployeeList = ({
     {
       title: "Name",
       render: (text, record, index) => {
-        const { id, photo, first_name, middle_name, last_name, role } = record;
+        const { id, photo, first_name, middle_name, last_name, role_name } =
+          record;
         return (
           <React.Fragment>
             <h2 className="table-avatar">
@@ -60,8 +61,10 @@ const AllEmployeeList = ({
                 // }}
                 onClick={() => handleEmployeeProfilePage(id, index)}
               >
-                {`${first_name} ${middle_name ? middle_name : "--"} ${last_name}`}{" "}
-                <span>{role ? role?.role_name : "--"}</span>
+                {`${first_name} ${
+                  middle_name ? middle_name : "--"
+                } ${last_name}`}{" "}
+                <span>{role_name ? role_name : "--"}</span>
               </a>
             </h2>
           </React.Fragment>
@@ -84,12 +87,6 @@ const AllEmployeeList = ({
     {
       title: "Mobile",
       dataIndex: "phone_number",
-      // sorter: (a, b) => a.phone_number?.length - b.phone_number?.length,
-    },
-
-    {
-      title: "Join Date",
-      dataIndex: "hire_date",
       // sorter: (a, b) => a.phone_number?.length - b.phone_number?.length,
     },
     {
