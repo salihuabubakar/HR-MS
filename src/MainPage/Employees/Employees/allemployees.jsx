@@ -124,7 +124,7 @@ const AllEmployees = () => {
                     <div className="row">
                       <div className="col-sm-12">
                         <h3 className="page-title">Profile</h3>
-                        <ul className="breadcrumb">
+                        <ul className="breadcrumb breadcrumb-nav">
                           <li className="breadcrumb-item">
                             <a onClick={() => setTab("employeeAll")}>
                               All Employees
