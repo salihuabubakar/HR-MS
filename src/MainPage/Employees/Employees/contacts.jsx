@@ -116,13 +116,16 @@ const Contacts = () => {
                                   <a href="">All</a>
                                 </li>
                                 <li>
-                                  <a href="#">Company</a>
+                                  <a href="#">Employee</a>
                                 </li>
                                 <li>
-                                  <a href="#">Client</a>
+                                  <a href="#">Residence</a>
                                 </li>
                                 <li>
-                                  <a href="#">Staff</a>
+                                  <a href="#">Organisation</a>
+                                </li>
+                                <li>
+                                  <a href="#">Borough</a>
                                 </li>
                               </ul>
                             </div>
