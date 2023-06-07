@@ -66,22 +66,25 @@ const Profile = ({
                       <>
                         <div className="col-md-5">
                           <div className="profile-info-left">
-                            <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
+                            <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name ? middle_name : "--"} ${last_name}`}</h3>
                             <h6 className="text-muted">
-                              Role: {role?.role_name}
+                              Role: {role ? role?.role_name : "--"}
                             </h6>
                             <div className="small doj text-muted">
-                              Employee ID : {employee_number}
+                              Employee ID :{" "}
+                              {employee_number ? employee_number : "--"}
                             </div>
                             <div className="small doj text-muted">
-                              NI Number : {ni_numbber}
+                              NI Number : {ni_numbber ? ni_numbber : "--"}
                             </div>
                             <div className="small doj text-muted">
                               Date of Join:{" "}
-                              {moment(hire_date).format("DD MMM YYYY")}
+                              {hire_date
+                                ? moment(hire_date).format("DD MMM YYYY")
+                                : "--"}
                             </div>
                             <div className="small doj text-muted">
-                              Nationality : {nationality}
+                              Nationality: {nationality ? nationality : "--"}
                             </div>
                           </div>
                         </div>
@@ -91,28 +94,30 @@ const Profile = ({
                             <li>
                               <div className="title">Phone:</div>
                               <div className="text">
-                                <a>{phone_number}</a>
+                                <a>{phone_number ? phone_number : "--"}</a>
                               </div>
                             </li>
                             <li>
                               <div className="title">Email:</div>
                               <div className="text">
-                                <a>{email}</a>
+                                <a>{email ? email : "--"}</a>
                               </div>
                             </li>
                             <li>
                               <div className="title">Birthday:</div>
                               <div className="text">
-                                {moment(date_of_birth).format("DD MMM YYYY")}
+                                {date_of_birth
+                                  ? moment(date_of_birth).format("DD MMM YYYY")
+                                  : "--"}
                               </div>
                             </li>
                             <li>
                               <div className="title">Gender:</div>
-                              <div className="text">{gender}</div>
+                              <div className="text">{gender ? gender : "--"}</div>
                             </li>
                             <li>
                               <div className="title">Marital Status:</div>
-                              <div className="text">{marital_status}</div>
+                              <div className="text">{marital_status ? marital_status : "--"}</div>
                             </li>
                           </ul>
                         </div>
