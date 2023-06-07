@@ -52,10 +52,6 @@ const AllEmployee = ({
                     <div className="profile-widget">
                       <div className="profile-img">
                         <a
-                          // to={{
-                          //   pathname: "/app/profile/employee-profile",
-                          //   state: { id: id, index: index },
-                          // }}
                           onClick={() => handleEmployeeProfilePage(id, index)}
                           className="avatar"
                           style={{

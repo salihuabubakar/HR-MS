@@ -45,11 +45,19 @@ const Profile = ({
             <div className="col-md-12">
               <div className="profile-view">
                 <div className="profile-img-wrap">
-                  <div className="profile-img">
-                    <a>
-                      <img alt="" src={photo ? photo : DefaultImage} />
-                    </a>
-                  </div>
+                  {isSelectedLoading || skeletonLoading ? (
+                    <div className="skeleton-container1">
+                      <div className="skeleton-avatar1"></div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="profile-img">
+                        <a>
+                          <img alt="" src={photo ? photo : DefaultImage} />
+                        </a>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="profile-basic">
                   <div className="row">
@@ -66,7 +74,9 @@ const Profile = ({
                       <>
                         <div className="col-md-5">
                           <div className="profile-info-left">
-                            <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name ? middle_name : "--"} ${last_name}`}</h3>
+                            <h3 className="user-name m-t-0 mb-0">{`${first_name} ${
+                              middle_name ? middle_name : "--"
+                            } ${last_name}`}</h3>
                             <h6 className="text-muted">
                               Role: {role ? role?.role_name : "--"}
                             </h6>
@@ -113,11 +123,15 @@ const Profile = ({
                             </li>
                             <li>
                               <div className="title">Gender:</div>
-                              <div className="text">{gender ? gender : "--"}</div>
+                              <div className="text">
+                                {gender ? gender : "--"}
+                              </div>
                             </li>
                             <li>
                               <div className="title">Marital Status:</div>
-                              <div className="text">{marital_status ? marital_status : "--"}</div>
+                              <div className="text">
+                                {marital_status ? marital_status : "--"}
+                              </div>
                             </li>
                           </ul>
                         </div>
