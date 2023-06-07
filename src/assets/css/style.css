@@ -8531,6 +8531,10 @@ ul.comment-list li ul.children {
 	.page-header .breadcrumb {
 		display: none;
 	}
+
+  .page-header .breadcrumb-nav {
+		display: flex;
+	}
 	.add-btn {
 		font-size: 14px;
 		min-width: inherit;
