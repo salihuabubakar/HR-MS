@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useReducer } from "react";
 import Select from "react-select";
-import { useGlobalState, setGlobalState } from '../../context/GlobalState';
+import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import {
   PopupWrapper,
   PopupOverlay,
   PopupContainer,
   Card,
 } from "./Addemployee.style";
-import "./style.css"
+import "./style.css";
 import { v4 as uuidv4 } from "uuid";
 import {
   initDept,
@@ -44,6 +44,8 @@ const Addemployee = ({
   // console.log("getEmployeeId", getEmployeeId);
 
   let isIdExist;
+
+  let formData = new FormData();
 
   if (selectedEmployeeAccount && indexToEdit !== undefined) {
     isIdExist = selectedEmployeeAccount[indexToEdit]?.id;
@@ -173,21 +175,25 @@ const Addemployee = ({
     //   salary,
     //   niNumber,
     // };
-    const employeeData = {
-      first_name,
-      last_name,
-      middle_name,
-      employee_number,
-      photo,
-      email,
-      phone_number,
+    const fields = {
+      first_name: first_name,
+      last_name: last_name,
+      middle_name: middle_name,
+      employee_number: employee_number,
+      photo: photo,
+      email: email,
+      phone_number: phone_number,
     };
+
+    Object.entries(fields).forEach(([fieldName, fieldValue]) => {
+      formData.append(fieldName, fieldValue);
+    });
     if (isIdExist) {
-      dispatchEmployee({ type: "update", payload: employeeData });
+      dispatchEmployee({ type: "update", payload: formData });
     } else {
       dispatchEmployee({
         type: "add",
-        payload: employeeData
+        payload: formData,
       });
     }
     setGlobalState("showModal", false);
@@ -263,14 +269,14 @@ const Addemployee = ({
 
   const imageOnChange = (event) => {
     const file = event.target.files[0]; // Get the selected file
-    const reader = new FileReader();
-    const imagePath = URL.createObjectURL(file);
+    // const reader = new FileReader();
+    // const imagePath = URL.createObjectURL(file);
     // reader.readAsDataURL(file);
     // reader.onload = () => {
     //   const base64Image = reader.result;
     //   setPhoto(base64Image);
     // };
-    setPhoto(null);
+    setPhoto(file);
   };
 
   return (
@@ -535,7 +541,6 @@ const Addemployee = ({
                           <input
                             className="form-control floating"
                             type="file"
-                            accept="image/*"
                             onChange={imageOnChange}
                           />
                         </div>
@@ -607,4 +612,4 @@ const Addemployee = ({
   );
 };
 
-export default Addemployee
+export default Addemployee;
