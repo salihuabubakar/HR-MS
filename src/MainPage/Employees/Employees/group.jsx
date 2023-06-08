@@ -5,12 +5,17 @@ import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import "../../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
-import Designations from "./designation";
+import Role from "./role";
 import Department from "./department";
 import Organisation from "./organisation";
 import Status from "./status";
+import { useRoleFetching, useDepartmentFetching } from "../../../utils/employeeCustomFetchHook";
+import { add_update_delete_role, add_update_delete_department } from "../../../utils/sendToServer";
 
 const Group = () => {
+  const { roleData, roleError, isRoleLoading } = useRoleFetching();
+  const { departmentData, isDepartmentDataLoading, departmentError } =
+    useDepartmentFetching();
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {
     setMenu(!menu);
@@ -43,10 +48,21 @@ const Group = () => {
           {/* /Page Header */}
           <div className="row">
             <div className="col-sm-6">
-              <Department />
+              <Department
+                departmentData={departmentData}
+                isDepartmentDataLoading={isDepartmentDataLoading}
+                departmentError={departmentError}
+                add_update_delete_department={add_update_delete_department}
+              />
             </div>
             <div className="col-sm-6">
-              <Designations />
+              <Role
+                roleData={roleData}
+                roleError={roleError}
+                isRoleLoading={isRoleLoading}
+                add_update_delete_role={add_update_delete_role}
+                departmentData={departmentData}
+              />
             </div>
             <div className="col-sm-6">
               <Organisation />

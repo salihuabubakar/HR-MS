@@ -1,12 +1,13 @@
 import axios from "axios";
+import { BaseUrl } from "./baseUrl";
 
+// Add - Update - Delete Employee state
 export const add_update_delete_employee = async (state, { type, payload }) => {
-  console.log("payload...outside", payload);
   switch (type) {
     case "add":
       try {
         const response = await axios.post(
-          "https://www.jakago.com.ng/employee/list/",
+          `${BaseUrl}/employee/list/`,
           payload
         );
 
@@ -25,8 +26,8 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
 
     case "update":
       try {
-        const response = await axios.patch(
-          `https://www.jakago.com.ng/employee/detail/${payload.id}`,
+        const response = await axios.put(
+          `${BaseUrl}/employee/detail/${payload.id}/`,
           payload,
           {
             headers: {
@@ -55,13 +56,169 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
     case "delete":
       try {
         const response = await axios.delete(
-          `https://www.jakago.com.ng/employee/detail/${payload.id}`
+          `${BaseUrl}/employee/detail/${payload.id}/`
         );
 
         // Check the response status
         if (response.status === 200) {
           // Filter out the deleted user from state
           const updatedState = state.filter((employee) => employee.id !== payload.id);
+          // Update state or perform any other necessary actions based on the response
+          return updatedState;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+
+// Add - Update - Delete Role state
+export const add_update_delete_role = async (state, { type, payload }) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/employee/roles/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          // Update state or perform any other necessary actions based on the response
+          return [...state, responseData];
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/employee/roles/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          const updatedUser = response.data;
+          const updatedState = state.map((role) =>
+            role.id === updatedUser.id ? updatedUser : role
+          );
+          // Update state or perform any other necessary actions based on the response
+          return updatedState;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/employee/roles/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          // Filter out the deleted user from state
+          const updatedState = state.filter((role) => role.id !== payload.id);
+          // Update state or perform any other necessary actions based on the response
+          return updatedState;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+
+// Add - Update - Delete Department state
+export const add_update_delete_department = async (state, { type, payload }) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/employee/departments/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          // Update state or perform any other necessary actions based on the response
+          return [...state, responseData];
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/employee/departments/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          const updatedUser = response.data;
+          const updatedState = state.map((dept) =>
+            dept.id === updatedUser.id ? updatedUser : dept
+          );
+          // Update state or perform any other necessary actions based on the response
+          return updatedState;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/employee/departments/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          // Filter out the deleted user from state
+          const updatedState = state.filter((dept) => dept.id !== payload.id);
           // Update state or perform any other necessary actions based on the response
           return updatedState;
         } else {

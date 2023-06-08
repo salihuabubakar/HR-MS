@@ -1,0 +1,1 @@
+export const BaseUrl = "https://www.jakago.com.ng"; 

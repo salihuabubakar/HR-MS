@@ -12,56 +12,70 @@ import { initDept, savedDeptReducer } from "../../../utils/localStorage";
 import AddDepartment from "../../../_components/modelbox/AddDepartment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 
-const Department = () => {
-  const [depts, dispatchDepts] = useReducer(savedDeptReducer, [], initDept);
-  const [showModal] = useGlobalState("showModal");
-  const [deleteModal] = useGlobalState("deleteModal");
+const Department = ({
+  departmentData,
+  isDepartmentDataLoading,
+  departmentError,
+  add_update_delete_department,
+}) => {
+  // Table pagination
+  const itemsPerPage = 10; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const startCount = (currentPage - 1) * itemsPerPage + 1;
+  const endCount = startCount + itemsPerPage - 1;
+  const paginationSettings = {
+    total: departmentData?.length,
+    showTotal: (total, range) =>
+      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    itemRender: itemRender,
+    current: currentPage,
+    onChange: setCurrentPage,
+  };
 
-  useEffect(() => {
-    localStorage.setItem("dept", JSON.stringify(depts));
-  }, [depts]);
-  useEffect(() => {
-    if(!showModal) {
-      setGlobalState("selectedDept", "");
-    }
-  }, [showModal])
-
-  const [deptList, setDeptList] = useState();
-  useEffect(() => {
-    setDeptList(depts);
-  }, [depts]);
-
-  const [indexToEdit, setIndexToEdit] = useState(0);
+  const [initialState, dispatchDept] = useReducer(add_update_delete_department, []);
+  const [showDeptModal] = useGlobalState("showDeptModal");
+  const [deleteDeptModal] = useGlobalState("deleteDeptModal");
+  const [indexToEdit, setIndexToEdit] = useState();
   const [deptIdToEdit, setDeptIdToEdit] = useState("");
+
+  useEffect(() => {
+    if (!showDeptModal) {
+      setGlobalState("selectedDept", "");
+      setDeptIdToEdit("");
+      setIndexToEdit("");
+    }
+  }, [showDeptModal]);
+
 
   const handleDeptEdit = (id, index) => {
     setDeptIdToEdit(id);
-    setIndexToEdit(index);
-    setGlobalState("showModal", true);
-    setGlobalState("selectedDept", depts);
+    setIndexToEdit((currentPage - 1) * itemsPerPage + index);
+    setGlobalState("showDeptModal", true);
+    setGlobalState("selectedDept", departmentData);
   };
 
-  const handleDeptDelete = (index) => {
-    setIndexToEdit(index);
-    setGlobalState("deleteModal", true);
+  const handleDeptDelete = (id) => {
+    setDeptIdToEdit(id);
+    setGlobalState("deleteDeptModal", true);
   };
-
 
   const columns = [
     {
       title: "#",
       render: (text, record, index) => {
-        return (
-          <React.Fragment>
-            {index + 1}
-          </React.Fragment>
-        );
+        const actualIndex = (currentPage - 1) * itemsPerPage + index + 1;
+        return <React.Fragment>{actualIndex}</React.Fragment>;
       },
     },
     {
       title: "Department",
-      dataIndex: "deptName",
-      // sorter: (a, b) => a.name.length - b.name.length,
+      dataIndex: "department_name",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
     },
     {
       title: "Action",
@@ -83,7 +97,7 @@ const Department = () => {
             </a>
             <a
               className="dropdown-item"
-              onClick={() => handleDeptDelete(index)}
+              onClick={() => handleDeptDelete(record.id)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -94,69 +108,60 @@ const Department = () => {
   ];
   return (
     <div>
-        {/* Page Content */}
-        <div className="content container-fluid">
-          {/* Page Header */}
-          <div className="page-header">
-            <div className="row align-items-center">
-              <div className="col">
-                <h3 className="page-title">Department</h3>
-              </div>
-              <div className="col-auto float-end ml-auto">
-                <a
-                  className="btn add-btn"
-                  onClick={() => setGlobalState("showModal", true)}
-                >
-                  <i className="fa fa-plus" /> Add Department
-                </a>
-              </div>
+      {/* Page Content */}
+      <div className="content container-fluid">
+        {/* Page Header */}
+        <div className="page-header">
+          <div className="row align-items-center">
+            <div className="col">
+              <h3 className="page-title">Department</h3>
             </div>
-          </div>
-          {/* /Page Header */}
-          <div className="row">
-            <div className="col-md-12">
-              <div className="table-responsive">
-                <Table
-                  className="table-striped"
-                  pagination={{
-                    total: deptList?.length,
-                    showTotal: (total, range) =>
-                      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                    showSizeChanger: true,
-                    onShowSizeChange: onShowSizeChange,
-                    itemRender: itemRender,
-                  }}
-                  style={{ overflowX: "auto" }}
-                  columns={columns}
-                  // bordered
-                  dataSource={deptList}
-                  rowKey={(dept) => dept.id}
-                />
-              </div>
+            <div className="col-auto float-end ml-auto">
+              <a
+                className="btn add-btn"
+                onClick={() => setGlobalState("showDeptModal", true)}
+              >
+                <i className="fa fa-plus" /> Add Department
+              </a>
             </div>
           </div>
         </div>
-        {/* /Page Content */}
-        {/* Add Department Modal */}
-        {showModal && (
-          <AddDepartment
-            dispatchDepts={dispatchDepts}
-            indexToEdit={indexToEdit}
-            deptIdToEdit={deptIdToEdit}
-            depts={depts}
-          />
-        )}
-        {/* /Add Department Modal */}
-        {/* Delete Department Modal */}
-        {deleteModal && (
-          <DeleteModal
-            deleteAction={dispatchDepts}
-            indexToDelete={indexToEdit}
-            dispatch={depts}
-            modalTitle={"Department"}
-          />
-        )}
-        {/* /Delete Department Modal */}
+        {/* /Page Header */}
+        <div className="row">
+          <div className="col-md-12">
+            <div className="table-responsive">
+              <Table
+                className="table-striped"
+                pagination={paginationSettings}
+                style={{ overflowX: "auto" }}
+                columns={columns}
+                bordered
+                dataSource={departmentData}
+                rowKey={(dept) => dept?.id}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* /Page Content */}
+      {/* Add Department Modal */}
+      {showDeptModal && (
+        <AddDepartment
+          dispatchDept={dispatchDept}
+          indexToEdit={indexToEdit}
+          deptIdToEdit={deptIdToEdit}
+        />
+      )}
+      {/* /Add Department Modal */}
+      {/* Delete Department Modal */}
+      {deleteDeptModal && (
+        <DeleteModal
+          deleteAction={dispatchDept}
+          iDToDelete={deptIdToEdit}
+          modalTitle={"Department"}
+        />
+      )}
+      {/* /Delete Department Modal */}
     </div>
   );
 };
