@@ -17,9 +17,10 @@ import {
 } from "../../utils/localStorage";
 
 const Addemployee = ({
-  dispatchUserAcct,
+  dispatchEmployee,
   indexToEdit,
-  userAcct,
+  employeeIdToEdit,
+  getEmployeeId,
 }) => {
   // const isEdit = () => !!(acctIdToEdit && userAcct[indexToEdit]);
   const uniqueId = uuidv4();
@@ -29,120 +30,118 @@ const Addemployee = ({
     setDeptList(depts);
   }, [depts]);
 
-  const [desig] = useReducer(
-    savedDesignationReducer,
-    [],
-    initDesignation
-  );
+  const [desig] = useReducer(savedDesignationReducer, [], initDesignation);
   const [desigList, setDesignationList] = useState();
   useEffect(() => {
     setDesignationList(desig);
   }, [desig]);
 
-  const [selectedUserAccount] = useGlobalState("selectedUserAccount");
+  const [selectedEmployeeAccount] = useGlobalState("selectedEmployeeAccount");
+
+  // console.log("selectedEmployeeAccount", selectedEmployeeAccount);
+  // console.log("employeeIdToEdit", employeeIdToEdit);
+  // console.log("indexToEdit", indexToEdit);
+  // console.log("getEmployeeId", getEmployeeId);
 
   let isIdExist;
 
-  if (selectedUserAccount && indexToEdit !== undefined) {
-    isIdExist = selectedUserAccount[indexToEdit]?.id;
+  if (selectedEmployeeAccount && indexToEdit !== undefined) {
+    isIdExist = selectedEmployeeAccount[indexToEdit]?.id;
   } else {
     isIdExist = "";
   }
 
-  const [employeeNumber, setEmployeeNumber] = useState(
-    selectedUserAccount[indexToEdit]?.employeeNumber
-      ? selectedUserAccount[indexToEdit]?.employeeNumber
+  const [employee_number, setEmployeeNumber] = useState(
+    selectedEmployeeAccount[indexToEdit]?.employee_number
+      ? selectedEmployeeAccount[indexToEdit]?.employee_number
       : ""
   );
-  const [firstName, setFirstName] = useState(
-    selectedUserAccount[indexToEdit]?.firstName
-      ? selectedUserAccount[indexToEdit]?.firstName
+  const [first_name, setFirstName] = useState(
+    selectedEmployeeAccount[indexToEdit]?.first_name
+      ? selectedEmployeeAccount[indexToEdit]?.first_name
       : ""
   );
-  const [middleName, setMiddleName] = useState(
-    selectedUserAccount[indexToEdit]?.middleName
-      ? selectedUserAccount[indexToEdit]?.middleName
+  const [middle_name, setMiddleName] = useState(
+    selectedEmployeeAccount[indexToEdit]?.middle_name
+      ? selectedEmployeeAccount[indexToEdit]?.middle_name
       : ""
   );
-  const [lastName, setLastName] = useState(
-    selectedUserAccount[indexToEdit]?.lastName
-      ? selectedUserAccount[indexToEdit]?.lastName
+  const [last_name, setLastName] = useState(
+    selectedEmployeeAccount[indexToEdit]?.last_name
+      ? selectedEmployeeAccount[indexToEdit]?.last_name
       : ""
   );
-  const [dateOfBirth, setDateOfBirth] = useState(
-    selectedUserAccount[indexToEdit]?.dateOfBirth
-      ? selectedUserAccount[indexToEdit]?.dateOfBirth 
+  const [date_of_birth, setDateOfBirth] = useState(
+    selectedEmployeeAccount[indexToEdit]?.date_of_birth
+      ? selectedEmployeeAccount[indexToEdit]?.date_of_birth
       : ""
   );
   const [gender, setGender] = useState(
-    selectedUserAccount[indexToEdit]?.gender
-     ? selectedUserAccount[indexToEdit]?.gender 
-     : ""
-  );
-  const [maritalStatus, setMaritalStatus] = useState(
-    selectedUserAccount[indexToEdit]?.maritalStatus 
-      ? selectedUserAccount[indexToEdit]?.maritalStatus 
+    selectedEmployeeAccount[indexToEdit]?.gender
+      ? selectedEmployeeAccount[indexToEdit]?.gender
       : ""
   );
-  const [nationality, setNationality] = useState(
-    selectedUserAccount[indexToEdit]?.nationality
-      ? selectedUserAccount[indexToEdit]?.nationality 
-      : ""
-  );
-  const [phoneNumber, setPhoneNumber] = useState(
-    selectedUserAccount[indexToEdit]?.phoneNumber
-     ? selectedUserAccount[indexToEdit]?.phoneNumber
+  // const [maritalStatus, setMaritalStatus] = useState(
+  //   selectedEmployeeAccount[indexToEdit]?.maritalStatus
+  //     ? selectedEmployeeAccount[indexToEdit]?.maritalStatus
+  //     : ""
+  // );
+  // const [nationality, setNationality] = useState(
+  //   selectedEmployeeAccount[indexToEdit]?.nationality
+  //     ? selectedEmployeeAccount[indexToEdit]?.nationality
+  //     : ""
+  // );
+  const [phone_number, setPhoneNumber] = useState(
+    selectedEmployeeAccount[indexToEdit]?.phone_number
+      ? selectedEmployeeAccount[indexToEdit]?.phone_number
       : ""
   );
   const [email, setEmail] = useState(
-    selectedUserAccount[indexToEdit]?.email
-     ? selectedUserAccount[indexToEdit]?.email 
-     : ""
-  );
-  const [hireDate, setHireDate] = useState(
-    selectedUserAccount[indexToEdit]?.hireDate 
-    ? selectedUserAccount[indexToEdit]?.hireDate
-     : ""
-  );
-  const [appointmentLetter, setAppointmentLetter] = useState(
-    selectedUserAccount[indexToEdit]?.appointmentLetter
-     ? selectedUserAccount[indexToEdit]?.appointmentLetter
+    selectedEmployeeAccount[indexToEdit]?.email
+      ? selectedEmployeeAccount[indexToEdit]?.email
       : ""
   );
-  const [role, setRole] = useState(
-    selectedUserAccount[indexToEdit]?.role 
-    ? selectedUserAccount[indexToEdit]?.role 
-    : ""
-  );
-  const [department, setDepartment] = useState(
-    selectedUserAccount[indexToEdit]?.department 
-    ? selectedUserAccount[indexToEdit]?.department
-     :""
-  );
-  const [organisation, setOrganisation] = useState(
-    selectedUserAccount[indexToEdit]?.organisation 
-    ? selectedUserAccount[indexToEdit]?.organisation 
-    : ""
-  );
-  const [salary, setSalary] = useState(
-    selectedUserAccount[indexToEdit]?.salary
-     ? selectedUserAccount[indexToEdit]?.salary
+  const [hire_date, setHireDate] = useState(
+    selectedEmployeeAccount[indexToEdit]?.hire_date
+      ? selectedEmployeeAccount[indexToEdit]?.hire_date
       : ""
   );
+  // const [appointmentLetter, setAppointmentLetter] = useState(
+  //   selectedEmployeeAccount[indexToEdit]?.appointmentLetter
+  //     ? selectedEmployeeAccount[indexToEdit]?.appointmentLetter
+  //     : ""
+  // );
+  // const [role, setRole] = useState(
+  //   selectedEmployeeAccount[indexToEdit]?.role
+  //     ? selectedEmployeeAccount[indexToEdit]?.role
+  //     : ""
+  // );
+  // const [department, setDepartment] = useState(
+  //   selectedEmployeeAccount[indexToEdit]?.department
+  //     ? selectedEmployeeAccount[indexToEdit]?.department
+  //     : ""
+  // );
+  // const [organisation, setOrganisation] = useState(
+  //   selectedEmployeeAccount[indexToEdit]?.organisation
+  //     ? selectedEmployeeAccount[indexToEdit]?.organisation
+  //     : ""
+  // );
+  // const [salary, setSalary] = useState(
+  //   selectedEmployeeAccount[indexToEdit]?.salary
+  //     ? selectedEmployeeAccount[indexToEdit]?.salary
+  //     : ""
+  // );
   const [photo, setPhoto] = useState(
-    selectedUserAccount[indexToEdit]?.photo
-     ? selectedUserAccount[indexToEdit]?.photo
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.photo
+      ? selectedEmployeeAccount[indexToEdit]?.photo
+      : null
   );
-  // const [createdDate, setCreatedDate] = useState("");
-  // const [lastUpdate, setLastUpdate] = useState("");
-  // const [createdById, setCreatedById] = useState(0);
-  const [niNumber, setNiNumber] = useState(
-    selectedUserAccount[indexToEdit]?.niNumber
-     ? selectedUserAccount[indexToEdit]?.niNumber 
-     : ""
-  )
-  const [id] = useState(isIdExist ? isIdExist : uniqueId);
+  // const [niNumber, setNiNumber] = useState(
+  //   selectedEmployeeAccount[indexToEdit]?.niNumber
+  //     ? selectedEmployeeAccount[indexToEdit]?.niNumber
+  //     : ""
+  // );
+  // const [id] = useState(isIdExist ? isIdExist : uniqueId);
 
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
@@ -150,47 +149,46 @@ const Addemployee = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validate first name and last name
-    if (firstName === "") {
+    if (first_name === "") {
       setFirstNameError("First name is required.");
       return;
     }
-    if (lastName === "") {
+    if (last_name === "") {
       setLastNameError("Last name is required.");
       return;
     }
 
-    // Clear any existing error messages
+    // // Clear any existing error messages
     setFirstNameError("");
     setLastNameError("");
 
-    const userAccount = {
-      id,
-      employeeNumber,
-      firstName,
-      middleName,
-      lastName,
-      dateOfBirth,
-      gender,
-      maritalStatus,
-      nationality,
-      phoneNumber,
-      email,
-      hireDate,
-      appointmentLetter,
-      role,
-      department,
-      organisation,
-      salary,
+    // const userAccount = {
+    //   maritalStatus,
+    //   nationality,
+    //   hireDate,
+    //   appointmentLetter,
+    //   role,
+    //   department,
+    //   organisation,
+    //   salary,
+    //   niNumber,
+    // };
+    const employeeData = {
+      first_name,
+      last_name,
+      middle_name,
+      employee_number,
       photo,
-      // createdDate,
-      // lastUpdate,
-      // createdById,
-      niNumber,
+      email,
+      phone_number,
     };
     if (isIdExist) {
-      dispatchUserAcct({ type: "update", payload: userAccount });
+      dispatchEmployee({ type: "update", payload: employeeData });
     } else {
-      dispatchUserAcct({ type: "push", payload: userAccount });
+      dispatchEmployee({
+        type: "add",
+        payload: employeeData
+      });
     }
     setGlobalState("showModal", false);
   };
@@ -223,56 +221,56 @@ const Addemployee = ({
     setGender(data);
   };
 
-  const departments = [];
-  deptList?.map((dept) => {
-    departments.push({ value: dept.id, label: dept.deptName });
-  });
+  // const departments = [];
+  // deptList?.map((dept) => {
+  //   departments.push({ value: dept.id, label: dept.deptName });
+  // });
 
-  const handleDepartmentChange = (event) => {
-    setDepartment(event);
-  };
+  // const handleDepartmentChange = (event) => {
+  //   setDepartment(event);
+  // };
 
+  // const roles = [];
+  // desigList?.map((role) => {
+  //   roles.push({ value: role.id, label: role.desigName });
+  // });
 
-  const roles = [];
-  desigList?.map((role) => {
-    roles.push({ value: role.id, label: role.desigName });
-  });
+  // const handleRoleChange = (event) => {
+  //   setRole(event);
+  // };
 
-  const handleRoleChange = (event) => {
-    setRole(event);
-  };
+  // const handleOrganisationChange = (event) => {
+  //   const data = event.target.value;
+  //   setOrganisation(data);
+  // };
 
-  const handleOrganisationChange = (event) => {
-    const data = event.target.value;
-    setOrganisation(data);
-  };
+  // const handleMaritalStatusChange = (event) => {
+  //   const data = event.target.value;
+  //   setMaritalStatus(data);
+  // };
 
-  const handleMaritalStatusChange = (event) => {
-    const data = event.target.value;
-    setMaritalStatus(data);
-  }
-
-  const appLetterOnChange = (event) => {
-    // const file = event.target.files[0];
-    // const reader = new FileReader();
-    // reader.readAsDataURL(file);
-    // reader.onload = () => {
-    //   const base64File = reader.result;
-    //   setAppointmentLetter(base64File)
-    // };
-    const data = event.target.value;
-    setAppointmentLetter(data)
-  }
-
+  // const appLetterOnChange = (event) => {
+  //   // const file = event.target.files[0];
+  //   // const reader = new FileReader();
+  //   // reader.readAsDataURL(file);
+  //   // reader.onload = () => {
+  //   //   const base64File = reader.result;
+  //   //   setAppointmentLetter(base64File)
+  //   // };
+  //   const data = event.target.value;
+  //   setAppointmentLetter(data);
+  // };
 
   const imageOnChange = (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files[0]; // Get the selected file
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const base64Image = reader.result;
-      setPhoto(base64Image);
-    };
+    const imagePath = URL.createObjectURL(file);
+    // reader.readAsDataURL(file);
+    // reader.onload = () => {
+    //   const base64Image = reader.result;
+    //   setPhoto(base64Image);
+    // };
+    setPhoto(null);
   };
 
   return (
@@ -300,7 +298,7 @@ const Addemployee = ({
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
@@ -308,7 +306,7 @@ const Addemployee = ({
                             First Name <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={firstName}
+                            value={first_name}
                             onChange={handleFirstNameChange}
                             className="form-control floating"
                             type="text"
@@ -325,7 +323,7 @@ const Addemployee = ({
                             Last Name <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={lastName}
+                            value={last_name}
                             onChange={handleLastNameChange}
                             className="form-control floating"
                             type="text"
@@ -342,7 +340,7 @@ const Addemployee = ({
                             Employee Number
                           </label>
                           <input
-                            value={employeeNumber}
+                            value={employee_number}
                             onChange={(event) =>
                               setEmployeeNumber(event.target.value)
                             }
@@ -356,7 +354,7 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">Middle Name</label>
                           <input
-                            value={middleName}
+                            value={middle_name}
                             onChange={(event) =>
                               setMiddleName(event.target.value)
                             }
@@ -370,10 +368,10 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">NI Number</label>
                           <input
-                            value={niNumber}
-                            onChange={(event) =>
-                              setNiNumber(event.target.value)
-                            }
+                            // value={niNumber}
+                            // onChange={(event) =>
+                            //   setNiNumber(event.target.value)
+                            // }
                             className="form-control floating"
                             type="text"
                             placeholder="NI Number"
@@ -389,10 +387,12 @@ const Addemployee = ({
                             onChange={handleGenderChange}
                             className="form-control floating"
                           >
-                            <option value="">Select</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
+                            <option disabled value="">
+                              Select
+                            </option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
                           </select>
                         </div>
                       </div>
@@ -402,8 +402,8 @@ const Addemployee = ({
                             Marital Status
                           </label>
                           <select
-                            value={maritalStatus}
-                            onChange={handleMaritalStatusChange}
+                            // value={maritalStatus}
+                            // onChange={handleMaritalStatusChange}
                             // className="select"
                             className="form-control floating"
                           >
@@ -419,10 +419,10 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">Nationality</label>
                           <input
-                            value={nationality}
-                            onChange={(event) =>
-                              setNationality(event.target.value)
-                            }
+                            // value={nationality}
+                            // onChange={(event) =>
+                            //   setNationality(event.target.value)
+                            // }
                             className="form-control floating"
                             type="text"
                             placeholder="Nationality"
@@ -433,7 +433,7 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">Phone Number</label>
                           <input
-                            value={phoneNumber}
+                            value={phone_number}
                             onChange={(event) =>
                               setPhoneNumber(event.target.value)
                             }
@@ -461,7 +461,7 @@ const Addemployee = ({
                             Date of Birth
                           </label>
                           <input
-                            value={dateOfBirth}
+                            value={date_of_birth}
                             onChange={(event) =>
                               setDateOfBirth(event.target.value)
                             }
@@ -475,7 +475,7 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">Hire Date</label>
                           <input
-                            value={hireDate}
+                            value={hire_date}
                             onChange={(event) =>
                               setHireDate(event.target.value)
                             }
@@ -489,8 +489,8 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">Organization</label>
                           <select
-                            value={organisation}
-                            onChange={handleOrganisationChange}
+                            // value={organisation}
+                            // onChange={handleOrganisationChange}
                             className="form-control floating"
                           >
                             <option value="">Select</option>
@@ -504,8 +504,8 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">Salary</label>
                           <input
-                            value={salary}
-                            onChange={(event) => setSalary(event.target.value)}
+                            // value={salary}
+                            // onChange={(event) => setSalary(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Salary"
@@ -518,8 +518,8 @@ const Addemployee = ({
                             Appointment Letter
                           </label>
                           <select
-                            value={appointmentLetter}
-                            onChange={appLetterOnChange}
+                            // value={appointmentLetter}
+                            // onChange={appLetterOnChange}
                             className="form-control floating"
                           >
                             <option value="">Select</option>
@@ -540,7 +540,7 @@ const Addemployee = ({
                           />
                         </div>
                       </div>
-                      <div className="col-sm-6">
+                      {/* <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Department</label>
                           <Select
@@ -549,21 +549,21 @@ const Addemployee = ({
                             styles={customSelectStyles}
                             placeholder="Select Department"
                             defaultValue={
-                              selectedUserAccount[indexToEdit]?.department
+                              selectedEmployeeAccount[indexToEdit]?.department
                                 ? {
                                     value:
-                                      selectedUserAccount[indexToEdit]
+                                      selectedEmployeeAccount[indexToEdit]
                                         .department.value,
                                     label:
-                                      selectedUserAccount[indexToEdit]
+                                      selectedEmployeeAccount[indexToEdit]
                                         .department.label,
                                   }
                                 : "Select Department"
                             }
                           />
                         </div>
-                      </div>
-                      <div className="col-sm-6">
+                      </div> */}
+                      {/* <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Role</label>
                           <Select
@@ -572,24 +572,24 @@ const Addemployee = ({
                             styles={customSelectStyles}
                             placeholder="Select Role"
                             defaultValue={
-                              selectedUserAccount[indexToEdit]?.role
+                              selectedEmployeeAccount[indexToEdit]?.role
                                 ? {
                                     value:
-                                      selectedUserAccount[indexToEdit]?.role
+                                      selectedEmployeeAccount[indexToEdit]?.role
                                         ?.value,
                                     label:
-                                      selectedUserAccount[indexToEdit]?.role
+                                      selectedEmployeeAccount[indexToEdit]?.role
                                         ?.label,
                                   }
                                 : "Select Role"
                             }
                           />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="submit-section">
                       <button
-                        onClick={handleSubmit}
+                        type="submit"
                         className="btn btn-primary submit-btn"
                       >
                         {isIdExist ? "Update" : "Save"}

@@ -6,7 +6,7 @@ import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
 const AllEmployeeList = ({
   DefaultImage,
-  handleEditAcct,
+  handleEditEmployee,
   handleDeleteAcct,
   data,
   setTab,
@@ -103,7 +103,7 @@ const AllEmployeeList = ({
           <div className="dropdown-menu dropdown-menu-right">
             <a
               className="dropdown-item"
-              onClick={() => handleEditAcct(record.id, index)}
+              onClick={() => handleEditEmployee(record.id, index)}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
