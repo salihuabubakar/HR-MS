@@ -7,6 +7,8 @@ import "../../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import Designations from "./designation";
 import Department from "./department";
+import Organisation from "./organisation";
+import Status from "./status";
 
 const Group = () => {
   const [menu, setMenu] = useState(false);
@@ -45,6 +47,12 @@ const Group = () => {
             </div>
             <div className="col-sm-6">
               <Designations />
+            </div>
+            <div className="col-sm-6">
+              <Organisation />
+            </div>
+            <div className="col-sm-6">
+              <Status />
             </div>
           </div>
         </div>

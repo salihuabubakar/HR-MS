@@ -9,7 +9,7 @@ export const useDataFetching = () => {
   const [showSkeleton, setShowSkeleton] = useState(false);
 
   useEffect(() => {
-
+    let isMounted = true;
     const fetchData = async () => {
       try {
         setIsLoading(true);
@@ -19,9 +19,11 @@ export const useDataFetching = () => {
           "https://www.jakago.com.ng/employee/list/?format=json"
         );
 
-        setData(response.data);
-        setIsLoading(false);
-        setShowSkeleton(false);
+        if(isMounted) {
+          setData(response.data);
+          setIsLoading(false);
+          setShowSkeleton(false);
+        }
       } catch (error) {
         console.error("Error:", error);
         setError("Network error occured.");
@@ -31,6 +33,9 @@ export const useDataFetching = () => {
     };
 
     fetchData();
+    return () => {
+      isMounted = false;
+    };
 
   }, []);
 
@@ -42,18 +47,24 @@ export const useDataEdit = () => {
   const [employeeEditData, setEmployeeEditData] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       try {
         const response = await axios.get(
           "https://www.jakago.com.ng/employee/detail/?format=json"
         );
-        setEmployeeEditData(response.data);
+        if(isMounted) {
+          setEmployeeEditData(response.data);
+        }
       } catch (error) {
         console.error("Error:", error);
       }
     };
 
     fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, [employeeEditData]);
 
   return { employeeEditData };

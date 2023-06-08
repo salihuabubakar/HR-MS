@@ -29,6 +29,7 @@ const AllEmployees = () => {
   const [skeletonLoading, setSkeletonLoading] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchEmployeeSelectedData = async () => {
       try {
         setIsSelectedLoading(true);
@@ -36,9 +37,11 @@ const AllEmployees = () => {
         const response = await axios.get(
           `https://www.jakago.com.ng/employee/detail/${getEmployeeId}?format=json`
         );
-        setGetSelectedData(response.data);
-        setIsSelectedLoading(false);
-        setSkeletonLoading(false);
+        if(isMounted) {
+          setGetSelectedData(response.data);
+          setIsSelectedLoading(false);
+          setSkeletonLoading(false);
+        }
       } catch (error) {
         console.error("Error:", error);
         setIsSelectedLoading(false);
@@ -46,6 +49,10 @@ const AllEmployees = () => {
       }
     };
     getEmployeeId != null ? fetchEmployeeSelectedData() : null;
+    
+    return () => {
+      isMounted = false;
+    };
   }, [getEmployeeId]);
 
   const initialUserData = [];
