@@ -15,6 +15,7 @@ import AllEmployeeList from './AllEmployeeList';
 import Profile from './Profile';
 import { DivContainer } from '../../TaskManagement/style';
 import axios from "axios";
+import { BaseUrl } from '../../../utils/baseUrl';
 
 
 const AllEmployees = () => {
@@ -35,7 +36,7 @@ const AllEmployees = () => {
         setIsSelectedLoading(true);
         setSkeletonLoading(true);
         const response = await axios.get(
-          `https://www.jakago.com.ng/employee/detail/${getEmployeeId}?format=json`
+          `${BaseUrl}/employee/detail/${getEmployeeId}?format=json`
         );
         if(isMounted) {
           setGetSelectedData(response.data);

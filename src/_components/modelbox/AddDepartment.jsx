@@ -1,55 +1,55 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { v4 as uuidv4 } from "uuid";
 
-const AddDepartment = ({ 
-  dispatchDepts, 
-  indexToEdit, 
-  // deptIdToEdit, 
-  // depts 
+const AddDepartment = ({
+  dispatchDept,
+  indexToEdit,
+  deptIdToEdit,
 }) => {
   const [selectedDept] = useGlobalState("selectedDept");
-  const uniqueId = uuidv4();
+  let id = deptIdToEdit;
 
-  const [deptName, setDeptName] = useState(
-    selectedDept[indexToEdit]?.deptName
-      ? selectedDept[indexToEdit]?.deptName
+  const [department_name, setDeptName] = useState(
+    selectedDept[indexToEdit]?.department_name
+      ? selectedDept[indexToEdit]?.department_name
       : ""
   );
 
-  const [id] = useState(
-    selectedDept[indexToEdit]?.id ? selectedDept[indexToEdit]?.id : uniqueId
+  const [description, setDescription] = useState(
+    selectedDept[indexToEdit]?.description
+      ? selectedDept[indexToEdit]?.description
+      : ""
   );
+
   const [deptNameError, setDeptNameError] = useState("");
 
-  //  const isEdit = () => !!(deptIdToEdit && depts[indexToEdit]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (department_name === "") {
+      setDeptNameError("Department is required.");
+      return;
+    }
 
-   const handleSubmit = (e) => {
-     e.preventDefault();
-     if (deptName === "") {
-       setDeptNameError("Department is required.");
-       return;
-     }
+    // Clear any existing error messages
+    setDeptNameError("");
+    const department = {
+      id,
+      department_name,
+      description,
+    };
+    if (selectedDept[indexToEdit]?.id) {
+      dispatchDept({ type: "update", payload: department });
+    } else {
+      dispatchDept({ type: "add", payload: department });
+    }
+    setGlobalState("showDeptModal", false);
+  };
 
-     // Clear any existing error messages
-     setDeptNameError("");
-     const department = {
-       deptName,
-       id,
-     };
-     if (selectedDept[indexToEdit]?.id) {
-       dispatchDepts({ type: "update", payload: department });
-     } else {
-       dispatchDepts({ type: "push", payload: department });
-     }
-     setGlobalState("showModal", false);
-   };
-   
-   const handleDeptNameChange = (event) => {
+  const handleDeptNameChange = (event) => {
     setDeptName(event.target.value);
-    setDeptNameError("")
-   }
+    setDeptNameError("");
+  };
   return (
     <>
       <PopupWrapper>
@@ -69,13 +69,13 @@ const AddDepartment = ({
                   <button
                     type="button"
                     className="close"
-                    onClick={() => setGlobalState("showModal", false)}
+                    onClick={() => setGlobalState("showDeptModal", false)}
                   >
                     <span aria-hidden="true">×</span>
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-sm-12">
                         <div className="form-group">
@@ -84,7 +84,7 @@ const AddDepartment = ({
                             <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={deptName}
+                            value={department_name}
                             onChange={handleDeptNameChange}
                             className="form-control floating"
                             type="text"
@@ -95,10 +95,25 @@ const AddDepartment = ({
                           )}
                         </div>
                       </div>
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          <label className="label">
+                            Description
+                          </label>
+                          <textarea
+                            className="form-control floating"
+                            name="description"
+                            placeholder="Description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            style={{ height: "70px" }}
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="submit-section">
                       <button
-                        onClick={handleSubmit}
+                        type="submit"
                         className="btn btn-primary submit-btn"
                       >
                         {selectedDept[indexToEdit]?.id ? "Update" : "Save"}

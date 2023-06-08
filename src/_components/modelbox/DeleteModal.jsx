@@ -6,13 +6,14 @@ import {
   PopupContainer,
 } from "./Addemployee.style";
 
-const DeleteModal = ({ deleteAction, indexToDelete, dispatch, modalTitle }) => {
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const DeleteModal = ({ deleteAction, iDToDelete, modalTitle }) => {
+  const handleSubmit = async () => {
 
     deleteAction({
       type: "delete",
-      payload: dispatch[indexToDelete],
+      payload: {
+        id: iDToDelete,
+      },
     });
 
     setGlobalState("deleteModal", false);
@@ -25,8 +26,9 @@ const DeleteModal = ({ deleteAction, indexToDelete, dispatch, modalTitle }) => {
     setGlobalState("deleteSubTask", false);
     setGlobalState("showEmergencyContactModal", false);
     setGlobalState("showPersonalInfoModal", false);
-    setGlobalState("deleteDesignationModal", false);
+    setGlobalState("deleteRoleModal", false);
     setGlobalState("showAddReviewModal", false);
+    setGlobalState("deleteDeptModal", false);
   };
 
   const handleModalClose = () => {
@@ -38,8 +40,9 @@ const DeleteModal = ({ deleteAction, indexToDelete, dispatch, modalTitle }) => {
     setGlobalState("showExperienceModal", false);
     setGlobalState("showAddSchedul", false);
     setGlobalState("deleteSubTask", false);
-    setGlobalState("deleteDesignationModal", false);
+    setGlobalState("deleteRoleModal", false);
     setGlobalState("showAddReviewModal", false);
+    setGlobalState("deleteDeptModal", false);
   }
 
   return (
