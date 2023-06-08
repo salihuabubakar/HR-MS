@@ -1,7 +1,7 @@
 import { createGlobalState } from "react-hooks-global-state";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
-  selectedUserAccount: [],
+  selectedEmployeeAccount: [],
   selectedDept: [],
   selectedDesignation: [],
   selectedHouse: [],

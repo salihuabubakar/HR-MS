@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const AllEmployee = ({
   DefaultImage,
-  handleEditAcct,
+  handleEditEmployee,
   handleDeleteAcct,
   data,
   isLoading,
@@ -82,7 +82,7 @@ const AllEmployee = ({
                         <div className="dropdown-menu dropdown-menu-right">
                           <a
                             className="dropdown-item"
-                            onClick={() => handleEditAcct(staff.id, index)}
+                            onClick={() => handleEditEmployee(staff.id, index)}
                           >
                             <i className="fa fa-pencil m-r-5" /> Edit
                           </a>

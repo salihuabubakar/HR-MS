@@ -5,13 +5,10 @@ import  Addemployee from "../../../_components/modelbox/Addemployee"
 import Header from '../../../initialpage/Sidebar/header'
 import Sidebar from '../../../initialpage/Sidebar/sidebar'
 import { setGlobalState, useGlobalState } from '../../../context/GlobalState';
-import {
-  initUserAccount,
-  savedUserAccountReducer,
-} from "../../../utils/localStorage";
+import { add_update_delete_employee } from '../../../utils/sendToServer';
 import DefaultImage from "../../../assets/img/placeholder.jpg";
 import DeleteModal from '../../../_components/modelbox/DeleteModal';
-import useDataFetching from '../../../utils/employeeCustomFetchHook';
+import { useDataFetching, useDataEdit } from '../../../utils/employeeCustomFetchHook';
 import "./style.css";
 import AllEmployee from './AllEmployee';
 import AllEmployeeList from './AllEmployeeList';
@@ -26,65 +23,10 @@ const AllEmployees = () => {
   const [tab, setTab] = useState("employeeAll" || "employeeList" || "employeeProfile");
   const [getEmployeeId, setGetEmployeeId] = useState(null)
   const { data, isLoading, error, showSkeleton } = useDataFetching();
+  const { employeeEditData } = useDataEdit();
   const [getSelectedData, setGetSelectedData] = useState();
   const [isSelectedLoading, setIsSelectedLoading] = useState(false);
   const [skeletonLoading, setSkeletonLoading] = useState(false);
-
-
-  const [userAcct, dispatchUserAcct] = useReducer(
-    savedUserAccountReducer,
-    [],
-    initUserAccount
-  );
-
-  useEffect(() => {
-    localStorage.setItem("userAccount", JSON.stringify(userAcct));
-  }, [userAcct]);
-  useEffect(() => {
-    if(!showModal) {
-      setGlobalState("selectedUserAccount", "")
-    }
-  }, [showModal])
-
-  const [employeeAccts, setEmployeeAccts] = useState();
-  useEffect(() => {
-    setEmployeeAccts(userAcct);
-  }, [userAcct]);
-
-  const [menu, setMenu] = useState(false)
- 
-  const [indexToEdit, setIndexToEdit] = useState(0);
-  const [acctIdToEdit, setAcctIdToEdit] = useState("");
-
-  const handleAddEmployee = () => {
-    setGlobalState("showModal", true);
-    setGlobalState("selectedUserAccount", "");
-  }
-
-  const handleEditAcct = (id, index) => {
-    setAcctIdToEdit(id);
-    setIndexToEdit(index);
-    setGlobalState("showModal", true);
-    setGlobalState("selectedUserAccount", userAcct);
-  };
-
-   const handleDeleteAcct = (index) => {
-    setIndexToEdit(index);
-    setGlobalState("deleteModal", true);
-   };
-
-	const toggleMobileMenu = () => {
-		setMenu(!menu)
-	  }
-
-    useEffect( ()=>{
-      if($('.select').length > 0) {
-        $('.select').select2({
-          minimumResultsForSearch: -1,
-          width: '100%'
-        });
-      }
-    });
 
   useEffect(() => {
     const fetchEmployeeSelectedData = async () => {
@@ -105,6 +47,54 @@ const AllEmployees = () => {
     };
     getEmployeeId != null ? fetchEmployeeSelectedData() : null;
   }, [getEmployeeId]);
+
+  const initialUserData = [];
+
+  const [state, dispatchEmployee] = useReducer(
+    add_update_delete_employee,
+    initialUserData
+  );
+
+  useEffect(() => {
+    if(!showModal) {
+      setGlobalState("selectedEmployeeAccount", "")
+    }
+  }, [showModal])
+  const [menu, setMenu] = useState(false)
+ 
+  const [indexToEdit, setIndexToEdit] = useState();
+  const [employeeIdToEdit, setEmployeeIdToEdit] = useState("");
+
+  const handleAddEmployee = () => {
+    setGlobalState("showModal", true);
+    setGlobalState("selectedEmployeeAccount", "");
+  }
+
+  const handleEditEmployee = (id, index) => {
+    setEmployeeIdToEdit(id);
+    setGetEmployeeId(id);
+    setIndexToEdit(index);
+    setGlobalState("showModal", true);
+    setGlobalState("selectedEmployeeAccount", employeeEditData);
+  };
+
+   const handleDeleteAcct = (index) => {
+    setIndexToEdit(index);
+    setGlobalState("deleteModal", true);
+   };
+
+	const toggleMobileMenu = () => {
+		setMenu(!menu)
+	  }
+
+    useEffect( ()=>{
+      if($('.select').length > 0) {
+        $('.select').select2({
+          minimumResultsForSearch: -1,
+          width: '100%'
+        });
+      }
+    });
 
       return (
         <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -207,7 +197,7 @@ const AllEmployees = () => {
                   isLoading={isLoading}
                   showSkeleton={showSkeleton}
                   error={error}
-                  handleEditAcct={handleEditAcct}
+                  handleEditEmployee={handleEditEmployee}
                   handleDeleteAcct={handleDeleteAcct}
                   DefaultImage={DefaultImage}
                   setTab={setTab}
@@ -216,7 +206,7 @@ const AllEmployees = () => {
               )}
               {tab == "employeeList" && (
                 <AllEmployeeList
-                  handleEditAcct={handleEditAcct}
+                  handleEditEmployee={handleEditEmployee}
                   handleDeleteAcct={handleDeleteAcct}
                   DefaultImage={DefaultImage}
                   data={data}
@@ -236,15 +226,15 @@ const AllEmployees = () => {
 
             {showModal && (
               <Addemployee
-                dispatchUserAcct={dispatchUserAcct}
+                dispatchEmployee={dispatchEmployee}
                 indexToEdit={indexToEdit}
-                acctIdToEdit={acctIdToEdit}
-                userAcct={userAcct}
+                employeeIdToEdit={employeeIdToEdit}
+                getEmployeeId={getEmployeeId}
               />
             )}
             {deleteModal && (
               <DeleteModal
-                deleteAction={dispatchUserAcct}
+                deleteAction={dispatchEmployee}
                 indexToDelete={indexToEdit}
                 dispatch={userAcct}
                 modalTitle={"Employee"}
