@@ -16,10 +16,21 @@
   max-height: 250px;
 }
 
+.file-name {
+  margin-left: 10px;
+  flex: 1;
+}
+
 .removeBtn {
-  border: 1px dashed #888;
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .removeBtn:hover {
-  color: #454545;
+  background-color: #c0392b;
 }

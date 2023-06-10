@@ -220,6 +220,7 @@ const Accomodations = () => {
                 <HouseDetails
                   isSelectedLoading={isSelectedLoading}
                   getSelectedData={getSelectedData}
+                  getHouseId={getHouseId}
                 />
               )}
             </div>

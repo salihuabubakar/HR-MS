@@ -125,5 +125,24 @@ export const useHouseFetching = () => {
   return { houseData, isHouseDataLoading, houseError };
 };
 
+// Get room data
+export const useRoomFetching = () => {
+  const fetchRoomData = async () => {
+    const response = await axios.get(`${BaseUrl}/house/rooms/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
 
+  const {
+    data: roomData,
+    isLoading: isRoomDataLoading,
+    error: roomError,
+  } = useQuery("roomData", fetchRoomData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on roleData
+      queryClient.invalidateQueries(["roomData"]);
+    },
+  });
 
+  return { roomData, isRoomDataLoading, roomError };
+};
