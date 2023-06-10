@@ -66,7 +66,7 @@ const AllEmployee = ({
                               width: "80px",
                               height: "80px",
                             }}
-                            src={photo ? photo : DefaultImage}
+                            src={(photo ? photo : DefaultImage)}
                             alt=""
                           />
                         </a>

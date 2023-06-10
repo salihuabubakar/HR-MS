@@ -6,9 +6,12 @@ import {
   PopupContainer,
 } from "./Addemployee.style";
 
-const DeleteModal = ({ deleteAction, iDToDelete, modalTitle }) => {
+const DeleteModal = ({
+  deleteAction,
+  iDToDelete,
+  modalTitle,
+}) => {
   const handleSubmit = async () => {
-
     deleteAction({
       type: "delete",
       payload: {
@@ -43,7 +46,7 @@ const DeleteModal = ({ deleteAction, iDToDelete, modalTitle }) => {
     setGlobalState("deleteRoleModal", false);
     setGlobalState("showAddReviewModal", false);
     setGlobalState("deleteDeptModal", false);
-  }
+  };
 
   return (
     <>
