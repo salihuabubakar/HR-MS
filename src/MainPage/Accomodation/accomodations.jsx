@@ -12,42 +12,75 @@ import HouseImg from "../../assets/img/house.png";
 import AddHouse from "../../_components/modelbox/AddHouse";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
 import DefaultImage from "../../assets/img/placeholder.jpg";
+import HouseDetails from './HouseDetails';
+import AllHouse from './AllHouse';
+import HouseList from './HouseList';
+import { useHouseFetching } from '../../utils/employeeCustomFetchHook';
+import { add_update_delete_house } from '../../utils/sendToServer';
+import "../Employees/Employees/style.css"
+import axios from "axios"
+import { BaseUrl } from '../../utils/baseUrl';
 
 
 const Accomodations = () => {
-
-  const [house, dispatchHouse] = useReducer(savedHouseReducer, [], initHouse);
+  const [tab, setTab] = useState(
+    "allHouse" || "houseList" || "houseDetail"
+  );
+  const { houseData, houseError, isHouseDataLoading } =
+    useHouseFetching();
+  const [state, dispatchHouse] = useReducer(add_update_delete_house, []);
   const [showModal] = useGlobalState("showModal");
   const [deleteModal] = useGlobalState("deleteModal");
-
-  useEffect(() => {
-    localStorage.setItem("house", JSON.stringify(house));
-  }, [house]);
-  useEffect(() => {
-    if (!showModal) {
-      setGlobalState("selectedHouse", "");
-    }
-  }, [showModal]);
-
-  const [houseList, setHouseList] = useState();
-  useEffect(() => {
-    setHouseList(house);
-  }, [house]);
-
-
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState(0);
   const [houseIdToEdit, setHouseIdToEdit] = useState("");
+  const [getHouseId, setGetHouseId] = useState();
+  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
+  const [getSelectedData, setGetSelectedData] = useState();
+
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchHouseSelectedData = async () => {
+      try {
+        setIsSelectedLoading(true);
+        const response = await axios.get(
+          `${BaseUrl}/house/details/${getHouseId}/?format=json`
+        );
+        if (isMounted) {
+          setGetSelectedData(response.data);
+          setIsSelectedLoading(false);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setIsSelectedLoading(false);
+      }
+    };
+    getHouseId != null ? fetchHouseSelectedData() : null;
+
+    return () => {
+      isMounted = false;
+    };
+  }, [getHouseId]);
+
+
+  useEffect(() => {
+    if (!showModal) {
+      setGlobalState("selectedHouse", "");
+      setHouseIdToEdit("");
+      setIndexToEdit("")
+    }
+  }, [showModal]);
 
   const handleHouseEdit = (id, index) => {
     setHouseIdToEdit(id);
     setIndexToEdit(index);
     setGlobalState("showModal", true);
-    setGlobalState("selectedHouse", house);
+    setGlobalState("selectedHouse", houseData);
   };
 
-  const handleHouseDelete = (index) => {
-    setIndexToEdit(index);
+  const handleHouseDelete = (id) => {
+    setGetHouseId(id);
     setGlobalState("deleteModal", true);
   };
 
@@ -77,158 +110,132 @@ const Accomodations = () => {
             <div className="content container-fluid">
               {/* Page Header */}
               <div className="page-header">
-                <div className="row align-items-center">
-                  <div className="col">
-                    <h3 className="page-title">House</h3>
-                    <ul className="breadcrumb">
-                      <li className="breadcrumb-item">
-                        <Link to="/app/main/dashboard">Dashboard</Link>
-                      </li>
-                      <li className="breadcrumb-item active">House</li>
-                    </ul>
-                  </div>
-                  <div className="col-auto float-end ml-auto">
-                    <a
-                      className="btn add-btn"
-                      onClick={() => setGlobalState("showModal", true)}
-                    >
-                      <i className="fa fa-plus" /> Add House
-                    </a>
-                    <div className="view-icons">
-                      <Link
-                        to="/app/accomodation/accomodations"
-                        className="grid-view btn btn-link active"
-                      >
-                        <i className="fa fa-th" />
-                      </Link>
-                      <Link
-                        to="/app/accomodation/accomodation"
-                        className="list-view btn btn-link"
-                      >
-                        <i className="fa fa-bars" />
-                      </Link>
+                {tab == "houseDetail" ? (
+                  <>
+                    <div className="row">
+                      <div className="col-sm-12">
+                        <h3 className="page-title">Profile</h3>
+                        <ul className="breadcrumb breadcrumb-nav">
+                          <li className="breadcrumb-item">
+                            <a onClick={() => setTab("allHouse")}>All House</a>
+                          </li>
+                          <li className="breadcrumb-item active">Profile</li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="row align-items-center">
+                      <div className="col">
+                        <h3 className="page-title">House</h3>
+                        <ul className="breadcrumb">
+                          <li className="breadcrumb-item">
+                            <Link to="/app/main/dashboard">Dashboard</Link>
+                          </li>
+                          <li className="breadcrumb-item active">House</li>
+                        </ul>
+                      </div>
+                      <div className="col-auto float-end ml-auto">
+                        <a
+                          className="btn add-btn"
+                          onClick={() => setGlobalState("showModal", true)}
+                        >
+                          <i className="fa fa-plus" /> Add House
+                        </a>
+                        <div className="view-icons">
+                          <a
+                            onClick={() => setTab("allHouse")}
+                            className={`grid-view btn btn-link ${
+                              tab == `allHouse` ? `active` : null
+                            }`}
+                          >
+                            <i className="fa fa-th" />
+                          </a>
+                          <a
+                            onClick={() => setTab("houseList")}
+                            className={`list-view btn btn-link ${
+                              tab == `houseList` ? `active` : null
+                            }`}
+                          >
+                            <i className="fa fa-bars" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
               {/* /Page Header */}
               {/* Search Filter */}
-              <div className="row filter-row">
-                <div className="col-sm-6 col-md-4">
-                  <div className="form-group form-focus">
-                    <input type="text" className="form-control floating" />
-                    <label className="focus-label">House ID</label>
+              {tab != "houseDetail" ? (
+                <>
+                  {/* Search Filter */}
+                  <div className="row filter-row">
+                    <div className="col-sm-6 col-md-4">
+                      <div className="form-group form-focus">
+                        <input type="text" className="form-control floating" />
+                        <label className="focus-label">House ID</label>
+                      </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4">
+                      <div className="form-group form-focus">
+                        <input type="text" className="form-control floating" />
+                        <label className="focus-label">House Name</label>
+                      </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4">
+                      <a href="#" className="btn btn-success btn-block w-100">
+                        {" "}
+                        Search{" "}
+                      </a>
+                    </div>
                   </div>
-                </div>
-                <div className="col-sm-6 col-md-4">
-                  <div className="form-group form-focus">
-                    <input type="text" className="form-control floating" />
-                    <label className="focus-label">House Name</label>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4">
-                  <a href="#" className="btn btn-success btn-block w-100">
-                    {" "}
-                    Search{" "}
-                  </a>
-                </div>
-              </div>
+                  {/* Search Filter */}
+                </>
+              ) : null}
               {/* Search Filter */}
-              <div className="row staff-grid-row">
-                {houseList?.length > 0
-                  ? houseList?.map((house, index) => {
-                      const { id, image, houseName, employee, managerName } =
-                        house;
-                      return (
-                        <div
-                          key={id}
-                          className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
-                        >
-                          <div className="profile-widget">
-                            <div className="profile-img">
-                              <Link
-                                to={{
-                                  pathname: "/app/accomodation/house-profile",
-                                  state: { id: id, index: index },
-                                }}
-                                className="avatar"
-                                style={{
-                                  borderRadius: "5px",
-                                  backgroundColor: "#00000000",
-                                }}
-                              >
-                                <img
-                                  style={{
-                                    borderRadius: "5px",
-                                    width: "80px",
-                                    height: "80px",
-                                  }}
-                                  src={image ? image : DefaultImage}
-                                  alt=""
-                                />
-                              </Link>
-                            </div>
-                            <div className="dropdown profile-action">
-                              <a
-                                className="action-icon dropdown-toggle"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <i className="material-icons">more_vert</i>
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <a
-                                  className="dropdown-item"
-                                  onClick={() =>
-                                    handleHouseEdit(house.id, index)
-                                  }
-                                >
-                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                </a>
-                                <a
-                                  className="dropdown-item"
-                                  onClick={() => handleHouseDelete(index)}
-                                >
-                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                </a>
-                              </div>
-                            </div>
-                            <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                              <Link
-                                to={{
-                                  pathname: "/app/accomodation/house-profile",
-                                  state: { id: id, index: index },
-                                }}
-                              >
-                                {houseName}
-                              </Link>
-                            </h4>
-                            <div className="small text-muted">
-                              Manager: {managerName}
-                            </div>
-                            {/* {employee?.length} */}
-                          </div>
-                        </div>
-                      );
-                    })
-                  : "No house available"}
-              </div>
+
+              {tab == "allHouse" && (
+                <AllHouse
+                  setTab={setTab}
+                  houseData={houseData}
+                  houseError={houseError}
+                  isHouseDataLoading={isHouseDataLoading}
+                  setGetHouseId={setGetHouseId}
+                  handleHouseEdit={handleHouseEdit}
+                  handleHouseDelete={handleHouseDelete}
+                />
+              )}
+              {tab == "houseList" && (
+                <HouseList
+                  setTab={setTab}
+                  houseData={houseData}
+                  setGetHouseId={setGetHouseId}
+                  handleHouseEdit={handleHouseEdit}
+                  handleHouseDelete={handleHouseDelete}
+                />
+              )}
+              {tab == "houseDetail" && (
+                <HouseDetails
+                  isSelectedLoading={isSelectedLoading}
+                  getSelectedData={getSelectedData}
+                />
+              )}
             </div>
 
             {showModal && (
               <AddHouse
                 dispatchHouse={dispatchHouse}
                 indexToEdit={indexToEdit}
-                deptIdToEdit={houseIdToEdit}
-                house={house}
+                houseIdToEdit={houseIdToEdit}
               />
             )}
 
             {deleteModal && (
               <DeleteModal
                 deleteAction={dispatchHouse}
-                indexToDelete={indexToEdit}
-                dispatch={house}
+                iDToDelete={getHouseId}
                 modalTitle={"House"}
               />
             )}

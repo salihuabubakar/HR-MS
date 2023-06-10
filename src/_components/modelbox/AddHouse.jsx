@@ -8,108 +8,255 @@ import {
   savedResidentReducer,
 } from "../../utils/localStorage";
 import Select from "react-select";
-import { v4 as uuidv4 } from "uuid";
 import "./style.css";
 
 const AddDepartment = ({
   dispatchHouse,
   indexToEdit,
-  // houseIdToEdit,
-  house
+  houseIdToEdit,
 }) => {
   const [selectedHouse] = useGlobalState("selectedHouse");
-  const uniqueId = uuidv4();
-     
- const [userAcct, dispatchUserAcct] = useReducer(
-   savedUserAccountReducer,
-   [],
-   initUserAccount
- );
- const [employeeAccts, setEmployeeAccts] = useState();
- useEffect(() => {
-   setEmployeeAccts(userAcct);
- }, [userAcct]);
 
- const [residentAcct] = useReducer(savedResidentReducer, [], initResident);
- const [residentAccts, setResidentAccts] = useState();
- useEffect(() => {
-   setResidentAccts(residentAcct);
- }, [residentAcct]);
+  let id = houseIdToEdit;
 
- const [image, setImage] = useState(
-   selectedHouse[indexToEdit]?.image ? selectedHouse[indexToEdit]?.image : ""
+ const [photo, setPhoto] = useState(
+  selectedHouse[indexToEdit]?.photo ? selectedHouse[indexToEdit]?.photo : ""
  );
 
-  const [houseName, setHouseName] = useState(
-    selectedHouse[indexToEdit]?.houseName
-      ? selectedHouse[indexToEdit]?.houseName
+  const [name, setName] = useState(
+    selectedHouse[indexToEdit]?.name
+      ? selectedHouse[indexToEdit]?.name
       : ""
   );
 
-  const [managerName, setManagerName] = useState(
-    selectedHouse[indexToEdit]?.managerName
-      ? selectedHouse[indexToEdit]?.managerName
+  const [manager, setManager] = useState(
+    selectedHouse[indexToEdit]?.manager
+      ? selectedHouse[indexToEdit]?.manager
       : ""
   );
 
-  const [employee, setEmployee] = useState(
-    selectedHouse[indexToEdit]?.employee
-      ? selectedHouse[indexToEdit]?.employee
+  const [street_address, setStreetAddress] = useState(
+    selectedHouse[indexToEdit]?.street_address
+      ? selectedHouse[indexToEdit]?.street_address
       : ""
   );
 
-  const [resident, setResident] = useState(
-    selectedHouse[indexToEdit]?.resident
-      ? selectedHouse[indexToEdit]?.resident
+  const [postcode, setPostcode] = useState(
+    selectedHouse[indexToEdit]?.postcode
+      ? selectedHouse[indexToEdit]?.postcode
       : ""
   );
 
-  const [id] = useState(
-    selectedHouse[indexToEdit]?.id ? selectedHouse[indexToEdit]?.id : uniqueId
+  const [city, setCity] = useState(
+    selectedHouse[indexToEdit]?.city ? selectedHouse[indexToEdit]?.city : ""
   );
+
+  const [mobile, setMobile] = useState(
+    selectedHouse[indexToEdit]?.mobile ? selectedHouse[indexToEdit]?.mobile : ""
+  );
+
+  const [email, setEmail] = useState(
+    selectedHouse[indexToEdit]?.email ? selectedHouse[indexToEdit]?.email : ""
+  );
+
+  const [house_type, setHouseType] = useState(
+    selectedHouse[indexToEdit]?.house_type
+      ? selectedHouse[indexToEdit]?.house_type
+      : ""
+  );
+
+  const [num_bedrooms, setNumBedrooms] = useState(
+    selectedHouse[indexToEdit]?.num_bedrooms
+      ? selectedHouse[indexToEdit]?.num_bedrooms
+      : ""
+  );
+
+  const [num_bathrooms, setNumBathrooms] = useState(
+    selectedHouse[indexToEdit]?.num_bathrooms
+      ? selectedHouse[indexToEdit]?.num_bathrooms
+      : ""
+  );
+
+  const [num_kitchens, setNumKitchens] = useState(
+    selectedHouse[indexToEdit]?.num_kitchens
+      ? selectedHouse[indexToEdit]?.num_kitchens
+      : ""
+  );
+
+  const [square_footage, setSquareFootage] = useState(
+    selectedHouse[indexToEdit]?.square_footage
+      ? selectedHouse[indexToEdit]?.square_footage
+      : ""
+  );
+
+  const [garage, setGarage] = useState(
+    selectedHouse[indexToEdit]?.garage
+      ? selectedHouse[indexToEdit]?.garage
+      : false
+  );
+
+  const [basement, setBasement] = useState(
+    selectedHouse[indexToEdit]?.basement
+      ? selectedHouse[indexToEdit]?.basement
+      : false
+  );
+
+  const [pool, setPool] = useState(
+    selectedHouse[indexToEdit]?.pool ? selectedHouse[indexToEdit]?.pool : false
+  );
+
+  const [back_yard, setBackYard] = useState(
+    selectedHouse[indexToEdit]?.back_yard
+      ? selectedHouse[indexToEdit]?.back_yard
+      : false
+  );
+
+  const [year_built, setYearBuilt] = useState(
+    selectedHouse[indexToEdit]?.year_built
+      ? selectedHouse[indexToEdit]?.year_built
+      : ""
+  );
+
+  const [air_conditioning, setAirConditioning] = useState(
+    selectedHouse[indexToEdit]?.air_conditioning
+      ? selectedHouse[indexToEdit]?.air_conditioning
+      : false
+  );
+
+  const [heating_system, setHeatingSystem] = useState(
+    selectedHouse[indexToEdit]?.heating_system
+      ? selectedHouse[indexToEdit]?.heating_system
+      : ""
+  );
+
+  const [roof_type, setRoofType] = useState(
+    selectedHouse[indexToEdit]?.roof_type
+      ? selectedHouse[indexToEdit]?.roof_type
+      : ""
+  );
+
+  const [fireplace, setFireplace] = useState(
+    selectedHouse[indexToEdit]?.fireplace
+      ? selectedHouse[indexToEdit]?.fireplace
+      : false
+  );
+
+  const [security_system, setSecuritySystem] = useState(
+    selectedHouse[indexToEdit]?.security_system
+      ? selectedHouse[indexToEdit]?.security_system
+      : false
+  );
+
+  const [solar_panels, setSolarPanels] = useState(
+    selectedHouse[indexToEdit]?.solar_panels
+      ? selectedHouse[indexToEdit]?.solar_panels
+      : false
+  );
+
+  const [num_floors, setNumFloors] = useState(
+    selectedHouse[indexToEdit]?.num_floors
+      ? selectedHouse[indexToEdit]?.num_floors
+      : ""
+  );
+
+  const [floor_type, setFloorType] = useState(
+    selectedHouse[indexToEdit]?.floor_type
+      ? selectedHouse[indexToEdit]?.floor_type
+      : ""
+  );
+
+  const [other_features, setOtherFeatures] = useState(
+    selectedHouse[indexToEdit]?.other_features
+      ? selectedHouse[indexToEdit]?.other_features
+      : ""
+  );
+
+  const [description, setDescription] = useState(
+    selectedHouse[indexToEdit]?.description
+      ? selectedHouse[indexToEdit]?.description
+      : ""
+  );
+
+
 
   //  const isEdit = () => !!(deptIdToEdit && depts[indexToEdit]);
   const [houseNameError, setHouseNameError] = useState("");
-  const [managerNameError, setManagerNameError] = useState("");
-  const [employeeError, setEmployeeError] = useState("");
-  const [residentError, setResidentError] = useState("");
+  const [streetAddError, setStreetAddError] = useState("");
+  const [cityError, setCityeError] = useState("");
+  const [postcodeError, setPostCodeError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+
+  const formData = new FormData();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (houseName === "") {
-      setHouseNameError("House Name is required.");
+    if (name === "") {
+      setHouseNameError("Name is required.");
       return;
     }
-    if (managerName === "") {
-      setManagerNameError("Manager Name is required.");
+    if (city === "") {
+      setCityeError("City is required.");
       return;
     }
-    if (employee === "") {
-      setEmployeeError("Employee is required.");
+    if (street_address === "") {
+      setStreetAddError("Street Address is required.");
       return;
     }
-    if (resident === "") {
-      setResidentError("Resident is required.");
+    if (postcode === "") {
+      setPostCodeError("Postcode is required.");
+      return;
+    }
+    if (description === "") {
+      setDescriptionError("Description is required.");
       return;
     }
 
     // Clear any existing error messages
     setHouseNameError("");
-    setManagerNameError("");
-    setEmployeeError("");
-    setResidentError("");
-    const house = {
-      image,
-      houseName,
-      employee,
-      resident,
-      managerName,
-      id,
+    setCityeError("");
+    setStreetAddError("");
+    setPostCodeError("");
+    setDescriptionError("")
+
+    const fields = {
+      name: name,
+      street_address: street_address,
+      postcode: postcode,
+      city: city,
+      mobile: mobile,
+      email: email,
+      house_type: house_type,
+      num_bedrooms: num_bedrooms,
+      num_bathrooms: num_bathrooms,
+      num_kitchens: num_kitchens,
+      square_footage: square_footage,
+      garage: garage,
+      basement: basement,
+      pool: pool,
+      back_yard: back_yard,
+      year_built: year_built,
+      air_conditioning: air_conditioning,
+      heating_system: heating_system,
+      roof_type: roof_type,
+      fireplace: fireplace,
+      security_system: security_system,
+      solar_panels: solar_panels,
+      num_floors: num_floors,
+      floor_type: floor_type,
+      other_features: other_features,
+      description: description,
+      photo: photo,
+      manager: manager,
     };
+
+    Object.entries(fields).forEach(([fieldName, fieldValue]) => {
+      formData.append(fieldName, fieldValue);
+    });
+
     if (selectedHouse[indexToEdit]?.id) {
-      dispatchHouse({ type: "update", payload: house });
+      dispatchHouse({ type: "update", payload: formData });
     } else {
-      dispatchHouse({ type: "push", payload: house });
+      dispatchHouse({ type: "add", payload: formData });
     }
     setGlobalState("showModal", false);
   };
@@ -127,76 +274,33 @@ const AddDepartment = ({
     }),
   };
 
-  const users = [];
-  employeeAccts?.map((user) => {
-    users.push({
-      value: user.id,
-      label: user.firstName + " " + user.lastName,
-      image: user.photo,
-    });
-  });
 
   const imageOnChange = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const base64Image = reader.result;
-      setImage(base64Image);
-    };
+    setPhoto(file);
   };
 
-    
-
-  const residents = [];
-  residentAccts?.map((resident) => {
-    residents.push({
-      value: resident.id,
-      label: resident.residentName,
-      image: resident.image,
-    });
-  });
 
   const handleHouseNameChange = (e) => {
-    setHouseName(e.target.value);
+    setName(e.target.value);
     setHouseNameError("");
   };
-  const handleManagerNameChange = (e) => {
-    setManagerName(e.target.value);
-    setManagerNameError("");
+  const handleCityChange = (e) => {
+    setCity(e.target.value);
+    setCityeError("");
   };
-  const handleEmployeeChange = (event) => {
-    setEmployee(event);
-    setEmployeeError("")
+  const handleStreetChange = (e) => {
+    setStreetAddress(e.target.value);
+    setStreetAddError("");
   };
-  const handleResidentChange = (event) => {
-    setResident(event);
-    setResidentError("")
+  const handlePostCodeChange = (e) => {
+    setPostcode(e.target.value);
+    setPostCodeError("");
   };
-
-
-const getEmployeeDefaultValues = (employeeData) => {
-  if (Array.isArray(employeeData)) {
-    return employeeData.map((employee) => ({
-      value: employee.value,
-      label: employee.label,
-      image: employee.photo,
-      role: employee.role,
-    }));
-  }
-  return [];
-}
-
-const getResidentefaultValues = (residentData) => {
-  if (Array.isArray(residentData)) {
-    return residentData.map((resident) => ({
-      value: resident.value,
-      label: resident.label,
-      image: resident.image,
-    }));
-  }
-  return [];
-};
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+    setDescriptionError("");
+  };
 
 
   return (
@@ -224,19 +328,21 @@ const getResidentefaultValues = (residentData) => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-sm-12">
                         <div
                           style={{ borderRadius: "5px" }}
                           className="profile-img-wrap edit-img"
                         >
-                          <img
-                            style={{ borderRadius: "5px" }}
-                            className="inline-block"
-                            src={image}
-                            alt="image"
-                          />
+                          {photo && (
+                            <img
+                              style={{ borderRadius: "5px" }}
+                              className="inline-block"
+                              src={URL.createObjectURL(photo)}
+                              alt="Selected"
+                            />
+                          )}
                           <div className="fileupload btn">
                             <span className="btn-text">Upload</span>
                             <input
@@ -254,7 +360,7 @@ const getResidentefaultValues = (residentData) => {
                             House Name <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={houseName}
+                            value={name}
                             onChange={handleHouseNameChange}
                             className="form-control floating"
                             type="text"
@@ -268,67 +374,328 @@ const getResidentefaultValues = (residentData) => {
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Manager <span className="text-danger">*</span>
+                            City <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={managerName}
-                            onChange={handleManagerNameChange}
+                            value={city}
+                            onChange={handleCityChange}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="City"
+                          />
+                          {cityError && (
+                            <p className="error-message">{cityError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Street Address{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={street_address}
+                            onChange={handleStreetChange}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Street Address"
+                          />
+                          {streetAddError && (
+                            <p className="error-message">{streetAddError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Postcode <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={postcode}
+                            onChange={handlePostCodeChange}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Postcode"
+                          />
+                          {postcodeError && (
+                            <p className="error-message">{postcodeError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Manager</label>
+                          <input
+                            value={manager}
+                            onChange={(e) => setManager(e.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Manager"
                           />
-                          {managerNameError && (
-                            <p className="error-message">{managerNameError}</p>
-                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
-                            Select Employee{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={getEmployeeDefaultValues(
-                              selectedHouse[indexToEdit]?.employee
-                            )}
-                            onChange={handleEmployeeChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={users}
-                            styles={customSelectStyles}
-                            placeholder="Select Staff"
+                          <label className="label">Mobile</label>
+                          <input
+                            value={mobile}
+                            onChange={(e) => setMobile(e.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Mobile"
                           />
-                          {employeeError && (
-                            <p className="error-message">{employeeError}</p>
-                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
-                            Residents <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={getResidentefaultValues(
-                              selectedHouse[indexToEdit]?.resident
-                            )}
-                            onChange={handleResidentChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={residents}
-                            styles={customSelectStyles}
-                            placeholder="Select Resident"
+                          <label className="label">Email</label>
+                          <input
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="form-control floating"
+                            type="email"
+                            placeholder="Email"
                           />
-                          {residentError && (
-                            <p className="error-message">{residentError}</p>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">House Type</label>
+                          <input
+                            value={house_type}
+                            onChange={(e) => setHouseType(e.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="House Type"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">No of Bedrooms</label>
+                          <input
+                            value={num_bedrooms}
+                            onChange={(e) => setNumBedrooms(e.target.value)}
+                            className="form-control floating"
+                            type="number"
+                            placeholder="No of Bedrooms"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">No of Bathrooms</label>
+                          <input
+                            value={num_bathrooms}
+                            onChange={(e) => setNumBathrooms(e.target.value)}
+                            className="form-control floating"
+                            type="number"
+                            placeholder="No of Bathrooms"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">No of Kitchens</label>
+                          <input
+                            value={num_kitchens}
+                            onChange={(e) => setNumKitchens(e.target.value)}
+                            className="form-control floating"
+                            type="number"
+                            placeholder="No of Kitchens"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Square Footage</label>
+                          <input
+                            value={square_footage}
+                            onChange={(e) => setSquareFootage(e.target.value)}
+                            className="form-control floating"
+                            type="number"
+                            placeholder="Square Footage"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Garage</label>
+                          <input
+                            value={garage}
+                            onChange={(e) => setGarage(e.target.value)}
+                            // className="form-control floating"
+                            type="checkbox"
+                            placeholder="Garage"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Basement</label>
+                          <input
+                            value={basement}
+                            onChange={(e) => setBasement(e.target.value)}
+                            // className="form-control floating"
+                            type="checkbox"
+                            placeholder="Basement"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Pool</label>
+                          <input
+                            value={pool}
+                            onChange={(e) => setPool(e.target.value)}
+                            // className="form-control floating"
+                            type="checkbox"
+                            placeholder="Pool"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Back Yard</label>
+                          <input
+                            value={back_yard}
+                            onChange={(e) => setBackYard(e.target.value)}
+                            // className="form-control floating"
+                            type="checkbox"
+                            placeholder="Back yard"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Year Built</label>
+                          <input
+                            value={year_built}
+                            onChange={(e) => setYearBuilt(e.target.value)}
+                            className="form-control floating"
+                            type="number"
+                            placeholder="Year Built"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Air Conditioning</label>
+                          <input
+                            value={air_conditioning}
+                            onChange={(e) => setAirConditioning(e.target.value)}
+                            // className="form-control floating"
+                            type="checkbox"
+                            placeholder="Air Conditioning"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Heating System</label>
+                          <input
+                            value={heating_system}
+                            onChange={(e) => setHeatingSystem(e.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Heating System"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Roof Type</label>
+                          <input
+                            value={roof_type}
+                            onChange={(e) => setRoofType(e.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Roof Type"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Fire Place</label>
+                          <input
+                            value={fireplace}
+                            onChange={(e) => setFireplace(e.target.value)}
+                            // className="form-control floating"
+                            type="checkbox"
+                            placeholder="Fire Place"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Security System</label>
+                          <input
+                            value={security_system}
+                            onChange={(e) => setSecuritySystem(e.target.value)}
+                            // className="form-control floating"
+                            type="checkbox"
+                            placeholder="Security System"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Solar Panels</label>
+                          <input
+                            value={solar_panels}
+                            onChange={(e) => setSolarPanels(e.target.value)}
+                            // className="form-control floating"
+                            type="checkbox"
+                            placeholder="Solar Panels"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">No FLoors</label>
+                          <input
+                            value={num_floors}
+                            onChange={(e) => setNumFloors(e.target.value)}
+                            className="form-control floating"
+                            type="number"
+                            placeholder="No FLoors"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          <label className="label">FLoor Type</label>
+                          <input
+                            value={floor_type}
+                            onChange={(e) => setFloorType(e.target.value)}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="FLoor Type"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          <label className="label">Description</label>{" "}
+                          <span className="text-danger">*</span>
+                          <textarea
+                            className="form-control floating"
+                            name="description"
+                            placeholder="Description"
+                            value={description}
+                            onChange={handleDescriptionChange}
+                            style={{ height: "70px" }}
+                          />
+                          {descriptionError && (
+                            <p className="error-message">{descriptionError}</p>
                           )}
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
                       <button
-                        onClick={handleSubmit}
+                        type="submit"
                         className="btn btn-primary submit-btn"
                       >
                         {selectedHouse[indexToEdit]?.id ? "Update" : "Save"}
