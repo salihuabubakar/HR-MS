@@ -1,12 +1,6 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import {
-  initUserAccount,
-  savedUserAccountReducer,
-  initResident,
-  savedResidentReducer,
-} from "../../utils/localStorage";
 import Select from "react-select";
 import "./style.css";
 
@@ -243,7 +237,7 @@ const AddDepartment = ({
       solar_panels: solar_panels,
       num_floors: num_floors,
       floor_type: floor_type,
-      other_features: other_features,
+      // other_features: other_features,
       description: description,
       photo: photo,
       manager: manager,

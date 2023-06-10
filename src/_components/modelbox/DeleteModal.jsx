@@ -32,6 +32,7 @@ const DeleteModal = ({
     setGlobalState("deleteRoleModal", false);
     setGlobalState("showAddReviewModal", false);
     setGlobalState("deleteDeptModal", false);
+    setGlobalState("deleteRoomModal", false);
   };
 
   const handleModalClose = () => {
@@ -46,6 +47,7 @@ const DeleteModal = ({
     setGlobalState("deleteRoleModal", false);
     setGlobalState("showAddReviewModal", false);
     setGlobalState("deleteDeptModal", false);
+    setGlobalState("deleteRoomModal", false);
   };
 
   return (

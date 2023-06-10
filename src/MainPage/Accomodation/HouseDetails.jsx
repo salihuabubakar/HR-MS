@@ -1,12 +1,44 @@
-import React from 'react'
+import React, {useEffect, useState, useMemo, useReducer } from 'react'
 import { Link } from "react-router-dom";
 import DefaultImage from "../../assets/img/placeholder.jpg";
+import AddRoom from '../../_components/modelbox/AddRoom';
+import { setGlobalState, useGlobalState } from '../../context/GlobalState';
+import { add_update_delete_room } from '../../utils/sendToServer';
+import { useRoomFetching  } from '../../utils/employeeCustomFetchHook';
+import DeleteModal from '../../_components/modelbox/DeleteModal';
 
-const HouseDetails = ({ 
-  isSelectedLoading,
-  getSelectedData, 
-}) => {
+const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
+  const [state, dispatchRoom] = useReducer(add_update_delete_room, []);
+  const [roomIndexToEdit, setRoomIndexToEdit] = useState(null);
+  const [showRoomModal] = useGlobalState("showRoomModal");
+  const { roomData, isRoomLoading, roomError } = useRoomFetching();
+  const [getRoomId, setGetRoomId] = useState();
+  const [deleteRoomModal] = useGlobalState("deleteRoomModal");
 
+  useEffect(() => {
+    if (!showRoomModal) {
+      setGlobalState("selectedRoom", "");
+    }
+  }, [showRoomModal]);
+
+const handleAddRoom = () => {
+  setGlobalState("showRoomModal", true)
+}
+const handleEdditRoom = (id, index) => {
+  console.log("insideEdit", id);
+  setGetRoomId(id);
+  setRoomIndexToEdit(index)
+  setGlobalState("selectedRoom", roomData);
+  setGlobalState("showRoomModal", true);
+};
+
+const handleDeleteRoom = (id) => {
+  setGetRoomId(id);
+  setGlobalState("deleteRoomModal", true)
+}
+console.log(getHouseId);
+
+  const houseId = getHouseId;
   const selectedHouseId = getSelectedData?.id;
   const name = getSelectedData?.name;
   const street_address = getSelectedData?.street_address;
@@ -422,9 +454,14 @@ const HouseDetails = ({
               <div className="col-md-6 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
-                    <h3 className="card-title">House Rooms</h3>
-                    {house_rooms?.length > 0
-                      ? house_rooms?.map((bills, index) => {
+                    <h3 className="card-title">
+                      House Rooms
+                      <a onClick={handleAddRoom} className="edit-icon">
+                        <i className="fa fa-plus" />
+                      </a>
+                    </h3>
+                    {roomData?.length > 0
+                      ? roomData?.map((bills, index) => {
                           const {
                             room_type,
                             id,
@@ -433,15 +470,46 @@ const HouseDetails = ({
                             house,
                             room_photos,
                           } = bills;
-                          return (
-                            <React.Fragment key={id}>
-                              <ul className="personal-info">
-                                <li>
-                                  <span className="text">{room_type}</span>
-                                </li>
-                              </ul>
-                            </React.Fragment>
-                          );
+                          if (house == houseId) {
+                            return (
+                              <React.Fragment key={id}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">{room_type}</span>
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleEdditRoom(id, index)
+                                          }
+                                        >
+                                          <i className="fa fa-pencil m-r-5" />{" "}
+                                          Edit
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() => handleDeleteRoom(id)}
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          }
                         })
                       : "Ops! No Room in the house"}
                   </div>
@@ -608,6 +676,22 @@ const HouseDetails = ({
         </div>
         {/* /Document Upload Tab */}
       </div>
+
+      {showRoomModal && (
+        <AddRoom
+          house={houseId}
+          dispatchRoom={dispatchRoom}
+          roomIndexToEdit={roomIndexToEdit}
+          id={getRoomId}
+        />
+      )}
+      {deleteRoomModal && (
+        <DeleteModal
+          deleteAction={dispatchRoom}
+          iDToDelete={getRoomId}
+          modalTitle={"Room"}
+        />
+      )}
     </>
   );
 };
