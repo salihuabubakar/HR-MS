@@ -13,7 +13,7 @@ import {
 // Get employee data
 export const useDataFetching = () => {
   const fetchData = async () => {
-    const response = await axios.get(`${BaseUrl}/employee/list/?format=json`);
+    const response = await axios.get(`${BaseUrl}/employee/create/?format=json`);
     return response.data;
   };
   const queryClient = useQueryClient();
@@ -146,3 +146,49 @@ export const useRoomFetching = () => {
 
   return { roomData, isRoomDataLoading, roomError };
 };
+
+
+// Get House Employee data
+export const useHouseEmployeeFetching = () => {
+  const fetchHouseEmployeeData = async () => {
+    const response = await axios.get(`${BaseUrl}/house/employees/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: houseEmployeeData,
+    isLoading: isHouseEmployeeLoading,
+    error: houseEmployeeError,
+  } = useQuery("houseEmployeeData", fetchHouseEmployeeData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on roleData
+      queryClient.invalidateQueries(["houseEmployeeData"]);
+    },
+  });
+
+  return { houseEmployeeData, isHouseEmployeeLoading, houseEmployeeError };
+};
+
+// Get House Employee data
+export const useHouseResidentFetching = () => {
+  const fetchHouseResidentData = async () => {
+    const response = await axios.get(`${BaseUrl}/house/residents/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: houseResidentData,
+    isLoading: isHouseResidentLoading,
+    error: houseResidentError,
+  } = useQuery("houseResidentData", fetchHouseResidentData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on roleData
+      queryClient.invalidateQueries(["houseResidentData"]);
+    },
+  });
+
+  return { houseResidentData, isHouseResidentLoading, houseResidentError };
+};
+

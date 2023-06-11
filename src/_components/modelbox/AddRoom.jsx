@@ -58,7 +58,6 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
     setRoomPhotosError("");
 
     const fields = {
-      id: id,
       house: house,
       room_type: room_type,
       room_status: room_status,
@@ -71,7 +70,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
     });
 
     if (selectedRoom[roomIndexToEdit]?.id) {
-      dispatchRoom({ type: "update", payload: formData });
+      dispatchRoom({ type: "update", payload: {id, formData} });
     } else {
       dispatchRoom({ type: "add", payload: formData });
     }
@@ -124,7 +123,9 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedRoom[roomIndexToEdit]?.id ? "Edit Room" : "Add Room"}
+                    {selectedRoom[roomIndexToEdit]?.id
+                      ? "Edit Room"
+                      : "Add Room"}
                   </h5>
                   <button
                     type="button"
@@ -199,7 +200,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                           <div>
                             <Dropzone
                               onDrop={handleFileDrop}
-                              accept="image/*"
+                              accept={"image/*"}
                               multiple={true}
                             >
                               {({ getRootProps, getInputProps }) => (

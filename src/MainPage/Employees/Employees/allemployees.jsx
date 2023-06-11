@@ -244,8 +244,7 @@ const AllEmployees = () => {
             {deleteModal && (
               <DeleteModal
                 deleteAction={dispatchEmployee}
-                indexToDelete={indexToEdit}
-                dispatch={userAcct}
+                iDToDelete={getEmployeeId}
                 modalTitle={"Employee"}
               />
             )}

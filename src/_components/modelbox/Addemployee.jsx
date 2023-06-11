@@ -37,11 +37,14 @@ const Addemployee = ({
   }, [desig]);
 
   const [selectedEmployeeAccount] = useGlobalState("selectedEmployeeAccount");
+  const imageUrlFromServer = selectedEmployeeAccount[indexToEdit]?.photo;
+  const [photo, setPhoto] = useState("");
 
   // console.log("selectedEmployeeAccount", selectedEmployeeAccount);
   // console.log("employeeIdToEdit", employeeIdToEdit);
   // console.log("indexToEdit", indexToEdit);
   // console.log("getEmployeeId", getEmployeeId);
+  let id = getEmployeeId;
 
   let isIdExist;
 
@@ -83,16 +86,16 @@ const Addemployee = ({
       ? selectedEmployeeAccount[indexToEdit]?.gender
       : ""
   );
-  // const [maritalStatus, setMaritalStatus] = useState(
-  //   selectedEmployeeAccount[indexToEdit]?.maritalStatus
-  //     ? selectedEmployeeAccount[indexToEdit]?.maritalStatus
-  //     : ""
-  // );
-  // const [nationality, setNationality] = useState(
-  //   selectedEmployeeAccount[indexToEdit]?.nationality
-  //     ? selectedEmployeeAccount[indexToEdit]?.nationality
-  //     : ""
-  // );
+  const [marital_status, setMaritalStatus] = useState(
+    selectedEmployeeAccount[indexToEdit]?.marital_status
+      ? selectedEmployeeAccount[indexToEdit]?.marital_status
+      : ""
+  );
+  const [nationality, setNationality] = useState(
+    selectedEmployeeAccount[indexToEdit]?.nationality
+      ? selectedEmployeeAccount[indexToEdit]?.nationality
+      : ""
+  );
   const [phone_number, setPhoneNumber] = useState(
     selectedEmployeeAccount[indexToEdit]?.phone_number
       ? selectedEmployeeAccount[indexToEdit]?.phone_number
@@ -123,27 +126,22 @@ const Addemployee = ({
   //     ? selectedEmployeeAccount[indexToEdit]?.department
   //     : ""
   // );
-  // const [organisation, setOrganisation] = useState(
-  //   selectedEmployeeAccount[indexToEdit]?.organisation
-  //     ? selectedEmployeeAccount[indexToEdit]?.organisation
-  //     : ""
-  // );
-  // const [salary, setSalary] = useState(
-  //   selectedEmployeeAccount[indexToEdit]?.salary
-  //     ? selectedEmployeeAccount[indexToEdit]?.salary
-  //     : ""
-  // );
-  const [photo, setPhoto] = useState(
-    selectedEmployeeAccount[indexToEdit]?.photo
-      ? selectedEmployeeAccount[indexToEdit]?.photo
-      : null
+  const [organisation, setOrganisation] = useState(
+    selectedEmployeeAccount[indexToEdit]?.organisation
+      ? selectedEmployeeAccount[indexToEdit]?.organisation
+      : ""
   );
-  // const [niNumber, setNiNumber] = useState(
-  //   selectedEmployeeAccount[indexToEdit]?.niNumber
-  //     ? selectedEmployeeAccount[indexToEdit]?.niNumber
-  //     : ""
-  // );
-  // const [id] = useState(isIdExist ? isIdExist : uniqueId);
+  // I will validate the number of salary should not be more than 6 figures
+  const [salary, setSalary] = useState(
+    selectedEmployeeAccount[indexToEdit]?.salary
+      ? selectedEmployeeAccount[indexToEdit]?.salary
+      : ""
+  );
+  const [ni_number, setNiNumber] = useState(
+    selectedEmployeeAccount[indexToEdit]?.ni_number
+      ? selectedEmployeeAccount[indexToEdit]?.ni_number
+      : ""
+  );
 
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
@@ -183,13 +181,21 @@ const Addemployee = ({
       photo: photo,
       email: email,
       phone_number: phone_number,
+      gender: gender,
+      ni_number: ni_number,
+      salary: salary,
+      organisation: organisation,
+      marital_status: marital_status,
+      nationality: nationality,
+      date_of_birth: date_of_birth,
+      hire_date: hire_date
     };
 
     Object.entries(fields).forEach(([fieldName, fieldValue]) => {
       formData.append(fieldName, fieldValue);
     });
     if (isIdExist) {
-      dispatchEmployee({ type: "update", payload: formData });
+      dispatchEmployee({ type: "update", payload: {id, formData} });
     } else {
       dispatchEmployee({
         type: "add",
@@ -227,6 +233,11 @@ const Addemployee = ({
     setGender(data);
   };
 
+  const imageOnChange = (event) => {
+    const file = event.target.files[0];
+    setPhoto(file);
+  };
+
   // const departments = [];
   // deptList?.map((dept) => {
   //   departments.push({ value: dept.id, label: dept.deptName });
@@ -245,15 +256,15 @@ const Addemployee = ({
   //   setRole(event);
   // };
 
-  // const handleOrganisationChange = (event) => {
-  //   const data = event.target.value;
-  //   setOrganisation(data);
-  // };
+  const handleOrganisationChange = (event) => {
+    const data = event.target.value;
+    setOrganisation(data);
+  };
 
-  // const handleMaritalStatusChange = (event) => {
-  //   const data = event.target.value;
-  //   setMaritalStatus(data);
-  // };
+  const handleMaritalStatusChange = (event) => {
+    const data = event.target.value;
+    setMaritalStatus(data);
+  };
 
   // const appLetterOnChange = (event) => {
   //   // const file = event.target.files[0];
@@ -267,17 +278,6 @@ const Addemployee = ({
   //   setAppointmentLetter(data);
   // };
 
-  const imageOnChange = (event) => {
-    const file = event.target.files[0]; // Get the selected file
-    // const reader = new FileReader();
-    // const imagePath = URL.createObjectURL(file);
-    // reader.readAsDataURL(file);
-    // reader.onload = () => {
-    //   const base64Image = reader.result;
-    //   setPhoto(base64Image);
-    // };
-    setPhoto(file);
-  };
 
   return (
     <>
@@ -306,6 +306,34 @@ const Addemployee = ({
                 <div className="modal-body">
                   <form onSubmit={handleSubmit}>
                     <div className="row">
+                      <div className="col-sm-12">
+                        <div
+                          style={{ borderRadius: "5px" }}
+                          className="profile-img-wrap edit-img"
+                        >
+                          <img
+                            style={{ borderRadius: "5px" }}
+                            className="inline-block"
+                            src={
+                              photo
+                                ? URL.createObjectURL(photo)
+                                : imageUrlFromServer
+                            }
+                            alt="employee_image"
+                          />
+                          <div className="fileupload btn">
+                            <span className="btn-text">
+                              {isIdExist ? "Update" : "Upload"}
+                            </span>
+                            <input
+                              className="upload"
+                              type="file"
+                              accept="image/*"
+                              onChange={imageOnChange}
+                            />
+                          </div>
+                        </div>
+                      </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">
@@ -374,10 +402,10 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">NI Number</label>
                           <input
-                            // value={niNumber}
-                            // onChange={(event) =>
-                            //   setNiNumber(event.target.value)
-                            // }
+                            value={ni_number}
+                            onChange={(event) =>
+                              setNiNumber(event.target.value)
+                            }
                             className="form-control floating"
                             type="text"
                             placeholder="NI Number"
@@ -408,9 +436,8 @@ const Addemployee = ({
                             Marital Status
                           </label>
                           <select
-                            // value={maritalStatus}
-                            // onChange={handleMaritalStatusChange}
-                            // className="select"
+                            value={marital_status}
+                            onChange={handleMaritalStatusChange}
                             className="form-control floating"
                           >
                             <option value="">Select</option>
@@ -425,10 +452,10 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">Nationality</label>
                           <input
-                            // value={nationality}
-                            // onChange={(event) =>
-                            //   setNationality(event.target.value)
-                            // }
+                            value={nationality}
+                            onChange={(event) =>
+                              setNationality(event.target.value)
+                            }
                             className="form-control floating"
                             type="text"
                             placeholder="Nationality"
@@ -495,14 +522,14 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">Organization</label>
                           <select
-                            // value={organisation}
-                            // onChange={handleOrganisationChange}
+                            value={organisation}
+                            onChange={handleOrganisationChange}
                             className="form-control floating"
                           >
-                            <option value="">Select</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Office">Office</option>
+                            <option disabled value="">Select Organization</option>
+                            <option value={1}>Finance</option>
+                            <option value={2}>Sales</option>
+                            <option value={3}>Office</option>
                           </select>
                         </div>
                       </div>
@@ -510,15 +537,15 @@ const Addemployee = ({
                         <div className="form-group">
                           <label className="col-form-label">Salary</label>
                           <input
-                            // value={salary}
-                            // onChange={(event) => setSalary(event.target.value)}
+                            value={salary}
+                            onChange={(event) => setSalary(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Salary"
                           />
                         </div>
                       </div>
-                      <div className="col-sm-6">
+                      <div className="col-sm-12">
                         <div className="form-group">
                           <label className="col-form-label">
                             Appointment Letter
@@ -533,16 +560,6 @@ const Addemployee = ({
                             <option value="Sales">Sales</option>
                             <option value="Office">Office</option>
                           </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Photo</label>
-                          <input
-                            className="form-control floating"
-                            type="file"
-                            onChange={imageOnChange}
-                          />
                         </div>
                       </div>
                       {/* <div className="col-sm-6">

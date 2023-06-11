@@ -2,41 +2,118 @@ import React, {useEffect, useState, useMemo, useReducer } from 'react'
 import { Link } from "react-router-dom";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import AddRoom from '../../_components/modelbox/AddRoom';
+import AddHouseEmployee from "../../_components/modelbox/AddHouseEmployee";
+import AddHouseResident from "../../_components/modelbox/AddHouseResident";
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
-import { add_update_delete_room } from '../../utils/sendToServer';
-import { useRoomFetching  } from '../../utils/employeeCustomFetchHook';
+import {
+  add_update_delete_room,
+  add_update_delete_house_employee,
+  add_update_delete_house_resident,
+} from "../../utils/sendToServer";
+import {
+  useRoomFetching,
+  useHouseEmployeeFetching,
+  useHouseResidentFetching,
+} from "../../utils/employeeCustomFetchHook";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
+import moment from "moment";
 
 const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
-  const [state, dispatchRoom] = useReducer(add_update_delete_room, []);
+  // House Employee
+  const [houseEmployeeState, dispatchHouseEmployee] = useReducer(
+    add_update_delete_house_employee,
+    []
+  );
+  const [houseEmployeeIndexToEdit, setHouseEmployeeIndexToEdit] =
+    useState(null);
+  const [showHouseEmployeeModal] = useGlobalState("showHouseEmployeeModal");
+  const { houseEmployeeData, isHouseEmployeeLoading, houseEmployeeError } =
+    useHouseEmployeeFetching();
+  const [getHouseEmployeeId, setGetHouseEmployeeId] = useState();
+  const [deleteHouseEmployeeModal] = useGlobalState("deleteHouseEmployeeModal");
+  useEffect(() => {
+    if (!showHouseEmployeeModal) {
+      setGlobalState("selectedHouseEmployee", "");
+    }
+  }, [showHouseEmployeeModal]);
+
+  const handleAddHouseEmployye = () => {
+    setGlobalState("showHouseEmployeeModal", true);
+  };
+
+  const handleEditHouseEmployee = (id, index) => {
+    setGetHouseEmployeeId(id);
+    setHouseEmployeeIndexToEdit(index);
+    setGlobalState("selectedHouseEmployee", houseEmployeeData);
+    setGlobalState("showHouseEmployeeModal", true);
+  };
+
+  const handleDeleteHouseEmployee = (id) => {
+    setGetHouseEmployeeId(id);
+    setGlobalState("deleteHouseEmployeeModal", true);
+  };
+
+  // House Resident
+  const [houseResidentState, dispatchHouseResident] = useReducer(
+    add_update_delete_house_resident,
+    []
+  );
+  const [houseResidentIndexToEdit, setHouseResidentIndexToEdit] =
+    useState(null);
+  const [showHouseResidentModal] = useGlobalState("showHouseResidentModal");
+  const { houseResidentData, isHouseResidentLoading, houseResidentError } =
+    useHouseResidentFetching();
+  const [getHouseResidentId, setGetHouseResidentId] = useState();
+  const [deleteHouseResidentModal] = useGlobalState("deleteHouseResidentModal");
+  useEffect(() => {
+    if (!showHouseResidentModal) {
+      setGlobalState("selectedHouseResident", "");
+    }
+  }, [showHouseResidentModal]);
+
+  const handleAddHouseResident = () => {
+    setGlobalState("showHouseResidentModal", true);
+  };
+
+  const handleEditHouseResident = (id, index) => {
+    setGetHouseResidentId(id);
+    setHouseResidentIndexToEdit(index);
+    setGlobalState("selectedHouseResident", houseResidentData);
+    setGlobalState("showHouseResidentModal", true);
+  };
+
+  const handleDeleteHouseResident = (id) => {
+    setGetHouseEmployeeId(id);
+    setGlobalState("deleteHouseEmployeeModal", true);
+  };
+
+  // Room
+  const [roomState, dispatchRoom] = useReducer(add_update_delete_room, []);
   const [roomIndexToEdit, setRoomIndexToEdit] = useState(null);
   const [showRoomModal] = useGlobalState("showRoomModal");
   const { roomData, isRoomLoading, roomError } = useRoomFetching();
   const [getRoomId, setGetRoomId] = useState();
   const [deleteRoomModal] = useGlobalState("deleteRoomModal");
-
   useEffect(() => {
     if (!showRoomModal) {
       setGlobalState("selectedRoom", "");
     }
   }, [showRoomModal]);
 
-const handleAddRoom = () => {
-  setGlobalState("showRoomModal", true)
-}
-const handleEdditRoom = (id, index) => {
-  console.log("insideEdit", id);
-  setGetRoomId(id);
-  setRoomIndexToEdit(index)
-  setGlobalState("selectedRoom", roomData);
-  setGlobalState("showRoomModal", true);
-};
+  const handleAddRoom = () => {
+    setGlobalState("showRoomModal", true);
+  };
+  const handleEdditRoom = (id, index) => {
+    setGetRoomId(id);
+    setRoomIndexToEdit(index);
+    setGlobalState("selectedRoom", roomData);
+    setGlobalState("showRoomModal", true);
+  };
 
-const handleDeleteRoom = (id) => {
-  setGetRoomId(id);
-  setGlobalState("deleteRoomModal", true)
-}
-console.log(getHouseId);
+  const handleDeleteRoom = (id) => {
+    setGetRoomId(id);
+    setGlobalState("deleteRoomModal", true);
+  };
 
   const houseId = getHouseId;
   const selectedHouseId = getSelectedData?.id;
@@ -147,30 +224,81 @@ console.log(getHouseId);
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Employees</h3>
+                      <h3 className="card-title">
+                        Employees
+                        <a
+                          onClick={handleAddHouseEmployye}
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
                       {house_employees?.length > 0
                         ? house_employees?.map((employees, index) => {
-                            const { label, value, image } = employees;
-                            return (
-                              <React.Fragment key={index}>
-                                {/* <ul className="personal-info">
-                              <li>
-                                <span className="text">
-                                  <img
-                                    style={{
-                                      width: "30px",
-                                      height: "30px",
-                                      borderRadius: "50px",
-                                    }}
-                                    alt=""
-                                    src={image ? image : DefaultImage}
-                                  />{" "}
-                                  {label}
-                                </span>
-                              </li>
-                            </ul> */}
-                              </React.Fragment>
-                            );
+                            const { id, status, employee, house, join_date, end_date} =
+                              employees;
+                              if(house === houseId) {
+                                return (
+                                  <React.Fragment key={id}>
+                                    <ul className="personal-info">
+                                      <li>
+                                        <span className="text">
+                                          Employee: {employee}
+                                        </span>
+                                        <span className="text">
+                                          Status: {status}
+                                        </span>
+                                        <span className="text">
+                                          Join Date:{" "}
+                                          {moment(join_date).format(
+                                            "DD MMM YYYY"
+                                          )}
+                                        </span>
+                                        <span className="text">
+                                          End Date:{" "}
+                                          {moment(end_date).format(
+                                            "DD MMM YYYY"
+                                          )}
+                                        </span>
+                                        <div className="dropdown dropdown-action text-end">
+                                          <a
+                                            className="action-icon dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            <i className="material-icons">
+                                              more_vert
+                                            </i>
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleEditHouseEmployee(
+                                                  id,
+                                                  index
+                                                )
+                                              }
+                                            >
+                                              <i className="fa fa-pencil m-r-5" />{" "}
+                                              Edit
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleDeleteHouseEmployee(id)
+                                              }
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" />{" "}
+                                              Delete
+                                            </a>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                  </React.Fragment>
+                                );
+                              }
                           })
                         : "Ops! No employee in the house."}
                     </div>
@@ -254,30 +382,85 @@ console.log(getHouseId);
               <div className="col-md-6 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
-                    <h3 className="card-title">Residents</h3>
+                    <h3 className="card-title">
+                      Residents
+                      <a onClick={handleAddHouseResident} className="edit-icon">
+                        <i className="fa fa-plus" />
+                      </a>
+                    </h3>
                     {house_residents?.length > 0
                       ? house_residents?.map((resident, index) => {
-                          const { label, value, image } = resident;
-                          return (
-                            <React.Fragment key={index}>
-                              {/* <ul className="personal-info">
-                                <li>
-                                  <span className="text">
-                                    <img
-                                      style={{
-                                        width: "30px",
-                                        height: "30px",
-                                        borderRadius: "50px",
-                                      }}
-                                      alt=""
-                                      src={image ? image : DefaultImage}
-                                    />{" "}
-                                    {label}
-                                  </span>
-                                </li>
-                              </ul> */}
-                            </React.Fragment>
-                          );
+                          const {
+                            id,
+                            status,
+                            room,
+                            resident: houseRes,
+                            house,
+                            join_date: occupancy_start_date,
+                            end_date: occupancy_end_date,
+                          } = resident;
+                          if(house == houseId) {
+                            return (
+                              <React.Fragment key={index}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">
+                                      Employee: {houseRes}
+                                    </span>
+                                    <span className="text">
+                                      Status: {status}
+                                    </span>
+                                    <span className="text">
+                                      Room: {room}
+                                    </span>
+                                    <span className="text">
+                                      Join Date:{" "}
+                                      {moment(occupancy_start_date).format(
+                                        "DD MMM YYYY"
+                                      )}
+                                    </span>
+                                    <span className="text">
+                                      End Date:{" "}
+                                      {moment(occupancy_end_date).format(
+                                        "DD MMM YYYY"
+                                      )}
+                                    </span>
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleEditHouseResident(id, index)
+                                          }
+                                        >
+                                          <i className="fa fa-pencil m-r-5" />{" "}
+                                          Edit
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleDeleteHouseResident(id)
+                                          }
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          }
                         })
                       : "Ops! No resident in the house."}
                   </div>
@@ -677,6 +860,41 @@ console.log(getHouseId);
         {/* /Document Upload Tab */}
       </div>
 
+      {/* House Employee Modals */}
+      {showHouseEmployeeModal && (
+        <AddHouseEmployee
+          house={houseId}
+          dispatchHouseEmployee={dispatchHouseEmployee}
+          houseEmployeeIndexToEdit={houseEmployeeIndexToEdit}
+          id={getHouseEmployeeId}
+        />
+      )}
+      {deleteHouseEmployeeModal && (
+        <DeleteModal
+          deleteAction={dispatchHouseEmployee}
+          iDToDelete={getHouseEmployeeId}
+          modalTitle={"House Employee"}
+        />
+      )}
+
+      {/* House Resident Modals */}
+      {showHouseResidentModal && (
+        <AddHouseResident
+          house={houseId}
+          dispatchHouseResident={dispatchHouseResident}
+          houseResidentIndexToEdit={houseResidentIndexToEdit}
+          id={getHouseResidentId}
+        />
+      )}
+      {deleteHouseResidentModal && (
+        <DeleteModal
+          deleteAction={dispatchHouseResident}
+          iDToDelete={getHouseResidentId}
+          modalTitle={"House Resident"}
+        />
+      )}
+
+      {/* Room Modals */}
       {showRoomModal && (
         <AddRoom
           house={houseId}
