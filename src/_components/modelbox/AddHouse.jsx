@@ -12,10 +12,9 @@ const AddDepartment = ({
   const [selectedHouse] = useGlobalState("selectedHouse");
 
   let id = houseIdToEdit;
+  const imageUrlFromServer = selectedHouse[indexToEdit]?.photo;
 
- const [photo, setPhoto] = useState(
-  selectedHouse[indexToEdit]?.photo ? selectedHouse[indexToEdit]?.photo : ""
- );
+ const [photo, setPhoto] = useState("");
 
   const [name, setName] = useState(
     selectedHouse[indexToEdit]?.name
@@ -248,7 +247,7 @@ const AddDepartment = ({
     });
 
     if (selectedHouse[indexToEdit]?.id) {
-      dispatchHouse({ type: "update", payload: formData });
+      dispatchHouse({ type: "update", payload: {id, formData} });
     } else {
       dispatchHouse({ type: "add", payload: formData });
     }
@@ -329,16 +328,22 @@ const AddDepartment = ({
                           style={{ borderRadius: "5px" }}
                           className="profile-img-wrap edit-img"
                         >
-                          {photo && (
-                            <img
-                              style={{ borderRadius: "5px" }}
-                              className="inline-block"
-                              src={URL.createObjectURL(photo)}
-                              alt="Selected"
-                            />
-                          )}
+                          <img
+                            style={{ borderRadius: "5px" }}
+                            className="inline-block"
+                            src={
+                              photo
+                                ? URL.createObjectURL(photo)
+                                : imageUrlFromServer
+                            }
+                            alt="house_image"
+                          />
                           <div className="fileupload btn">
-                            <span className="btn-text">Upload</span>
+                            <span className="btn-text">
+                              {selectedHouse[indexToEdit]?.id
+                                ? "Update"
+                                : "Upload"}
+                            </span>
                             <input
                               className="upload"
                               type="file"
@@ -517,8 +522,8 @@ const AddDepartment = ({
                         <div className="form-group">
                           <label className="label">Garage</label>
                           <input
-                            value={garage}
-                            onChange={(e) => setGarage(e.target.value)}
+                            checked={garage}
+                            onChange={(e) => setGarage(e.target.checked)}
                             // className="form-control floating"
                             type="checkbox"
                             placeholder="Garage"
@@ -529,8 +534,8 @@ const AddDepartment = ({
                         <div className="form-group">
                           <label className="label">Basement</label>
                           <input
-                            value={basement}
-                            onChange={(e) => setBasement(e.target.value)}
+                            checked={basement}
+                            onChange={(e) => setBasement(e.target.checked)}
                             // className="form-control floating"
                             type="checkbox"
                             placeholder="Basement"
@@ -541,8 +546,8 @@ const AddDepartment = ({
                         <div className="form-group">
                           <label className="label">Pool</label>
                           <input
-                            value={pool}
-                            onChange={(e) => setPool(e.target.value)}
+                            checked={pool}
+                            onChange={(e) => setPool(e.target.checked)}
                             // className="form-control floating"
                             type="checkbox"
                             placeholder="Pool"
@@ -553,8 +558,8 @@ const AddDepartment = ({
                         <div className="form-group">
                           <label className="label">Back Yard</label>
                           <input
-                            value={back_yard}
-                            onChange={(e) => setBackYard(e.target.value)}
+                            checked={back_yard}
+                            onChange={(e) => setBackYard(e.target.checked)}
                             // className="form-control floating"
                             type="checkbox"
                             placeholder="Back yard"
@@ -577,8 +582,10 @@ const AddDepartment = ({
                         <div className="form-group">
                           <label className="label">Air Conditioning</label>
                           <input
-                            value={air_conditioning}
-                            onChange={(e) => setAirConditioning(e.target.value)}
+                            checked={air_conditioning}
+                            onChange={(e) =>
+                              setAirConditioning(e.target.checked)
+                            }
                             // className="form-control floating"
                             type="checkbox"
                             placeholder="Air Conditioning"
@@ -613,8 +620,8 @@ const AddDepartment = ({
                         <div className="form-group">
                           <label className="label">Fire Place</label>
                           <input
-                            value={fireplace}
-                            onChange={(e) => setFireplace(e.target.value)}
+                            checked={fireplace}
+                            onChange={(e) => setFireplace(e.target.checked)}
                             // className="form-control floating"
                             type="checkbox"
                             placeholder="Fire Place"
@@ -625,9 +632,10 @@ const AddDepartment = ({
                         <div className="form-group">
                           <label className="label">Security System</label>
                           <input
-                            value={security_system}
-                            onChange={(e) => setSecuritySystem(e.target.value)}
-                            // className="form-control floating"
+                            checked={security_system}
+                            onChange={(e) =>
+                              setSecuritySystem(e.target.checked)
+                            }
                             type="checkbox"
                             placeholder="Security System"
                           />
@@ -637,8 +645,8 @@ const AddDepartment = ({
                         <div className="form-group">
                           <label className="label">Solar Panels</label>
                           <input
-                            value={solar_panels}
-                            onChange={(e) => setSolarPanels(e.target.value)}
+                            checked={solar_panels}
+                            onChange={(e) => setSolarPanels(e.target.checked)}
                             // className="form-control floating"
                             type="checkbox"
                             placeholder="Solar Panels"

@@ -46,6 +46,12 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedSalary: [],
   showUsersModal: false,
   selectedUsers: [],
+  selectedHouseEmployee: [],
+  showHouseEmployeeModal: false,
+  deleteHouseEmployeeModal: false,
+  selectedHouseResident: [],
+  showHouseResidentModal: false,
+  deleteHouseResidentModal: false,
 });
 
 export {setGlobalState, useGlobalState}

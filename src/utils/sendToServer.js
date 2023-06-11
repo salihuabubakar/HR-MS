@@ -3,19 +3,24 @@ import { BaseUrl } from "./baseUrl";
 
 // Add - Update - Delete Employee state
 export const add_update_delete_employee = async (state, { type, payload }) => {
+  const { id, formData } = payload;
+  console.log(id);
   switch (type) {
     case "add":
       try {
         const response = await axios.post(
-          `${BaseUrl}/employee/list/`,
+          `${BaseUrl}/employee/create/`,
           payload
         );
 
         // Check the response status
         if (response.status === 201) {
           const responseData = response.data;
-          // Update state or perform any other necessary actions based on the response
-          return [...state, responseData];
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
         } else {
           throw new Error("Failed to post data");
         }
@@ -27,24 +32,12 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
     case "update":
       try {
         const response = await axios.put(
-          `${BaseUrl}/employee/detail/${payload.id}/`,
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json"
-            },
-          }
+          `${BaseUrl}/employee/create/${id}/`, formData
         );
 
         // Check the response status
         if (response.status === 200) {
-          const updatedUser = response.data;
-          const updatedState = state.map((employee) =>
-            employee.id === updatedUser.id ? updatedUser : employee
-          );
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          return;
         } else {
           throw new Error("Failed to update data");
         }
@@ -56,15 +49,12 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
     case "delete":
       try {
         const response = await axios.delete(
-          `${BaseUrl}/employee/detail/${payload.id}/`
+          `${BaseUrl}/employee/create/${id}/`
         );
 
         // Check the response status
         if (response.status === 200) {
-          // Filter out the deleted user from state
-          const updatedState = state.filter((employee) => employee.id !== payload.id);
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          return;
         } else {
           throw new Error("Failed to delete data");
         }
@@ -92,8 +82,11 @@ export const add_update_delete_role = async (state, { type, payload }) => {
         // Check the response status
         if (response.status === 201) {
           const responseData = response.data;
-          // Update state or perform any other necessary actions based on the response
-          return [...state, responseData];
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
         } else {
           throw new Error("Failed to post data");
         }
@@ -170,8 +163,11 @@ export const add_update_delete_department = async (state, { type, payload }) => 
         // Check the response status
         if (response.status === 201) {
           const responseData = response.data;
-          // Update state or perform any other necessary actions based on the response
-          return [...state, responseData];
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
         } else {
           throw new Error("Failed to post data");
         }
@@ -236,7 +232,8 @@ export const add_update_delete_department = async (state, { type, payload }) => 
 
 // Add - Update - Delete House state
 export const add_update_delete_house = async (state, { type, payload }) => {
-  console.log(payload);
+ const { id, formData } = payload;
+ console.log(id);
   switch (type) {
     case "add":
       try {
@@ -245,8 +242,11 @@ export const add_update_delete_house = async (state, { type, payload }) => {
         // Check the response status
         if (response.status === 201) {
           const responseData = response.data;
-          // Update state or perform any other necessary actions based on the response
-          return [...state, responseData];
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
         } else {
           throw new Error("Failed to post data");
         }
@@ -258,24 +258,12 @@ export const add_update_delete_house = async (state, { type, payload }) => {
     case "update":
       try {
         const response = await axios.put(
-          `${BaseUrl}/house/houses/${payload.id}/`,
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          }
+          `${BaseUrl}/house/houses/${id}/`, formData
         );
 
         // Check the response status
         if (response.status === 200) {
-          const updatedHouse = response.data;
-          const updatedState = state.map((house) =>
-            house.id === updatedHouse.id ? updatedHouse : house
-          );
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          return;
         } else {
           throw new Error("Failed to update data");
         }
@@ -287,15 +275,12 @@ export const add_update_delete_house = async (state, { type, payload }) => {
     case "delete":
       try {
         const response = await axios.delete(
-          `${BaseUrl}/house/houses/${payload.id}/`
+          `${BaseUrl}/house/houses/${id}/`
         );
 
         // Check the response status
         if (response.status === 204) {
-          // Filter out the deleted house from state
-          const updatedState = state.filter((house) => house.id !== payload.id);
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          return;
         } else {
           throw new Error("Failed to delete data");
         }
@@ -311,7 +296,8 @@ export const add_update_delete_house = async (state, { type, payload }) => {
 
 // Add - Update - Delete Room state
 export const add_update_delete_room = async (state, { type, payload }) => {
-  console.log(payload);
+  const { id, formData } = payload;
+  console.log(id);
   switch (type) {
     case "add":
       try {
@@ -320,8 +306,11 @@ export const add_update_delete_room = async (state, { type, payload }) => {
         // Check the response status
         if (response.status === 201) {
           const responseData = response.data;
-          // Update state or perform any other necessary actions based on the response
-          return [...state, responseData];
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
         } else {
           throw new Error("Failed to post data");
         }
@@ -333,24 +322,12 @@ export const add_update_delete_room = async (state, { type, payload }) => {
     case "update":
       try {
         const response = await axios.put(
-          `${BaseUrl}/house/rooms/${payload.id}/`,
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          }
+          `${BaseUrl}/house/rooms/${id}/`, formData
         );
 
         // Check the response status
         if (response.status === 200) {
-          const updatedHouse = response.data;
-          const updatedState = state.map((room) =>
-            room.id === updatedHouse.id ? updatedHouse : room
-          );
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          return;
         } else {
           throw new Error("Failed to update data");
         }
@@ -362,15 +339,142 @@ export const add_update_delete_room = async (state, { type, payload }) => {
     case "delete":
       try {
         const response = await axios.delete(
-          `${BaseUrl}/house/rooms/${payload.id}/`
+          `${BaseUrl}/house/rooms/${id}/`
         );
 
         // Check the response status
         if (response.status === 204) {
-          // Filter out the deleted house from state
-          const updatedState = state.filter((room) => room.id !== payload.id);
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Delete House Employee state
+export const add_update_delete_house_employee = async (state, { type, payload }) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/house/employees/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/house/employees/${payload.id}/`, payload
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/house/employees/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Delete House Resident state
+export const add_update_delete_house_resident = async (state, { type, payload }) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/house/residents/`, payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/house/residents/${payload.id}/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/house/residents/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
         } else {
           throw new Error("Failed to delete data");
         }
