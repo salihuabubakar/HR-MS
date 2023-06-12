@@ -12,8 +12,14 @@ import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
 const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
-  const { houseImageData } = useHouseImageFetching();
+  const { houseImagesData } = useHouseImageFetching();
   const [selectedRoom] = useGlobalState("selectedRoom");
+
+  const [name, setRoomName] = useState(
+    selectedRoom[roomIndexToEdit]?.name
+      ? selectedRoom[roomIndexToEdit]?.name
+      : ""
+  );
   
 
   const [room_type, setRoomType] = useState(
@@ -46,11 +52,16 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
  
   const [roomTypeError, setRoomTypeError] = useState("");
   const [roomPhotosError, setRoomPhotosError] = useState("");
+  const [roomNameError, setRoomNameError] = useState("");
 
   // const formData = new FormData();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (name === "") {
+      setRoomNameError("Room name is required.");
+      return;
+    }
     if (room_type === "") {
       setRoomTypeError("Room type is required.");
       return;
@@ -66,6 +77,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
 
     const fields = {
       id,
+      name,
       house,
       room_type,
       room_status,
@@ -94,6 +106,10 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
   const handleRoomType = (e) => {
     setRoomType(e.target.value);
     setRoomTypeError("");
+  };
+  const handleNameChange = (e) => {
+    setRoomName(e.target.value);
+    setRoomNameError("");
   };
 
   //  const handleFileDrop = (acceptedFiles) => {
@@ -126,7 +142,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
   //  };
 
   const photos = [];
-  houseImageData?.map((image) => {
+  houseImagesData?.map((image) => {
     photos.push({
       name: image.name,
       id: image.id
@@ -178,6 +194,23 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
+                            Room Name <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={name}
+                            onChange={handleNameChange}
+                            className="form-control floating"
+                            type="text"
+                            placeholder="Room Name"
+                          />
+                          {roomNameError && (
+                            <p className="error-message">{roomNameError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
                             Room Type <span className="text-danger">*</span>
                           </label>
                           <select
@@ -216,7 +249,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                           </select>
                         </div>
                       </div>
-                      <div className="col-sm-12">
+                      <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Room Photos</label> {""}
                           <span className="text-danger">*</span>
@@ -235,13 +268,11 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                             ))}
                           </select> */}
                           <Autocomplete
-                            sx={{ m: 1, width: 500 }}
+                            sx={{ m: 1, width: 350 }}
                             multiple
                             id="tags-standard"
                             options={photos}
-                            getOptionLabel={
-                              (option) => option.name
-                            }
+                            getOptionLabel={(option) => option.name}
                             isOptionEqualToValue={(option, value) =>
                               option.id === value.id
                             }

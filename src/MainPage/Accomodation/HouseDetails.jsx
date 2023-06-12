@@ -765,12 +765,16 @@ const handleDeleteHouseDocuments = (id) => {
                             room_status,
                             house,
                             room_photos,
+                            name,
                           } = room;
                           if (house == houseId) {
                             return (
                               <React.Fragment key={id}>
                                 <ul className="personal-info">
                                   <li>
+                                    <span className="text">
+                                      Room Name: {name}
+                                    </span>
                                     <span className="text">
                                       Room Type: {room_type}
                                     </span>

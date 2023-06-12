@@ -152,7 +152,7 @@ const AddHouseResident = ({
                             </option>
                             {roomData.map((r, index) => (
                               <option key={r.id} value={r.id}>
-                                {`Room ${index + 1}`}
+                                {r.name}
                               </option>
                             ))}
                           </select>
