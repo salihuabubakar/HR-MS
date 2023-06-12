@@ -155,7 +155,7 @@ const AddHouseDocuments = ({
                             onChange={handleNameChange}
                             className="form-control floating"
                             type="text"
-                            placeholder="Name"
+                            placeholder="Title"
                           />
                           {titleError && (
                             <p className="error-message">{titleError}</p>
