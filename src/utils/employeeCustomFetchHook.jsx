@@ -201,15 +201,43 @@ export const useHouseImageFetching = () => {
   const queryClient = useQueryClient();
 
   const {
-    data: houseImageData,
-    isLoading: isHouseImageLoading,
-    error: houseImageError,
-  } = useQuery("houseImageData", fetchHouseImageData, {
+    data: houseImagesData,
+    isLoading: isHouseImagesLoading,
+    error: houseImagesError,
+  } = useQuery("houseImagesData", fetchHouseImageData, {
     onSuccess: () => {
       // Invalidate queries that depend on houseImageData
-      queryClient.invalidateQueries(["houseImageData"]);
+      queryClient.invalidateQueries(["houseImagesData"]);
     },
   });
 
-  return { houseImageData, isHouseImageLoading, houseImageError };
+  return { houseImagesData, isHouseImagesLoading, houseImagesError };
 };
+
+// Get House Maintenance data
+export const fetchHouseMaintenanceData = () => {
+  const fetchHouseMaintenanceData = async () => {
+    const response = await axios.get(`${BaseUrl}/house/maintenances/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: houseMaintenanceData,
+    isLoading: isHouseMaintenanceLoading,
+    error: houseMaintenanceError,
+  } = useQuery("houseMaintenanceData", fetchHouseMaintenanceData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on houseMaintenanceData
+      queryClient.invalidateQueries(["houseMaintenanceData"]);
+    },
+  });
+
+  return {
+    houseMaintenanceData,
+    isHouseMaintenanceLoading,
+    houseMaintenanceError,
+  };
+};
+
+

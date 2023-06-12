@@ -254,7 +254,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                             disableCloseOnSelect
                             renderOption={(props, option, { selected }) => (
                               <MenuItem
-                                key={option.id} // Assign a unique key to each MenuItem
+                                key={option.id}
                                 value={option.id}
                                 sx={{ justifyContent: "space-between" }}
                                 {...props}
