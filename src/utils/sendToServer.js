@@ -486,3 +486,66 @@ export const add_update_delete_house_resident = async (state, { type, payload })
       throw new Error();
   }
 };
+
+
+// Add - Update - Delete House Image state
+export const add_update_delete_house_image = async (state, { type, payload }) => {
+  const { id, formData } = payload;
+  console.log(id);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${BaseUrl}/house/images/`, payload);
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/house/images/${id}/`,
+          formData
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(`${BaseUrl}/house/images/${id}/`);
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};

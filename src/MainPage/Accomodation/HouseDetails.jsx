@@ -4,16 +4,19 @@ import DefaultImage from "../../assets/img/placeholder.jpg";
 import AddRoom from '../../_components/modelbox/AddRoom';
 import AddHouseEmployee from "../../_components/modelbox/AddHouseEmployee";
 import AddHouseResident from "../../_components/modelbox/AddHouseResident";
+import AddHouseImages from "../../_components/modelbox/AddHouseImages";
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
   add_update_delete_house_resident,
+  add_update_delete_house_image,
 } from "../../utils/sendToServer";
 import {
   useRoomFetching,
   useHouseEmployeeFetching,
   useHouseResidentFetching,
+  useHouseImageFetching,
 } from "../../utils/employeeCustomFetchHook";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
 import moment from "moment";
@@ -83,8 +86,42 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   };
 
   const handleDeleteHouseResident = (id) => {
-    setGetHouseEmployeeId(id);
+    setGetHouseResidentId(id);
     setGlobalState("deleteHouseResidentModal", true);
+  };
+
+  // House Images
+  const [houseImagesState, dispatchHouseImages] = useReducer(
+    add_update_delete_house_image,
+    []
+  );
+  const [houseImagesIndexToEdit, setHouseImagesIndexToEdit] =
+    useState(null);
+  const [showHouseImagesModal] = useGlobalState("showHouseImagesModal");
+  const { houseImagesData, isHouseImagesLoading, houseImagesError } =
+    useHouseImageFetching();
+  const [getHouseImagesId, setGetHouseImagesId] = useState();
+  const [deleteHouseImagesModal] = useGlobalState("deleteHouseImagesModal");
+  useEffect(() => {
+    if (!showHouseImagesModal) {
+      setGlobalState("selectedHouseImages", "");
+    }
+  }, [showHouseImagesModal]);
+
+  const handleAddHouseImages = () => {
+    setGlobalState("showHouseImagesModal", true);
+  };
+
+  const handleEditHouseImages = (id, index) => {
+    setGetHouseImagesId(id);
+    setHouseImagesIndexToEdit(index);
+    setGlobalState("selectedHouseImages", houseImagesData);
+    setGlobalState("showHouseImagesModal", true);
+  };
+
+  const handleDeleteHouseImages = (id) => {
+    setGetHouseImagesId(id);
+    setGlobalState("deleteHouseImagesModal", true);
   };
 
   // Room
@@ -233,8 +270,8 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                           <i className="fa fa-plus" />
                         </a>
                       </h3>
-                      {house_employees?.length > 0
-                        ? house_employees?.map((employees, index) => {
+                      {houseEmployeeData?.length > 0
+                        ? houseEmployeeData?.map((employees, index) => {
                             const {
                               id,
                               status,
@@ -389,13 +426,13 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                         <i className="fa fa-plus" />
                       </a>
                     </h3>
-                    {house_residents?.length > 0
-                      ? house_residents?.map((resident, index) => {
+                    {houseResidentData?.length > 0
+                      ? houseResidentData?.map((resident, index) => {
                           const {
                             id,
                             status,
                             room,
-                            resident: houseRes,
+                            residents,
                             house,
                             occupancy_start_date,
                             occupancy_end_date,
@@ -406,7 +443,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                 <ul className="personal-info">
                                   <li>
                                     <span className="text">
-                                      Resident: {houseRes}
+                                      Resident: {residents}
                                     </span>
                                     <span className="text">
                                       Status: {status}
@@ -540,9 +577,14 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
               <div className="col-md-6 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
-                    <h3 className="card-title">House Images</h3>
-                    {house_images?.length > 0
-                      ? house_images?.map((images, index) => {
+                    <h3 className="card-title">
+                      House Images
+                      <a onClick={handleAddHouseImages} className="edit-icon">
+                        <i className="fa fa-plus" />
+                      </a>
+                    </h3>
+                    {houseImagesData?.length > 0
+                      ? houseImagesData?.map((images, index) => {
                           const {
                             name,
                             id,
@@ -551,26 +593,67 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                             house,
                             cover_image,
                           } = images;
-                          return (
-                            <React.Fragment key={id}>
-                              <ul className="personal-info">
-                                <li>
-                                  <span className="text">
-                                    <img
-                                      style={{
-                                        width: "30px",
-                                        height: "30px",
-                                        borderRadius: "50px",
-                                      }}
-                                      alt=""
-                                      src={image ? image : DefaultImage}
-                                    />{" "}
-                                    {name}
-                                  </span>
-                                </li>
-                              </ul>
-                            </React.Fragment>
-                          );
+                          if (house == houseId) {
+                            return (
+                              <React.Fragment key={id}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">
+                                      <img
+                                        style={{
+                                          width: "350px",
+                                          height: "300px",
+                                          borderRadius: "5px",
+                                        }}
+                                        alt=""
+                                        src={image ? image : DefaultImage}
+                                      />
+                                    </span>
+                                    <span className="text">
+                                      {name}
+                                    </span>
+                                    <span className="text">
+                                      {description}
+                                    </span>
+                                    <span className="text">
+                                      {cover_image}
+                                    </span>
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleEditHouseImages(id, index)
+                                          }
+                                        >
+                                          <i className="fa fa-pencil m-r-5" />{" "}
+                                          Edit
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleDeleteHouseImages(id)
+                                          }
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          }
                         })
                       : "Ops! No Image"}
                   </div>
@@ -894,6 +977,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
           dispatchHouseResident={dispatchHouseResident}
           houseResidentIndexToEdit={houseResidentIndexToEdit}
           id={getHouseResidentId}
+          roomData={roomData}
         />
       )}
       {deleteHouseResidentModal && (
@@ -901,6 +985,23 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
           deleteAction={dispatchHouseResident}
           iDToDelete={getHouseResidentId}
           modalTitle={"House Resident"}
+        />
+      )}
+
+      {/* House Images Modals */}
+      {showHouseImagesModal && (
+        <AddHouseImages
+          house={houseId}
+          dispatchHouseImages={dispatchHouseImages}
+          houseImagesIndexToEdit={houseImagesIndexToEdit}
+          id={getHouseImagesId}
+        />
+      )}
+      {deleteHouseImagesModal && (
+        <DeleteModal
+          deleteAction={dispatchHouseImages}
+          iDToDelete={getHouseImagesId}
+          modalTitle={"House Image"}
         />
       )}
 

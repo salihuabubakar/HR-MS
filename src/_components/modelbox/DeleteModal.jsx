@@ -33,8 +33,9 @@ const DeleteModal = ({
     setGlobalState("showAddReviewModal", false);
     setGlobalState("deleteDeptModal", false);
     setGlobalState("deleteRoomModal", false);
-    setGlobalState("showHouseEmployeeModal", false);
+    setGlobalState("deleteHouseEmployeeModal", false);
     setGlobalState("deleteHouseResidentModal", false);
+    setGlobalState("deleteHouseImagesModal", false);
   };
 
   const handleModalClose = () => {
@@ -50,8 +51,9 @@ const DeleteModal = ({
     setGlobalState("showAddReviewModal", false);
     setGlobalState("deleteDeptModal", false);
     setGlobalState("deleteRoomModal", false);
-    setGlobalState("showHouseEmployeeModal", false);
+    setGlobalState("deleteHouseEmployeeModal", false);
     setGlobalState("deleteHouseResidentModal", false);
+    setGlobalState("deleteHouseImagesModal", false);
   };
 
   return (

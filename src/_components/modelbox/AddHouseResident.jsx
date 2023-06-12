@@ -13,19 +13,20 @@ const AddHouseResident = ({
   dispatchHouseResident,
   houseResidentIndexToEdit,
   id,
+  roomData,
 }) => {
   const [selectedHouseResident] = useGlobalState("selectedHouseResident");
-    const [status, setStatus] = useState(
-      selectedHouseResident[houseResidentIndexToEdit]?.status
-        ? selectedHouseResident[houseResidentIndexToEdit]?.status
-        : ""
-    );
+  const [status, setStatus] = useState(
+    selectedHouseResident[houseResidentIndexToEdit]?.status
+      ? selectedHouseResident[houseResidentIndexToEdit]?.status
+      : ""
+  );
 
-    const [room, setRoom] = useState(
-      selectedHouseResident[houseResidentIndexToEdit]?.room
-        ? selectedHouseResident[houseResidentIndexToEdit]?.room
-        : ""
-    );
+  const [room, setRoom] = useState(
+    selectedHouseResident[houseResidentIndexToEdit]?.room
+      ? selectedHouseResident[houseResidentIndexToEdit]?.room
+      : ""
+  );
 
   const [resident, setResident] = useState(
     selectedHouseResident[houseResidentIndexToEdit]?.resident
@@ -45,8 +46,7 @@ const AddHouseResident = ({
       : ""
   );
 
-
-    const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const houseResident = {
       id,
@@ -71,8 +71,7 @@ const AddHouseResident = ({
 
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
-  }
-
+  };
 
   return (
     <>
@@ -121,12 +120,6 @@ const AddHouseResident = ({
                             ))} */}
                             <option value={1}>Jofhn Maik Jakd</option>
                             <option value={2}>ofhn Ye rkd</option>
-                            <option value={3}>Jofhn Maike Jakd</option>
-                            <option value={4}>ofhn Ye rkd</option>
-                            <option value={5}>Jofhn Maike Jakd</option>
-                            <option value={6}>ofhn Ye rkd</option>
-                            <option value={7}>Jofhn Maike Jakd</option>
-                            <option value={8}>ofhn Ye rkd</option>
                           </select>
                         </div>
                       </div>
@@ -148,7 +141,28 @@ const AddHouseResident = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">Join Date</label>
+                          <label className="col-form-label">Room</label>
+                          <select
+                            value={room}
+                            onChange={(e) => setRoom(e.target.value)}
+                            className="form-control floating"
+                          >
+                            <option disabled value="">
+                              Select Room
+                            </option>
+                            {roomData.map((r, index) => (
+                              <option key={r.id} value={r.id}>
+                                {`Room ${index + 1}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Occupancy Start Date
+                          </label>
                           <input
                             value={occupancy_start_date}
                             onChange={(event) =>
@@ -162,10 +176,14 @@ const AddHouseResident = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">End Date</label>
+                          <label className="col-form-label">
+                            Occupancy End Date
+                          </label>
                           <input
                             value={occupancy_end_date}
-                            onChange={(event) => setOccupancyEndDate(event.target.value)}
+                            onChange={(event) =>
+                              setOccupancyEndDate(event.target.value)
+                            }
                             className="form-control floating"
                             type="date"
                             placeholder="End Date"
@@ -192,8 +210,6 @@ const AddHouseResident = ({
       </PopupWrapper>
     </>
   );
-
-
 };
 
 export default AddHouseResident;
