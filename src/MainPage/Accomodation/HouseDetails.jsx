@@ -84,7 +84,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
 
   const handleDeleteHouseResident = (id) => {
     setGetHouseEmployeeId(id);
-    setGlobalState("deleteHouseEmployeeModal", true);
+    setGlobalState("deleteHouseResidentModal", true);
   };
 
   // Room
@@ -235,70 +235,71 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                       </h3>
                       {house_employees?.length > 0
                         ? house_employees?.map((employees, index) => {
-                            const { id, status, employee, house, join_date, end_date} =
-                              employees;
-                              if(house === houseId) {
-                                return (
-                                  <React.Fragment key={id}>
-                                    <ul className="personal-info">
-                                      <li>
-                                        <span className="text">
-                                          Employee: {employee}
-                                        </span>
-                                        <span className="text">
-                                          Status: {status}
-                                        </span>
-                                        <span className="text">
-                                          Join Date:{" "}
-                                          {moment(join_date).format(
-                                            "DD MMM YYYY"
-                                          )}
-                                        </span>
-                                        <span className="text">
-                                          End Date:{" "}
-                                          {moment(end_date).format(
-                                            "DD MMM YYYY"
-                                          )}
-                                        </span>
-                                        <div className="dropdown dropdown-action text-end">
+                            const {
+                              id,
+                              status,
+                              employee,
+                              house,
+                              join_date,
+                              end_date,
+                            } = employees;
+                            if (house === houseId) {
+                              return (
+                                <React.Fragment key={id}>
+                                  <ul className="personal-info">
+                                    <li>
+                                      <span className="text">
+                                        Employee: {employee}
+                                      </span>
+                                      <span className="text">
+                                        Status: {status}
+                                      </span>
+                                      <span className="text">
+                                        Join Date:{" "}
+                                        {moment(join_date).format(
+                                          "DD MMM YYYY"
+                                        )}
+                                      </span>
+                                      <span className="text">
+                                        End Date:{" "}
+                                        {moment(end_date).format("DD MMM YYYY")}
+                                      </span>
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
                                           <a
-                                            className="action-icon dropdown-toggle"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false"
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditHouseEmployee(id, index)
+                                            }
                                           >
-                                            <i className="material-icons">
-                                              more_vert
-                                            </i>
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
                                           </a>
-                                          <div className="dropdown-menu dropdown-menu-right">
-                                            <a
-                                              className="dropdown-item"
-                                              onClick={() =>
-                                                handleEditHouseEmployee(
-                                                  id,
-                                                  index
-                                                )
-                                              }
-                                            >
-                                              <i className="fa fa-pencil m-r-5" />{" "}
-                                              Edit
-                                            </a>
-                                            <a
-                                              className="dropdown-item"
-                                              onClick={() =>
-                                                handleDeleteHouseEmployee(id)
-                                              }
-                                            >
-                                              <i className="fa fa-trash-o m-r-5" />{" "}
-                                              Delete
-                                            </a>
-                                          </div>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteHouseEmployee(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
                                         </div>
-                                      </li>
-                                    </ul>
-                                  </React.Fragment>
-                                );
-                              }
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </React.Fragment>
+                              );
+                            }
                           })
                         : "Ops! No employee in the house."}
                     </div>
@@ -396,31 +397,29 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                             room,
                             resident: houseRes,
                             house,
-                            join_date: occupancy_start_date,
-                            end_date: occupancy_end_date,
+                            occupancy_start_date,
+                            occupancy_end_date,
                           } = resident;
-                          if(house == houseId) {
+                          if (house == houseId) {
                             return (
                               <React.Fragment key={index}>
                                 <ul className="personal-info">
                                   <li>
                                     <span className="text">
-                                      Employee: {houseRes}
+                                      Resident: {houseRes}
                                     </span>
                                     <span className="text">
                                       Status: {status}
                                     </span>
+                                    <span className="text">Room: {room}</span>
                                     <span className="text">
-                                      Room: {room}
-                                    </span>
-                                    <span className="text">
-                                      Join Date:{" "}
+                                      Occupancy Start Date:{" "}
                                       {moment(occupancy_start_date).format(
                                         "DD MMM YYYY"
                                       )}
                                     </span>
                                     <span className="text">
-                                      End Date:{" "}
+                                      Occupancy End Date:{" "}
                                       {moment(occupancy_end_date).format(
                                         "DD MMM YYYY"
                                       )}
@@ -644,7 +643,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                       </a>
                     </h3>
                     {roomData?.length > 0
-                      ? roomData?.map((bills, index) => {
+                      ? roomData?.map((room, index) => {
                           const {
                             room_type,
                             id,
@@ -652,13 +651,24 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                             room_status,
                             house,
                             room_photos,
-                          } = bills;
+                          } = room;
                           if (house == houseId) {
                             return (
                               <React.Fragment key={id}>
                                 <ul className="personal-info">
                                   <li>
-                                    <span className="text">{room_type}</span>
+                                    <span className="text">
+                                      Room Type: {room_type}
+                                    </span>
+                                    <span className="text">
+                                      Room Status: {room_status}
+                                    </span>
+                                    <span className="text">
+                                      Room Photos: {room_photos}
+                                    </span>
+                                    <span className="text">
+                                      Room Description: {room_description}
+                                    </span>
                                     <div className="dropdown dropdown-action text-end">
                                       <a
                                         className="action-icon dropdown-toggle"
