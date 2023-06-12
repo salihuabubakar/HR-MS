@@ -296,8 +296,8 @@ export const add_update_delete_house = async (state, { type, payload }) => {
 
 // Add - Update - Delete Room state
 export const add_update_delete_room = async (state, { type, payload }) => {
-  const { id, formData } = payload;
-  console.log(id);
+  // const { id, formData } = payload;
+  console.log(payload);
   switch (type) {
     case "add":
       try {
@@ -322,7 +322,7 @@ export const add_update_delete_room = async (state, { type, payload }) => {
     case "update":
       try {
         const response = await axios.put(
-          `${BaseUrl}/house/rooms/${id}/`, formData
+          `${BaseUrl}/house/rooms/${payload.id}/`, payload
         );
 
         // Check the response status
@@ -339,7 +339,7 @@ export const add_update_delete_room = async (state, { type, payload }) => {
     case "delete":
       try {
         const response = await axios.delete(
-          `${BaseUrl}/house/rooms/${id}/`
+          `${BaseUrl}/house/rooms/${payload.id}/`
         );
 
         // Check the response status

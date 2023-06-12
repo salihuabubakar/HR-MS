@@ -7,11 +7,14 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import Dropzone from "react-dropzone";
+import { useHouseImageFetching } from "../../utils/employeeCustomFetchHook";
+import { MenuItem, Autocomplete, TextField } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 
 const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
+  const { houseImageData } = useHouseImageFetching();
   const [selectedRoom] = useGlobalState("selectedRoom");
-
-  console.log("insideRoom",id);
+  
 
   const [room_type, setRoomType] = useState(
     selectedRoom[roomIndexToEdit]?.room_type
@@ -36,11 +39,15 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
       ? selectedRoom[roomIndexToEdit]?.room_photos
       : []
   );
+
+  useEffect(() => {
+    console.log("room_photos", room_photos);
+  }, [])
  
   const [roomTypeError, setRoomTypeError] = useState("");
   const [roomPhotosError, setRoomPhotosError] = useState("");
 
-  const formData = new FormData();
+  // const formData = new FormData();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,7 +56,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
       return;
     }
     if (room_photos?.length === 0) {
-      setRoomPhotosError("Please upload at least one photo.");
+      setRoomPhotosError("Room photo is required.");
       return;
     }
 
@@ -58,21 +65,28 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
     setRoomPhotosError("");
 
     const fields = {
-      house: house,
-      room_type: room_type,
-      room_status: room_status,
-      room_description: room_description,
-      room_photos: room_photos,
+      id,
+      house,
+      room_type,
+      room_status,
+      room_description,
+      room_photos,
     };
 
-    Object.entries(fields).forEach(([fieldName, fieldValue]) => {
-      formData.append(fieldName, fieldValue);
-    });
+    // Object.entries(fields).forEach(([fieldName, fieldValue]) => {
+    //   formData.append(fieldName, fieldValue);
+    // });
+
+    // if (selectedRoom[roomIndexToEdit]?.id) {
+    //   dispatchRoom({ type: "update", payload: {id, formData} });
+    // } else {
+    //   dispatchRoom({ type: "add", payload: formData });
+    // }
 
     if (selectedRoom[roomIndexToEdit]?.id) {
-      dispatchRoom({ type: "update", payload: {id, formData} });
+      dispatchRoom({ type: "update", payload: fields });
     } else {
-      dispatchRoom({ type: "add", payload: formData });
+      dispatchRoom({ type: "add", payload: fields });
     }
     setGlobalState("showRoomModal", false);
   };
@@ -82,34 +96,57 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
     setRoomTypeError("");
   };
 
-   const handleFileDrop = (acceptedFiles) => {
-     const updatedFilePreviews = acceptedFiles.reduce((acc, file) => {
-       if (file.size <= 5 * 1024 * 1024) {
-         // 5MB in bytes
-         return [
-           ...acc,
-           {
-             room_photos: file,
-           },
-         ];
-       } else {
-         alert(`File '${file.name}' is larger than 5MB`);
-         return acc;
-       }
-     }, []);
+  //  const handleFileDrop = (acceptedFiles) => {
+  //    const updatedFilePreviews = acceptedFiles.reduce((acc, file) => {
+  //      if (file.size <= 5 * 1024 * 1024) {
+  //        // 5MB in bytes
+  //        return [
+  //          ...acc,
+  //          {
+  //            room_photos: file,
+  //          },
+  //        ];
+  //      } else {
+  //        alert(`File '${file.name}' is larger than 5MB`);
+  //        return acc;
+  //      }
+  //    }, []);
 
-     setRoomPhotos((prevFilePreviews) => [
-       ...prevFilePreviews,
-       ...updatedFilePreviews,
-     ]);
-     setRoomPhotosError("");
-   };
+  //    setRoomPhotos((prevFilePreviews) => [
+  //      ...prevFilePreviews,
+  //      ...updatedFilePreviews,
+  //    ]);
+  //    setRoomPhotosError("");
+  //  };
 
-   const handleFileRemove = (previewIndex) => {
-     setRoomPhotos((prevFilePreviews) =>
-       prevFilePreviews.filter((_, index) => index !== previewIndex)
-     );
-   };
+  //  const handleFileRemove = (previewIndex) => {
+  //    setRoomPhotos((prevFilePreviews) =>
+  //      prevFilePreviews.filter((_, index) => index !== previewIndex)
+  //    );
+  //  };
+
+  const photos = [];
+  houseImageData?.map((image) => {
+    photos.push({
+      name: image.name,
+      id: image.id
+    })
+  })
+
+  const handleRoomPhotos = (event, value) => {
+    const list = value?.map((v) =>v.id);
+    setRoomPhotos(list);
+    setRoomPhotosError("");
+  };
+
+  const getRoomPhotosDefaultValues = (photo) => {
+    if (Array.isArray(photo)) {
+      return photo.map((image) => ({
+        id: image.id,
+      }));
+    }
+    return [];
+  };
 
   return (
     <>
@@ -151,10 +188,9 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                             <option disabled value="">
                               Select Room Type
                             </option>
-                            <option value="bedroom">Bedroom</option>
-                            <option value="bathroom">Bathroom</option>
-                            <option value="kitchen">Kitchen</option>
-                            <option value="living_room">Living Room</option>
+                            <option value="Single">Single</option>
+                            <option value="Double">Double</option>
+                            <option value="Triple">Triple</option>
                           </select>
                           {roomTypeError && (
                             <p className="error-message">{roomTypeError}</p>
@@ -172,12 +208,73 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                             <option disabled value="">
                               Select Room Status
                             </option>
-                            <option value="vacant">Vacant</option>
-                            <option value="occupied">Occupied</option>
-                            <option value="under_maintenance">
+                            <option value="Vacant">Vacant</option>
+                            <option value="Occupied">Occupied</option>
+                            <option value="Under Maintenance">
                               Under Maintenance
                             </option>
                           </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          <label className="label">Room Photos</label> {""}
+                          <span className="text-danger">*</span>
+                          {/* <select
+                            value={room_photos}
+                            className="form-control floating"
+                            onChange={handleRoomPhotos}
+                          >
+                            <option disabled value="">
+                              Select Room Photos
+                            </option>
+                            {houseImageData?.map((image) => (
+                              <option key={image.id} value={image.id}>
+                                {`${image.name}`}
+                              </option>
+                            ))}
+                          </select> */}
+                          <Autocomplete
+                            sx={{ m: 1, width: 500 }}
+                            multiple
+                            id="tags-standard"
+                            options={photos}
+                            getOptionLabel={
+                              (option) => option.name
+                            }
+                            isOptionEqualToValue={(option, value) =>
+                              option.id === value.id
+                            }
+                            defaultValue={getRoomPhotosDefaultValues(
+                              selectedRoom[roomIndexToEdit]?.room_photos
+                            )}
+                            onChange={(event, value) =>
+                              handleRoomPhotos(event, value)
+                            }
+                            disableCloseOnSelect
+                            renderOption={(props, option, { selected }) => (
+                              <MenuItem
+                                key={option.id} // Assign a unique key to each MenuItem
+                                value={option.id}
+                                sx={{ justifyContent: "space-between" }}
+                                {...props}
+                              >
+                                {option.name}
+                                {selected ? <CheckIcon color="info" /> : null}
+                              </MenuItem>
+                            )}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Select Multiple Names"
+                                placeholder="Photo Names"
+                              />
+                            )}
+                          />
+                          {roomPhotosError && (
+                            <p className="error-message">{roomPhotosError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-12">
@@ -193,7 +290,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                           />
                         </div>
                       </div>
-                      <div className="col-sm-12">
+                      {/* <div className="col-sm-12">
                         <div className="form-group">
                           <label className="col-form-label">Room Photos</label>{" "}
                           <span className="text-danger">*</span>
@@ -257,7 +354,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                             )}
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="submit-section">
                       <button

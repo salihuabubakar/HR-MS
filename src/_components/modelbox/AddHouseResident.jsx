@@ -21,21 +21,27 @@ const AddHouseResident = ({
         : ""
     );
 
+    const [room, setRoom] = useState(
+      selectedHouseResident[houseResidentIndexToEdit]?.room
+        ? selectedHouseResident[houseResidentIndexToEdit]?.room
+        : ""
+    );
+
   const [resident, setResident] = useState(
     selectedHouseResident[houseResidentIndexToEdit]?.resident
       ? selectedHouseResident[houseResidentIndexToEdit]?.resident
       : ""
   );
 
-  const [join_date, setJoinDate] = useState(
-    selectedHouseResident[houseResidentIndexToEdit]?.join_date
-      ? selectedHouseResident[houseResidentIndexToEdit]?.join_date
+  const [occupancy_start_date, setOccupancyStartDate] = useState(
+    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_start_date
+      ? selectedHouseResident[houseResidentIndexToEdit]?.occupancy_start_date
       : ""
   );
 
-  const [end_date, setEndDate] = useState(
-    selectedHouseResident[houseResidentIndexToEdit]?.end_date
-      ? selectedHouseResident[houseResidentIndexToEdit]?.end_date
+  const [occupancy_end_date, setOccupancyEndDate] = useState(
+    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_end_date
+      ? selectedHouseResident[houseResidentIndexToEdit]?.occupancy_end_date
       : ""
   );
 
@@ -45,10 +51,11 @@ const AddHouseResident = ({
     const houseResident = {
       id,
       house,
+      room,
       status,
       resident,
-      join_date,
-      end_date,
+      occupancy_start_date,
+      occupancy_end_date,
     };
     if (selectedHouseResident[houseResidentIndexToEdit]?.id) {
       dispatchHouseResident({ type: "update", payload: houseResident });
@@ -112,14 +119,14 @@ const AddHouseResident = ({
                                 {`${employee.first_name} ${employee.middle_name} ${employee.last_name}`}
                               </option>
                             ))} */}
-                            <option value="">Jofhn Maik Jakd</option>
-                            <option value="">ofhn Ye rkd</option>
-                            <option value="">Jofhn Maike Jakd</option>
-                            <option value="">ofhn Ye rkd</option>
-                            <option value="">Jofhn Maike Jakd</option>
-                            <option value="">ofhn Ye rkd</option>
-                            <option value="">Jofhn Maike Jakd</option>
-                            <option value="">ofhn Ye rkd</option>
+                            <option value={1}>Jofhn Maik Jakd</option>
+                            <option value={2}>ofhn Ye rkd</option>
+                            <option value={3}>Jofhn Maike Jakd</option>
+                            <option value={4}>ofhn Ye rkd</option>
+                            <option value={5}>Jofhn Maike Jakd</option>
+                            <option value={6}>ofhn Ye rkd</option>
+                            <option value={7}>Jofhn Maike Jakd</option>
+                            <option value={8}>ofhn Ye rkd</option>
                           </select>
                         </div>
                       </div>
@@ -143,9 +150,9 @@ const AddHouseResident = ({
                         <div className="form-group">
                           <label className="col-form-label">Join Date</label>
                           <input
-                            value={join_date}
+                            value={occupancy_start_date}
                             onChange={(event) =>
-                              setJoinDate(event.target.value)
+                              setOccupancyStartDate(event.target.value)
                             }
                             className="form-control floating"
                             type="date"
@@ -157,8 +164,8 @@ const AddHouseResident = ({
                         <div className="form-group">
                           <label className="col-form-label">End Date</label>
                           <input
-                            value={end_date}
-                            onChange={(event) => setEndDate(event.target.value)}
+                            value={occupancy_end_date}
+                            onChange={(event) => setOccupancyEndDate(event.target.value)}
                             className="form-control floating"
                             type="date"
                             placeholder="End Date"

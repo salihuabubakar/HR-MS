@@ -192,3 +192,24 @@ export const useHouseResidentFetching = () => {
   return { houseResidentData, isHouseResidentLoading, houseResidentError };
 };
 
+// Get House Images data
+export const useHouseImageFetching = () => {
+  const fetchHouseImageData = async () => {
+    const response = await axios.get(`${BaseUrl}/house/images/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: houseImageData,
+    isLoading: isHouseImageLoading,
+    error: houseImageError,
+  } = useQuery("houseImageData", fetchHouseImageData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on houseImageData
+      queryClient.invalidateQueries(["houseImageData"]);
+    },
+  });
+
+  return { houseImageData, isHouseImageLoading, houseImageError };
+};
