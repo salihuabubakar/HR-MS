@@ -5,18 +5,21 @@ import AddRoom from '../../_components/modelbox/AddRoom';
 import AddHouseEmployee from "../../_components/modelbox/AddHouseEmployee";
 import AddHouseResident from "../../_components/modelbox/AddHouseResident";
 import AddHouseImages from "../../_components/modelbox/AddHouseImages";
+import AddHouseDocuments from "../../_components/modelbox/AddHouseDocuments";
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
   add_update_delete_house_resident,
   add_update_delete_house_image,
+  add_update_delete_house_document,
 } from "../../utils/sendToServer";
 import {
   useRoomFetching,
   useHouseEmployeeFetching,
   useHouseResidentFetching,
   useHouseImageFetching,
+  useHouseDocumentFetching
 } from "../../utils/employeeCustomFetchHook";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
 import moment from "moment";
@@ -95,8 +98,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
     add_update_delete_house_image,
     []
   );
-  const [houseImagesIndexToEdit, setHouseImagesIndexToEdit] =
-    useState(null);
+  const [houseImagesIndexToEdit, setHouseImagesIndexToEdit] = useState(null);
   const [showHouseImagesModal] = useGlobalState("showHouseImagesModal");
   const { houseImagesData, isHouseImagesLoading, houseImagesError } =
     useHouseImageFetching();
@@ -151,6 +153,41 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
     setGetRoomId(id);
     setGlobalState("deleteRoomModal", true);
   };
+
+  // House Document
+const [houseDocumentsState, dispatchHouseDocuments] = useReducer(
+  add_update_delete_house_document,
+  []
+);
+const [houseDocumentsIndexToEdit, setHouseDocumentsIndexToEdit] =
+  useState(null);
+const [showHouseDocumentsModal] = useGlobalState("showHouseDocumentsModal");
+const { houseDocumentsData, isHouseDocumentsLoading, houseDocumentsError } =
+  useHouseDocumentFetching();
+const [getHouseDocumentsId, setGetHouseDocumentsId] = useState();
+const [deleteHouseDocumentsModal] = useGlobalState("deleteHouseDocumentsModal");
+useEffect(() => {
+  if (!showHouseDocumentsModal) {
+    setGlobalState("selectedHouseDocuments", "");
+  }
+}, [showHouseDocumentsModal]);
+
+const handleAddHouseDocuments = () => {
+  setGlobalState("showHouseDocumentsModal", true);
+};
+
+const handleEditHouseDocuments = (id, index) => {
+  setGetHouseDocumentsId(id);
+  setHouseDocumentsIndexToEdit(index);
+  setGlobalState("selectedHouseDocuments", houseDocumentsData);
+  setGlobalState("showHouseDocumentsModal", true);
+};
+
+const handleDeleteHouseDocuments = (id) => {
+  setGetHouseDocumentsId(id);
+  setGlobalState("deleteHouseDocumentsModal", true);
+};
+
 
   const houseId = getHouseId;
   const selectedHouseId = getSelectedData?.id;
@@ -609,15 +646,9 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                         src={image ? image : DefaultImage}
                                       />
                                     </span>
-                                    <span className="text">
-                                      {name}
-                                    </span>
-                                    <span className="text">
-                                      {description}
-                                    </span>
-                                    <span className="text">
-                                      {cover_image}
-                                    </span>
+                                    <span className="text">{name}</span>
+                                    <span className="text">{description}</span>
+                                    <span className="text">{cover_image}</span>
                                     <div className="dropdown dropdown-action text-end">
                                       <a
                                         className="action-icon dropdown-toggle"
@@ -798,17 +829,112 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
         {/* Document Upload Tab */}
         <div className="tab-pane fade" id="document_upload">
           <div className="row">
-            <div className="col-md-6 d-flex">
+            {isSelectedLoading ? (
+              <div className="skeleton-container-profile">
+                <div className="skeleton-content-profile">
+                  <div className="skeleton-line-profile"></div>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        House Document
+                        <a
+                          onClick={handleAddHouseDocuments}
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      {houseDocumentsData?.length > 0
+                        ? houseDocumentsData?.map((doc, index) => {
+                            const {
+                              title,
+                              id,
+                              description,
+                              file,
+                              house,
+                              expiry_date,
+                              valid_from,
+                              status
+                            } = doc;
+                            if (house == houseId) {
+                              return (
+                                <React.Fragment key={id}>
+                                  <ul className="personal-info">
+                                    <li>
+                                      <span className="text">file: {file}</span>
+                                      <span className="text">{title}</span>
+                                      <span className="text">
+                                        {description}
+                                      </span>
+                                      <span className="text">
+                                        {status}
+                                      </span>
+                                      <span className="text">{valid_from}</span>
+                                      <span className="text">
+                                        {expiry_date}
+                                      </span>
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditHouseDocuments(
+                                                id,
+                                                index
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteHouseDocuments(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </React.Fragment>
+                              );
+                            }
+                          })
+                        : "Ops! No Document"}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+            {/* <div className="col-md-6 d-flex">
               <div className="card profile-box flex-fill">
                 <div className="card-body">
                   <h3 className="card-title">
                     House Documents{" "}
-                    {/* <a onClick={handleOpeneFileUpload} className="edit-icon">
+                    <a onClick={handleOpeneFileUpload} className="edit-icon">
                       <i className="fa fa-plus" />
-                    </a> */}
+                    </a>
                   </h3>
                   <div className="experience-box">
-                    {/* <ul className="experience-list">
+                    <ul className="experience-list">
                       {filesList?.length > 0 &&
                       selectedHouseDocumentId === houseID
                         ? filesList?.map((file, index) => {
@@ -943,11 +1069,11 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                             }
                           })
                         : "No uploaded file(s) yet"}
-                    </ul> */}
+                    </ul>
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* /Document Upload Tab */}
@@ -1019,6 +1145,23 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
           deleteAction={dispatchRoom}
           iDToDelete={getRoomId}
           modalTitle={"Room"}
+        />
+      )}
+
+      {/* House Documents Modals */}
+      {showHouseDocumentsModal && (
+        <AddHouseDocuments
+          house={houseId}
+          dispatchHouseDocuments={dispatchHouseDocuments}
+          houseDocumentsIndexToEdit={houseDocumentsIndexToEdit}
+          id={getHouseDocumentsId}
+        />
+      )}
+      {deleteHouseDocumentsModal && (
+        <DeleteModal
+          deleteAction={dispatchHouseDocuments}
+          iDToDelete={getHouseDocumentsId}
+          modalTitle={"House Document"}
         />
       )}
     </>
