@@ -57,7 +57,10 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   deleteHouseImagesModal: false,
   showHouseDocumentsModal: false,
   deleteHouseDocumentsModal: false,
-  selectedHouseDocuments: []
+  selectedHouseDocuments: [],
+  selectedBill: [],
+  showBillModal: false,
+  deleteBillModal: false,
 });
 
 export {setGlobalState, useGlobalState}

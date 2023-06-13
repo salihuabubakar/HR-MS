@@ -6,6 +6,7 @@ import AddHouseEmployee from "../../_components/modelbox/AddHouseEmployee";
 import AddHouseResident from "../../_components/modelbox/AddHouseResident";
 import AddHouseImages from "../../_components/modelbox/AddHouseImages";
 import AddHouseDocuments from "../../_components/modelbox/AddHouseDocuments";
+import AddHouseBills from "../../_components/modelbox/AddHouseBills";
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import {
   add_update_delete_room,
@@ -13,13 +14,15 @@ import {
   add_update_delete_house_resident,
   add_update_delete_house_image,
   add_update_delete_house_document,
+  add_update_delete_bill,
 } from "../../utils/sendToServer";
 import {
   useRoomFetching,
   useHouseEmployeeFetching,
   useHouseResidentFetching,
   useHouseImageFetching,
-  useHouseDocumentFetching
+  useHouseDocumentFetching,
+  useBillFetching,
 } from "../../utils/employeeCustomFetchHook";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
 import moment from "moment";
@@ -188,6 +191,36 @@ const handleDeleteHouseDocuments = (id) => {
   setGlobalState("deleteHouseDocumentsModal", true);
 };
 
+// House Bill
+const [billState, dispatchBill] = useReducer(add_update_delete_bill, []);
+const [billIndexToEdit, setBillIndexToEdit] = useState(null);
+const [showBillModal] = useGlobalState("showBillModal");
+const { billData, isBillLoading, billError } = useBillFetching();
+const [getBillId, setGetBillId] = useState();
+const [deleteBillModal] = useGlobalState("deleteBillModal");
+useEffect(() => {
+  if (!showBillModal) {
+    setGlobalState("selectedBill", "");
+  }
+}, [showBillModal]);
+
+const handleAddBill = () => {
+  setGlobalState("showBillModal", true);
+};
+
+const handleEditBill = (id, index) => {
+  setGetBillId(id);
+  setBillIndexToEdit(index);
+  setGlobalState("selectedBill", billData);
+  setGlobalState("showBillModal", true);
+};
+
+const handleDeleteBill = (id) => {
+  setGetBillId(id);
+  setGlobalState("deleteBillModal", true);
+};
+
+
 
   const houseId = getHouseId;
   const selectedHouseId = getSelectedData?.id;
@@ -226,6 +259,9 @@ const handleDeleteHouseDocuments = (id) => {
   const house_rooms = getSelectedData?.house_rooms;
   const house_employees = getSelectedData?.house_employees;
   const house_residents = getSelectedData?.house_residents;
+
+
+  const vacantRooms = house_rooms?.filter((room) => room.room_status === 'Vacant');
 
   return (
     <>
@@ -707,9 +743,14 @@ const handleDeleteHouseDocuments = (id) => {
               <div className="col-md-6 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
-                    <h3 className="card-title">House Bills</h3>
-                    {house_bills?.length > 0
-                      ? house_bills?.map((bills, index) => {
+                    <h3 className="card-title">
+                      House Bills
+                      <a onClick={handleAddBill} className="edit-icon">
+                        <i className="fa fa-plus" />
+                      </a>
+                    </h3>
+                    {billData?.length > 0
+                      ? billData?.map((bills, index) => {
                           const {
                             title,
                             id,
@@ -719,15 +760,54 @@ const handleDeleteHouseDocuments = (id) => {
                             paid,
                             documents,
                           } = bills;
-                          return (
-                            <React.Fragment key={id}>
-                              <ul className="personal-info">
-                                <li>
-                                  <span className="text">{title}</span>
-                                </li>
-                              </ul>
-                            </React.Fragment>
-                          );
+                          if (house == houseId) {
+                            return (
+                              <React.Fragment key={id}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">Title: {title}</span>
+                                    <span className="text">
+                                      Amount: {amount}
+                                    </span>
+                                    <span className="text">Paid: {paid}</span>
+                                    <span className="text">
+                                      Document: {documents}
+                                    </span>
+                                    <span className="text">Date: {date}</span>
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleEditBill(id, index)
+                                          }
+                                        >
+                                          <i className="fa fa-pencil m-r-5" />{" "}
+                                          Edit
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() => handleDeleteBill(id)}
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          }
                         })
                       : "Ops! No Bill"}
                   </div>
@@ -863,7 +943,7 @@ const handleDeleteHouseDocuments = (id) => {
                               house,
                               expiry_date,
                               valid_from,
-                              status
+                              status,
                             } = doc;
                             if (house == houseId) {
                               return (
@@ -875,9 +955,7 @@ const handleDeleteHouseDocuments = (id) => {
                                       <span className="text">
                                         {description}
                                       </span>
-                                      <span className="text">
-                                        {status}
-                                      </span>
+                                      <span className="text">{status}</span>
                                       <span className="text">{valid_from}</span>
                                       <span className="text">
                                         {expiry_date}
@@ -1107,7 +1185,7 @@ const handleDeleteHouseDocuments = (id) => {
           dispatchHouseResident={dispatchHouseResident}
           houseResidentIndexToEdit={houseResidentIndexToEdit}
           id={getHouseResidentId}
-          roomData={roomData}
+          roomData={vacantRooms}
         />
       )}
       {deleteHouseResidentModal && (
@@ -1148,7 +1226,24 @@ const handleDeleteHouseDocuments = (id) => {
         <DeleteModal
           deleteAction={dispatchRoom}
           iDToDelete={getRoomId}
-          modalTitle={"Room"}
+          modalTitle={"House Room"}
+        />
+      )}
+
+      {/* House Bill Modals */}
+      {showBillModal && (
+        <AddHouseBills
+          house={houseId}
+          dispatchBill={dispatchBill}
+          billIndexToEdit={billIndexToEdit}
+          id={getBillId}
+        />
+      )}
+      {deleteBillModal && (
+        <DeleteModal
+          deleteAction={dispatchBill}
+          iDToDelete={getBillId}
+          modalTitle={"House Bill"}
         />
       )}
 

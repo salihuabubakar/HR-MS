@@ -266,3 +266,27 @@ export const useHouseDocumentFetching = () => {
   };
 };
 
+// Get House Bills data
+export const useBillFetching = () => {
+  const fetchBillData = async () => {
+    const response = await axios.get(`${BaseUrl}/house/bills/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: billData,
+    isLoading: isBillDataLoading,
+    error: billError,
+  } = useQuery("billData", fetchBillData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on billData
+      queryClient.invalidateQueries(["billData"]);
+    },
+  });
+
+  return { billData, isBillDataLoading, billError };
+};
+
+
+
