@@ -7,6 +7,7 @@ import AddHouseResident from "../../_components/modelbox/AddHouseResident";
 import AddHouseImages from "../../_components/modelbox/AddHouseImages";
 import AddHouseDocuments from "../../_components/modelbox/AddHouseDocuments";
 import AddHouseBills from "../../_components/modelbox/AddHouseBills";
+import AddHouseMaintenance from "../../_components/modelbox/AddHouseMaintenance";
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import {
   add_update_delete_room,
@@ -15,6 +16,7 @@ import {
   add_update_delete_house_image,
   add_update_delete_house_document,
   add_update_delete_bill,
+  add_update_delete_maintenance
 } from "../../utils/sendToServer";
 import {
   useRoomFetching,
@@ -23,6 +25,7 @@ import {
   useHouseImageFetching,
   useHouseDocumentFetching,
   useBillFetching,
+  useHouseMaintenanceData
 } from "../../utils/employeeCustomFetchHook";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
 import moment from "moment";
@@ -158,68 +161,105 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   };
 
   // House Document
-const [houseDocumentsState, dispatchHouseDocuments] = useReducer(
-  add_update_delete_house_document,
+  const [houseDocumentsState, dispatchHouseDocuments] = useReducer(
+    add_update_delete_house_document,
+    []
+  );
+  const [houseDocumentsIndexToEdit, setHouseDocumentsIndexToEdit] =
+    useState(null);
+  const [showHouseDocumentsModal] = useGlobalState("showHouseDocumentsModal");
+  const { houseDocumentsData, isHouseDocumentsLoading, houseDocumentsError } =
+    useHouseDocumentFetching();
+  const [getHouseDocumentsId, setGetHouseDocumentsId] = useState();
+  const [deleteHouseDocumentsModal] = useGlobalState(
+    "deleteHouseDocumentsModal"
+  );
+  useEffect(() => {
+    if (!showHouseDocumentsModal) {
+      setGlobalState("selectedHouseDocuments", "");
+    }
+  }, [showHouseDocumentsModal]);
+
+  const handleAddHouseDocuments = () => {
+    setGlobalState("showHouseDocumentsModal", true);
+  };
+
+  const handleEditHouseDocuments = (id, index) => {
+    setGetHouseDocumentsId(id);
+    setHouseDocumentsIndexToEdit(index);
+    setGlobalState("selectedHouseDocuments", houseDocumentsData);
+    setGlobalState("showHouseDocumentsModal", true);
+  };
+
+  const handleDeleteHouseDocuments = (id) => {
+    setGetHouseDocumentsId(id);
+    setGlobalState("deleteHouseDocumentsModal", true);
+  };
+
+  // House Bill
+  const [billState, dispatchBill] = useReducer(add_update_delete_bill, []);
+  const [billIndexToEdit, setBillIndexToEdit] = useState(null);
+  const [showBillModal] = useGlobalState("showBillModal");
+  const { billData, isBillLoading, billError } = useBillFetching();
+  const [getBillId, setGetBillId] = useState();
+  const [deleteBillModal] = useGlobalState("deleteBillModal");
+  useEffect(() => {
+    if (!showBillModal) {
+      setGlobalState("selectedBill", "");
+    }
+  }, [showBillModal]);
+
+  const handleAddBill = () => {
+    setGlobalState("showBillModal", true);
+  };
+
+  const handleEditBill = (id, index) => {
+    setGetBillId(id);
+    setBillIndexToEdit(index);
+    setGlobalState("selectedBill", billData);
+    setGlobalState("showBillModal", true);
+  };
+
+  const handleDeleteBill = (id) => {
+    setGetBillId(id);
+    setGlobalState("deleteBillModal", true);
+  };
+
+  // Maintenance
+const [maintenanceState, dispatchMaintenance] = useReducer(
+  add_update_delete_maintenance,
   []
 );
-const [houseDocumentsIndexToEdit, setHouseDocumentsIndexToEdit] =
-  useState(null);
-const [showHouseDocumentsModal] = useGlobalState("showHouseDocumentsModal");
-const { houseDocumentsData, isHouseDocumentsLoading, houseDocumentsError } =
-  useHouseDocumentFetching();
-const [getHouseDocumentsId, setGetHouseDocumentsId] = useState();
-const [deleteHouseDocumentsModal] = useGlobalState("deleteHouseDocumentsModal");
+const [maintenanceIndexToEdit, setMaintenanceIndexToEdit] = useState(null);
+const [showMaintenanceModal] = useGlobalState("showMaintenanceModal");
+const {
+  houseMaintenanceData,
+  isHouseMaintenanceLoading,
+  houseMaintenanceError,
+} = useHouseMaintenanceData();
+const [getMaintenanceId, setGetMaintenanceId] = useState();
+const [deleteMaintenanceModal] = useGlobalState("deleteMaintenanceModal");
 useEffect(() => {
-  if (!showHouseDocumentsModal) {
-    setGlobalState("selectedHouseDocuments", "");
+  if (!showMaintenanceModal) {
+    setGlobalState("selectedMaintenance", "");
   }
-}, [showHouseDocumentsModal]);
+}, [showMaintenanceModal]);
 
-const handleAddHouseDocuments = () => {
-  setGlobalState("showHouseDocumentsModal", true);
+const handleAddMaintenance = () => {
+  setGlobalState("showMaintenanceModal", true);
 };
 
-const handleEditHouseDocuments = (id, index) => {
-  setGetHouseDocumentsId(id);
-  setHouseDocumentsIndexToEdit(index);
-  setGlobalState("selectedHouseDocuments", houseDocumentsData);
-  setGlobalState("showHouseDocumentsModal", true);
+const handleEditMaintenance = (id, index) => {
+  setGetMaintenanceId(id);
+  setMaintenanceIndexToEdit(index);
+  setGlobalState("selectedMaintenance", houseMaintenanceData);
+  setGlobalState("showMaintenanceModal", true);
 };
 
-const handleDeleteHouseDocuments = (id) => {
-  setGetHouseDocumentsId(id);
-  setGlobalState("deleteHouseDocumentsModal", true);
+const handleDeleteMaintenance = (id) => {
+  setGetMaintenanceId(id);
+  setGlobalState("deleteMaintenanceModal", true);
 };
-
-// House Bill
-const [billState, dispatchBill] = useReducer(add_update_delete_bill, []);
-const [billIndexToEdit, setBillIndexToEdit] = useState(null);
-const [showBillModal] = useGlobalState("showBillModal");
-const { billData, isBillLoading, billError } = useBillFetching();
-const [getBillId, setGetBillId] = useState();
-const [deleteBillModal] = useGlobalState("deleteBillModal");
-useEffect(() => {
-  if (!showBillModal) {
-    setGlobalState("selectedBill", "");
-  }
-}, [showBillModal]);
-
-const handleAddBill = () => {
-  setGlobalState("showBillModal", true);
-};
-
-const handleEditBill = (id, index) => {
-  setGetBillId(id);
-  setBillIndexToEdit(index);
-  setGlobalState("selectedBill", billData);
-  setGlobalState("showBillModal", true);
-};
-
-const handleDeleteBill = (id) => {
-  setGetBillId(id);
-  setGlobalState("deleteBillModal", true);
-};
-
 
 
   const houseId = getHouseId;
@@ -260,8 +300,9 @@ const handleDeleteBill = (id) => {
   const house_employees = getSelectedData?.house_employees;
   const house_residents = getSelectedData?.house_residents;
 
-
-  const vacantRooms = house_rooms?.filter((room) => room.room_status === 'Vacant');
+  const vacantRooms = house_rooms?.filter(
+    (room) => room.room_status === "Vacant"
+  );
 
   return (
     <>
@@ -592,9 +633,14 @@ const handleDeleteBill = (id) => {
               <div className="col-md-6 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
-                    <h3 className="card-title">Maintenance</h3>
-                    {house_maintenance?.length > 0
-                      ? house_maintenance?.map((maintenance, index) => {
+                    <h3 className="card-title">
+                      Maintenance
+                      <a onClick={handleAddMaintenance} className="edit-icon">
+                        <i className="fa fa-plus" />
+                      </a>
+                    </h3>
+                    {houseMaintenanceData?.length > 0
+                      ? houseMaintenanceData?.map((maintenance, index) => {
                           const {
                             status,
                             id,
@@ -608,26 +654,62 @@ const handleDeleteBill = (id) => {
                             Before_Image,
                             After_Image,
                           } = maintenance;
-                          return (
-                            <React.Fragment key={id}>
-                              <ul className="personal-info">
-                                <li>
-                                  <span className="text">
-                                    {/* <img
-                                      style={{
-                                        width: "30px",
-                                        height: "30px",
-                                        borderRadius: "50px",
-                                      }}
-                                      alt=""
-                                      src={image ? image : DefaultImage}
-                                    />{" "} */}
-                                    {status}
-                                  </span>
-                                </li>
-                              </ul>
-                            </React.Fragment>
-                          );
+                          if (house === houseId) {
+                            return (
+                              <React.Fragment key={id}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">
+                                      Status: {status}
+                                    </span>
+                                    <span className="text">Cost: {cost}</span>
+                                    <span className="text">Date: {date}</span>
+                                    <span className="text">
+                                      Employee: {Employee}
+                                    </span>
+                                    <span className="text">
+                                      Organization: {Organization}
+                                    </span>
+                                    <span className="text">Document: {documents}</span>
+                                    <span className="text">Before Image: {Before_Image}</span>
+                                    <span className="text">After Image: {After_Image}</span>
+                                    <span className="text">Description: {description}</span>
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleEditMaintenance(id, index)
+                                          }
+                                        >
+                                          <i className="fa fa-pencil m-r-5" />{" "}
+                                          Edit
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleDeleteMaintenance(id)
+                                          }
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          }
                         })
                       : "Ops!"}
                   </div>
@@ -1244,6 +1326,23 @@ const handleDeleteBill = (id) => {
           deleteAction={dispatchBill}
           iDToDelete={getBillId}
           modalTitle={"House Bill"}
+        />
+      )}
+
+      {/* House Maintenance Modals */}
+      {showMaintenanceModal && (
+        <AddHouseMaintenance
+          house={houseId}
+          dispatchMaintenance={dispatchMaintenance}
+          maintenanceIndexToEdit={maintenanceIndexToEdit}
+          id={getMaintenanceId}
+        />
+      )}
+      {deleteMaintenanceModal && (
+        <DeleteModal
+          deleteAction={dispatchMaintenance}
+          iDToDelete={getMaintenanceId}
+          modalTitle={"House Maintenance"}
         />
       )}
 

@@ -61,6 +61,9 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedBill: [],
   showBillModal: false,
   deleteBillModal: false,
+  selectedMaintenance: [],
+  showMaintenanceModal: false,
+  deleteMaintenanceModal: false
 });
 
 export {setGlobalState, useGlobalState}
