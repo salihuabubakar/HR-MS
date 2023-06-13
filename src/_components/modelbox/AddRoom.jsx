@@ -45,10 +45,6 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
       ? selectedRoom[roomIndexToEdit]?.room_photos
       : []
   );
-
-  useEffect(() => {
-    console.log("room_photos", room_photos);
-  }, [])
  
   const [roomTypeError, setRoomTypeError] = useState("");
   const [roomPhotosError, setRoomPhotosError] = useState("");
