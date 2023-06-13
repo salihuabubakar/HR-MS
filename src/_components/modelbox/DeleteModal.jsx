@@ -37,6 +37,7 @@ const DeleteModal = ({
     setGlobalState("deleteHouseResidentModal", false);
     setGlobalState("deleteHouseImagesModal", false);
     setGlobalState("deleteHouseDocumentsModal", false);
+    setGlobalState("deleteBillModal", false);
   };
 
   const handleModalClose = () => {
@@ -56,6 +57,7 @@ const DeleteModal = ({
     setGlobalState("deleteHouseResidentModal", false);
     setGlobalState("deleteHouseImagesModal", false);
     setGlobalState("deleteHouseDocumentsModal", false);
+    setGlobalState("deleteBillModal", false);
   };
 
   return (

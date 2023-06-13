@@ -268,7 +268,13 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                             ))}
                           </select> */}
                           <Autocomplete
-                            sx={{ m: 1, width: 350 }}
+                            sx={{
+                              m: 1,
+                              width: 350,
+                              "& .MuiInputBase-root": {
+                                height: "45px", // Adjust the height here
+                              },
+                            }}
                             multiple
                             id="tags-standard"
                             options={photos}
