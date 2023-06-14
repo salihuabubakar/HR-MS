@@ -1,12 +1,52 @@
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import moment from "moment";
+import DeleteModal from "../../../_components/modelbox/DeleteModal";
+import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
+import { useEmployeeAddressFetching } from "../../../utils/employeeCustomFetchHook";
+import { add_update_delete_employee_address } from "../../../utils/sendToServer";
+import AddEmployeeAddress from "../../../_components/modelbox/AddEmployeeAddress";
 
-const Profile = ({ 
-  getSelectedData, 
-  DefaultImage, 
+const Profile = ({
+  getSelectedData,
+  DefaultImage,
   isSelectedLoading,
-  skeletonLoading 
+  skeletonLoading,
+  getEmployeeId,
 }) => {
+  // Address
+  const [employeeAddressState, dispatchEmployeeAddress] = useReducer(
+    add_update_delete_employee_address,
+    []
+  );
+  const {
+    employeeAddressData,
+    isEmployeeAddressDataLoading,
+    employeeAddressError,
+  } = useEmployeeAddressFetching();
+  const [getEmployeeAddressId, setGetEmployeeAddressId] = useState();
+  const [employeeAddressIndexToEdit, setEmployeeAddressIndexToEdit] =
+    useState();
+  const [showEmployeeAddressModal] = useGlobalState("showEmployeeAddressModal");
+  const [deleteEmployeeAddressModal] = useGlobalState(
+    "deleteEmployeeAddressModal"
+  );
+
+  const handleEditEmployeeAddress = (id, index) => {
+    setGetEmployeeAddressId(id);
+    setEmployeeAddressIndexToEdit(index);
+    setGlobalState("selectedEmployeeAddress", employeeAddressData);
+    setGlobalState("showEmployeeAddressModal", true)
+  };
+  const handleDeleteEmployeeAddress = (id) => {
+    setGetEmployeeAddressId(id);
+    setGlobalState("deleteEmployeeAddressModal", true)
+  };
+
+  useEffect(() => {
+    if (!showEmployeeAddressModal) {
+      setGlobalState("selectedEmployeeAddress", "");
+    }
+  }, [showEmployeeAddressModal]);
 
   const selectedEmployeeId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
@@ -75,7 +115,7 @@ const Profile = ({
                         <div className="col-md-5">
                           <div className="profile-info-left">
                             <h3 className="user-name m-t-0 mb-0">{`${first_name} ${
-                              middle_name ? middle_name : "--"
+                              middle_name 
                             } ${last_name}`}</h3>
                             <h6 className="text-muted">
                               Role: {role ? role?.role_name : "--"}
@@ -322,44 +362,94 @@ const Profile = ({
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Address</h3>
-                      {employee_addresses?.map((address, index) => {
-                        const {
-                          id,
-                          employee,
-                          street,
-                          city,
-                          state,
-                          country,
-                          postal_code,
-                        } = address;
-                        if (employee == selectedEmployeeId) {
-                          return (
-                            <ul key={id} className="personal-info">
-                              <li>
-                                <div className="title">Street</div>
-                                <div className="text">{street}</div>
-                              </li>
-                              <li>
-                                <div className="title">City</div>
-                                <div className="text">{city}</div>
-                              </li>
-                              <li>
-                                <div className="title">State</div>
-                                <div className="text">{state}</div>
-                              </li>
-                              <li>
-                                <div className="title">Country</div>
-                                <div className="text">{country}</div>
-                              </li>
-                              <li>
-                                <div className="title">Postal Code</div>
-                                <div className="text">{postal_code}</div>
-                              </li>
-                            </ul>
-                          );
-                        }
-                      })}
+                      <h3 className="card-title">
+                        Address{" "}
+                        <a
+                          className="edit-icon"
+                          onClick={() =>
+                            setGlobalState("showEmployeeAddressModal", true)
+                          }
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Street</th>
+                              <th>City</th>
+                              <th>State</th>
+                              <th>Country</th>
+                              <th>Postal Code</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {employeeAddressData?.length > 0 ? (
+                              employeeAddressData?.map((address, index) => {
+                                const {
+                                  id,
+                                  employee,
+                                  street,
+                                  city,
+                                  state,
+                                  country,
+                                  postal_code,
+                                } = address;
+                                if (employee == selectedEmployeeId) {
+                                  return (
+                                    <tr style={{ height: "90px" }} key={id}>
+                                      <td>{street}</td>
+                                      <td>{city}</td>
+                                      <td>{state}</td>
+                                      <td>{country}</td>
+                                      <td>{postal_code}</td>
+                                      <td className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditEmployeeAddress(
+                                                id,
+                                                index
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteEmployeeAddress(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <tr>
+                                <td>No Address attach to this employee</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1219,6 +1309,23 @@ const Profile = ({
         </div>
         {/* /Document Upload Tab */}
       </div>
+
+      {/* Employee Address */}
+      {showEmployeeAddressModal && (
+        <AddEmployeeAddress
+          id={getEmployeeAddressId}
+          dispatchEmployeeAddress={dispatchEmployeeAddress}
+          employeeAddressIndexToEdit={employeeAddressIndexToEdit}
+          employee={getEmployeeId}
+        />
+      )}
+      {deleteEmployeeAddressModal && (
+        <DeleteModal
+          deleteAction={dispatchEmployeeAddress}
+          iDToDelete={getEmployeeAddressId}
+          modalTitle={"Employee Address"}
+        />
+      )}
     </>
   );
 };
