@@ -24,7 +24,6 @@ const AllEmployees = () => {
   const [tab, setTab] = useState("employeeAll" || "employeeList" || "employeeProfile");
   const [getEmployeeId, setGetEmployeeId] = useState(null)
   const { data, isLoading, error, showSkeleton } = useDataFetching();
-  const { employeeEditData } = useDataEdit();
   const [getSelectedData, setGetSelectedData] = useState();
   const [isSelectedLoading, setIsSelectedLoading] = useState(false);
   const [skeletonLoading, setSkeletonLoading] = useState(false);
@@ -84,7 +83,7 @@ const AllEmployees = () => {
     setGetEmployeeId(id);
     setIndexToEdit(index);
     setGlobalState("showModal", true);
-    setGlobalState("selectedEmployeeAccount", employeeEditData);
+    setGlobalState("selectedEmployeeAccount", data);
   };
 
    const handleDeleteAcct = (index) => {
@@ -229,6 +228,7 @@ const AllEmployees = () => {
                   DefaultImage={DefaultImage}
                   isSelectedLoading={isSelectedLoading}
                   skeletonLoading={skeletonLoading}
+                  getEmployeeId={getEmployeeId}
                 />
               )}
             </div>

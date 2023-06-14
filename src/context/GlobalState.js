@@ -2,8 +2,7 @@ import { createGlobalState } from "react-hooks-global-state";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
   selectedEmployeeAccount: [],
-  selectedDept: [],
-  selectedRole: [],
+
   selectedHouse: [],
   selectedResident: [],
   selectedScheduleEvent: [],
@@ -12,16 +11,26 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   deleteModal: false,
   showFileUploadModal: false,
   selectedFileUpload: [],
-  showRoomModal: false,
-  selectedRoom: [],
+
   repeatModal: false,
   deleteFile: false,
   deleteSubTask: false,
+
+  // Depatment
   showDeptModal: false,
   deleteDeptModal: false,
+  selectedDept: [],
+
+  // Room
+  showRoomModal: false,
+  selectedRoom: [],
   deleteRoomModal: false,
+
+  // Role
   showRoleModal: false,
+  selectedRole: [],
   deleteRoleModal: false,
+
   showModal: false,
   showProfileModal: false,
   showPersonalInfoModal: false,
@@ -46,30 +55,54 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedSalary: [],
   showUsersModal: false,
   selectedUsers: [],
+
+  // House Employee
   selectedHouseEmployee: [],
   showHouseEmployeeModal: false,
   deleteHouseEmployeeModal: false,
+
+  // House Resident
   selectedHouseResident: [],
   showHouseResidentModal: false,
   deleteHouseResidentModal: false,
+
+  // House Image
   showHouseImagesModal: false,
   selectedHouseImages: [],
   deleteHouseImagesModal: false,
+
+  // House Document
   showHouseDocumentsModal: false,
   deleteHouseDocumentsModal: false,
   selectedHouseDocuments: [],
+
+  // Bill
   selectedBill: [],
   showBillModal: false,
   deleteBillModal: false,
+
+  // Maintenance
   selectedMaintenance: [],
   showMaintenanceModal: false,
   deleteMaintenanceModal: false,
+
+  // Organisation
   showOrganisationModal: false,
   selectedOrganisation: [],
   deleteOrganisationModal: false,
+
+  // Status
   showStatusModal: false,
   selectedStatus: [],
-  deleteStatusModal: false
+  deleteStatusModal: false,
+
+  // Employee Address
+  deleteEmployeeAddressModal: false,
+  showEmployeeAddressModal: false,
+  selectedEmployeeAddress: [],
+
+  // Sever Error Response Text
+  collectServerResponseTextError: [],
 });
 
 export {setGlobalState, useGlobalState}

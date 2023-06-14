@@ -333,6 +333,31 @@ export const useStatusFetching = () => {
   return { statusData, isStatusDataLoading, statusError };
 };
 
+// Get employeeAddress data
+export const useEmployeeAddressFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${BaseUrl}/employee/addresses/?format=json`
+    );
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: employeeAddressData,
+    isLoading: isEmployeeAddressDataLoading,
+    error: employeeAddressError,
+  } = useQuery("employeeAddressData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on employeeAddressData
+      queryClient.invalidateQueries(["employeeAddressData"]);
+    },
+  });
+
+  return { employeeAddressData, isEmployeeAddressDataLoading, employeeAddressError };
+};
+
+
 
 
 
