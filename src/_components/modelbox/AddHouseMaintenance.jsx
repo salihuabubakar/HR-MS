@@ -11,6 +11,7 @@ import {
   useHouseDocumentFetching,
   useDataFetching,
   useHouseImageFetching,
+  useOrganisationFetching
 } from "../../utils/employeeCustomFetchHook";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
@@ -19,6 +20,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
   const { houseDocumentsData } = useHouseDocumentFetching();
   const { data: allEmployee } = useDataFetching();
   const { houseImagesData } = useHouseImageFetching();
+  const { organisationData } = useOrganisationFetching();
   const [selectedMaintenance] = useGlobalState("selectedMaintenance");
 
   const [date, setDate] = useState(
@@ -435,8 +437,11 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
                             <option disabled value="">
                               Select
                             </option>
-                            <option value={1}>Finance</option>
-                            <option value={2}>Micro</option>
+                            {organisationData?.map((organisationData) => (
+                              <option key={organisationData.id} value={organisationData.id}>
+                                {organisationData.organisation_name}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       </div>

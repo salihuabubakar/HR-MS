@@ -1,62 +1,106 @@
 import React, { useState, useReducer, useEffect } from "react";
-import { Helmet } from "react-helmet";
-import { Link, withRouter } from "react-router-dom";
-import Header from "../../../initialpage/Sidebar/header";
-import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
-import { initDept, savedDeptReducer } from "../../../utils/localStorage";
-import AddDepartment from "../../../_components/modelbox/AddDepartment";
+import AddOrganisation from "../../../_components/modelbox/AddOrganisation";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 
-const Organisation = () => {
-  const [depts, dispatchDepts] = useReducer(savedDeptReducer, [], initDept);
-  const [showModal] = useGlobalState("showModal");
-  const [deleteModal] = useGlobalState("deleteModal");
-
-  useEffect(() => {
-    localStorage.setItem("dept", JSON.stringify(depts));
-  }, [depts]);
-  useEffect(() => {
-    if (!showModal) {
-      setGlobalState("selectedDept", "");
-    }
-  }, [showModal]);
-
-  const [deptList, setDeptList] = useState();
-  useEffect(() => {
-    setDeptList(depts);
-  }, [depts]);
-
-  const [indexToEdit, setIndexToEdit] = useState(0);
-  const [deptIdToEdit, setDeptIdToEdit] = useState("");
-
-  const handleDeptEdit = (id, index) => {
-    setDeptIdToEdit(id);
-    setIndexToEdit(index);
-    setGlobalState("showModal", true);
-    setGlobalState("selectedDept", depts);
+const Organisation = ({
+  organisationData,
+  isOrganisationDataLoading,
+  organisationError,
+  add_update_delete_organisation
+}) => {
+  // Table pagination
+  const itemsPerPage = 10; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const startCount = (currentPage - 1) * itemsPerPage + 1;
+  const endCount = startCount + itemsPerPage - 1;
+  const paginationSettings = {
+    total: organisationData?.length,
+    showTotal: (total, range) =>
+      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    itemRender: itemRender,
+    current: currentPage,
+    onChange: setCurrentPage,
   };
 
-  const handleDeptDelete = (index) => {
-    setIndexToEdit(index);
-    setGlobalState("deleteModal", true);
+  const [state, dispatchOrganisation] = useReducer(
+    add_update_delete_organisation,
+    []
+  );
+  const [showOrganisationModal] = useGlobalState("showOrganisationModal");
+  const [deleteOrganisationModal] = useGlobalState("deleteOrganisationModal");
+  const [indexToEdit, setIndexToEdit] = useState();
+  const [getOrganisationId, setGetOrganisationId] = useState();
+
+  useEffect(() => {
+    if (!showOrganisationModal) {
+      setGlobalState("selectedOrganisation", "");
+      setGetOrganisationId("");
+      setIndexToEdit("");
+    }
+  }, [showOrganisationModal]);
+
+  const handleOrganisationEdit = (id, index) => {
+    setIndexToEdit((currentPage - 1) * itemsPerPage + index);
+    setGetOrganisationId(id);
+    setGlobalState("showOrganisationModal", true);
+    setGlobalState("selectedOrganisation", organisationData);
+  };
+
+  const handleOrganisationDelete = (id) => {
+    setGetOrganisationId(id);
+    setGlobalState("deleteOrganisationModal", true);
   };
 
   const columns = [
     {
       title: "#",
       render: (text, record, index) => {
-        return <React.Fragment>{index + 1}</React.Fragment>;
+        const actualIndex = (currentPage - 1) * itemsPerPage + index + 1;
+        return <React.Fragment>{actualIndex}</React.Fragment>;
       },
     },
     {
-      title: "Department",
-      dataIndex: "deptName",
-      // sorter: (a, b) => a.name.length - b.name.length,
+      title: "Organisation",
+      dataIndex: "organisation_name",
+    },
+    {
+      title: "Manager",
+      dataIndex: "manager_name",
+    },
+    {
+      title: "Mobile",
+      dataIndex: "mobile",
+    },
+    {
+      title: "Office Phone",
+      dataIndex: "office_phone",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "City",
+      dataIndex: "city",
+    },
+    {
+      title: "Street",
+      dataIndex: "street",
+    },
+    {
+      title: "Post Code",
+      dataIndex: "post_code",
+    },
+    {
+      title: "Country",
+      dataIndex: "country",
     },
     {
       title: "Action",
@@ -72,13 +116,13 @@ const Organisation = () => {
           <div className="dropdown-menu dropdown-menu-right">
             <a
               className="dropdown-item"
-              onClick={() => handleDeptEdit(record.id, index)}
+              onClick={() => handleOrganisationEdit(record.id, index)}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
             <a
               className="dropdown-item"
-              onClick={() => handleDeptDelete(index)}
+              onClick={() => handleOrganisationDelete(index)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -100,7 +144,7 @@ const Organisation = () => {
             <div className="col-auto float-end ml-auto">
               <a
                 className="btn add-btn"
-                onClick={() => setGlobalState("showModal", true)}
+                onClick={() => setGlobalState("showOrganisationModal", true)}
               >
                 <i className="fa fa-plus" /> Add Organisation
               </a>
@@ -113,45 +157,33 @@ const Organisation = () => {
             <div className="table-responsive">
               <Table
                 className="table-striped"
-                pagination={{
-                  total: deptList?.length,
-                  showTotal: (total, range) =>
-                    `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                  showSizeChanger: true,
-                  onShowSizeChange: onShowSizeChange,
-                  itemRender: itemRender,
-                }}
+                pagination={paginationSettings}
                 style={{ overflowX: "auto" }}
                 columns={columns}
-                // bordered
-                dataSource={deptList}
-                rowKey={(dept) => dept.id}
+                bordered
+                dataSource={organisationData}
+                rowKey={(org) => org?.id}
               />
             </div>
           </div>
         </div>
       </div>
       {/* /Page Content */}
-      {/* Add Department Modal */}
-      {showModal && (
-        <AddDepartment
-          dispatchDepts={dispatchDepts}
+      {showOrganisationModal && (
+        <AddOrganisation
+          dispatchOrganisation={dispatchOrganisation}
           indexToEdit={indexToEdit}
-          deptIdToEdit={deptIdToEdit}
-          depts={depts}
+          getOrganisationId={getOrganisationId}
+          organisationData={organisationData}
         />
       )}
-      {/* /Add Department Modal */}
-      {/* Delete Department Modal */}
-      {deleteModal && (
+      {deleteOrganisationModal && (
         <DeleteModal
-          deleteAction={dispatchDepts}
-          indexToDelete={indexToEdit}
-          dispatch={depts}
-          modalTitle={"Department"}
+          deleteAction={dispatchOrganisation}
+          iDToDelete={getOrganisationId}
+          modalTitle={"Organisation"}
         />
       )}
-      {/* /Delete Department Modal */}
     </div>
   );
 };

@@ -289,6 +289,53 @@ export const useBillFetching = () => {
 };
 
 
+// Get organisation data
+export const useOrganisationFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/employee/organisations/?format=json`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: organisationData,
+    isLoading: isOrganisationDataLoading,
+    error: organisationError,
+  } = useQuery("orgData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on organisationData
+      queryClient.invalidateQueries(["orgData"]);
+    },
+  });
+
+  return { organisationData, isOrganisationDataLoading, organisationError };
+};
+
+// Get status data
+export const useStatusFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/employee/status/?format=json`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: statusData,
+    isLoading: isStatusDataLoading,
+    error: statusError,
+  } = useQuery("statusData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on statusData
+      queryClient.invalidateQueries(["statusData"]);
+    },
+  });
+
+  return { statusData, isStatusDataLoading, statusError };
+};
+
+
+
+
 
 
 
