@@ -4,6 +4,7 @@ import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
+import { useRoleFetching } from "../../../utils/employeeCustomFetchHook";
 const AllEmployeeList = ({
   DefaultImage,
   handleEditEmployee,
@@ -13,6 +14,7 @@ const AllEmployeeList = ({
   setGetEmployeeId,
 }) => {
 
+  const { roleData } = useRoleFetching();
 
   const handleEmployeeProfilePage = (id, index) => {
     setTab("employeeProfile");
@@ -62,7 +64,7 @@ const AllEmployeeList = ({
                 onClick={() => handleEmployeeProfilePage(id, index)}
               >
                 {`${first_name} ${
-                  middle_name ? middle_name : "--"
+                  middle_name
                 } ${last_name}`}{" "}
                 <span>{role_name ? role_name : "--"}</span>
               </a>
