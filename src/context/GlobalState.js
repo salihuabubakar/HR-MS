@@ -101,6 +101,11 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showEmployeeAddressModal: false,
   selectedEmployeeAddress: [],
 
+  // Employee Emergency Contact
+  deleteEmployeeEmergencyModal: false,
+  showEmployeeEmergencyModal: false,
+  selectedEmployeeEmergency: [],
+
   // Sever Error Response Text
   collectServerResponseTextError: [],
 });

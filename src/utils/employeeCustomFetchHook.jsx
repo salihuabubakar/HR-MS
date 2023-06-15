@@ -357,6 +357,35 @@ export const useEmployeeAddressFetching = () => {
   return { employeeAddressData, isEmployeeAddressDataLoading, employeeAddressError };
 };
 
+// Get emergency data
+export const useEmployeeEmergencyFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${BaseUrl}/employee/emergency/?format=json`
+    );
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: employeeEmergencyData,
+    isLoading: isEmployeeEmergencyDataLoading,
+    error: employeeEmergencyError,
+  } = useQuery("emergencyData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on emergencyData
+      queryClient.invalidateQueries(["emergencyData"]);
+    },
+  });
+
+  return {
+    employeeEmergencyData,
+    isEmployeeEmergencyDataLoading,
+    employeeEmergencyError,
+  };
+};
+
+
 
 
 

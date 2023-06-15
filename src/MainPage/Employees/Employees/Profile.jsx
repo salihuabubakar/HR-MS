@@ -2,9 +2,13 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import moment from "moment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
-import { useEmployeeAddressFetching } from "../../../utils/employeeCustomFetchHook";
-import { add_update_delete_employee_address } from "../../../utils/sendToServer";
+import {
+  useEmployeeAddressFetching,
+  useEmployeeEmergencyFetching,
+} from "../../../utils/employeeCustomFetchHook";
+import { add_update_delete_employee_address, add_update_delete_employee_emergency } from "../../../utils/sendToServer";
 import AddEmployeeAddress from "../../../_components/modelbox/AddEmployeeAddress";
+import AddEmployeeEmergency from "../../../_components/modelbox/AddEmployeeEmergency";
 
 const Profile = ({
   getSelectedData,
@@ -13,6 +17,7 @@ const Profile = ({
   skeletonLoading,
   getEmployeeId,
 }) => {
+
   // Address
   const [employeeAddressState, dispatchEmployeeAddress] = useReducer(
     add_update_delete_employee_address,
@@ -35,11 +40,11 @@ const Profile = ({
     setGetEmployeeAddressId(id);
     setEmployeeAddressIndexToEdit(index);
     setGlobalState("selectedEmployeeAddress", employeeAddressData);
-    setGlobalState("showEmployeeAddressModal", true)
+    setGlobalState("showEmployeeAddressModal", true);
   };
   const handleDeleteEmployeeAddress = (id) => {
     setGetEmployeeAddressId(id);
-    setGlobalState("deleteEmployeeAddressModal", true)
+    setGlobalState("deleteEmployeeAddressModal", true);
   };
 
   useEffect(() => {
@@ -47,6 +52,43 @@ const Profile = ({
       setGlobalState("selectedEmployeeAddress", "");
     }
   }, [showEmployeeAddressModal]);
+
+  // Emergency
+  const [employeeEmergencyState, dispatchEmployeeEmergency] = useReducer(
+    add_update_delete_employee_emergency,
+    []
+  );
+  const {
+    employeeEmergencyData,
+    isEmployeeEmergencyDataLoading,
+    employeeEmergencyError,
+  } = useEmployeeEmergencyFetching();
+  const [getEmployeeEmergencyId, setGetEmployeeEmergencyId] = useState();
+  const [employeeEmergencyIndexToEdit, setEmployeeEmergencyIndexToEdit] =
+    useState();
+  const [showEmployeeEmergencyModal] = useGlobalState(
+    "showEmployeeEmergencyModal"
+  );
+  const [deleteEmployeeEmergencyModal] = useGlobalState(
+    "deleteEmployeeEmergencyModal"
+  );
+
+  const handleEditEmployeeEmergency = (id, index) => {
+    setGetEmployeeEmergencyId(id);
+    setEmployeeEmergencyIndexToEdit(index);
+    setGlobalState("selectedEmployeeEmergency", employeeEmergencyData);
+    setGlobalState("showEmployeeEmergencyModal", true);
+  };
+  const handleDeleteEmployeeEmergency = (id) => {
+    setGetEmployeeEmergencyId(id);
+    setGlobalState("deleteEmployeeEmergencyModal", true);
+  };
+
+  useEffect(() => {
+    if (!showEmployeeEmergencyModal) {
+      setGlobalState("selectedEmployeeEmergency", "");
+    }
+  }, [showEmployeeEmergencyModal]);
 
   const selectedEmployeeId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
@@ -114,9 +156,7 @@ const Profile = ({
                       <>
                         <div className="col-md-5">
                           <div className="profile-info-left">
-                            <h3 className="user-name m-t-0 mb-0">{`${first_name} ${
-                              middle_name 
-                            } ${last_name}`}</h3>
+                            <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
                             <h6 className="text-muted">
                               Role: {role ? role?.role_name : "--"}
                             </h6>
@@ -312,49 +352,97 @@ const Profile = ({
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Emergency Contact</h3>
-                      {employee_emergency_contacts?.map((contacts, index) => {
-                        const {
-                          id,
-                          employee,
-                          name,
-                          relationship,
-                          phone_number,
-                          email,
-                          address,
-                          post_code,
-                        } = contacts;
-                        if (employee == selectedEmployeeId) {
-                          return (
-                            <ul key={id} className="personal-info">
-                              <li>
-                                <div className="title">Name</div>
-                                <div className="text">{name}</div>
-                              </li>
-                              <li>
-                                <div className="title">Relationship</div>
-                                <div className="text">{relationship}</div>
-                              </li>
-                              <li>
-                                <div className="title">Phone</div>
-                                <div className="text">{phone_number}</div>
-                              </li>
-                              <li>
-                                <div className="title">Email</div>
-                                <div className="text">{email}</div>
-                              </li>
-                              <li>
-                                <div className="title">Address.</div>
-                                <div className="text">{address}</div>
-                              </li>
-                              <li>
-                                <div className="title">Post Code</div>
-                                <div className="text">{post_code}</div>
-                              </li>
-                            </ul>
-                          );
-                        }
-                      })}
+                      <h3 className="card-title">
+                        Emergency Contact{" "}
+                        <a
+                          className="edit-icon"
+                          onClick={() =>
+                            setGlobalState("showEmployeeEmergencyModal", true)
+                          }
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Relationship</th>
+                              <th>Phone Number</th>
+                              <th>Address</th>
+                              <th>Email</th>
+                              <th>Post Code</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {employeeEmergencyData?.length > 0 ? (
+                              employeeEmergencyData?.map((emergency, index) => {
+                                const {
+                                  id,
+                                  employee,
+                                  name,
+                                  relationship,
+                                  phone_number,
+                                  address,
+                                  email,
+                                  post_code,
+                                } = emergency;
+                                if (employee == selectedEmployeeId) {
+                                  return (
+                                    <tr style={{ height: "90px" }} key={id}>
+                                      <td>{name}</td>
+                                      <td>{relationship}</td>
+                                      <td>{phone_number}</td>
+                                      <td>{address}</td>
+                                      <td>{email}</td>
+                                      <td>{post_code}</td>
+                                      <td className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditEmployeeEmergency(
+                                                id,
+                                                index
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteEmployeeEmergency(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <tr>
+                                <td>No Emergency Contact attach to this employee</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1324,6 +1412,23 @@ const Profile = ({
           deleteAction={dispatchEmployeeAddress}
           iDToDelete={getEmployeeAddressId}
           modalTitle={"Employee Address"}
+        />
+      )}
+
+      {/* Employee Emergency Contact */}
+      {showEmployeeEmergencyModal && (
+        <AddEmployeeEmergency
+          id={getEmployeeEmergencyId}
+          dispatchEmployeeEmergency={dispatchEmployeeEmergency}
+          employeeEmergencyIndexToEdit={employeeEmergencyIndexToEdit}
+          employee={getEmployeeId}
+        />
+      )}
+      {deleteEmployeeEmergencyModal && (
+        <DeleteModal
+          deleteAction={dispatchEmployeeEmergency}
+          iDToDelete={getEmployeeEmergencyId}
+          modalTitle={"Emergency"}
         />
       )}
     </>
