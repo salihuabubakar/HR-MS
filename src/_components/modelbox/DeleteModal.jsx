@@ -20,15 +20,9 @@ const DeleteModal = ({
     });
 
     setGlobalState("deleteModal", false);
-    setGlobalState("showEducationInformationModal", false);
-    setGlobalState("showFamilyMenberModal", false);
-    setGlobalState("showExperienceModal", false);
     setGlobalState("showAddSchedul", false);
     setGlobalState("deleteFile", false);
-    setGlobalState("showFileUploadModal", false);
     setGlobalState("deleteSubTask", false);
-    setGlobalState("showEmergencyContactModal", false);
-    setGlobalState("showPersonalInfoModal", false);
     setGlobalState("deleteRoleModal", false);
     setGlobalState("showAddReviewModal", false);
     setGlobalState("deleteDeptModal", false);
@@ -46,15 +40,12 @@ const DeleteModal = ({
     setGlobalState("deleteEmployeeQualificationModal", false);
     setGlobalState("deleteEmployeeExperienceModal", false);
     setGlobalState("deleteEmployeeDocumentModal", false);
+    setGlobalState("deleteEmployeeBankModal", false);
   };
 
   const handleModalClose = () => {
     setGlobalState("deleteModal", false);
     setGlobalState("deleteFile", false);
-    setGlobalState("showFileUploadModal");
-    setGlobalState("showEducationInformationModal", false);
-    setGlobalState("showFamilyMenberModal", false);
-    setGlobalState("showExperienceModal", false);
     setGlobalState("showAddSchedul", false);
     setGlobalState("deleteSubTask", false);
     setGlobalState("deleteRoleModal", false);
@@ -74,6 +65,7 @@ const DeleteModal = ({
     setGlobalState("deleteEmployeeQualificationModal", false);
     setGlobalState("deleteEmployeeExperienceModal", false);
     setGlobalState("deleteEmployeeDocumentModal", false);
+    setGlobalState("deleteEmployeeBankModal", false);
   };
 
   return (

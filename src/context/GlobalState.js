@@ -121,6 +121,11 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showEmployeeDocumentModal: false,
   selectedEmployeeDocument: [],
 
+  // Employee Bank
+  deleteEmployeeBankModal: false,
+  showEmployeeBankModal: false,
+  selectedEmployeeBank: [],
+
   // Sever Error Response Text
   collectServerResponseTextError: [],
 });
