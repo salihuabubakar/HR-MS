@@ -7,20 +7,23 @@ import {
   useEmployeeEmergencyFetching,
   useEmployeeQualificationFetching,
   useEmployeeExperienceFetching,
-  useEmployeeDocumentFetching
+  useEmployeeDocumentFetching,
+  useEmployeeBankFetching,
 } from "../../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_employee_address,
   add_update_delete_employee_emergency,
   add_update_delete_employee_qualification,
   add_update_delete_employee_experience,
-  add_update_delete_employee_document
+  add_update_delete_employee_document,
+  add_update_delete_employee_bank,
 } from "../../../utils/sendToServer";
 import AddEmployeeAddress from "../../../_components/modelbox/AddEmployeeAddress";
 import AddEmployeeEmergency from "../../../_components/modelbox/AddEmployeeEmergency";
 import AddEmployeeQualification from "../../../_components/modelbox/AddEmployeeQualification";
 import AddEmployeeExperience from "../../../_components/modelbox/AddEmployeeExperience";
 import AddEmployeeDocument from "../../../_components/modelbox/AddEmployeeDocument";
+import AddEmployeeBank from "../../../_components/modelbox/AddEmployeeBank";
 
 const Profile = ({
   getSelectedData,
@@ -215,6 +218,36 @@ const Profile = ({
     }
   }, [showEmployeeDocumentModal]);
 
+  // Bank
+  const [employeeBankState, dispatchEmployeeBank] = useReducer(
+    add_update_delete_employee_bank,
+    []
+  );
+  const { employeeBankData, isEmployeeBankDataLoading, employeeBankError } =
+    useEmployeeBankFetching();
+  const [getEmployeeBankId, setGetEmployeeBankId] = useState();
+  const [employeeBankIndexToEdit, setEmployeeBankIndexToEdit] = useState();
+  const [showEmployeeBankModal] = useGlobalState("showEmployeeBankModal");
+  const [deleteEmployeeBankModal] = useGlobalState("deleteEmployeeBankModal");
+
+  const handleEditEmployeeBank = (id, index) => {
+    setGetEmployeeBankId(id);
+    setEmployeeBankIndexToEdit(index);
+    setGlobalState("selectedEmployeeBank", employeeBankData);
+    setGlobalState("showEmployeeBankModal", true);
+  };
+
+  const handleDeleteEmployeeBank = (id) => {
+    setGetEmployeeBankId(id);
+    setGlobalState("deleteEmployeeBankModal", true);
+  };
+
+  useEffect(() => {
+    if (!showEmployeeBankModal) {
+      setGlobalState("selectedEmployeeBank", "");
+    }
+  }, [showEmployeeBankModal]);
+
   const selectedEmployeeId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
   const middle_name = getSelectedData?.middle_name;
@@ -243,6 +276,9 @@ const Profile = ({
   const employee_leave = getSelectedData?.employee_leave;
   const employee_status = getSelectedData?.employee_status;
   const employee_documents = getSelectedData?.employee_documents;
+
+// Checks if the uploaded document contain any of this extentions.
+  const regex = /(png|jpg|webp|JPG|PNG)/;
 
   return (
     <>
@@ -344,11 +380,6 @@ const Profile = ({
                     )}
                   </div>
                 </div>
-                {/* <div className="pro-edit">
-                      <a onClick={handleEditAcct} className="edit-icon">
-                        <i className="fa fa-pencil" />
-                      </a>
-                    </div> */}
               </div>
             </div>
           </div>
@@ -403,73 +434,128 @@ const Profile = ({
           ) : (
             <>
               <div className="row">
-                <div className="col-md-6 d-flex">
+                <div className="col-md-12 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Bank information</h3>
-                      {employee_bank_accounts?.map((banks, index) => {
-                        const {
-                          id,
-                          employee,
-                          account_name,
-                          account_number,
-                          sort_code,
-                          bank_name,
-                          bank_address,
-                          swift_code,
-                          iban,
-                          routing_number,
-                          account_type,
-                          currency,
-                          upload_document,
-                        } = banks;
-                        if (employee == selectedEmployeeId) {
-                          return (
-                            <ul key={id} className="personal-info">
-                              <li>
-                                <div className="title">Bank name</div>
-                                <div className="text">{bank_name}</div>
-                              </li>
-                              <li>
-                                <div className="title">Bank account Name.</div>
-                                <div className="text">{account_name}</div>
-                              </li>
-                              <li>
-                                <div className="title">Bank account No.</div>
-                                <div className="text">{account_number}</div>
-                              </li>
-                              <li>
-                                <div className="title">Bank account Type.</div>
-                                <div className="text">{account_type}</div>
-                              </li>
-                              <li>
-                                <div className="title">Currency.</div>
-                                <div className="text">{currency}</div>
-                              </li>
-                              <li>
-                                <div className="title">Bank address.</div>
-                                <div className="text">{bank_address}</div>
-                              </li>
-                              <li>
-                                <div className="title">Sort Code</div>
-                                <div className="text">{sort_code}</div>
-                              </li>
-                              <li>
-                                <div className="title">Swift Code</div>
-                                <div className="text">{swift_code}</div>
-                              </li>
-                              <li>
-                                <div className="title">Iban</div>
-                                <div className="text">{iban}</div>
-                              </li>
-                              <li>
-                                <div className="title">Routing No</div>
-                                <div className="text">{routing_number}</div>
-                              </li>
-                            </ul>
-                          );
-                        }
-                      })}
+                      <h3 className="card-title">
+                        Bank Information{" "}
+                        <a
+                          className="edit-icon"
+                          onClick={() =>
+                            setGlobalState("showEmployeeBankModal", true)
+                          }
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Bank name</th>
+                              <th>Account Name</th>
+                              <th>Account No</th>
+                              <th>Account Type</th>
+                              <th>Currency</th>
+                              <th>Address</th>
+                              <th>Sort Code</th>
+                              <th>Swift Code</th>
+                              <th>Iban</th>
+                              <th>Routing No</th>
+                              <th>Date</th>
+                              <th>Document</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {employeeBankData?.length > 0 ? (
+                              employeeBankData?.map((bank, index) => {
+                                const {
+                                  id,
+                                  employee,
+                                  bank_name,
+                                  account_name,
+                                  account_number,
+                                  account_type,
+                                  currency,
+                                  bank_address,
+                                  sort_code,
+                                  swift_code,
+                                  iban,
+                                  routing_number,
+                                  upload_date,
+                                  upload_document,
+                                } = bank;
+                                if (employee == selectedEmployeeId) {
+                                  return (
+                                    <tr style={{ height: "90px" }} key={id}>
+                                      <td>{bank_name}</td>
+                                      <td>{account_name}</td>
+                                      <td>{account_number}</td>
+                                      <td>{account_type}</td>
+                                      <td>{currency}</td>
+                                      <td>{bank_address}</td>
+                                      <td>{sort_code}</td>
+                                      <td>{swift_code}</td>
+                                      <td>{iban}</td>
+                                      <td>{routing_number}</td>
+                                      <td>{upload_date}</td>
+                                      <td>
+                                        {upload_document &&
+                                        regex.test(upload_document) ? (
+                                          <img
+                                            className="img-preview"
+                                            src={upload_document}
+                                            alt="Preview"
+                                          />
+                                        ) : !upload_document ? null : (
+                                          <span className="files-icon">
+                                            <i className="fa fa-file-pdf-o" />
+                                          </span>
+                                        )}
+                                      </td>
+                                      <td className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditEmployeeBank(id, index)
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteEmployeeBank(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <tr>
+                                <td>No Bank detail attach to this employee</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -764,7 +850,6 @@ const Profile = ({
                                 qualification_upload,
                               } = qualifications;
                               if (employee == selectedEmployeeId) {
-                                const regex = /(png|jpg|webp|JPG|PNG)/;
                                 return (
                                   <li key={id}>
                                     <div className="experience-user">
@@ -1612,9 +1697,10 @@ const Profile = ({
                                           "DD MMM YYYY"
                                         )}{" "}
                                         -{" "}
-                                        {expiry_date && moment(expiry_date).format(
-                                          "DD MMM YYYY"
-                                        )}
+                                        {expiry_date &&
+                                          moment(expiry_date).format(
+                                            "DD MMM YYYY"
+                                          )}
                                       </span>
                                       <div>Status: {status}</div>
                                       <div>
@@ -1738,6 +1824,23 @@ const Profile = ({
           deleteAction={dispatchEmployeeDocument}
           iDToDelete={getEmployeeDocumentId}
           modalTitle={"Document"}
+        />
+      )}
+
+      {/* Employee Bank */}
+      {showEmployeeBankModal && (
+        <AddEmployeeBank
+          id={getEmployeeBankId}
+          dispatchEmployeeBank={dispatchEmployeeBank}
+          employeeBankIndexToEdit={employeeBankIndexToEdit}
+          employee={getEmployeeId}
+        />
+      )}
+      {deleteEmployeeBankModal && (
+        <DeleteModal
+          deleteAction={dispatchEmployeeBank}
+          iDToDelete={getEmployeeBankId}
+          modalTitle={"Bank"}
         />
       )}
     </>

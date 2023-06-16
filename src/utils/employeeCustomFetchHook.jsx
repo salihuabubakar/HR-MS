@@ -469,6 +469,35 @@ export const useEmployeeDocumentFetching = () => {
   };
 };
 
+// Get bank data
+export const useEmployeeBankFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${BaseUrl}/employee/bank/?format=json`
+    );
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: employeeBankData,
+    isLoading: isEmployeeBankDataLoading,
+    error: employeeBankError,
+  } = useQuery("bankData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on bankData
+      queryClient.invalidateQueries(["bankData"]);
+    },
+  });
+
+  return {
+    employeeBankData,
+    isEmployeeBankDataLoading,
+    employeeBankError,
+  };
+};
+
+
 
 
 
