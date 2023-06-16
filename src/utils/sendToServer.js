@@ -1287,3 +1287,69 @@ export const add_update_delete_employee_bank = async (state, { type, payload }) 
       throw new Error();
   }
 };
+
+// Add - Update - Delete Employee Review state
+export const add_update_delete_employee_review = async (state, { type, payload }) => {
+  const { id, formData } = payload;
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${BaseUrl}/employee/reviews/`, payload);
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            // setGlobalState("collectServerResponseTextError", response);
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/employee/reviews/${id}/`,
+          formData
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/employee/reviews/${id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+

@@ -497,6 +497,35 @@ export const useEmployeeBankFetching = () => {
   };
 };
 
+// Get review data
+export const useEmployeeReviewFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${BaseUrl}/employee/reviews/?format=json`
+    );
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: employeeReviewData,
+    isLoading: isEmployeeReviewDataLoading,
+    error: employeeReviewError,
+  } = useQuery("reviewData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on reviewData
+      queryClient.invalidateQueries(["reviewData"]);
+    },
+  });
+
+  return {
+    employeeReviewData,
+    isEmployeeReviewDataLoading,
+    employeeReviewError,
+  };
+};
+
+
 
 
 

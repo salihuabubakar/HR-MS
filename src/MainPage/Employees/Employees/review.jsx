@@ -14,74 +14,97 @@ import {
   initReview,
   savedReviewReducer,
 } from "../../../utils/localStorage";
+import { add_update_delete_employee_review } from "../../../utils/sendToServer";
+import { useEmployeeReviewFetching } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
 import DefaultImage from "../../../assets/img/placeholder.jpg";
 
 const Review = () => {
+
+  const { employeeReviewData } = useEmployeeReviewFetching();
+  // Table pagination
+  const itemsPerPage = 10; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const startCount = (currentPage - 1) * itemsPerPage + 1;
+  const endCount = startCount + itemsPerPage - 1;
+  const paginationSettings = {
+    total: employeeReviewData?.length,
+    showTotal: (total, range) =>
+      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    itemRender: itemRender,
+    current: currentPage,
+    onChange: setCurrentPage,
+  };
+
   const [showAddReviewModal] = useGlobalState("showAddReviewModal");
   const [deleteModal] = useGlobalState("deleteModal");
 
-  const [reviewDetails, dispatchReviewDetails] = useReducer(
-    savedReviewReducer,
-    [],
-    initReview
+  const [reviewState, dispatchReviewDetails] = useReducer(
+    add_update_delete_employee_review,
+    []
   );
 
-  useEffect(() => {
-    localStorage.setItem("reviewInfo", JSON.stringify(reviewDetails));
-  }, [reviewDetails]);
   useEffect(() => {
     if (!showAddReviewModal) {
       setGlobalState("selectedReviewInfo", "");
     }
   }, [showAddReviewModal]);
 
-  const [reviewList, setReviewList] = useState();
-  useEffect(() => {
-    setReviewList(reviewDetails);
-  }, [reviewDetails]);
-
   const [menu, setMenu] = useState(false);
-  const [indexToEdit, setIndexToEdit] = useState(0);
-  const [acctIdToEdit, setAcctIdToEdit] = useState("");
+  const [indexToEdit, setIndexToEdit] = useState();
+  const [reviewId, setReviewId] = useState("");
 
-  const handleEditAcct = (id, index) => {
-    setAcctIdToEdit(id);
-    setIndexToEdit(index);
+  const handleEditReview = (id, index) => {
+    setReviewId(id);
+    setIndexToEdit((currentPage - 1) * itemsPerPage + index);
     setGlobalState("showAddReviewModal", true);
-    setGlobalState("selectedReviewInfo", reviewDetails);
+    setGlobalState("selectedReviewInfo", employeeReviewData);
   };
 
-  const handleDeleteAcct = (index) => {
-    setIndexToEdit(index);
+  const handleDeleteReview = (id) => {
+    setReviewId(id);
     setGlobalState("deleteModal", true);
   };
 
   const handleFileDownload = (fileDetails) => {
-    const dataUrlParts = fileDetails.base64File.split(",");
-    const base64Data = dataUrlParts[1];
-    const mimeType = dataUrlParts[0].split(":")[1].split(";")[0];
+    const a = document.createElement("a");
+    a.href = fileDetails;
 
-    const byteCharacters = atob(base64Data);
-    const byteNumbers = new Array(byteCharacters.length);
+    const fileExtension = fileDetails.split(".").pop().toLowerCase();
 
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    // Set the MIME type based on the file extension
+    let mimeType;
+    if (
+      fileExtension === "jpg" ||
+      fileExtension === "jpeg" ||
+      fileExtension === "JPG"
+    ) {
+      mimeType = "image/jpeg";
+    } else if (fileExtension === "png" || fileExtension === "PNG") {
+      mimeType = "image/png";
+    } else if (fileExtension === "pdf") {
+      mimeType = "application/pdf";
+    } else if (fileExtension === "webp") {
+      mimeType = "image/webp";
+    } else if (fileExtension === "txt") {
+      mimeType = "text/plain";
+    } else if (fileExtension === "xls" || fileExtension === "xlsx") {
+      mimeType = "application/vnd.ms-excel";
+    } else if (fileExtension === "doc" || fileExtension === "docx") {
+      mimeType =
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    } else {
+      mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
     }
 
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], {
-      type: mimeType,
-    });
+    // Set the MIME type of the file
+    a.type = mimeType;
 
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileDetails.fileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   const toggleMobileMenu = () => {
@@ -101,42 +124,20 @@ const Review = () => {
     {
       title: "#",
       render: (text, record, index) => {
-        return <React.Fragment>{index + 1}</React.Fragment>;
+        const actualIndex = (currentPage - 1) * itemsPerPage + index + 1;
+        return <React.Fragment>{actualIndex}</React.Fragment>;
       },
     },
     {
       title: "Name",
       dataIndex: "employee",
       render: (text, record, index) => {
-        const { id, employee } = record;
+        const { employee } = record;
         return (
           <React.Fragment>
             <h2 className="table-avatar">
-              <Link
-                onClick={(e) => e.preventDefault()}
-                className="avatar"
-                data-bs-toggle="tooltip"
-                title={employee?.label}
-                style={{
-                  borderRadius: "5px",
-                  backgroundColor: "#00000000",
-                  height: "100%",
-                }}
-              >
-                <img
-                  style={{
-                    width: "30px",
-                    borderRadius: "50px",
-                    backgroundColor: "#00000000",
-                    height: "30px",
-                  }}
-                  alt=""
-                  src={employee?.image ? employee?.image : DefaultImage}
-                />
-              </Link>
-              <Link onClick={(e) => e.preventDefault()}>
-                {employee?.label}{" "}
-                <span>{employee?.role ? employee?.role?.label : "--"}</span>
+              <Link to="#" onClick={(e) => e.preventDefault()}>
+                <span>{employee}</span>
               </Link>
             </h2>
           </React.Fragment>
@@ -145,14 +146,14 @@ const Review = () => {
     },
     {
       title: "Review Type",
-      dataIndex: "reviewType",
+      dataIndex: "review_type",
       render: (text, record, index) => {
-        const { id, reviewType } = record;
+        const { review_type } = record;
         return (
           <React.Fragment>
             <h2 className="table-avatar">
-              <Link onClick={(e) => e.preventDefault()}>
-                {reviewType?.label}
+              <Link to="#" onClick={(e) => e.preventDefault()}>
+                {review_type}
               </Link>
             </h2>
           </React.Fragment>
@@ -167,7 +168,7 @@ const Review = () => {
 
     {
       title: "Review Date",
-      dataIndex: "reviewDate",
+      dataIndex: "review_date",
       render: (text, record, index) => {
         return (
           <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>
@@ -178,12 +179,12 @@ const Review = () => {
       title: "Review Status",
       dataIndex: "reviewStatus",
       render: (text, record, index) => {
-        const { id, reviewStatus } = record;
+        const { review_status } = record;
         return (
           <React.Fragment>
             <h2 className="table-avatar">
-              <Link onClick={(e) => e.preventDefault()}>
-                {reviewStatus?.label}
+              <Link to="#" onClick={(e) => e.preventDefault()}>
+                {review_status}
               </Link>
             </h2>
           </React.Fragment>
@@ -192,18 +193,18 @@ const Review = () => {
     },
     {
       title: "Review Manager",
-      dataIndex: "reviewManager",
+      dataIndex: "review_manager",
     },
     {
       title: "Review File",
-      dataIndex: "reviewFile",
+      dataIndex: "review_file",
       render: (text, record, index) => {
-        const { reviewFile } = record;
+        const { review_file } = record;
         return (
           <React.Fragment>
             <h2 className="table-avatar">
-              <Link onClick={(e) => e.preventDefault()}>
-                {reviewFile.fileName}
+              <Link to="#" onClick={(e) => e.preventDefault()}>
+                {review_file}
               </Link>
             </h2>
           </React.Fragment>
@@ -224,19 +225,19 @@ const Review = () => {
           <div className="dropdown-menu dropdown-menu-right">
             <a
               className="dropdown-item"
-              onClick={() => handleFileDownload(record.reviewFile)}
+              onClick={() => handleFileDownload(record.review_file)}
             >
               <i className="fa fa-download m-r-5" /> Download
             </a>
             <a
               className="dropdown-item"
-              onClick={() => handleEditAcct(record.id, index)}
+              onClick={() => handleEditReview(record.id, index)}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
             <a
               className="dropdown-item"
-              onClick={() => handleDeleteAcct(index)}
+              onClick={() => handleDeleteReview(record.id)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -306,19 +307,12 @@ const Review = () => {
               <div className="table-responsive">
                 <Table
                   className="table-striped"
-                  pagination={{
-                    total: reviewList?.length,
-                    showTotal: (total, range) =>
-                      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                    showSizeChanger: true,
-                    onShowSizeChange: onShowSizeChange,
-                    itemRender: itemRender,
-                  }}
+                  pagination={paginationSettings}
                   style={{ overflowX: "auto" }}
                   columns={columns}
-                  // bordered
-                  dataSource={reviewList}
-                  rowKey={(review) => review.id}
+                  bordered
+                  dataSource={employeeReviewData}
+                  rowKey={(review) => review?.id}
                 />
               </div>
             </div>
@@ -329,15 +323,13 @@ const Review = () => {
           <AddReview
             dispatchReviewDetails={dispatchReviewDetails}
             indexToEdit={indexToEdit}
-            acctIdToEdit={acctIdToEdit}
-            reviewDetails={reviewDetails}
+            id={reviewId}
           />
         )}
         {deleteModal && (
           <DeleteModal
             deleteAction={dispatchReviewDetails}
-            indexToDelete={indexToEdit}
-            dispatch={reviewDetails}
+            iDToDelete={reviewId}
             modalTitle={"Review"}
           />
         )}
