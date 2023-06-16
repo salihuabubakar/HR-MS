@@ -441,6 +441,35 @@ export const useEmployeeExperienceFetching = () => {
   };
 };
 
+// Get document data
+export const useEmployeeDocumentFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${BaseUrl}/employee/documents/?format=json`
+    );
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: employeeDocumentData,
+    isLoading: isEmployeeDocumentDataLoading,
+    error: employeeDocumentError,
+  } = useQuery("documentData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on documentData
+      queryClient.invalidateQueries(["documentData"]);
+    },
+  });
+
+  return {
+    employeeDocumentData,
+    isEmployeeDocumentDataLoading,
+    employeeDocumentError,
+  };
+};
+
+
 
 
 

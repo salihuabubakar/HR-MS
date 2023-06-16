@@ -116,6 +116,11 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showEmployeeExperienceModal: false,
   selectedEmployeeExperience: [],
 
+  // Employee Document
+  deleteEmployeeDocumentModal: false,
+  showEmployeeDocumentModal: false,
+  selectedEmployeeDocument: [],
+
   // Sever Error Response Text
   collectServerResponseTextError: [],
 });
