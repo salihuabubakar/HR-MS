@@ -385,6 +385,64 @@ export const useEmployeeEmergencyFetching = () => {
   };
 };
 
+// Get qualification data
+export const useEmployeeQualificationFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${BaseUrl}/employee/qualifications/?format=json`
+    );
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: employeeQualificationData,
+    isLoading: isEmployeeQualificationDataLoading,
+    error: employeeQualificationError,
+  } = useQuery("qualificationData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on qualificationData
+      queryClient.invalidateQueries(["qualificationData"]);
+    },
+  });
+
+  return {
+    employeeQualificationData,
+    isEmployeeQualificationDataLoading,
+    employeeQualificationError,
+  };
+};
+
+// Get experience data
+export const useEmployeeExperienceFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${BaseUrl}/employee/workexperience/?format=json`
+    );
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: employeeExperienceData,
+    isLoading: isEmployeeExperienceDataLoading,
+    error: employeeExperienceError,
+  } = useQuery("experienceData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on experienceData
+      queryClient.invalidateQueries(["experienceData"]);
+    },
+  });
+
+  return {
+    employeeExperienceData,
+    isEmployeeExperienceDataLoading,
+    employeeExperienceError,
+  };
+};
+
+
+
 
 
 
