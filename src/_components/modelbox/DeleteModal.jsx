@@ -43,6 +43,8 @@ const DeleteModal = ({
     setGlobalState("deleteStatusModal", false);
     setGlobalState("deleteEmployeeAddressModal", false);
     setGlobalState("deleteEmployeeEmergencyModal", false);
+    setGlobalState("deleteEmployeeQualificationModal", false);
+    setGlobalState("deleteEmployeeExperienceModal", false);
   };
 
   const handleModalClose = () => {
@@ -68,6 +70,8 @@ const DeleteModal = ({
     setGlobalState("deleteStatusModal", false);
     setGlobalState("deleteEmployeeAddressModal", false);
     setGlobalState("deleteEmployeeEmergencyModal", false);
+    setGlobalState("deleteEmployeeQualificationModal", false);
+    setGlobalState("deleteEmployeeExperienceModal", false);
   };
 
   return (

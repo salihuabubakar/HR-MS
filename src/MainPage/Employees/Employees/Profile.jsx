@@ -5,10 +5,19 @@ import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import {
   useEmployeeAddressFetching,
   useEmployeeEmergencyFetching,
+  useEmployeeQualificationFetching,
+  useEmployeeExperienceFetching,
 } from "../../../utils/employeeCustomFetchHook";
-import { add_update_delete_employee_address, add_update_delete_employee_emergency } from "../../../utils/sendToServer";
+import {
+  add_update_delete_employee_address,
+  add_update_delete_employee_emergency,
+  add_update_delete_employee_qualification,
+  add_update_delete_employee_experience,
+} from "../../../utils/sendToServer";
 import AddEmployeeAddress from "../../../_components/modelbox/AddEmployeeAddress";
 import AddEmployeeEmergency from "../../../_components/modelbox/AddEmployeeEmergency";
+import AddEmployeeQualification from "../../../_components/modelbox/AddEmployeeQualification";
+import AddEmployeeExperience from "../../../_components/modelbox/AddEmployeeExperience";
 
 const Profile = ({
   getSelectedData,
@@ -17,7 +26,6 @@ const Profile = ({
   skeletonLoading,
   getEmployeeId,
 }) => {
-
   // Address
   const [employeeAddressState, dispatchEmployeeAddress] = useReducer(
     add_update_delete_employee_address,
@@ -89,6 +97,82 @@ const Profile = ({
       setGlobalState("selectedEmployeeEmergency", "");
     }
   }, [showEmployeeEmergencyModal]);
+
+  // Qualification
+  const [employeeQualificationState, dispatchEmployeeQualification] =
+    useReducer(add_update_delete_employee_qualification, []);
+  const {
+    employeeQualificationData,
+    isEmployeeQualificationDataLoading,
+    employeeQualificationError,
+  } = useEmployeeQualificationFetching();
+  const [getEmployeeQualificationId, setGetEmployeeQualificationId] =
+    useState();
+  const [
+    employeeQualificationIndexToEdit,
+    setEmployeeQualificationIndexToEdit,
+  ] = useState();
+  const [showEmployeeQualificationModal] = useGlobalState(
+    "showEmployeeQualificationModal"
+  );
+  const [deleteEmployeeQualificationModal] = useGlobalState(
+    "deleteEmployeeQualificationModal"
+  );
+
+  const handleEditEmployeeQualification = (id, index) => {
+    setGetEmployeeQualificationId(id);
+    setEmployeeQualificationIndexToEdit(index);
+    setGlobalState("selectedEmployeeQualification", employeeQualificationData);
+    setGlobalState("showEmployeeQualificationModal", true);
+  };
+  const handleDeleteEmployeeQualification = (id) => {
+    setGetEmployeeQualificationId(id);
+    setGlobalState("deleteEmployeeQualificationModal", true);
+  };
+
+  useEffect(() => {
+    if (!showEmployeeQualificationModal) {
+      setGlobalState("selectedEmployeeQualification", "");
+    }
+  }, [showEmployeeQualificationModal]);
+
+  // Experience
+  const [employeeExperienceState, dispatchEmployeeExperience] = useReducer(
+    add_update_delete_employee_experience,
+    []
+  );
+  const {
+    employeeExperienceData,
+    isEmployeeExperienceDataLoading,
+    employeeExperienceError,
+  } = useEmployeeExperienceFetching();
+  const [getEmployeeExperienceId, setGetEmployeeExperienceId] = useState();
+  const [employeeExperienceIndexToEdit, setEmployeeExperienceIndexToEdit] =
+    useState();
+  const [showEmployeeExperienceModal] = useGlobalState(
+    "showEmployeeExperienceModal"
+  );
+  const [deleteEmployeeExperienceModal] = useGlobalState(
+    "deleteEmployeeExperienceModal"
+  );
+
+  const handleEditEmployeeExperience = (id, index) => {
+    setGetEmployeeExperienceId(id);
+    setEmployeeExperienceIndexToEdit(index);
+    setGlobalState("selectedEmployeeExperience", employeeExperienceData);
+    setGlobalState("showEmployeeExperienceModal", true);
+  };
+
+  const handleDeleteEmployeeExperience = (id) => {
+    setGetEmployeeExperienceId(id);
+    setGlobalState("deleteEmployeeExperienceModal", true);
+  };
+
+  useEffect(() => {
+    if (!showEmployeeExperienceModal) {
+      setGlobalState("selectedEmployeeExperience", "");
+    }
+  }, [showEmployeeExperienceModal]);
 
   const selectedEmployeeId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
@@ -437,7 +521,9 @@ const Profile = ({
                               })
                             ) : (
                               <tr>
-                                <td>No Emergency Contact attach to this employee</td>
+                                <td>
+                                  No Emergency Contact attach to this employee
+                                </td>
                               </tr>
                             )}
                           </tbody>
@@ -610,13 +696,21 @@ const Profile = ({
                     <div className="card-body">
                       <h3 className="card-title">
                         Qualifications{" "}
-                        {/* <a onClick={handleEducationInfo} className="edit-icon">
-                      <i className="fa fa-plus" />
-                    </a> */}
+                        <a
+                          onClick={() =>
+                            setGlobalState(
+                              "showEmployeeQualificationModal",
+                              true
+                            )
+                          }
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          {employee_qualifications?.map(
+                          {employeeQualificationData?.map(
                             (qualifications, index) => {
                               const {
                                 id,
@@ -625,8 +719,11 @@ const Profile = ({
                                 institute_name,
                                 start_date,
                                 end_date,
+                                description,
+                                qualification_upload,
                               } = qualifications;
                               if (employee == selectedEmployeeId) {
+                                const regex = /(png|jpg|webp|JPG|PNG)/;
                                 return (
                                   <li key={id}>
                                     <div className="experience-user">
@@ -636,14 +733,50 @@ const Profile = ({
                                       <div className="timeline-content">
                                         <a className="name">
                                           {institute_name}
-                                          {/* <span
-                                      className="edit-icon"
-                                      onClick={() =>
-                                        editEduInfo(fieldsIndex, index)
-                                      }
-                                    >
-                                      <i className="fa fa-pencil" />
-                                    </span> */}
+                                          <span
+                                            className="edit-icon"
+                                            style={{
+                                              background: "none",
+                                              border: "none",
+                                            }}
+                                          >
+                                            <div className="dropdown dropdown-action text-end">
+                                              <a
+                                                className="action-icon dropdown-toggle"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                <i className="material-icons">
+                                                  more_vert
+                                                </i>
+                                              </a>
+                                              <div className="dropdown-menu dropdown-menu-right">
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleEditEmployeeQualification(
+                                                      id,
+                                                      index
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil m-r-5" />{" "}
+                                                  Edit
+                                                </a>
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleDeleteEmployeeQualification(
+                                                      id
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa fa-trash-o m-r-5" />{" "}
+                                                  Delete
+                                                </a>
+                                              </div>
+                                            </div>
+                                          </span>
                                         </a>
                                         <div style={{ fontWeight: "900" }}>
                                           {qualification_name}
@@ -651,6 +784,21 @@ const Profile = ({
                                         <span className="time">
                                           {start_date} - {end_date}
                                         </span>
+                                        <div>{description}</div>
+                                        <div>
+                                          {qualification_upload &&
+                                          regex.test(qualification_upload) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={qualification_upload}
+                                              alt="Preview"
+                                            />
+                                          ) : !qualification_upload ? null : (
+                                            <span className="files-icon">
+                                              <i className="fa fa-file-pdf-o" />
+                                            </span>
+                                          )}
+                                        </div>
                                       </div>
                                     </div>
                                   </li>
@@ -668,25 +816,32 @@ const Profile = ({
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Work Experience{" "}
-                        {/* <a onClick={handleEducationInfo} className="edit-icon">
-                      <i className="fa fa-plus" />
-                    </a> */}
+                        Experience{" "}
+                        <a
+                          onClick={() =>
+                            setGlobalState("showEmployeeExperienceModal", true)
+                          }
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          {employee_work_experiences?.map(
+                          {employeeExperienceData?.map(
                             (experience, index) => {
                               const {
                                 id,
                                 employee,
                                 job_title,
                                 company_name,
-                                description,
                                 start_date,
                                 end_date,
+                                description,
+                                experience_upload,
                               } = experience;
                               if (employee == selectedEmployeeId) {
+                                const regex = /(png|jpg|webp|JPG|PNG)/;
                                 return (
                                   <li key={id}>
                                     <div className="experience-user">
@@ -696,22 +851,72 @@ const Profile = ({
                                       <div className="timeline-content">
                                         <a className="name">
                                           {company_name}
-                                          {/* <span
-                                      className="edit-icon"
-                                      onClick={() =>
-                                        editEduInfo(fieldsIndex, index)
-                                      }
-                                    >
-                                      <i className="fa fa-pencil" />
-                                    </span> */}
+                                          <span
+                                            className="edit-icon"
+                                            style={{
+                                              background: "none",
+                                              border: "none",
+                                            }}
+                                          >
+                                            <div className="dropdown dropdown-action text-end">
+                                              <a
+                                                className="action-icon dropdown-toggle"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                <i className="material-icons">
+                                                  more_vert
+                                                </i>
+                                              </a>
+                                              <div className="dropdown-menu dropdown-menu-right">
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleEditEmployeeExperience(
+                                                      id,
+                                                      index
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil m-r-5" />{" "}
+                                                  Edit
+                                                </a>
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleDeleteEmployeeExperience(
+                                                      id
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa fa-trash-o m-r-5" />{" "}
+                                                  Delete
+                                                </a>
+                                              </div>
+                                            </div>
+                                          </span>
                                         </a>
                                         <div style={{ fontWeight: "900" }}>
                                           {job_title}
                                         </div>
-                                        <div>{description}</div>
                                         <span className="time">
                                           {start_date} - {end_date}
                                         </span>
+                                        <div>{description}</div>
+                                        <div>
+                                          {experience_upload &&
+                                          regex.test(experience_upload) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={experience_upload}
+                                              alt="Preview"
+                                            />
+                                          ) : !experience_upload ? null : (
+                                            <span className="files-icon">
+                                              <i className="fa fa-file-pdf-o" />
+                                            </span>
+                                          )}
+                                        </div>
                                       </div>
                                     </div>
                                   </li>
@@ -1429,6 +1634,40 @@ const Profile = ({
           deleteAction={dispatchEmployeeEmergency}
           iDToDelete={getEmployeeEmergencyId}
           modalTitle={"Emergency"}
+        />
+      )}
+
+      {/* Employee Qualification */}
+      {showEmployeeQualificationModal && (
+        <AddEmployeeQualification
+          id={getEmployeeQualificationId}
+          dispatchEmployeeQualification={dispatchEmployeeQualification}
+          employeeQualificationIndexToEdit={employeeQualificationIndexToEdit}
+          employee={getEmployeeId}
+        />
+      )}
+      {deleteEmployeeQualificationModal && (
+        <DeleteModal
+          deleteAction={dispatchEmployeeQualification}
+          iDToDelete={getEmployeeQualificationId}
+          modalTitle={"Qualification"}
+        />
+      )}
+
+      {/* Employee Experience */}
+      {showEmployeeExperienceModal && (
+        <AddEmployeeExperience
+          id={getEmployeeExperienceId}
+          dispatchEmployeeExperience={dispatchEmployeeExperience}
+          employeeExperienceIndexToEdit={employeeExperienceIndexToEdit}
+          employee={getEmployeeId}
+        />
+      )}
+      {deleteEmployeeExperienceModal && (
+        <DeleteModal
+          deleteAction={dispatchEmployeeExperience}
+          iDToDelete={getEmployeeExperienceId}
+          modalTitle={"Experience"}
         />
       )}
     </>

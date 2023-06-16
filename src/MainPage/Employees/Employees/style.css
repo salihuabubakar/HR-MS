@@ -1,3 +1,7 @@
+.material-icons:hover {
+  color: #ff9b44;
+}
+
 .skeleton-container {
   display: flex;
   align-items: center;
