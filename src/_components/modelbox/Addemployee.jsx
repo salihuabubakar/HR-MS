@@ -8,7 +8,7 @@ import {
   Card,
 } from "./Addemployee.style";
 import "./style.css";
-import { useOrganisationFetching } from "../../utils/employeeCustomFetchHook";
+import { useOrganisationFetching, useRoleFetching, useDepartmentFetching } from "../../utils/employeeCustomFetchHook";
 
 const Addemployee = ({
   dispatchEmployee,
@@ -17,6 +17,8 @@ const Addemployee = ({
 }) => {
 
   const { organisationData } = useOrganisationFetching();
+  const { roleData } = useRoleFetching();
+  const { departmentData } = useDepartmentFetching()
 
   const [selectedEmployeeAccount] = useGlobalState("selectedEmployeeAccount");
   const imageUrlFromServer = selectedEmployeeAccount[indexToEdit]?.photo;
@@ -94,16 +96,16 @@ const Addemployee = ({
   //     ? selectedEmployeeAccount[indexToEdit]?.appointmentLetter
   //     : ""
   // );
-  // const [role, setRole] = useState(
-  //   selectedEmployeeAccount[indexToEdit]?.role
-  //     ? selectedEmployeeAccount[indexToEdit]?.role
-  //     : ""
-  // );
-  // const [department, setDepartment] = useState(
-  //   selectedEmployeeAccount[indexToEdit]?.department
-  //     ? selectedEmployeeAccount[indexToEdit]?.department
-  //     : ""
-  // );
+  const [role, setRole] = useState(
+    selectedEmployeeAccount[indexToEdit]?.role
+      ? selectedEmployeeAccount[indexToEdit]?.role
+      : ""
+  );
+  const [department, setDepartment] = useState(
+    selectedEmployeeAccount[indexToEdit]?.department
+      ? selectedEmployeeAccount[indexToEdit]?.department
+      : ""
+  );
   const [organisation, setOrganisation] = useState(
     selectedEmployeeAccount[indexToEdit]?.organisation
       ? selectedEmployeeAccount[indexToEdit]?.organisation
@@ -156,7 +158,9 @@ const Addemployee = ({
       marital_status: marital_status,
       nationality: nationality,
       date_of_birth: date_of_birth,
-      hire_date: hire_date
+      hire_date: hire_date,
+      role: role,
+      department: department
     };
 
     Object.entries(fields).forEach(([fieldName, fieldValue]) => {
@@ -440,6 +444,44 @@ const Addemployee = ({
                             type="date"
                             placeholder="Hire Date"
                           />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Role</label>
+                          <select
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            className="form-control floating"
+                          >
+                            <option disabled value="">
+                              Select Role
+                            </option>
+                            {roleData?.map((role) => (
+                              <option key={role.id} value={role.id}>
+                                {`${role.role_name}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Department</label>
+                          <select
+                            value={department}
+                            onChange={(e) => setDepartment(e.target.value)}
+                            className="form-control floating"
+                          >
+                            <option disabled value="">
+                              Select Department
+                            </option>
+                            {departmentData?.map((dept) => (
+                              <option key={dept.id} value={dept.id}>
+                                {`${dept.department_name}`}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       </div>
                       <div className="col-sm-6">

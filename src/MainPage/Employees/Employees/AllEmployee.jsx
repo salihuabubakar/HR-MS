@@ -16,6 +16,12 @@ const AllEmployee = ({
 
   const {roleData} = useRoleFetching();
 
+  const [itemsToShow, setItemsToShow] = useState(16);
+
+  const handleViewMore = () => {
+    setItemsToShow(itemsToShow + 16);
+  };
+
 
   
 
@@ -40,15 +46,9 @@ const AllEmployee = ({
         <>
           {data ? (
             <>
-              {data?.map((staff, index) => {
-                const {
-                  id,
-                  photo,
-                  first_name,
-                  middle_name,
-                  last_name,
-                  role,
-                } = staff;
+              {data?.slice(0, itemsToShow)?.map((staff, index) => {
+                const { id, photo, first_name, middle_name, last_name, role } =
+                  staff;
                 return (
                   <React.Fragment key={id}>
                     <div
@@ -58,9 +58,7 @@ const AllEmployee = ({
                       <div className="profile-widget">
                         <div className="profile-img">
                           <a
-                            onClick={() =>
-                              handleEmployeeProfilePage(id, index)
-                            }
+                            onClick={() => handleEmployeeProfilePage(id, index)}
                             className="avatar"
                             style={{
                               borderRadius: "5px",
@@ -90,9 +88,7 @@ const AllEmployee = ({
                           <div className="dropdown-menu dropdown-menu-right">
                             <a
                               className="dropdown-item"
-                              onClick={() =>
-                                handleEditEmployee(id, index)
-                              }
+                              onClick={() => handleEditEmployee(id, index)}
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
                             </a>
@@ -106,23 +102,18 @@ const AllEmployee = ({
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                           <a
-                            // to={{
-                            //   pathname: "/app/profile/employee-profile",
-                            //   state: { id: id, index: index },
-                            // }}
-                            onClick={() =>
-                              handleEmployeeProfilePage(id, index)
-                            }
+                            onClick={() => handleEmployeeProfilePage(id, index)}
                           >
                             {`${first_name} ${middle_name} ${last_name}`}
                           </a>
                         </h4>
                         <div className="small text-muted">
-                          {roleData?.map(r => {
-                            if(r.id === role) {
-                              return r.role_name
+                          {roleData?.map((r) => {
+                            if (r.id === role) {
+                              return r.role_name;
                             }
                           })}
+                          {!role && "---"}
                         </div>
                       </div>
                     </div>
@@ -134,6 +125,14 @@ const AllEmployee = ({
             <p>No data available</p>
           )}
         </>
+      )}
+      {itemsToShow < data?.length && (
+        <button
+          className="btn btn-primary col-md-2 mt-3"
+          onClick={handleViewMore}
+        >
+          View More
+        </button>
       )}
     </div>
   );
