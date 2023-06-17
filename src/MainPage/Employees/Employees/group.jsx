@@ -8,18 +8,16 @@ import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import Role from "./role";
 import Department from "./department";
 import Organisation from "./organisation";
-import Status from "./status";
 import { 
   useRoleFetching, 
   useDepartmentFetching, 
   useOrganisationFetching, 
-  useStatusFetching 
+   
 } from "../../../utils/employeeCustomFetchHook";
 import { 
   add_update_delete_role, 
   add_update_delete_department,
-  add_update_delete_organisation,
-  add_update_delete_status 
+  add_update_delete_organisation, 
 } from "../../../utils/sendToServer";
 
 const Group = () => {
@@ -28,7 +26,7 @@ const Group = () => {
     useDepartmentFetching();
   const { organisationData, isOrganisationDataLoading, organisationError } =
     useOrganisationFetching();
-  const { statusData, isStatusDataLoading, statusError } = useStatusFetching();
+  
 
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {
@@ -86,14 +84,6 @@ const Group = () => {
                 add_update_delete_organisation={add_update_delete_organisation}
               />
             </div>
-            {/* <div className="col-sm-12">
-              <Status
-                // statusData={statusData}
-                // isStatusDataLoading={isStatusDataLoading}
-                // statusError={statusError}
-                // add_update_delete_status={add_update_delete_status}
-              />
-            </div> */}
           </div>
         </div>
       </div>
