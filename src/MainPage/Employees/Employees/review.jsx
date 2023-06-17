@@ -38,6 +38,9 @@ const Review = () => {
     onChange: setCurrentPage,
   };
 
+  // Checks if the uploaded document contain any of this extentions.
+  const regex = /(png|jpg|webp|JPG|PNG)/;
+
   const [showAddReviewModal] = useGlobalState("showAddReviewModal");
   const [deleteModal] = useGlobalState("deleteModal");
 
@@ -68,11 +71,11 @@ const Review = () => {
     setGlobalState("deleteModal", true);
   };
 
-  const handleFileDownload = (fileDetails) => {
+  const handleFileDownload = (file) => {
     const a = document.createElement("a");
-    a.href = fileDetails;
+    a.href = file;
 
-    const fileExtension = fileDetails.split(".").pop().toLowerCase();
+    const fileExtension = file.split(".").pop().toLowerCase();
 
     // Set the MIME type based on the file extension
     let mimeType;
@@ -204,7 +207,17 @@ const Review = () => {
           <React.Fragment>
             <h2 className="table-avatar">
               <Link to="#" onClick={(e) => e.preventDefault()}>
-                {review_file}
+                {review_file && regex.test(review_file) ? (
+                  <img
+                    className="img-preview"
+                    src={review_file}
+                    alt="Preview"
+                  />
+                ) : !review_file ? null : (
+                  <span className="files-icon">
+                    <i className="fa fa-file-pdf-o" />
+                  </span>
+                )}
               </Link>
             </h2>
           </React.Fragment>

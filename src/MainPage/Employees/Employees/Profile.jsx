@@ -32,6 +32,46 @@ const Profile = ({
   skeletonLoading,
   getEmployeeId,
 }) => {
+
+    const handleFileDownload = (file) => {
+      const a = document.createElement("a");
+      a.href = file;
+
+      const fileExtension = file.split(".").pop().toLowerCase();
+
+      // Set the MIME type based on the file extension
+      let mimeType;
+      if (
+        fileExtension === "jpg" ||
+        fileExtension === "jpeg" ||
+        fileExtension === "JPG"
+      ) {
+        mimeType = "image/jpeg";
+      } else if (fileExtension === "png" || fileExtension === "PNG") {
+        mimeType = "image/png";
+      } else if (fileExtension === "pdf") {
+        mimeType = "application/pdf";
+      } else if (fileExtension === "webp") {
+        mimeType = "image/webp";
+      } else if (fileExtension === "txt") {
+        mimeType = "text/plain";
+      } else if (fileExtension === "xls" || fileExtension === "xlsx") {
+        mimeType = "application/vnd.ms-excel";
+      } else if (fileExtension === "doc" || fileExtension === "docx") {
+        mimeType =
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+      } else {
+        mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
+      }
+
+      // Set the MIME type of the file
+      a.type = mimeType;
+
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
+
   // Address
   const [employeeAddressState, dispatchEmployeeAddress] = useReducer(
     add_update_delete_employee_address,
@@ -277,6 +317,13 @@ const Profile = ({
   const employee_status = getSelectedData?.employee_status;
   const employee_documents = getSelectedData?.employee_documents;
 
+
+  const employeeStatus = employee_status?.map(s => {
+    if(s.employee === selectedEmployeeId) {
+      return s.status
+    }
+  })
+
 // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
 
@@ -318,6 +365,24 @@ const Profile = ({
                         <div className="col-md-5">
                           <div className="profile-info-left">
                             <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
+
+                            <h6
+                              style={{ display: "flex" }}
+                              className="text-muted"
+                            >
+                              <div
+                                style={{
+                                  borderRadius: "50%",
+                                  height: "10px",
+                                  width: "10px",
+                                  backgroundColor: "lightgreen",
+                                  marginRight: "5px",
+                                }}
+                              ></div>
+                              {employeeStatus == Number(employeeStatus)
+                                ? "Active"
+                                : employeeStatus}
+                            </h6>
                             <h6 className="text-muted">
                               Role: {role ? role?.role_name : "--"}
                             </h6>
@@ -336,6 +401,9 @@ const Profile = ({
                             </div>
                             <div className="small doj text-muted">
                               Nationality: {nationality ? nationality : "--"}
+                            </div>
+                            <div className="small doj text-muted">
+                              Department: {department?.department_name}
                             </div>
                           </div>
                         </div>
@@ -372,6 +440,14 @@ const Profile = ({
                               <div className="title">Marital Status:</div>
                               <div className="text">
                                 {marital_status ? marital_status : "--"}
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">Organisation:</div>
+                              <div className="text">
+                                {organisation?.organisation_name
+                                  ? organisation?.organisation_name
+                                  : "--"}
                               </div>
                             </li>
                           </ul>
@@ -524,6 +600,17 @@ const Profile = ({
                                           </i>
                                         </a>
                                         <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(
+                                                upload_document
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
                                           <a
                                             className="dropdown-item"
                                             onClick={() =>
@@ -868,6 +955,17 @@ const Profile = ({
                                           >
                                             <div className="dropdown dropdown-action text-end">
                                               <a
+                                                className="dropdown-item"
+                                                onClick={() =>
+                                                  handleFileDownload(
+                                                    qualification_upload
+                                                  )
+                                                }
+                                              >
+                                                <i className="fa fa-download m-r-5" />{" "}
+                                                Download
+                                              </a>
+                                              <a
                                                 className="action-icon dropdown-toggle"
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false"
@@ -966,7 +1064,6 @@ const Profile = ({
                               experience_upload,
                             } = experience;
                             if (employee == selectedEmployeeId) {
-                              const regex = /(png|jpg|webp|JPG|PNG)/;
                               return (
                                 <li key={id}>
                                   <div className="experience-user">
@@ -994,6 +1091,17 @@ const Profile = ({
                                               </i>
                                             </a>
                                             <div className="dropdown-menu dropdown-menu-right">
+                                              <a
+                                                className="dropdown-item"
+                                                onClick={() =>
+                                                  handleFileDownload(
+                                                    experience_upload
+                                                  )
+                                                }
+                                              >
+                                                <i className="fa fa-download m-r-5" />{" "}
+                                                Download
+                                              </a>
                                               <a
                                                 className="dropdown-item"
                                                 onClick={() =>
@@ -1050,91 +1158,6 @@ const Profile = ({
                           })}
                         </ul>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {isSelectedLoading || skeletonLoading ? (
-            <div className="skeleton-container-profile">
-              <div className="skeleton-content-profile">
-                <div className="skeleton-line-profile"></div>
-                <div className="skeleton-line-profile"></div>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="row">
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">Department</h3>
-                      <ul className="personal-info">
-                        <li>
-                          <div className="title">Department Name</div>
-                          <div className="text">
-                            {department?.department_name}
-                          </div>
-                        </li>
-                        <li>
-                          <div className="title">Description</div>
-                          <div className="text">{department?.description}</div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">Organisation</h3>
-                      <ul className="personal-info">
-                        <li>
-                          <div className="title">Organisation Name</div>
-                          <div className="text">
-                            {organisation?.organisation_name}
-                          </div>
-                        </li>
-                        <li>
-                          <div className="title">Manager Name</div>
-                          <div className="text">
-                            {organisation?.manager_name}
-                          </div>
-                        </li>
-                        <li>
-                          <div className="title">Phone</div>
-                          <div className="text">{organisation?.mobile}</div>
-                        </li>
-                        <li>
-                          <div className="title">Office Phone</div>
-                          <div className="text">
-                            {organisation?.office_phone}
-                          </div>
-                        </li>
-                        <li>
-                          <div className="title">Email</div>
-                          <div className="text">{organisation?.email}</div>
-                        </li>
-                        <li>
-                          <div className="title">City</div>
-                          <div className="text">{organisation?.city}</div>
-                        </li>
-                        <li>
-                          <div className="title">Street</div>
-                          <div className="text">{organisation?.street}</div>
-                        </li>
-                        <li>
-                          <div className="title">Country</div>
-                          <div className="text">{organisation?.country}</div>
-                        </li>
-                        <li>
-                          <div className="title">Post Code</div>
-                          <div className="text">{organisation?.post_code}</div>
-                        </li>
-                      </ul>
                     </div>
                   </div>
                 </div>
@@ -1272,14 +1295,12 @@ const Profile = ({
                   </div>
                 </div>
 
-                <div className="col-md-6 d-flex">
+                {/* <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
                         Status{" "}
-                        {/* <a onClick={handleEducationInfo} className="edit-icon">
-                      <i className="fa fa-plus" />
-                    </a> */}
+                        
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
@@ -1304,20 +1325,13 @@ const Profile = ({
                                     <div className="timeline-content">
                                       <a className="name">
                                         {authorising_manager}
-                                        {/* <span
-                                      className="edit-icon"
-                                      onClick={() =>
-                                        editEduInfo(fieldsIndex, index)
-                                      }
-                                    >
-                                      <i className="fa fa-pencil" />
-                                    </span> */}
+                                        
                                       </a>
-                                      <div style={{ fontWeight: "900" }}>
+                                      <a style={{ fontWeight: "900" }}>
                                         {status == Number(status)
                                           ? "Active"
                                           : status}
-                                      </div>
+                                      </a>
                                       <div>{comments}</div>
                                       <span className="time">
                                         {start_date} - {end_date}
@@ -1332,7 +1346,7 @@ const Profile = ({
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </>
           )}
@@ -1633,7 +1647,6 @@ const Profile = ({
                               verified,
                             } = experience;
                             if (employee == selectedEmployeeId) {
-                              const regex = /(png|jpg|webp|JPG|PNG)/;
                               return (
                                 <li key={id}>
                                   <div className="experience-user">
@@ -1661,6 +1674,17 @@ const Profile = ({
                                               </i>
                                             </a>
                                             <div className="dropdown-menu dropdown-menu-right">
+                                              <a
+                                                className="dropdown-item"
+                                                onClick={() =>
+                                                  handleFileDownload(
+                                                    document_upload
+                                                  )
+                                                }
+                                              >
+                                                <i className="fa fa-download m-r-5" />{" "}
+                                                Download
+                                              </a>
                                               <a
                                                 className="dropdown-item"
                                                 onClick={() =>

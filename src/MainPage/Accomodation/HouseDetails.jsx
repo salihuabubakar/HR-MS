@@ -31,6 +31,45 @@ import DeleteModal from '../../_components/modelbox/DeleteModal';
 import moment from "moment";
 
 const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
+  const handleFileDownload = (file) => {
+    const a = document.createElement("a");
+    a.href = file;
+
+    const fileExtension = file.split(".").pop().toLowerCase();
+
+    // Set the MIME type based on the file extension
+    let mimeType;
+    if (
+      fileExtension === "jpg" ||
+      fileExtension === "jpeg" ||
+      fileExtension === "JPG"
+    ) {
+      mimeType = "image/jpeg";
+    } else if (fileExtension === "png" || fileExtension === "PNG") {
+      mimeType = "image/png";
+    } else if (fileExtension === "pdf") {
+      mimeType = "application/pdf";
+    } else if (fileExtension === "webp") {
+      mimeType = "image/webp";
+    } else if (fileExtension === "txt") {
+      mimeType = "text/plain";
+    } else if (fileExtension === "xls" || fileExtension === "xlsx") {
+      mimeType = "application/vnd.ms-excel";
+    } else if (fileExtension === "doc" || fileExtension === "docx") {
+      mimeType =
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    } else {
+      mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
+    }
+
+    // Set the MIME type of the file
+    a.type = mimeType;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   // House Employee
   const [houseEmployeeState, dispatchHouseEmployee] = useReducer(
     add_update_delete_house_employee,
@@ -226,41 +265,40 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   };
 
   // Maintenance
-const [maintenanceState, dispatchMaintenance] = useReducer(
-  add_update_delete_maintenance,
-  []
-);
-const [maintenanceIndexToEdit, setMaintenanceIndexToEdit] = useState(null);
-const [showMaintenanceModal] = useGlobalState("showMaintenanceModal");
-const {
-  houseMaintenanceData,
-  isHouseMaintenanceLoading,
-  houseMaintenanceError,
-} = useHouseMaintenanceData();
-const [getMaintenanceId, setGetMaintenanceId] = useState();
-const [deleteMaintenanceModal] = useGlobalState("deleteMaintenanceModal");
-useEffect(() => {
-  if (!showMaintenanceModal) {
-    setGlobalState("selectedMaintenance", "");
-  }
-}, [showMaintenanceModal]);
+  const [maintenanceState, dispatchMaintenance] = useReducer(
+    add_update_delete_maintenance,
+    []
+  );
+  const [maintenanceIndexToEdit, setMaintenanceIndexToEdit] = useState(null);
+  const [showMaintenanceModal] = useGlobalState("showMaintenanceModal");
+  const {
+    houseMaintenanceData,
+    isHouseMaintenanceLoading,
+    houseMaintenanceError,
+  } = useHouseMaintenanceData();
+  const [getMaintenanceId, setGetMaintenanceId] = useState();
+  const [deleteMaintenanceModal] = useGlobalState("deleteMaintenanceModal");
+  useEffect(() => {
+    if (!showMaintenanceModal) {
+      setGlobalState("selectedMaintenance", "");
+    }
+  }, [showMaintenanceModal]);
 
-const handleAddMaintenance = () => {
-  setGlobalState("showMaintenanceModal", true);
-};
+  const handleAddMaintenance = () => {
+    setGlobalState("showMaintenanceModal", true);
+  };
 
-const handleEditMaintenance = (id, index) => {
-  setGetMaintenanceId(id);
-  setMaintenanceIndexToEdit(index);
-  setGlobalState("selectedMaintenance", houseMaintenanceData);
-  setGlobalState("showMaintenanceModal", true);
-};
+  const handleEditMaintenance = (id, index) => {
+    setGetMaintenanceId(id);
+    setMaintenanceIndexToEdit(index);
+    setGlobalState("selectedMaintenance", houseMaintenanceData);
+    setGlobalState("showMaintenanceModal", true);
+  };
 
-const handleDeleteMaintenance = (id) => {
-  setGetMaintenanceId(id);
-  setGlobalState("deleteMaintenanceModal", true);
-};
-
+  const handleDeleteMaintenance = (id) => {
+    setGetMaintenanceId(id);
+    setGlobalState("deleteMaintenanceModal", true);
+  };
 
   const houseId = getHouseId;
   const selectedHouseId = getSelectedData?.id;
@@ -303,6 +341,9 @@ const handleDeleteMaintenance = (id) => {
   const vacantRooms = house_rooms?.filter(
     (room) => room.room_status === "Vacant"
   );
+
+  // Checks if the uploaded document contain any of this extentions.
+  const regex = /(png|jpg|webp|JPG|PNG)/;
 
   return (
     <>
@@ -670,10 +711,18 @@ const handleDeleteMaintenance = (id) => {
                                     <span className="text">
                                       Organization: {Organization}
                                     </span>
-                                    <span className="text">Document: {documents}</span>
-                                    <span className="text">Before Image: {Before_Image}</span>
-                                    <span className="text">After Image: {After_Image}</span>
-                                    <span className="text">Description: {description}</span>
+                                    <span className="text">
+                                      Document: {documents}
+                                    </span>
+                                    <span className="text">
+                                      Before Image: {Before_Image}
+                                    </span>
+                                    <span className="text">
+                                      After Image: {After_Image}
+                                    </span>
+                                    <span className="text">
+                                      Description: {description}
+                                    </span>
                                     <div className="dropdown dropdown-action text-end">
                                       <a
                                         className="action-icon dropdown-toggle"
@@ -729,35 +778,133 @@ const handleDeleteMaintenance = (id) => {
                 </div>
               </div>
             ) : (
-              <div className="col-md-6 d-flex">
-                <div className="card profile-box flex-fill">
-                  <div className="card-body">
-                    <h3 className="card-title">
-                      House Images
-                      <a onClick={handleAddHouseImages} className="edit-icon">
-                        <i className="fa fa-plus" />
-                      </a>
-                    </h3>
-                    {houseImagesData?.length > 0
-                      ? houseImagesData?.map((images, index) => {
-                          const {
-                            name,
-                            id,
-                            description,
-                            image,
-                            house,
-                            cover_image,
-                          } = images;
-                          if (house == houseId) {
-                            return (
-                              <React.Fragment key={id}>
+              <>
+                {/* <div className="col-md-12 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        House Images
+                        <a onClick={handleAddHouseImages} className="edit-icon">
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      {houseImagesData?.length > 0
+                        ? houseImagesData?.map((images, index) => {
+                            const {
+                              name,
+                              id,
+                              description,
+                              image,
+                              house,
+                              cover_image,
+                            } = images;
+                            if (house == houseId) {
+                              return (
+                                <React.Fragment key={id}>
+                                  <ul className="personal-info">
+                                    <li>
+                                      <span className="text">
+                                        <img
+                                          style={{
+                                            width: "350px",
+                                            height: "300px",
+                                            borderRadius: "5px",
+                                          }}
+                                          alt=""
+                                          src={image ? image : DefaultImage}
+                                        />
+                                      </span>
+                                      <span className="text">{name}</span>
+                                      <span className="text">
+                                        {description}
+                                      </span>
+                                      <span className="text">
+                                        {cover_image}
+                                      </span>
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(image)
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditHouseImages(id, index)
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteHouseImages(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </React.Fragment>
+                              );
+                            }
+                          })
+                        : "Ops! No Image"}
+                    </div>
+                  </div>
+                </div> */}
+
+                
+                  <h3 className="card-title">
+                    House Images
+                    <a onClick={handleAddHouseImages} className="edit-icon">
+                      <i className="fa fa-plus" />
+                    </a>
+                  </h3>
+                  {houseImagesData?.length > 0
+                  ? houseImagesData?.map((images, index) => {
+                    const {
+                      name,
+                      id,
+                      description,
+                      image,
+                      house,
+                      cover_image,
+                    } = images;
+                    if (house == houseId) {
+                      return (
+                        <>
+                          <div key={id} className="col-md-6 d-flex">
+                            <div className="card profile-box flex-fill">
+                              <div className="card-body">
                                 <ul className="personal-info">
                                   <li>
                                     <span className="text">
                                       <img
                                         style={{
-                                          width: "350px",
-                                          height: "300px",
+                                          // maxWidth: "800px",
+                                          // maxHeight: "400px",
+                                          height: "100%",
+                                          width: "100%",
+                                          objectFit: "cover",
                                           borderRadius: "5px",
                                         }}
                                         alt=""
@@ -781,6 +928,15 @@ const handleDeleteMaintenance = (id) => {
                                         <a
                                           className="dropdown-item"
                                           onClick={() =>
+                                            handleFileDownload(image)
+                                          }
+                                        >
+                                          <i className="fa fa-download m-r-5" />{" "}
+                                          Download
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
                                             handleEditHouseImages(id, index)
                                           }
                                         >
@@ -800,14 +956,14 @@ const handleDeleteMaintenance = (id) => {
                                     </div>
                                   </li>
                                 </ul>
-                              </React.Fragment>
-                            );
-                          }
-                        })
-                      : "Ops! No Image"}
-                  </div>
-                </div>
-              </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    }
+                  }) : "Ops! No Image"}
+              </>
             )}
           </div>
         </div>
@@ -1032,15 +1188,34 @@ const handleDeleteMaintenance = (id) => {
                                 <React.Fragment key={id}>
                                   <ul className="personal-info">
                                     <li>
-                                      <span className="text">file: {file}</span>
-                                      <span className="text">{title}</span>
                                       <span className="text">
-                                        {description}
+                                        file:{" "}
+                                        {file && regex.test(file) ? (
+                                          <img
+                                            className="img-preview"
+                                            src={file}
+                                            alt="Preview"
+                                          />
+                                        ) : !file ? null : (
+                                          <span className="files-icon">
+                                            <i className="fa fa-file-pdf-o" />
+                                          </span>
+                                        )}
                                       </span>
-                                      <span className="text">{status}</span>
-                                      <span className="text">{valid_from}</span>
                                       <span className="text">
-                                        {expiry_date}
+                                        Title: {title}
+                                      </span>
+                                      <span className="text">
+                                        Description: {description}
+                                      </span>
+                                      <span className="text">
+                                        Status: {status}
+                                      </span>
+                                      <span className="text">
+                                        Valid From: {valid_from}
+                                      </span>
+                                      <span className="text">
+                                        Expiry Date: {expiry_date}
                                       </span>
                                       <div className="dropdown dropdown-action text-end">
                                         <a
@@ -1053,6 +1228,15 @@ const handleDeleteMaintenance = (id) => {
                                           </i>
                                         </a>
                                         <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(file)
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
                                           <a
                                             className="dropdown-item"
                                             onClick={() =>
