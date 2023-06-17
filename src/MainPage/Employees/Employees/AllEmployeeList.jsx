@@ -12,21 +12,37 @@ const AllEmployeeList = ({
   data,
   setTab,
   setGetEmployeeId,
+  itemsPerPage,
+  currentPage,
+  setCurrentPage,
 }) => {
-
   const { roleData } = useRoleFetching();
+
+  // Table pagination
+  const startCount = (currentPage - 1) * itemsPerPage + 1;
+  const endCount = startCount + itemsPerPage - 1;
+  const paginationSettings = {
+    total: data?.length,
+    showTotal: (total, range) =>
+      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    itemRender: itemRender,
+    current: currentPage,
+    onChange: setCurrentPage,
+  };
 
   const handleEmployeeProfilePage = (id, index) => {
     setTab("employeeProfile");
     setGetEmployeeId(id);
   };
 
-
   const columns = [
     {
       title: "#",
       render: (text, record, index) => {
-        return <React.Fragment>{index + 1}</React.Fragment>;
+        const actualIndex = (currentPage - 1) * itemsPerPage + index + 1;
+        return <React.Fragment>{actualIndex}</React.Fragment>;
       },
     },
     {
@@ -63,9 +79,7 @@ const AllEmployeeList = ({
                 // }}
                 onClick={() => handleEmployeeProfilePage(id, index)}
               >
-                {`${first_name} ${
-                  middle_name
-                } ${last_name}`}{" "}
+                {`${first_name} ${middle_name} ${last_name}`}{" "}
                 <span>{role_name ? role_name : "--"}</span>
               </a>
             </h2>
@@ -127,19 +141,12 @@ const AllEmployeeList = ({
         <div className="table-responsive">
           <Table
             className="table-striped"
-            pagination={{
-              total: data?.length,
-              showTotal: (total, range) =>
-                `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-              showSizeChanger: true,
-              onShowSizeChange: onShowSizeChange,
-              itemRender: itemRender,
-            }}
+            pagination={paginationSettings}
             style={{ overflowX: "auto" }}
             columns={columns}
-            // bordered
+            bordered
             dataSource={data}
-            rowKey={(staff) => staff.id}
+            rowKey={(data) => data?.id}
           />
         </div>
       </div>

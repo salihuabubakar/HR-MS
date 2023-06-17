@@ -71,17 +71,20 @@ const AllEmployees = () => {
   const [menu, setMenu] = useState(false)
  
   const [indexToEdit, setIndexToEdit] = useState();
-  const [employeeIdToEdit, setEmployeeIdToEdit] = useState("");
 
   const handleAddEmployee = () => {
     setGlobalState("showModal", true);
     setGlobalState("selectedEmployeeAccount", "");
   }
 
+  // Pagination
+
+  const itemsPerPage = 10; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1);
+
   const handleEditEmployee = (id, index) => {
-    setEmployeeIdToEdit(id);
     setGetEmployeeId(id);
-    setIndexToEdit(index);
+    setIndexToEdit((currentPage - 1) * itemsPerPage + index);
     setGlobalState("showModal", true);
     setGlobalState("selectedEmployeeAccount", data);
   };
@@ -220,6 +223,9 @@ const AllEmployees = () => {
                   data={data}
                   setTab={setTab}
                   setGetEmployeeId={setGetEmployeeId}
+                  itemsPerPage={itemsPerPage}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
                 />
               )}
               {tab == "employeeProfile" && (
