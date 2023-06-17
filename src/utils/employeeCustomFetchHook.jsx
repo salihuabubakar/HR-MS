@@ -13,7 +13,7 @@ import {
 // Get employee data
 export const useDataFetching = () => {
   const fetchData = async () => {
-    const response = await axios.get(`${BaseUrl}/employee/create/?format=json`);
+    const response = await axios.get(`${BaseUrl}/employee/create/`);
     return response.data;
   };
   const queryClient = useQueryClient();

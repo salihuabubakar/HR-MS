@@ -109,12 +109,12 @@ const AllEmployeeList = ({
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
+            {/* <a
               className="dropdown-item"
               onClick={() => handleDeleteAcct(index)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
-            </a>
+            </a> */}
           </div>
         </div>
       ),

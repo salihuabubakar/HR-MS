@@ -237,7 +237,6 @@ const AllEmployees = () => {
               <Addemployee
                 dispatchEmployee={dispatchEmployee}
                 indexToEdit={indexToEdit}
-                employeeIdToEdit={employeeIdToEdit}
                 getEmployeeId={getEmployeeId}
               />
             )}

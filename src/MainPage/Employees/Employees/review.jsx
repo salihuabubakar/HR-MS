@@ -132,7 +132,7 @@ const Review = () => {
       },
     },
     {
-      title: "Name",
+      title: "Employee",
       dataIndex: "employee",
       render: (text, record, index) => {
         const { employee } = record;

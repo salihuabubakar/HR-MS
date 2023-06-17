@@ -164,6 +164,16 @@ const toggleLevelThree = (value) => {
                           Review
                         </Link>
                       </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("status") ? "active" : ""
+                          }
+                          to="/app/employee/status"
+                        >
+                          Status
+                        </Link>
+                      </li>
                     </ul>
                   ) : (
                     ""

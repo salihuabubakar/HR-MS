@@ -8,42 +8,20 @@ import {
   Card,
 } from "./Addemployee.style";
 import "./style.css";
-import { v4 as uuidv4 } from "uuid";
-import {
-  initDept,
-  savedDeptReducer,
-  initDesignation,
-  savedDesignationReducer,
-} from "../../utils/localStorage";
+import { useOrganisationFetching } from "../../utils/employeeCustomFetchHook";
 
 const Addemployee = ({
   dispatchEmployee,
   indexToEdit,
-  employeeIdToEdit,
   getEmployeeId,
 }) => {
-  // const isEdit = () => !!(acctIdToEdit && userAcct[indexToEdit]);
-  const uniqueId = uuidv4();
-  const [depts] = useReducer(savedDeptReducer, [], initDept);
-  const [deptList, setDeptList] = useState();
-  useEffect(() => {
-    setDeptList(depts);
-  }, [depts]);
 
-  const [desig] = useReducer(savedDesignationReducer, [], initDesignation);
-  const [desigList, setDesignationList] = useState();
-  useEffect(() => {
-    setDesignationList(desig);
-  }, [desig]);
+  const { organisationData } = useOrganisationFetching();
 
   const [selectedEmployeeAccount] = useGlobalState("selectedEmployeeAccount");
   const imageUrlFromServer = selectedEmployeeAccount[indexToEdit]?.photo;
   const [photo, setPhoto] = useState("");
 
-  // console.log("selectedEmployeeAccount", selectedEmployeeAccount);
-  // console.log("employeeIdToEdit", employeeIdToEdit);
-  // console.log("indexToEdit", indexToEdit);
-  // console.log("getEmployeeId", getEmployeeId);
   let id = getEmployeeId;
 
   let isIdExist;
@@ -162,18 +140,8 @@ const Addemployee = ({
     setFirstNameError("");
     setLastNameError("");
 
-    // const userAccount = {
-    //   maritalStatus,
-    //   nationality,
-    //   hireDate,
-    //   appointmentLetter,
-    //   role,
-    //   department,
-    //   organisation,
-    //   salary,
-    //   niNumber,
-    // };
     const fields = {
+      id: id,
       first_name: first_name,
       last_name: last_name,
       middle_name: middle_name,
@@ -205,19 +173,6 @@ const Addemployee = ({
     setGlobalState("showModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-  };
-
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
     setFirstNameError("");
@@ -238,24 +193,6 @@ const Addemployee = ({
     setPhoto(file);
   };
 
-  // const departments = [];
-  // deptList?.map((dept) => {
-  //   departments.push({ value: dept.id, label: dept.deptName });
-  // });
-
-  // const handleDepartmentChange = (event) => {
-  //   setDepartment(event);
-  // };
-
-  // const roles = [];
-  // desigList?.map((role) => {
-  //   roles.push({ value: role.id, label: role.desigName });
-  // });
-
-  // const handleRoleChange = (event) => {
-  //   setRole(event);
-  // };
-
   const handleOrganisationChange = (event) => {
     const data = event.target.value;
     setOrganisation(data);
@@ -265,19 +202,6 @@ const Addemployee = ({
     const data = event.target.value;
     setMaritalStatus(data);
   };
-
-  // const appLetterOnChange = (event) => {
-  //   // const file = event.target.files[0];
-  //   // const reader = new FileReader();
-  //   // reader.readAsDataURL(file);
-  //   // reader.onload = () => {
-  //   //   const base64File = reader.result;
-  //   //   setAppointmentLetter(base64File)
-  //   // };
-  //   const data = event.target.value;
-  //   setAppointmentLetter(data);
-  // };
-
 
   return (
     <>
@@ -526,10 +450,14 @@ const Addemployee = ({
                             onChange={handleOrganisationChange}
                             className="form-control floating"
                           >
-                            <option disabled value="">Select Organization</option>
-                            <option value={1}>Finance</option>
-                            <option value={2}>Sales</option>
-                            <option value={3}>Office</option>
+                            <option disabled value="">
+                              Select Organization
+                            </option>
+                            {organisationData?.map((org) => (
+                              <option key={org.id} value={org.id}>
+                                {`${org.organisation_name}`}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       </div>

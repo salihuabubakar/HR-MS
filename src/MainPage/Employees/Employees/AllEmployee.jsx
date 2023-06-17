@@ -51,7 +51,7 @@ const AllEmployee = ({
                 } = staff;
                 return (
                   <React.Fragment key={id}>
-                    {roleData?.map((r, index) => {
+                    {roleData?.map(r => {
                       if(r.id === role) {
                         return (
                           <div
@@ -94,17 +94,17 @@ const AllEmployee = ({
                                   <a
                                     className="dropdown-item"
                                     onClick={() =>
-                                      handleEditEmployee(staff.id, index)
+                                      handleEditEmployee(id, index)
                                     }
                                   >
                                     <i className="fa fa-pencil m-r-5" /> Edit
                                   </a>
-                                  <a
+                                  {/* <a
                                     className="dropdown-item"
                                     onClick={() => handleDeleteAcct(index)}
                                   >
                                     <i className="fa fa-trash-o m-r-5" /> Delete
-                                  </a>
+                                  </a> */}
                                 </div>
                               </div>
                               <h4 className="user-name m-t-10 mb-0 text-ellipsis">

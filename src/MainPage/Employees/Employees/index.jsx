@@ -5,6 +5,7 @@ import AllEmployees from './allemployees';
 import Group from "./group";
 import Contacts from './contacts';
 import Review from './review';
+import Status from "./status";
 
 const EmployeesRoute = ({ match }) => (
   <Switch>
@@ -13,6 +14,7 @@ const EmployeesRoute = ({ match }) => (
     <Route path={`${match.url}/group`} component={Group} />
     <Route path={`${match.url}/contacts`} component={Contacts} />
     <Route path={`${match.url}/review`} component={Review} />
+    <Route path={`${match.url}/status`} component={Status} />
   </Switch>
 );
 
