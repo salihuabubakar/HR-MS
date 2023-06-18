@@ -28,7 +28,10 @@ import {
   useHouseMaintenanceData,
   useDataFetching,
   useResidentFetching,
-  useOrganisationFetching
+  useOrganisationFetching,
+  useHouseNoticesFetching,
+  useHouseItemsFetching,
+  useHouseInspectionsFetching
 } from "../../utils/employeeCustomFetchHook";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
 import moment from "moment";
@@ -350,6 +353,10 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
     (room) => room.room_status === "Vacant"
   );
 
+  const { houseNoticesData } = useHouseNoticesFetching();
+  const { houseItemsData } = useHouseItemsFetching();
+  const { houseInspectionsData } = useHouseInspectionsFetching();
+
   // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
 
@@ -499,6 +506,21 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                   className="nav-link"
                 >
                   House Document
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#notice" data-bs-toggle="tab" className="nav-link">
+                  House Notices
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#item" data-bs-toggle="tab" className="nav-link">
+                  House Items
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#inspection" data-bs-toggle="tab" className="nav-link">
+                  House Inspection
                 </a>
               </li>
             </ul>
@@ -1019,6 +1041,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
             {isSelectedLoading ? (
               <div className="skeleton-container-profile">
                 <div className="skeleton-content-profile">
+                  <div className="skeleton-line-profile"></div>
                   <div className="skeleton-line-profile"></div>
                 </div>
               </div>
@@ -1674,6 +1697,303 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
           </div>
         </div>
         {/* /Document Upload Tab */}
+        {/* Maintenance Info Tab */}
+        <div id="notice" className="tab-pane fade">
+          <div className="row">
+            {isSelectedLoading ? (
+              <div className="skeleton-container-profile">
+                <div className="skeleton-content-profile">
+                  <div className="skeleton-line-profile"></div>
+                </div>
+              </div>
+            ) : (
+              <div className="col-md-6 d-flex">
+                <div className="card profile-box flex-fill">
+                  <div className="card-body">
+                    <h3 className="card-title">
+                      Notice
+                      {/* <a onClick={handleAddMaintenance} className="edit-icon">
+                        <i className="fa fa-plus" />
+                      </a> */}
+                    </h3>
+                    {houseNoticesData?.length > 0
+                      ? houseNoticesData?.map((notice, index) => {
+                          const {
+                            title,
+                            id,
+                            description,
+                            notice_date,
+                            house,
+                            residents_applicable,
+                            documents,
+                          } = notice;
+                          if (house === houseId) {
+                            return (
+                              <React.Fragment key={id}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">Title: {title}</span>
+                                    <span className="text">
+                                      Notice Date: {notice_date}
+                                    </span>
+
+                                    <span className="text">
+                                      Resident Applicable:{" "}
+                                      {residents_applicable}
+                                    </span>
+                                    <span className="text">
+                                      Document: {documents}
+                                    </span>
+                                    <span className="text">
+                                      Description: {description}
+                                    </span>
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          // onClick={() =>
+                                          //   handleEditMaintenance(id, index)
+                                          // }
+                                        >
+                                          <i className="fa fa-pencil m-r-5" />{" "}
+                                          Edit
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          // onClick={() =>
+                                          //   handleDeleteMaintenance(id)
+                                          // }
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          }
+                        })
+                      : "Ops!"}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* /Notice Info Tab */}
+        {/* Item Info Tab */}
+        <div id="item" className="tab-pane fade">
+          <div className="row">
+            {isSelectedLoading ? (
+              <div className="skeleton-container-profile">
+                <div className="skeleton-content-profile">
+                  <div className="skeleton-line-profile"></div>
+                </div>
+              </div>
+            ) : (
+              <div className="col-md-6 d-flex">
+                <div className="card profile-box flex-fill">
+                  <div className="card-body">
+                    <h3 className="card-title">
+                      Items
+                      {/* <a onClick={handleAddMaintenance} className="edit-icon">
+                        <i className="fa fa-plus" />
+                      </a> */}
+                    </h3>
+                    {houseItemsData?.length > 0
+                      ? houseItemsData?.map((items, index) => {
+                          const {
+                            sname,
+                            id,
+                            description,
+                            expiry_date,
+                            category,
+                            house,
+                            documents,
+                            quantity,
+                            purchase_date,
+                            location,
+                          } = items;
+                          if (house === houseId) {
+                            return (
+                              <React.Fragment key={id}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">Name: {name}</span>
+                                    <span className="text">
+                                      Category: {category}
+                                    </span>
+                                    <span className="text">
+                                      Expiry Date: {expiry_date}
+                                    </span>
+                                    <span className="text">
+                                      Location: {location}
+                                    </span>
+
+                                    <span className="text">
+                                      Document: {documents}
+                                    </span>
+                                    <span className="text">
+                                      Quantity: {quantity}
+                                    </span>
+                                    <span className="text">
+                                      Purchase Date: {purchase_date}
+                                    </span>
+                                    <span className="text">
+                                      Description: {description}
+                                    </span>
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          // onClick={() =>
+                                          //   handleEditMaintenance(id, index)
+                                          // }
+                                        >
+                                          <i className="fa fa-pencil m-r-5" />{" "}
+                                          Edit
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          // onClick={() =>
+                                          //   handleDeleteMaintenance(id)
+                                          // }
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          }
+                        })
+                      : "Ops!"}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* /Item Info Tab */}
+        {/* Inspection Info Tab */}
+        <div id="inspection" className="tab-pane fade">
+          <div className="row">
+            {isSelectedLoading ? (
+              <div className="skeleton-container-profile">
+                <div className="skeleton-content-profile">
+                  <div className="skeleton-line-profile"></div>
+                </div>
+              </div>
+            ) : (
+              <div className="col-md-6 d-flex">
+                <div className="card profile-box flex-fill">
+                  <div className="card-body">
+                    <h3 className="card-title">
+                      Inspection
+                      {/* <a onClick={handleAddMaintenance} className="edit-icon">
+                        <i className="fa fa-plus" />
+                      </a> */}
+                    </h3>
+                    {houseInspectionsData?.length > 0
+                      ? houseInspectionsData?.map((inspect, index) => {
+                          const {
+                            inspection_status,
+                            id,
+                            comments,
+                            inspection_date,
+                            inspected_by,
+                            house,
+                            documents,
+                            house_item,
+                          } = inspect;
+                          if (house === houseId) {
+                            return (
+                              <React.Fragment key={id}>
+                                <ul className="personal-info">
+                                  <li>
+                                    <span className="text">
+                                      Inspection Status: {inspection_status}
+                                    </span>
+                                    <span className="text">Inspected By: {inspected_by}</span>
+                                    <span className="text">Inspection Date: {inspection_date}</span>
+                                    
+                                    <span className="text">
+                                      Document: {documents}
+                                    </span>
+                                    <span className="text">
+                                      House Item: {house_item}
+                                    </span>
+                                    <span className="text">
+                                      Comment: {comments}
+                                    </span>
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          // onClick={() =>
+                                          //   handleEditMaintenance(id, index)
+                                          // }
+                                        >
+                                          <i className="fa fa-pencil m-r-5" />{" "}
+                                          Edit
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          // onClick={() =>
+                                          //   handleDeleteMaintenance(id)
+                                          // }
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" />{" "}
+                                          Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </React.Fragment>
+                            );
+                          }
+                        })
+                      : "Ops!"}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* /Inspection Info Tab */}
       </div>
 
       {/* House Employee Modals */}
