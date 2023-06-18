@@ -525,6 +525,29 @@ export const useEmployeeReviewFetching = () => {
   };
 };
 
+// Get resident data
+export const useResidentFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/residents/?format=json`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentData,
+    isLoading: isResidentLoading,
+    error: residentError,
+  } = useQuery("residentData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on residentData
+      queryClient.invalidateQueries(["residentData"]);
+    },
+  });
+
+  return { residentData, isResidentLoading, residentError };
+};
+
+
 
 
 

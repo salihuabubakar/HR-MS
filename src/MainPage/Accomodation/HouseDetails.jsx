@@ -25,10 +25,14 @@ import {
   useHouseImageFetching,
   useHouseDocumentFetching,
   useBillFetching,
-  useHouseMaintenanceData
+  useHouseMaintenanceData,
+  useDataFetching,
+  useResidentFetching,
+  useOrganisationFetching
 } from "../../utils/employeeCustomFetchHook";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
 import moment from "moment";
+import { useReactToPrint } from 'react-to-print';
 
 const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   const handleFileDownload = (file) => {
@@ -69,6 +73,10 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
     a.click();
     document.body.removeChild(a);
   };
+
+  const { data: allEmployee } = useDataFetching();
+  const { residentData } = useResidentFetching();
+  const { organisationData } = useOrganisationFetching();
 
   // House Employee
   const [houseEmployeeState, dispatchHouseEmployee] = useReducer(
@@ -347,9 +355,159 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
 
   return (
     <>
+      <div className="card mb-0">
+        <div className="card-body">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="profile-view">
+                <div className="profile-img-wrap">
+                  {isSelectedLoading ? (
+                    <div className="skeleton-container1">
+                      <div className="skeleton-avatar1"></div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="profile-img">
+                        <a>
+                          <img
+                            style={{ width: "90%", height: "90%" }}
+                            alt=""
+                            src={photo ? photo : DefaultImage}
+                          />
+                        </a>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="profile-basic">
+                  <div className="row">
+                    {isSelectedLoading ? (
+                      <div className="skeleton-container1">
+                        <div className="skeleton-content1">
+                          <div className="skeleton-line1"></div>
+                          <div className="skeleton-line2"></div>
+                          <div className="skeleton-line3"></div>
+                          <div className="skeleton-line4"></div>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="col-md-5">
+                          <div className="profile-info-left">
+                            <h3 className="user-name m-t-0 mb-0">{`${name}`}</h3>
+                            <h6 className="text-muted">
+                              {allEmployee?.map((allE) => {
+                                if (manager === allE.id)
+                                  return (
+                                    <React.Fragment key={allE.id}>
+                                      {`${allE.first_name} ${allE.middle_name} ${allE.last_name}`}
+                                    </React.Fragment>
+                                  );
+                              })}
+                            </h6>
+                          </div>
+                        </div>
+
+                        <div className="col-md-7">
+                          <ul className="personal-info">
+                            <li>
+                              <div className="title">Address:</div>
+                              <div className="text">
+                                <a>{`${street_address}, ${city}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">Number of employees:</div>
+                              <div className="text">
+                                <a>
+                                  {houseEmployeeData?.length
+                                    ? houseEmployeeData?.length
+                                    : "0"}
+                                </a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">Number of residents:</div>
+                              <div className="text">
+                                <a>
+                                  {houseResidentData?.length
+                                    ? houseResidentData?.length
+                                    : "0"}
+                                </a>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="card tab-box">
+        <div className="row user-tabs">
+          <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
+            <ul className="nav nav-tabs nav-tabs-bottom">
+              <li className="nav-item">
+                <a
+                  href="#residents"
+                  data-bs-toggle="tab"
+                  className="nav-link active"
+                >
+                  Residents
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#maintenance"
+                  data-bs-toggle="tab"
+                  className="nav-link"
+                >
+                  Maintenance
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#house_image"
+                  data-bs-toggle="tab"
+                  className="nav-link"
+                >
+                  House Images
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="#house_bill" data-bs-toggle="tab" className="nav-link">
+                  House Bills
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#house_rooms"
+                  data-bs-toggle="tab"
+                  className="nav-link"
+                >
+                  House Rooms
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#document_upload"
+                  data-bs-toggle="tab"
+                  className="nav-link"
+                >
+                  House Document
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
       <div className="tab-content">
-        {/* Profile Info Tab */}
-        <div>
+        {/* Resident Info Tab */}
+        <div id="residents" className="pro-overview tab-pane fade show active">
           <div className="row">
             {isSelectedLoading ? (
               <div className="skeleton-container-profile">
@@ -363,57 +521,96 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <div className="">
-                        <div className="profile-img">
-                          <a>
-                            <img
-                              className="inline-block"
-                              style={{
-                                borderRadius: "5px",
-                                width: "80px",
-                                height: "80px",
-                              }}
-                              alt=""
-                              src={photo ? photo : DefaultImage}
-                            />
-                          </a>
-                        </div>
+                      <h3 className="card-title">
+                        Employee{" "}
+                        <a
+                          onClick={handleAddHouseEmployye}
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {houseEmployeeData?.length > 0 ? (
+                              houseEmployeeData?.map((employees, index) => {
+                                const {
+                                  id,
+                                  employee,
+                                  status,
+                                  house,
+                                  join_date,
+                                  end_date,
+                                } = employees;
+                                if (house === houseId) {
+                                  return (
+                                    <tr style={{ height: "90px" }} key={id}>
+                                      <td>
+                                        {allEmployee?.map((allE) => {
+                                          if (employee === allE.id)
+                                            return (
+                                              <React.Fragment key={employee}>
+                                                {`${allE.first_name} ${allE.middle_name} ${allE.last_name}`}
+                                              </React.Fragment>
+                                            );
+                                        })}
+                                      </td>
+                                      <td>{status}</td>
+                                      <td className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditHouseEmployee(id, index)
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteHouseEmployee(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <tr>
+                                <td>Ops! No employee in the house.</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
                       </div>
-                      <h3 className="card-title">House information</h3>
-                      <ul className="personal-info">
-                        <li>
-                          <div className="title">House name</div>
-                          <div className="text">{name}</div>
-                        </li>
-                        <li>
-                          <div className="title">Address</div>
-                          <div className="text">{`${street_address}, ${city}`}</div>
-                        </li>
-                        <li>
-                          <div className="title">Manager</div>
-                          <div className="text">{manager}</div>
-                        </li>
-                        <li>
-                          <div className="title">Number of employees</div>
-                          <div className="text">
-                            {house_employees?.length
-                              ? house_employees?.length
-                              : "0"}
-                          </div>
-                        </li>
-                        <li>
-                          <div className="title">Number of residents</div>
-                          <div className="text">
-                            {house_residents?.length
-                              ? house_residents?.length
-                              : "0"}
-                          </div>
-                        </li>
-                      </ul>
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6 d-flex">
+
+                {/* <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
@@ -496,167 +693,199 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                         : "Ops! No employee in the house."}
                     </div>
                   </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-        {/* /Profile Info Tab */}
-      </div>
-      <div className="card tab-box">
-        <div className="row user-tabs">
-          <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
-            <ul className="nav nav-tabs nav-tabs-bottom">
-              <li className="nav-item">
-                <a
-                  href="#residents"
-                  data-bs-toggle="tab"
-                  className="nav-link active"
-                >
-                  Residents
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#maintenance"
-                  data-bs-toggle="tab"
-                  className="nav-link"
-                >
-                  Maintenance
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#house_image"
-                  data-bs-toggle="tab"
-                  className="nav-link"
-                >
-                  House Images
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#house_bill" data-bs-toggle="tab" className="nav-link">
-                  House Bills
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#house_rooms"
-                  data-bs-toggle="tab"
-                  className="nav-link"
-                >
-                  House Rooms
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#document_upload"
-                  data-bs-toggle="tab"
-                  className="nav-link"
-                >
-                  House Document
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="tab-content">
-        {/* Resident Info Tab */}
-        <div id="residents" className="pro-overview tab-pane fade show active">
-          <div className="row">
-            {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
-            ) : (
-              <div className="col-md-6 d-flex">
-                <div className="card profile-box flex-fill">
-                  <div className="card-body">
-                    <h3 className="card-title">
-                      Residents
-                      <a onClick={handleAddHouseResident} className="edit-icon">
-                        <i className="fa fa-plus" />
-                      </a>
-                    </h3>
-                    {houseResidentData?.length > 0
-                      ? houseResidentData?.map((resident, index) => {
-                          const {
-                            id,
-                            status,
-                            room,
-                            residents,
-                            house,
-                            occupancy_start_date,
-                            occupancy_end_date,
-                          } = resident;
-                          if (house == houseId) {
-                            return (
-                              <React.Fragment key={index}>
-                                <ul className="personal-info">
-                                  <li>
-                                    <span className="text">
-                                      Resident: {residents}
-                                    </span>
-                                    <span className="text">
-                                      Status: {status}
-                                    </span>
-                                    <span className="text">Room: {room}</span>
-                                    <span className="text">
-                                      Occupancy Start Date:{" "}
-                                      {moment(occupancy_start_date).format(
-                                        "DD MMM YYYY"
-                                      )}
-                                    </span>
-                                    <span className="text">
-                                      Occupancy End Date:{" "}
-                                      {moment(occupancy_end_date).format(
-                                        "DD MMM YYYY"
-                                      )}
-                                    </span>
-                                    <div className="dropdown dropdown-action text-end">
-                                      <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
-                                      </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
+                </div> */}
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        Residents{" "}
+                        <a
+                          onClick={handleAddHouseResident}
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Room</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {houseResidentData?.length > 0 ? (
+                              houseResidentData?.map((residents, index) => {
+                                const {
+                                  id,
+                                  status,
+                                  house,
+                                  room,
+                                  resident,
+                                  occupancy_start_date,
+                                  occupancy_end_date,
+                                } = residents;
+                                if (house === houseId) {
+                                  return (
+                                    <tr style={{ height: "90px" }} key={id}>
+                                      <td>
+                                        {residentData?.map((allR) => {
+                                          if (resident === allR.id)
+                                            return (
+                                              <React.Fragment key={resident}>
+                                                {`${allR.first_name} ${allR.middle_name} ${allR.last_name}`}
+                                              </React.Fragment>
+                                            );
+                                        })}
+                                      </td>
+                                      <td>
+                                        {roomData?.map((allR) => {
+                                          if (room === allR.id)
+                                            return (
+                                              <React.Fragment key={room}>
+                                                {`${allR.name}`}
+                                              </React.Fragment>
+                                            );
+                                        })}
+                                      </td>
+                                      <td>{status}</td>
+                                      <td className="dropdown dropdown-action text-end">
                                         <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleEditHouseResident(id, index)
-                                          }
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
                                         >
-                                          <i className="fa fa-pencil m-r-5" />{" "}
-                                          Edit
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
                                         </a>
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleDeleteHouseResident(id)
-                                          }
-                                        >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
-                                        </a>
-                                      </div>
-                                    </div>
-                                  </li>
-                                </ul>
-                              </React.Fragment>
-                            );
-                          }
-                        })
-                      : "Ops! No resident in the house."}
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditHouseResident(id, index)
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteHouseResident(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <tr>
+                                <td>Ops! No resident in the house.</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+                {/* <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        Residents
+                        <a
+                          onClick={handleAddHouseResident}
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      {houseResidentData?.length > 0
+                        ? houseResidentData?.map((resident, index) => {
+                            const {
+                              id,
+                              status,
+                              room,
+                              residents,
+                              house,
+                              occupancy_start_date,
+                              occupancy_end_date,
+                            } = resident;
+                            if (house == houseId) {
+                              return (
+                                <React.Fragment key={index}>
+                                  <ul className="personal-info">
+                                    <li>
+                                      <span className="text">
+                                        Resident: {residents}
+                                      </span>
+                                      <span className="text">
+                                        Status: {status}
+                                      </span>
+                                      <span className="text">Room: {room}</span>
+                                      <span className="text">
+                                        Occupancy Start Date:{" "}
+                                        {moment(occupancy_start_date).format(
+                                          "DD MMM YYYY"
+                                        )}
+                                      </span>
+                                      <span className="text">
+                                        Occupancy End Date:{" "}
+                                        {moment(occupancy_end_date).format(
+                                          "DD MMM YYYY"
+                                        )}
+                                      </span>
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditHouseResident(id, index)
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteHouseResident(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </React.Fragment>
+                              );
+                            }
+                          })
+                        : "Ops! No resident in the house."}
+                    </div>
+                  </div>
+                </div> */}
+              </>
             )}
           </div>
         </div>
@@ -706,10 +935,26 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                     <span className="text">Cost: {cost}</span>
                                     <span className="text">Date: {date}</span>
                                     <span className="text">
-                                      Employee: {Employee}
+                                      Employee: {""}
+                                      {allEmployee?.map((allE) => {
+                                        if (Employee === allE.id)
+                                          return (
+                                            <React.Fragment key={allE.id}>
+                                              {`${allE.first_name} ${allE.middle_name} ${allE.last_name}`}
+                                            </React.Fragment>
+                                          );
+                                      })}
                                     </span>
                                     <span className="text">
-                                      Organization: {Organization}
+                                      Organization: {""}
+                                      {organisationData?.map((org) => {
+                                        if (Organization === org.id)
+                                          return (
+                                            <React.Fragment key={org.id}>
+                                              {`${org.organisation_name}`}
+                                            </React.Fragment>
+                                          );
+                                      })}
                                     </span>
                                     <span className="text">
                                       Document: {documents}
@@ -872,97 +1117,101 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                   </div>
                 </div> */}
 
-                
-                  <h3 className="card-title">
-                    House Images
-                    <a onClick={handleAddHouseImages} className="edit-icon">
-                      <i className="fa fa-plus" />
-                    </a>
-                  </h3>
-                  {houseImagesData?.length > 0
+                <h3 className="card-title">
+                  House Images
+                  <a onClick={handleAddHouseImages} className="edit-icon">
+                    <i className="fa fa-plus" />
+                  </a>
+                </h3>
+                {houseImagesData?.length > 0
                   ? houseImagesData?.map((images, index) => {
-                    const {
-                      name,
-                      id,
-                      description,
-                      image,
-                      house,
-                      cover_image,
-                    } = images;
-                    if (house == houseId) {
-                      return (
-                        <>
-                          <div key={id} className="col-md-6 d-flex">
-                            <div className="card profile-box flex-fill">
-                              <div className="card-body">
-                                <ul className="personal-info">
-                                  <li>
-                                    <span className="text">
-                                      <img
-                                        style={{
-                                          // maxWidth: "800px",
-                                          // maxHeight: "400px",
-                                          height: "100%",
-                                          width: "100%",
-                                          objectFit: "cover",
-                                          borderRadius: "5px",
-                                        }}
-                                        alt=""
-                                        src={image ? image : DefaultImage}
-                                      />
-                                    </span>
-                                    <span className="text">{name}</span>
-                                    <span className="text">{description}</span>
-                                    <span className="text">{cover_image}</span>
-                                    <div className="dropdown dropdown-action text-end">
-                                      <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
-                                      </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
+                      const {
+                        name,
+                        id,
+                        description,
+                        image,
+                        house,
+                        cover_image,
+                      } = images;
+                      if (house == houseId) {
+                        return (
+                          <>
+                            <div key={id} className="col-md-6 d-flex">
+                              <div className="card profile-box flex-fill">
+                                <div className="card-body">
+                                  <ul className="personal-info">
+                                    <li>
+                                      <span className="text">
+                                        <img
+                                          style={{
+                                            // maxWidth: "800px",
+                                            // maxHeight: "400px",
+                                            height: "100%",
+                                            width: "100%",
+                                            objectFit: "cover",
+                                            borderRadius: "5px",
+                                          }}
+                                          alt=""
+                                          src={image ? image : DefaultImage}
+                                        />
+                                      </span>
+                                      <span className="text">{name}</span>
+                                      <span className="text">
+                                        {description}
+                                      </span>
+                                      <span className="text">
+                                        {cover_image}
+                                      </span>
+                                      <div className="dropdown dropdown-action text-end">
                                         <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleFileDownload(image)
-                                          }
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
                                         >
-                                          <i className="fa fa-download m-r-5" />{" "}
-                                          Download
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
                                         </a>
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleEditHouseImages(id, index)
-                                          }
-                                        >
-                                          <i className="fa fa-pencil m-r-5" />{" "}
-                                          Edit
-                                        </a>
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleDeleteHouseImages(id)
-                                          }
-                                        >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
-                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(image)
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditHouseImages(id, index)
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteHouseImages(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
                                       </div>
-                                    </div>
-                                  </li>
-                                </ul>
+                                    </li>
+                                  </ul>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </>
-                      );
-                    }
-                  }) : "Ops! No Image"}
+                          </>
+                        );
+                      }
+                    })
+                  : "Ops! No Image"}
               </>
             )}
           </div>

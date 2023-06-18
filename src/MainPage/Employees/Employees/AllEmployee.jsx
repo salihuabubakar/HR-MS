@@ -109,9 +109,7 @@ const AllEmployee = ({
                         </h4>
                         <div className="small text-muted">
                           {roleData?.map((r) => {
-                            if (r.id === role) {
-                              return r.role_name;
-                            }
+                            if (r.id === role) return r.role_name;
                           })}
                           {!role && "---"}
                         </div>

@@ -7,6 +7,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
+import { useResidentFetching } from '../../utils/employeeCustomFetchHook';
 
 const AddHouseResident = ({
   house,
@@ -16,6 +17,7 @@ const AddHouseResident = ({
   roomData,
 }) => {
   const [selectedHouseResident] = useGlobalState("selectedHouseResident");
+  const { residentData } = useResidentFetching()
   const [status, setStatus] = useState(
     selectedHouseResident[houseResidentIndexToEdit]?.status
       ? selectedHouseResident[houseResidentIndexToEdit]?.status
@@ -113,13 +115,11 @@ const AddHouseResident = ({
                             <option disabled value="">
                               Select Resident
                             </option>
-                            {/* {allEmployee?.map((employee) => (
-                              <option key={employee.id} value={employee.id}>
-                                {`${employee.first_name} ${employee.middle_name} ${employee.last_name}`}
+                            {residentData?.map((resident) => (
+                              <option key={resident.id} value={resident.id}>
+                                {`${resident.first_name} ${resident.middle_name} ${resident.last_name}`}
                               </option>
-                            ))} */}
-                            <option value={1}>Jofhn Maik Jakd</option>
-                            <option value={2}>ofhn Ye rkd</option>
+                            ))}
                           </select>
                         </div>
                       </div>
