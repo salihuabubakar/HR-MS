@@ -37,12 +37,12 @@ const Loginpage = () => {
     console.log("data", data);
     const email = data.email;
     const password = data.password;
-    if (email === localEmail && password == localPassword) {
+    if (email === "sachin@gmail.com" && password == "123456") {
       localStorage.setItem("isLoggedIn", true);
       history.push("/app/main/dashboard");
     } else {
       setError("password", {
-        message: "password is mismatch",
+        message: "email or password is mismatch",
       });
     }
   };
@@ -145,12 +145,12 @@ const Loginpage = () => {
                     </button>
                   </div>
                 </form>
-                <div className="account-footer">
+                {/* <div className="account-footer">
                   <p>
                     Don't have an account yet?{" "}
                     <Link to="/register">Register</Link>
                   </p>
-                </div>
+                </div> */}
               </div>
               {/* /Account Form */}
             </div>
