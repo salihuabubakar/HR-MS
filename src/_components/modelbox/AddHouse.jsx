@@ -3,6 +3,7 @@ import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
 import "./style.css";
+import { useDataFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddDepartment = ({
   dispatchHouse,
@@ -10,6 +11,8 @@ const AddDepartment = ({
   houseIdToEdit,
 }) => {
   const [selectedHouse] = useGlobalState("selectedHouse");
+
+  const { data: allEmployee, isLoading } = useDataFetching();
 
   let id = houseIdToEdit;
   const imageUrlFromServer = selectedHouse[indexToEdit]?.photo;
@@ -422,7 +425,7 @@ const AddDepartment = ({
                           )}
                         </div>
                       </div>
-                      <div className="col-sm-6">
+                      {/* <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Manager</label>
                           <input
@@ -432,6 +435,25 @@ const AddDepartment = ({
                             type="text"
                             placeholder="Manager"
                           />
+                        </div>
+                      </div> */}
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Manager</label>
+                          <select
+                            value={manager}
+                            onChange={(e) => setManager(e.target.value)}
+                            className="form-control floating"
+                          >
+                            <option disabled value="">
+                              Select Manager
+                            </option>
+                            {allEmployee?.map((employee) => (
+                              <option key={employee.id} value={employee.id}>
+                                {`${employee.first_name} ${employee.middle_name} ${employee.last_name}`}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       </div>
                       <div className="col-sm-6">

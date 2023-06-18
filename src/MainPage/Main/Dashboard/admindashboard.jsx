@@ -14,6 +14,7 @@ import {BarChart,Bar, Cell,ResponsiveContainer,
 import Header from '../../../initialpage/Sidebar/header'
 import Sidebar from '../../../initialpage/Sidebar/sidebar'
 import "../../index.css"
+import { useDataFetching, useHouseFetching, useResidentFetching } from '../../../utils/employeeCustomFetchHook.jsx';
 
 const barchartdata = [
       { y: '2006', "Total Income" : 100, 'Total Outcome' : 90 },
@@ -52,6 +53,10 @@ const toggleMobileMenu = () => {
  });
 
  const user = localStorage.getItem("email");
+
+ const {data: allEmployee} = useDataFetching(); 
+ const {houseData} = useHouseFetching();
+ const {residentData} = useResidentFetching();
 
       return (
         <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -94,19 +99,6 @@ const toggleMobileMenu = () => {
                   <div className="card dash-widget">
                     <div className="card-body">
                       <span className="dash-widget-icon">
-                        <i className="fa fa-usd" />
-                      </span>
-                      <div className="dash-widget-info">
-                        <h3>44</h3>
-                        <span>Clients</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                  <div className="card dash-widget">
-                    <div className="card-body">
-                      <span className="dash-widget-icon">
                         <i className="fa fa-diamond" />
                       </span>
                       <div className="dash-widget-info">
@@ -123,21 +115,47 @@ const toggleMobileMenu = () => {
                         <i className="fa fa-user" />
                       </span>
                       <div className="dash-widget-info">
-                        <h3>218</h3>
+                        <h3>44</h3>
+                        <span>Residents</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <span className="dash-widget-icon">
+                        <i className="fa fa-user" />
+                      </span>
+                      <div className="dash-widget-info">
+                        <h3>{allEmployee?.length}</h3>
                         <span>Employees</span>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <span className="dash-widget-icon">
+                        <i className="fa fa-home" />
+                      </span>
+                      <div className="dash-widget-info">
+                        <h3>{houseData?.length}</h3>
+                        <span>House</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-12">
                   <div className="row">
                     <div className="col-md-6 text-center">
                       <div className="card">
                         <div className="card-body">
                           <h3 className="card-title">Total Revenue</h3>
-                          {/* <div id="bar-charts" /> */}
+                          <div id="bar-charts" />
                           <ResponsiveContainer width="100%" height={300}>
                             <BarChart
                               data={barchartdata}
@@ -195,14 +213,14 @@ const toggleMobileMenu = () => {
                             </LineChart>
                           </ResponsiveContainer>
 
-                          {/* <div id="line-charts" /> */}
+                          <div id="line-charts" />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
+              </div> */}
+              {/* <div className="row">
                 <div className="col-md-12">
                   <div className="card-group m-b-30">
                     <div className="card">
@@ -324,9 +342,9 @@ const toggleMobileMenu = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* Statistics Widget */}
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-12 col-lg-12 col-xl-4 d-flex">
                   <div className="card flex-fill dash-statistics">
                     <div className="card-body">
@@ -591,9 +609,9 @@ const toggleMobileMenu = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* /Statistics Widget */}
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-6 d-flex">
                   <div className="card card-table flex-fill">
                     <div className="card-header">
@@ -750,8 +768,8 @@ const toggleMobileMenu = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
+              </div> */}
+              {/* <div className="row">
                 <div className="col-md-6 d-flex">
                   <div className="card card-table flex-fill">
                     <div className="card-header">
@@ -1356,7 +1374,7 @@ const toggleMobileMenu = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             {/* /Page Content */}
           </div>

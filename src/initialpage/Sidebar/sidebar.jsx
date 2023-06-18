@@ -87,7 +87,7 @@ const toggleLevelThree = (value) => {
                           Admin Dashboard
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link
                           className={
                             pathname.includes("main/employee-") ? "active" : ""
@@ -96,7 +96,7 @@ const toggleLevelThree = (value) => {
                         >
                           Employee Dashboard
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   ) : (
                     ""
