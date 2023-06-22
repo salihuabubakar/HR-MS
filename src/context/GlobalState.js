@@ -35,7 +35,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showProfileModal: false,
   showPersonalInfoModal: false,
   selectedPersonalInfo: [],
-  
+
   // Review
   showAddReviewModal: false,
   selectedReviewInfo: [],
@@ -128,6 +128,24 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   deleteEmployeeBankModal: false,
   showEmployeeBankModal: false,
   selectedEmployeeBank: [],
+
+  // House Notice
+  deleteNoticeModal: false,
+  showNoticeModal: false,
+  selectedNotice: [],
+
+  // House Item
+  deleteItemModal: false,
+  showItemModal: false,
+  selectedItem: [],
+
+  // House Inspection
+  deleteInspectionModal: false,
+  showInspectionModal: false,
+  selectedInspection: [],
+
+  // Resident Account
+  selectedResidentAccount: [],
 
   // Sever Error Response Text
   collectServerResponseTextError: [],

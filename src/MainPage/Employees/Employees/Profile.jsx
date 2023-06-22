@@ -23,7 +23,7 @@ import AddEmployeeEmergency from "../../../_components/modelbox/AddEmployeeEmerg
 import AddEmployeeQualification from "../../../_components/modelbox/AddEmployeeQualification";
 import AddEmployeeExperience from "../../../_components/modelbox/AddEmployeeExperience";
 import AddEmployeeDocument from "../../../_components/modelbox/AddEmployeeDocument";
-import AddEmployeeBank from "../../../_components/modelbox/AddEmployeeBank";
+import AddResident from "../../../_components/modelbox/AddEmployeeBank";
 
 const Profile = ({
   getSelectedData,
@@ -1853,7 +1853,7 @@ const Profile = ({
 
       {/* Employee Bank */}
       {showEmployeeBankModal && (
-        <AddEmployeeBank
+        <AddResident
           id={getEmployeeBankId}
           dispatchEmployeeBank={dispatchEmployeeBank}
           employeeBankIndexToEdit={employeeBankIndexToEdit}

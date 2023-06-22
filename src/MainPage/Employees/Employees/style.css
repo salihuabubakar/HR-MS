@@ -108,6 +108,20 @@
   background-color: #ccc;
 }
 
+.skeleton-line5 {
+  height: 12px;
+  width: 15%;
+  margin-bottom: 8px;
+  background-color: #ccc;
+}
+
+.skeleton-line6 {
+  height: 12px;
+  width: 10%;
+  margin-bottom: 8px;
+  background-color: #ccc;
+}
+
 @media only screen and (max-width: 600px) {
   .skeleton-line1 {
     height: 20px;
