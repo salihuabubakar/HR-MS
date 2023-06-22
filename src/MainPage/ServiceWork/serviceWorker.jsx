@@ -1,56 +1,99 @@
 import React, { useEffect, useState, useMemo, useReducer } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import AddResident from "../../_components/modelbox/AddResident";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
-import {
-  initResident,
-  savedResidentReducer,
-} from "../../utils/localStorage";
-import SmileImg from "../../assets/img/smile.png";
+import { add_update_delete_resident } from "../../utils/sendToServer";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
+import {
+  useResidentFetching
+} from "../../utils/employeeCustomFetchHook";
+import "../Employees/Employees/style.css";
+import AllResident from "./AllResident";
+import AllResidentList from "./AllResidentList";
+import Profile from "./Profile";
+import { DivContainer } from "../TaskManagement/style";
+import axios from "axios";
+import { BaseUrl } from "../../utils/baseUrl";
 
-const ServiceWorker = () => {
-  const [residents, dispatchResidents] = useReducer(
-    savedResidentReducer,
-    [],
-    initResident
-  );
+const AllServiceWorkers = () => {
   const [showModal] = useGlobalState("showModal");
   const [deleteModal] = useGlobalState("deleteModal");
+  const [tab, setTab] = useState(
+    "residentAll" || "residentList" || "residentProfile"
+  );
+const [getResidentId, setGetResidentId] = useState(null);
+const { residentData, isResidentLoading, residentError } =
+  useResidentFetching();
+const [getSelectedData, setGetSelectedData] = useState();
+const [isSelectedLoading, setIsSelectedLoading] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem("resident", JSON.stringify(residents));
-  }, [residents]);
-  useEffect(() => {
-    if (!showModal) {
-      setGlobalState("selectedResident", "");
+useEffect(() => {
+  let isMounted = true;
+  const fetchResidentSelectedData = async () => {
+    try {
+      setIsSelectedLoading(true);
+      const response = await axios.get(
+        `${BaseUrl}/resident/detail/${getResidentId}?format=json`
+      );
+      if (isMounted) {
+        setGetSelectedData(response.data);
+        setIsSelectedLoading(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setIsSelectedLoading(false);
     }
-  }, [showModal]);
-
-  const [residentList, setResidentList] = useState();
-  useEffect(() => {
-    setResidentList(residents);
-  }, [residents]);
-
-  const [menu, setMenu] = useState(false);
-  const [indexToEdit, setIndexToEdit] = useState(0);
-  const [residentIdToEdit, setResidentIdToEdit] = useState("");
-
-  const handleResidentEdit = (id, index) => {
-    setResidentIdToEdit(id);
-    setIndexToEdit(index);
-    setGlobalState("showModal", true);
-    setGlobalState("selectedResident", residents);
   };
+  getResidentId != null ? fetchResidentSelectedData() : null;
 
-  const handleResidentDelete = (index) => {
-    setIndexToEdit(index);
-    setGlobalState("deleteModal", true);
+  return () => {
+    isMounted = false;
   };
+}, [getResidentId]);
+
+const initialUserData = [];
+
+const [state, dispatchResident] = useReducer(
+  add_update_delete_resident,
+  initialUserData
+);
+
+useEffect(() => {
+  if (!showModal) {
+    setGlobalState("selectedResidentAccount", "");
+  }
+}, [showModal]);
+
+const [menu, setMenu] = useState(false);
+
+const [indexToEdit, setIndexToEdit] = useState();
+
+const handleAddResident = () => {
+  setGlobalState("showModal", true);
+  setGlobalState("selectedResidentAccount", "");
+};
+
+// Pagination
+
+const itemsPerPage = 10; // Number of items per page
+const [currentPage, setCurrentPage] = useState(1);
+
+const handleEditResident = (id, index) => {
+  setGetResidentId(id);
+  setIndexToEdit((currentPage - 1) * itemsPerPage + index);
+  setGlobalState("showModal", true);
+  setGlobalState("selectedResidentAccount", residentData);
+};
+
+const handleDeleteAcct = (id) => {
+  setGetResidentId(id);
+  setGlobalState("deleteModal", true);
+};
+
 
   const toggleMobileMenu = () => {
     setMenu(!menu);
@@ -66,166 +109,152 @@ const ServiceWorker = () => {
   });
 
   return (
-    <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+    <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
       <Header onMenuClick={(value) => toggleMobileMenu()} />
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Residents - Peepal Tree HRMS</title>
+          <title>Resident - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
           {/* Page Header */}
           <div className="page-header">
-            <div className="row align-items-center">
-              <div className="col">
-                <h3 className="page-title">Residents</h3>
-                <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Residents</li>
-                </ul>
-              </div>
-              <div className="col-auto float-end ml-auto">
-                <a
-                  className="btn add-btn"
-                  onClick={() => setGlobalState("showModal", true)}
-                >
-                  <i className="fa fa-plus" /> Add Residents
-                </a>
-                <div className="view-icons">
-                  <Link
-                    to="/app/servicework/service-worker"
-                    className="grid-view btn btn-link active"
-                  >
-                    <i className="fa fa-th" />
-                  </Link>
-                  <Link
-                    to="/app/servicework/service-worker-table"
-                    className="list-view btn btn-link"
-                  >
-                    <i className="fa fa-bars" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* /Page Header */}
-          {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Residents ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Residents Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
-          {/* Search Filter */}
-          <div className="row staff-grid-row">
-            {residentList?.map((user, index) => {
-              const { id, image, residentName } = user;
-              return (
-                <div
-                  key={id}
-                  className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
-                >
-                  <div className="profile-widget">
-                    <div className="profile-img">
-                      <Link
-                        to={{
-                          pathname: "/app/servicework/service-worker-profile",
-                          state: { id: id, index: index },
-                        }}
-                        className="avatar"
-                        style={{
-                          borderRadius: "5px",
-                          backgroundColor: "#00000000",
-                          height: "100%",
-                        }}
-                      >
-                        <img
-                          style={{
-                            borderRadius: "5px",
-                            width: "80px",
-                            height: "80px",
-                          }}
-                          src={image ? image : DefaultImage}
-                          alt=""
-                        />
-                      </Link>
-                    </div>
-                    <div className="dropdown profile-action">
-                      <a
-                        className="action-icon dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i className="material-icons">more_vert</i>
-                      </a>
-                      <div className="dropdown-menu dropdown-menu-right">
-                        <a
-                          className="dropdown-item"
-                          onClick={() => handleResidentEdit(id, index)}
-                        >
-                          <i className="fa fa-pencil m-r-5" /> Edit
+            {tab == "residentProfile" ? (
+              <>
+                <div className="row">
+                  <div className="col-sm-12">
+                    <h3 className="page-title">Profile</h3>
+                    <ul className="breadcrumb breadcrumb-nav">
+                      <li className="breadcrumb-item">
+                        <a onClick={() => setTab("residentAll")}>
+                          All Resident
                         </a>
-                        <a
-                          className="dropdown-item"
-                          onClick={() => handleResidentDelete(index)}
-                        >
-                          <i className="fa fa-trash-o m-r-5" /> Delete
-                        </a>
-                      </div>
-                    </div>
-                    <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                      <Link
-                        to={{
-                          pathname: "/app/servicework/service-worker-profile",
-                          state: { id: id, index: index },
-                        }}
-                      >
-                        {residentName}
-                      </Link>
-                    </h4>
+                      </li>
+                      <li className="breadcrumb-item active">Profile</li>
+                    </ul>
                   </div>
                 </div>
-              );
-            })}
+              </>
+            ) : (
+              <>
+                <div className="row align-items-center">
+                  <div className="col">
+                    <h3 className="page-title">Resident</h3>
+                    <ul className="breadcrumb">
+                      <li className="breadcrumb-item">
+                        <Link to="/app/main/dashboard">Dashboard</Link>
+                      </li>
+                      <li className="breadcrumb-item active">Resident</li>
+                    </ul>
+                  </div>
+                  <div className="col-auto float-end ml-auto">
+                    <a className="btn add-btn" onClick={handleAddResident}>
+                      <i className="fa fa-plus" /> Add Resident
+                    </a>
+                    <div className="view-icons">
+                      <a
+                        onClick={() => setTab("residentAll")}
+                        className={`grid-view btn btn-link ${
+                          tab == `residentAll` ? `active` : null
+                        }`}
+                      >
+                        <i className="fa fa-th" />
+                      </a>
+                      <a
+                        onClick={() => setTab("residentList")}
+                        className={`list-view btn btn-link ${
+                          tab == `residentList` ? `active` : null
+                        }`}
+                      >
+                        <i className="fa fa-bars" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
+          {/* /Page Header */}
+          {tab != "residentProfile" ? (
+            <>
+              {/* Search Filter */}
+              <div className="row filter-row">
+                <div className="col-sm-6 col-md-4">
+                  <div className="form-group form-focus">
+                    <input type="text" className="form-control floating" />
+                    <label className="focus-label">Resident ID</label>
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4">
+                  <div className="form-group form-focus">
+                    <input type="text" className="form-control floating" />
+                    <label className="focus-label">Resident Name</label>
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-4">
+                  <a href="#" className="btn btn-success btn-block w-100">
+                    {" "}
+                    Search{" "}
+                  </a>
+                </div>
+              </div>
+              {/* Search Filter */}
+            </>
+          ) : null}
+          {tab == "residentAll" && (
+            <AllResident
+              data={residentData}
+              isLoading={isResidentLoading}
+              error={residentError}
+              handleEditResident={handleEditResident}
+              handleDeleteAcct={handleDeleteAcct}
+              DefaultImage={DefaultImage}
+              setTab={setTab}
+              setGetResidentId={setGetResidentId}
+            />
+          )}
+          {tab == "residentList" && (
+            <AllResidentList
+              handleEditResident={handleEditResident}
+              handleDeleteAcct={handleDeleteAcct}
+              DefaultImage={DefaultImage}
+              data={residentData}
+              setTab={setTab}
+              setGetResidentId={setGetResidentId}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
+          {tab == "residentProfile" && (
+            <Profile
+              getSelectedData={getSelectedData}
+              DefaultImage={DefaultImage}
+              isSelectedLoading={isSelectedLoading}
+              getResidentId={getResidentId}
+            />
+          )}
         </div>
 
         {showModal && (
           <AddResident
-            dispatchResidents={dispatchResidents}
+            dispatchResident={dispatchResident}
             indexToEdit={indexToEdit}
+            getResidentId={getResidentId}
           />
         )}
-
         {deleteModal && (
           <DeleteModal
-            deleteAction={dispatchResidents}
-            indexToDelete={indexToEdit}
-            dispatch={residents}
+            deleteAction={dispatchResident}
+            iDToDelete={getResidentId}
             modalTitle={"Resident"}
           />
         )}
       </div>
-    </div>
+    </DivContainer>
   );
 };
 
-export default ServiceWorker;
+export default AllServiceWorkers;

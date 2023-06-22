@@ -129,7 +129,7 @@ const AllEmployee = ({
           className="btn btn-primary col-md-2 mt-3"
           onClick={handleViewMore}
         >
-          View More
+          Load More
         </button>
       )}
     </div>

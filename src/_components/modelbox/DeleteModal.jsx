@@ -41,6 +41,9 @@ const DeleteModal = ({
     setGlobalState("deleteEmployeeExperienceModal", false);
     setGlobalState("deleteEmployeeDocumentModal", false);
     setGlobalState("deleteEmployeeBankModal", false);
+    setGlobalState("deleteNoticeModal", false);
+    setGlobalState("deleteItemModal", false);
+    setGlobalState("deleteInspectionModal", false);
   };
 
   const handleModalClose = () => {
@@ -66,6 +69,9 @@ const DeleteModal = ({
     setGlobalState("deleteEmployeeExperienceModal", false);
     setGlobalState("deleteEmployeeDocumentModal", false);
     setGlobalState("deleteEmployeeBankModal", false);
+    setGlobalState("deleteNoticeModal", false);
+    setGlobalState("deleteItemModal", false);
+    setGlobalState("deleteInspectionModal", false);
   };
 
   return (

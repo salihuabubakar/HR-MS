@@ -525,6 +525,85 @@ export const useEmployeeReviewFetching = () => {
   };
 };
 
+// Get House Notices data
+export const useHouseNoticesFetching = () => {
+  const fetchHouseNoticesData = async () => {
+    const response = await axios.get(`${BaseUrl}/house/notices/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: houseNoticeData,
+    isLoading: isHouseNoticeLoading,
+    error: houseNoticeError,
+  } = useQuery("houseNoticesData", fetchHouseNoticesData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on houseNoticesData
+      queryClient.invalidateQueries(["houseNoticesData"]);
+    },
+  });
+
+  return {
+    houseNoticeData,
+    isHouseNoticeLoading,
+    houseNoticeError,
+  };
+};
+
+
+// Get House Items data
+export const useHouseItemsFetching = () => {
+  const fetchHouseItemsData = async () => {
+    const response = await axios.get(`${BaseUrl}/house/items/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: houseItemData,
+    isLoading: isHouseItemLoading,
+    error: houseItemError,
+  } = useQuery("houseItemsData", fetchHouseItemsData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on houseItemsData
+      queryClient.invalidateQueries(["houseItemsData"]);
+    },
+  });
+
+  return {
+    houseItemData,
+    isHouseItemLoading,
+    houseItemError,
+  };
+};
+
+// Get House Inspections data
+export const useHouseInspectionsFetching = () => {
+  const fetchHouseInspectionsData = async () => {
+    const response = await axios.get(`${BaseUrl}/house/inspections/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: houseInspectionData,
+    isLoading: isHouseInspectionLoading,
+    error: houseInspectionError,
+  } = useQuery("houseInspectionsData", fetchHouseInspectionsData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on houseInspectionsData
+      queryClient.invalidateQueries(["houseInspectionsData"]);
+    },
+  });
+
+  return {
+    houseInspectionData,
+    isHouseInspectionLoading,
+    houseInspectionError,
+  };
+};
+
 // Get resident data
 export const useResidentFetching = () => {
   const fetchData = async () => {
@@ -545,85 +624,6 @@ export const useResidentFetching = () => {
   });
 
   return { residentData, isResidentLoading, residentError };
-};
-
-// Get House Notices data
-export const useHouseNoticesFetching = () => {
-  const fetchHouseNoticesData = async () => {
-    const response = await axios.get(`${BaseUrl}/house/notices/`);
-    return response.data;
-  };
-  const queryClient = useQueryClient();
-
-  const {
-    data: houseNoticesData,
-    isLoading: isHouseNoticesLoading,
-    error: houseNoticesError,
-  } = useQuery("houseNoticesData", fetchHouseNoticesData, {
-    onSuccess: () => {
-      // Invalidate queries that depend on houseNoticesData
-      queryClient.invalidateQueries(["houseNoticesData"]);
-    },
-  });
-
-  return {
-    houseNoticesData,
-    isHouseNoticesLoading,
-    houseNoticesError,
-  };
-};
-
-
-// Get House Items data
-export const useHouseItemsFetching = () => {
-  const fetchHouseItemsData = async () => {
-    const response = await axios.get(`${BaseUrl}/house/items/`);
-    return response.data;
-  };
-  const queryClient = useQueryClient();
-
-  const {
-    data: houseItemsData,
-    isLoading: isHouseItemsLoading,
-    error: houseItemsError,
-  } = useQuery("houseItemsData", fetchHouseItemsData, {
-    onSuccess: () => {
-      // Invalidate queries that depend on houseItemsData
-      queryClient.invalidateQueries(["houseItemsData"]);
-    },
-  });
-
-  return {
-    houseItemsData,
-    isHouseItemsLoading,
-    houseItemsError,
-  };
-};
-
-// Get House Inspections data
-export const useHouseInspectionsFetching = () => {
-  const fetchHouseInspectionsData = async () => {
-    const response = await axios.get(`${BaseUrl}/house/inspections/`);
-    return response.data;
-  };
-  const queryClient = useQueryClient();
-
-  const {
-    data: houseInspectionsData,
-    isLoading: isHouseInspectionsLoading,
-    error: houseInspectionsError,
-  } = useQuery("houseInspectionsData", fetchHouseInspectionsData, {
-    onSuccess: () => {
-      // Invalidate queries that depend on houseInspectionsData
-      queryClient.invalidateQueries(["houseInspectionsData"]);
-    },
-  });
-
-  return {
-    houseInspectionsData,
-    isHouseInspectionsLoading,
-    houseInspectionsError,
-  };
 };
 
 

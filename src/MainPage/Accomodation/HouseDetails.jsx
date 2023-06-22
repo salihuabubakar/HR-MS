@@ -8,6 +8,9 @@ import AddHouseImages from "../../_components/modelbox/AddHouseImages";
 import AddHouseDocuments from "../../_components/modelbox/AddHouseDocuments";
 import AddHouseBills from "../../_components/modelbox/AddHouseBills";
 import AddHouseMaintenance from "../../_components/modelbox/AddHouseMaintenance";
+import AddHouseNotice from '../../_components/modelbox/AddHouseNotice';
+import AddHouseItem from '../../_components/modelbox/AddHouseItem';
+import AddHouseInspection from "../../_components/modelbox/AddHouseInspection";
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import {
   add_update_delete_room,
@@ -16,7 +19,10 @@ import {
   add_update_delete_house_image,
   add_update_delete_house_document,
   add_update_delete_bill,
-  add_update_delete_maintenance
+  add_update_delete_maintenance,
+  add_update_delete_notice,
+  add_update_delete_item,
+  add_update_delete_inspection,
 } from "../../utils/sendToServer";
 import {
   useRoomFetching,
@@ -311,6 +317,105 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
     setGlobalState("deleteMaintenanceModal", true);
   };
 
+  // Notice
+  const [noticeState, dispatchNotice] = useReducer(
+    add_update_delete_notice,
+    []
+  );
+  const [noticeIndexToEdit, setNoticeIndexToEdit] = useState(null);
+  const [showNoticeModal] = useGlobalState("showNoticeModal");
+  const { houseNoticeData, isHouseNoticeLoading, houseNoticeError } =
+    useHouseNoticesFetching();
+  const [getNoticeId, setGetNoticeId] = useState();
+  const [deleteNoticeModal] = useGlobalState("deleteNoticeModal");
+  useEffect(() => {
+    if (!showNoticeModal) {
+      setGlobalState("selectedNotice", "");
+    }
+  }, [showNoticeModal]);
+
+  const handleAddNotice = () => {
+    setGlobalState("showNoticeModal", true);
+  };
+
+  const handleEditNotice = (id, index) => {
+    setGetNoticeId(id);
+    setNoticeIndexToEdit(index);
+    setGlobalState("selectedNotice", houseNoticeData);
+    setGlobalState("showNoticeModal", true);
+  };
+
+  const handleDeleteNotice = (id) => {
+    setGetNoticeId(id);
+    setGlobalState("deleteNoticeModal", true);
+  };
+
+  // Item
+  const [itemState, dispatchItem] = useReducer(add_update_delete_item, []);
+  const [itemIndexToEdit, setItemIndexToEdit] = useState(null);
+  const [showItemModal] = useGlobalState("showItemModal");
+  const { houseItemData, isHouseItemLoading, houseItemError } =
+    useHouseItemsFetching();
+  const [getItemId, setGetItemId] = useState();
+  const [deleteItemModal] = useGlobalState("deleteItemModal");
+  useEffect(() => {
+    if (!showItemModal) {
+      setGlobalState("selectedItem", "");
+    }
+  }, [showItemModal]);
+
+  const handleAddItem = () => {
+    setGlobalState("showItemModal", true);
+  };
+
+  const handleEditItem = (id, index) => {
+    setGetItemId(id);
+    setItemIndexToEdit(index);
+    setGlobalState("selectedItem", houseItemData);
+    setGlobalState("showItemModal", true);
+  };
+
+  const handleDeleteItem = (id) => {
+    setGetItemId(id);
+    setGlobalState("deleteItemModal", true);
+  };
+
+  // Inspection
+  const [inspectionState, dispatchInspection] = useReducer(
+    add_update_delete_inspection,
+    []
+  );
+  const [inspectionIndexToEdit, setInspectionIndexToEdit] = useState(null);
+  const [showInspectionModal] = useGlobalState("showInspectionModal");
+  const {
+    houseInspectionData,
+    isHouseInspectionLoading,
+    houseInspectionError,
+  } = useHouseInspectionsFetching();
+  const [getInspectionId, setGetInspectionId] = useState();
+  const [deleteInspectionModal] = useGlobalState("deleteInspectionModal");
+  useEffect(() => {
+    if (!showInspectionModal) {
+      setGlobalState("selectedInspection", "");
+    }
+  }, [showInspectionModal]);
+
+  const handleAddInspection = () => {
+    setGlobalState("showInspectionModal", true);
+  };
+
+  const handleEditInspection = (id, index) => {
+    setGetInspectionId(id);
+    setInspectionIndexToEdit(index);
+    setGlobalState("selectedInspection", houseInspectionData);
+    setGlobalState("showInspectionModal", true);
+  };
+
+  const handleDeleteInspection = (id) => {
+    setGetInspectionId(id);
+    setGlobalState("deleteInspectionModal", true);
+  };
+
   const houseId = getHouseId;
   const selectedHouseId = getSelectedData?.id;
   const name = getSelectedData?.name;
@@ -353,9 +458,13 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
     (room) => room.room_status === "Vacant"
   );
 
-  const { houseNoticesData } = useHouseNoticesFetching();
-  const { houseItemsData } = useHouseItemsFetching();
-  const { houseInspectionsData } = useHouseInspectionsFetching();
+  const filteredResidents = houseResidentData?.filter(
+    (resident) => resident.house === houseId
+  );
+
+  const filteredEmployees = houseEmployeeData?.filter(
+    (employee) => employee.house === houseId
+  );
 
   // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
@@ -376,11 +485,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                     <>
                       <div className="profile-img">
                         <a>
-                          <img
-                            style={{ width: "90%", height: "90%" }}
-                            alt=""
-                            src={photo ? photo : DefaultImage}
-                          />
+                          <img alt="" src={photo ? photo : DefaultImage} />
                         </a>
                       </div>
                     </>
@@ -395,6 +500,8 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                           <div className="skeleton-line2"></div>
                           <div className="skeleton-line3"></div>
                           <div className="skeleton-line4"></div>
+                          <div className="skeleton-line5"></div>
+                          <div className="skeleton-line6"></div>
                         </div>
                       </div>
                     ) : (
@@ -403,6 +510,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                           <div className="profile-info-left">
                             <h3 className="user-name m-t-0 mb-0">{`${name}`}</h3>
                             <h6 className="text-muted">
+                              Manager:{" "}
                               {allEmployee?.map((allE) => {
                                 if (manager === allE.id)
                                   return (
@@ -412,7 +520,48 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                   );
                               })}
                             </h6>
+                            <h6 className="text-muted">Mobile: {mobile}</h6>
+                            <h6 className="text-muted">Email: {email}</h6>
+                            <h6 className="text-muted">
+                              House Type: {house_type}
+                            </h6>
+                            <h6 className="text-muted">
+                              Roof Type: {roof_type}
+                            </h6>
+                            <h6 className="text-muted">
+                              Floor Type: {floor_type}
+                            </h6>
+                            <h6 className="text-muted">
+                              Garage: {garage ? "True" : "False"}
+                            </h6>
+                            <h6 className="text-muted">
+                              Basement: {basement ? "True" : "False"}
+                            </h6>
+                            <h6 className="text-muted">
+                              Pool: {pool ? "True" : "False"}
+                            </h6>
+                            <h6 className="text-muted">
+                              Back Yard: {back_yard ? "True" : "False"}
+                            </h6>
+                            <h6 className="text-muted">
+                              Air Condition:{" "}
+                              {air_conditioning ? "True" : "False"}
+                            </h6>
+                            <h6 className="text-muted">
+                              Heating System:{" "}
+                              {heating_system ? "True" : "False"}
+                            </h6>
                           </div>
+                          <h6 className="text-muted">
+                            Fire Place: {fireplace ? "True" : "False"}
+                          </h6>
+                          <h6 className="text-muted">
+                            Security System:{" "}
+                            {security_system ? "True" : "False"}
+                          </h6>
+                          <h6 className="text-muted">
+                            Solar Panel: {solar_panels ? "True" : "False"}
+                          </h6>
                         </div>
 
                         <div className="col-md-7">
@@ -424,21 +573,67 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                               </div>
                             </li>
                             <li>
-                              <div className="title">Number of employees:</div>
+                              <div className="title">Post Code:</div>
+                              <div className="text">
+                                <a>{`${postcode}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">Year Built:</div>
+                              <div className="text">
+                                <a>{`${year_built}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">Square Footage:</div>
+                              <div className="text">
+                                <a>{`${square_footage}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">No of bedromm:</div>
+                              <div className="text">
+                                <a>{`${num_bedrooms}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">No of bathroom:</div>
+                              <div className="text">
+                                <a>{`${num_bathrooms}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">No of kitchens:</div>
+                              <div className="text">
+                                <a>{`${num_kitchens}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">No of floors:</div>
+                              <div className="text">
+                                <a>{`${num_floors}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">
+                                Total no of employees:
+                              </div>
                               <div className="text">
                                 <a>
-                                  {houseEmployeeData?.length
-                                    ? houseEmployeeData?.length
+                                  {filteredEmployees?.length
+                                    ? filteredEmployees?.length
                                     : "0"}
                                 </a>
                               </div>
                             </li>
                             <li>
-                              <div className="title">Number of residents:</div>
+                              <div className="title">
+                                Total no of residents:
+                              </div>
                               <div className="text">
                                 <a>
-                                  {houseResidentData?.length
-                                    ? houseResidentData?.length
+                                  {filteredResidents?.length
+                                    ? filteredResidents?.length
                                     : "0"}
                                 </a>
                               </div>
@@ -632,90 +827,6 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                   </div>
                 </div>
 
-                {/* <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Employees
-                        <a
-                          onClick={handleAddHouseEmployye}
-                          className="edit-icon"
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      {houseEmployeeData?.length > 0
-                        ? houseEmployeeData?.map((employees, index) => {
-                            const {
-                              id,
-                              status,
-                              employee,
-                              house,
-                              join_date,
-                              end_date,
-                            } = employees;
-                            if (house === houseId) {
-                              return (
-                                <React.Fragment key={id}>
-                                  <ul className="personal-info">
-                                    <li>
-                                      <span className="text">
-                                        Employee: {employee}
-                                      </span>
-                                      <span className="text">
-                                        Status: {status}
-                                      </span>
-                                      <span className="text">
-                                        Join Date:{" "}
-                                        {moment(join_date).format(
-                                          "DD MMM YYYY"
-                                        )}
-                                      </span>
-                                      <span className="text">
-                                        End Date:{" "}
-                                        {moment(end_date).format("DD MMM YYYY")}
-                                      </span>
-                                      <div className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditHouseEmployee(id, index)
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteHouseEmployee(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </React.Fragment>
-                              );
-                            }
-                          })
-                        : "Ops! No employee in the house."}
-                    </div>
-                  </div>
-                </div> */}
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
@@ -819,94 +930,6 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Residents
-                        <a
-                          onClick={handleAddHouseResident}
-                          className="edit-icon"
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      {houseResidentData?.length > 0
-                        ? houseResidentData?.map((resident, index) => {
-                            const {
-                              id,
-                              status,
-                              room,
-                              residents,
-                              house,
-                              occupancy_start_date,
-                              occupancy_end_date,
-                            } = resident;
-                            if (house == houseId) {
-                              return (
-                                <React.Fragment key={index}>
-                                  <ul className="personal-info">
-                                    <li>
-                                      <span className="text">
-                                        Resident: {residents}
-                                      </span>
-                                      <span className="text">
-                                        Status: {status}
-                                      </span>
-                                      <span className="text">Room: {room}</span>
-                                      <span className="text">
-                                        Occupancy Start Date:{" "}
-                                        {moment(occupancy_start_date).format(
-                                          "DD MMM YYYY"
-                                        )}
-                                      </span>
-                                      <span className="text">
-                                        Occupancy End Date:{" "}
-                                        {moment(occupancy_end_date).format(
-                                          "DD MMM YYYY"
-                                        )}
-                                      </span>
-                                      <div className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditHouseResident(id, index)
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteHouseResident(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </React.Fragment>
-                              );
-                            }
-                          })
-                        : "Ops! No resident in the house."}
-                    </div>
-                  </div>
-                </div> */}
               </>
             )}
           </div>
@@ -1047,99 +1070,6 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
               </div>
             ) : (
               <>
-                {/* <div className="col-md-12 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        House Images
-                        <a onClick={handleAddHouseImages} className="edit-icon">
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      {houseImagesData?.length > 0
-                        ? houseImagesData?.map((images, index) => {
-                            const {
-                              name,
-                              id,
-                              description,
-                              image,
-                              house,
-                              cover_image,
-                            } = images;
-                            if (house == houseId) {
-                              return (
-                                <React.Fragment key={id}>
-                                  <ul className="personal-info">
-                                    <li>
-                                      <span className="text">
-                                        <img
-                                          style={{
-                                            width: "350px",
-                                            height: "300px",
-                                            borderRadius: "5px",
-                                          }}
-                                          alt=""
-                                          src={image ? image : DefaultImage}
-                                        />
-                                      </span>
-                                      <span className="text">{name}</span>
-                                      <span className="text">
-                                        {description}
-                                      </span>
-                                      <span className="text">
-                                        {cover_image}
-                                      </span>
-                                      <div className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleFileDownload(image)
-                                            }
-                                          >
-                                            <i className="fa fa-download m-r-5" />{" "}
-                                            Download
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditHouseImages(id, index)
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteHouseImages(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </React.Fragment>
-                              );
-                            }
-                          })
-                        : "Ops! No Image"}
-                    </div>
-                  </div>
-                </div> */}
-
                 <h3 className="card-title">
                   House Images
                   <a onClick={handleAddHouseImages} className="edit-icon">
@@ -1712,12 +1642,12 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                   <div className="card-body">
                     <h3 className="card-title">
                       Notice
-                      {/* <a onClick={handleAddMaintenance} className="edit-icon">
+                      <a onClick={handleAddNotice} className="edit-icon">
                         <i className="fa fa-plus" />
-                      </a> */}
+                      </a>
                     </h3>
-                    {houseNoticesData?.length > 0
-                      ? houseNoticesData?.map((notice, index) => {
+                    {houseNoticeData?.length > 0
+                      ? houseNoticeData?.map((notice, index) => {
                           const {
                             title,
                             id,
@@ -1760,18 +1690,16 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                       <div className="dropdown-menu dropdown-menu-right">
                                         <a
                                           className="dropdown-item"
-                                          // onClick={() =>
-                                          //   handleEditMaintenance(id, index)
-                                          // }
+                                          onClick={() =>
+                                            handleEditNotice(id, index)
+                                          }
                                         >
                                           <i className="fa fa-pencil m-r-5" />{" "}
                                           Edit
                                         </a>
                                         <a
                                           className="dropdown-item"
-                                          // onClick={() =>
-                                          //   handleDeleteMaintenance(id)
-                                          // }
+                                          onClick={() => handleDeleteNotice(id)}
                                         >
                                           <i className="fa fa-trash-o m-r-5" />{" "}
                                           Delete
@@ -1807,14 +1735,14 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                   <div className="card-body">
                     <h3 className="card-title">
                       Items
-                      {/* <a onClick={handleAddMaintenance} className="edit-icon">
+                      <a onClick={handleAddItem} className="edit-icon">
                         <i className="fa fa-plus" />
-                      </a> */}
+                      </a>
                     </h3>
-                    {houseItemsData?.length > 0
-                      ? houseItemsData?.map((items, index) => {
+                    {houseItemData?.length > 0
+                      ? houseItemData?.map((items, index) => {
                           const {
-                            sname,
+                            name,
                             id,
                             description,
                             expiry_date,
@@ -1866,18 +1794,16 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                       <div className="dropdown-menu dropdown-menu-right">
                                         <a
                                           className="dropdown-item"
-                                          // onClick={() =>
-                                          //   handleEditMaintenance(id, index)
-                                          // }
+                                          onClick={() =>
+                                            handleEditItem(id, index)
+                                          }
                                         >
                                           <i className="fa fa-pencil m-r-5" />{" "}
                                           Edit
                                         </a>
                                         <a
                                           className="dropdown-item"
-                                          // onClick={() =>
-                                          //   handleDeleteMaintenance(id)
-                                          // }
+                                          onClick={() => handleDeleteItem(id)}
                                         >
                                           <i className="fa fa-trash-o m-r-5" />{" "}
                                           Delete
@@ -1913,12 +1839,12 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                   <div className="card-body">
                     <h3 className="card-title">
                       Inspection
-                      {/* <a onClick={handleAddMaintenance} className="edit-icon">
+                      <a onClick={handleAddInspection} className="edit-icon">
                         <i className="fa fa-plus" />
-                      </a> */}
+                      </a>
                     </h3>
-                    {houseInspectionsData?.length > 0
-                      ? houseInspectionsData?.map((inspect, index) => {
+                    {houseInspectionData?.length > 0
+                      ? houseInspectionData?.map((inspect, index) => {
                           const {
                             inspection_status,
                             id,
@@ -1937,9 +1863,13 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                     <span className="text">
                                       Inspection Status: {inspection_status}
                                     </span>
-                                    <span className="text">Inspected By: {inspected_by}</span>
-                                    <span className="text">Inspection Date: {inspection_date}</span>
-                                    
+                                    <span className="text">
+                                      Inspected By: {inspected_by}
+                                    </span>
+                                    <span className="text">
+                                      Inspection Date: {inspection_date}
+                                    </span>
+
                                     <span className="text">
                                       Document: {documents}
                                     </span>
@@ -1962,18 +1892,18 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                       <div className="dropdown-menu dropdown-menu-right">
                                         <a
                                           className="dropdown-item"
-                                          // onClick={() =>
-                                          //   handleEditMaintenance(id, index)
-                                          // }
+                                          onClick={() =>
+                                            handleEditInspection(id, index)
+                                          }
                                         >
                                           <i className="fa fa-pencil m-r-5" />{" "}
                                           Edit
                                         </a>
                                         <a
                                           className="dropdown-item"
-                                          // onClick={() =>
-                                          //   handleDeleteMaintenance(id)
-                                          // }
+                                          onClick={() =>
+                                            handleDeleteInspection(id)
+                                          }
                                         >
                                           <i className="fa fa-trash-o m-r-5" />{" "}
                                           Delete
@@ -2113,6 +2043,57 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
           deleteAction={dispatchHouseDocuments}
           iDToDelete={getHouseDocumentsId}
           modalTitle={"House Document"}
+        />
+      )}
+
+      {/* House Notice Modals */}
+      {showNoticeModal && (
+        <AddHouseNotice
+          house={houseId}
+          dispatchNotice={dispatchNotice}
+          noticeIndexToEdit={noticeIndexToEdit}
+          id={getNoticeId}
+        />
+      )}
+      {deleteNoticeModal && (
+        <DeleteModal
+          deleteAction={dispatchNotice}
+          iDToDelete={getNoticeId}
+          modalTitle={"House Notice"}
+        />
+      )}
+
+      {/* House Item Modals */}
+      {showItemModal && (
+        <AddHouseItem
+          house={houseId}
+          dispatchItem={dispatchItem}
+          itemIndexToEdit={itemIndexToEdit}
+          id={getItemId}
+        />
+      )}
+      {deleteItemModal && (
+        <DeleteModal
+          deleteAction={dispatchItem}
+          iDToDelete={getItemId}
+          modalTitle={"House Item"}
+        />
+      )}
+
+      {/* House Inspection Modals */}
+      {showInspectionModal && (
+        <AddHouseInspection
+          house={houseId}
+          dispatchInspection={dispatchInspection}
+          inspectionIndexToEdit={inspectionIndexToEdit}
+          id={getInspectionId}
+        />
+      )}
+      {deleteInspectionModal && (
+        <DeleteModal
+          deleteAction={dispatchInspection}
+          iDToDelete={getInspectionId}
+          modalTitle={"House Inspection"}
         />
       )}
     </>
