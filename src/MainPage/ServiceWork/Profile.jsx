@@ -5,7 +5,6 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import {
   useEmployeeAddressFetching,
   useEmployeeEmergencyFetching,
-  useEmployeeQualificationFetching,
   useEmployeeExperienceFetching,
   useEmployeeDocumentFetching,
   useEmployeeBankFetching,
@@ -13,17 +12,16 @@ import {
 import {
   add_update_delete_employee_address,
   add_update_delete_employee_emergency,
-  add_update_delete_employee_qualification,
   add_update_delete_employee_experience,
   add_update_delete_employee_document,
   add_update_delete_employee_bank,
 } from "../../utils/sendToServer";
 import AddEmployeeAddress from "../../_components/modelbox/AddEmployeeAddress";
 import AddEmployeeEmergency from "../../_components/modelbox/AddEmployeeEmergency";
-import AddEmployeeQualification from "../../_components/modelbox/AddEmployeeQualification";
 import AddEmployeeExperience from "../../_components/modelbox/AddEmployeeExperience";
 import AddEmployeeDocument from "../../_components/modelbox/AddEmployeeDocument";
 import AddEmployeeBank from "../../_components/modelbox/AddEmployeeBank";
+import { Wrapper } from "./style";
 
 const Profile = ({
   getSelectedData,
@@ -143,43 +141,6 @@ const Profile = ({
     }
   }, [showEmployeeEmergencyModal]);
 
-  // Qualification
-  const [employeeQualificationState, dispatchEmployeeQualification] =
-    useReducer(add_update_delete_employee_qualification, []);
-  const {
-    employeeQualificationData,
-    isEmployeeQualificationDataLoading,
-    employeeQualificationError,
-  } = useEmployeeQualificationFetching();
-  const [getEmployeeQualificationId, setGetEmployeeQualificationId] =
-    useState();
-  const [
-    employeeQualificationIndexToEdit,
-    setEmployeeQualificationIndexToEdit,
-  ] = useState();
-  const [showEmployeeQualificationModal] = useGlobalState(
-    "showEmployeeQualificationModal"
-  );
-  const [deleteEmployeeQualificationModal] = useGlobalState(
-    "deleteEmployeeQualificationModal"
-  );
-
-  const handleEditEmployeeQualification = (id, index) => {
-    setGetEmployeeQualificationId(id);
-    setEmployeeQualificationIndexToEdit(index);
-    setGlobalState("selectedEmployeeQualification", employeeQualificationData);
-    setGlobalState("showEmployeeQualificationModal", true);
-  };
-  const handleDeleteEmployeeQualification = (id) => {
-    setGetEmployeeQualificationId(id);
-    setGlobalState("deleteEmployeeQualificationModal", true);
-  };
-
-  useEffect(() => {
-    if (!showEmployeeQualificationModal) {
-      setGlobalState("selectedEmployeeQualification", "");
-    }
-  }, [showEmployeeQualificationModal]);
 
   // Experience
   const [employeeExperienceState, dispatchEmployeeExperience] = useReducer(
@@ -287,41 +248,36 @@ const Profile = ({
     }
   }, [showEmployeeBankModal]);
 
-  const selectedEmployeeId = getSelectedData?.id;
+  const selectedResidentId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
   const middle_name = getSelectedData?.middle_name;
   const last_name = getSelectedData?.last_name;
   const photo = getSelectedData?.photo;
-  const role = getSelectedData?.role;
-  const employee_number = getSelectedData?.employee_number;
-  const hire_date = getSelectedData?.hire_date;
+  const address = getSelectedData?.address;
   const phone_number = getSelectedData?.phone_number;
   const email = getSelectedData?.email;
   const date_of_birth = getSelectedData?.date_of_birth;
   const gender = getSelectedData?.gender;
   const nationality = getSelectedData?.nationality;
-  const ni_numbber = getSelectedData?.ni_numbber;
-  const marital_status = getSelectedData?.marital_status;
-  const employee_bank_accounts = getSelectedData?.employee_bank_accounts;
-  const employee_emergency_contacts =
-    getSelectedData?.employee_emergency_contacts;
-  const employee_addresses = getSelectedData?.employee_addresses;
+  const height = getSelectedData?.height;
+  const weight = getSelectedData?.weight;
+  const eye_colour = getSelectedData?.eye_colour;
+  const hair_colour = getSelectedData?.hair_colour;
+  const glasses = getSelectedData?.glasses;
+  const tattoos = getSelectedData?.tattoos;
+  const piercings = getSelectedData?.piercings;
+  const Subject_child_protection = getSelectedData?.subject_protection;
+  const legal_status = getSelectedData?.legal_status;
+  const Any_comment = getSelectedData?.Any_comment;
+  const key_worker = getSelectedData?.key_worker;
+  const resident_education = getSelectedData?.resident_education;
+  const resident_document = getSelectedData?.resident_document;
+  
   const employee_review = getSelectedData?.employee_review;
-  const employee_qualifications = getSelectedData?.employee_qualifications;
-  const employee_work_experiences = getSelectedData?.employee_work_experiences;
-  const department = getSelectedData?.department;
-  const organisation = getSelectedData?.organisation;
   const employee_contract = getSelectedData?.employee_contract;
   const employee_leave = getSelectedData?.employee_leave;
   const employee_status = getSelectedData?.employee_status;
-  const employee_documents = getSelectedData?.employee_documents;
 
-
-  const employeeStatus = employee_status?.map(s => {
-    if(s.employee === selectedEmployeeId) {
-      return s.status
-    }
-  })
 
 // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
@@ -364,35 +320,38 @@ const Profile = ({
                         <div className="col-md-5">
                           <div className="profile-info-left">
                             <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
-
-                            <h6
-                              style={{ display: "flex" }}
-                              className="text-muted"
-                            >
-                              <div
-                                style={{
-                                  borderRadius: "50%",
-                                  height: "10px",
-                                  width: "10px",
-                                  backgroundColor: "lightgreen",
-                                  marginRight: "5px",
-                                }}
-                              ></div>
-                              {employeeStatus == Number(employeeStatus)
-                                ? "Active"
-                                : employeeStatus}
-                            </h6>
-                            <h6 className="text-muted">
-                              Role: {role ? role?.role_name : "--"}
-                            </h6>
                             <div className="small doj text-muted">
-                              Nationality: {nationality ? nationality : "--"}
+                              Height: {height ? height : "--"}
+                            </div>
+                            <div className="small doj text-muted">
+                              Weight: {weight ? weight : "--"}
+                            </div>
+                            <div className="small doj text-muted">
+                              Eye Colour: {eye_colour ? eye_colour : "--"}
+                            </div>
+                            <div className="small doj text-muted">
+                              Hair Colour: {hair_colour ? hair_colour : "--"}
+                            </div>
+                            <div className="small doj text-muted">
+                              Glasses: {glasses ? glasses : "--"}
+                            </div>
+                            <div className="small doj text-muted">
+                              Tattoos: {tattoos ? tattoos : "--"}
+                            </div>
+                            <div className="small doj text-muted">
+                              Piercing: {piercings ? piercings : "--"}
                             </div>
                           </div>
                         </div>
 
                         <div className="col-md-7">
                           <ul className="personal-info">
+                            <li>
+                              <div className="title">Address:</div>
+                              <div className="text">
+                                <a>{address ? address : "--"}</a>
+                              </div>
+                            </li>
                             <li>
                               <div className="title">Phone:</div>
                               <div className="text">
@@ -417,6 +376,12 @@ const Profile = ({
                               <div className="title">Gender:</div>
                               <div className="text">
                                 {gender ? gender : "--"}
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">Nationality:</div>
+                              <div className="text">
+                                {nationality ? nationality : "--"}
                               </div>
                             </li>
                           </ul>
@@ -530,7 +495,7 @@ const Profile = ({
                                   upload_date,
                                   upload_document,
                                 } = bank;
-                                if (employee == selectedEmployeeId) {
+                                if (employee == selectedResidentId) {
                                   return (
                                     <tr style={{ height: "90px" }} key={id}>
                                       <td>{bank_name}</td>
@@ -655,7 +620,7 @@ const Profile = ({
                                   email,
                                   post_code,
                                 } = emergency;
-                                if (employee == selectedEmployeeId) {
+                                if (employee == selectedResidentId) {
                                   return (
                                     <tr style={{ height: "90px" }} key={id}>
                                       <td>{name}</td>
@@ -753,7 +718,7 @@ const Profile = ({
                                   country,
                                   postal_code,
                                 } = address;
-                                if (employee == selectedEmployeeId) {
+                                if (employee == selectedResidentId) {
                                   return (
                                     <tr style={{ height: "90px" }} key={id}>
                                       <td>{street}</td>
@@ -815,48 +780,84 @@ const Profile = ({
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">Review</h3>
-                      {employee_review?.map((review, index) => {
-                        const {
-                          id,
-                          employee,
-                          review_type,
-                          description,
-                          review_date,
-                          review_status,
-                          review_file,
-                          review_manager,
-                        } = review;
-                        if (employee == selectedEmployeeId) {
-                          return (
-                            <ul key={id} className="personal-info">
-                              <li>
-                                <div className="title">Review Type</div>
-                                <div className="text">{review_type}</div>
-                              </li>
-                              <li>
-                                <div className="title">Description</div>
-                                <div className="text">{description}</div>
-                              </li>
-                              <li>
-                                <div className="title">Review Date</div>
-                                <div className="text">{review_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">Review Status</div>
-                                <div className="text">{review_status}</div>
-                              </li>
-                              <li>
-                                <div className="title">Review Manager</div>
-                                <div className="text">
-                                  {review_manager != Number(review_manager)
-                                    ? review_manager
-                                    : "Admin"}
+                      <Wrapper>
+                        {employee_review?.length > 0 ? (
+                          employee_review.map((review, index) => {
+                            const {
+                              id,
+                              employee,
+                              review_type,
+                              description,
+                              review_date,
+                              review_status,
+                              review_file,
+                              review_manager,
+                            } = review;
+                            if (employee === selectedEmployeeId) {
+                              return (
+                                <div key={id} className="card plain-card">
+                                  <div className="text">
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleFileDownload(review_file)
+                                          }
+                                        >
+                                          <i className="fa fa-download m-r-5" />{" "}
+                                          Download
+                                        </a>
+                                      </div>
+                                    </div>
+                                    Review Type: <span>{review_type}</span>
+                                  </div>
+                                  <div className="text">
+                                    Review Manager:
+                                    {review_manager != Number(review_manager)
+                                      ? review_manager
+                                      : " Admin"}
+                                  </div>
+                                  <div className="text">
+                                    Review Date: <span>{review_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    Review Status: <span>{review_status}</span>
+                                  </div>
+                                  <div className="text">
+                                    Description:{" "}
+                                    <span className="c">{description}</span>
+                                  </div>
+                                  <div>
+                                    {review_file && regex.test(review_file) ? (
+                                      <img
+                                        className="img-preview"
+                                        src={review_file}
+                                        alt="Preview"
+                                      />
+                                    ) : !review_file ? null : (
+                                      <span className="files-icon">
+                                        <i className="fa fa-file-pdf-o" />
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                              </li>
-                            </ul>
-                          );
-                        }
-                      })}
+                              );
+                            }
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
@@ -878,7 +879,7 @@ const Profile = ({
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Qualifications{" "}
+                        Resident Education{" "}
                         <a
                           onClick={() =>
                             setGlobalState(
@@ -893,112 +894,108 @@ const Profile = ({
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          {employeeQualificationData?.map(
-                            (qualifications, index) => {
-                              const {
-                                id,
-                                employee,
-                                qualification_name,
-                                institute_name,
-                                start_date,
-                                end_date,
-                                description,
-                                qualification_upload,
-                              } = qualifications;
-                              if (employee == selectedEmployeeId) {
-                                return (
-                                  <li key={id}>
-                                    <div className="experience-user">
-                                      <div className="before-circle" />
-                                    </div>
-                                    <div className="experience-content">
-                                      <div className="timeline-content">
-                                        <a className="name">
-                                          {institute_name}
-                                          <span
-                                            className="edit-icon"
-                                            style={{
-                                              background: "none",
-                                              border: "none",
-                                            }}
-                                          >
-                                            <div className="dropdown dropdown-action text-end">
+                          {resident_education?.map((edu, index) => {
+                            const {
+                              id,
+                              resident,
+                              qualification_name,
+                              institute_name,
+                              start_date,
+                              end_date,
+                              qualification_upload,
+                            } = edu;
+                            if (resident == selectedResidentId) {
+                              return (
+                                <li key={id}>
+                                  <div className="experience-user">
+                                    <div className="before-circle" />
+                                  </div>
+                                  <div className="experience-content">
+                                    <div className="timeline-content">
+                                      <a className="name">
+                                        {institute_name}
+                                        <span
+                                          className="edit-icon"
+                                          style={{
+                                            background: "none",
+                                            border: "none",
+                                          }}
+                                        >
+                                          <div className="dropdown dropdown-action text-end">
+                                            {/* <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleFileDownload(
+                                                  qualification_upload
+                                                )
+                                              }
+                                            >
+                                              <i className="fa fa-download m-r-5" />{" "}
+                                              Download
+                                            </a> */}
+                                            <a
+                                              className="action-icon dropdown-toggle"
+                                              data-bs-toggle="dropdown"
+                                              aria-expanded="false"
+                                            >
+                                              <i className="material-icons">
+                                                more_vert
+                                              </i>
+                                            </a>
+                                            <div className="dropdown-menu dropdown-menu-right">
                                               <a
                                                 className="dropdown-item"
                                                 onClick={() =>
-                                                  handleFileDownload(
-                                                    qualification_upload
+                                                  handleEditEmployeeQualification(
+                                                    id,
+                                                    index
                                                   )
                                                 }
                                               >
-                                                <i className="fa fa-download m-r-5" />{" "}
-                                                Download
+                                                <i className="fa fa-pencil m-r-5" />{" "}
+                                                Edit
                                               </a>
                                               <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
+                                                className="dropdown-item"
+                                                onClick={() =>
+                                                  handleDeleteEmployeeQualification(
+                                                    id
+                                                  )
+                                                }
                                               >
-                                                <i className="material-icons">
-                                                  more_vert
-                                                </i>
+                                                <i className="fa fa-trash-o m-r-5" />{" "}
+                                                Delete
                                               </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditEmployeeQualification(
-                                                      id,
-                                                      index
-                                                    )
-                                                  }
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" />{" "}
-                                                  Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleDeleteEmployeeQualification(
-                                                      id
-                                                    )
-                                                  }
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" />{" "}
-                                                  Delete
-                                                </a>
-                                              </div>
                                             </div>
-                                          </span>
-                                        </a>
-                                        <div style={{ fontWeight: "900" }}>
-                                          {qualification_name}
-                                        </div>
-                                        <span className="time">
-                                          {start_date} - {end_date}
+                                          </div>
                                         </span>
-                                        <div>{description}</div>
-                                        <div>
-                                          {qualification_upload &&
-                                          regex.test(qualification_upload) ? (
-                                            <img
-                                              className="img-preview"
-                                              src={qualification_upload}
-                                              alt="Preview"
-                                            />
-                                          ) : !qualification_upload ? null : (
-                                            <span className="files-icon">
-                                              <i className="fa fa-file-pdf-o" />
-                                            </span>
-                                          )}
-                                        </div>
+                                      </a>
+                                      <div style={{ fontWeight: "900" }}>
+                                        {qualification_name}
                                       </div>
+                                      <span className="time">
+                                        {start_date} - {end_date}
+                                      </span>
+                                      {/* <div>
+                                        {qualification_upload &&
+                                        regex.test(qualification_upload) ? (
+                                          <img
+                                            className="img-preview"
+                                            src={qualification_upload}
+                                            alt="Preview"
+                                          />
+                                        ) : !qualification_upload ? null : (
+                                          <span className="files-icon">
+                                            <i className="fa fa-file-pdf-o" />
+                                          </span>
+                                        )}
+                                      </div> */}
                                     </div>
-                                  </li>
-                                );
-                              }
+                                  </div>
+                                </li>
+                              );
                             }
-                          )}
+                          })}
                         </ul>
                       </div>
                     </div>
@@ -1032,7 +1029,7 @@ const Profile = ({
                               description,
                               experience_upload,
                             } = experience;
-                            if (employee == selectedEmployeeId) {
+                            if (employee == selectedResidentId) {
                               return (
                                 <li key={id}>
                                   <div className="experience-user">
@@ -1130,192 +1127,6 @@ const Profile = ({
                     </div>
                   </div>
                 </div>
-              </div>
-            </>
-          )}
-
-          {isSelectedLoading ? (
-            <div className="skeleton-container-profile">
-              <div className="skeleton-content-profile">
-                <div className="skeleton-line-profile"></div>
-                <div className="skeleton-line-profile"></div>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="row">
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">Contract</h3>
-                      {employee_contract?.map((contract, index) => {
-                        const {
-                          id,
-                          employee_contract,
-                          contract_owner,
-                          description,
-                          contract_type,
-                          start_date,
-                          end_date,
-                          contract_status,
-                          contract_file,
-                        } = contract;
-                        if (employee_contract == selectedEmployeeId) {
-                          return (
-                            <ul key={id} className="personal-info">
-                              <li>
-                                <div className="title">Contract Owner</div>
-                                <div className="text">{contract_owner}</div>
-                              </li>
-                              <li>
-                                <div className="title">Contract Type</div>
-                                <div className="text">{contract_type}</div>
-                              </li>
-                              <li>
-                                <div className="title">Description</div>
-                                <div className="text">{description}</div>
-                              </li>
-                              <li>
-                                <div className="title">Start Date</div>
-                                <div className="text">{start_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">End Date</div>
-                                <div className="text">{end_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">Contract Status</div>
-                                <div className="text">{contract_status}</div>
-                              </li>
-                              <li>
-                                <div className="title">Contract File</div>
-                                <div className="text">
-                                  {contract_file != null ? contract_file : "--"}
-                                </div>
-                              </li>
-                            </ul>
-                          );
-                        }
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">Leave</h3>
-                      {employee_leave?.map((leave, index) => {
-                        const {
-                          id,
-                          employee,
-                          number_of_days,
-                          comments,
-                          authorising_manager,
-                          start_date,
-                          end_date,
-                          status,
-                          supporting_document,
-                          leave_type,
-                          authorised_by,
-                        } = leave;
-                        if (employee == selectedEmployeeId) {
-                          return (
-                            <ul key={id} className="personal-info">
-                              <li>
-                                <div className="title">Authorising Manager</div>
-                                <div className="text">
-                                  {authorising_manager}
-                                </div>
-                              </li>
-                              <li>
-                                <div className="title">Number of days</div>
-                                <div className="text">{number_of_days}</div>
-                              </li>
-                              <li>
-                                <div className="title">Comment</div>
-                                <div className="text">{comments}</div>
-                              </li>
-                              <li>
-                                <div className="title">Start Date</div>
-                                <div className="text">{start_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">End Date</div>
-                                <div className="text">{end_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">Leave Status</div>
-                                <div className="text">{status}</div>
-                              </li>
-                              <li>
-                                <div className="title">Supporting File</div>
-                                <div className="text">
-                                  {supporting_document != null
-                                    ? supporting_document
-                                    : "--"}
-                                </div>
-                              </li>
-                            </ul>
-                          );
-                        }
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                {/* <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Status{" "}
-                        
-                      </h3>
-                      <div className="experience-box">
-                        <ul className="experience-list">
-                          {employee_status?.map((employee_status, index) => {
-                            const {
-                              id,
-                              employee,
-                              status,
-                              authorising_manager,
-                              comments,
-                              start_date,
-                              end_date,
-                              authorised_by,
-                            } = employee_status;
-                            if (employee == selectedEmployeeId) {
-                              return (
-                                <li key={id}>
-                                  <div className="experience-user">
-                                    <div className="before-circle" />
-                                  </div>
-                                  <div className="experience-content">
-                                    <div className="timeline-content">
-                                      <a className="name">
-                                        {authorising_manager}
-                                        
-                                      </a>
-                                      <a style={{ fontWeight: "900" }}>
-                                        {status == Number(status)
-                                          ? "Active"
-                                          : status}
-                                      </a>
-                                      <div>{comments}</div>
-                                      <span className="time">
-                                        {start_date} - {end_date}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </li>
-                              );
-                            }
-                          })}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
               </div>
             </>
           )}
@@ -1586,7 +1397,7 @@ const Profile = ({
           ) : (
             <>
               <div className="row">
-                <div className="col-md-6 d-flex">
+                <div className="col-md-12 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
@@ -1600,131 +1411,116 @@ const Profile = ({
                           <i className="fa fa-plus" />
                         </a>
                       </h3>
-                      <div className="experience-box">
-                        <ul className="experience-list">
-                          {employeeDocumentData?.map((experience, index) => {
+                      <Wrapper>
+                        {resident_document?.length > 0 ? (
+                          resident_document.map((doc, index) => {
                             const {
                               id,
-                              employee,
+                              resident,
                               document_name,
                               document_number,
                               issue_date,
                               expiry_date,
                               document_type,
-                              document_upload,
+                              document,
                               status,
                               verified,
-                            } = experience;
-                            if (employee == selectedEmployeeId) {
+                            } = doc;
+                            if (resident === selectedResidentId) {
                               return (
-                                <li key={id}>
-                                  <div className="experience-user">
-                                    <div className="before-circle" />
-                                  </div>
-                                  <div className="experience-content">
-                                    <div className="timeline-content">
-                                      <a className="name">
-                                        Document Number: {document_number}
-                                        <span
-                                          className="edit-icon"
-                                          style={{
-                                            background: "none",
-                                            border: "none",
-                                          }}
+                                <div key={id} className="card">
+                                  <a className="name">
+                                    Document Number: {document_number}
+                                    <span
+                                      className="edit-icon"
+                                      style={{
+                                        background: "none",
+                                        border: "none",
+                                      }}
+                                    >
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
                                         >
-                                          <div className="dropdown dropdown-action text-end">
-                                            <a
-                                              className="action-icon dropdown-toggle"
-                                              data-bs-toggle="dropdown"
-                                              aria-expanded="false"
-                                            >
-                                              <i className="material-icons">
-                                                more_vert
-                                              </i>
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-right">
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleFileDownload(
-                                                    document_upload
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-download m-r-5" />{" "}
-                                                Download
-                                              </a>
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleEditEmployeeDocument(
-                                                    id,
-                                                    index
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-pencil m-r-5" />{" "}
-                                                Edit
-                                              </a>
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleDeleteEmployeeDocument(
-                                                    id
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-trash-o m-r-5" />{" "}
-                                                Delete
-                                              </a>
-                                            </div>
-                                          </div>
-                                        </span>
-                                      </a>
-                                      <div style={{ fontWeight: "900" }}>
-                                        Document Name: {document_name}
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(document)
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditEmployeeDocument(
+                                                id,
+                                                index
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteEmployeeDocument(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
                                       </div>
-                                      <span>
-                                        Date:{" "}
-                                        {moment(issue_date).format(
-                                          "DD MMM YYYY"
-                                        )}{" "}
-                                        -{" "}
-                                        {expiry_date &&
-                                          moment(expiry_date).format(
-                                            "DD MMM YYYY"
-                                          )}
-                                      </span>
-                                      <div>Status: {status}</div>
-                                      <div>
-                                        Verification:{" "}
-                                        {verified === true
-                                          ? "Varified"
-                                          : "Not varified"}
-                                      </div>
-                                      <div>Document Type: {document_type}</div>
-                                      <div>
-                                        {document_upload &&
-                                        regex.test(document_upload) ? (
-                                          <img
-                                            className="img-preview"
-                                            src={document_upload}
-                                            alt="Preview"
-                                          />
-                                        ) : !document_upload ? null : (
-                                          <span className="files-icon">
-                                            <i className="fa fa-file-pdf-o" />
-                                          </span>
-                                        )}
-                                      </div>
-                                    </div>
+                                    </span>
+                                  </a>
+                                  <div className="document-name">
+                                    Document Name: {document_name}
                                   </div>
-                                </li>
+                                  <span>
+                                    Date:{" "}
+                                    {moment(issue_date).format("DD MMM YYYY")} -{" "}
+                                    {expiry_date &&
+                                      moment(expiry_date).format("DD MMM YYYY")}
+                                  </span>
+                                  <div>Status: {status}</div>
+                                  <div>
+                                    Verification:{" "}
+                                    {verified === true
+                                      ? "Varified"
+                                      : "Not varified"}
+                                  </div>
+                                  <div>Document Type: {document_type}</div>
+                                  <div>
+                                    {document && regex.test(document) ? (
+                                      <img
+                                        className="img-preview"
+                                        src={document}
+                                        alt="Preview"
+                                      />
+                                    ) : !document ? null : (
+                                      <span className="files-icon">
+                                        <i className="fa fa-file-pdf-o" />
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
                               );
                             }
-                          })}
-                        </ul>
-                      </div>
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
@@ -1770,7 +1566,7 @@ const Profile = ({
       )}
 
       {/* Employee Qualification */}
-      {showEmployeeQualificationModal && (
+      {/* {showEmployeeQualificationModal && (
         <AddEmployeeQualification
           id={getEmployeeQualificationId}
           dispatchEmployeeQualification={dispatchEmployeeQualification}
@@ -1784,7 +1580,7 @@ const Profile = ({
           iDToDelete={getEmployeeQualificationId}
           modalTitle={"Qualification"}
         />
-      )}
+      )} */}
 
       {/* Employee Experience */}
       {showEmployeeExperienceModal && (

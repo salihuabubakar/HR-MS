@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import moment from "moment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
+import { Wrapper } from "../../ServiceWork/style";
 import {
   useEmployeeAddressFetching,
   useEmployeeEmergencyFetching,
@@ -23,7 +24,7 @@ import AddEmployeeEmergency from "../../../_components/modelbox/AddEmployeeEmerg
 import AddEmployeeQualification from "../../../_components/modelbox/AddEmployeeQualification";
 import AddEmployeeExperience from "../../../_components/modelbox/AddEmployeeExperience";
 import AddEmployeeDocument from "../../../_components/modelbox/AddEmployeeDocument";
-import AddResident from "../../../_components/modelbox/AddEmployeeBank";
+import AddEmployeeBank from "../../../_components/modelbox/AddEmployeeBank";
 
 const Profile = ({
   getSelectedData,
@@ -846,48 +847,84 @@ const Profile = ({
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">Review</h3>
-                      {employee_review?.map((review, index) => {
-                        const {
-                          id,
-                          employee,
-                          review_type,
-                          description,
-                          review_date,
-                          review_status,
-                          review_file,
-                          review_manager,
-                        } = review;
-                        if (employee == selectedEmployeeId) {
-                          return (
-                            <ul key={id} className="personal-info">
-                              <li>
-                                <div className="title">Review Type</div>
-                                <div className="text">{review_type}</div>
-                              </li>
-                              <li>
-                                <div className="title">Description</div>
-                                <div className="text">{description}</div>
-                              </li>
-                              <li>
-                                <div className="title">Review Date</div>
-                                <div className="text">{review_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">Review Status</div>
-                                <div className="text">{review_status}</div>
-                              </li>
-                              <li>
-                                <div className="title">Review Manager</div>
-                                <div className="text">
-                                  {review_manager != Number(review_manager)
-                                    ? review_manager
-                                    : "Admin"}
+                      <Wrapper>
+                        {employee_review?.length > 0 ? (
+                          employee_review.map((review, index) => {
+                            const {
+                              id,
+                              employee,
+                              review_type,
+                              description,
+                              review_date,
+                              review_status,
+                              review_file,
+                              review_manager,
+                            } = review;
+                            if (employee === selectedEmployeeId) {
+                              return (
+                                <div key={id} className="card plain-card">
+                                  <div className="text">
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleFileDownload(review_file)
+                                          }
+                                        >
+                                          <i className="fa fa-download m-r-5" />{" "}
+                                          Download
+                                        </a>
+                                      </div>
+                                    </div>
+                                    Review Type: <span>{review_type}</span>
+                                  </div>
+                                  <div className="text">
+                                    Review Manager: 
+                                    {review_manager != Number(review_manager)
+                                      ? review_manager
+                                      : " Admin"}
+                                  </div>
+                                  <div className="text">
+                                    Review Date: <span>{review_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    Review Status: <span>{review_status}</span>
+                                  </div>
+                                  <div className="text">
+                                    Description:{" "}
+                                    <span className="c">{description}</span>
+                                  </div>
+                                  <div>
+                                    {review_file && regex.test(review_file) ? (
+                                      <img
+                                        className="img-preview"
+                                        src={review_file}
+                                        alt="Preview"
+                                      />
+                                    ) : !review_file ? null : (
+                                      <span className="files-icon">
+                                        <i className="fa fa-file-pdf-o" />
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                              </li>
-                            </ul>
-                          );
-                        }
-                      })}
+                              );
+                            }
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
@@ -955,17 +992,6 @@ const Profile = ({
                                           >
                                             <div className="dropdown dropdown-action text-end">
                                               <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleFileDownload(
-                                                    qualification_upload
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-download m-r-5" />{" "}
-                                                Download
-                                              </a>
-                                              <a
                                                 className="action-icon dropdown-toggle"
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false"
@@ -975,6 +1001,17 @@ const Profile = ({
                                                 </i>
                                               </a>
                                               <div className="dropdown-menu dropdown-menu-right">
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleFileDownload(
+                                                      qualification_upload
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa fa-download m-r-5" />{" "}
+                                                  Download
+                                                </a>
                                                 <a
                                                   className="dropdown-item"
                                                   onClick={() =>
@@ -1179,55 +1216,88 @@ const Profile = ({
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">Contract</h3>
-                      {employee_contract?.map((contract, index) => {
-                        const {
-                          id,
-                          employee_contract,
-                          contract_owner,
-                          description,
-                          contract_type,
-                          start_date,
-                          end_date,
-                          contract_status,
-                          contract_file,
-                        } = contract;
-                        if (employee_contract == selectedEmployeeId) {
-                          return (
-                            <ul key={id} className="personal-info">
-                              <li>
-                                <div className="title">Contract Owner</div>
-                                <div className="text">{contract_owner}</div>
-                              </li>
-                              <li>
-                                <div className="title">Contract Type</div>
-                                <div className="text">{contract_type}</div>
-                              </li>
-                              <li>
-                                <div className="title">Description</div>
-                                <div className="text">{description}</div>
-                              </li>
-                              <li>
-                                <div className="title">Start Date</div>
-                                <div className="text">{start_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">End Date</div>
-                                <div className="text">{end_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">Contract Status</div>
-                                <div className="text">{contract_status}</div>
-                              </li>
-                              <li>
-                                <div className="title">Contract File</div>
-                                <div className="text">
-                                  {contract_file != null ? contract_file : "--"}
+                      <Wrapper>
+                        {employee_contract?.length > 0 ? (
+                          employee_contract.map((contract, index) => {
+                            const {
+                              id,
+                              employee_contract,
+                              contract_owner,
+                              description,
+                              contract_type,
+                              start_date,
+                              end_date,
+                              contract_status,
+                              contract_file,
+                            } = contract;
+                            if (employee_contract === selectedEmployeeId) {
+                              return (
+                                <div key={id} className="card plain-card">
+                                  <div className="text">
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleFileDownload(contract_file)
+                                          }
+                                        >
+                                          <i className="fa fa-download m-r-5" />{" "}
+                                          Download
+                                        </a>
+                                      </div>
+                                    </div>
+                                    Contract Owner:{" "}
+                                    <span>{contract_owner}</span>
+                                  </div>
+                                  <div className="text">
+                                    Contract Type: <span>{contract_type}</span>
+                                  </div>
+                                  <div className="text">
+                                    Start Date: <span>{start_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    End Date: <span>{end_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    Contract Status:{" "}
+                                    <span>{contract_status}</span>
+                                  </div>
+                                  <div className="text">
+                                    Description:{" "}
+                                    <span className="c">{description}</span>
+                                  </div>
+                                  <div>
+                                    {contract_file &&
+                                    regex.test(contract_file) ? (
+                                      <img
+                                        className="img-preview"
+                                        src={contract_file}
+                                        alt="Preview"
+                                      />
+                                    ) : !contract_file ? null : (
+                                      <span className="files-icon">
+                                        <i className="fa fa-file-pdf-o" />
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                              </li>
-                            </ul>
-                          );
-                        }
-                      })}
+                              );
+                            }
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
@@ -1236,61 +1306,92 @@ const Profile = ({
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">Leave</h3>
-                      {employee_leave?.map((leave, index) => {
-                        const {
-                          id,
-                          employee,
-                          number_of_days,
-                          comments,
-                          authorising_manager,
-                          start_date,
-                          end_date,
-                          status,
-                          supporting_document,
-                          leave_type,
-                          authorised_by,
-                        } = leave;
-                        if (employee == selectedEmployeeId) {
-                          return (
-                            <ul key={id} className="personal-info">
-                              <li>
-                                <div className="title">Authorising Manager</div>
-                                <div className="text">
-                                  {authorising_manager}
+                      <Wrapper>
+                        {employee_leave?.length > 0 ? (
+                          employee_leave.map((doc, index) => {
+                            const {
+                              id,
+                              employee,
+                              number_of_days,
+                              comments,
+                              authorising_manager,
+                              start_date,
+                              end_date,
+                              status,
+                              supporting_document,
+                              leave_type,
+                              authorised_by,
+                            } = doc;
+                            if (employee === selectedEmployeeId) {
+                              return (
+                                <div key={id} className="card plain-card">
+                                  <div className="text">
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">
+                                          more_vert
+                                        </i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleFileDownload(
+                                              supporting_document
+                                            )
+                                          }
+                                        >
+                                          <i className="fa fa-download m-r-5" />{" "}
+                                          Download
+                                        </a>
+                                      </div>
+                                    </div>
+                                    Authorising Manager:{" "}
+                                    <span>{authorising_manager}</span>
+                                  </div>
+                                  <div className="text">
+                                    Number of days:{" "}
+                                    <span>{number_of_days}</span>
+                                  </div>
+                                  <div className="text">
+                                    Start Date: <span>{start_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    End Date: <span>{end_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    Leave Status: <span>{status}</span>
+                                  </div>
+                                  <div className="text">
+                                    Comment:{" "}
+                                    <span className="c">{comments}</span>
+                                  </div>
+                                  <div>
+                                    {supporting_document &&
+                                    regex.test(supporting_document) ? (
+                                      <img
+                                        className="img-preview"
+                                        src={supporting_document}
+                                        alt="Preview"
+                                      />
+                                    ) : !supporting_document ? null : (
+                                      <span className="files-icon">
+                                        <i className="fa fa-file-pdf-o" />
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                              </li>
-                              <li>
-                                <div className="title">Number of days</div>
-                                <div className="text">{number_of_days}</div>
-                              </li>
-                              <li>
-                                <div className="title">Comment</div>
-                                <div className="text">{comments}</div>
-                              </li>
-                              <li>
-                                <div className="title">Start Date</div>
-                                <div className="text">{start_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">End Date</div>
-                                <div className="text">{end_date}</div>
-                              </li>
-                              <li>
-                                <div className="title">Leave Status</div>
-                                <div className="text">{status}</div>
-                              </li>
-                              <li>
-                                <div className="title">Supporting File</div>
-                                <div className="text">
-                                  {supporting_document != null
-                                    ? supporting_document
-                                    : "--"}
-                                </div>
-                              </li>
-                            </ul>
-                          );
-                        }
-                      })}
+                              );
+                            }
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
@@ -1617,7 +1718,7 @@ const Profile = ({
           ) : (
             <>
               <div className="row">
-                <div className="col-md-6 d-flex">
+                <div className="col-md-12 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
@@ -1631,9 +1732,9 @@ const Profile = ({
                           <i className="fa fa-plus" />
                         </a>
                       </h3>
-                      <div className="experience-box">
-                        <ul className="experience-list">
-                          {employeeDocumentData?.map((experience, index) => {
+                      <Wrapper>
+                        {employeeDocumentData?.length > 0 ? (
+                          employeeDocumentData.map((doc, index) => {
                             const {
                               id,
                               employee,
@@ -1645,117 +1746,105 @@ const Profile = ({
                               document_upload,
                               status,
                               verified,
-                            } = experience;
-                            if (employee == selectedEmployeeId) {
+                            } = doc;
+                            if (employee === selectedEmployeeId) {
                               return (
-                                <li key={id}>
-                                  <div className="experience-user">
-                                    <div className="before-circle" />
-                                  </div>
-                                  <div className="experience-content">
-                                    <div className="timeline-content">
-                                      <a className="name">
-                                        Document Number: {document_number}
-                                        <span
-                                          className="edit-icon"
-                                          style={{
-                                            background: "none",
-                                            border: "none",
-                                          }}
+                                <div key={id} className="card">
+                                  <a className="name">
+                                    Document Number: {document_number}
+                                    <span
+                                      className="edit-icon"
+                                      style={{
+                                        background: "none",
+                                        border: "none",
+                                      }}
+                                    >
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
                                         >
-                                          <div className="dropdown dropdown-action text-end">
-                                            <a
-                                              className="action-icon dropdown-toggle"
-                                              data-bs-toggle="dropdown"
-                                              aria-expanded="false"
-                                            >
-                                              <i className="material-icons">
-                                                more_vert
-                                              </i>
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-right">
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleFileDownload(
-                                                    document_upload
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-download m-r-5" />{" "}
-                                                Download
-                                              </a>
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleEditEmployeeDocument(
-                                                    id,
-                                                    index
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-pencil m-r-5" />{" "}
-                                                Edit
-                                              </a>
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleDeleteEmployeeDocument(
-                                                    id
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-trash-o m-r-5" />{" "}
-                                                Delete
-                                              </a>
-                                            </div>
-                                          </div>
-                                        </span>
-                                      </a>
-                                      <div style={{ fontWeight: "900" }}>
-                                        Document Name: {document_name}
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(
+                                                document_upload
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditEmployeeDocument(
+                                                id,
+                                                index
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteEmployeeDocument(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
                                       </div>
-                                      <span>
-                                        Date:{" "}
-                                        {moment(issue_date).format(
-                                          "DD MMM YYYY"
-                                        )}{" "}
-                                        -{" "}
-                                        {expiry_date &&
-                                          moment(expiry_date).format(
-                                            "DD MMM YYYY"
-                                          )}
-                                      </span>
-                                      <div>Status: {status}</div>
-                                      <div>
-                                        Verification:{" "}
-                                        {verified === true
-                                          ? "Varified"
-                                          : "Not varified"}
-                                      </div>
-                                      <div>Document Type: {document_type}</div>
-                                      <div>
-                                        {document_upload &&
-                                        regex.test(document_upload) ? (
-                                          <img
-                                            className="img-preview"
-                                            src={document_upload}
-                                            alt="Preview"
-                                          />
-                                        ) : !document_upload ? null : (
-                                          <span className="files-icon">
-                                            <i className="fa fa-file-pdf-o" />
-                                          </span>
-                                        )}
-                                      </div>
-                                    </div>
+                                    </span>
+                                  </a>
+                                  <div className="document-name">
+                                    Document Name: {document_name}
                                   </div>
-                                </li>
+                                  <span>
+                                    Date:{" "}
+                                    {moment(issue_date).format("DD MMM YYYY")} -{" "}
+                                    {expiry_date &&
+                                      moment(expiry_date).format("DD MMM YYYY")}
+                                  </span>
+                                  <div>Status: {status}</div>
+                                  <div>
+                                    Verification:{" "}
+                                    {verified === true
+                                      ? "Varified"
+                                      : "Not varified"}
+                                  </div>
+                                  <div>Document Type: {document_type}</div>
+                                  <div>
+                                    {document_upload &&
+                                    regex.test(document_upload) ? (
+                                      <img
+                                        className="img-preview"
+                                        src={document_upload}
+                                        alt="Preview"
+                                      />
+                                    ) : !document_upload ? null : (
+                                      <span className="files-icon">
+                                        <i className="fa fa-file-pdf-o" />
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
                               );
                             }
-                          })}
-                        </ul>
-                      </div>
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
@@ -1853,7 +1942,7 @@ const Profile = ({
 
       {/* Employee Bank */}
       {showEmployeeBankModal && (
-        <AddResident
+        <AddEmployeeBank
           id={getEmployeeBankId}
           dispatchEmployeeBank={dispatchEmployeeBank}
           employeeBankIndexToEdit={employeeBankIndexToEdit}
