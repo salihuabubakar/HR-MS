@@ -7,6 +7,8 @@ import {
   useEmployeeEmergencyFetching,
   useEmployeeExperienceFetching,
   useEmployeeDocumentFetching,
+  useResidentSchoolFetching,
+  useResidentGpFetching,
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_employee_address,
@@ -251,7 +253,9 @@ const Profile = ({
   const resident_school_report = getSelectedData?.resident_school_report;
   const resident_document = getSelectedData?.resident_document;
   
-  const employee_review = getSelectedData?.employee_review;
+
+  const { residentSchoolData } = useResidentSchoolFetching();
+  const {residentGpData } = useResidentGpFetching();
 
 
 // Checks if the uploaded document contain any of this extentions.
@@ -463,7 +467,9 @@ const Profile = ({
                                       <td>{status}</td>
                                       <td>{start_date}</td>
                                       <td>{end_date}</td>
-                                      <td data-title={description}>Hover to show</td>
+                                      <td data-title={description}>
+                                        Hover to show
+                                      </td>
                                       <td className="dropdown dropdown-action text-end">
                                         <a
                                           className="action-icon dropdown-toggle"
@@ -569,7 +575,9 @@ const Profile = ({
                                             src={referral_document}
                                             alt="Preview"
                                           />
-                                        ) : !referral_document ? "--" : (
+                                        ) : !referral_document ? (
+                                          "--"
+                                        ) : (
                                           <span className="files-icon">
                                             <i className="fa fa-file-pdf-o" />
                                           </span>
@@ -765,7 +773,7 @@ const Profile = ({
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6 d-flex">
+                <div className="col-md-12 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
@@ -806,9 +814,7 @@ const Profile = ({
                                       <td>{appointment_name}</td>
                                       <td>{appointment_time}</td>
                                       <td>{appointment_date}</td>
-                                      <td
-                                        data-title={appointment_description}
-                                      >
+                                      <td data-title={appointment_description}>
                                         Hover to show
                                       </td>
                                       <td className="dropdown dropdown-action text-end">
@@ -1018,7 +1024,7 @@ const Profile = ({
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          {resident_school?.map((schl, index) => {
+                          {residentSchoolData?.map((schl, index) => {
                             const {
                               id,
                               resident,
@@ -1095,6 +1101,411 @@ const Profile = ({
                           })}
                         </ul>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {isSelectedLoading ? (
+            <div className="skeleton-container-profile">
+              <div className="skeleton-content-profile">
+                <div className="skeleton-line-profile"></div>
+                <div className="skeleton-line-profile"></div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="row">
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        Resident School Timetable{" "}
+                        <a
+                          className="edit-icon"
+                          // onClick={() =>
+                          //   setGlobalState("showEmployeeAddressModal", true)
+                          // }
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>School</th>
+                              <th>Year</th>
+                              <th>Timetable</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {resident_school_timetable?.length > 0 ? (
+                              resident_school_timetable?.map((time, index) => {
+                                const {
+                                  id,
+                                  resident,
+                                  school,
+                                  year,
+                                  timetable,
+                                } = time;
+                                if (resident == selectedResidentId) {
+                                  return (
+                                    <tr style={{ height: "90px" }} key={id}>
+                                      <td>
+                                        {residentSchoolData?.map((schl) => {
+                                          if (schl.id === school)
+                                            return schl.school;
+                                        })}
+                                      </td>
+                                      <td>{year}</td>
+                                      <td>
+                                        {timetable && regex.test(timetable) ? (
+                                          <img
+                                            className="img-preview"
+                                            src={timetable}
+                                            alt="Preview"
+                                          />
+                                        ) : !timetable ? (
+                                          "--"
+                                        ) : (
+                                          <span className="files-icon">
+                                            <i className="fa fa-file-pdf-o" />
+                                          </span>
+                                        )}
+                                      </td>
+                                      <td className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(timetable)
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            // onClick={() =>
+                                            //   handleEditEmployeeAddress(
+                                            //     id,
+                                            //     index
+                                            //   )
+                                            // }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            // onClick={() =>
+                                            //   handleDeleteEmployeeAddress(id)
+                                            // }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <tr>
+                                <td>No timetable attach to this resident</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        Resident School Report{" "}
+                        <a
+                          className="edit-icon"
+                          // onClick={() =>
+                          //   setGlobalState("showEmployeeAddressModal", true)
+                          // }
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>School</th>
+                              <th>Year</th>
+                              <th>Timetable</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {resident_school_report?.length > 0 ? (
+                              resident_school_report?.map((time, index) => {
+                                const { id, resident, school, year, report } =
+                                  time;
+                                if (resident == selectedResidentId) {
+                                  return (
+                                    <tr style={{ height: "90px" }} key={id}>
+                                      <td>
+                                        {residentSchoolData?.map((schl) => {
+                                          if (schl.id === school)
+                                            return schl.school;
+                                        })}
+                                      </td>
+                                      <td>{year}</td>
+                                      <td>
+                                        {report && regex.test(report) ? (
+                                          <img
+                                            className="img-preview"
+                                            src={report}
+                                            alt="Preview"
+                                          />
+                                        ) : !report ? (
+                                          "--"
+                                        ) : (
+                                          <span className="files-icon">
+                                            <i className="fa fa-file-pdf-o" />
+                                          </span>
+                                        )}
+                                      </td>
+                                      <td className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(report)
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            // onClick={() =>
+                                            //   handleEditEmployeeAddress(
+                                            //     id,
+                                            //     index
+                                            //   )
+                                            // }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            // onClick={() =>
+                                            //   handleDeleteEmployeeAddress(id)
+                                            // }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <tr>
+                                <td>No report attach to this resident</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">Resident Medical Condition</h3>
+                      <Wrapper>
+                        {resident_medical_condition?.length > 0 ? (
+                          resident_medical_condition.map((med, index) => {
+                            const {
+                              id,
+                              resident,
+                              medical_condition_name,
+                              medical_condition_description,
+                              medical_condition_state,
+                              medical_condition_document,
+                              medical_condition_start_date,
+                              medical_condition_end_date,
+                            } = med;
+                            if (resident === selectedResidentId) {
+                              return (
+                                <div key={id} className="card plain-card">
+                                  <div className="text">
+                                    Name: <span>{medical_condition_name}</span>
+                                  </div>
+                                  <div className="text">
+                                    Start Date:{" "}
+                                    <span>{medical_condition_start_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    End Date: <span>{medical_condition_end_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    Status: <span>{medical_condition_state}</span>
+                                  </div>
+                                  <div className="text">
+                                    Description:{" "}
+                                    <span className="c">
+                                      {medical_condition_description}
+                                    </span>
+                                  </div>
+                                  <div className="text">
+                                    Document:{" "}
+                                    <span>
+                                      {medical_condition_document &&
+                                      regex.test(medical_condition_document) ? (
+                                        <img
+                                          className="img-preview"
+                                          src={medical_condition_document}
+                                          alt="Preview"
+                                        />
+                                      ) : !medical_condition_document ? (
+                                        "--"
+                                      ) : (
+                                        <span className="files-icon">
+                                          <i className="fa fa-file-pdf-o" />
+                                        </span>
+                                      )}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            }
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">Resident Medication</h3>
+                      <Wrapper>
+                        {resident_medication?.length > 0 ? (
+                          resident_medication.map((med, index) => {
+                            const {
+                              id,
+                              resident,
+                              medication_name,
+                              medication_description,
+                              gp,
+                              medication_state,
+                              medication_document,
+                              medication_prescription_date,
+                              medication_start_date,
+                              medication_end_date,
+                              medication_dosage,
+                              medication_frequency,
+                            } = med;
+                            if (resident === selectedResidentId) {
+                              return (
+                                <div key={id} className="card plain-card">
+                                  <div className="text">
+                                    Name: <span>{medication_name}</span>
+                                  </div>
+                                  <div className="text">
+                                    Start Date:{" "}
+                                    <span>{medication_start_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    End Date: <span>{medication_end_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    Prescription Date:{" "}
+                                    <span>{medication_prescription_date}</span>
+                                  </div>
+                                  <div className="text">
+                                    GP:{" "}
+                                    <span>
+                                      {residentGpData?.map((rGp) => {
+                                        if (rGp.id === gp)
+                                          return rGp.gp_practice_name;
+                                      })}
+                                    </span>
+                                  </div>
+                                  <div className="text">
+                                    Dosage: <span>{medication_dosage}</span>
+                                  </div>
+                                  <div className="text">
+                                    Frequency:{" "}
+                                    <span>{medication_frequency}</span>
+                                  </div>
+                                  <div className="text">
+                                    Status: <span>{medication_state}</span>
+                                  </div>
+                                  <div className="text">
+                                    Description:{" "}
+                                    <span className="c">
+                                      {medication_description}
+                                    </span>
+                                  </div>
+                                  <div className="text">
+                                    Document:{" "}
+                                    <span>
+                                      {medication_document &&
+                                      regex.test(medication_document) ? (
+                                        <img
+                                          className="img-preview"
+                                          src={medication_document}
+                                          alt="Preview"
+                                        />
+                                      ) : !medication_document ? (
+                                        "--"
+                                      ) : (
+                                        <span className="files-icon">
+                                          <i className="fa fa-file-pdf-o" />
+                                        </span>
+                                      )}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            }
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
