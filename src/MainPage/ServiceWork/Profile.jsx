@@ -9,6 +9,7 @@ import {
   useEmployeeDocumentFetching,
   useResidentSchoolFetching,
   useResidentGpFetching,
+  useResidentSocialWorkerFetching,
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_employee_address,
@@ -255,7 +256,8 @@ const Profile = ({
   
 
   const { residentSchoolData } = useResidentSchoolFetching();
-  const {residentGpData } = useResidentGpFetching();
+  const { residentGpData } = useResidentGpFetching();
+  const { residentSocialWorkerData } = useResidentSocialWorkerFetching();
 
 
 // Checks if the uploaded document contain any of this extentions.
@@ -463,7 +465,14 @@ const Profile = ({
                                 if (resident == selectedResidentId) {
                                   return (
                                     <tr style={{ height: "90px" }} key={id}>
-                                      <td>{social_worker}</td>
+                                      <td>
+                                        {residentSocialWorkerData?.map(
+                                          (rSw) => {
+                                            if (rSw.id === social_worker)
+                                              return `${rSw.first_name} ${rSw.middle_name} ${rSw.last_name}`;
+                                          }
+                                        )}
+                                      </td>
                                       <td>{status}</td>
                                       <td>{start_date}</td>
                                       <td>{end_date}</td>
