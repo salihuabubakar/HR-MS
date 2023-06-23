@@ -626,6 +626,51 @@ export const useResidentFetching = () => {
   return { residentData, isResidentLoading, residentError };
 };
 
+// Get resident school data
+export const useResidentSchoolFetching = () => {
+  const fetchResidentSchoolData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/school/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentSchoolData,
+    isLoading: isResidentSchoolLoading,
+    error: residentSchoolError,
+  } = useQuery("residentSchoolData", fetchResidentSchoolData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on residentSchoolData
+      queryClient.invalidateQueries(["residentSchoolData"]);
+    },
+  });
+
+  return { residentSchoolData, isResidentSchoolLoading, residentSchoolError };
+};
+
+// Get resident gp data
+export const useResidentGpFetching = () => {
+  const fetchResidentGpData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/residentgp/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentGpData,
+    isLoading: isResidentGpLoading,
+    error: residentGpError,
+  } = useQuery("residentGpData", fetchResidentGpData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on residentGpData
+      queryClient.invalidateQueries(["residentGpData"]);
+    },
+  });
+
+  return { residentGpData, isResidentGpLoading, residentGpError };
+};
+
+
 
 
 
