@@ -7,21 +7,19 @@ import {
   useEmployeeEmergencyFetching,
   useEmployeeExperienceFetching,
   useEmployeeDocumentFetching,
-  useEmployeeBankFetching,
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_employee_address,
   add_update_delete_employee_emergency,
   add_update_delete_employee_experience,
   add_update_delete_employee_document,
-  add_update_delete_employee_bank,
 } from "../../utils/sendToServer";
 import AddEmployeeAddress from "../../_components/modelbox/AddEmployeeAddress";
 import AddEmployeeEmergency from "../../_components/modelbox/AddEmployeeEmergency";
 import AddEmployeeExperience from "../../_components/modelbox/AddEmployeeExperience";
 import AddEmployeeDocument from "../../_components/modelbox/AddEmployeeDocument";
-import AddEmployeeBank from "../../_components/modelbox/AddEmployeeBank";
 import { Wrapper } from "./style";
+import "../Employees/Employees/style.css";
 
 const Profile = ({
   getSelectedData,
@@ -218,36 +216,6 @@ const Profile = ({
     }
   }, [showEmployeeDocumentModal]);
 
-  // Bank
-  const [employeeBankState, dispatchEmployeeBank] = useReducer(
-    add_update_delete_employee_bank,
-    []
-  );
-  const { employeeBankData, isEmployeeBankDataLoading, employeeBankError } =
-    useEmployeeBankFetching();
-  const [getEmployeeBankId, setGetEmployeeBankId] = useState();
-  const [employeeBankIndexToEdit, setEmployeeBankIndexToEdit] = useState();
-  const [showEmployeeBankModal] = useGlobalState("showEmployeeBankModal");
-  const [deleteEmployeeBankModal] = useGlobalState("deleteEmployeeBankModal");
-
-  const handleEditEmployeeBank = (id, index) => {
-    setGetEmployeeBankId(id);
-    setEmployeeBankIndexToEdit(index);
-    setGlobalState("selectedEmployeeBank", employeeBankData);
-    setGlobalState("showEmployeeBankModal", true);
-  };
-
-  const handleDeleteEmployeeBank = (id) => {
-    setGetEmployeeBankId(id);
-    setGlobalState("deleteEmployeeBankModal", true);
-  };
-
-  useEffect(() => {
-    if (!showEmployeeBankModal) {
-      setGlobalState("selectedEmployeeBank", "");
-    }
-  }, [showEmployeeBankModal]);
-
   const selectedResidentId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
   const middle_name = getSelectedData?.middle_name;
@@ -271,12 +239,19 @@ const Profile = ({
   const Any_comment = getSelectedData?.Any_comment;
   const key_worker = getSelectedData?.key_worker;
   const resident_education = getSelectedData?.resident_education;
+  const resident_solicitor = getSelectedData?.resident_solicitor;
+  const resident_gp = getSelectedData?.resident_gp;
+  const resident_social_worker = getSelectedData?.resident_social_worker;
+  const resident_referral = getSelectedData?.resident_referral;
+  const resident_appointment = getSelectedData?.resident_appointment;
+  const resident_medication = getSelectedData?.resident_medication;
+  const resident_medical_condition = getSelectedData?.resident_medical_condition;
+  const resident_school = getSelectedData?.resident_school;
+  const resident_school_timetable = getSelectedData?.resident_school_timetable;
+  const resident_school_report = getSelectedData?.resident_school_report;
   const resident_document = getSelectedData?.resident_document;
   
   const employee_review = getSelectedData?.employee_review;
-  const employee_contract = getSelectedData?.employee_contract;
-  const employee_leave = getSelectedData?.employee_leave;
-  const employee_status = getSelectedData?.employee_status;
 
 
 // Checks if the uploaded document contain any of this extentions.
@@ -444,16 +419,16 @@ const Profile = ({
           ) : (
             <>
               <div className="row">
-                <div className="col-md-12 d-flex">
+                <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Bank Information{" "}
+                        Social Worker{" "}
                         <a
                           className="edit-icon"
-                          onClick={() =>
-                            setGlobalState("showEmployeeBankModal", true)
-                          }
+                          // onClick={() =>
+                          //   setGlobalState("showEmployeeEmergencyModal", true)
+                          // }
                         >
                           <i className="fa fa-plus" />
                         </a>
@@ -462,62 +437,139 @@ const Profile = ({
                         <table className="table table-nowrap">
                           <thead>
                             <tr>
-                              <th>Bank name</th>
-                              <th>Account Name</th>
-                              <th>Account No</th>
-                              <th>Account Type</th>
-                              <th>Currency</th>
-                              <th>Address</th>
-                              <th>Sort Code</th>
-                              <th>Swift Code</th>
-                              <th>Iban</th>
-                              <th>Routing No</th>
+                              <th>Social Worker</th>
+                              <th>Status</th>
+                              <th>Start Date</th>
+                              <th>End Date</th>
+                              <th>Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {resident_social_worker?.length > 0 ? (
+                              resident_social_worker?.map((worker, index) => {
+                                const {
+                                  id,
+                                  resident,
+                                  social_worker,
+                                  status,
+                                  start_date,
+                                  end_date,
+                                  description,
+                                } = worker;
+                                if (resident == selectedResidentId) {
+                                  return (
+                                    <tr style={{ height: "90px" }} key={id}>
+                                      <td>{social_worker}</td>
+                                      <td>{status}</td>
+                                      <td>{start_date}</td>
+                                      <td>{end_date}</td>
+                                      <td data-title={description}>Hover to show</td>
+                                      <td className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            // onClick={() =>
+                                            //   handleEditEmployeeEmergency(
+                                            //     id,
+                                            //     index
+                                            //   )
+                                            // }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            // onClick={() =>
+                                            //   handleDeleteEmployeeEmergency(
+                                            //     id
+                                            //   )
+                                            // }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <tr>
+                                <td>
+                                  No Social worker attach to this resident
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        Resident Referral{" "}
+                        <a
+                          className="edit-icon"
+                          // onClick={() =>
+                          //   setGlobalState("showEmployeeAddressModal", true)
+                          // }
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
                               <th>Date</th>
+                              <th>Description</th>
                               <th>Document</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {employeeBankData?.length > 0 ? (
-                              employeeBankData?.map((bank, index) => {
+                            {resident_referral?.length > 0 ? (
+                              resident_referral?.map((address, index) => {
                                 const {
                                   id,
-                                  employee,
-                                  bank_name,
-                                  account_name,
-                                  account_number,
-                                  account_type,
-                                  currency,
-                                  bank_address,
-                                  sort_code,
-                                  swift_code,
-                                  iban,
-                                  routing_number,
-                                  upload_date,
-                                  upload_document,
-                                } = bank;
-                                if (employee == selectedResidentId) {
+                                  resident,
+                                  referral_name,
+                                  referral_date,
+                                  referral_description,
+                                  referral_document,
+                                } = address;
+                                if (resident == selectedResidentId) {
                                   return (
                                     <tr style={{ height: "90px" }} key={id}>
-                                      <td>{bank_name}</td>
-                                      <td>{account_name}</td>
-                                      <td>{account_number}</td>
-                                      <td>{account_type}</td>
-                                      <td>{currency}</td>
-                                      <td>{bank_address}</td>
-                                      <td>{sort_code}</td>
-                                      <td>{swift_code}</td>
-                                      <td>{iban}</td>
-                                      <td>{routing_number}</td>
-                                      <td>{upload_date}</td>
+                                      <td>{referral_name}</td>
+                                      <td>{referral_date}</td>
+                                      <td data-title={referral_description}>
+                                        Hover to show
+                                      </td>
                                       <td>
-                                        {upload_document &&
-                                        regex.test(upload_document) ? (
+                                        {referral_document &&
+                                        regex.test(referral_document) ? (
                                           <img
                                             className="img-preview"
-                                            src={upload_document}
+                                            src={referral_document}
                                             alt="Preview"
                                           />
-                                        ) : !upload_document ? null : (
+                                        ) : !referral_document ? "--" : (
                                           <span className="files-icon">
                                             <i className="fa fa-file-pdf-o" />
                                           </span>
@@ -536,29 +588,21 @@ const Profile = ({
                                         <div className="dropdown-menu dropdown-menu-right">
                                           <a
                                             className="dropdown-item"
-                                            onClick={() =>
-                                              handleFileDownload(
-                                                upload_document
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-download m-r-5" />{" "}
-                                            Download
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditEmployeeBank(id, index)
-                                            }
+                                            // onClick={() =>
+                                            //   handleEditEmployeeAddress(
+                                            //     id,
+                                            //     index
+                                            //   )
+                                            // }
                                           >
                                             <i className="fa fa-pencil m-r-5" />{" "}
                                             Edit
                                           </a>
                                           <a
                                             className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteEmployeeBank(id)
-                                            }
+                                            // onClick={() =>
+                                            //   handleDeleteEmployeeAddress(id)
+                                            // }
                                           >
                                             <i className="fa fa-trash-o m-r-5" />{" "}
                                             Delete
@@ -571,7 +615,7 @@ const Profile = ({
                               })
                             ) : (
                               <tr>
-                                <td>No Bank detail attach to this employee</td>
+                                <td>No referrals attach to this resident</td>
                               </tr>
                             )}
                           </tbody>
@@ -584,271 +628,59 @@ const Profile = ({
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">
-                        Emergency Contact{" "}
-                        <a
-                          className="edit-icon"
-                          onClick={() =>
-                            setGlobalState("showEmployeeEmergencyModal", true)
-                          }
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      <div className="table-responsive">
-                        <table className="table table-nowrap">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Relationship</th>
-                              <th>Phone Number</th>
-                              <th>Address</th>
-                              <th>Email</th>
-                              <th>Post Code</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {employeeEmergencyData?.length > 0 ? (
-                              employeeEmergencyData?.map((emergency, index) => {
-                                const {
-                                  id,
-                                  employee,
-                                  name,
-                                  relationship,
-                                  phone_number,
-                                  address,
-                                  email,
-                                  post_code,
-                                } = emergency;
-                                if (employee == selectedResidentId) {
-                                  return (
-                                    <tr style={{ height: "90px" }} key={id}>
-                                      <td>{name}</td>
-                                      <td>{relationship}</td>
-                                      <td>{phone_number}</td>
-                                      <td>{address}</td>
-                                      <td>{email}</td>
-                                      <td>{post_code}</td>
-                                      <td className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditEmployeeEmergency(
-                                                id,
-                                                index
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteEmployeeEmergency(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                }
-                              })
-                            ) : (
-                              <tr>
-                                <td>
-                                  No Emergency Contact attach to this employee
-                                </td>
-                              </tr>
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Address{" "}
-                        <a
-                          className="edit-icon"
-                          onClick={() =>
-                            setGlobalState("showEmployeeAddressModal", true)
-                          }
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      <div className="table-responsive">
-                        <table className="table table-nowrap">
-                          <thead>
-                            <tr>
-                              <th>Street</th>
-                              <th>City</th>
-                              <th>State</th>
-                              <th>Country</th>
-                              <th>Postal Code</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {employeeAddressData?.length > 0 ? (
-                              employeeAddressData?.map((address, index) => {
-                                const {
-                                  id,
-                                  employee,
-                                  street,
-                                  city,
-                                  state,
-                                  country,
-                                  postal_code,
-                                } = address;
-                                if (employee == selectedResidentId) {
-                                  return (
-                                    <tr style={{ height: "90px" }} key={id}>
-                                      <td>{street}</td>
-                                      <td>{city}</td>
-                                      <td>{state}</td>
-                                      <td>{country}</td>
-                                      <td>{postal_code}</td>
-                                      <td className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditEmployeeAddress(
-                                                id,
-                                                index
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteEmployeeAddress(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                }
-                              })
-                            ) : (
-                              <tr>
-                                <td>No Address attach to this employee</td>
-                              </tr>
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">Review</h3>
+                      <h3 className="card-title">Resident Solicitor</h3>
                       <Wrapper>
-                        {employee_review?.length > 0 ? (
-                          employee_review.map((review, index) => {
+                        {resident_solicitor?.length > 0 ? (
+                          resident_solicitor.map((solicit, index) => {
                             const {
                               id,
-                              employee,
-                              review_type,
-                              description,
-                              review_date,
-                              review_status,
-                              review_file,
-                              review_manager,
-                            } = review;
-                            if (employee === selectedEmployeeId) {
+                              resident,
+                              solicitor_name,
+                              solicitor_description,
+                              solicitor_address,
+                              solicitor_status,
+                              solicitor_postcode,
+                              solicitor_phone_number,
+                              solicitor_email,
+                              solicitor_website,
+                            } = solicit;
+                            if (resident === selectedResidentId) {
                               return (
                                 <div key={id} className="card plain-card">
                                   <div className="text">
-                                    <div className="dropdown dropdown-action text-end">
+                                    Name: <span>{solicitor_name}</span>
+                                  </div>
+                                  <div className="text">
+                                    Email: <span>{solicitor_email}</span>
+                                  </div>
+                                  <div className="text">
+                                    Website:{" "}
+                                    <span>
                                       <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
+                                        target={"_blank"}
+                                        href={solicitor_website}
                                       >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
+                                        {solicitor_website}
                                       </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleFileDownload(review_file)
-                                          }
-                                        >
-                                          <i className="fa fa-download m-r-5" />{" "}
-                                          Download
-                                        </a>
-                                      </div>
-                                    </div>
-                                    Review Type: <span>{review_type}</span>
+                                    </span>
                                   </div>
                                   <div className="text">
-                                    Review Manager:
-                                    {review_manager != Number(review_manager)
-                                      ? review_manager
-                                      : " Admin"}
+                                    Phone: <span>{solicitor_phone_number}</span>
                                   </div>
                                   <div className="text">
-                                    Review Date: <span>{review_date}</span>
+                                    Address: <span>{solicitor_address}</span>
                                   </div>
                                   <div className="text">
-                                    Review Status: <span>{review_status}</span>
+                                    Status: <span>{solicitor_status}</span>
+                                  </div>
+                                  <div className="text">
+                                    Post Code: <span>{solicitor_postcode}</span>
                                   </div>
                                   <div className="text">
                                     Description:{" "}
-                                    <span className="c">{description}</span>
-                                  </div>
-                                  <div>
-                                    {review_file && regex.test(review_file) ? (
-                                      <img
-                                        className="img-preview"
-                                        src={review_file}
-                                        alt="Preview"
-                                      />
-                                    ) : !review_file ? null : (
-                                      <span className="files-icon">
-                                        <i className="fa fa-file-pdf-o" />
-                                      </span>
-                                    )}
+                                    <span className="c">
+                                      {solicitor_description}
+                                    </span>
                                   </div>
                                 </div>
                               );
@@ -858,6 +690,173 @@ const Profile = ({
                           <></>
                         )}
                       </Wrapper>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">Resident GP</h3>
+                      <Wrapper>
+                        {resident_gp?.length > 0 ? (
+                          resident_gp.map((gp, index) => {
+                            const {
+                              id,
+                              resident,
+                              gp_practice_name,
+                              gp_practice_description,
+                              gp_practice_address,
+                              gp_practice_status,
+                              gp_practice_postcode,
+                              gp_practice_phone_number,
+                              gp_practice_email,
+                              gp_practice_website,
+                              gp_practice_type,
+                            } = gp;
+                            if (resident === selectedResidentId) {
+                              return (
+                                <div key={id} className="card plain-card">
+                                  <div className="text">
+                                    Name: <span>{gp_practice_name}</span>
+                                  </div>
+                                  <div className="text">
+                                    Email: <span>{gp_practice_email}</span>
+                                  </div>
+                                  <div className="text">
+                                    Website:{" "}
+                                    <span>
+                                      <a
+                                        target={"_blank"}
+                                        href={gp_practice_website}
+                                      >
+                                        {gp_practice_website}
+                                      </a>
+                                    </span>
+                                  </div>
+                                  <div className="text">
+                                    Phone:{" "}
+                                    <span>{gp_practice_phone_number}</span>
+                                  </div>
+                                  <div className="text">
+                                    Address: <span>{gp_practice_address}</span>
+                                  </div>
+                                  <div className="text">
+                                    Status: <span>{gp_practice_status}</span>
+                                  </div>
+                                  <div className="text">
+                                    Post Code:{" "}
+                                    <span>{gp_practice_postcode}</span>
+                                  </div>
+                                  <div className="text">
+                                    Description:{" "}
+                                    <span className="c">
+                                      {gp_practice_description}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            }
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 d-flex">
+                  <div className="card profile-box flex-fill">
+                    <div className="card-body">
+                      <h3 className="card-title">
+                        Resident Appointment{" "}
+                        <a
+                          className="edit-icon"
+                          // onClick={() =>
+                          //   setGlobalState("showEmployeeAddressModal", true)
+                          // }
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
+                      <div className="table-responsive">
+                        <table className="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Time</th>
+                              <th>Date</th>
+                              <th>Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {resident_appointment?.length > 0 ? (
+                              resident_appointment?.map((app, index) => {
+                                const {
+                                  id,
+                                  resident,
+                                  appointment_name,
+                                  appointment_time,
+                                  appointment_date,
+                                  appointment_description,
+                                } = app;
+                                if (resident == selectedResidentId) {
+                                  return (
+                                    <tr style={{ height: "90px" }} key={id}>
+                                      <td>{appointment_name}</td>
+                                      <td>{appointment_time}</td>
+                                      <td>{appointment_date}</td>
+                                      <td
+                                        data-title={appointment_description}
+                                      >
+                                        Hover to show
+                                      </td>
+                                      <td className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            // onClick={() =>
+                                            //   handleEditEmployeeAddress(
+                                            //     id,
+                                            //     index
+                                            //   )
+                                            // }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            // onClick={() =>
+                                            //   handleDeleteEmployeeAddress(id)
+                                            // }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <tr>
+                                <td>No referrals attach to this resident</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -913,7 +912,7 @@ const Profile = ({
                                   <div className="experience-content">
                                     <div className="timeline-content">
                                       <a className="name">
-                                        {institute_name}
+                                        Institute Name: {institute_name}
                                         <span
                                           className="edit-icon"
                                           style={{
@@ -971,11 +970,12 @@ const Profile = ({
                                         </span>
                                       </a>
                                       <div style={{ fontWeight: "900" }}>
-                                        {qualification_name}
+                                        Qualification: {qualification_name}
                                       </div>
-                                      <span className="time">
-                                        {start_date} - {end_date}
-                                      </span>
+                                      <div>
+                                        Start Date: {start_date} - End Date:{" "}
+                                        {end_date}
+                                      </div>
                                       {/* <div>
                                         {qualification_upload &&
                                         regex.test(qualification_upload) ? (
@@ -1006,11 +1006,11 @@ const Profile = ({
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Experience{" "}
+                        Resident School{" "}
                         <a
-                          onClick={() =>
-                            setGlobalState("showEmployeeExperienceModal", true)
-                          }
+                          // onClick={() =>
+                          //   setGlobalState("showEmployeeExperienceModal", true)
+                          // }
                           className="edit-icon"
                         >
                           <i className="fa fa-plus" />
@@ -1018,18 +1018,16 @@ const Profile = ({
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          {employeeExperienceData?.map((experience, index) => {
+                          {resident_school?.map((schl, index) => {
                             const {
                               id,
-                              employee,
-                              job_title,
-                              company_name,
-                              start_date,
-                              end_date,
-                              description,
-                              experience_upload,
-                            } = experience;
-                            if (employee == selectedResidentId) {
+                              resident,
+                              status,
+                              school,
+                              year,
+                              grade,
+                            } = schl;
+                            if (resident == selectedResidentId) {
                               return (
                                 <li key={id}>
                                   <div className="experience-user">
@@ -1038,7 +1036,7 @@ const Profile = ({
                                   <div className="experience-content">
                                     <div className="timeline-content">
                                       <a className="name">
-                                        {company_name}
+                                        School: {school}
                                         <span
                                           className="edit-icon"
                                           style={{
@@ -1059,34 +1057,23 @@ const Profile = ({
                                             <div className="dropdown-menu dropdown-menu-right">
                                               <a
                                                 className="dropdown-item"
-                                                onClick={() =>
-                                                  handleFileDownload(
-                                                    experience_upload
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-download m-r-5" />{" "}
-                                                Download
-                                              </a>
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleEditEmployeeExperience(
-                                                    id,
-                                                    index
-                                                  )
-                                                }
+                                                // onClick={() =>
+                                                //   handleEditEmployeeExperience(
+                                                //     id,
+                                                //     index
+                                                //   )
+                                                // }
                                               >
                                                 <i className="fa fa-pencil m-r-5" />{" "}
                                                 Edit
                                               </a>
                                               <a
                                                 className="dropdown-item"
-                                                onClick={() =>
-                                                  handleDeleteEmployeeExperience(
-                                                    id
-                                                  )
-                                                }
+                                                // onClick={() =>
+                                                //   handleDeleteEmployeeExperience(
+                                                //     id
+                                                //   )
+                                                // }
                                               >
                                                 <i className="fa fa-trash-o m-r-5" />{" "}
                                                 Delete
@@ -1096,26 +1083,10 @@ const Profile = ({
                                         </span>
                                       </a>
                                       <div style={{ fontWeight: "900" }}>
-                                        {job_title}
+                                        Status: {status}
                                       </div>
-                                      <span className="time">
-                                        {start_date} - {end_date}
-                                      </span>
-                                      <div>{description}</div>
-                                      <div>
-                                        {experience_upload &&
-                                        regex.test(experience_upload) ? (
-                                          <img
-                                            className="img-preview"
-                                            src={experience_upload}
-                                            alt="Preview"
-                                          />
-                                        ) : !experience_upload ? null : (
-                                          <span className="files-icon">
-                                            <i className="fa fa-file-pdf-o" />
-                                          </span>
-                                        )}
-                                      </div>
+                                      <div>Year: {year}</div>
+                                      <div>Grade: {grade}</div>
                                     </div>
                                   </div>
                                 </li>
@@ -1565,23 +1536,6 @@ const Profile = ({
         />
       )}
 
-      {/* Employee Qualification */}
-      {/* {showEmployeeQualificationModal && (
-        <AddEmployeeQualification
-          id={getEmployeeQualificationId}
-          dispatchEmployeeQualification={dispatchEmployeeQualification}
-          employeeQualificationIndexToEdit={employeeQualificationIndexToEdit}
-          employee={getEmployeeId}
-        />
-      )}
-      {deleteEmployeeQualificationModal && (
-        <DeleteModal
-          deleteAction={dispatchEmployeeQualification}
-          iDToDelete={getEmployeeQualificationId}
-          modalTitle={"Qualification"}
-        />
-      )} */}
-
       {/* Employee Experience */}
       {showEmployeeExperienceModal && (
         <AddEmployeeExperience
@@ -1613,23 +1567,6 @@ const Profile = ({
           deleteAction={dispatchEmployeeDocument}
           iDToDelete={getEmployeeDocumentId}
           modalTitle={"Document"}
-        />
-      )}
-
-      {/* Employee Bank */}
-      {showEmployeeBankModal && (
-        <AddEmployeeBank
-          id={getEmployeeBankId}
-          dispatchEmployeeBank={dispatchEmployeeBank}
-          employeeBankIndexToEdit={employeeBankIndexToEdit}
-          employee={getEmployeeId}
-        />
-      )}
-      {deleteEmployeeBankModal && (
-        <DeleteModal
-          deleteAction={dispatchEmployeeBank}
-          iDToDelete={getEmployeeBankId}
-          modalTitle={"Bank"}
         />
       )}
     </>

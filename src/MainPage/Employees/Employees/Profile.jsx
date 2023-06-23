@@ -982,7 +982,7 @@ const Profile = ({
                                     <div className="experience-content">
                                       <div className="timeline-content">
                                         <a className="name">
-                                          {institute_name}
+                                          Institution Name: {institute_name}
                                           <span
                                             className="edit-icon"
                                             style={{
@@ -1040,21 +1040,21 @@ const Profile = ({
                                           </span>
                                         </a>
                                         <div style={{ fontWeight: "900" }}>
-                                          {qualification_name}
+                                          Qualification: {qualification_name}
                                         </div>
-                                        <span className="time">
-                                          {start_date} - {end_date}
-                                        </span>
-                                        <div>{description}</div>
                                         <div>
-                                          {qualification_upload &&
+                                          Start Date: {start_date} - End Date: {end_date}
+                                        </div>
+                                        <div>Description: {description ? description : "--"}</div>
+                                        <div>
+                                          File {qualification_upload &&
                                           regex.test(qualification_upload) ? (
                                             <img
                                               className="img-preview"
                                               src={qualification_upload}
                                               alt="Preview"
                                             />
-                                          ) : !qualification_upload ? null : (
+                                          ) : !qualification_upload ? "--" : (
                                             <span className="files-icon">
                                               <i className="fa fa-file-pdf-o" />
                                             </span>
@@ -1109,7 +1109,7 @@ const Profile = ({
                                   <div className="experience-content">
                                     <div className="timeline-content">
                                       <a className="name">
-                                        {company_name}
+                                        Company Name: {company_name}
                                         <span
                                           className="edit-icon"
                                           style={{
@@ -1167,13 +1167,15 @@ const Profile = ({
                                         </span>
                                       </a>
                                       <div style={{ fontWeight: "900" }}>
-                                        {job_title}
+                                        Job Title: {job_title}
                                       </div>
-                                      <span className="time">
-                                        {start_date} - {end_date}
-                                      </span>
-                                      <div>{description}</div>
                                       <div>
+                                        Start Date: {start_date} - End Date:{" "}
+                                        {end_date}
+                                      </div>
+                                      <div>Description: {description ? description : "--"}</div>
+                                      <div>
+                                        File:{" "}
                                         {experience_upload &&
                                         regex.test(experience_upload) ? (
                                           <img
@@ -1181,7 +1183,7 @@ const Profile = ({
                                             src={experience_upload}
                                             alt="Preview"
                                           />
-                                        ) : !experience_upload ? null : (
+                                        ) : !experience_upload ? "--" : (
                                           <span className="files-icon">
                                             <i className="fa fa-file-pdf-o" />
                                           </span>

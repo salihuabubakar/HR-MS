@@ -32,9 +32,18 @@ export const Wrapper = styled.div`
     font-weight: 900;
   }
 
+  @media screen and (max-width: 1398px) {
+    .plain-card {
+      width: 100%;
+    }
+  }
+
   @media screen and (max-width: 1194px) {
     .card {
       width: 47%;
+    }
+    .plain-card {
+      width: 100%;
     }
   }
 
