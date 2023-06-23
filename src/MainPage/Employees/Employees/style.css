@@ -214,3 +214,32 @@
 .skeleton-line-profile {
   animation: skeleton-loading 1.5s infinite;
 }
+
+
+[data-title]:hover:after {
+  opacity: 1;
+  transition: all 0.1s ease 0.5s;
+  visibility: visible;
+  cursor: pointer;
+}
+
+[data-title]:after {
+  content: attr(data-title);
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  position: absolute;
+  left: 10px;
+  color: #333;
+  /* Customize the tooltip text color */
+  padding: 5px;
+  /* Adjust the padding of the tooltip */
+  border: 1px solid #ccc;
+  /* Customize the tooltip border */
+  border-radius: 4px;
+  opacity: 0;
+  z-index: 99999;
+  visibility: hidden;
+  word-wrap: break-word;
+  overflow-x: auto;
+  width: 100%;
+}
