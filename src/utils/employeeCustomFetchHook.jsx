@@ -670,6 +670,32 @@ export const useResidentGpFetching = () => {
   return { residentGpData, isResidentGpLoading, residentGpError };
 };
 
+// Get resident social worker data
+export const useResidentSocialWorkerFetching = () => {
+  const fetchResidentSocialWorkerData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/socialworker/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentSocialWorkerData,
+    isLoading: isResidentSocialWorkerLoading,
+    error: residentSocialWorkerError,
+  } = useQuery("residentSocialWorkerData", fetchResidentSocialWorkerData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on residentSocialWorkerData
+      queryClient.invalidateQueries(["residentSocialWorkerData"]);
+    },
+  });
+
+  return {
+    residentSocialWorkerData,
+    isResidentSocialWorkerLoading,
+    residentSocialWorkerError,
+  };
+};
+
 
 
 
