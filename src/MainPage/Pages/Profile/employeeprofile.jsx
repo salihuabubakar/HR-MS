@@ -5,10 +5,6 @@ import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import {Avatar_02,Avatar_05,Avatar_09,Avatar_10,Avatar_16 } from '../../../Entryfile/imagepath'
 import { useLocation } from "react-router-dom";
-import AddProfileInfo from './components/AddProfileInfo';
-import AddPersonalInfo from '../../../_components/modelbox/AddPersonalInfo';
-import AddExpModal from '../../../_components/modelbox/AddExpModal';
-import AddFamilyMemberModal from '../../../_components/modelbox/AddFamilyMemberModal';
 import AddFileUploadModal from '../../../_components/modelbox/AddFileUploadModal';
 import { useGlobalState, setGlobalState } from '../../../context/GlobalState';
 import {
@@ -29,10 +25,7 @@ import {
   initTask,
   savedTaskReducer,
 } from "../../../utils/localStorage";
-import AddEmergencyContact from '../../../_components/modelbox/AddEmergencyContact';
-import AddEducationInformation from '../../../_components/modelbox/AddEducationInformation';
 import DefaultImage from "../../../assets/img/placeholder.jpg";
-import DeleteModal from '../../../_components/modelbox/DeleteModal';
 import { DivContainer } from '../../TaskManagement/style';
 
 const EmployeeProfile = () => {
@@ -1335,67 +1328,6 @@ const EmployeeProfile = () => {
           </div>
         </div>
         {/* /Page Content */}
-
-        {/* Profile Modal */}
-        {showProfileModal && (
-          <>
-            <AddProfileInfo
-              dispatchUserAcct={dispatchUserAcct}
-              userAcct={userAcct}
-            />
-          </>
-        )}
-        {/* /Profile Modal */}
-
-        {/* Personal Info Modal */}
-        {showPersonalInfoModal && (
-          <>
-            <AddPersonalInfo
-              dispatchPersonalInfo={dispatchPersonalInfo}
-              employeeId={selectedEmployeeId}
-              indexToEdit={indexToEdit}
-            />
-          </>
-        )}
-        {/* /Personal Info Modal */}
-
-        {/* Emergency Conatact Modal */}
-        {showEmergencyContactModal && (
-          <>
-            <AddEmergencyContact
-              dispatchEmergencyContactInfo={dispatchEmergencyContactInfo}
-              employeeId={selectedEmployeeId}
-              indexToEdit={indexToEdit}
-            />
-          </>
-        )}
-        {/* /Emergency Conatact Modal */}
-
-        {/* Educational Modal */}
-        {showEducationInformationModal && (
-          <>
-            <AddEducationInformation
-              dispatchEduInfo={dispatchEduInfo}
-              eduInformationIndex={eduInformationIndex}
-              employeeId={selectedEmployeeId}
-              fieldIndex={fieldIndex}
-            />
-          </>
-        )}
-        {/* /Educational Modal */}
-
-        {/* Experience Modal */}
-        {showExperienceModal && (
-          <>
-            <AddExpModal
-              dispatchExpInfo={dispatchExpInfo}
-              expInformationIndex={expInformationIndex}
-              employeeId={selectedEmployeeId}
-              expfieldIndex={expfieldIndex}
-            />
-          </>
-        )}
-        {/* /Experience Modal */}
         {/* FileUpload Modal */}
         {showFileUploadModal && (
           <>
@@ -1408,19 +1340,6 @@ const EmployeeProfile = () => {
           </>
         )}
         {/* /FileUpload Modal */}
-
-        {/* Family Info Modal */}
-        {showFamilyMenberModal && (
-          <>
-            <AddFamilyMemberModal
-              dispatchFamilyMemberInfo={dispatchFamilyMemberInfo}
-              familyMembInformationIndex={familyMembInformationIndex}
-              employeeId={selectedEmployeeId}
-              familyMembfieldIndex={familyMembfieldIndex}
-            />
-          </>
-        )}
-        {/* /Family Info Modal */}
       </div>
     </DivContainer>
   );

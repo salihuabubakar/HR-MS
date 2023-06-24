@@ -3,24 +3,21 @@ import moment from "moment";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import {
-  useEmployeeAddressFetching,
-  useEmployeeEmergencyFetching,
-  useEmployeeExperienceFetching,
-  useEmployeeDocumentFetching,
   useResidentSchoolFetching,
   useResidentGpFetching,
+  useResidentSolicitorFetching,
   useResidentSocialWorkerFetching,
+  useGpTypeFetching,
+  useResidentDocumentFetching
 } from "../../utils/employeeCustomFetchHook";
 import {
-  add_update_delete_employee_address,
-  add_update_delete_employee_emergency,
-  add_update_delete_employee_experience,
-  add_update_delete_employee_document,
+  add_update_delete_resident_gp,
+  add_update_delete_resident_solicitor,
+  add_update_delete_resident_document,
 } from "../../utils/sendToServer";
-import AddEmployeeAddress from "../../_components/modelbox/AddEmployeeAddress";
-import AddEmployeeEmergency from "../../_components/modelbox/AddEmployeeEmergency";
-import AddEmployeeExperience from "../../_components/modelbox/AddEmployeeExperience";
-import AddEmployeeDocument from "../../_components/modelbox/AddEmployeeDocument";
+import AddResidentGpModal from "../../_components/modelbox/AddResidentGpModal";
+import AddResidentSolicitorModal from "../../_components/modelbox/AddResidentSolicitorModal";
+import AddResidentDocumentModal from "../../_components/modelbox/AddResidentDocumentModal";
 import { Wrapper } from "./style";
 import "../Employees/Employees/style.css";
 
@@ -28,196 +25,160 @@ const Profile = ({
   getSelectedData,
   DefaultImage,
   isSelectedLoading,
-  getEmployeeId,
+  getResidentId,
 }) => {
+  const [gpError] = useGlobalState("gpError");
+  const [solicitorError] = useGlobalState("solicitorError");
+  const [residentdocumentError] = useGlobalState("residentdocumentError");
+  const clearErrorMessage = () => {
+    console.log("cliked");
+    setGlobalState("gpError", "");
+    setGlobalState("solicitorError", "");
+    setGlobalState("residentdocumentError", "");
+  };
+  const handleFileDownload = (file) => {
+    const a = document.createElement("a");
+    a.href = file;
 
-    const handleFileDownload = (file) => {
-      const a = document.createElement("a");
-      a.href = file;
+    const fileExtension = file.split(".").pop().toLowerCase();
 
-      const fileExtension = file.split(".").pop().toLowerCase();
+    // Set the MIME type based on the file extension
+    let mimeType;
+    if (
+      fileExtension === "jpg" ||
+      fileExtension === "jpeg" ||
+      fileExtension === "JPG"
+    ) {
+      mimeType = "image/jpeg";
+    } else if (fileExtension === "png" || fileExtension === "PNG") {
+      mimeType = "image/png";
+    } else if (fileExtension === "pdf") {
+      mimeType = "application/pdf";
+    } else if (fileExtension === "webp") {
+      mimeType = "image/webp";
+    } else if (fileExtension === "txt") {
+      mimeType = "text/plain";
+    } else if (fileExtension === "xls" || fileExtension === "xlsx") {
+      mimeType = "application/vnd.ms-excel";
+    } else if (fileExtension === "doc" || fileExtension === "docx") {
+      mimeType =
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    } else {
+      mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
+    }
 
-      // Set the MIME type based on the file extension
-      let mimeType;
-      if (
-        fileExtension === "jpg" ||
-        fileExtension === "jpeg" ||
-        fileExtension === "JPG"
-      ) {
-        mimeType = "image/jpeg";
-      } else if (fileExtension === "png" || fileExtension === "PNG") {
-        mimeType = "image/png";
-      } else if (fileExtension === "pdf") {
-        mimeType = "application/pdf";
-      } else if (fileExtension === "webp") {
-        mimeType = "image/webp";
-      } else if (fileExtension === "txt") {
-        mimeType = "text/plain";
-      } else if (fileExtension === "xls" || fileExtension === "xlsx") {
-        mimeType = "application/vnd.ms-excel";
-      } else if (fileExtension === "doc" || fileExtension === "docx") {
-        mimeType =
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-      } else {
-        mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
-      }
+    // Set the MIME type of the file
+    a.type = mimeType;
 
-      // Set the MIME type of the file
-      a.type = mimeType;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
 
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    };
-
-  // Address
-  const [employeeAddressState, dispatchEmployeeAddress] = useReducer(
-    add_update_delete_employee_address,
+  // Resident GP
+  const [residentGpState, dispatchResidentGp] = useReducer(
+    add_update_delete_resident_gp,
     []
   );
-  const {
-    employeeAddressData,
-    isEmployeeAddressDataLoading,
-    employeeAddressError,
-  } = useEmployeeAddressFetching();
-  const [getEmployeeAddressId, setGetEmployeeAddressId] = useState();
-  const [employeeAddressIndexToEdit, setEmployeeAddressIndexToEdit] =
-    useState();
-  const [showEmployeeAddressModal] = useGlobalState("showEmployeeAddressModal");
-  const [deleteEmployeeAddressModal] = useGlobalState(
-    "deleteEmployeeAddressModal"
-  );
+  const { residentGpData, isResidentGpDataLoading, residentGpError } =
+    useResidentGpFetching();
+  const [getResidentGpId, setGetResidentGpId] = useState();
+  const [residentGpIndexToEdit, setResidentGpIndexToEdit] = useState();
+  const [showResidentGpModal] = useGlobalState("showResidentGpModal");
+  const [deleteResidentGpModal] = useGlobalState("deleteResidentGpModal");
 
-  const handleEditEmployeeAddress = (id, index) => {
-    setGetEmployeeAddressId(id);
-    setEmployeeAddressIndexToEdit(index);
-    setGlobalState("selectedEmployeeAddress", employeeAddressData);
-    setGlobalState("showEmployeeAddressModal", true);
+  const handleEditResidentGp = (id, index) => {
+    setGetResidentGpId(id);
+    setResidentGpIndexToEdit(index);
+    setGlobalState("selectedResidentGp", residentGpData);
+    setGlobalState("showResidentGpModal", true);
   };
-  const handleDeleteEmployeeAddress = (id) => {
-    setGetEmployeeAddressId(id);
-    setGlobalState("deleteEmployeeAddressModal", true);
+
+  const handleDeleteResidentGp = (id) => {
+    setGetResidentGpId(id);
+    setGlobalState("deleteResidentGpModal", true);
   };
 
   useEffect(() => {
-    if (!showEmployeeAddressModal) {
-      setGlobalState("selectedEmployeeAddress", "");
+    if (!showResidentGpModal) {
+      setGlobalState("selectedResidentGp", "");
     }
-  }, [showEmployeeAddressModal]);
+  }, [showResidentGpModal]);
 
-  // Emergency
-  const [employeeEmergencyState, dispatchEmployeeEmergency] = useReducer(
-    add_update_delete_employee_emergency,
+  // Resident Solicitor
+  const [residentSolicitorState, dispatchResidentSolicitor] = useReducer(
+    add_update_delete_resident_solicitor,
     []
   );
   const {
-    employeeEmergencyData,
-    isEmployeeEmergencyDataLoading,
-    employeeEmergencyError,
-  } = useEmployeeEmergencyFetching();
-  const [getEmployeeEmergencyId, setGetEmployeeEmergencyId] = useState();
-  const [employeeEmergencyIndexToEdit, setEmployeeEmergencyIndexToEdit] =
+    residentSolicitorData,
+    isResidentSolicitorDataLoading,
+    residentSolicitorError,
+  } = useResidentSolicitorFetching();
+  const [getResidentSolicitorId, setGetResidentSolicitorId] = useState();
+  const [residentSolicitorIndexToEdit, setResidentSolicitorIndexToEdit] =
     useState();
-  const [showEmployeeEmergencyModal] = useGlobalState(
-    "showEmployeeEmergencyModal"
+  const [showResidentSolicitorModal] = useGlobalState(
+    "showResidentSolicitorModal"
   );
-  const [deleteEmployeeEmergencyModal] = useGlobalState(
-    "deleteEmployeeEmergencyModal"
+  const [deleteResidentSolicitorModal] = useGlobalState(
+    "deleteResidentSolicitorModal"
   );
 
-  const handleEditEmployeeEmergency = (id, index) => {
-    setGetEmployeeEmergencyId(id);
-    setEmployeeEmergencyIndexToEdit(index);
-    setGlobalState("selectedEmployeeEmergency", employeeEmergencyData);
-    setGlobalState("showEmployeeEmergencyModal", true);
+  const handleEditResidentSolicitor = (id, index) => {
+    setGetResidentSolicitorId(id);
+    setResidentSolicitorIndexToEdit(index);
+    setGlobalState("selectedResidentSolicitor", residentSolicitorData);
+    setGlobalState("showResidentSolicitorModal", true);
   };
-  const handleDeleteEmployeeEmergency = (id) => {
-    setGetEmployeeEmergencyId(id);
-    setGlobalState("deleteEmployeeEmergencyModal", true);
+
+  const handleDeleteResidentSolicitor = (id) => {
+    setGetResidentSolicitorId(id);
+    setGlobalState("deleteResidentSolicitorModal", true);
   };
 
   useEffect(() => {
-    if (!showEmployeeEmergencyModal) {
-      setGlobalState("selectedEmployeeEmergency", "");
+    if (!showResidentSolicitorModal) {
+      setGlobalState("selectedResidentSolicitor", "");
     }
-  }, [showEmployeeEmergencyModal]);
-
-
-  // Experience
-  const [employeeExperienceState, dispatchEmployeeExperience] = useReducer(
-    add_update_delete_employee_experience,
-    []
-  );
-  const {
-    employeeExperienceData,
-    isEmployeeExperienceDataLoading,
-    employeeExperienceError,
-  } = useEmployeeExperienceFetching();
-  const [getEmployeeExperienceId, setGetEmployeeExperienceId] = useState();
-  const [employeeExperienceIndexToEdit, setEmployeeExperienceIndexToEdit] =
-    useState();
-  const [showEmployeeExperienceModal] = useGlobalState(
-    "showEmployeeExperienceModal"
-  );
-  const [deleteEmployeeExperienceModal] = useGlobalState(
-    "deleteEmployeeExperienceModal"
-  );
-
-  const handleEditEmployeeExperience = (id, index) => {
-    setGetEmployeeExperienceId(id);
-    setEmployeeExperienceIndexToEdit(index);
-    setGlobalState("selectedEmployeeExperience", employeeExperienceData);
-    setGlobalState("showEmployeeExperienceModal", true);
-  };
-
-  const handleDeleteEmployeeExperience = (id) => {
-    setGetEmployeeExperienceId(id);
-    setGlobalState("deleteEmployeeExperienceModal", true);
-  };
-
-  useEffect(() => {
-    if (!showEmployeeExperienceModal) {
-      setGlobalState("selectedEmployeeExperience", "");
-    }
-  }, [showEmployeeExperienceModal]);
+  }, [showResidentSolicitorModal]);
 
   // Document
-  const [employeeDocumentState, dispatchEmployeeDocument] = useReducer(
-    add_update_delete_employee_document,
-    []
-  );
-  const {
-    employeeDocumentData,
-    isEmployeeDocumentDataLoading,
-    employeeDocumentError,
-  } = useEmployeeDocumentFetching();
-  const [getEmployeeDocumentId, setGetEmployeeDocumentId] = useState();
-  const [employeeDocumentIndexToEdit, setEmployeeDocumentIndexToEdit] =
-    useState();
-  const [showEmployeeDocumentModal] = useGlobalState(
-    "showEmployeeDocumentModal"
-  );
-  const [deleteEmployeeDocumentModal] = useGlobalState(
-    "deleteEmployeeDocumentModal"
-  );
+const [residentDocumentState, dispatchResidentDocument] = useReducer(
+  add_update_delete_resident_document,
+  []
+);
+const {
+  residentDocumentData,
+  isResidentDocumentDataLoading,
+  residentDocumentError,
+} = useResidentDocumentFetching();
+const [getResidentDocumentId, setGetResidentDocumentId] = useState();
+const [residentDocumentIndexToEdit, setResidentDocumentIndexToEdit] =
+  useState();
+const [showResidentDocumentModal] = useGlobalState("showResidentDocumentModal");
+const [deleteResidentDocumentModal] = useGlobalState(
+  "deleteResidentDocumentModal"
+);
 
-  const handleEditEmployeeDocument = (id, index) => {
-    setGetEmployeeDocumentId(id);
-    setEmployeeDocumentIndexToEdit(index);
-    setGlobalState("selectedEmployeeDocument", employeeDocumentData);
-    setGlobalState("showEmployeeDocumentModal", true);
-  };
+const handleEditResidentDocument = (id, index) => {
+  setGetResidentDocumentId(id);
+  setResidentDocumentIndexToEdit(index);
+  setGlobalState("selectedResidentDocument", residentDocumentData);
+  setGlobalState("showResidentDocumentModal", true);
+};
 
-  const handleDeleteEmployeeDocument = (id) => {
-    setGetEmployeeDocumentId(id);
-    setGlobalState("deleteEmployeeDocumentModal", true);
-  };
+const handleDeleteResidentDocument = (id) => {
+  setGetResidentDocumentId(id);
+  setGlobalState("deleteResidentDocumentModal", true);
+};
 
-  useEffect(() => {
-    if (!showEmployeeDocumentModal) {
-      setGlobalState("selectedEmployeeDocument", "");
-    }
-  }, [showEmployeeDocumentModal]);
+useEffect(() => {
+  if (!showResidentDocumentModal) {
+    setGlobalState("selectedResidentDocument", "");
+  }
+}, [showResidentDocumentModal]);
+
 
   const selectedResidentId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
@@ -248,19 +209,18 @@ const Profile = ({
   const resident_referral = getSelectedData?.resident_referral;
   const resident_appointment = getSelectedData?.resident_appointment;
   const resident_medication = getSelectedData?.resident_medication;
-  const resident_medical_condition = getSelectedData?.resident_medical_condition;
+  const resident_medical_condition =
+    getSelectedData?.resident_medical_condition;
   const resident_school = getSelectedData?.resident_school;
   const resident_school_timetable = getSelectedData?.resident_school_timetable;
   const resident_school_report = getSelectedData?.resident_school_report;
   const resident_document = getSelectedData?.resident_document;
-  
 
   const { residentSchoolData } = useResidentSchoolFetching();
-  const { residentGpData } = useResidentGpFetching();
   const { residentSocialWorkerData } = useResidentSocialWorkerFetching();
+  const { gpTypeData } = useGpTypeFetching();
 
-
-// Checks if the uploaded document contain any of this extentions.
+  // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
 
   return (
@@ -645,10 +605,39 @@ const Profile = ({
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Resident Solicitor</h3>
+                      <h3 className="card-title">
+                        Resident Solicitor{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {solicitorError?.length > 0 && (
+                            <>
+                              Error: {solicitorError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
+                        <a
+                          onClick={() =>
+                            setGlobalState("showResidentSolicitorModal", true)
+                          }
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
                       <Wrapper>
-                        {resident_solicitor?.length > 0 ? (
-                          resident_solicitor.map((solicit, index) => {
+                        {residentSolicitorData?.length > 0 ? (
+                          residentSolicitorData.map((solicit, index) => {
                             const {
                               id,
                               resident,
@@ -666,6 +655,48 @@ const Profile = ({
                                 <div key={id} className="card plain-card">
                                   <div className="text">
                                     Name: <span>{solicitor_name}</span>
+                                    <span
+                                      className="edit-icon"
+                                      style={{
+                                        background: "none",
+                                        border: "none",
+                                      }}
+                                    >
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditResidentSolicitor(
+                                                id,
+                                                index
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteResidentSolicitor(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </span>
                                   </div>
                                   <div className="text">
                                     Email: <span>{solicitor_email}</span>
@@ -714,10 +745,39 @@ const Profile = ({
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Resident GP</h3>
+                      <h3 className="card-title">
+                        Resident GP{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {gpError?.length > 0 && (
+                            <>
+                              Error: {gpError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
+                        <a
+                          onClick={() =>
+                            setGlobalState("showResidentGpModal", true)
+                          }
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
                       <Wrapper>
-                        {resident_gp?.length > 0 ? (
-                          resident_gp.map((gp, index) => {
+                        {residentGpData?.length > 0 ? (
+                          residentGpData.map((gp, index) => {
                             const {
                               id,
                               resident,
@@ -736,6 +796,45 @@ const Profile = ({
                                 <div key={id} className="card plain-card">
                                   <div className="text">
                                     Name: <span>{gp_practice_name}</span>
+                                    <span
+                                      className="edit-icon"
+                                      style={{
+                                        background: "none",
+                                        border: "none",
+                                      }}
+                                    >
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditResidentGp(id, index)
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteResidentGp(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </span>
                                   </div>
                                   <div className="text">
                                     Email: <span>{gp_practice_email}</span>
@@ -760,6 +859,15 @@ const Profile = ({
                                   </div>
                                   <div className="text">
                                     Status: <span>{gp_practice_status}</span>
+                                  </div>
+                                  <div className="text">
+                                    Type:{" "}
+                                    <span>
+                                      {gpTypeData?.map((_gp) => {
+                                        if (_gp.id === gp_practice_type)
+                                          return _gp.gp_type_name;
+                                      })}
+                                    </span>
                                   </div>
                                   <div className="text">
                                     Post Code:{" "}
@@ -1383,10 +1491,12 @@ const Profile = ({
                                     <span>{medical_condition_start_date}</span>
                                   </div>
                                   <div className="text">
-                                    End Date: <span>{medical_condition_end_date}</span>
+                                    End Date:{" "}
+                                    <span>{medical_condition_end_date}</span>
                                   </div>
                                   <div className="text">
-                                    Status: <span>{medical_condition_state}</span>
+                                    Status:{" "}
+                                    <span>{medical_condition_state}</span>
                                   </div>
                                   <div className="text">
                                     Description:{" "}
@@ -1793,9 +1903,28 @@ const Profile = ({
                     <div className="card-body">
                       <h3 className="card-title">
                         Document{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {residentdocumentError?.length > 0 && (
+                            <>
+                              Error: {residentdocumentError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           onClick={() =>
-                            setGlobalState("showEmployeeDocumentModal", true)
+                            setGlobalState("showResidentDocumentModal", true)
                           }
                           className="edit-icon"
                         >
@@ -1803,8 +1932,8 @@ const Profile = ({
                         </a>
                       </h3>
                       <Wrapper>
-                        {resident_document?.length > 0 ? (
-                          resident_document.map((doc, index) => {
+                        {residentDocumentData?.length > 0 ? (
+                          residentDocumentData.map((doc, index) => {
                             const {
                               id,
                               resident,
@@ -1852,7 +1981,7 @@ const Profile = ({
                                           <a
                                             className="dropdown-item"
                                             onClick={() =>
-                                              handleEditEmployeeDocument(
+                                              handleEditResidentDocument(
                                                 id,
                                                 index
                                               )
@@ -1864,7 +1993,7 @@ const Profile = ({
                                           <a
                                             className="dropdown-item"
                                             onClick={() =>
-                                              handleDeleteEmployeeDocument(id)
+                                              handleDeleteResidentDocument(id)
                                             }
                                           >
                                             <i className="fa fa-trash-o m-r-5" />{" "}
@@ -1922,71 +2051,54 @@ const Profile = ({
         {/* /Document Upload Tab */}
       </div>
 
-      {/* Employee Address */}
-      {showEmployeeAddressModal && (
-        <AddEmployeeAddress
-          id={getEmployeeAddressId}
-          dispatchEmployeeAddress={dispatchEmployeeAddress}
-          employeeAddressIndexToEdit={employeeAddressIndexToEdit}
-          employee={getEmployeeId}
+      {/* Resident Gp */}
+      {showResidentGpModal && (
+        <AddResidentGpModal
+          id={getResidentGpId}
+          dispatchResidentGp={dispatchResidentGp}
+          residentGpIndexToEdit={residentGpIndexToEdit}
+          resident={getResidentId}
         />
       )}
-      {deleteEmployeeAddressModal && (
+      {deleteResidentGpModal && (
         <DeleteModal
-          deleteAction={dispatchEmployeeAddress}
-          iDToDelete={getEmployeeAddressId}
-          modalTitle={"Employee Address"}
+          deleteAction={dispatchResidentGp}
+          iDToDelete={getResidentGpId}
+          modalTitle={"Resident GP"}
         />
       )}
 
-      {/* Employee Emergency Contact */}
-      {showEmployeeEmergencyModal && (
-        <AddEmployeeEmergency
-          id={getEmployeeEmergencyId}
-          dispatchEmployeeEmergency={dispatchEmployeeEmergency}
-          employeeEmergencyIndexToEdit={employeeEmergencyIndexToEdit}
-          employee={getEmployeeId}
+      {/* Resident Solicitor */}
+      {showResidentSolicitorModal && (
+        <AddResidentSolicitorModal
+          id={getResidentSolicitorId}
+          dispatchResidentSolicitor={dispatchResidentSolicitor}
+          residentSolicitorIndexToEdit={residentSolicitorIndexToEdit}
+          resident={getResidentId}
         />
       )}
-      {deleteEmployeeEmergencyModal && (
+      {deleteResidentSolicitorModal && (
         <DeleteModal
-          deleteAction={dispatchEmployeeEmergency}
-          iDToDelete={getEmployeeEmergencyId}
-          modalTitle={"Emergency"}
+          deleteAction={dispatchResidentSolicitor}
+          iDToDelete={getResidentSolicitorId}
+          modalTitle={"Resident Solicitor"}
         />
       )}
 
-      {/* Employee Experience */}
-      {showEmployeeExperienceModal && (
-        <AddEmployeeExperience
-          id={getEmployeeExperienceId}
-          dispatchEmployeeExperience={dispatchEmployeeExperience}
-          employeeExperienceIndexToEdit={employeeExperienceIndexToEdit}
-          employee={getEmployeeId}
+      {/* Resident Document */}
+      {showResidentDocumentModal && (
+        <AddResidentDocumentModal
+          id={getResidentDocumentId}
+          dispatchResidentDocument={dispatchResidentDocument}
+          residentDocumentIndexToEdit={residentDocumentIndexToEdit}
+          resident={getResidentId}
         />
       )}
-      {deleteEmployeeExperienceModal && (
+      {deleteResidentDocumentModal && (
         <DeleteModal
-          deleteAction={dispatchEmployeeExperience}
-          iDToDelete={getEmployeeExperienceId}
-          modalTitle={"Experience"}
-        />
-      )}
-
-      {/* Employee Document */}
-      {showEmployeeDocumentModal && (
-        <AddEmployeeDocument
-          id={getEmployeeDocumentId}
-          dispatchEmployeeDocument={dispatchEmployeeDocument}
-          employeeDocumentIndexToEdit={employeeDocumentIndexToEdit}
-          employee={getEmployeeId}
-        />
-      )}
-      {deleteEmployeeDocumentModal && (
-        <DeleteModal
-          deleteAction={dispatchEmployeeDocument}
-          iDToDelete={getEmployeeDocumentId}
-          modalTitle={"Document"}
+          deleteAction={dispatchResidentDocument}
+          iDToDelete={getResidentDocumentId}
+          modalTitle={"Resident Document"}
         />
       )}
     </>
