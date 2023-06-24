@@ -670,6 +670,50 @@ export const useResidentGpFetching = () => {
   return { residentGpData, isResidentGpLoading, residentGpError };
 };
 
+// Get gptype data
+export const useGpTypeFetching = () => {
+  const fetchGpTypeData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/gptype/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: gpTypeData,
+    isLoading: isGpTypeLoading,
+    error: gpTypeError,
+  } = useQuery("gpTypeData", fetchGpTypeData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on gpTypeData
+      queryClient.invalidateQueries(["gpTypeData"]);
+    },
+  });
+
+  return { gpTypeData, isGpTypeLoading, gpTypeError };
+};
+
+// Get resident solicitor data
+export const useResidentSolicitorFetching = () => {
+  const fetchResidentSolicitorData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/solicitor/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentSolicitorData,
+    isLoading: isResidentSolicitorLoading,
+    error: residentSolicitorError,
+  } = useQuery("residentSolicitorData", fetchResidentSolicitorData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on residentSolicitorData
+      queryClient.invalidateQueries(["residentSolicitorData"]);
+    },
+  });
+
+  return { residentSolicitorData, isResidentSolicitorLoading, residentSolicitorError };
+};
+
 // Get resident social worker data
 export const useResidentSocialWorkerFetching = () => {
   const fetchResidentSocialWorkerData = async () => {
@@ -693,6 +737,32 @@ export const useResidentSocialWorkerFetching = () => {
     residentSocialWorkerData,
     isResidentSocialWorkerLoading,
     residentSocialWorkerError,
+  };
+};
+
+// Get Resident Documents data
+export const useResidentDocumentFetching = () => {
+  const fetchResidentDocumentData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/document/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentDocumentData,
+    isLoading: isResidentDocumentLoading,
+    error: residentDocumentError,
+  } = useQuery("residentDocumentData", fetchResidentDocumentData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on residentDocumentData
+      queryClient.invalidateQueries(["residentDocumentData"]);
+    },
+  });
+
+  return {
+    residentDocumentData,
+    isResidentDocumentLoading,
+    residentDocumentError,
   };
 };
 

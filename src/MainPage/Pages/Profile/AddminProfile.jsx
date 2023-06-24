@@ -11,10 +11,6 @@ import {
   Avatar_16,
 } from "../../../Entryfile/imagepath";
 import { useParams, useLocation } from "react-router-dom";
-import AddProfileInfo from "./components/AddProfileInfo";
-import AddPersonalInfo from "../../../_components/modelbox/AddPersonalInfo";
-import AddExpModal from "../../../_components/modelbox/AddExpModal";
-import AddFamilyMemberModal from "../../../_components/modelbox/AddFamilyMemberModal";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import {
   initProfileInfo,
@@ -28,8 +24,6 @@ import {
   initFamilyMemberInfo,
   savedFamilyMemberReducer,
 } from "../../../utils/localStorage";
-import AddEmergencyContact from "../../../_components/modelbox/AddEmergencyContact";
-import AddEducationInformation from "../../../_components/modelbox/AddEducationInformation";
 
 const EmployeeProfile = () => {
   const location = useLocation();

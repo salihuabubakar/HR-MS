@@ -147,8 +147,29 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   // Resident Account
   selectedResidentAccount: [],
 
-  // Sever Error Response Text
-  collectServerResponseTextError: [],
+  // Resident gp
+  showResidentGpModal: false,
+  selectedResidentGp: [],
+  deleteResidentGpModal: false,
+
+  // Resident solicitor
+  showResidentSolicitorModal: false,
+  selectedResidentSolicitor: [],
+  deleteResidentSolicitorModal: false,
+
+  // Resident Document
+  deleteResidentDocumentModal: false,
+  showResidentDocumentModal: false,
+  selectedResidentDocument: [],
+
+  // Sever Resident Error Response Text
+  gpError: [],
+  solicitorError: [],
+  residentdocumentError: [],
+  // bankError: [],
+  // statusError: [],
+  // employeeAddressError: [],
+  // employeeEmergencyError: [],
 });
 
 export {setGlobalState, useGlobalState}

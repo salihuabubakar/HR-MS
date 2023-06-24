@@ -5,6 +5,7 @@ import {
   PopupOverlay,
   PopupContainer,
 } from "./Addemployee.style";
+import { toast } from "react-toastify";
 
 const DeleteModal = ({
   deleteAction,
@@ -18,6 +19,7 @@ const DeleteModal = ({
         id: iDToDelete,
       },
     });
+    toast(`${modalTitle} deleted`, { autoClose: 1500 });
 
     setGlobalState("deleteModal", false);
     setGlobalState("showAddSchedul", false);
@@ -44,6 +46,9 @@ const DeleteModal = ({
     setGlobalState("deleteNoticeModal", false);
     setGlobalState("deleteItemModal", false);
     setGlobalState("deleteInspectionModal", false);
+    setGlobalState("deleteResidentGpModal", false);
+    setGlobalState("deleteResidentSolicitorModal", false);
+    setGlobalState("deleteResidentDocumentModal", false);
   };
 
   const handleModalClose = () => {
@@ -72,6 +77,9 @@ const DeleteModal = ({
     setGlobalState("deleteNoticeModal", false);
     setGlobalState("deleteItemModal", false);
     setGlobalState("deleteInspectionModal", false);
+    setGlobalState("deleteResidentGpModal", false);
+    setGlobalState("deleteResidentSolicitorModal", false);
+    setGlobalState("deleteResidentDocumentModal", false);
   };
 
   return (
