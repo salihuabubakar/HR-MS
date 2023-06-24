@@ -162,10 +162,22 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showResidentDocumentModal: false,
   selectedResidentDocument: [],
 
+  // Resident School
+  deleteResidentSchoolModal: false,
+  showResidentSchoolModal: false,
+  selectedResidentSchool: [],
+
+  // Resident Education
+  deleteResidentEducationModal: false,
+  showResidentEducationModal: false,
+  selectedResidentEducation: [],
+
   // Sever Resident Error Response Text
   gpError: [],
   solicitorError: [],
   residentdocumentError: [],
+  schoolError: [],
+  educationError: [],
   // bankError: [],
   // statusError: [],
   // employeeAddressError: [],

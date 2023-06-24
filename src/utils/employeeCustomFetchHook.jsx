@@ -648,6 +648,29 @@ export const useResidentSchoolFetching = () => {
   return { residentSchoolData, isResidentSchoolLoading, residentSchoolError };
 };
 
+// Get resident education data
+export const useResidentEducationFetching = () => {
+  const fetchResidentEducationData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/education/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentEducationData,
+    isLoading: isResidentEducationLoading,
+    error: residentEducationError,
+  } = useQuery("residentEducationData", fetchResidentEducationData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on residentEducationData
+      queryClient.invalidateQueries(["residentEducationData"]);
+    },
+  });
+
+  return { residentEducationData, isResidentEducationLoading, residentEducationError };
+};
+
+
 // Get resident gp data
 export const useResidentGpFetching = () => {
   const fetchResidentGpData = async () => {

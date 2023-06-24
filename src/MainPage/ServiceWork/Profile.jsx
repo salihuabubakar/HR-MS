@@ -4,6 +4,7 @@ import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import {
   useResidentSchoolFetching,
+  useResidentEducationFetching,
   useResidentGpFetching,
   useResidentSolicitorFetching,
   useResidentSocialWorkerFetching,
@@ -14,9 +15,13 @@ import {
   add_update_delete_resident_gp,
   add_update_delete_resident_solicitor,
   add_update_delete_resident_document,
+  add_update_delete_resident_school,
+  add_update_delete_resident_education
 } from "../../utils/sendToServer";
 import AddResidentGpModal from "../../_components/modelbox/AddResidentGpModal";
 import AddResidentSolicitorModal from "../../_components/modelbox/AddResidentSolicitorModal";
+import AddResidentSchoolModal from "../../_components/modelbox/AddResidentSchoolModal";
+import AddResidentEducationModal from "../../_components/modelbox/AddResidentEducationModal";
 import AddResidentDocumentModal from "../../_components/modelbox/AddResidentDocumentModal";
 import { Wrapper } from "./style";
 import "../Employees/Employees/style.css";
@@ -30,11 +35,14 @@ const Profile = ({
   const [gpError] = useGlobalState("gpError");
   const [solicitorError] = useGlobalState("solicitorError");
   const [residentdocumentError] = useGlobalState("residentdocumentError");
+  const [schoolError] = useGlobalState("schoolError");
+  const [educationError] = useGlobalState("educationError");
   const clearErrorMessage = () => {
-    console.log("cliked");
     setGlobalState("gpError", "");
     setGlobalState("solicitorError", "");
     setGlobalState("residentdocumentError", "");
+    setGlobalState("schoolError", "");
+    setGlobalState("educationError");
   };
   const handleFileDownload = (file) => {
     const a = document.createElement("a");
@@ -179,6 +187,80 @@ useEffect(() => {
   }
 }, [showResidentDocumentModal]);
 
+// School
+const [residentSchoolState, dispatchResidentSchool] = useReducer(
+  add_update_delete_resident_school,
+  []
+);
+const {
+  residentSchoolData,
+  isResidentSchoolDataLoading,
+  residentSchoolError,
+} = useResidentSchoolFetching();
+const [getResidentSchoolId, setGetResidentSchoolId] = useState();
+const [residentSchoolIndexToEdit, setResidentSchoolIndexToEdit] =
+  useState();
+const [showResidentSchoolModal] = useGlobalState("showResidentSchoolModal");
+const [deleteResidentSchoolModal] = useGlobalState(
+  "deleteResidentSchoolModal"
+);
+
+const handleEditResidentSchool = (id, index) => {
+  setGetResidentSchoolId(id);
+  setResidentSchoolIndexToEdit(index);
+  setGlobalState("selectedResidentSchool", residentSchoolData);
+  setGlobalState("showResidentSchoolModal", true);
+};
+
+const handleDeleteResidentSchool = (id) => {
+  setGetResidentSchoolId(id);
+  setGlobalState("deleteResidentSchoolModal", true);
+};
+
+useEffect(() => {
+  if (!showResidentSchoolModal) {
+    setGlobalState("selectedResidentSchool", "");
+  }
+}, [showResidentSchoolModal]);
+
+// Education
+const [residentEducationState, dispatchResidentEducation] = useReducer(
+  add_update_delete_resident_education,
+  []
+);
+const {
+  residentEducationData,
+  isResidentEducationDataLoading,
+  residentEducationError,
+} = useResidentEducationFetching();
+const [getResidentEducationId, setGetResidentEducationId] = useState();
+const [residentEducationIndexToEdit, setResidentEducationIndexToEdit] =
+  useState();
+const [showResidentEducationModal] = useGlobalState("showResidentEducationModal");
+const [deleteResidentEducationModal] = useGlobalState(
+  "deleteResidentEducationModal"
+);
+
+const handleEditResidentEducation = (id, index) => {
+  setGetResidentEducationId(id);
+  setResidentEducationIndexToEdit(index);
+  setGlobalState("selectedResidentEducation", residentEducationData);
+  setGlobalState("showResidentEducationModal", true);
+};
+
+const handleDeleteResidentEducation = (id) => {
+  setGetResidentEducationId(id);
+  setGlobalState("deleteResidentEducationModal", true);
+};
+
+useEffect(() => {
+  if (!showResidentEducationModal) {
+    setGlobalState("selectedResidentEducation", "");
+  }
+}, [showResidentEducationModal]);
+
+
+
 
   const selectedResidentId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
@@ -216,7 +298,6 @@ useEffect(() => {
   const resident_school_report = getSelectedData?.resident_school_report;
   const resident_document = getSelectedData?.resident_document;
 
-  const { residentSchoolData } = useResidentSchoolFetching();
   const { residentSocialWorkerData } = useResidentSocialWorkerFetching();
   const { gpTypeData } = useGpTypeFetching();
 
@@ -1002,12 +1083,28 @@ useEffect(() => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Resident Education{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {educationError?.length > 0 && (
+                            <>
+                              Error: {educationError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           onClick={() =>
-                            setGlobalState(
-                              "showEmployeeQualificationModal",
-                              true
-                            )
+                            setGlobalState("showResidentEducationModal", true)
                           }
                           className="edit-icon"
                         >
@@ -1016,7 +1113,7 @@ useEffect(() => {
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          {resident_education?.map((edu, index) => {
+                          {residentEducationData?.map((edu, index) => {
                             const {
                               id,
                               resident,
@@ -1024,7 +1121,6 @@ useEffect(() => {
                               institute_name,
                               start_date,
                               end_date,
-                              qualification_upload,
                             } = edu;
                             if (resident == selectedResidentId) {
                               return (
@@ -1044,17 +1140,6 @@ useEffect(() => {
                                           }}
                                         >
                                           <div className="dropdown dropdown-action text-end">
-                                            {/* <a
-                                              className="dropdown-item"
-                                              onClick={() =>
-                                                handleFileDownload(
-                                                  qualification_upload
-                                                )
-                                              }
-                                            >
-                                              <i className="fa fa-download m-r-5" />{" "}
-                                              Download
-                                            </a> */}
                                             <a
                                               className="action-icon dropdown-toggle"
                                               data-bs-toggle="dropdown"
@@ -1068,7 +1153,7 @@ useEffect(() => {
                                               <a
                                                 className="dropdown-item"
                                                 onClick={() =>
-                                                  handleEditEmployeeQualification(
+                                                  handleEditResidentEducation(
                                                     id,
                                                     index
                                                   )
@@ -1080,7 +1165,7 @@ useEffect(() => {
                                               <a
                                                 className="dropdown-item"
                                                 onClick={() =>
-                                                  handleDeleteEmployeeQualification(
+                                                  handleDeleteResidentEducation(
                                                     id
                                                   )
                                                 }
@@ -1099,20 +1184,6 @@ useEffect(() => {
                                         Start Date: {start_date} - End Date:{" "}
                                         {end_date}
                                       </div>
-                                      {/* <div>
-                                        {qualification_upload &&
-                                        regex.test(qualification_upload) ? (
-                                          <img
-                                            className="img-preview"
-                                            src={qualification_upload}
-                                            alt="Preview"
-                                          />
-                                        ) : !qualification_upload ? null : (
-                                          <span className="files-icon">
-                                            <i className="fa fa-file-pdf-o" />
-                                          </span>
-                                        )}
-                                      </div> */}
                                     </div>
                                   </div>
                                 </li>
@@ -1130,10 +1201,29 @@ useEffect(() => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Resident School{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {schoolError?.length > 0 && (
+                            <>
+                              Error: {schoolError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
-                          // onClick={() =>
-                          //   setGlobalState("showEmployeeExperienceModal", true)
-                          // }
+                          onClick={() =>
+                            setGlobalState("showResidentSchoolModal", true)
+                          }
                           className="edit-icon"
                         >
                           <i className="fa fa-plus" />
@@ -1159,7 +1249,7 @@ useEffect(() => {
                                   <div className="experience-content">
                                     <div className="timeline-content">
                                       <a className="name">
-                                        School: {school}
+                                        School: <span>{school}</span>
                                         <span
                                           className="edit-icon"
                                           style={{
@@ -1180,23 +1270,21 @@ useEffect(() => {
                                             <div className="dropdown-menu dropdown-menu-right">
                                               <a
                                                 className="dropdown-item"
-                                                // onClick={() =>
-                                                //   handleEditEmployeeExperience(
-                                                //     id,
-                                                //     index
-                                                //   )
-                                                // }
+                                                onClick={() =>
+                                                  handleEditResidentSchool(
+                                                    id,
+                                                    index
+                                                  )
+                                                }
                                               >
                                                 <i className="fa fa-pencil m-r-5" />{" "}
                                                 Edit
                                               </a>
                                               <a
                                                 className="dropdown-item"
-                                                // onClick={() =>
-                                                //   handleDeleteEmployeeExperience(
-                                                //     id
-                                                //   )
-                                                // }
+                                                onClick={() =>
+                                                  handleDeleteResidentSchool(id)
+                                                }
                                               >
                                                 <i className="fa fa-trash-o m-r-5" />{" "}
                                                 Delete
@@ -2082,6 +2170,40 @@ useEffect(() => {
           deleteAction={dispatchResidentSolicitor}
           iDToDelete={getResidentSolicitorId}
           modalTitle={"Resident Solicitor"}
+        />
+      )}
+
+      {/* Resident School */}
+      {showResidentSchoolModal && (
+        <AddResidentSchoolModal
+          id={getResidentSchoolId}
+          dispatchResidentSchool={dispatchResidentSchool}
+          residentSchoolIndexToEdit={residentSchoolIndexToEdit}
+          resident={getResidentId}
+        />
+      )}
+      {deleteResidentSchoolModal && (
+        <DeleteModal
+          deleteAction={dispatchResidentSchool}
+          iDToDelete={getResidentSchoolId}
+          modalTitle={"Resident School"}
+        />
+      )}
+
+      {/* Resident Education */}
+      {showResidentEducationModal && (
+        <AddResidentEducationModal
+          id={getResidentEducationId}
+          dispatchResidentEducation={dispatchResidentEducation}
+          residentEducationIndexToEdit={residentEducationIndexToEdit}
+          resident={getResidentId}
+        />
+      )}
+      {deleteResidentEducationModal && (
+        <DeleteModal
+          deleteAction={dispatchResidentEducation}
+          iDToDelete={getResidentEducationId}
+          modalTitle={"Resident Education"}
         />
       )}
 
