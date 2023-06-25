@@ -368,7 +368,7 @@ const Addemployee = ({
                             onChange={handleMaritalStatusChange}
                             className="form-control floating"
                           >
-                            <option value="">Select</option>
+                            <option disabled value="">Select</option>
                             <option value="Single">Single</option>
                             <option value="Married">Married</option>
                             <option value="Widowed">Widowed</option>
@@ -525,7 +525,7 @@ const Addemployee = ({
                             // onChange={appLetterOnChange}
                             className="form-control floating"
                           >
-                            <option value="">Select</option>
+                            <option disabled value="">Select</option>
                             <option value="Finance">Finance</option>
                             <option value="Sales">Sales</option>
                             <option value="Office">Office</option>

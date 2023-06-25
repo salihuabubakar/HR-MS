@@ -737,29 +737,55 @@ export const useResidentSolicitorFetching = () => {
   return { residentSolicitorData, isResidentSolicitorLoading, residentSolicitorError };
 };
 
-// Get resident social worker data
-export const useResidentSocialWorkerFetching = () => {
-  const fetchResidentSocialWorkerData = async () => {
+// Get social worker data
+export const useSocialWorkerFetching = () => {
+  const fetchSocialWorkerData = async () => {
     const response = await axios.get(`${BaseUrl}/resident/socialworker/`);
     return response.data;
   };
   const queryClient = useQueryClient();
 
   const {
-    data: residentSocialWorkerData,
-    isLoading: isResidentSocialWorkerLoading,
-    error: residentSocialWorkerError,
-  } = useQuery("residentSocialWorkerData", fetchResidentSocialWorkerData, {
+    data: socialWorkerData,
+    isLoading: socialWorkerLoading,
+    error: socialWorkerError,
+  } = useQuery("socialWorkerData", fetchSocialWorkerData, {
     onSuccess: () => {
-      // Invalidate queries that depend on residentSocialWorkerData
-      queryClient.invalidateQueries(["residentSocialWorkerData"]);
+      // Invalidate queries that depend on SocialWorkerData
+      queryClient.invalidateQueries(["socialWorkerData"]);
     },
   });
 
   return {
-    residentSocialWorkerData,
-    isResidentSocialWorkerLoading,
-    residentSocialWorkerError,
+    socialWorkerData,
+    socialWorkerLoading,
+    socialWorkerError,
+  };
+};
+
+// Get resident social worker data
+export const useRSocialWorkerFetching = () => {
+  const fetchRSocialWorkerData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/rsocialworker/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: rSocialWorkerData,
+    isLoading: rSocialWorkerLoading,
+    error: rSocialWorkerError,
+  } = useQuery("rSocialWorkerData", fetchRSocialWorkerData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on ResidentSocialWorkerData
+      queryClient.invalidateQueries(["rSocialWorkerData"]);
+    },
+  });
+
+  return {
+    rSocialWorkerData,
+    rSocialWorkerLoading,
+    rSocialWorkerError,
   };
 };
 
@@ -788,6 +814,181 @@ export const useResidentDocumentFetching = () => {
     residentDocumentError,
   };
 };
+
+// Get resident school Report data
+export const useResidentSchoolReportFetching = () => {
+  const fetchResidentSchoolData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/report/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentSchoolReportData,
+    isLoading: isResidentSchoolReportLoading,
+    error: residentSchoolReportError,
+  } = useQuery("residentSchoolReportData", fetchResidentSchoolData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on residentSchoolReportData
+      queryClient.invalidateQueries(["residentSchoolReportData"]);
+    },
+  });
+
+  return { residentSchoolReportData, isResidentSchoolReportLoading, residentSchoolReportError };
+};
+
+// Get resident school Timetable data
+export const useResidentSchoolTimetableFetching = () => {
+  const fetchResidentSchoolTimetableData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/timetable/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentSchoolTimetableData,
+    isLoading: isResidentSchoolTimetableLoading,
+    error: residentSchoolTimetableError,
+  } = useQuery(
+    "residentSchoolTimetableData",
+    fetchResidentSchoolTimetableData,
+    {
+      onSuccess: () => {
+        // Invalidate queries that depend on residentSchoolTimetableData
+        queryClient.invalidateQueries(["residentSchoolTimetableData"]);
+      },
+    }
+  );
+
+  return {
+    residentSchoolTimetableData,
+    isResidentSchoolTimetableLoading,
+    residentSchoolTimetableError,
+  };
+};
+
+// Get resident medical condition data
+export const useResidentMedicalConditionFetching = () => {
+  const fetchResidentMedicalConditionData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/medicalcondition/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentMedicalConditionData,
+    isLoading: isResidentMedicalConditionLoading,
+    error: residentMedicalConditionError,
+  } = useQuery(
+    "residentMedicalConditionData",
+    fetchResidentMedicalConditionData,
+    {
+      onSuccess: () => {
+        // Invalidate queries that depend on residentMedicalConditionData
+        queryClient.invalidateQueries(["residentMedicalConditionData"]);
+      },
+    }
+  );
+
+  return {
+    residentMedicalConditionData,
+    isResidentMedicalConditionLoading,
+    residentMedicalConditionError,
+  };
+};
+
+// Get resident medication data
+export const useResidentMedicationFetching = () => {
+  const fetchResidentMedicationData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/medication/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentMedicationData,
+    isLoading: isResidentMedicationLoading,
+    error: residentMedicationError,
+  } = useQuery(
+    "residentMedicationData",
+    fetchResidentMedicationData,
+    {
+      onSuccess: () => {
+        // Invalidate queries that depend on residentMedicationData
+        queryClient.invalidateQueries(["residentMedicationData"]);
+      },
+    }
+  );
+
+  return {
+    residentMedicationData,
+    isResidentMedicationLoading,
+    residentMedicationError,
+  };
+};
+
+// Get resident appointment data
+export const useResidentAppointmentFetching = () => {
+  const fetchResidentAppointmentData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/appointment/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentAppointmentData,
+    isLoading: isResidentAppointmentLoading,
+    error: residentAppointmentError,
+  } = useQuery(
+    "residentAppointmentData",
+    fetchResidentAppointmentData,
+    {
+      onSuccess: () => {
+        // Invalidate queries that depend on residentAppointmentData
+        queryClient.invalidateQueries(["residentAppointmentData"]);
+      },
+    }
+  );
+
+  return {
+    residentAppointmentData,
+    isResidentAppointmentLoading,
+    residentAppointmentError,
+  };
+};
+
+// Get resident referral data
+export const useResidentReferralFetching = () => {
+  const fetchResidentReferralData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/referral/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentReferralData,
+    isLoading: isResidentReferralLoading,
+    error: residentReferralError,
+  } = useQuery(
+    "residentReferralData",
+    fetchResidentReferralData,
+    {
+      onSuccess: () => {
+        // Invalidate queries that depend on residentReferralData
+        queryClient.invalidateQueries(["residentReferralData"]);
+      },
+    }
+  );
+
+  return {
+    residentReferralData,
+    isResidentReferralLoading,
+    residentReferralError,
+  };
+};
+
+
+
 
 
 

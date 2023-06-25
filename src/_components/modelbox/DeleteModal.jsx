@@ -51,6 +51,13 @@ const DeleteModal = ({
     setGlobalState("deleteResidentDocumentModal", false);
     setGlobalState("deleteResidentSchoolModal", false);
     setGlobalState("deleteResidentEducationModal", false);
+    setGlobalState("deleteResidentSchoolReportModal", false);
+    setGlobalState("deleteResidentSchoolTimetableModal", false);
+    setGlobalState("deleteResidentMedicalConditionModal", false);
+    setGlobalState("deleteResidentMedicationModal", false);
+    setGlobalState("deleteResidentAppointmentModal", false);
+    setGlobalState("deleteResidentSocialWorkerModal", false);
+    setGlobalState("deleteResidentReferralModal", false);
   };
 
   const handleModalClose = () => {
@@ -84,6 +91,13 @@ const DeleteModal = ({
     setGlobalState("deleteResidentDocumentModal", false);
     setGlobalState("deleteResidentSchoolModal", false);
     setGlobalState("deleteResidentEducationModal", false);
+    setGlobalState("deleteResidentSchoolReportModal", false);
+    setGlobalState("deleteResidentSchoolTimetableModal", false);
+    setGlobalState("deleteResidentMedicalConditionModal", false);
+    setGlobalState("deleteResidentMedicationModal", false);
+    setGlobalState("deleteResidentAppointmentModal", false);
+    setGlobalState("deleteResidentSocialWorkerModal", false);
+    setGlobalState("deleteResidentReferralModal", false);
   };
 
   return (
