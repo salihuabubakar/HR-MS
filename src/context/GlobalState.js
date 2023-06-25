@@ -230,6 +230,12 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showSocialWorkerModal: false,
   selectedSocialWorker: [],
   socialWorkerError: [],
+
+  // Resident Visitor
+  deleteResidentVisitorModal: false,
+  showResidentVisitorModal: false,
+  selectedResidentVisitor: [],
+  residentVisitorError: [],
 });
 
 export {setGlobalState, useGlobalState}

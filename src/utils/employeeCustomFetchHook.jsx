@@ -1017,6 +1017,33 @@ export const useResidentBoroughFetching = () => {
   };
 };
 
+// Get resident visitor data
+export const useResidentVisitorFetching = () => {
+  const fetchResidentVisitorData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/visitor/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentVisitorData,
+    isLoading: residentVisitorLoading,
+    error: residentVisitorError,
+  } = useQuery("residentVisitorData", fetchResidentVisitorData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on ResidentVisitorData
+      queryClient.invalidateQueries(["residentVisitorData"]);
+    },
+  });
+
+  return {
+    residentVisitorData,
+    residentVisitorLoading,
+    residentVisitorError,
+  };
+};
+
+
 
 
 
