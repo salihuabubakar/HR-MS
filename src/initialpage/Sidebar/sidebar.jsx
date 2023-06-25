@@ -322,6 +322,56 @@ const toggleLevelThree = (value) => {
                           All Residents
                         </Link>
                       </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("request") ? "active" : ""
+                          }
+                          to="/app/servicework/request"
+                        >
+                          Request
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("visitor") ? "active" : ""
+                          }
+                          to="/app/servicework/visitor"
+                        >
+                          Visitor
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("complaint") ? "active" : ""
+                          }
+                          to="/app/servicework/complaint"
+                        >
+                          Complaint
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("social-worker") ? "active" : ""
+                          }
+                          to="/app/servicework/social-worker"
+                        >
+                          Social Worker
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("borough") ? "active" : ""
+                          }
+                          to="/app/servicework/borough"
+                        >
+                          Borough
+                        </Link>
+                      </li>
                     </ul>
                   ) : (
                     ""

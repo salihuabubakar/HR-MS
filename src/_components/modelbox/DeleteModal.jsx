@@ -58,6 +58,8 @@ const DeleteModal = ({
     setGlobalState("deleteResidentAppointmentModal", false);
     setGlobalState("deleteResidentSocialWorkerModal", false);
     setGlobalState("deleteResidentReferralModal", false);
+    setGlobalState("deleteBoroughModal", false);
+    setGlobalState("deleteSocialWorkerModal", false);
   };
 
   const handleModalClose = () => {
@@ -98,6 +100,8 @@ const DeleteModal = ({
     setGlobalState("deleteResidentAppointmentModal", false);
     setGlobalState("deleteResidentSocialWorkerModal", false);
     setGlobalState("deleteResidentReferralModal", false);
+    setGlobalState("deleteBoroughModal", false);
+    setGlobalState("deleteSocialWorkerModal", false);
   };
 
   return (
