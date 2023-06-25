@@ -7,22 +7,43 @@ import {
   useResidentEducationFetching,
   useResidentGpFetching,
   useResidentSolicitorFetching,
-  useResidentSocialWorkerFetching,
+  useSocialWorkerFetching,
+  useRSocialWorkerFetching,
   useGpTypeFetching,
-  useResidentDocumentFetching
+  useResidentDocumentFetching,
+  useResidentSchoolReportFetching,
+  useResidentSchoolTimetableFetching,
+  useResidentMedicalConditionFetching,
+  useResidentMedicationFetching,
+  useResidentAppointmentFetching,
+  useResidentReferralFetching
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_resident_gp,
   add_update_delete_resident_solicitor,
   add_update_delete_resident_document,
   add_update_delete_resident_school,
-  add_update_delete_resident_education
+  add_update_delete_resident_education,
+  add_update_delete_resident_school_report,
+  add_update_delete_resident_school_timetable,
+  add_update_delete_resident_medical_condition,
+  add_update_delete_resident_medication,
+  add_update_delete_resident_appointment,
+  add_update_delete_resident_social_worker,
+  add_update_delete_resident_referral
 } from "../../utils/sendToServer";
 import AddResidentGpModal from "../../_components/modelbox/AddResidentGpModal";
 import AddResidentSolicitorModal from "../../_components/modelbox/AddResidentSolicitorModal";
 import AddResidentSchoolModal from "../../_components/modelbox/AddResidentSchoolModal";
 import AddResidentEducationModal from "../../_components/modelbox/AddResidentEducationModal";
+import AddResidentSchoolReportModal from "../../_components/modelbox/AddResidentSchoolReportModal";
+import AddResidentSchoolTimetableModal from "../../_components/modelbox/AddResidentSchoolTimetableModal";
 import AddResidentDocumentModal from "../../_components/modelbox/AddResidentDocumentModal";
+import AddResidentMedicalConditionModal from "../../_components/modelbox/AddResidentMedicalConditionModal";
+import AddResidentMedicationModal from "../../_components/modelbox/AddResidentMedicationModal";
+import AddResidentAppointmentModal from "../../_components/modelbox/AddResidentAppointmentModal";
+import AddResidentSocialWorkerModal from "../../_components/modelbox/AddResidentSocialWorkerModal";
+import AddResidentReferralModal from "../../_components/modelbox/AddResidentReferralModal";
 import { Wrapper } from "./style";
 import "../Employees/Employees/style.css";
 
@@ -37,12 +58,26 @@ const Profile = ({
   const [residentdocumentError] = useGlobalState("residentdocumentError");
   const [schoolError] = useGlobalState("schoolError");
   const [educationError] = useGlobalState("educationError");
+  const [schoolReportError] = useGlobalState("schoolReportError");
+  const [schoolTimetableError] = useGlobalState("schoolTimetableError");
+  const [medicalConditionError] = useGlobalState("medicalConditionError");
+  const [medicationError] = useGlobalState("medicationError");
+  const [appointmentError] = useGlobalState("appointmentError");
+  const [rSocialWorkerError] = useGlobalState("rSocialWorkerError");
+  const [referralError] = useGlobalState("referralError");
   const clearErrorMessage = () => {
     setGlobalState("gpError", "");
     setGlobalState("solicitorError", "");
     setGlobalState("residentdocumentError", "");
     setGlobalState("schoolError", "");
-    setGlobalState("educationError");
+    setGlobalState("educationError", "");
+    setGlobalState("schoolReportError", "");
+    setGlobalState("schoolTimetableError", "");
+    setGlobalState("medicalConditionError", "");
+    setGlobalState("medicationError", "");
+    setGlobalState("appointmentError", "");
+    setGlobalState("rSocialWorkerError", "");
+    setGlobalState("referralError", "");
   };
   const handleFileDownload = (file) => {
     const a = document.createElement("a");
@@ -259,7 +294,254 @@ useEffect(() => {
   }
 }, [showResidentEducationModal]);
 
+// School Report
+const [residentSchoolReportState, dispatchResidentSchoolReport] = useReducer(
+  add_update_delete_resident_school_report,
+  []
+);
+const {
+  residentSchoolReportData,
+  isResidentSchoolReportDataLoading,
+  residentSchoolReportError,
+} = useResidentSchoolReportFetching();
+const [getResidentSchoolReportId, setGetResidentSchoolReportId] = useState();
+const [residentSchoolReportIndexToEdit, setResidentSchoolReportIndexToEdit] =
+  useState();
+const [showResidentSchoolReportModal] = useGlobalState("showResidentSchoolReportModal");
+const [deleteResidentSchoolReportModal] = useGlobalState(
+  "deleteResidentSchoolReportModal"
+);
 
+const handleEditResidentSchoolReport = (id, index) => {
+  setGetResidentSchoolReportId(id);
+  setResidentSchoolReportIndexToEdit(index);
+  setGlobalState("selectedResidentSchoolReport", residentSchoolReportData);
+  setGlobalState("showResidentSchoolReportModal", true);
+};
+
+const handleDeleteResidentSchoolReport = (id) => {
+  setGetResidentSchoolReportId(id);
+  setGlobalState("deleteResidentSchoolReportModal", true);
+};
+
+useEffect(() => {
+  if (!showResidentSchoolReportModal) {
+    setGlobalState("selectedResidentSchoolReport", "");
+  }
+}, [showResidentSchoolReportModal]);
+
+// School Timetable
+const [residentSchoolTimetableState, dispatchResidentSchoolTimetable] = useReducer(
+  add_update_delete_resident_school_timetable,
+  []
+);
+const {
+  residentSchoolTimetableData,
+  isResidentSchoolTimetableDataLoading,
+  residentSchoolTimetableError,
+} = useResidentSchoolTimetableFetching();
+const [getResidentSchoolTimetableId, setGetResidentSchoolTimetableId] = useState();
+const [residentSchoolTimetableIndexToEdit, setResidentSchoolTimetableIndexToEdit] =
+  useState();
+const [showResidentSchoolTimetableModal] = useGlobalState("showResidentSchoolTimetableModal");
+const [deleteResidentSchoolTimetableModal] = useGlobalState(
+  "deleteResidentSchoolTimetableModal"
+);
+
+const handleEditResidentSchoolTimetable = (id, index) => {
+  setGetResidentSchoolTimetableId(id);
+  setResidentSchoolTimetableIndexToEdit(index);
+  setGlobalState("selectedResidentSchoolTimetable", residentSchoolTimetableData);
+  setGlobalState("showResidentSchoolTimetableModal", true);
+};
+
+const handleDeleteResidentSchoolTimetable = (id) => {
+  setGetResidentSchoolTimetableId(id);
+  setGlobalState("deleteResidentSchoolTimetableModal", true);
+};
+
+useEffect(() => {
+  if (!showResidentSchoolTimetableModal) {
+    setGlobalState("selectedResidentSchoolTimetable", "");
+  }
+}, [showResidentSchoolTimetableModal]);
+
+// Medical Condition
+const [residentMedicalConditionState, dispatchResidentMedicalCondition] = useReducer(
+  add_update_delete_resident_medical_condition,
+  []
+);
+const {
+  residentMedicalConditionData,
+  isResidentMedicalConditionDataLoading,
+  residentMedicalConditionError,
+} = useResidentMedicalConditionFetching();
+const [getResidentMedicalConditionId, setGetResidentMedicalConditionId] = useState();
+const [residentMedicalConditionIndexToEdit, setResidentMedicalConditionIndexToEdit] =
+  useState();
+const [showResidentMedicalConditionModal] = useGlobalState("showResidentMedicalConditionModal");
+const [deleteResidentMedicalConditionModal] = useGlobalState(
+  "deleteResidentMedicalConditionModal"
+);
+
+const handleEditResidentMedicalCondition = (id, index) => {
+  setGetResidentMedicalConditionId(id);
+  setResidentMedicalConditionIndexToEdit(index);
+  setGlobalState("selectedResidentMedicalCondition", residentMedicalConditionData);
+  setGlobalState("showResidentMedicalConditionModal", true);
+};
+
+const handleDeleteResidentMedicalCondition = (id) => {
+  setGetResidentMedicalConditionId(id);
+  setGlobalState("deleteResidentMedicalConditionModal", true);
+};
+
+useEffect(() => {
+  if (!showResidentMedicalConditionModal) {
+    setGlobalState("selectedResidentMedicalCondition", "");
+  }
+}, [showResidentMedicalConditionModal]);
+
+// Medication
+const [residentMedicationState, dispatchResidentMedication] = useReducer(
+  add_update_delete_resident_medication,
+  []
+);
+const {
+  residentMedicationData,
+  isResidentMedicationDataLoading,
+  residentMedicationError,
+} = useResidentMedicationFetching();
+const [getResidentMedicationId, setGetResidentMedicationId] = useState();
+const [residentMedicationIndexToEdit, setResidentMedicationIndexToEdit] =
+  useState();
+const [showResidentMedicationModal] = useGlobalState("showResidentMedicationModal");
+const [deleteResidentMedicationModal] = useGlobalState(
+  "deleteResidentMedicationModal"
+);
+
+const handleEditResidentMedication = (id, index) => {
+  setGetResidentMedicationId(id);
+  setResidentMedicationIndexToEdit(index);
+  setGlobalState("selectedResidentMedication", residentMedicationData);
+  setGlobalState("showResidentMedicationModal", true);
+};
+
+const handleDeleteResidentMedication = (id) => {
+  setGetResidentMedicationId(id);
+  setGlobalState("deleteResidentMedicationModal", true);
+};
+
+useEffect(() => {
+  if (!showResidentMedicationModal) {
+    setGlobalState("selectedResidentMedication", "");
+  }
+}, [showResidentMedicationModal]);
+
+// Appointment
+const [residentAppointmentState, dispatchResidentAppointment] = useReducer(
+  add_update_delete_resident_appointment,
+  []
+);
+const {
+  residentAppointmentData,
+  isResidentAppointmentDataLoading,
+  residentAppointmentError,
+} = useResidentAppointmentFetching();
+const [getResidentAppointmentId, setGetResidentAppointmentId] = useState();
+const [residentAppointmentIndexToEdit, setResidentAppointmentIndexToEdit] =
+  useState();
+const [showResidentAppointmentModal] = useGlobalState("showResidentAppointmentModal");
+const [deleteResidentAppointmentModal] = useGlobalState(
+  "deleteResidentAppointmentModal"
+);
+
+const handleEditResidentAppointment = (id, index) => {
+  setGetResidentAppointmentId(id);
+  setResidentAppointmentIndexToEdit(index);
+  setGlobalState("selectedResidentAppointment", residentAppointmentData);
+  setGlobalState("showResidentAppointmentModal", true);
+};
+
+const handleDeleteResidentAppointment = (id) => {
+  setGetResidentAppointmentId(id);
+  setGlobalState("deleteResidentAppointmentModal", true);
+};
+
+useEffect(() => {
+  if (!showResidentAppointmentModal) {
+    setGlobalState("selectedResidentAppointment", "");
+  }
+}, [showResidentAppointmentModal]);
+
+// Resident Social Worker
+const [residentSocialWorkerState, dispatchResidentSocialWorker] = useReducer(
+  add_update_delete_resident_social_worker,
+  []
+);
+
+const { rSocialWorkerData } = useRSocialWorkerFetching();
+const [getResidentSocialWorkerId, setGetResidentSocialWorkerId] = useState();
+const [residentSocialWorkerIndexToEdit, setResidentSocialWorkerIndexToEdit] =
+  useState();
+const [showResidentSocialWorkerModal] = useGlobalState("showResidentSocialWorkerModal");
+const [deleteResidentSocialWorkerModal] = useGlobalState(
+  "deleteResidentSocialWorkerModal"
+);
+
+const handleEditResidentSocialWorker = (id, index) => {
+  setGetResidentSocialWorkerId(id);
+  setResidentSocialWorkerIndexToEdit(index);
+  setGlobalState("selectedResidentSocialWorker", rSocialWorkerData);
+  setGlobalState("showResidentSocialWorkerModal", true);
+};
+
+const handleDeleteResidentSocialWorker = (id) => {
+  setGetResidentSocialWorkerId(id);
+  setGlobalState("deleteResidentSocialWorkerModal", true);
+};
+
+useEffect(() => {
+  if (!showResidentSocialWorkerModal) {
+    setGlobalState("selectedResidentSocialWorker", "");
+  }
+}, [showResidentSocialWorkerModal]);
+
+// Referral
+const [residentReferralState, dispatchResidentReferral] = useReducer(
+  add_update_delete_resident_referral,
+  []
+);
+const {
+  residentReferralData,
+  isResidentReferralDataLoading,
+  residentReferralError,
+} = useResidentReferralFetching();
+const [getResidentReferralId, setGetResidentReferralId] = useState();
+const [residentReferralIndexToEdit, setResidentReferralIndexToEdit] =
+  useState();
+const [showResidentReferralModal] = useGlobalState("showResidentReferralModal");
+const [deleteResidentReferralModal] = useGlobalState(
+  "deleteResidentReferralModal"
+);
+
+const handleEditResidentReferral = (id, index) => {
+  setGetResidentReferralId(id);
+  setResidentReferralIndexToEdit(index);
+  setGlobalState("selectedResidentReferral", residentReferralData);
+  setGlobalState("showResidentReferralModal", true);
+};
+
+const handleDeleteResidentReferral = (id) => {
+  setGetResidentReferralId(id);
+  setGlobalState("deleteResidentReferralModal", true);
+};
+
+useEffect(() => {
+  if (!showResidentReferralModal) {
+    setGlobalState("selectedResidentReferral", "");
+  }
+}, [showResidentReferralModal]);
 
 
   const selectedResidentId = getSelectedData?.id;
@@ -298,8 +580,8 @@ useEffect(() => {
   const resident_school_report = getSelectedData?.resident_school_report;
   const resident_document = getSelectedData?.resident_document;
 
-  const { residentSocialWorkerData } = useResidentSocialWorkerFetching();
   const { gpTypeData } = useGpTypeFetching();
+  const { socialWorkerData } = useSocialWorkerFetching();
 
   // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
@@ -471,11 +753,30 @@ useEffect(() => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Social Worker{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {rSocialWorkerError?.length > 0 && (
+                            <>
+                              Error: {rSocialWorkerError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           className="edit-icon"
-                          // onClick={() =>
-                          //   setGlobalState("showEmployeeEmergencyModal", true)
-                          // }
+                          onClick={() =>
+                            setGlobalState("showResidentSocialWorkerModal", true)
+                          }
                         >
                           <i className="fa fa-plus" />
                         </a>
@@ -492,8 +793,8 @@ useEffect(() => {
                             </tr>
                           </thead>
                           <tbody>
-                            {resident_social_worker?.length > 0 ? (
-                              resident_social_worker?.map((worker, index) => {
+                            {rSocialWorkerData?.length > 0 ? (
+                              rSocialWorkerData?.map((worker, index) => {
                                 const {
                                   id,
                                   resident,
@@ -507,7 +808,7 @@ useEffect(() => {
                                   return (
                                     <tr style={{ height: "90px" }} key={id}>
                                       <td>
-                                        {residentSocialWorkerData?.map(
+                                        {socialWorkerData?.map(
                                           (rSw) => {
                                             if (rSw.id === social_worker)
                                               return `${rSw.first_name} ${rSw.middle_name} ${rSw.last_name}`;
@@ -533,23 +834,23 @@ useEffect(() => {
                                         <div className="dropdown-menu dropdown-menu-right">
                                           <a
                                             className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleEditEmployeeEmergency(
-                                            //     id,
-                                            //     index
-                                            //   )
-                                            // }
+                                            onClick={() =>
+                                              handleEditResidentSocialWorker(
+                                                id,
+                                                index
+                                              )
+                                            }
                                           >
                                             <i className="fa fa-pencil m-r-5" />{" "}
                                             Edit
                                           </a>
                                           <a
                                             className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleDeleteEmployeeEmergency(
-                                            //     id
-                                            //   )
-                                            // }
+                                            onClick={() =>
+                                              handleDeleteResidentSocialWorker(
+                                                id
+                                              )
+                                            }
                                           >
                                             <i className="fa fa-trash-o m-r-5" />{" "}
                                             Delete
@@ -579,11 +880,30 @@ useEffect(() => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Resident Referral{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {referralError?.length > 0 && (
+                            <>
+                              Error: {referralError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           className="edit-icon"
-                          // onClick={() =>
-                          //   setGlobalState("showEmployeeAddressModal", true)
-                          // }
+                          onClick={() =>
+                            setGlobalState("showResidentReferralModal", true)
+                          }
                         >
                           <i className="fa fa-plus" />
                         </a>
@@ -599,8 +919,8 @@ useEffect(() => {
                             </tr>
                           </thead>
                           <tbody>
-                            {resident_referral?.length > 0 ? (
-                              resident_referral?.map((address, index) => {
+                            {residentReferralData?.length > 0 ? (
+                              residentReferralData?.map((address, index) => {
                                 const {
                                   id,
                                   resident,
@@ -646,21 +966,21 @@ useEffect(() => {
                                         <div className="dropdown-menu dropdown-menu-right">
                                           <a
                                             className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleEditEmployeeAddress(
-                                            //     id,
-                                            //     index
-                                            //   )
-                                            // }
+                                            onClick={() =>
+                                              handleEditResidentReferral(
+                                                id,
+                                                index
+                                              )
+                                            }
                                           >
                                             <i className="fa fa-pencil m-r-5" />{" "}
                                             Edit
                                           </a>
                                           <a
                                             className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleDeleteEmployeeAddress(id)
-                                            // }
+                                            onClick={() =>
+                                              handleDeleteResidentReferral(id)
+                                            }
                                           >
                                             <i className="fa fa-trash-o m-r-5" />{" "}
                                             Delete
@@ -976,11 +1296,30 @@ useEffect(() => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Resident Appointment{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {appointmentError?.length > 0 && (
+                            <>
+                              Error: {appointmentError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           className="edit-icon"
-                          // onClick={() =>
-                          //   setGlobalState("showEmployeeAddressModal", true)
-                          // }
+                          onClick={() =>
+                            setGlobalState("showResidentAppointmentModal", true)
+                          }
                         >
                           <i className="fa fa-plus" />
                         </a>
@@ -996,8 +1335,8 @@ useEffect(() => {
                             </tr>
                           </thead>
                           <tbody>
-                            {resident_appointment?.length > 0 ? (
-                              resident_appointment?.map((app, index) => {
+                            {residentAppointmentData?.length > 0 ? (
+                              residentAppointmentData?.map((app, index) => {
                                 const {
                                   id,
                                   resident,
@@ -1028,21 +1367,21 @@ useEffect(() => {
                                         <div className="dropdown-menu dropdown-menu-right">
                                           <a
                                             className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleEditEmployeeAddress(
-                                            //     id,
-                                            //     index
-                                            //   )
-                                            // }
+                                            onClick={() =>
+                                              handleEditResidentAppointment(
+                                                id,
+                                                index
+                                              )
+                                            }
                                           >
                                             <i className="fa fa-pencil m-r-5" />{" "}
                                             Edit
                                           </a>
                                           <a
                                             className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleDeleteEmployeeAddress(id)
-                                            // }
+                                            onClick={() =>
+                                              handleDeleteResidentAppointment(id)
+                                            }
                                           >
                                             <i className="fa fa-trash-o m-r-5" />{" "}
                                             Delete
@@ -1328,11 +1667,33 @@ useEffect(() => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Resident School Timetable{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {schoolTimetableError?.length > 0 && (
+                            <>
+                              Error: {schoolTimetableError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           className="edit-icon"
-                          // onClick={() =>
-                          //   setGlobalState("showEmployeeAddressModal", true)
-                          // }
+                          onClick={() =>
+                            setGlobalState(
+                              "showResidentSchoolTimetableModal",
+                              true
+                            )
+                          }
                         >
                           <i className="fa fa-plus" />
                         </a>
@@ -1347,87 +1708,92 @@ useEffect(() => {
                             </tr>
                           </thead>
                           <tbody>
-                            {resident_school_timetable?.length > 0 ? (
-                              resident_school_timetable?.map((time, index) => {
-                                const {
-                                  id,
-                                  resident,
-                                  school,
-                                  year,
-                                  timetable,
-                                } = time;
-                                if (resident == selectedResidentId) {
-                                  return (
-                                    <tr style={{ height: "90px" }} key={id}>
-                                      <td>
-                                        {residentSchoolData?.map((schl) => {
-                                          if (schl.id === school)
-                                            return schl.school;
-                                        })}
-                                      </td>
-                                      <td>{year}</td>
-                                      <td>
-                                        {timetable && regex.test(timetable) ? (
-                                          <img
-                                            className="img-preview"
-                                            src={timetable}
-                                            alt="Preview"
-                                          />
-                                        ) : !timetable ? (
-                                          "--"
-                                        ) : (
-                                          <span className="files-icon">
-                                            <i className="fa fa-file-pdf-o" />
-                                          </span>
-                                        )}
-                                      </td>
-                                      <td className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
+                            {residentSchoolTimetableData?.length > 0 ? (
+                              residentSchoolTimetableData?.map(
+                                (time, index) => {
+                                  const {
+                                    id,
+                                    resident,
+                                    school,
+                                    year,
+                                    timetable,
+                                  } = time;
+                                  if (resident == selectedResidentId) {
+                                    return (
+                                      <tr style={{ height: "90px" }} key={id}>
+                                        <td>
+                                          {residentSchoolData?.map((schl) => {
+                                            if (schl.id === school)
+                                              return schl.school;
+                                          })}
+                                        </td>
+                                        <td>{year}</td>
+                                        <td>
+                                          {timetable &&
+                                          regex.test(timetable) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={timetable}
+                                              alt="Preview"
+                                            />
+                                          ) : !timetable ? (
+                                            "--"
+                                          ) : (
+                                            <span className="files-icon">
+                                              <i className="fa fa-file-pdf-o" />
+                                            </span>
+                                          )}
+                                        </td>
+                                        <td className="dropdown dropdown-action text-end">
                                           <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleFileDownload(timetable)
-                                            }
+                                            className="action-icon dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
                                           >
-                                            <i className="fa fa-download m-r-5" />{" "}
-                                            Download
+                                            <i className="material-icons">
+                                              more_vert
+                                            </i>
                                           </a>
-                                          <a
-                                            className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleEditEmployeeAddress(
-                                            //     id,
-                                            //     index
-                                            //   )
-                                            // }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleDeleteEmployeeAddress(id)
-                                            // }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleFileDownload(timetable)
+                                              }
+                                            >
+                                              <i className="fa fa-download m-r-5" />{" "}
+                                              Download
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleEditResidentSchoolTimetable(
+                                                  id,
+                                                  index
+                                                )
+                                              }
+                                            >
+                                              <i className="fa fa-pencil m-r-5" />{" "}
+                                              Edit
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleDeleteResidentSchoolTimetable(
+                                                  id
+                                                )
+                                              }
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" />{" "}
+                                              Delete
+                                            </a>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    );
+                                  }
                                 }
-                              })
+                              )
                             ) : (
                               <tr>
                                 <td>No timetable attach to this resident</td>
@@ -1444,11 +1810,33 @@ useEffect(() => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Resident School Report{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {schoolReportError?.length > 0 && (
+                            <>
+                              Error: {schoolReportError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           className="edit-icon"
-                          // onClick={() =>
-                          //   setGlobalState("showEmployeeAddressModal", true)
-                          // }
+                          onClick={() =>
+                            setGlobalState(
+                              "showResidentSchoolReportModal",
+                              true
+                            )
+                          }
                         >
                           <i className="fa fa-plus" />
                         </a>
@@ -1459,12 +1847,12 @@ useEffect(() => {
                             <tr>
                               <th>School</th>
                               <th>Year</th>
-                              <th>Timetable</th>
+                              <th>Report</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {resident_school_report?.length > 0 ? (
-                              resident_school_report?.map((time, index) => {
+                            {residentSchoolReportData?.length > 0 ? (
+                              residentSchoolReportData?.map((time, index) => {
                                 const { id, resident, school, year, report } =
                                   time;
                                 if (resident == selectedResidentId) {
@@ -1514,21 +1902,23 @@ useEffect(() => {
                                           </a>
                                           <a
                                             className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleEditEmployeeAddress(
-                                            //     id,
-                                            //     index
-                                            //   )
-                                            // }
+                                            onClick={() =>
+                                              handleEditResidentSchoolReport(
+                                                id,
+                                                index
+                                              )
+                                            }
                                           >
                                             <i className="fa fa-pencil m-r-5" />{" "}
                                             Edit
                                           </a>
                                           <a
                                             className="dropdown-item"
-                                            // onClick={() =>
-                                            //   handleDeleteEmployeeAddress(id)
-                                            // }
+                                            onClick={() =>
+                                              handleDeleteResidentSchoolReport(
+                                                id
+                                              )
+                                            }
                                           >
                                             <i className="fa fa-trash-o m-r-5" />{" "}
                                             Delete
@@ -1554,10 +1944,42 @@ useEffect(() => {
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Resident Medical Condition</h3>
+                      <h3 className="card-title">
+                        Resident Medical Condition{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {medicalConditionError?.length > 0 && (
+                            <>
+                              Error: {medicalConditionError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
+                        <a
+                          className="edit-icon"
+                          onClick={() =>
+                            setGlobalState(
+                              "showResidentMedicalConditionModal",
+                              true
+                            )
+                          }
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
                       <Wrapper>
-                        {resident_medical_condition?.length > 0 ? (
-                          resident_medical_condition.map((med, index) => {
+                        {residentMedicalConditionData?.length > 0 ? (
+                          residentMedicalConditionData.map((med, index) => {
                             const {
                               id,
                               resident,
@@ -1573,6 +1995,61 @@ useEffect(() => {
                                 <div key={id} className="card plain-card">
                                   <div className="text">
                                     Name: <span>{medical_condition_name}</span>
+                                    <span
+                                      className="edit-icon"
+                                      style={{
+                                        background: "none",
+                                        border: "none",
+                                      }}
+                                    >
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(
+                                                medical_condition_document
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditResidentMedicalCondition(
+                                                id,
+                                                index
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteResidentMedicalCondition(
+                                                id
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </span>
                                   </div>
                                   <div className="text">
                                     Start Date:{" "}
@@ -1626,10 +2103,39 @@ useEffect(() => {
                 <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
-                      <h3 className="card-title">Resident Medication</h3>
+                      <h3 className="card-title">
+                        Resident Medication{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {medicationError?.length > 0 && (
+                            <>
+                              Error: {medicationError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
+                        <a
+                          className="edit-icon"
+                          onClick={() =>
+                            setGlobalState("showResidentMedicationModal", true)
+                          }
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h3>
                       <Wrapper>
-                        {resident_medication?.length > 0 ? (
-                          resident_medication.map((med, index) => {
+                        {residentMedicationData?.length > 0 ? (
+                          residentMedicationData.map((med, index) => {
                             const {
                               id,
                               resident,
@@ -1649,6 +2155,59 @@ useEffect(() => {
                                 <div key={id} className="card plain-card">
                                   <div className="text">
                                     Name: <span>{medication_name}</span>
+                                    <span
+                                      className="edit-icon"
+                                      style={{
+                                        background: "none",
+                                        border: "none",
+                                      }}
+                                    >
+                                      <div className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">
+                                            more_vert
+                                          </i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleFileDownload(
+                                                medication_document
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-download m-r-5" />{" "}
+                                            Download
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditResidentMedication(
+                                                id,
+                                                index
+                                              )
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" />{" "}
+                                            Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteResidentMedication(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" />{" "}
+                                            Delete
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </span>
                                   </div>
                                   <div className="text">
                                     Start Date:{" "}
@@ -2206,6 +2765,131 @@ useEffect(() => {
           modalTitle={"Resident Education"}
         />
       )}
+
+      {/* Resident School Report */}
+      {showResidentSchoolReportModal && (
+        <AddResidentSchoolReportModal
+          id={getResidentSchoolReportId}
+          dispatchResidentSchoolReport={dispatchResidentSchoolReport}
+          residentSchoolReportIndexToEdit={residentSchoolReportIndexToEdit}
+          resident={getResidentId}
+        />
+      )}
+      {deleteResidentSchoolReportModal && (
+        <DeleteModal
+          deleteAction={dispatchResidentSchoolReport}
+          iDToDelete={getResidentSchoolReportId}
+          modalTitle={"Resident Report"}
+        />
+      )}
+
+      {/* Resident School Timetable */}
+      {showResidentSchoolTimetableModal && (
+        <AddResidentSchoolTimetableModal
+          id={getResidentSchoolTimetableId}
+          dispatchResidentSchoolTimetable={dispatchResidentSchoolTimetable}
+          residentSchoolTimetableIndexToEdit={
+            residentSchoolTimetableIndexToEdit
+          }
+          resident={getResidentId}
+        />
+      )}
+      {deleteResidentSchoolTimetableModal && (
+        <DeleteModal
+          deleteAction={dispatchResidentSchoolTimetable}
+          iDToDelete={getResidentSchoolTimetableId}
+          modalTitle={"Resident Timetable"}
+        />
+      )}
+
+      {/* Resident Medical Condition */}
+      {showResidentMedicalConditionModal && (
+        <AddResidentMedicalConditionModal
+          id={getResidentMedicalConditionId}
+          dispatchResidentMedicalCondition={dispatchResidentMedicalCondition}
+          residentMedicalConditionIndexToEdit={
+            residentMedicalConditionIndexToEdit
+          }
+          resident={getResidentId}
+        />
+      )}
+      {deleteResidentMedicalConditionModal && (
+        <DeleteModal
+          deleteAction={dispatchResidentMedicalCondition}
+          iDToDelete={getResidentMedicalConditionId}
+          modalTitle={"Medical Condition"}
+        />
+      )}
+
+      {/* Resident Appointment */}
+      {showResidentAppointmentModal && (
+        <AddResidentAppointmentModal
+          id={getResidentAppointmentId}
+          dispatchResidentAppointment={dispatchResidentAppointment}
+          residentAppointmentIndexToEdit={residentAppointmentIndexToEdit}
+          resident={getResidentId}
+        />
+      )}
+      {deleteResidentAppointmentModal && (
+        <DeleteModal
+          deleteAction={dispatchResidentAppointment}
+          iDToDelete={getResidentAppointmentId}
+          modalTitle={"Resident Appointment"}
+        />
+      )}
+
+      {/* Resident Social Worker */}
+      {showResidentSocialWorkerModal && (
+        <AddResidentSocialWorkerModal
+          id={getResidentSocialWorkerId}
+          dispatchResidentSocialWorker={dispatchResidentSocialWorker}
+          residentSocialWorkerIndexToEdit={residentSocialWorkerIndexToEdit}
+          resident={getResidentId}
+        />
+      )}
+      {deleteResidentSocialWorkerModal && (
+        <DeleteModal
+          deleteAction={dispatchResidentSocialWorker}
+          iDToDelete={getResidentSocialWorkerId}
+          modalTitle={"Resident Social Worker"}
+        />
+      )}
+
+
+      {/* Resident Medication */}
+      {showResidentMedicationModal && (
+        <AddResidentMedicationModal
+          id={getResidentMedicationId}
+          dispatchResidentMedication={dispatchResidentMedication}
+          residentMedicationIndexToEdit={residentMedicationIndexToEdit}
+          resident={getResidentId}
+        />
+      )}
+      {deleteResidentMedicationModal && (
+        <DeleteModal
+          deleteAction={dispatchResidentMedication}
+          iDToDelete={getResidentMedicationId}
+          modalTitle={"Resident Medication"}
+        />
+      )}
+
+      {/* Resident Referral */}
+      {showResidentReferralModal && (
+        <AddResidentReferralModal
+          id={getResidentReferralId}
+          dispatchResidentReferral={dispatchResidentReferral}
+          residentReferralIndexToEdit={residentReferralIndexToEdit}
+          resident={getResidentId}
+        />
+      )}
+      {deleteResidentReferralModal && (
+        <DeleteModal
+          deleteAction={dispatchResidentReferral}
+          iDToDelete={getResidentReferralId}
+          modalTitle={"Resident Referral"}
+        />
+      )}
+
 
       {/* Resident Document */}
       {showResidentDocumentModal && (

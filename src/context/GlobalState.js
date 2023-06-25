@@ -151,37 +151,73 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showResidentGpModal: false,
   selectedResidentGp: [],
   deleteResidentGpModal: false,
+  gpError: [],
 
   // Resident solicitor
   showResidentSolicitorModal: false,
   selectedResidentSolicitor: [],
   deleteResidentSolicitorModal: false,
+  solicitorError: [],
 
   // Resident Document
   deleteResidentDocumentModal: false,
   showResidentDocumentModal: false,
   selectedResidentDocument: [],
+  residentdocumentError: [],
 
   // Resident School
   deleteResidentSchoolModal: false,
   showResidentSchoolModal: false,
   selectedResidentSchool: [],
+  schoolError: [],
 
   // Resident Education
   deleteResidentEducationModal: false,
   showResidentEducationModal: false,
   selectedResidentEducation: [],
-
-  // Sever Resident Error Response Text
-  gpError: [],
-  solicitorError: [],
-  residentdocumentError: [],
-  schoolError: [],
   educationError: [],
-  // bankError: [],
-  // statusError: [],
-  // employeeAddressError: [],
-  // employeeEmergencyError: [],
+
+  // Resident School Report
+  deleteResidentSchoolReportModal: false,
+  showResidentSchoolReportModal: false,
+  selectedResidentSchoolReport: [],
+  schoolReportError: [],
+
+  // Resident School Timetable
+  deleteResidentSchoolTimetableModal: false,
+  showResidentSchoolTimetableModal: false,
+  selectedResidentSchoolTimetable: [],
+  schoolTimetableError: [],
+
+  // Resident Medical Condition
+  deleteResidentMedicalConditionModal: false,
+  showResidentMedicalConditionModal: false,
+  selectedResidentMedicalCondition: [],
+  medicalConditionError: [],
+
+  // Resident Medication
+  deleteResidentMedicationModal: false,
+  showResidentMedicationModal: false,
+  selectedResidentMedication: [],
+  medicationError: [],
+
+  // Resident Appointment
+  deleteResidentAppointmentModal: false,
+  showResidentAppointmentModal: false,
+  selectedResidentAppointment: [],
+  appointmentError: [],
+
+  // Resident Social Worker
+  deleteResidentSocialWorkerModal: false,
+  showResidentSocialWorkerModal: false,
+  selectedResidentSocialWorker: [],
+  rSocialWorkerError: [],
+
+  // Resident Referral
+  deleteResidentReferralModal: false,
+  showResidentReferralModal: false,
+  selectedResidentReferral: [],
+  referralError: [],
 });
 
 export {setGlobalState, useGlobalState}
