@@ -64,10 +64,12 @@ const AddResidentVisitor = ({
 
     if(visit_date === "") {
       setVisitDateError("Visit Date is required");
+      return;
     }
 
     if(visit_time === "") {
       setVisitTimeError("Visit Time is required");
+      return;
     }
 
     if (status == "") {
@@ -76,7 +78,8 @@ const AddResidentVisitor = ({
     }
 
     if(left_time === "") {
-      setLeftTimeError("Left Time is required")
+      setLeftTimeError("Left Time is required");
+      return;
     }
 
     setVisitDateError("");
@@ -137,7 +140,7 @@ const AddResidentVisitor = ({
 
   const handleTimeLeft = (e) => {
     setLeftTime(e.target.value);
-    setLeftTimeError("")
+    setLeftTimeError("");
   }
 
 
@@ -295,6 +298,9 @@ const AddResidentVisitor = ({
                             className="form-control floating"
                             type="time"
                           />
+                          {leftTimeError && (
+                            <p className="error-message">{leftTimeError}</p>
+                          )}
                         </div>
                       </div>
                     </div>
