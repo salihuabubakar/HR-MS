@@ -136,9 +136,9 @@ const handleDeleteBorough = (id) => {
       dataIndex: "borough_description",
       render: (text, record, index) => {
         return (
-          <p style={{ width: "100%" }} data-title={text}>
+          <React.Fragment style={{ width: "100%" }} data-title={text}>
             Hover to show
-          </p>
+          </React.Fragment>
         );
       },
     },

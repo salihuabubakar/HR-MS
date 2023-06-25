@@ -131,7 +131,7 @@ const socialworker = () => {
           (b) => b.id === borough
         );
         if (matchedBorough) {
-          return <p>{matchedBorough.borough_name}</p>;
+          return <React.Fragment>{matchedBorough.borough_name}</React.Fragment>;
         } else {
           return null; // or return a default value if no match is found
         }

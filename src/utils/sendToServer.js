@@ -2651,7 +2651,7 @@ export const add_update_delete_borough = async (state, { type, payload }) => {
   }
 };
 
-// Add - Update - Delete Borough state
+// Add - Update - Delete Social worker state
 export const add_update_delete_social_worker = async (state, { type, payload }) => {
   console.log(payload);
   switch (type) {
@@ -2734,6 +2734,91 @@ export const add_update_delete_social_worker = async (state, { type, payload }) 
       throw new Error();
   }
 };
+
+// Add - Update - Delete Resident Visitor state
+export const add_update_delete_resident_visitor = async (state, { type, payload }) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/resident/visitor/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "residentVisitorError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/resident/visitor/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "residentVisitorError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/resident/visitor/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "residentVisitorError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
 
 
 
