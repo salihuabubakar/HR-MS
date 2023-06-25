@@ -218,6 +218,18 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showResidentReferralModal: false,
   selectedResidentReferral: [],
   referralError: [],
+
+  // Resident Borough
+  deleteBoroughModal: false,
+  showBoroughModal: false,
+  selectedBorough: [],
+  boroughError: [],
+
+  // Social Worker
+  deleteSocialWorkerModal: false,
+  showSocialWorkerModal: false,
+  selectedSocialWorker: [],
+  socialWorkerError: [],
 });
 
 export {setGlobalState, useGlobalState}

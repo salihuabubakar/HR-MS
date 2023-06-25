@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { toast } from "react-toastify";
 import {
   PopupWrapper,
   PopupOverlay,
@@ -160,10 +161,16 @@ const AddResident = ({
     });
     if (isIdExist) {
       dispatchResident({ type: "update", payload: {id, formData} });
+      toast.success("Resident Updated", {
+        autoClose: 7000,
+      });
     } else {
       dispatchResident({
         type: "add",
         payload: formData,
+      });
+      toast.success("Resident Added", {
+        autoClose: 7000,
       });
     }
     setGlobalState("showModal", false);

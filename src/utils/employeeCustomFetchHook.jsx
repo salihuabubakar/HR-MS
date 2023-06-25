@@ -987,6 +987,37 @@ export const useResidentReferralFetching = () => {
   };
 };
 
+// Get resident borough data
+export const useResidentBoroughFetching = () => {
+  const fetchResidentBoroughData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/borough/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentBoroughData,
+    isLoading: isResidentBoroughLoading,
+    error: residentBoroughError,
+  } = useQuery(
+    "residentBoroughData",
+    fetchResidentBoroughData,
+    {
+      onSuccess: () => {
+        // Invalidate queries that depend on residentBoroughData
+        queryClient.invalidateQueries(["residentBoroughData"]);
+      },
+    }
+  );
+
+  return {
+    residentBoroughData,
+    isResidentBoroughLoading,
+    residentBoroughError,
+  };
+};
+
+
 
 
 
