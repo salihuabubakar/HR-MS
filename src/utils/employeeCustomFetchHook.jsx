@@ -1043,6 +1043,57 @@ export const useResidentVisitorFetching = () => {
   };
 };
 
+// Get resident complaint data
+export const useComplaintFetching = () => {
+  const fetchResidentComplaintData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/complaint/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: complaintData,
+    isLoading: complaintLoading,
+    error: complaintError,
+  } = useQuery("residentComplaintData", fetchResidentComplaintData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on ResidentComplaintData
+      queryClient.invalidateQueries(["residentComplaintData"]);
+    },
+  });
+
+  return {
+    complaintData,
+    complaintLoading,
+    complaintError,
+  };
+};
+
+// Get resident Request data
+export const useResidentRequestFetching = () => {
+  const fetchResidentRequestData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/request/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentRequestData,
+    isLoading: residentRequestLoading,
+    error: residentRequestError,
+  } = useQuery("residentRequestData", fetchResidentRequestData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on ResidentRequestData
+      queryClient.invalidateQueries(["residentRequestData"]);
+    },
+  });
+
+  return {
+    residentRequestData,
+    residentRequestLoading,
+    residentRequestError,
+  };
+};
 
 
 

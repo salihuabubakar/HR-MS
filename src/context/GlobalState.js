@@ -50,6 +50,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showFamilyMenberModal: false,
   selectedFamilyMemberInfo: [],
   showTaskModal: false,
+  selectedUserAccount: [],
   selectedTaskInfo: [],
   showSubTaskModal: false,
   selectedSubTaskInfo: [],
@@ -236,6 +237,18 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showResidentVisitorModal: false,
   selectedResidentVisitor: [],
   residentVisitorError: [],
+
+  // Resident Complaint
+  deleteComplaintModal: false,
+  showComplaintModal: false,
+  selectedComplaint: [],
+  complaintError: [],
+
+  // Resident Request
+  deleteResidentRequestModal: false,
+  showResidentRequestModal: false,
+  selectedResidentRequest: [],
+  residentRequestError: [],
 });
 
 export {setGlobalState, useGlobalState}

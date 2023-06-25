@@ -8,6 +8,8 @@ import ServiceWorker from "./serviceWorker";
 import Borough from "./borough";
 import SocialWorker from "./social-worker";
 import Visitor from "./visitor";
+import Complaint from "./complaint";
+import Request from "./request";
 
 const ServiceRoute = ({ match }) => (
   <Switch>
@@ -16,6 +18,8 @@ const ServiceRoute = ({ match }) => (
     <Route path={`${match.url}/borough`} component={Borough} />
     <Route path={`${match.url}/social-worker`} component={SocialWorker} />
     <Route path={`${match.url}/visitor`} component={Visitor} />
+    <Route path={`${match.url}/complaint`} component={Complaint} />
+    <Route path={`${match.url}/request`} component={Request} />
   </Switch>
 );
 
