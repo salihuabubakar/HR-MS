@@ -249,6 +249,18 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showResidentRequestModal: false,
   selectedResidentRequest: [],
   residentRequestError: [],
+
+  // Resident Incident
+  deleteResidentIncidentModal: false,
+  showResidentIncidentModal: false,
+  selectedResidentIncident: [],
+  residentIncidentError: [],
+
+  // Resident Misper
+  deleteResidentMisperModal: false,
+  showResidentMisperModal: false,
+  selectedResidentMisper: [],
+  residentMisperError: [],
 });
 
 export {setGlobalState, useGlobalState}

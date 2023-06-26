@@ -2994,6 +2994,179 @@ export const add_update_delete_resident_request = async (
 };
 
 
+// Add - Update - Delete Resident Incident state
+export const add_update_delete_resident_incident = async (
+  state,
+  { type, payload }
+) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/resident/incident/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting resident incident:", error);
+        setGlobalState(
+          "residentIncidentError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while posting resident incident");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/resident/incident/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating resident incident:", error);
+        setGlobalState(
+          "residentIncidentError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while updating resident incident");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/resident/incident/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting resident incident:", error);
+        setGlobalState(
+          "residentIncidentError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while deleting resident incident");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Delete Resident Misper state
+export const add_update_delete_resident_misper = async (
+  state,
+  { type, payload }
+) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/resident/misper/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting resident misper:", error);
+        setGlobalState(
+          "residentMisperError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while posting resident misper");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/resident/misper/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating resident misper:", error);
+        setGlobalState(
+          "residentMisperError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while updating resident misper");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/resident/misper/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting resident misper:", error);
+        setGlobalState(
+          "residentMisperError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while deleting resident misper");
+      }
+    default:
+      throw new Error();
+  }
+};
 
 
 

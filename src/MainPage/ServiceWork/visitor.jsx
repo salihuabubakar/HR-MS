@@ -56,7 +56,7 @@ const visitor = () => {
 
   useEffect(() => {
     if (!showResidentVisitorModal) {
-      setGlobalState("selectedResidentVisitor", "");
+      setGlobalState("selectedResidentIncident", "");
     }
   }, [showResidentVisitorModal]);
 
@@ -68,7 +68,7 @@ const visitor = () => {
     setResidentVisitorId(id);
     setIndexToEdit((currentPage - 1) * itemsPerPage + index);
     setGlobalState("showResidentVisitorModal", true);
-    setGlobalState("selectedResidentVisitor", residentVisitorData);
+    setGlobalState("selectedResidentIncident", residentVisitorData);
   };
 
   const handleDeleteResidentVisitor = (id) => {
