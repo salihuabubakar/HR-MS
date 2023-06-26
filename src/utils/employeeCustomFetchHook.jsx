@@ -1095,6 +1095,57 @@ export const useResidentRequestFetching = () => {
   };
 };
 
+// Get resident Incident data
+export const useResidentIncidentFetching = () => {
+  const fetchResidentIncidentData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/incident/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentIncidentData,
+    isLoading: residentIncidentLoading,
+    error: residentIncidentError,
+  } = useQuery("residentIncidentData", fetchResidentIncidentData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on ResidentIncidentData
+      queryClient.invalidateQueries(["residentIncidentData"]);
+    },
+  });
+
+  return {
+    residentIncidentData,
+    residentIncidentLoading,
+    residentIncidentError,
+  };
+};
+
+// Get resident Misper data
+export const useResidentMisperFetching = () => {
+  const fetchResidentMisperData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/misper/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentMisperData,
+    isLoading: residentMisperLoading,
+    error: residentMisperError,
+  } = useQuery("residentMisperData", fetchResidentMisperData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on ResidentMisperData
+      queryClient.invalidateQueries(["residentMisperData"]);
+    },
+  });
+
+  return {
+    residentMisperData,
+    residentMisperLoading,
+    residentMisperError,
+  };
+};
 
 
 

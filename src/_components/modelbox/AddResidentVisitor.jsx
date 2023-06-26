@@ -17,7 +17,7 @@ const AddResidentVisitor = ({
   id,
   dispatchResidentVisitor,
 }) => {
-  const [selectedResidentVisitor] = useGlobalState("selectedResidentVisitor");
+  const [selectedResidentVisitor] = useGlobalState("selectedResidentIncident");
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
 
