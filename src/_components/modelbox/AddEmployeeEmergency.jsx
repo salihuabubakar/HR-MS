@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { toast } from "react-toastify";
 
 const AddEmployeeEmergency = ({
   employeeEmergencyIndexToEdit,
@@ -13,39 +14,27 @@ const AddEmployeeEmergency = ({
   );
 
   const [name, setName] = useState(
-    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.name
-      ? selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.name
-      : ""
+    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.name || ""
   );
 
   const [relationship, setRelationship] = useState(
-    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.relationship
-      ? selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.relationship
-      : ""
+    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.relationship || ""
   );
 
   const [phone_number, setPhoneNumber] = useState(
-    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.phone_number
-      ? selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.phone_number
-      : ""
+    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.phone_number || ""
   );
 
   const [email, setEmail] = useState(
-    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.email
-      ? selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.email
-      : ""
+    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.email || ""
   );
 
   const [address, setAddress] = useState(
-    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.address
-      ? selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.address
-      : ""
+    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.address || ""
   );
 
   const [post_code, setPostCode] = useState(
-    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.post_code
-      ? selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.post_code
-      : ""
+    selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.post_code || ""
   );
 
 
@@ -84,8 +73,14 @@ const AddEmployeeEmergency = ({
     };
     if (selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.id) {
       dispatchEmployeeEmergency({ type: "update", payload: emergency });
+      toast.success("Emergency contact Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchEmployeeEmergency({ type: "add", payload: emergency });
+      toast.success("Emergency contact Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showEmployeeEmergencyModal", false);
   };

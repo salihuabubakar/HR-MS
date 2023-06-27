@@ -8,6 +8,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
+import { toast } from "react-toastify";
 
 const AddHouseEmployee = ({
   house,
@@ -19,27 +20,19 @@ const AddHouseEmployee = ({
   const [selectedHouseEmployee] = useGlobalState("selectedHouseEmployee");
 
   const [status, setStatus] = useState(
-    selectedHouseEmployee[houseEmployeeIndexToEdit]?.status
-      ? selectedHouseEmployee[houseEmployeeIndexToEdit]?.status
-      : ""
+    selectedHouseEmployee[houseEmployeeIndexToEdit]?.status || ""
   );
 
   const [employee, setEmployee] = useState(
-    selectedHouseEmployee[houseEmployeeIndexToEdit]?.employee
-      ? selectedHouseEmployee[houseEmployeeIndexToEdit]?.employee
-      : ""
+    selectedHouseEmployee[houseEmployeeIndexToEdit]?.employee || ""
   );
 
   const [join_date, setJoinDate] = useState(
-    selectedHouseEmployee[houseEmployeeIndexToEdit]?.join_date
-      ? selectedHouseEmployee[houseEmployeeIndexToEdit]?.join_date
-      : ""
+    selectedHouseEmployee[houseEmployeeIndexToEdit]?.join_date || ""
   );
 
   const [end_date, setEndDate] = useState(
-    selectedHouseEmployee[houseEmployeeIndexToEdit]?.end_date
-      ? selectedHouseEmployee[houseEmployeeIndexToEdit]?.end_date
-      : ""
+    selectedHouseEmployee[houseEmployeeIndexToEdit]?.end_date || ""
   );
 
   const handleSubmit = (e) => {
@@ -54,8 +47,14 @@ const AddHouseEmployee = ({
     };
     if (selectedHouseEmployee[houseEmployeeIndexToEdit]?.id) {
       dispatchHouseEmployee({ type: "update", payload: houseEmployee });
+      toast.success("House Employee Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchHouseEmployee({ type: "add", payload: houseEmployee });
+      toast.success("House Employee Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showHouseEmployeeModal", false);
   };

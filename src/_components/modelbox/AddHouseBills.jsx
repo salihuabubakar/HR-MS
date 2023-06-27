@@ -10,44 +10,31 @@ import Dropzone from "react-dropzone";
 import { useHouseDocumentFetching } from "../../utils/employeeCustomFetchHook";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import { toast } from "react-toastify";
 
 const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
   const [selectedBill] = useGlobalState("selectedBill");
 
   const [title, setTitle] = useState(
-    selectedBill[billIndexToEdit]?.title
-      ? selectedBill[billIndexToEdit]?.title
-      : ""
+    selectedBill[billIndexToEdit]?.title || ""
   );
 
   const [amount, setAmount] = useState(
-    selectedBill[billIndexToEdit]?.amount
-      ? selectedBill[billIndexToEdit]?.amount
-      : ""
+    selectedBill[billIndexToEdit]?.amount || ""
   );
 
   const [paid, setPaid] = useState(
-    selectedBill[billIndexToEdit]?.paid
-      ? selectedBill[billIndexToEdit]?.paid
-      : false
+    selectedBill[billIndexToEdit]?.paid || false
   );
 
   const [date, setDate] = useState(
-    selectedBill[billIndexToEdit]?.date
-      ? selectedBill[billIndexToEdit]?.date
-      : ""
+    selectedBill[billIndexToEdit]?.date || ""
   );
 
   const [documents, setDocuments] = useState(
-    selectedBill[billIndexToEdit]?.documents
-      ? selectedBill[billIndexToEdit]?.documents
-      : []
+    selectedBill[billIndexToEdit]?.documents || []
   );
-
-  useEffect(() => {
-    console.log("room_photos", documents);
-  }, []);
 
   const [titleError, setTitleError] = useState("");
   const [amountError, setAmountError] = useState("");
@@ -93,8 +80,14 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
 
     if (selectedBill[billIndexToEdit]?.id) {
       dispatchBill({ type: "update", payload: fields });
+      toast.success("House Bill Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchBill({ type: "add", payload: fields });
+      toast.success("House Bill Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showBillModal", false);
   };

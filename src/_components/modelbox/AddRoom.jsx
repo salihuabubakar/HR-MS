@@ -10,40 +10,31 @@ import Dropzone from "react-dropzone";
 import { useHouseImageFetching } from "../../utils/employeeCustomFetchHook";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import { toast } from "react-toastify";
 
 const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
   const { houseImagesData } = useHouseImageFetching();
   const [selectedRoom] = useGlobalState("selectedRoom");
 
   const [name, setRoomName] = useState(
-    selectedRoom[roomIndexToEdit]?.name
-      ? selectedRoom[roomIndexToEdit]?.name
-      : ""
+    selectedRoom[roomIndexToEdit]?.name || ""
   );
   
 
   const [room_type, setRoomType] = useState(
-    selectedRoom[roomIndexToEdit]?.room_type
-      ? selectedRoom[roomIndexToEdit]?.room_type
-      : ""
+    selectedRoom[roomIndexToEdit]?.room_type || ""
   );
 
   const [room_status, setRoomStatus] = useState(
-    selectedRoom[roomIndexToEdit]?.room_status
-      ? selectedRoom[roomIndexToEdit]?.room_status
-      : ""
+    selectedRoom[roomIndexToEdit]?.room_status || ""
   );
 
   const [room_description, setDescription] = useState(
-    selectedRoom[roomIndexToEdit]?.room_description
-      ? selectedRoom[roomIndexToEdit]?.room_description
-      : ""
+    selectedRoom[roomIndexToEdit]?.room_description || ""
   );
 
   const [room_photos, setRoomPhotos] = useState(
-    selectedRoom[roomIndexToEdit]?.room_photos
-      ? selectedRoom[roomIndexToEdit]?.room_photos
-      : []
+    selectedRoom[roomIndexToEdit]?.room_photos || []
   );
  
   const [roomTypeError, setRoomTypeError] = useState("");
@@ -93,8 +84,14 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
 
     if (selectedRoom[roomIndexToEdit]?.id) {
       dispatchRoom({ type: "update", payload: fields });
+      toast.success("House Room Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchRoom({ type: "add", payload: fields });
+      toast.success("House Room Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showRoomModal", false);
   };

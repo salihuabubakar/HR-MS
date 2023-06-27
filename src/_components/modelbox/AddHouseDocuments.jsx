@@ -7,6 +7,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
+import { toast } from "react-toastify";
 
 const AddHouseDocuments = ({
   house,
@@ -17,39 +18,27 @@ const AddHouseDocuments = ({
   const [selectedHouseDocuments] = useGlobalState("selectedHouseDocuments");
 
   const [title, setTitle] = useState(
-    selectedHouseDocuments[houseDocumentsIndexToEdit]?.title
-      ? selectedHouseDocuments[houseDocumentsIndexToEdit]?.title
-      : ""
+    selectedHouseDocuments[houseDocumentsIndexToEdit]?.title || ""
   );
 
   const [file, setFile] = useState(
-    selectedHouseDocuments[houseDocumentsIndexToEdit]?.file
-      ? selectedHouseDocuments[houseDocumentsIndexToEdit]?.file
-      : ""
+    selectedHouseDocuments[houseDocumentsIndexToEdit]?.file || ""
   );
 
   const [description, setDescription] = useState(
-    selectedHouseDocuments[houseDocumentsIndexToEdit]?.description
-      ? selectedHouseDocuments[houseDocumentsIndexToEdit]?.description
-      : ""
+    selectedHouseDocuments[houseDocumentsIndexToEdit]?.description || ""
   );
 
   const [status, setStatus] = useState(
-    selectedHouseDocuments[houseDocumentsIndexToEdit]?.status
-      ? selectedHouseDocuments[houseDocumentsIndexToEdit]?.status
-      : ""
+    selectedHouseDocuments[houseDocumentsIndexToEdit]?.status || ""
   );
 
   const [valid_from, setValidFrom] = useState(
-    selectedHouseDocuments[houseDocumentsIndexToEdit]?.valid_from
-      ? selectedHouseDocuments[houseDocumentsIndexToEdit]?.valid_from
-      : ""
+    selectedHouseDocuments[houseDocumentsIndexToEdit]?.valid_from || ""
   );
 
   const [expiry_date, setExpiryDate] = useState(
-    selectedHouseDocuments[houseDocumentsIndexToEdit]?.expiry_date
-      ? selectedHouseDocuments[houseDocumentsIndexToEdit]?.expiry_date
-      : ""
+    selectedHouseDocuments[houseDocumentsIndexToEdit]?.expiry_date || ""
   );
 
   const [titleError, setTitleError] = useState("");
@@ -95,8 +84,14 @@ const AddHouseDocuments = ({
 
     if (selectedHouseDocuments[houseDocumentsIndexToEdit]?.id) {
       dispatchHouseDocuments({ type: "update", payload: { id, formData } });
+      toast.success("House Document Updated", {
+        autoClose: 7000,
+      });
     } else {
       dispatchHouseDocuments({ type: "add", payload: formData });
+      toast.success("House Document Added", {
+        autoClose: 7000,
+      });
     }
     setGlobalState("showHouseDocumentsModal", false);
   };

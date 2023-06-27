@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { toast } from "react-toastify";
 
 const AddEmployeeAddress = ({
   employeeAddressIndexToEdit,
@@ -11,33 +12,23 @@ const AddEmployeeAddress = ({
   const [selectedEmployeeAddress] = useGlobalState("selectedEmployeeAddress");
 
   const [street, setStreet] = useState(
-    selectedEmployeeAddress[employeeAddressIndexToEdit]?.street
-      ? selectedEmployeeAddress[employeeAddressIndexToEdit]?.street
-      : ""
+    selectedEmployeeAddress[employeeAddressIndexToEdit]?.street || ""
   );
 
   const [city, setCity] = useState(
-    selectedEmployeeAddress[employeeAddressIndexToEdit]?.city
-      ? selectedEmployeeAddress[employeeAddressIndexToEdit]?.city
-      : ""
+    selectedEmployeeAddress[employeeAddressIndexToEdit]?.city || ""
   );
 
   const [state, setState] = useState(
-    selectedEmployeeAddress[employeeAddressIndexToEdit]?.state
-      ? selectedEmployeeAddress[employeeAddressIndexToEdit]?.state
-      : ""
+    selectedEmployeeAddress[employeeAddressIndexToEdit]?.state || ""
   );
 
   const [postal_code, setPostalCode] = useState(
-    selectedEmployeeAddress[employeeAddressIndexToEdit]?.postal_code
-      ? selectedEmployeeAddress[employeeAddressIndexToEdit]?.postal_code
-      : ""
+    selectedEmployeeAddress[employeeAddressIndexToEdit]?.postal_code || ""
   );
 
   const [country, setCountry] = useState(
-    selectedEmployeeAddress[employeeAddressIndexToEdit]?.country
-      ? selectedEmployeeAddress[employeeAddressIndexToEdit]?.country
-      : ""
+    selectedEmployeeAddress[employeeAddressIndexToEdit]?.country || ""
   );
 
 
@@ -87,8 +78,14 @@ const AddEmployeeAddress = ({
     };
     if (selectedEmployeeAddress[employeeAddressIndexToEdit]?.id) {
       dispatchEmployeeAddress({ type: "update", payload: address });
+      toast.success("Employee Address Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchEmployeeAddress({ type: "add", payload: address });
+      toast.success("Employee Address Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showEmployeeAddressModal", false);
   };

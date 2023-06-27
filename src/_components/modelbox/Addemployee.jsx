@@ -5,7 +5,6 @@ import {
   PopupWrapper,
   PopupOverlay,
   PopupContainer,
-  Card,
 } from "./Addemployee.style";
 import "./style.css";
 import { useOrganisationFetching, useRoleFetching, useDepartmentFetching } from "../../utils/employeeCustomFetchHook";
@@ -38,59 +37,37 @@ const Addemployee = ({
   }
 
   const [employee_number, setEmployeeNumber] = useState(
-    selectedEmployeeAccount[indexToEdit]?.employee_number
-      ? selectedEmployeeAccount[indexToEdit]?.employee_number
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.employee_number || ""
   );
   const [first_name, setFirstName] = useState(
-    selectedEmployeeAccount[indexToEdit]?.first_name
-      ? selectedEmployeeAccount[indexToEdit]?.first_name
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.first_name || ""
   );
   const [middle_name, setMiddleName] = useState(
-    selectedEmployeeAccount[indexToEdit]?.middle_name
-      ? selectedEmployeeAccount[indexToEdit]?.middle_name
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.middle_name || ""
   );
   const [last_name, setLastName] = useState(
-    selectedEmployeeAccount[indexToEdit]?.last_name
-      ? selectedEmployeeAccount[indexToEdit]?.last_name
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.last_name || ""
   );
   const [date_of_birth, setDateOfBirth] = useState(
-    selectedEmployeeAccount[indexToEdit]?.date_of_birth
-      ? selectedEmployeeAccount[indexToEdit]?.date_of_birth
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.date_of_birth || ""
   );
   const [gender, setGender] = useState(
-    selectedEmployeeAccount[indexToEdit]?.gender
-      ? selectedEmployeeAccount[indexToEdit]?.gender
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.gender || ""
   );
   const [marital_status, setMaritalStatus] = useState(
-    selectedEmployeeAccount[indexToEdit]?.marital_status
-      ? selectedEmployeeAccount[indexToEdit]?.marital_status
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.marital_status || ""
   );
   const [nationality, setNationality] = useState(
-    selectedEmployeeAccount[indexToEdit]?.nationality
-      ? selectedEmployeeAccount[indexToEdit]?.nationality
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.nationality || ""
   );
   const [phone_number, setPhoneNumber] = useState(
-    selectedEmployeeAccount[indexToEdit]?.phone_number
-      ? selectedEmployeeAccount[indexToEdit]?.phone_number
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.phone_number || ""
   );
   const [email, setEmail] = useState(
-    selectedEmployeeAccount[indexToEdit]?.email
-      ? selectedEmployeeAccount[indexToEdit]?.email
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.email || ""
   );
   const [hire_date, setHireDate] = useState(
-    selectedEmployeeAccount[indexToEdit]?.hire_date
-      ? selectedEmployeeAccount[indexToEdit]?.hire_date
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.hire_date || ""
   );
   // const [appointmentLetter, setAppointmentLetter] = useState(
   //   selectedEmployeeAccount[indexToEdit]?.appointmentLetter
@@ -98,30 +75,20 @@ const Addemployee = ({
   //     : ""
   // );
   const [role, setRole] = useState(
-    selectedEmployeeAccount[indexToEdit]?.role
-      ? selectedEmployeeAccount[indexToEdit]?.role
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.role || ""
   );
   const [department, setDepartment] = useState(
-    selectedEmployeeAccount[indexToEdit]?.department
-      ? selectedEmployeeAccount[indexToEdit]?.department
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.department || ""
   );
   const [organisation, setOrganisation] = useState(
-    selectedEmployeeAccount[indexToEdit]?.organisation
-      ? selectedEmployeeAccount[indexToEdit]?.organisation
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.organisation || ""
   );
   // I will validate the number of salary should not be more than 6 figures
   const [salary, setSalary] = useState(
-    selectedEmployeeAccount[indexToEdit]?.salary
-      ? selectedEmployeeAccount[indexToEdit]?.salary
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.salary || ""
   );
   const [ni_number, setNiNumber] = useState(
-    selectedEmployeeAccount[indexToEdit]?.ni_number
-      ? selectedEmployeeAccount[indexToEdit]?.ni_number
-      : ""
+    selectedEmployeeAccount[indexToEdit]?.ni_number || ""
   );
 
   const [firstNameError, setFirstNameError] = useState("");

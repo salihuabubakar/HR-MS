@@ -5,6 +5,7 @@ import {
   PopupWrapper,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { toast } from "react-toastify";
 
 const AddRole = ({
   dispatchRole,
@@ -17,21 +18,15 @@ const AddRole = ({
   let id = roleIdToEdit;
 
   const [role_name, setDesigName] = useState(
-    selectedRole[indexToEdit]?.role_name
-      ? selectedRole[indexToEdit]?.role_name
-      : ""
+    selectedRole[indexToEdit]?.role_name || ""
   );
 
   const [description, setDescription] = useState(
-    selectedRole[indexToEdit]?.description
-      ? selectedRole[indexToEdit]?.description
-      : ""
+    selectedRole[indexToEdit]?.description || ""
   );
 
   const [department, setDepartment] = useState(
-    selectedRole[indexToEdit]?.department
-      ? selectedRole[indexToEdit]?.department
-      : ""
+    selectedRole[indexToEdit]?.department || ""
   );
 
   const [roleError, setRoleError] = useState("");
@@ -53,8 +48,14 @@ const AddRole = ({
     };
     if (selectedRole[indexToEdit]?.id) {
       dispatchRole({ type: "update", payload: role });
+      toast.success("Role Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchRole({ type: "add", payload: role });
+      toast.success("Role Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showRoleModal", false);
   };

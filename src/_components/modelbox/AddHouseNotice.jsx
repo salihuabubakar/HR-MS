@@ -14,6 +14,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import { toast } from "react-toastify";
 
 const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
@@ -81,8 +82,14 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
 
     if (selectedNotice[noticeIndexToEdit]?.id) {
       dispatchNotice({ type: "update", payload: fields });
+      toast.success("House Notice Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchNotice({ type: "add", payload: fields });
+      toast.success("House Notice Updated", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showNoticeModal", false);
   };

@@ -5,7 +5,11 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedEmployeeAccount: [],
   employeeError: [],
 
+  // Household Info
   selectedHouse: [],
+  isHouseError: [],
+
+
   selectedResident: [],
   selectedScheduleEvent: [],
   selectedShiftList: [],
@@ -28,6 +32,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showRoomModal: false,
   selectedRoom: [],
   deleteRoomModal: false,
+  roomError: [],
 
   // Role
   showRoleModal: false,
@@ -69,31 +74,38 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedHouseEmployee: [],
   showHouseEmployeeModal: false,
   deleteHouseEmployeeModal: false,
+  houseEmployeeError: [],
 
   // House Resident
   selectedHouseResident: [],
   showHouseResidentModal: false,
   deleteHouseResidentModal: false,
+  houseResidentError: [],
+
 
   // House Image
   showHouseImagesModal: false,
   selectedHouseImages: [],
   deleteHouseImagesModal: false,
+  houseImageError: [],
 
   // House Document
   showHouseDocumentsModal: false,
   deleteHouseDocumentsModal: false,
   selectedHouseDocuments: [],
+  houseDocumentError: [],
 
   // Bill
   selectedBill: [],
   showBillModal: false,
   deleteBillModal: false,
+  houseBillError: [],
 
   // Maintenance
   selectedMaintenance: [],
   showMaintenanceModal: false,
   deleteMaintenanceModal: false,
+  maintenanceError: [],
 
   // Organisation
   showOrganisationModal: false,
@@ -153,16 +165,19 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   deleteNoticeModal: false,
   showNoticeModal: false,
   selectedNotice: [],
+  houseNoticeError: [],
 
   // House Item
   deleteItemModal: false,
   showItemModal: false,
   selectedItem: [],
+  houseItemError: [],
 
   // House Inspection
   deleteInspectionModal: false,
   showInspectionModal: false,
   selectedInspection: [],
+  houseInspectionError: [],
 
   // Resident Account
   selectedResidentAccount: [],

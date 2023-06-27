@@ -15,6 +15,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import { toast } from "react-toastify";
 
 const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
@@ -24,57 +25,39 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
   const [selectedMaintenance] = useGlobalState("selectedMaintenance");
 
   const [date, setDate] = useState(
-    selectedMaintenance[maintenanceIndexToEdit]?.date
-      ? selectedMaintenance[maintenanceIndexToEdit]?.date
-      : ""
+    selectedMaintenance[maintenanceIndexToEdit]?.date || ""
   );
 
   const [cost, setCost] = useState(
-    selectedMaintenance[maintenanceIndexToEdit]?.cost
-      ? selectedMaintenance[maintenanceIndexToEdit]?.cost
-      : ""
+    selectedMaintenance[maintenanceIndexToEdit]?.cost || ""
   );
 
   const [beforeImage, setBeforeImage] = useState(
-    selectedMaintenance[maintenanceIndexToEdit]?.Before_Image
-      ? selectedMaintenance[maintenanceIndexToEdit]?.Before_Image
-      : []
+    selectedMaintenance[maintenanceIndexToEdit]?.Before_Image || []
   );
 
   const [afterImage, setAfterImage] = useState(
-    selectedMaintenance[maintenanceIndexToEdit]?.After_Image
-      ? selectedMaintenance[maintenanceIndexToEdit]?.After_Image
-      : []
+    selectedMaintenance[maintenanceIndexToEdit]?.After_Image || []
   );
 
   const [documents, setDocuments] = useState(
-    selectedMaintenance[maintenanceIndexToEdit]?.documents
-      ? selectedMaintenance[maintenanceIndexToEdit]?.documents
-      : []
+    selectedMaintenance[maintenanceIndexToEdit]?.documents || []
   );
 
   const [status, setStatus] = useState(
-    selectedMaintenance[maintenanceIndexToEdit]?.status
-      ? selectedMaintenance[maintenanceIndexToEdit]?.status
-      : ""
+    selectedMaintenance[maintenanceIndexToEdit]?.status || ""
   );
 
   const [Employee, setEmployee] = useState(
-    selectedMaintenance[maintenanceIndexToEdit]?.Employee
-      ? selectedMaintenance[maintenanceIndexToEdit]?.Employee
-      : ""
+    selectedMaintenance[maintenanceIndexToEdit]?.Employee || ""
   );
 
   const [Organization, setOrganization] = useState(
-    selectedMaintenance[maintenanceIndexToEdit]?.Organization
-      ? selectedMaintenance[maintenanceIndexToEdit]?.Organization
-      : ""
+    selectedMaintenance[maintenanceIndexToEdit]?.Organization || ""
   );
 
   const [description, setDescription] = useState(
-    selectedMaintenance[maintenanceIndexToEdit]?.description
-      ? selectedMaintenance[maintenanceIndexToEdit]?.description
-      : ""
+    selectedMaintenance[maintenanceIndexToEdit]?.description || ""
   );
 
   const [costError, setCostError] = useState("");
@@ -143,8 +126,14 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
 
     if (selectedMaintenance[maintenanceIndexToEdit]?.id) {
       dispatchMaintenance({ type: "update", payload: fields });
+      toast.success("House Maintenance Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchMaintenance({ type: "add", payload: fields });
+      toast.success("House Maintenance Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showMaintenanceModal", false);
   };
