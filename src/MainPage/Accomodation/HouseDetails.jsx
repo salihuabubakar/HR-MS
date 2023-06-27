@@ -12,6 +12,7 @@ import AddHouseNotice from '../../_components/modelbox/AddHouseNotice';
 import AddHouseItem from '../../_components/modelbox/AddHouseItem';
 import AddHouseInspection from "../../_components/modelbox/AddHouseInspection";
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
+import { Wrapper } from "../ServiceWork/style";
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
@@ -1498,7 +1499,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
               </div>
             ) : (
               <>
-                <div className="col-md-6 d-flex">
+              <div className="col-md-12 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
@@ -1529,52 +1530,31 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                           <i className="fa fa-plus" />
                         </a>
                       </h3>
-                      {houseDocumentsData?.length > 0
-                        ? houseDocumentsData?.map((doc, index) => {
+                      <Wrapper>
+                        {houseDocumentsData?.length > 0 ? (
+                          houseDocumentsData.map((doc, index) => {
                             const {
-                              title,
                               id,
-                              description,
-                              file,
                               house,
-                              expiry_date,
+                              title,
                               valid_from,
+                              expiry_date,
+                              file,
                               status,
+                              description,
                             } = doc;
                             if (house == houseId) {
                               return (
-                                <React.Fragment key={id}>
-                                  <ul className="personal-info">
-                                    <li>
-                                      <span className="text">
-                                        file:{" "}
-                                        {file && regex.test(file) ? (
-                                          <img
-                                            className="img-preview"
-                                            src={file}
-                                            alt="Preview"
-                                          />
-                                        ) : !file ? null : (
-                                          <span className="files-icon">
-                                            <i className="fa fa-file-pdf-o" />
-                                          </span>
-                                        )}
-                                      </span>
-                                      <span className="text">
-                                        Title: {title}
-                                      </span>
-                                      <span className="text">
-                                        Description: {description}
-                                      </span>
-                                      <span className="text">
-                                        Status: {status}
-                                      </span>
-                                      <span className="text">
-                                        Valid From: {valid_from}
-                                      </span>
-                                      <span className="text">
-                                        Expiry Date: {expiry_date}
-                                      </span>
+                                <div key={id} className="card">
+                                  <a className="name">
+                                    Document Name: {title}
+                                    <span
+                                      className="edit-icon"
+                                      style={{
+                                        background: "none",
+                                        border: "none",
+                                      }}
+                                    >
                                       <div className="dropdown dropdown-action text-end">
                                         <a
                                           className="action-icon dropdown-toggle"
@@ -1589,7 +1569,9 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                           <a
                                             className="dropdown-item"
                                             onClick={() =>
-                                              handleFileDownload(file)
+                                              handleFileDownload(
+                                                file
+                                              )
                                             }
                                           >
                                             <i className="fa fa-download m-r-5" />{" "}
@@ -1618,13 +1600,38 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                                           </a>
                                         </div>
                                       </div>
-                                    </li>
-                                  </ul>
-                                </React.Fragment>
+                                    </span>
+                                  </a>
+                                  <span>
+                                    Valid From: {""}
+                                    {moment(valid_from).format("DD MMM YYYY")} - To: {" "}
+                                    {expiry_date &&
+                                      moment(expiry_date).format("DD MMM YYYY")}
+                                  </span>
+                                  <div>Status: {status}</div>
+                                  <div>Description: {description}</div>
+                                  <div>
+                                    {file &&
+                                    regex.test(file) ? (
+                                      <img
+                                        className="img-preview"
+                                        src={file}
+                                        alt="Preview"
+                                      />
+                                    ) : !file ? null : (
+                                      <span className="files-icon">
+                                        <i className="fa fa-file-pdf-o" />
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
                               );
                             }
                           })
-                        : "Ops! No Document"}
+                        ) : (
+                          <></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
