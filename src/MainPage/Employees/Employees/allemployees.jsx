@@ -107,6 +107,12 @@ const AllEmployees = () => {
       }
     });
 
+    const [employeeError] = useGlobalState("employeeError");
+
+    const clearErrorMessage = () => {
+      setGlobalState("employeeError", "");
+    };
+
       return (
         <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
           <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -199,6 +205,25 @@ const AllEmployees = () => {
                       </a>
                     </div>
                   </div>
+                  <span style={{ color: "red", fontSize: "0.7rem" }}>
+                    {employeeError?.length > 0 && (
+                      <>
+                        Error: {employeeError}
+                        <button
+                          onClick={clearErrorMessage}
+                          style={{
+                            marginLeft: "10px",
+                            fontSize: "0.8rem",
+                            cursor: "pointer",
+                            color: "black",
+                          }}
+                        >
+                          <i className="fa fa-times" />
+                          Clear Error
+                        </button>
+                      </>
+                    )}
+                  </span>
                   {/* Search Filter */}
                 </>
               ) : null}
@@ -221,6 +246,7 @@ const AllEmployees = () => {
                   handleDeleteAcct={handleDeleteAcct}
                   DefaultImage={DefaultImage}
                   data={data}
+                  isLoading={isLoading}
                   setTab={setTab}
                   setGetEmployeeId={setGetEmployeeId}
                   itemsPerPage={itemsPerPage}

@@ -73,6 +73,24 @@ const Profile = ({
       document.body.removeChild(a);
     };
 
+    const [employeeBankError] = useGlobalState("employeeBankError");
+    const [employeeEmergencyError] = useGlobalState("employeeEmergencyError");
+    const [employeeAddressError] = useGlobalState("employeeAddressError");
+    const [employeeQualificationError] = useGlobalState(
+      "employeeQualificationError"
+    );
+    const [employeeExperiencError] = useGlobalState("employeeExperiencError");
+    const [employeeDocumentError] = useGlobalState("employeeDocumentError");
+
+    const clearErrorMessage = () => {
+      setGlobalState("employeeBankError", "");
+      setGlobalState("employeeEmergencyError", "");
+      setGlobalState("employeeAddressError", "");
+      setGlobalState("employeeQualificationError", "");
+      setGlobalState("employeeExperiencError", "");
+      setGlobalState("employeeDocumentError", "");
+    };
+
   // Address
   const [employeeAddressState, dispatchEmployeeAddress] = useReducer(
     add_update_delete_employee_address,
@@ -80,8 +98,6 @@ const Profile = ({
   );
   const {
     employeeAddressData,
-    isEmployeeAddressDataLoading,
-    employeeAddressError,
   } = useEmployeeAddressFetching();
   const [getEmployeeAddressId, setGetEmployeeAddressId] = useState();
   const [employeeAddressIndexToEdit, setEmployeeAddressIndexToEdit] =
@@ -115,8 +131,6 @@ const Profile = ({
   );
   const {
     employeeEmergencyData,
-    isEmployeeEmergencyDataLoading,
-    employeeEmergencyError,
   } = useEmployeeEmergencyFetching();
   const [getEmployeeEmergencyId, setGetEmployeeEmergencyId] = useState();
   const [employeeEmergencyIndexToEdit, setEmployeeEmergencyIndexToEdit] =
@@ -150,8 +164,6 @@ const Profile = ({
     useReducer(add_update_delete_employee_qualification, []);
   const {
     employeeQualificationData,
-    isEmployeeQualificationDataLoading,
-    employeeQualificationError,
   } = useEmployeeQualificationFetching();
   const [getEmployeeQualificationId, setGetEmployeeQualificationId] =
     useState();
@@ -228,8 +240,6 @@ const Profile = ({
   );
   const {
     employeeDocumentData,
-    isEmployeeDocumentDataLoading,
-    employeeDocumentError,
   } = useEmployeeDocumentFetching();
   const [getEmployeeDocumentId, setGetEmployeeDocumentId] = useState();
   const [employeeDocumentIndexToEdit, setEmployeeDocumentIndexToEdit] =
@@ -264,7 +274,7 @@ const Profile = ({
     add_update_delete_employee_bank,
     []
   );
-  const { employeeBankData, isEmployeeBankDataLoading, employeeBankError } =
+  const { employeeBankData, isEmployeeBankDataLoading } =
     useEmployeeBankFetching();
   const [getEmployeeBankId, setGetEmployeeBankId] = useState();
   const [employeeBankIndexToEdit, setEmployeeBankIndexToEdit] = useState();
@@ -324,6 +334,7 @@ const Profile = ({
       return s.status
     }
   })
+
 
 // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
@@ -516,6 +527,25 @@ const Profile = ({
                     <div className="card-body">
                       <h3 className="card-title">
                         Bank Information{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {employeeBankError?.length > 0 && (
+                            <>
+                              Error: {employeeBankError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           className="edit-icon"
                           onClick={() =>
@@ -653,6 +683,25 @@ const Profile = ({
                     <div className="card-body">
                       <h3 className="card-title">
                         Emergency Contact{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {employeeEmergencyError?.length > 0 && (
+                            <>
+                              Error: {employeeEmergencyError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           className="edit-icon"
                           onClick={() =>
@@ -753,6 +802,25 @@ const Profile = ({
                     <div className="card-body">
                       <h3 className="card-title">
                         Address{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {employeeAddressError?.length > 0 && (
+                            <>
+                              Error: {employeeAddressError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           className="edit-icon"
                           onClick={() =>
@@ -889,7 +957,7 @@ const Profile = ({
                                     Review Type: <span>{review_type}</span>
                                   </div>
                                   <div className="text">
-                                    Review Manager: 
+                                    Review Manager:
                                     {review_manager != Number(review_manager)
                                       ? review_manager
                                       : " Admin"}
@@ -947,6 +1015,25 @@ const Profile = ({
                     <div className="card-body">
                       <h3 className="card-title">
                         Qualifications{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {employeeQualificationError?.length > 0 && (
+                            <>
+                              Error: {employeeQualificationError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           onClick={() =>
                             setGlobalState(
@@ -1043,18 +1130,25 @@ const Profile = ({
                                           Qualification: {qualification_name}
                                         </div>
                                         <div>
-                                          Start Date: {start_date} - End Date: {end_date}
+                                          Start Date: {start_date} - End Date:{" "}
+                                          {end_date}
                                         </div>
-                                        <div>Description: {description ? description : "--"}</div>
                                         <div>
-                                          File {qualification_upload &&
+                                          Description:{" "}
+                                          {description ? description : "--"}
+                                        </div>
+                                        <div>
+                                          File{" "}
+                                          {qualification_upload &&
                                           regex.test(qualification_upload) ? (
                                             <img
                                               className="img-preview"
                                               src={qualification_upload}
                                               alt="Preview"
                                             />
-                                          ) : !qualification_upload ? "--" : (
+                                          ) : !qualification_upload ? (
+                                            "--"
+                                          ) : (
                                             <span className="files-icon">
                                               <i className="fa fa-file-pdf-o" />
                                             </span>
@@ -1078,6 +1172,25 @@ const Profile = ({
                     <div className="card-body">
                       <h3 className="card-title">
                         Experience{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {employeeExperiencError?.length > 0 && (
+                            <>
+                              Error: {employeeExperiencError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           onClick={() =>
                             setGlobalState("showEmployeeExperienceModal", true)
@@ -1173,7 +1286,10 @@ const Profile = ({
                                         Start Date: {start_date} - End Date:{" "}
                                         {end_date}
                                       </div>
-                                      <div>Description: {description ? description : "--"}</div>
+                                      <div>
+                                        Description:{" "}
+                                        {description ? description : "--"}
+                                      </div>
                                       <div>
                                         File:{" "}
                                         {experience_upload &&
@@ -1183,7 +1299,9 @@ const Profile = ({
                                             src={experience_upload}
                                             alt="Preview"
                                           />
-                                        ) : !experience_upload ? "--" : (
+                                        ) : !experience_upload ? (
+                                          "--"
+                                        ) : (
                                           <span className="files-icon">
                                             <i className="fa fa-file-pdf-o" />
                                           </span>
@@ -1725,6 +1843,25 @@ const Profile = ({
                     <div className="card-body">
                       <h3 className="card-title">
                         Document{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {employeeDocumentError?.length > 0 && (
+                            <>
+                              Error: {employeeDocumentError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           onClick={() =>
                             setGlobalState("showEmployeeDocumentModal", true)

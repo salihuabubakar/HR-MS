@@ -13,7 +13,6 @@ import DeleteModal from "../../../_components/modelbox/DeleteModal";
 
 const Role = ({
   roleData,
-  roleError,
   isRoleLoading,
   add_update_delete_role,
   departmentData,
@@ -60,6 +59,12 @@ const Role = ({
     setGlobalState("deleteRoleModal", true);
   };
 
+  const [roleError] = useGlobalState("roleError");
+  
+  const clearErrorMessage = () => {
+    setGlobalState("departmentError", "");
+  };
+
   const columns = [
     {
       title: "#",
@@ -71,7 +76,19 @@ const Role = ({
     {
       title: "Department",
       dataIndex: "department",
-      // sorter: (a, b) => a.department.length - b.department.length,
+      render: (text, record, index) => {
+        const { department } = record;
+        const matchedDepartment = departmentData?.find(
+          (d) => d.id === department
+        );
+        if (matchedDepartment) {
+          return (
+            <React.Fragment>{`${matchedDepartment.department_name}`}</React.Fragment>
+          );
+        } else {
+          return null; // or return a default value if no match is found
+        }
+      },
     },
     {
       title: "Role",
@@ -120,6 +137,25 @@ const Role = ({
           <div className="row align-items-center">
             <div className="col">
               <h3 className="page-title">Role</h3>
+              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                {roleError?.length > 0 && (
+                  <>
+                    Error: {roleError}
+                    <button
+                      onClick={clearErrorMessage}
+                      style={{
+                        marginLeft: "10px",
+                        fontSize: "0.8rem",
+                        cursor: "pointer",
+                        color: "black",
+                      }}
+                    >
+                      <i className="fa fa-times" />
+                      Clear Error
+                    </button>
+                  </>
+                )}
+              </span>
             </div>
             <div className="col-auto float-end ml-auto">
               <a
@@ -143,6 +179,7 @@ const Role = ({
                 bordered
                 dataSource={roleData}
                 rowKey={(role) => role?.id}
+                loading={isRoleLoading}
               />
             </div>
           </div>

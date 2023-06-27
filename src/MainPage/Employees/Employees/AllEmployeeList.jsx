@@ -4,11 +4,14 @@ import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
-import { useRoleFetching } from "../../../utils/employeeCustomFetchHook";
+import {
+  useRoleFetching,
+} from "../../../utils/employeeCustomFetchHook";
 const AllEmployeeList = ({
   DefaultImage,
   handleEditEmployee,
   handleDeleteAcct,
+  isLoading,
   data,
   setTab,
   setGetEmployeeId,
@@ -48,43 +51,49 @@ const AllEmployeeList = ({
     {
       title: "Name",
       render: (text, record, index) => {
-        const { id, photo, first_name, middle_name, last_name, role_name } =
+        const { id, photo, first_name, middle_name, last_name, role } =
           record;
-        return (
-          <React.Fragment>
-            <h2 className="table-avatar">
-              <a
-                // to={{
-                //   pathname: "/app/profile/employee-profile",
-                //   state: { id: id, index: index },
-                // }}
-                onClick={() => handleEmployeeProfilePage(id, index)}
-                className="avatar"
-                style={{
-                  borderRadius: "5px",
-                  backgroundColor: "#00000000",
-                  height: "100%",
-                }}
-              >
-                <img
-                  style={{ width: "40px", height: "40px" }}
-                  alt=""
-                  src={photo ? photo : DefaultImage}
-                />
-              </a>
-              <a
-                // to={{
-                //   pathname: "/app/profile/employee-profile",
-                //   state: { id: id, index: index },
-                // }}
-                onClick={() => handleEmployeeProfilePage(id, index)}
-              >
-                {`${first_name} ${middle_name} ${last_name}`}{" "}
-                <span>{role_name ? role_name : "--"}</span>
-              </a>
-            </h2>
-          </React.Fragment>
-        );
+          const matchedRole = roleData?.find((r) => r.id === role);
+          if (matchedRole) {
+            return (
+              // <React.Fragment>{`${matchedRole.role_name}`}</React.Fragment>
+              <React.Fragment>
+                <h2 className="table-avatar">
+                  <a
+                    // to={{
+                    //   pathname: "/app/profile/employee-profile",
+                    //   state: { id: id, index: index },
+                    // }}
+                    onClick={() => handleEmployeeProfilePage(id, index)}
+                    className="avatar"
+                    style={{
+                      borderRadius: "5px",
+                      backgroundColor: "#00000000",
+                      height: "100%",
+                    }}
+                  >
+                    <img
+                      style={{ width: "40px", height: "40px" }}
+                      alt=""
+                      src={photo ? photo : DefaultImage}
+                    />
+                  </a>
+                  <a
+                    // to={{
+                    //   pathname: "/app/profile/employee-profile",
+                    //   state: { id: id, index: index },
+                    // }}
+                    onClick={() => handleEmployeeProfilePage(id, index)}
+                  >
+                    {`${first_name} ${middle_name} ${last_name}`}{" "}
+                    <span>{matchedRole.role_name}</span>
+                  </a>
+                </h2>
+              </React.Fragment>
+            );
+          } else {
+            return null; // or return a default value if no match is found
+          }
       },
       // sorter: (a, b) => a.name.length - b.name.length,
     },
@@ -147,6 +156,7 @@ const AllEmployeeList = ({
             bordered
             dataSource={data}
             rowKey={(data) => data?.id}
+            loading={isLoading}
           />
         </div>
       </div>

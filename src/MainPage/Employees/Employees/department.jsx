@@ -15,7 +15,6 @@ import DeleteModal from "../../../_components/modelbox/DeleteModal";
 const Department = ({
   departmentData,
   isDepartmentDataLoading,
-  departmentError,
   add_update_delete_department,
 }) => {
   // Table pagination
@@ -59,6 +58,12 @@ const Department = ({
   const handleDeptDelete = (id) => {
     setDeptIdToEdit(id);
     setGlobalState("deleteDeptModal", true);
+  };
+
+  const [departmentError] = useGlobalState("departmentError");
+
+  const clearErrorMessage = () => {
+    setGlobalState("departmentError", "");
   };
 
   const columns = [
@@ -115,6 +120,25 @@ const Department = ({
           <div className="row align-items-center">
             <div className="col">
               <h3 className="page-title">Department</h3>
+              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                {departmentError?.length > 0 && (
+                  <>
+                    Error: {departmentError}
+                    <button
+                      onClick={clearErrorMessage}
+                      style={{
+                        marginLeft: "10px",
+                        fontSize: "0.8rem",
+                        cursor: "pointer",
+                        color: "black",
+                      }}
+                    >
+                      <i className="fa fa-times" />
+                      Clear Error
+                    </button>
+                  </>
+                )}
+              </span>
             </div>
             <div className="col-auto float-end ml-auto">
               <a
@@ -138,6 +162,7 @@ const Department = ({
                 bordered
                 dataSource={departmentData}
                 rowKey={(dept) => dept?.id}
+                loading={isDepartmentDataLoading}
               />
             </div>
           </div>

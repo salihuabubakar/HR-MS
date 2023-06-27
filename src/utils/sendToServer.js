@@ -28,6 +28,10 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "employeeError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -45,6 +49,10 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "employeeError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -62,6 +70,10 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "employeeError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -94,6 +106,10 @@ export const add_update_delete_role = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "roleError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -123,6 +139,10 @@ export const add_update_delete_role = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "roleError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -143,6 +163,10 @@ export const add_update_delete_role = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "roleError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -175,6 +199,10 @@ export const add_update_delete_department = async (state, { type, payload }) => 
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "departmentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -204,6 +232,10 @@ export const add_update_delete_department = async (state, { type, payload }) => 
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "departmentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -224,6 +256,10 @@ export const add_update_delete_department = async (state, { type, payload }) => 
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "departmentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -776,6 +812,10 @@ export const add_update_delete_organisation = async (state, { type, payload }) =
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "organisationError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -794,6 +834,10 @@ export const add_update_delete_organisation = async (state, { type, payload }) =
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "organisationError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -811,6 +855,10 @@ export const add_update_delete_organisation = async (state, { type, payload }) =
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "organisationError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -818,7 +866,7 @@ export const add_update_delete_organisation = async (state, { type, payload }) =
   }
 };
 
-// Add - Update - Delete House Status state
+// Add - Update - Delete  Status state
 export const add_update_delete_status = async (state, { type, payload }) => {
   // const { id, formData } = payload;
   console.log(payload);
@@ -843,6 +891,10 @@ export const add_update_delete_status = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "statusError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -861,6 +913,10 @@ export const add_update_delete_status = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "statusError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -878,6 +934,10 @@ export const add_update_delete_status = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "statusError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -910,6 +970,10 @@ export const add_update_delete_employee_address = async (state, { type, payload 
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "employeeAddressError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -928,6 +992,10 @@ export const add_update_delete_employee_address = async (state, { type, payload 
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "employeeAddressError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -945,6 +1013,10 @@ export const add_update_delete_employee_address = async (state, { type, payload 
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "employeeAddressError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -978,6 +1050,10 @@ export const add_update_delete_employee_emergency = async (state, { type, payloa
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "employeeEmergencyError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -996,6 +1072,10 @@ export const add_update_delete_employee_emergency = async (state, { type, payloa
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "employeeEmergencyError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -1013,6 +1093,10 @@ export const add_update_delete_employee_emergency = async (state, { type, payloa
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "employeeEmergencyError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -1045,6 +1129,10 @@ export const add_update_delete_employee_qualification = async (state, { type, pa
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "employeeQualificationError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -1063,6 +1151,10 @@ export const add_update_delete_employee_qualification = async (state, { type, pa
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "employeeQualificationError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -1080,6 +1172,10 @@ export const add_update_delete_employee_qualification = async (state, { type, pa
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "employeeQualificationError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -1115,6 +1211,10 @@ export const add_update_delete_employee_experience = async (
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "employeeExperiencError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -1133,6 +1233,10 @@ export const add_update_delete_employee_experience = async (
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "employeeExperiencError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -1150,6 +1254,10 @@ export const add_update_delete_employee_experience = async (
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "employeeExperiencError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -1185,6 +1293,10 @@ export const add_update_delete_employee_document = async (
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "employeeDocumentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -1203,6 +1315,10 @@ export const add_update_delete_employee_document = async (
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "employeeDocumentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -1220,6 +1336,10 @@ export const add_update_delete_employee_document = async (
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "employeeDocumentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -1249,6 +1369,10 @@ export const add_update_delete_employee_bank = async (state, { type, payload }) 
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "employeeBankError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -1267,6 +1391,10 @@ export const add_update_delete_employee_bank = async (state, { type, payload }) 
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "employeeBankError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -1282,6 +1410,10 @@ export const add_update_delete_employee_bank = async (state, { type, payload }) 
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "employeeBankError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -1311,6 +1443,10 @@ export const add_update_delete_employee_review = async (state, { type, payload }
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "employeeReviewError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -1329,6 +1465,10 @@ export const add_update_delete_employee_review = async (state, { type, payload }
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "employeeReviewError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -1346,6 +1486,10 @@ export const add_update_delete_employee_review = async (state, { type, payload }
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "employeeReviewError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -1594,6 +1738,7 @@ export const add_update_delete_resident = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState("isResidentError", JSON.stringify(error.response.data));
         throw new Error("Error occurred while posting data");
       }
 
@@ -1612,6 +1757,7 @@ export const add_update_delete_resident = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState("isResidentError", JSON.stringify(error.response.data));
         throw new Error("Error occurred while updating data");
       }
 
@@ -1629,6 +1775,7 @@ export const add_update_delete_resident = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState("isResidentError", JSON.stringify(error.response.data));
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -3452,5 +3599,6 @@ export const add_update_delete_resident_legal_status_type = async (
       throw new Error();
   }
 };
+
 
 
