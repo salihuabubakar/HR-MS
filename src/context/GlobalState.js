@@ -1,7 +1,9 @@
 import { createGlobalState } from "react-hooks-global-state";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
+  //Employee Account
   selectedEmployeeAccount: [],
+  employeeError: [],
 
   selectedHouse: [],
   selectedResident: [],
@@ -20,6 +22,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showDeptModal: false,
   deleteDeptModal: false,
   selectedDept: [],
+  departmentError: [],
 
   // Room
   showRoomModal: false,
@@ -30,6 +33,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showRoleModal: false,
   selectedRole: [],
   deleteRoleModal: false,
+  roleError: [],
 
   showModal: false,
   showProfileModal: false,
@@ -39,6 +43,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   // Review
   showAddReviewModal: false,
   selectedReviewInfo: [],
+  employeeReviewError: [],
 
   showAddSchedul: false,
   showEmergencyContactModal: false,
@@ -94,41 +99,55 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showOrganisationModal: false,
   selectedOrganisation: [],
   deleteOrganisationModal: false,
+  organisationError: [],
 
   // Status
   showStatusModal: false,
   selectedStatus: [],
   deleteStatusModal: false,
+  statusError: [],
+
+  // Status
+  showStatusTypeModal: false,
+  selectedStatusType: [],
+  deleteStatusTypeModal: false,
+  statusTypeError: [],
 
   // Employee Address
   deleteEmployeeAddressModal: false,
   showEmployeeAddressModal: false,
   selectedEmployeeAddress: [],
+  employeeAddressError: [],
 
   // Employee Emergency Contact
   deleteEmployeeEmergencyModal: false,
   showEmployeeEmergencyModal: false,
   selectedEmployeeEmergency: [],
+  employeeEmergencyError: [],
 
   // Employee Qualification
   deleteEmployeeQualificationModal: false,
   showEmployeeQualificationModal: false,
   selectedEmployeeQualification: [],
+  employeeQualificationError: [],
 
   // Employee Experience
   deleteEmployeeExperienceModal: false,
   showEmployeeExperienceModal: false,
   selectedEmployeeExperience: [],
+  employeeExperiencError: [],
 
   // Employee Document
   deleteEmployeeDocumentModal: false,
   showEmployeeDocumentModal: false,
   selectedEmployeeDocument: [],
+  employeeDocumentError: [],
 
   // Employee Bank
   deleteEmployeeBankModal: false,
   showEmployeeBankModal: false,
   selectedEmployeeBank: [],
+  employeeBankError: [],
 
   // House Notice
   deleteNoticeModal: false,
@@ -147,6 +166,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
 
   // Resident Account
   selectedResidentAccount: [],
+  isResidentError: [],
 
   // Resident gp
   showResidentGpModal: false,

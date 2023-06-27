@@ -15,12 +15,14 @@ import {
 } from "../../../utils/sendToServer";
 import {
   useStatusFetching,
+  useDataFetching,
 } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
 import DefaultImage from "../../../assets/img/placeholder.jpg";
 
 const Status = () => {
-  const { statusData, isStatusDataLoading, statusError } = useStatusFetching();
+  const { statusData, isStatusDataLoading } = useStatusFetching();
+  const { data } = useDataFetching();
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,6 +79,12 @@ const handleDeleteStatus = (id) => {
     }
   });
 
+  const [statusError] = useGlobalState("statusError");
+
+  const clearErrorMessage = () => {
+    setGlobalState("statusError", "");
+  };
+
   const columns = [
     {
       title: "#",
@@ -90,15 +98,14 @@ const handleDeleteStatus = (id) => {
       dataIndex: "employee",
       render: (text, record, index) => {
         const { employee } = record;
-        return (
-          <React.Fragment>
-            <h2 className="table-avatar">
-              <Link to="#" onClick={(e) => e.preventDefault()}>
-                <span>{employee}</span>
-              </Link>
-            </h2>
-          </React.Fragment>
-        );
+        const matchedEmployee = data?.find((e) => e.id === employee);
+        if (matchedEmployee) {
+          return (
+            <React.Fragment>{`${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`}</React.Fragment>
+          );
+        } else {
+          return null; // or return a default value if no match is found
+        }
       },
     },
     {
@@ -121,10 +128,16 @@ const handleDeleteStatus = (id) => {
       title: "Authorising Mananger",
       dataIndex: "authorising_manager",
     },
-
     {
       title: "Comment",
       dataIndex: "comments",
+      render: (text, record, index) => {
+        return (
+          <div style={{ width: "100%" }} data-title={text}>
+            Hover to show
+          </div>
+        );
+      },
     },
 
     {
@@ -230,6 +243,25 @@ const handleDeleteStatus = (id) => {
               </a>
             </div>
           </div>
+          <span style={{ color: "red", fontSize: "0.7rem" }}>
+            {statusError?.length > 0 && (
+              <>
+                Error: {statusError}
+                <button
+                  onClick={clearErrorMessage}
+                  style={{
+                    marginLeft: "10px",
+                    fontSize: "0.8rem",
+                    cursor: "pointer",
+                    color: "black",
+                  }}
+                >
+                  <i className="fa fa-times" />
+                  Clear Error
+                </button>
+              </>
+            )}
+          </span>
           {/* /Search Filter */}
           <div className="row">
             <div className="col-md-12">
@@ -242,6 +274,7 @@ const handleDeleteStatus = (id) => {
                   bordered
                   dataSource={statusData}
                   rowKey={(status) => status?.id}
+                  loading={isStatusDataLoading}
                 />
               </div>
             </div>

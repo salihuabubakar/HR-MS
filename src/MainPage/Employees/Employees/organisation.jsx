@@ -10,7 +10,6 @@ import DeleteModal from "../../../_components/modelbox/DeleteModal";
 const Organisation = ({
   organisationData,
   isOrganisationDataLoading,
-  organisationError,
   add_update_delete_organisation
 }) => {
   // Table pagination
@@ -56,6 +55,12 @@ const Organisation = ({
   const handleOrganisationDelete = (id) => {
     setGetOrganisationId(id);
     setGlobalState("deleteOrganisationModal", true);
+  };
+
+  const [organisationError] = useGlobalState("organisationError");
+
+  const clearErrorMessage = () => {
+    setGlobalState("organisationError", "");
   };
 
   const columns = [
@@ -140,6 +145,25 @@ const Organisation = ({
           <div className="row align-items-center">
             <div className="col">
               <h3 className="page-title">Organisation</h3>
+              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                {organisationError?.length > 0 && (
+                  <>
+                    Error: {organisationError}
+                    <button
+                      onClick={clearErrorMessage}
+                      style={{
+                        marginLeft: "10px",
+                        fontSize: "0.8rem",
+                        cursor: "pointer",
+                        color: "black",
+                      }}
+                    >
+                      <i className="fa fa-times" />
+                      Clear Error
+                    </button>
+                  </>
+                )}
+              </span>
             </div>
             <div className="col-auto float-end ml-auto">
               <a
@@ -163,6 +187,7 @@ const Organisation = ({
                 bordered
                 dataSource={organisationData}
                 rowKey={(org) => org?.id}
+                loading={isOrganisationDataLoading}
               />
             </div>
           </div>

@@ -15,13 +15,13 @@ import {
   savedReviewReducer,
 } from "../../../utils/localStorage";
 import { add_update_delete_employee_review } from "../../../utils/sendToServer";
-import { useEmployeeReviewFetching } from "../../../utils/employeeCustomFetchHook";
+import { useEmployeeReviewFetching, useDataFetching } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
-import DefaultImage from "../../../assets/img/placeholder.jpg";
 
 const Review = () => {
 
-  const { employeeReviewData } = useEmployeeReviewFetching();
+  const { employeeReviewData, isEmployeeReviewDataLoading } = useEmployeeReviewFetching();
+  const { data } = useDataFetching();
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -123,6 +123,13 @@ const Review = () => {
     }
   });
 
+
+  const [employeeReviewError] = useGlobalState("employeeReviewError");
+
+  const clearErrorMessage = () => {
+    setGlobalState("employeeReviewError", "");
+  };
+
   const columns = [
     {
       title: "#",
@@ -136,15 +143,14 @@ const Review = () => {
       dataIndex: "employee",
       render: (text, record, index) => {
         const { employee } = record;
-        return (
-          <React.Fragment>
-            <h2 className="table-avatar">
-              <Link to="#" onClick={(e) => e.preventDefault()}>
-                <span>{employee}</span>
-              </Link>
-            </h2>
-          </React.Fragment>
-        );
+        const matchedEmployee = data?.find((e) => e.id === employee);
+        if (matchedEmployee) {
+          return (
+            <React.Fragment>{`${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`}</React.Fragment>
+          );
+        } else {
+          return null; // or return a default value if no match is found
+        }
       },
     },
     {
@@ -163,12 +169,6 @@ const Review = () => {
         );
       },
     },
-
-    {
-      title: "Description",
-      dataIndex: "description",
-    },
-
     {
       title: "Review Date",
       dataIndex: "review_date",
@@ -191,6 +191,17 @@ const Review = () => {
               </Link>
             </h2>
           </React.Fragment>
+        );
+      },
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      render: (text, record, index) => {
+        return (
+          <div style={{ width: "100%" }} data-title={text}>
+            Hover to show
+          </div>
         );
       },
     },
@@ -314,6 +325,25 @@ const Review = () => {
               </a>
             </div>
           </div>
+          <span style={{ color: "red", fontSize: "0.7rem" }}>
+            {employeeReviewError?.length > 0 && (
+              <>
+                Error: {employeeReviewError}
+                <button
+                  onClick={clearErrorMessage}
+                  style={{
+                    marginLeft: "10px",
+                    fontSize: "0.8rem",
+                    cursor: "pointer",
+                    color: "black",
+                  }}
+                >
+                  <i className="fa fa-times" />
+                  Clear Error
+                </button>
+              </>
+            )}
+          </span>
           {/* /Search Filter */}
           <div className="row">
             <div className="col-md-12">
@@ -326,6 +356,7 @@ const Review = () => {
                   bordered
                   dataSource={employeeReviewData}
                   rowKey={(review) => review?.id}
+                  loading={isEmployeeReviewDataLoading}
                 />
               </div>
             </div>
