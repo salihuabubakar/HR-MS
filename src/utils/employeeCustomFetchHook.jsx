@@ -1147,12 +1147,84 @@ export const useResidentMisperFetching = () => {
   };
 };
 
+// Get resident DocumentType data
+export const useResidentDocumentTypeFetching = () => {
+  const fetchResidentDocumentTypeData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/documenttype/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: residentDocumentTypeData,
+    isLoading: residentDocumentTypeLoading,
+    error: residentDocumentTypeError,
+  } = useQuery("residentDocumentTypeData", fetchResidentDocumentTypeData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on ResidentDocumentTypeData
+      queryClient.invalidateQueries(["residentDocumentTypeData"]);
+    },
+  });
+
+  return {
+    residentDocumentTypeData,
+    residentDocumentTypeLoading,
+    residentDocumentTypeError,
+  };
+};
 
 
+// Get resident Gp Type data
+export const useResidentGpTypeFetching = () => {
+  const fetchResidentGpTypeData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/gptype/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
 
+  const {
+    data: residentGpTypeData,
+    isLoading: residentGpTypeLoading,
+    error: residentGpTypeError,
+  } = useQuery("residentGpTypeData", fetchResidentGpTypeData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on ResidentGpTypeData
+      queryClient.invalidateQueries(["residentGpTypeData"]);
+    },
+  });
 
+  return {
+    residentGpTypeData,
+    residentGpTypeLoading,
+    residentGpTypeError,
+  };
+};
 
+// Get resident Legal Status Type data
+export const useResidentLegalStatusTypeFetching = () => {
+  const fetchResidentLegalStatusTypeData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/legalstatus/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
 
+  const {
+    data: residentLegalStatusTypeData,
+    isLoading: residentLegalStatusTypeLoading,
+    error: residentLegalStatusTypeError,
+  } = useQuery("residentLegalStatusTypeData", fetchResidentLegalStatusTypeData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on ResidentLegalStatusTypeData
+      queryClient.invalidateQueries(["residentLegalStatusTypeData"]);
+    },
+  });
+
+  return {
+    residentLegalStatusTypeData,
+    residentLegalStatusTypeLoading,
+    residentLegalStatusTypeError,
+  };
+};
 
 
 

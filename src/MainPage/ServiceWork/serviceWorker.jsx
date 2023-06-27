@@ -222,6 +222,7 @@ const handleDeleteAcct = (id) => {
               DefaultImage={DefaultImage}
               data={residentData}
               setTab={setTab}
+              isResidentLoading={isResidentLoading}
               setGetResidentId={setGetResidentId}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}

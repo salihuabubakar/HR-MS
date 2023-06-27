@@ -65,6 +65,9 @@ const DeleteModal = ({
     setGlobalState("deleteResidentRequestModal", false);
     setGlobalState("deleteResidentIncidentModal", false);
     setGlobalState("deleteResidentMisperModal", false);
+    setGlobalState("deleteResidentDocumentTypeModal", false);
+    setGlobalState("deleteResidentGpTypeModal", false);
+    setGlobalState("deleteResidentLegalStatusTypeModal", false);
   };
 
   const handleModalClose = () => {
@@ -112,6 +115,9 @@ const DeleteModal = ({
     setGlobalState("deleteResidentRequestModal", false);
     setGlobalState("deleteResidentIncidentModal", false);
     setGlobalState("deleteResidentMisperModal", false);
+    setGlobalState("deleteResidentDocumentTypeModal", false);
+    setGlobalState("deleteResidentGpTypeModal", false);
+    setGlobalState("deleteResidentLegalStatusTypeModal", false);
   };
 
   return (

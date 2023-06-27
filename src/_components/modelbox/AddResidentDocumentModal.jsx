@@ -7,6 +7,7 @@ import {
 } from "./Addemployee.style";
 import { toast } from "react-toastify";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { useResidentDocumentTypeFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentDocumentModal = ({
   residentDocumentIndexToEdit,
@@ -15,6 +16,7 @@ const AddResidentDocumentModal = ({
   resident,
 }) => {
   const [selectedResidentDocument] = useGlobalState("selectedResidentDocument");
+  const { residentDocumentTypeData } = useResidentDocumentTypeFetching();
 
   const [document_name, setDocumentName] = useState(
     selectedResidentDocument[residentDocumentIndexToEdit]?.document_name || ""
@@ -212,10 +214,13 @@ const AddResidentDocumentModal = ({
                             <option disabled value="">
                               Select
                             </option>
-                            <option value={1}>Passpord</option>
-                            <option value={2}>NIN</option>
-                            <option value={3}>Birth Cert</option>
-                            <option value={4}>School Cert</option>
+                            {residentDocumentTypeData?.map(type => {
+                              return (
+                                <option key={type.id} value={type.id}>
+                                  {type.document_type}
+                                </option>
+                              );
+                            })}
                           </select>
                         </div>
                       </div>

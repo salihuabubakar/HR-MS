@@ -20,7 +20,7 @@ import "./style.css";
 import moment from "moment";
 
 const Incident = () => {
-  const { residentIncidentData } = useResidentIncidentFetching();
+  const { residentIncidentData, residentIncidentLoading } = useResidentIncidentFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
   // Table pagination
@@ -276,6 +276,7 @@ const Incident = () => {
                   bordered
                   dataSource={residentIncidentData}
                   rowKey={(residentIncident) => residentIncident?.id}
+                  loading={residentIncidentLoading}
                 />
               </div>
             </div>

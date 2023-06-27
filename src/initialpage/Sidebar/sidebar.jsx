@@ -355,6 +355,36 @@ const toggleLevelThree = (value) => {
                       <li>
                         <Link
                           className={
+                            pathname.includes("document-type") ? "active" : ""
+                          }
+                          to="/app/servicework/document-type"
+                        >
+                          Document Type
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("legal-status") ? "active" : ""
+                          }
+                          to="/app/servicework/legal-status"
+                        >
+                          Legal Status
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("gp-type") ? "active" : ""
+                          }
+                          to="/app/servicework/gp-type"
+                        >
+                          gp type
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
                             pathname.includes("incident") ? "active" : ""
                           }
                           to="/app/servicework/incident"

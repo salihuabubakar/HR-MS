@@ -20,7 +20,7 @@ import "./style.css";
 import moment from "moment";
 
 const Complaint = () => {
-  const { complaintData } = useComplaintFetching();
+  const { complaintData, complaintLoading } = useComplaintFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
   // Table pagination
@@ -291,6 +291,7 @@ const Complaint = () => {
                   bordered
                   dataSource={complaintData}
                   rowKey={(complaint) => complaint?.id}
+                  loading={complaintLoading}
                 />
               </div>
             </div>

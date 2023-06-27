@@ -12,6 +12,9 @@ import Complaint from "./complaint";
 import Request from "./request";
 import Incident from "./incident";
 import Misper from "./misper";
+import DocumentType from "./document-type";
+import LegalStatus from "./legal-status";
+import GpType from "./gp-type";
 
 const ServiceRoute = ({ match }) => (
   <Switch>
@@ -24,6 +27,9 @@ const ServiceRoute = ({ match }) => (
     <Route path={`${match.url}/request`} component={Request} />
     <Route path={`${match.url}/incident`} component={Incident} />
     <Route path={`${match.url}/misper`} component={Misper} />
+    <Route path={`${match.url}/document-type`} component={DocumentType} />
+    <Route path={`${match.url}/legal-status`} component={LegalStatus} />
+    <Route path={`${match.url}/gp-type`} component={GpType} />
   </Switch>
 );
 
