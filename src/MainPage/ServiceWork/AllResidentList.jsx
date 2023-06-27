@@ -15,6 +15,7 @@ const AllResidentList = ({
   itemsPerPage,
   currentPage,
   setCurrentPage,
+  isResidentLoading,
 }) => {
   const { roleData } = useRoleFetching();
 
@@ -147,6 +148,7 @@ const AllResidentList = ({
             bordered
             dataSource={data}
             rowKey={(data) => data?.id}
+            loading={isResidentLoading}
           />
         </div>
       </div>

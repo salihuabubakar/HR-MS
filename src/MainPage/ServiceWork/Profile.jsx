@@ -16,7 +16,8 @@ import {
   useResidentMedicalConditionFetching,
   useResidentMedicationFetching,
   useResidentAppointmentFetching,
-  useResidentReferralFetching
+  useResidentReferralFetching,
+  useResidentDocumentTypeFetching
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_resident_gp,
@@ -582,6 +583,7 @@ useEffect(() => {
 
   const { gpTypeData } = useGpTypeFetching();
   const { socialWorkerData } = useSocialWorkerFetching();
+  const { residentDocumentTypeData } = useResidentDocumentTypeFetching();
 
   // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
@@ -2666,7 +2668,12 @@ useEffect(() => {
                                       ? "Varified"
                                       : "Not varified"}
                                   </div>
-                                  <div>Document Type: {document_type}</div>
+                                  <div>Document Type: {
+                                    residentDocumentTypeData?.map(doc => {
+                                      if(doc.id === document_type) return doc.document_type
+                                    })
+                                    }
+                                  </div>
                                   <div>
                                     {document && regex.test(document) ? (
                                       <img

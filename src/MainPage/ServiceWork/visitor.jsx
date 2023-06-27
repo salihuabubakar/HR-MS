@@ -20,7 +20,7 @@ import "./style.css";
 import moment from "moment";
 
 const visitor = () => {
-  const { residentVisitorData } = useResidentVisitorFetching();
+  const { residentVisitorData, residentVisitorLoading } = useResidentVisitorFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
   // Table pagination
@@ -56,7 +56,7 @@ const visitor = () => {
 
   useEffect(() => {
     if (!showResidentVisitorModal) {
-      setGlobalState("selectedResidentIncident", "");
+      setGlobalState("selectedResidentVisitor", "");
     }
   }, [showResidentVisitorModal]);
 
@@ -68,7 +68,7 @@ const visitor = () => {
     setResidentVisitorId(id);
     setIndexToEdit((currentPage - 1) * itemsPerPage + index);
     setGlobalState("showResidentVisitorModal", true);
-    setGlobalState("selectedResidentIncident", residentVisitorData);
+    setGlobalState("selectedResidentVisitor", residentVisitorData);
   };
 
   const handleDeleteResidentVisitor = (id) => {
@@ -282,6 +282,7 @@ const visitor = () => {
                   bordered
                   dataSource={residentVisitorData}
                   rowKey={(residentVisitor) => residentVisitor?.id}
+                  loading={residentVisitorLoading}
                 />
               </div>
             </div>

@@ -20,7 +20,7 @@ import "./style.css";
 import moment from "moment";
 
 const Misper = () => {
-  const { residentMisperData } = useResidentMisperFetching();
+  const { residentMisperData, residentMisperLoading } = useResidentMisperFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
   // Table pagination
@@ -310,6 +310,7 @@ const Misper = () => {
                   bordered
                   dataSource={residentMisperData}
                   rowKey={(residentMisper) => residentMisper?.id}
+                  loading={residentMisperLoading}
                 />
               </div>
             </div>

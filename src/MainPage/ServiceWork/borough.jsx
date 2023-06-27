@@ -15,7 +15,7 @@ import { useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook"
 import "./style.css";
 
 const borough = () => {
-  const { residentBoroughData } = useResidentBoroughFetching();
+  const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -258,6 +258,7 @@ const handleDeleteBorough = (id) => {
                   bordered
                   dataSource={residentBoroughData}
                   rowKey={(borough) => borough?.id}
+                  loading={isResidentBoroughLoading}
                 />
               </div>
             </div>

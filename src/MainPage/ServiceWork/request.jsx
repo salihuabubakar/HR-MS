@@ -19,7 +19,7 @@ import "./style.css";
 import moment from "moment";
 
 const request = () => {
-  const { residentRequestData } = useResidentRequestFetching();
+  const { residentRequestData, residentRequestLoading } = useResidentRequestFetching();
   const { residentData } = useResidentFetching();
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -276,6 +276,7 @@ const request = () => {
                   bordered
                   dataSource={residentRequestData}
                   rowKey={(residentRequest) => residentRequest?.id}
+                  loading={residentRequestLoading}
                 />
               </div>
             </div>

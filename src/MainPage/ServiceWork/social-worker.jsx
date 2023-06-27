@@ -15,7 +15,7 @@ import { useSocialWorkerFetching, useResidentBoroughFetching } from "../../utils
 import "./style.css";
 
 const socialworker = () => {
-  const { socialWorkerData } = useSocialWorkerFetching();
+  const { socialWorkerData, socialWorkerLoading } = useSocialWorkerFetching();
   const { residentBoroughData } = useResidentBoroughFetching();
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -253,6 +253,7 @@ const socialworker = () => {
                   bordered
                   dataSource={socialWorkerData}
                   rowKey={(socialWorker) => socialWorker?.id}
+                  loading={socialWorkerLoading}
                 />
               </div>
             </div>

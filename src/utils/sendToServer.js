@@ -3168,8 +3168,289 @@ export const add_update_delete_resident_misper = async (
   }
 };
 
+// Add - Update - Delete Resident DocumentType state
+export const add_update_delete_resident_document_type = async (
+  state,
+  { type, payload }
+) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/resident/documenttype/`,
+          payload
+        );
 
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while posting resident documenttype:",
+          error
+        );
+        setGlobalState(
+          "residentDocumentTypeError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while posting resident documenttype");
+      }
 
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/resident/documenttype/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
 
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while updating resident documenttype:",
+          error
+        );
+        setGlobalState(
+          "residentDocumentTypeError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while updating resident documenttype");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/resident/documenttype/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while deleting resident documenttype:",
+          error
+        );
+        setGlobalState(
+          "residentDocumentTypeError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while deleting resident documenttype");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Delete Resident Gp Type state
+export const add_update_delete_resident_gp_type = async (state, { type, payload }) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/resident/gptype/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while posting resident documenttype:",
+          error
+        );
+        setGlobalState(
+          "residentGpTypeError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while posting resident documenttype");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/resident/gptype/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while updating resident documenttype:",
+          error
+        );
+        setGlobalState(
+          "residentGpTypeError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while updating resident documenttype");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/resident/gptype/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while deleting resident documenttype:",
+          error
+        );
+        setGlobalState(
+          "residentGpTypeError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while deleting resident documenttype");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Delete Resident Legal Status Type state
+export const add_update_delete_resident_legal_status_type = async (
+  state,
+  { type, payload }
+) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/resident/legalstatus/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while posting resident documenttype:",
+          error
+        );
+        setGlobalState(
+          "residentLegalStatusTypeError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while posting resident documenttype");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/resident/legalstatus/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while updating resident documenttype:",
+          error
+        );
+        setGlobalState(
+          "residentLegalStatusTypeError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while updating resident documenttype");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/resident/legalstatus/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while deleting resident documenttype:",
+          error
+        );
+        setGlobalState(
+          "residentLegalStatusTypeError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while deleting resident documenttype");
+      }
+    default:
+      throw new Error();
+  }
+};
 
 

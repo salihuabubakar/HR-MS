@@ -261,6 +261,24 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showResidentMisperModal: false,
   selectedResidentMisper: [],
   residentMisperError: [],
+
+  // Resident Document Type
+  deleteResidentDocumentTypeModal: false,
+  showResidentDocumentTypeModal: false,
+  selectedResidentDocumentType: [],
+  residentDocumentTypeError: [],
+
+  // Resident Gp Type
+  deleteResidentGpTypeModal: false,
+  showResidentGpTypeModal: false,
+  selectedResidentGpType: [],
+  residentGpTypeError: [],
+
+  // Resident Legal Status Type
+  deleteResidentLegalStatusTypeModal: false,
+  showResidentLegalStatusTypeModal: false,
+  selectedResidentLegalStatusType: [],
+  residentLegalStatusTypeError: [],
 });
 
 export {setGlobalState, useGlobalState}
