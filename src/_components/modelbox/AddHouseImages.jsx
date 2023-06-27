@@ -7,6 +7,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
+import { toast } from "react-toastify";
 
 const AddHouseImages = ({
   house,
@@ -16,24 +17,20 @@ const AddHouseImages = ({
 }) => {
   const [selectedHouseImages] = useGlobalState("selectedHouseImages");
   const imageUrlFromServer = selectedHouseImages[houseImagesIndexToEdit]?.image;
+
+
   const [name, setName] = useState(
-    selectedHouseImages[houseImagesIndexToEdit]?.name
-      ? selectedHouseImages[houseImagesIndexToEdit]?.name
-      : ""
+    selectedHouseImages[houseImagesIndexToEdit]?.name || ""
   );
 
   const [image, setImage] = useState("");
 
   const [description, setDescription] = useState(
-    selectedHouseImages[houseImagesIndexToEdit]?.description
-      ? selectedHouseImages[houseImagesIndexToEdit]?.description
-      : ""
+    selectedHouseImages[houseImagesIndexToEdit]?.description || ""
   );
 
   const [cover_image, setCoverImage] = useState(
-    selectedHouseImages[houseImagesIndexToEdit]?.cover_image
-      ? selectedHouseImages[houseImagesIndexToEdit]?.cover_image
-      : false
+    selectedHouseImages[houseImagesIndexToEdit]?.cover_image || false
   );
 
   const [nameError, setNameError] = useState("");
@@ -78,8 +75,14 @@ const AddHouseImages = ({
 
     if (selectedHouseImages[houseImagesIndexToEdit]?.id) {
       dispatchHouseImages({ type: "update", payload: { id, formData } });
+      toast.success("House Document Updated", {
+        autoClose: 7000,
+      });
     } else {
       dispatchHouseImages({ type: "add", payload: formData });
+      toast.success("House Document Added", {
+        autoClose: 7000,
+      });
     }
     setGlobalState("showHouseImagesModal", false);
   };

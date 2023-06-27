@@ -8,6 +8,7 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import { useResidentFetching } from '../../utils/employeeCustomFetchHook';
+import { toast } from "react-toastify";
 
 const AddHouseResident = ({
   house,
@@ -19,33 +20,23 @@ const AddHouseResident = ({
   const [selectedHouseResident] = useGlobalState("selectedHouseResident");
   const { residentData } = useResidentFetching()
   const [status, setStatus] = useState(
-    selectedHouseResident[houseResidentIndexToEdit]?.status
-      ? selectedHouseResident[houseResidentIndexToEdit]?.status
-      : ""
+    selectedHouseResident[houseResidentIndexToEdit]?.status || ""
   );
 
   const [room, setRoom] = useState(
-    selectedHouseResident[houseResidentIndexToEdit]?.room
-      ? selectedHouseResident[houseResidentIndexToEdit]?.room
-      : ""
+    selectedHouseResident[houseResidentIndexToEdit]?.room || ""
   );
 
   const [resident, setResident] = useState(
-    selectedHouseResident[houseResidentIndexToEdit]?.resident
-      ? selectedHouseResident[houseResidentIndexToEdit]?.resident
-      : ""
+    selectedHouseResident[houseResidentIndexToEdit]?.resident || ""
   );
 
   const [occupancy_start_date, setOccupancyStartDate] = useState(
-    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_start_date
-      ? selectedHouseResident[houseResidentIndexToEdit]?.occupancy_start_date
-      : ""
+    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_start_date || ""
   );
 
   const [occupancy_end_date, setOccupancyEndDate] = useState(
-    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_end_date
-      ? selectedHouseResident[houseResidentIndexToEdit]?.occupancy_end_date
-      : ""
+    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_end_date || ""
   );
 
   const handleSubmit = (e) => {
@@ -61,8 +52,14 @@ const AddHouseResident = ({
     };
     if (selectedHouseResident[houseResidentIndexToEdit]?.id) {
       dispatchHouseResident({ type: "update", payload: houseResident });
+      toast.success("House Resident Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchHouseResident({ type: "add", payload: houseResident });
+      toast.success("House Resident Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showHouseResidentModal", false);
   };

@@ -104,6 +104,7 @@ const HouseList = ({
             // bordered
             dataSource={houseData}
             rowKey={(house) => house.id}
+            loading={isHouseDataLoading}
           />
         </div>
       </div>

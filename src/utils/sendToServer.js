@@ -290,6 +290,10 @@ export const add_update_delete_house = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "isHouseError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -307,6 +311,10 @@ export const add_update_delete_house = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "isHouseError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -324,6 +332,10 @@ export const add_update_delete_house = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "isHouseError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -354,6 +366,10 @@ export const add_update_delete_room = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "roomError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -371,6 +387,10 @@ export const add_update_delete_room = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "roomError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -388,6 +408,10 @@ export const add_update_delete_room = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "roomError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -419,6 +443,10 @@ export const add_update_delete_house_employee = async (state, { type, payload })
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "houseEmployeeError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -436,6 +464,10 @@ export const add_update_delete_house_employee = async (state, { type, payload })
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "houseEmployeeError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -453,6 +485,10 @@ export const add_update_delete_house_employee = async (state, { type, payload })
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "houseEmployeeError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -483,6 +519,10 @@ export const add_update_delete_house_resident = async (state, { type, payload })
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "houseResidentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -501,6 +541,10 @@ export const add_update_delete_house_resident = async (state, { type, payload })
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "houseResidentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -518,6 +562,10 @@ export const add_update_delete_house_resident = async (state, { type, payload })
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "houseResidentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -548,6 +596,10 @@ export const add_update_delete_house_image = async (state, { type, payload }) =>
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "houseImageError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -566,6 +618,10 @@ export const add_update_delete_house_image = async (state, { type, payload }) =>
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "houseImageError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -581,6 +637,10 @@ export const add_update_delete_house_image = async (state, { type, payload }) =>
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "houseImageError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -613,6 +673,10 @@ export const add_update_delete_house_document = async (state, { type, payload })
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "houseDocumentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -631,6 +695,10 @@ export const add_update_delete_house_document = async (state, { type, payload })
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "houseDocumentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -648,6 +716,10 @@ export const add_update_delete_house_document = async (state, { type, payload })
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "houseDocumentError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -677,6 +749,10 @@ export const add_update_delete_bill = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "houseBillError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -695,6 +771,10 @@ export const add_update_delete_bill = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "houseBillError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -712,6 +792,10 @@ export const add_update_delete_bill = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "houseBillError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -744,6 +828,10 @@ export const add_update_delete_maintenance = async (state, { type, payload }) =>
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "maintenanceError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -762,6 +850,10 @@ export const add_update_delete_maintenance = async (state, { type, payload }) =>
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "maintenanceError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -779,6 +871,10 @@ export const add_update_delete_maintenance = async (state, { type, payload }) =>
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "maintenanceError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -1521,6 +1617,10 @@ export const add_update_delete_notice = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "houseNoticeError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -1545,6 +1645,10 @@ export const add_update_delete_notice = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "houseNoticeError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -1562,6 +1666,10 @@ export const add_update_delete_notice = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "houseNoticeError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -1593,6 +1701,10 @@ export const add_update_delete_item = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "houseItemError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -1617,6 +1729,10 @@ export const add_update_delete_item = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "houseItemError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -1634,6 +1750,10 @@ export const add_update_delete_item = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "houseItemError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -1665,6 +1785,10 @@ export const add_update_delete_inspection = async (state, { type, payload }) => 
         }
       } catch (error) {
         console.error("Error occurred while posting data:", error);
+        setGlobalState(
+          "houseInspectionError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while posting data");
       }
 
@@ -1689,6 +1813,10 @@ export const add_update_delete_inspection = async (state, { type, payload }) => 
         }
       } catch (error) {
         console.error("Error occurred while updating data:", error);
+        setGlobalState(
+          "houseInspectionError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while updating data");
       }
 
@@ -1706,6 +1834,10 @@ export const add_update_delete_inspection = async (state, { type, payload }) => 
         }
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
+        setGlobalState(
+          "houseInspectionError",
+          JSON.stringify(error.response.data)
+        );
         throw new Error("Error occurred while deleting data");
       }
     default:

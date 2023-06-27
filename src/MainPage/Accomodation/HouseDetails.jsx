@@ -83,6 +83,31 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
     document.body.removeChild(a);
   };
 
+
+  const [houseEmployeeError] = useGlobalState("houseEmployeeError");
+  const [houseResidentError] = useGlobalState("houseResidentError");
+  const [roomError] = useGlobalState("roomError");
+  const [maintenanceError] = useGlobalState("maintenanceError");
+  const [houseImageError] = useGlobalState("houseImageError");
+  const [houseBillError] = useGlobalState("houseBillError");
+  const [houseDocumentError] = useGlobalState("houseDocumentError");
+  const [houseNoticeError] = useGlobalState("houseNoticeError");
+  const [houseItemError] = useGlobalState("houseItemError");
+  const [houseInspectionError] = useGlobalState("houseInspectionError");
+
+  const clearErrorMessage = () => {
+    setGlobalState("houseEmployeeError", "");
+    setGlobalState("houseResidentError", "");
+    setGlobalState("roomError", "");
+    setGlobalState("maintenanceError", "");
+    setGlobalState("houseImageError", "");
+    setGlobalState("houseBillError", "");
+    setGlobalState("houseDocumentError", "");
+    setGlobalState("houseNoticeError", "");
+    setGlobalState("houseItemError", "");
+    setGlobalState("houseInspectionError", "");
+  };
+
   const { data: allEmployee } = useDataFetching();
   const { residentData } = useResidentFetching();
   const { organisationData } = useOrganisationFetching();
@@ -95,7 +120,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   const [houseEmployeeIndexToEdit, setHouseEmployeeIndexToEdit] =
     useState(null);
   const [showHouseEmployeeModal] = useGlobalState("showHouseEmployeeModal");
-  const { houseEmployeeData, isHouseEmployeeLoading, houseEmployeeError } =
+  const { houseEmployeeData } =
     useHouseEmployeeFetching();
   const [getHouseEmployeeId, setGetHouseEmployeeId] = useState();
   const [deleteHouseEmployeeModal] = useGlobalState("deleteHouseEmployeeModal");
@@ -129,7 +154,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   const [houseResidentIndexToEdit, setHouseResidentIndexToEdit] =
     useState(null);
   const [showHouseResidentModal] = useGlobalState("showHouseResidentModal");
-  const { houseResidentData, isHouseResidentLoading, houseResidentError } =
+  const { houseResidentData } =
     useHouseResidentFetching();
   const [getHouseResidentId, setGetHouseResidentId] = useState();
   const [deleteHouseResidentModal] = useGlobalState("deleteHouseResidentModal");
@@ -192,7 +217,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   const [roomState, dispatchRoom] = useReducer(add_update_delete_room, []);
   const [roomIndexToEdit, setRoomIndexToEdit] = useState(null);
   const [showRoomModal] = useGlobalState("showRoomModal");
-  const { roomData, isRoomLoading, roomError } = useRoomFetching();
+  const { roomData } = useRoomFetching();
   const [getRoomId, setGetRoomId] = useState();
   const [deleteRoomModal] = useGlobalState("deleteRoomModal");
   useEffect(() => {
@@ -324,7 +349,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   );
   const [noticeIndexToEdit, setNoticeIndexToEdit] = useState(null);
   const [showNoticeModal] = useGlobalState("showNoticeModal");
-  const { houseNoticeData, isHouseNoticeLoading, houseNoticeError } =
+  const { houseNoticeData } =
     useHouseNoticesFetching();
   const [getNoticeId, setGetNoticeId] = useState();
   const [deleteNoticeModal] = useGlobalState("deleteNoticeModal");
@@ -354,7 +379,7 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   const [itemState, dispatchItem] = useReducer(add_update_delete_item, []);
   const [itemIndexToEdit, setItemIndexToEdit] = useState(null);
   const [showItemModal] = useGlobalState("showItemModal");
-  const { houseItemData, isHouseItemLoading, houseItemError } =
+  const { houseItemData } =
     useHouseItemsFetching();
   const [getItemId, setGetItemId] = useState();
   const [deleteItemModal] = useGlobalState("deleteItemModal");
@@ -389,8 +414,6 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
   const [showInspectionModal] = useGlobalState("showInspectionModal");
   const {
     houseInspectionData,
-    isHouseInspectionLoading,
-    houseInspectionError,
   } = useHouseInspectionsFetching();
   const [getInspectionId, setGetInspectionId] = useState();
   const [deleteInspectionModal] = useGlobalState("deleteInspectionModal");
@@ -740,6 +763,25 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Employee{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {houseEmployeeError?.length > 0 && (
+                            <>
+                              Error: {houseEmployeeError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           onClick={handleAddHouseEmployye}
                           className="edit-icon"
@@ -832,6 +874,25 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                     <div className="card-body">
                       <h3 className="card-title">
                         Residents{" "}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {houseResidentError?.length > 0 && (
+                            <>
+                              Error: {houseResidentError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           onClick={handleAddHouseResident}
                           className="edit-icon"
@@ -949,7 +1010,26 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
                     <h3 className="card-title">
-                      Maintenance
+                      Maintenance {""}
+                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+                        {maintenanceError?.length > 0 && (
+                          <>
+                            Error: {maintenanceError}
+                            <button
+                              onClick={clearErrorMessage}
+                              style={{
+                                marginLeft: "10px",
+                                fontSize: "0.8rem",
+                                cursor: "pointer",
+                                color: "black",
+                              }}
+                            >
+                              <i className="fa fa-times" />
+                              Clear Error
+                            </button>
+                          </>
+                        )}
+                      </span>
                       <a onClick={handleAddMaintenance} className="edit-icon">
                         <i className="fa fa-plus" />
                       </a>
@@ -1071,7 +1151,26 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
             ) : (
               <>
                 <h3 className="card-title">
-                  House Images
+                  House Images {""}
+                  <span style={{ color: "red", fontSize: "0.7rem" }}>
+                    {houseImageError?.length > 0 && (
+                      <>
+                        Error: {houseImageError}
+                        <button
+                          onClick={clearErrorMessage}
+                          style={{
+                            marginLeft: "10px",
+                            fontSize: "0.8rem",
+                            cursor: "pointer",
+                            color: "black",
+                          }}
+                        >
+                          <i className="fa fa-times" />
+                          Clear Error
+                        </button>
+                      </>
+                    )}
+                  </span>
                   <a onClick={handleAddHouseImages} className="edit-icon">
                     <i className="fa fa-plus" />
                   </a>
@@ -1184,7 +1283,26 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
                     <h3 className="card-title">
-                      House Bills
+                      House Bills {""}
+                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+                        {houseBillError?.length > 0 && (
+                          <>
+                            Error: {houseBillError}
+                            <button
+                              onClick={clearErrorMessage}
+                              style={{
+                                marginLeft: "10px",
+                                fontSize: "0.8rem",
+                                cursor: "pointer",
+                                color: "black",
+                              }}
+                            >
+                              <i className="fa fa-times" />
+                              Clear Error
+                            </button>
+                          </>
+                        )}
+                      </span>
                       <a onClick={handleAddBill} className="edit-icon">
                         <i className="fa fa-plus" />
                       </a>
@@ -1271,7 +1389,26 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
                     <h3 className="card-title">
-                      House Rooms
+                      House Rooms {""}
+                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+                        {roomError?.length > 0 && (
+                          <>
+                            Error: {roomError}
+                            <button
+                              onClick={clearErrorMessage}
+                              style={{
+                                marginLeft: "10px",
+                                fontSize: "0.8rem",
+                                cursor: "pointer",
+                                color: "black",
+                              }}
+                            >
+                              <i className="fa fa-times" />
+                              Clear Error
+                            </button>
+                          </>
+                        )}
+                      </span>
                       <a onClick={handleAddRoom} className="edit-icon">
                         <i className="fa fa-plus" />
                       </a>
@@ -1365,7 +1502,26 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        House Document
+                        House Document {""}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {houseDocumentError?.length > 0 && (
+                            <>
+                              Error: {houseDocumentError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                         <a
                           onClick={handleAddHouseDocuments}
                           className="edit-icon"
@@ -1641,7 +1797,26 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
                     <h3 className="card-title">
-                      Notice
+                      Notice {""}
+                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {houseNoticeError?.length > 0 && (
+                            <>
+                              Error: {houseNoticeError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                       <a onClick={handleAddNotice} className="edit-icon">
                         <i className="fa fa-plus" />
                       </a>
@@ -1734,7 +1909,26 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
                     <h3 className="card-title">
-                      Items
+                      Items {""}
+                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {houseItemError?.length > 0 && (
+                            <>
+                              Error: {houseItemError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                       <a onClick={handleAddItem} className="edit-icon">
                         <i className="fa fa-plus" />
                       </a>
@@ -1838,7 +2032,26 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
                     <h3 className="card-title">
-                      Inspection
+                      Inspection {""}
+                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          {houseInspectionError?.length > 0 && (
+                            <>
+                              Error: {houseInspectionError}
+                              <button
+                                onClick={clearErrorMessage}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                              >
+                                <i className="fa fa-times" />
+                                Clear Error
+                              </button>
+                            </>
+                          )}
+                        </span>
                       <a onClick={handleAddInspection} className="edit-icon">
                         <i className="fa fa-plus" />
                       </a>

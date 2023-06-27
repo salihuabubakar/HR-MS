@@ -4,6 +4,7 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
 import "./style.css";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
+import { toast } from "react-toastify";
 
 const AddDepartment = ({
   dispatchHouse,
@@ -20,157 +21,111 @@ const AddDepartment = ({
  const [photo, setPhoto] = useState("");
 
   const [name, setName] = useState(
-    selectedHouse[indexToEdit]?.name
-      ? selectedHouse[indexToEdit]?.name
-      : ""
+    selectedHouse[indexToEdit]?.name || ""
   );
 
   const [manager, setManager] = useState(
-    selectedHouse[indexToEdit]?.manager
-      ? selectedHouse[indexToEdit]?.manager
-      : ""
+    selectedHouse[indexToEdit]?.manager || ""
   );
 
   const [street_address, setStreetAddress] = useState(
-    selectedHouse[indexToEdit]?.street_address
-      ? selectedHouse[indexToEdit]?.street_address
-      : ""
+    selectedHouse[indexToEdit]?.street_address || ""
   );
 
   const [postcode, setPostcode] = useState(
-    selectedHouse[indexToEdit]?.postcode
-      ? selectedHouse[indexToEdit]?.postcode
-      : ""
+    selectedHouse[indexToEdit]?.postcode || ""
   );
 
   const [city, setCity] = useState(
-    selectedHouse[indexToEdit]?.city ? selectedHouse[indexToEdit]?.city : ""
+    selectedHouse[indexToEdit]?.city || ""
   );
 
   const [mobile, setMobile] = useState(
-    selectedHouse[indexToEdit]?.mobile ? selectedHouse[indexToEdit]?.mobile : ""
+    selectedHouse[indexToEdit]?.mobile || ""
   );
 
   const [email, setEmail] = useState(
-    selectedHouse[indexToEdit]?.email ? selectedHouse[indexToEdit]?.email : ""
+    selectedHouse[indexToEdit]?.email || ""
   );
 
   const [house_type, setHouseType] = useState(
-    selectedHouse[indexToEdit]?.house_type
-      ? selectedHouse[indexToEdit]?.house_type
-      : ""
+    selectedHouse[indexToEdit]?.house_type || ""
   );
 
   const [num_bedrooms, setNumBedrooms] = useState(
-    selectedHouse[indexToEdit]?.num_bedrooms
-      ? selectedHouse[indexToEdit]?.num_bedrooms
-      : ""
+    selectedHouse[indexToEdit]?.num_bedrooms || ""
   );
 
   const [num_bathrooms, setNumBathrooms] = useState(
-    selectedHouse[indexToEdit]?.num_bathrooms
-      ? selectedHouse[indexToEdit]?.num_bathrooms
-      : ""
+    selectedHouse[indexToEdit]?.num_bathrooms || ""
   );
 
   const [num_kitchens, setNumKitchens] = useState(
-    selectedHouse[indexToEdit]?.num_kitchens
-      ? selectedHouse[indexToEdit]?.num_kitchens
-      : ""
+    selectedHouse[indexToEdit]?.num_kitchens || ""
   );
 
   const [square_footage, setSquareFootage] = useState(
-    selectedHouse[indexToEdit]?.square_footage
-      ? selectedHouse[indexToEdit]?.square_footage
-      : ""
+    selectedHouse[indexToEdit]?.square_footage || ""
   );
 
   const [garage, setGarage] = useState(
-    selectedHouse[indexToEdit]?.garage
-      ? selectedHouse[indexToEdit]?.garage
-      : false
+    selectedHouse[indexToEdit]?.garage || false
   );
 
   const [basement, setBasement] = useState(
-    selectedHouse[indexToEdit]?.basement
-      ? selectedHouse[indexToEdit]?.basement
-      : false
+    selectedHouse[indexToEdit]?.basement || false
   );
 
   const [pool, setPool] = useState(
-    selectedHouse[indexToEdit]?.pool ? selectedHouse[indexToEdit]?.pool : false
+    selectedHouse[indexToEdit]?.pool || false
   );
 
   const [back_yard, setBackYard] = useState(
-    selectedHouse[indexToEdit]?.back_yard
-      ? selectedHouse[indexToEdit]?.back_yard
-      : false
+    selectedHouse[indexToEdit]?.back_yard || false
   );
 
   const [year_built, setYearBuilt] = useState(
-    selectedHouse[indexToEdit]?.year_built
-      ? selectedHouse[indexToEdit]?.year_built
-      : ""
+    selectedHouse[indexToEdit]?.year_built || ""
   );
 
   const [air_conditioning, setAirConditioning] = useState(
-    selectedHouse[indexToEdit]?.air_conditioning
-      ? selectedHouse[indexToEdit]?.air_conditioning
-      : false
+    selectedHouse[indexToEdit]?.air_conditioning || false
   );
 
   const [heating_system, setHeatingSystem] = useState(
-    selectedHouse[indexToEdit]?.heating_system
-      ? selectedHouse[indexToEdit]?.heating_system
-      : ""
+    selectedHouse[indexToEdit]?.heating_system || ""
   );
 
   const [roof_type, setRoofType] = useState(
-    selectedHouse[indexToEdit]?.roof_type
-      ? selectedHouse[indexToEdit]?.roof_type
-      : ""
+    selectedHouse[indexToEdit]?.roof_type || ""
   );
 
   const [fireplace, setFireplace] = useState(
-    selectedHouse[indexToEdit]?.fireplace
-      ? selectedHouse[indexToEdit]?.fireplace
-      : false
+    selectedHouse[indexToEdit]?.fireplace || false
   );
 
   const [security_system, setSecuritySystem] = useState(
-    selectedHouse[indexToEdit]?.security_system
-      ? selectedHouse[indexToEdit]?.security_system
-      : false
+    selectedHouse[indexToEdit]?.security_system || false
   );
 
   const [solar_panels, setSolarPanels] = useState(
-    selectedHouse[indexToEdit]?.solar_panels
-      ? selectedHouse[indexToEdit]?.solar_panels
-      : false
+    selectedHouse[indexToEdit]?.solar_panels || false
   );
 
   const [num_floors, setNumFloors] = useState(
-    selectedHouse[indexToEdit]?.num_floors
-      ? selectedHouse[indexToEdit]?.num_floors
-      : ""
+    selectedHouse[indexToEdit]?.num_floors || ""
   );
 
   const [floor_type, setFloorType] = useState(
-    selectedHouse[indexToEdit]?.floor_type
-      ? selectedHouse[indexToEdit]?.floor_type
-      : ""
+    selectedHouse[indexToEdit]?.floor_type || ""
   );
 
   const [other_features, setOtherFeatures] = useState(
-    selectedHouse[indexToEdit]?.other_features
-      ? selectedHouse[indexToEdit]?.other_features
-      : ""
+    selectedHouse[indexToEdit]?.other_features || ""
   );
 
   const [description, setDescription] = useState(
-    selectedHouse[indexToEdit]?.description
-      ? selectedHouse[indexToEdit]?.description
-      : ""
+    selectedHouse[indexToEdit]?.description || ""
   );
 
 
@@ -251,8 +206,14 @@ const AddDepartment = ({
 
     if (selectedHouse[indexToEdit]?.id) {
       dispatchHouse({ type: "update", payload: {id, formData} });
+      toast.success("House Updated", {
+        autoClose: 7000,
+      });
     } else {
       dispatchHouse({ type: "add", payload: formData });
+      toast.success("House Added", {
+        autoClose: 7000,
+      });
     }
     setGlobalState("showModal", false);
   };

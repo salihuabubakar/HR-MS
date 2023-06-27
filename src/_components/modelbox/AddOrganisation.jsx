@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { toast } from "react-toastify";
 
 const AddOrganisation = ({
   indexToEdit,
@@ -11,57 +12,39 @@ const AddOrganisation = ({
   let id = getOrganisationId;
 
   const [organisation_name, setOrganisationName] = useState(
-    selectedOrganisation[indexToEdit]?.organisation_name
-      ? selectedOrganisation[indexToEdit]?.organisation_name
-      : ""
+    selectedOrganisation[indexToEdit]?.organisation_name || ""
   );
 
   const [manager_name, setManagerName] = useState(
-    selectedOrganisation[indexToEdit]?.manager_name
-      ? selectedOrganisation[indexToEdit]?.manager_name
-      : ""
+    selectedOrganisation[indexToEdit]?.manager_name || ""
   );
 
   const [mobile, setMobile] = useState(
-    selectedOrganisation[indexToEdit]?.mobile
-      ? selectedOrganisation[indexToEdit]?.mobile
-      : ""
+    selectedOrganisation[indexToEdit]?.mobile || ""
   );
 
   const [office_phone, setOfficePhone] = useState(
-    selectedOrganisation[indexToEdit]?.office_phone
-      ? selectedOrganisation[indexToEdit]?.office_phone
-      : ""
+    selectedOrganisation[indexToEdit]?.office_phone || ""
   );
 
   const [email, setEmail] = useState(
-    selectedOrganisation[indexToEdit]?.email
-      ? selectedOrganisation[indexToEdit]?.email
-      : ""
+    selectedOrganisation[indexToEdit]?.email || ""
   );
 
   const [city, setCity] = useState(
-    selectedOrganisation[indexToEdit]?.city
-      ? selectedOrganisation[indexToEdit]?.city
-      : ""
+    selectedOrganisation[indexToEdit]?.city || ""
   );
 
   const [street, setStreet] = useState(
-    selectedOrganisation[indexToEdit]?.street
-      ? selectedOrganisation[indexToEdit]?.street
-      : ""
+    selectedOrganisation[indexToEdit]?.street || ""
   );
 
   const [post_code, setPostCode] = useState(
-    selectedOrganisation[indexToEdit]?.post_code
-      ? selectedOrganisation[indexToEdit]?.post_code
-      : ""
+    selectedOrganisation[indexToEdit]?.post_code || ""
   );
 
   const [country, setCountry] = useState(
-    selectedOrganisation[indexToEdit]?.country
-      ? selectedOrganisation[indexToEdit]?.country
-      : ""
+    selectedOrganisation[indexToEdit]?.country || ""
   );
 
 
@@ -90,8 +73,14 @@ const AddOrganisation = ({
     };
     if (selectedOrganisation[indexToEdit]?.id) {
       dispatchOrganisation({ type: "update", payload: organisation });
+      toast.success("Organisation Updated", {
+        autoClose: 1500,
+      });
     } else {
       dispatchOrganisation({ type: "add", payload: organisation });
+      toast.success("Organisation Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showOrganisationModal", false);
   };

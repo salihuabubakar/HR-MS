@@ -95,7 +95,13 @@ const Accomodations = () => {
           width: '100%'
         });
       }
-    });  
+    }); 
+    
+    const [isHouseError] = useGlobalState("isHouseError");
+
+    const clearErrorMessage = () => {
+      setGlobalState("isHouseError", "");
+    };
 
       return (
         <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -191,6 +197,25 @@ const Accomodations = () => {
                       </a>
                     </div>
                   </div>
+                  <span style={{ color: "red", fontSize: "0.7rem" }}>
+                    {isHouseError?.length > 0 && (
+                      <>
+                        Error: {isHouseError}
+                        <button
+                          onClick={clearErrorMessage}
+                          style={{
+                            marginLeft: "10px",
+                            fontSize: "0.8rem",
+                            cursor: "pointer",
+                            color: "black",
+                          }}
+                        >
+                          <i className="fa fa-times" />
+                          Clear Error
+                        </button>
+                      </>
+                    )}
+                  </span>
                   {/* Search Filter */}
                 </>
               ) : null}
@@ -212,6 +237,7 @@ const Accomodations = () => {
                   setTab={setTab}
                   houseData={houseData}
                   setGetHouseId={setGetHouseId}
+                  isHouseDataLoading={isHouseDataLoading}
                   handleHouseEdit={handleHouseEdit}
                   handleHouseDelete={handleHouseDelete}
                 />

@@ -6,6 +6,7 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { toast } from "react-toastify";
 
 const AddEmployeeDocument = ({
   employeeDocumentIndexToEdit,
@@ -100,8 +101,14 @@ const AddEmployeeDocument = ({
         type: "update",
         payload: { id, formData },
       });
+      toast.success("Employee Document Updated", {
+        autoClose: 7000,
+      });
     } else {
       dispatchEmployeeDocument({ type: "add", payload: formData });
+      toast.success("Employee Document Added", {
+        autoClose: 7000,
+      });
     }
     setGlobalState("showEmployeeDocumentModal", false);
   };
