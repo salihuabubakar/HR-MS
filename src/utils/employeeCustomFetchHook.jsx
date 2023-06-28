@@ -1227,6 +1227,27 @@ export const useResidentLegalStatusTypeFetching = () => {
 };
 
 
+// Get shift data
+export const useShiftFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/shift/shifts/?format=json`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: shiftData,
+    isLoading: isShiftLoading,
+    error: shiftError,
+  } = useQuery("shiftData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on shiftData
+      queryClient.invalidateQueries(["shiftData"]);
+    },
+  });
+
+  return { shiftData, isShiftLoading, shiftError };
+};
 
 
 

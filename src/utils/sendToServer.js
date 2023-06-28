@@ -3732,5 +3732,97 @@ export const add_update_delete_resident_legal_status_type = async (
   }
 };
 
+// Add - Update - Delete Shift state
+export const add_update_delete_shift = async (state, { type, payload }) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/shift/shifts/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while posting shift:",
+          error
+        );
+        setGlobalState(
+          "shiftError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while posting shift");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/shift/shifts/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while updating shift:",
+          error
+        );
+        setGlobalState(
+          "shiftError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while updating shift");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/shift/shifts/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while deleting shift",
+          error
+        );
+        setGlobalState(
+          "shiftError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while deleting shift");
+      }
+    default:
+      throw new Error();
+  }
+};
 
 

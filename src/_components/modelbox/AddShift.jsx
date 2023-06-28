@@ -1,136 +1,115 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState } from "react";
 import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
-import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import dayjs from "dayjs";
-import TextField from "@mui/material/TextField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
 import "./style.css";
 
 const AddShift = ({
   dispatchShift,
   indexToEdit,
+  id
 }) => {
-  const [selectedShiftList] = useGlobalState("selectedShiftList");
-  const uniqueId = uuidv4();
+  const [selectedShift] = useGlobalState("selectedShift");
 
-  const [title, setTitle] = useState(
-    selectedShiftList[indexToEdit]?.title
-      ? selectedShiftList[indexToEdit]?.title
-      : ""
+  const [name, setName] = useState(selectedShift[indexToEdit]?.name || "");
+  const [start_time, setStartTime] = useState(
+    selectedShift[indexToEdit]?.start_time || ""
   );
+  const [end_time, setEndTime] = useState(
+    selectedShift[indexToEdit]?.end_time || ""
+  );
+  const [hours, setHours] = useState(selectedShift[indexToEdit]?.hours || "");
+  const [status, setSatus] = useState(selectedShift[indexToEdit]?.status || "");
 
-  const [note, setNote] = useState(
-    selectedShiftList[indexToEdit]?.note
-      ? selectedShiftList[indexToEdit]?.note
-      : ""
-  );
-
-  const [startTime, setStartTime] = useState(
-    selectedShiftList[indexToEdit]?.startTime
-      ? selectedShiftList[indexToEdit]?.startTime
-      : dayjs()
-  );
-  const [endTime, setEndTime] = useState(
-    selectedShiftList[indexToEdit]?.endTime
-      ? selectedShiftList[indexToEdit]?.endTime
-      : dayjs()
-  );
-
-  const [id, setId] = useState(
-    selectedShiftList[indexToEdit]?.id
-      ? selectedShiftList[indexToEdit]?.id
-      : uniqueId
-  );
-
-  const [titleError, setTitleError] = useState("");
-  const [noteError, setNoteError] = useState("");
+  const [nameError, setNameError] = useState("");
   const [startTimeError, setStartTimeError] = useState("");
   const [endTimeError, setEndTimeError] = useState("");
+  const [hoursError, setHoursError] = useState("");
+  const [statusError, setStatusError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validate first name and last name
-    if (title === "") {
-      setTitleError("Title is required.");
+    if (name === "") {
+      setNameError("Shift name is required.");
       return;
     }
-    if (note === "") {
-      setNoteError("Note is required.");
-      return;
-    }
-    if (startTime === "") {
+    if (start_time === "") {
       setStartTimeError("Start Time is required.");
       return;
     }
-    if (endTime === "") {
+    if (end_time === "") {
       setEndTimeError("End Time is required.");
+      return;
+    }
+    if (hours === "") {
+      setHoursError("Hours is required.");
+      return;
+    }
+    if (status === "") {
+      setStatusError("Status is required.");
       return;
     }
 
     // Clear any existing error messages
-    setTitleError("");
-    setNoteError("");
+    setNameError("");
     setStartTimeError("");
     setEndTimeError("");
+    setHoursError("");
+    setStatusError("");
+
     const shiftList = {
-      title,
-      note,
-      startTime,
-      endTime,
       id,
+      name,
+      start_time,
+      end_time,
+      hours,
+      status
     };
-    if (selectedShiftList[indexToEdit]?.id) {
+    if (selectedShift[indexToEdit]?.id) {
       dispatchShift({ type: "update", payload: shiftList });
+      toast.success("Shift Updated", {
+        autoClose: 1500,
+      });
     } else {
-      dispatchShift({ type: "push", payload: shiftList });
+      dispatchShift({ type: "add", payload: shiftList });
+      toast.success("Shift Added", {
+        autoClose: 1500,
+      });
     }
-    setGlobalState("showModal", false);
+    setGlobalState("showShiftModal", false);
   };
 
-  const handleStartTimeChange = (newValue) => {
-    let newTime;
-    //  const hours = newValue;
-    //  let date = new Date(hours).toLocaleString();
-    //  date = date.split(" ").splice(1).join(" ");
-    //  console.log("date", date);
-    //  const minutes = newValue.toString().padStart(2, "0");
-    //  const textValue = hours + ":" + minutes;
-    //  console.log("dateString", textValue);
-    newTime= newValue.$d;
-    setStartTime(
-      newTime.toString().slice(0, 21) + newTime.toString().slice(24)
-    );
+  const handleStartTimeChange = (e) => {
+    setStartTime(e.target.value);
     setStartTimeError("");
   };
 
-  const handleEndTimeChange = (newValue) => {
-    let newTime;
-    newTime = newValue.$d;
-    setEndTime(newTime.toString().slice(0, 21) + newTime.toString().slice(24));
+  const handleEndTimeChange = (e) => {
+    setEndTime(e.target.value);
     setEndTimeError("");
   };
 
-   const handleTitleChange = (event) => {
-     setTitle(event.target.value);
-     setTitleError("");
-   };
-   const handleNoteChange = (event) => {
-     setNote(event.target.value);
-     setNoteError("");
-   };
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+    setNameError("");
+  };
 
-  // const handleSelectedDateChange = (newValue) => {
-  //   setSelectedDate(newValue.$d);
-  // };
+  const handleHoursChange = (event) => {
+    setHours(event.target.value);
+    setHoursError("");
+  };
+
+  const handleStatusChange = (event) => {
+    setSatus(event.target.value);
+    setStatusError("");
+  };
+
+
 
   return (
     <>
@@ -144,14 +123,14 @@ const AddShift = ({
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedShiftList[indexToEdit]?.id
+                    {selectedShift[indexToEdit]?.id
                       ? "Edit Shift"
                       : "Add shift"}
                   </h5>
                   <button
                     type="button"
                     className="close"
-                    onClick={() => setGlobalState("showModal", false)}
+                    onClick={() => setGlobalState("showShiftModal", false)}
                   >
                     <span aria-hidden="true">×</span>
                   </button>
@@ -162,72 +141,90 @@ const AddShift = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Title <span className="text-danger">*</span>
+                            Name <span className="text-danger">*</span>
                           </label>
                           <input
                             type="text"
-                            className="form-control"
-                            placeholder="Title"
-                            value={title}
-                            onChange={handleTitleChange}
+                            className="form-control floating"
+                            placeholder="Name"
+                            value={name}
+                            onChange={handleNameChange}
                           />
-                          {titleError && (
-                            <p className="error-message">{titleError}</p>
+                          {nameError && (
+                            <p className="error-message">{nameError}</p>
                           )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Note <span className="text-danger">*</span>
+                            Start Time <span className="text-danger">*</span>
                           </label>
                           <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Description"
-                            value={note}
-                            onChange={handleNoteChange}
+                            type="time"
+                            className="form-control floating"
+                            placeholder="Start Time"
+                            value={start_time}
+                            onChange={handleStartTimeChange}
                           />
-                          {noteError && (
-                            <p className="error-message">{noteError}</p>
+                          {startTimeError && (
+                            <p className="error-message">{startTimeError}</p>
                           )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <TimePicker
-                              label="Start Time"
-                              value={startTime}
-                              className="time-picker"
-                              // value={setSeconds(value, 0)}
-                              onChange={handleStartTimeChange}
-                              renderInput={(params) => (
-                                <TextField {...params} />
-                              )}
-                            />
-                            {startTimeError && (
-                              <p className="error-message">{startTimeError}</p>
-                            )}
-                          </LocalizationProvider>
+                          <label className="label">
+                            End Time <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            type="time"
+                            className="form-control floating"
+                            placeholder="End Time"
+                            value={end_time}
+                            onChange={handleEndTimeChange}
+                          />
+                          {endTimeError && (
+                            <p className="error-message">{endTimeError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <TimePicker
-                              className="time-picker"
-                              label="End Time"
-                              value={endTime}
-                              onChange={handleEndTimeChange}
-                              renderInput={(params) => (
-                                <TextField {...params} />
-                              )}
-                            />
-                            {endTimeError && (
-                              <p className="error-message">{endTimeError}</p>
-                            )}
-                          </LocalizationProvider>
+                          <label className="label">
+                            Hours <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            className="form-control floating"
+                            placeholder="Hours"
+                            min={0}
+                            value={hours}
+                            onChange={handleHoursChange}
+                          />
+                          {hoursError && (
+                            <p className="error-message">{hoursError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">Status</label>{" "}
+                          <span className="text-danger">*</span>
+                          <select
+                            value={status}
+                            onChange={handleStatusChange}
+                            className="form-control floating"
+                          >
+                            <option disabled value="">
+                              Select Status
+                            </option>
+                            <option value={"Active"}>Active</option>
+                            <option value={"Inactive"}>Inactive</option>
+                          </select>
+                          {statusError && (
+                            <p className="error-message">{statusError}</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -236,7 +233,7 @@ const AddShift = ({
                         onClick={handleSubmit}
                         className="btn btn-primary submit-btn"
                       >
-                        {selectedShiftList[indexToEdit]?.id ? "Update" : "Save"}
+                        {selectedShift[indexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>

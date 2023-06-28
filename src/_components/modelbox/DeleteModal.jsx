@@ -68,6 +68,7 @@ const DeleteModal = ({
     setGlobalState("deleteResidentDocumentTypeModal", false);
     setGlobalState("deleteResidentGpTypeModal", false);
     setGlobalState("deleteResidentLegalStatusTypeModal", false);
+    setGlobalState("deleteShiftModal", false);
   };
 
   const handleModalClose = () => {
@@ -118,6 +119,7 @@ const DeleteModal = ({
     setGlobalState("deleteResidentDocumentTypeModal", false);
     setGlobalState("deleteResidentGpTypeModal", false);
     setGlobalState("deleteResidentLegalStatusTypeModal", false);
+    setGlobalState("deleteShiftModal", false);
   };
 
   return (

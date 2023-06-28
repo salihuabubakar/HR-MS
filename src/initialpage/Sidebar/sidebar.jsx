@@ -221,9 +221,9 @@ const toggleLevelThree = (value) => {
                       <li>
                         <Link
                           className={
-                            pathname.includes("shift-list") ? "active" : ""
+                            pathname.includes("shift") ? "active" : ""
                           }
-                          to="/app/shiftschedule/shift-list"
+                          to="/app/shiftschedule/shift"
                         >
                           Shifts
                         </Link>
