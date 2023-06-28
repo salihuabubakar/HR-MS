@@ -3,17 +3,13 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
-import { initHouse, savedHouseReducer } from "../../utils/localStorage";
 import HouseImg from "../../assets/img/house.png";
 import DefaultImage from "../../assets/img/placeholder.jpg";
+import { useHouseFetching } from "../../utils/employeeCustomFetchHook";
 
-const SelectDept = () => {
+const house = () => {
+  const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
   const [menu, setMenu] = useState(false);
-  const [house] = useReducer(savedHouseReducer, [], initHouse);
-  const [houseList, setHouseList] = useState();
-  useEffect(() => {
-    setHouseList(house);
-  }, [house]);
 
   const toggleMobileMenu = () => {
     setMenu(!menu);
@@ -71,59 +67,75 @@ const SelectDept = () => {
           </div>
           {/* Search Filter */}
           <div className="row staff-grid-row">
-            {houseList?.length > 0
-              ? houseList?.map((house) => {
-                  const { id, image, houseName, employee, managerName } = house;
-                  return (
-                    <div
-                      key={id}
-                      className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
-                    >
-                      <div className="profile-widget">
-                        <Link
-                          to={{
-                            pathname: "/app/shiftschedule/shift-scheduling",
-                            state: { id: id },
-                          }}
-                          className="avatar"
-                          style={{
-                            borderRadius: "5px",
-                            backgroundColor: "#00000000",
-                            height: "100%",
-                            marginRight: "40px",
-                          }}
+            {isHouseDataLoading ? (
+              <div className="skeleton-container">
+                <div className="skeleton-content">
+                  <div className="skeleton-line"></div>
+                  <div className="skeleton-line"></div>
+                  <div className="skeleton-line"></div>
+                  <div className="skeleton-line"></div>
+                </div>
+              </div>
+            ) : houseError ? (
+              <p>{houseError}</p>
+            ) : (
+              <>
+                {houseData?.length > 0
+                  ? houseData?.map((house) => {
+                      const { id, photo, name, employee, manager } = house;
+                      return (
+                        <div
+                          key={id}
+                          className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
                         >
-                          <img
-                            style={{
-                              borderRadius: "5px",
-                              width: "80px",
-                              height: "80px",
-                            }}
-                            alt=""
-                            src={image ? image : DefaultImage}
-                          />
-                        </Link>
-                        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <Link
-                            to={{
-                              pathname: "/app/shiftschedule/shift-scheduling",
-                              state: { id: id },
-                            }}
-                          >
-                            {houseName}
-                          </Link>
-                        </h4>
-                        <p className="small text-muted">
-                          House Manager: {managerName}
-                        </p>
-                        <div className="small text-muted">
-                          {"Number of staffs: " + employee?.length}
+                          <div className="profile-widget">
+                            <Link
+                              to={{
+                                pathname: "/app/shiftschedule/shift-scheduling",
+                                state: { id: id },
+                              }}
+                              className="avatar"
+                              style={{
+                                borderRadius: "5px",
+                                backgroundColor: "#00000000",
+                                height: "100%",
+                                marginRight: "40px",
+                              }}
+                            >
+                              <img
+                                style={{
+                                  borderRadius: "5px",
+                                  width: "80px",
+                                  height: "80px",
+                                }}
+                                alt=""
+                                src={photo ? photo : DefaultImage}
+                              />
+                            </Link>
+                            <h4 className="user-name m-t-10 mb-0 text-ellipsis">
+                              <Link
+                                to={{
+                                  pathname:
+                                    "/app/shiftschedule/shift-scheduling",
+                                  state: { id: id },
+                                }}
+                              >
+                                {name}
+                              </Link>
+                            </h4>
+                            <p className="small text-muted">
+                              House Manager: {manager}
+                            </p>
+                            <div className="small text-muted">
+                              {"Number of staffs: " + employee?.length}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  );
-                })
-              : "No house available."}
+                      );
+                    })
+                  : "No house available."}
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -131,4 +143,4 @@ const SelectDept = () => {
   );
 };
 
-export default SelectDept;
+export default house;
