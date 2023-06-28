@@ -38,6 +38,7 @@ import { useDateWeeklyCalendarCounter, useDateMonthlyCalendarCounter } from "../
 const ShiftScheduling = () => {
   const location = useLocation();
   const houseId = location?.state?.id;
+  console.log("🚀 ~ file: shiftscheduling.jsx:41 ~ ShiftScheduling ~ houseId:", houseId)
 
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {
