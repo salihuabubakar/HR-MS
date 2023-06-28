@@ -9,7 +9,6 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedHouse: [],
   isHouseError: [],
 
-
   selectedResident: [],
   selectedScheduleEvent: [],
   selectedShiftList: [],
@@ -81,7 +80,6 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showHouseResidentModal: false,
   deleteHouseResidentModal: false,
   houseResidentError: [],
-
 
   // House Image
   showHouseImagesModal: false,
@@ -314,6 +312,12 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showResidentLegalStatusTypeModal: false,
   selectedResidentLegalStatusType: [],
   residentLegalStatusTypeError: [],
+
+  // Shift
+  deleteShiftModal: false,
+  showShiftModal: false,
+  selectedShift: [],
+  shiftError: [],
 });
 
 export {setGlobalState, useGlobalState}
