@@ -28,6 +28,13 @@ import {
   initUserAccount,
   savedUserAccountReducer,
 } from "../../utils/localStorage";
+import {
+  useHouseFetching,
+  useDataFetching,
+  useHouseEmployeeFetching,
+} from "../../utils/employeeCustomFetchHook";
+import { BaseUrl } from "../../utils/baseUrl";
+import axios from "axios";
 import "regenerator-runtime/runtime";
 import { useReactToPrint } from "react-to-print";
 import WeeklyComponent from "./weeklyComponent";
@@ -38,8 +45,6 @@ import { useDateWeeklyCalendarCounter, useDateMonthlyCalendarCounter } from "../
 const ShiftScheduling = () => {
   const location = useLocation();
   const houseId = location?.state?.id;
-  console.log("🚀 ~ file: shiftscheduling.jsx:41 ~ ShiftScheduling ~ houseId:", houseId)
-
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {
     setMenu(!menu);
@@ -118,7 +123,45 @@ const ShiftScheduling = () => {
   }, [depts]);
 
   const selectedHouse = houseList?.find((house) => house.id === houseId);
-  const houseName = selectedHouse?.houseName;
+
+  const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
+  const { data: allEmployee } = useDataFetching();
+  const { houseEmployeeData } = useHouseEmployeeFetching();
+
+  const selecetedHome = houseData?.find((house) => house.id === houseId);
+  const houseName = selecetedHome?.name;
+  
+  // const selectedHouseEmployee = 
+
+
+  // const [isSelectedLoading, setIsSelectedLoading] = useState(false);
+  // const [getSelectedData, setGetSelectedData] = useState();
+  // console.log("🚀 ~ file: shiftscheduling.jsx:128 ~ ShiftScheduling ~ getSelectedData:", getSelectedData)
+
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const fetchHouseSelectedData = async () => {
+  //     try {
+  //       setIsSelectedLoading(true);
+  //       const response = await axios.get(
+  //         `${BaseUrl}/house/details/${houseId}/?format=json`
+  //       );
+  //       if (isMounted) {
+  //         setGetSelectedData(response.data);
+  //         setIsSelectedLoading(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //       setIsSelectedLoading(false);
+  //     }
+  //   };
+  //   houseId != null ? fetchHouseSelectedData() : null;
+
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, [houseId]);
+
 
   const handleDeptChange = (event) => {
     // console.log(event);
@@ -512,6 +555,8 @@ const ShiftScheduling = () => {
                 handleSundayShiftIndex={handleSundayShiftIndex}
                 scheduleEvent={scheduleEvent}
                 DefaultImage={DefaultImage}
+                allEmployee={allEmployee}
+                houseEmployeeData={houseEmployeeData}
               />
             )}
             {views === "monthlyView" && (
