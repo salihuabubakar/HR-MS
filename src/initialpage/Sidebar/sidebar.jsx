@@ -40,6 +40,9 @@ const toggleLevelThree = (value) => {
 
     let pathname = props?.location?.pathname;
 
+    const url = "/app/shiftschedule/shift";
+    
+
     return (
       <HeaderContainer className="sidebar" id="sidebar">
         <Scrollbars
@@ -196,7 +199,6 @@ const toggleLevelThree = (value) => {
                 </li>
                 <li className="submenu">
                   <a
-                    // data-bs-toggle="dropdown"
                     className={isSideMenu == "shiftschedule" ? "subdrop" : ""}
                     onClick={() =>
                       toggleSidebar(
@@ -220,12 +222,10 @@ const toggleLevelThree = (value) => {
                     <ul>
                       <li>
                         <Link
-                          className={
-                            pathname.includes("shift") ? "active" : ""
-                          }
+                          className={pathname === url ? "active" : ""}
                           to="/app/shiftschedule/shift"
                         >
-                          Shifts
+                          Shift
                         </Link>
                       </li>
                       <li>

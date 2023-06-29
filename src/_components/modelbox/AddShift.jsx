@@ -7,12 +7,14 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { toast } from "react-toastify";
 import "./style.css";
+import { useEffect } from "react";
 
 const AddShift = ({
   dispatchShift,
   indexToEdit,
   id
 }) => {
+  let dynamic = "";
   const [selectedShift] = useGlobalState("selectedShift");
 
   const [name, setName] = useState(selectedShift[indexToEdit]?.name || "");
@@ -22,7 +24,7 @@ const AddShift = ({
   const [end_time, setEndTime] = useState(
     selectedShift[indexToEdit]?.end_time || ""
   );
-  const [hours, setHours] = useState(selectedShift[indexToEdit]?.hours || "");
+  const [hours, setHours] = useState(selectedShift[indexToEdit]?.hours || 0);
   const [status, setSatus] = useState(selectedShift[indexToEdit]?.status || "");
 
   const [nameError, setNameError] = useState("");
@@ -84,29 +86,53 @@ const AddShift = ({
     setGlobalState("showShiftModal", false);
   };
 
-  const handleStartTimeChange = (e) => {
-    setStartTime(e.target.value);
-    setStartTimeError("");
-  };
-
-  const handleEndTimeChange = (e) => {
-    setEndTime(e.target.value);
-    setEndTimeError("");
-  };
 
   const handleNameChange = (event) => {
     setName(event.target.value);
     setNameError("");
   };
 
-  const handleHoursChange = (event) => {
-    setHours(event.target.value);
-    setHoursError("");
+  const handleStartTimeChange = (e) => {
+    setStartTime(e.target.value);
+    calculateDifference(e.target.value, end_time);
+    setStartTimeError("");
+  };
+
+  const handleEndTimeChange = (e) => {
+    setEndTime(e.target.value);
+    calculateDifference(start_time, e.target.value);
+    setEndTimeError("");
   };
 
   const handleStatusChange = (event) => {
     setSatus(event.target.value);
     setStatusError("");
+  };
+
+  const calculateDifference = (startTime, endTime) => {
+    if (startTime && endTime) {
+      const startSplit = startTime.split(":");
+      const endSplit = endTime.split(":");
+      const startDate = new Date(0, 0, 0, parseInt(startSplit[0]), parseInt(startSplit[1]), 0);
+      const endDate = new Date(0, 0, 0, parseInt(endSplit[0]), parseInt(endSplit[1]), 0);
+      const diff = endDate.getTime() - startDate.getTime();
+      const hours = Math.floor(diff / 1000 / 60 / 60);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const timeDifference = `${hours < 9 ? "0" : ""}${hours}:${
+        minutes < 9 ? "0" : ""
+      }${minutes}`;
+      setHours(parseInt(timeDifference));
+      setHoursError("");
+    } else {
+      setHours(0);
+    }
+  };
+
+  const handleClear = (e) => {
+    e.preventDefault();
+    setStartTime("");
+    setEndTime("");
+    setHours(0);
   };
 
 
@@ -195,12 +221,10 @@ const AddShift = ({
                             Hours <span className="text-danger">*</span>
                           </label>
                           <input
-                            type="number"
                             className="form-control floating"
                             placeholder="Hours"
-                            min={0}
+                            disabled
                             value={hours}
-                            onChange={handleHoursChange}
                           />
                           {hoursError && (
                             <p className="error-message">{hoursError}</p>
@@ -227,6 +251,14 @@ const AddShift = ({
                           )}
                         </div>
                       </div>
+
+                      {hours === 0 ? null : (
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <button onClick={handleClear}>Clear Time</button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     <div className="submit-section">
                       <button
