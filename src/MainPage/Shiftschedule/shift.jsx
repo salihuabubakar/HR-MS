@@ -17,7 +17,7 @@ import {
 import "../ServiceWork/style.css";
 import moment from "moment";
 
-const ShiftList = () => {
+const shift = () => {
   const { shiftData, isShiftLoading } = useShiftFetching();
 
   // Table pagination
@@ -169,7 +169,7 @@ const ShiftList = () => {
     <>
       {/* Page Wrapper */}
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-        <Header onMenuClick={() => toggleMobileMenu()} />
+        <Header onMenuClick={(value) => toggleMobileMenu()} />
         <Sidebar />
         <div className="page-wrapper">
           <Helmet>
@@ -283,4 +283,4 @@ const ShiftList = () => {
   );
 }
 
-export default ShiftList;
+export default shift;
