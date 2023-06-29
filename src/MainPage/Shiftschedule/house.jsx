@@ -5,11 +5,16 @@ import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import HouseImg from "../../assets/img/house.png";
 import DefaultImage from "../../assets/img/placeholder.jpg";
-import { useHouseFetching } from "../../utils/employeeCustomFetchHook";
+import { useHouseFetching, useDataFetching, } from "../../utils/employeeCustomFetchHook";
 
 const house = () => {
   const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
+  const { data } = useDataFetching();
   const [menu, setMenu] = useState(false);
+
+  // const filteredEmployees = houseEmployeeData?.filter(
+  //   (employee) => employee.house === houseId
+  // );
 
   const toggleMobileMenu = () => {
     setMenu(!menu);
@@ -82,7 +87,7 @@ const house = () => {
               <>
                 {houseData?.length > 0
                   ? houseData?.map((house) => {
-                      const { id, photo, name, employee, manager } = house;
+                      const { id, photo, name, manager } = house;
                       return (
                         <div
                           key={id}
@@ -123,12 +128,17 @@ const house = () => {
                                 {name}
                               </Link>
                             </h4>
-                            <p className="small text-muted">
-                              House Manager: {manager}
-                            </p>
-                            <div className="small text-muted">
-                              {"Number of staffs: " + employee?.length}
-                            </div>
+                            {data?.map((manage) => {
+                              if (manager === manage.id)
+                                return (
+                                  <p
+                                    key={manage.id}
+                                    className="small text-muted"
+                                  >
+                                    {`Manager: ${manage.first_name} ${manage.middle_name} ${manage.last_name}`}
+                                  </p>
+                                );
+                            })}
                           </div>
                         </div>
                       );
