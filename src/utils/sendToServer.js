@@ -3825,4 +3825,96 @@ export const add_update_delete_shift = async (state, { type, payload }) => {
   }
 };
 
+// Add - Update - Delete employeeshift state
+export const add_update_delete_employee_shift = async (state, { type, payload }) => {
+  console.log(payload);
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/shift/employeeshifts/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          const responseData = response.data;
+          if (Array.isArray(payload)) {
+            return [...state, ...responseData];
+          } else {
+            return [responseData];
+          }
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while posting employeeshift:",
+          error
+        );
+        setGlobalState(
+          "employeeShiftError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while posting employeeshift");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/shift/employeeshifts/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while updating employeeshift:",
+          error
+        );
+        setGlobalState(
+          "employeeShiftError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while updating employeeshift");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/shift/employeeshifts/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while deleting employeeshift",
+          error
+        );
+        setGlobalState(
+          "shiftemployeeShiftErrorError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while deleting employeeshift");
+      }
+    default:
+      throw new Error();
+  }
+};
 

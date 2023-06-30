@@ -17,24 +17,18 @@ import {
   NavButton,
 } from "../Employees/Employees/styles";
 import {
-  initDept,
-  savedDeptReducer,
-  initShiftList,
-  savedShiftListReducer,
-  initHouse,
-  savedHouseReducer,
-  initScheduleEvent,
-  savedScheduleEventReducer,
-  initUserAccount,
-  savedUserAccountReducer,
-} from "../../utils/localStorage";
-import {
   useHouseFetching,
   useDataFetching,
   useHouseEmployeeFetching,
+  useShiftFetching,
+  useEmployeeShiftFetching,
 } from "../../utils/employeeCustomFetchHook";
 import { BaseUrl } from "../../utils/baseUrl";
 import axios from "axios";
+import {
+  add_update_delete_shift,
+  add_update_delete_employee_shift,
+} from "../../utils/sendToServer";
 import "regenerator-runtime/runtime";
 import { useReactToPrint } from "react-to-print";
 import WeeklyComponent from "./weeklyComponent";
@@ -55,6 +49,7 @@ const ShiftScheduling = () => {
     recentDates,
     activeCurrentDate,
     handleNavigation,
+    dayMonthYear,
   } = useDateWeeklyCalendarCounter();
 
   const {
@@ -68,68 +63,28 @@ const ShiftScheduling = () => {
 
   const [views, setViews] = useState("weeklyView" || "monthlyView")
 
-  const [showModal] = useGlobalState("showModal");
+  const [showShiftModal] = useGlobalState("showShiftModal");
   const [showAddSchedul] = useGlobalState("showAddSchedul");
   const [selectedShiftList] = useGlobalState("selectedShiftList");
-
-  const [schedule, dispatchSchedule] = useReducer(
-    savedScheduleEventReducer,
-    [],
-    initScheduleEvent
-  );
-  useEffect(() => {
-    localStorage.setItem("scheduleEvent", JSON.stringify(schedule));
-  }, [schedule]);
   useEffect(() => {
     if (!showAddSchedul) {
       setGlobalState("selectedScheduleEvent", "");
     }
   }, [showAddSchedul]);
 
-  const [shift, dispatchShift] = useReducer(
-    savedShiftListReducer,
-    [],
-    initShiftList
-  );
-  useEffect(() => {
-    localStorage.setItem("shiftList", JSON.stringify(shift));
-  }, [shift]);
-  useEffect(() => {
-    if (!showModal) {
-      setGlobalState("selectedShiftList", "");
-    }
-  }, [showModal]);
-
-  const [shiftList, setShiftList] = useState();
-  useEffect(() => {
-    setShiftList(shift);
-  }, [shift]);
-
-  const [scheduleEvent, setScheduleEvent] = useState();
-  useEffect(() => {
-    setScheduleEvent(schedule);
-  }, [schedule]);
-
-  const [house] = useReducer(savedHouseReducer, [], initHouse);
-  const [houseList, setHouseList] = useState();
-  useEffect(() => {
-    setHouseList(house);
-  }, [house]);
-
-  const [depts] = useReducer(savedDeptReducer, [], initDept);
-  const [deptList, setDeptList] = useState();
-  useEffect(() => {
-    setDeptList(depts);
-  }, [depts]);
-
-  const selectedHouse = houseList?.find((house) => house.id === houseId);
-
+const [shiftSchedule, dispatchSchedule] = useReducer(
+  add_update_delete_employee_shift,
+  []
+);
+const { employeeshiftData } = useEmployeeShiftFetching();
+const [shiftState, dispatchShift] = useReducer(add_update_delete_shift, []); 
+const { shiftData } = useShiftFetching();
   const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
   const { data: allEmployee } = useDataFetching();
   const { houseEmployeeData } = useHouseEmployeeFetching();
 
-  const selecetedHome = houseData?.find((house) => house.id === houseId);
-  const houseName = selecetedHome?.name;
+  const selectedHouse = houseData?.find((house) => house.id === houseId);
+  const houseName = selectedHouse?.name;
   
   // const selectedHouseEmployee = 
 
@@ -163,33 +118,6 @@ const ShiftScheduling = () => {
   // }, [houseId]);
 
 
-  const handleDeptChange = (event) => {
-    // console.log(event);
-  };
-
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-    control: (provided, state) => ({
-      ...provided,
-      background: "#fff",
-      borderColor: "#ddd",
-      height: "48px",
-    }),
-  };
-  const departments = [];
-  deptList?.map((dept) => {
-    departments.push({ value: dept.id, label: dept.deptName });
-  });
-
   useEffect(() => {
     if ($(".select").length > 0) {
       $(".select").select2({
@@ -199,29 +127,15 @@ const ShiftScheduling = () => {
     }
   });
 
-  const [userAcct] = useReducer(
-    savedUserAccountReducer,
-    [],
-    initUserAccount
-  );
-
-  useEffect(() => {
-    localStorage.setItem("userAccount", JSON.stringify(userAcct));
-  }, [userAcct])
-
-  const [employeeAccts, setEmployeeAccts] = useState();
-  useEffect(() => {
-    setEmployeeAccts(userAcct);
-  }, [userAcct]);
-
   const [employeeId, setEmployeeId] = useState();
   const [selectedDay, setSelectedDay] = useState();
   const [selectedDayIndex, setSelectedDayIndex] = useState(null);
   const [event, setEvent] = useState();
+  const [shiftScheduleId, setShiftScheduleId] = useState(null)
 
   const handleMondayShift = (value) => {
     setEmployeeId(value);
-    setSelectedDay(recentDates[0]);
+    setSelectedDay(dayMonthYear[0]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -230,15 +144,18 @@ const ShiftScheduling = () => {
     employeeId,
     houseId,
     index,
+    id
   ) => {
+    setShiftScheduleId(id);
     setSelectedDayIndex(index);
     setEvent({ shifts, employeeId, houseId });
-    setGlobalState("selectedScheduleEvent", scheduleEvent);
+    setGlobalState("selectedScheduleEvent", employeeshiftData);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleTuesDayShift = (value) => {
     setEmployeeId(value);
-    setSelectedDay(recentDates[1]);
+    setSelectedDay(dayMonthYear[1]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -250,12 +167,12 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setEvent({ shifts, employeeId, houseId });
-    setGlobalState("selectedScheduleEvent", scheduleEvent);
+    setGlobalState("selectedScheduleEvent", employeeshiftData);
   };
 
   const handleWednesdayShift = (value) => {
     setEmployeeId(value);
-    setSelectedDay(recentDates[2]);
+    setSelectedDay(dayMonthYear[2]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -267,12 +184,12 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setEvent({ shifts, employeeId, houseId });
-    setGlobalState("selectedScheduleEvent", scheduleEvent);
+    setGlobalState("selectedScheduleEvent", employeeshiftData);
   };
 
   const handleThursdayShift = (value) => {
     setEmployeeId(value);
-    setSelectedDay(recentDates[3]);
+    setSelectedDay(dayMonthYear[3]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -284,12 +201,12 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setEvent({ shifts, employeeId, houseId });
-    setGlobalState("selectedScheduleEvent", scheduleEvent);
+    setGlobalState("selectedScheduleEvent", employeeshiftData);
   };
 
   const handleFridayShift = (value) => {
     setEmployeeId(value);
-    setSelectedDay(recentDates[4]);
+    setSelectedDay(dayMonthYear[4]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -301,12 +218,12 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setEvent({ shifts, employeeId, houseId });
-    setGlobalState("selectedScheduleEvent", scheduleEvent);
+    setGlobalState("selectedScheduleEvent", employeeshiftData);
   };
 
   const handlSaturdayShift = (value) => {
     setEmployeeId(value);
-    setSelectedDay(recentDates[5]);
+    setSelectedDay(dayMonthYear[5]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -318,12 +235,12 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setEvent({ shifts, employeeId, houseId });
-    setGlobalState("selectedScheduleEvent", scheduleEvent);
+    setGlobalState("selectedScheduleEvent", employeeshiftData);
   };
 
   const handleSundayShift = (value) => {
     setEmployeeId(value);
-    setSelectedDay(recentDates[6]);
+    setSelectedDay(dayMonthYear[6]);
     setGlobalState("showAddSchedul", true);
   };
 
@@ -335,7 +252,7 @@ const ShiftScheduling = () => {
   ) => {
     setSelectedDayIndex(index);
     setEvent({ shifts, employeeId, houseId });
-    setGlobalState("selectedScheduleEvent", scheduleEvent);
+    setGlobalState("selectedScheduleEvent", employeeshiftData);
   };
 
   const componentRef = useRef();
@@ -384,7 +301,7 @@ const ShiftScheduling = () => {
                   </Link>
                   <a
                     className="btn add-btn m-r-5"
-                    onClick={() => setGlobalState("showModal", true)}
+                    onClick={() => setGlobalState("showShiftModal", true)}
                   >
                     {" "}
                     Add Shifts
@@ -420,17 +337,7 @@ const ShiftScheduling = () => {
                   <label className="focus-label">Employee</label>
                 </div>
               </div>
-              <DesignationDiv className="col-sm-6 col-md-3">
-                <div className="field">
-                  <Select
-                    onChange={handleDeptChange}
-                    options={departments}
-                    styles={customSelectStyles}
-                    placeholder="Select Department"
-                  />
-                </div>
-              </DesignationDiv>
-              <div className="col-sm-6 col-md-2">
+              <div className="col-sm-6 col-md-3">
                 <div className="form-group form-focus focused">
                   <div>
                     <input
@@ -441,7 +348,7 @@ const ShiftScheduling = () => {
                   <label className="focus-label">From</label>
                 </div>
               </div>
-              <div className="col-sm-6 col-md-2">
+              <div className="col-sm-6 col-md-3">
                 <div className="form-group form-focus focused">
                   <div>
                     <input
@@ -452,7 +359,7 @@ const ShiftScheduling = () => {
                   <label className="focus-label">To</label>
                 </div>
               </div>
-              <div className="col-sm-6 col-md-2">
+              <div className="col-sm-6 col-md-3">
                 <a href="#" className="btn btn-success btn-block w-100">
                   {" "}
                   Search{" "}
@@ -553,10 +460,11 @@ const ShiftScheduling = () => {
                 handleSaturdayShiftIndex={handleSaturdayShiftIndex}
                 handleSundayShift={handleSundayShift}
                 handleSundayShiftIndex={handleSundayShiftIndex}
-                scheduleEvent={scheduleEvent}
+                employeeshiftData={employeeshiftData}
                 DefaultImage={DefaultImage}
                 allEmployee={allEmployee}
                 houseEmployeeData={houseEmployeeData}
+                shiftData={shiftData}
               />
             )}
             {views === "monthlyView" && (
@@ -566,11 +474,12 @@ const ShiftScheduling = () => {
                 currentYear={currentYear}
                 DefaultImage={DefaultImage}
                 tableData={tableData}
-                selectedHouse={selectedHouse}
+                houseEmployeeData={houseEmployeeData}
                 houseId={houseId}
-                scheduleEvent={scheduleEvent}
-                employeeAccts={employeeAccts}
+                employeeshiftData={employeeshiftData}
                 ref={monthlyCalendarComponentRef}
+                shiftData={shiftData}
+                allEmployee={allEmployee}
               />
             )}
             {/* /Content End */}
@@ -580,17 +489,17 @@ const ShiftScheduling = () => {
       </div>
       {/* /Page Wrapper */}
       {/* Add Schedule Modal */}
-      {showModal && <AddShift dispatchShift={dispatchShift} />}
+      {showShiftModal && <AddShift dispatchShift={dispatchShift} />}
       {showAddSchedul && (
         <AddSchedule
           employeeId={employeeId}
           dispatchSchedule={dispatchSchedule}
           selectedDay={selectedDay}
           selectedDayIndex={selectedDayIndex}
-          shiftList={shiftList}
+          shiftData={shiftData}
           event={event}
-          schedule={schedule}
           houseId={houseId}
+          shiftScheduleId={shiftScheduleId}
         />
       )}
     </>

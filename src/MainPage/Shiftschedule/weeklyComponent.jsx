@@ -1,5 +1,5 @@
 import React, {Fragment} from "react";
-import { Link } from "react-router-dom";
+import moment from "moment";
 
 class WeeklyComponent extends React.Component {
   render() {
@@ -8,7 +8,7 @@ class WeeklyComponent extends React.Component {
       houseEmployeeData,
       recentDates,
       activeCurrentDate,
-      selectedHouse,
+      shiftData,
       houseId: accomodationId,
       handleMondayShift,
       handleMondayShiftIndex,
@@ -24,7 +24,7 @@ class WeeklyComponent extends React.Component {
       handleSaturdayShiftIndex,
       handleSundayShift,
       handleSundayShiftIndex,
-      scheduleEvent,
+      employeeshiftData,
       DefaultImage,
     } = this.props;
 
@@ -37,18 +37,11 @@ class WeeklyComponent extends React.Component {
         handleDayShiftIndex,
         indexID,
       }) => {
-        console.log("label", label)
         return (
           <div
             onClick={() =>
-              handleDayShiftIndex(
-                shifts,
-                employeeId,
-                houseId,
-                indexID,
-              )
+              handleDayShiftIndex(shifts, employeeId, houseId, indexID, id)
             }
-            key={id}
             className="user-add-shedule-list"
           >
             <h2>
@@ -57,7 +50,19 @@ class WeeklyComponent extends React.Component {
                   border: "2px dashed #1eb53a",
                 }}
               >
-                <span>{shifts.label}</span>
+                {shiftData?.map((shift, i) => {
+                  if (shift.id === shifts) {
+                    return (
+                      <span key={i}>{`${shift.name} ${moment(
+                        shift.start_time,
+                        "HH:mm"
+                      ).format("hh:mm A")} - ${moment(
+                        shift.end_time,
+                        "HH:mm"
+                      ).format("hh:mm A")}`}</span>
+                    );
+                  }
+                })}
                 <span className="userrole-info">Web Designer - {label}</span>
               </a>
             </h2>
@@ -139,25 +144,26 @@ class WeeklyComponent extends React.Component {
                                           </span>
                                         </a>
                                       </span>
-                                      {scheduleEvent?.map((events, indexID) => {
+                                      {employeeshiftData?.map((events, indexID) => {
                                         const {
                                           id,
-                                          employeeId,
-                                          houseId,
-                                          selectedDay,
-                                          shifts,
+                                          employee,
+                                          house,
+                                          date,
+                                          shift,
                                         } = events;
                                         if (
-                                          houseId == accomodationId &&
-                                          value === employeeId &&
-                                          selectedDay === recentDates[0]
+                                          house == accomodationId &&
+                                          value === employee &&
+                                          date.includes(recentDates[0])
                                         ) {
                                           return (
                                             <Shifts
+                                              key={indexID}
                                               id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
+                                              employeeId={employee}
+                                              houseId={house}
+                                              shifts={shift}
                                               handleDayShiftIndex={
                                                 handleMondayShiftIndex
                                               }
@@ -179,25 +185,26 @@ class WeeklyComponent extends React.Component {
                                           </span>
                                         </a>
                                       </span>
-                                      {scheduleEvent?.map((events, indexID) => {
+                                      {employeeshiftData?.map((events, indexID) => {
                                         const {
                                           id,
-                                          employeeId,
-                                          houseId,
-                                          selectedDay,
-                                          shifts,
+                                          employee,
+                                          house,
+                                          date,
+                                          shift,
                                         } = events;
                                         if (
-                                          houseId == accomodationId &&
-                                          value === employeeId &&
-                                          selectedDay === recentDates[1]
+                                          house == accomodationId &&
+                                          value === employee &&
+                                          date.includes(recentDates[1])
                                         ) {
                                           return (
                                             <Shifts
+                                              key={indexID}
                                               id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
+                                              employeeId={employee}
+                                              houseId={house}
+                                              shifts={shift}
                                               handleDayShiftIndex={
                                                 handleTuesdayShiftIndex
                                               }
@@ -221,25 +228,26 @@ class WeeklyComponent extends React.Component {
                                           </span>
                                         </a>
                                       </span>
-                                      {scheduleEvent?.map((events, indexID) => {
+                                      {employeeshiftData?.map((events, indexID) => {
                                         const {
                                           id,
-                                          employeeId,
-                                          houseId,
-                                          selectedDay,
-                                          shifts,
+                                          employee,
+                                          house,
+                                          date,
+                                          shift,
                                         } = events;
                                         if (
-                                          houseId == accomodationId &&
-                                          value === employeeId &&
-                                          selectedDay === recentDates[2]
+                                          house == accomodationId &&
+                                          value === employee &&
+                                          date.includes(recentDates[2])
                                         ) {
                                           return (
                                             <Shifts
+                                              key={indexID}
                                               id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
+                                              employeeId={employee}
+                                              houseId={house}
+                                              shifts={shift}
                                               handleDayShiftIndex={
                                                 handleWednesdayShiftIndex
                                               }
@@ -261,25 +269,26 @@ class WeeklyComponent extends React.Component {
                                           </span>
                                         </a>
                                       </span>
-                                      {scheduleEvent?.map((events, indexID) => {
+                                      {employeeshiftData?.map((events, indexID) => {
                                         const {
                                           id,
-                                          employeeId,
-                                          houseId,
-                                          selectedDay,
-                                          shifts,
+                                          employee,
+                                          house,
+                                          date,
+                                          shift,
                                         } = events;
                                         if (
-                                          houseId == accomodationId &&
-                                          value === employeeId &&
-                                          selectedDay === recentDates[3]
+                                          house == accomodationId &&
+                                          value === employee &&
+                                          date.includes(recentDates[3])
                                         ) {
                                           return (
                                             <Shifts
+                                              key={indexID}
                                               id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
+                                              employeeId={employee}
+                                              houseId={house}
+                                              shifts={shift}
                                               handleDayShiftIndex={
                                                 handleThursdayShiftIndex
                                               }
@@ -301,25 +310,26 @@ class WeeklyComponent extends React.Component {
                                           </span>
                                         </a>
                                       </span>
-                                      {scheduleEvent?.map((events, indexID) => {
+                                      {employeeshiftData?.map((events, indexID) => {
                                         const {
                                           id,
-                                          employeeId,
-                                          houseId,
-                                          selectedDay,
-                                          shifts,
+                                          employee,
+                                          house,
+                                          date,
+                                          shift,
                                         } = events;
                                         if (
-                                          houseId == accomodationId &&
-                                          value === employeeId &&
-                                          selectedDay === recentDates[4]
+                                          house == accomodationId &&
+                                          value === employee &&
+                                          date.includes(recentDates[4])
                                         ) {
                                           return (
                                             <Shifts
+                                              key={indexID}
                                               id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
+                                              employeeId={employee}
+                                              houseId={house}
+                                              shifts={shift}
                                               handleDayShiftIndex={
                                                 handleFridayShiftIndex
                                               }
@@ -341,25 +351,26 @@ class WeeklyComponent extends React.Component {
                                           </span>
                                         </a>
                                       </span>
-                                      {scheduleEvent?.map((events, indexID) => {
+                                      {employeeshiftData?.map((events, indexID) => {
                                         const {
                                           id,
-                                          employeeId,
-                                          houseId,
-                                          selectedDay,
-                                          shifts,
+                                          employee,
+                                          house,
+                                          date,
+                                          shift,
                                         } = events;
                                         if (
-                                          houseId == accomodationId &&
-                                          value === employeeId &&
-                                          selectedDay === recentDates[5]
+                                          house == accomodationId &&
+                                          value === employee &&
+                                          date.includes(recentDates[5])
                                         ) {
                                           return (
                                             <Shifts
+                                              key={indexID}
                                               id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
+                                              employeeId={employee}
+                                              houseId={house}
+                                              shifts={shift}
                                               handleDayShiftIndex={
                                                 handleSaturdayShiftIndex
                                               }
@@ -381,25 +392,26 @@ class WeeklyComponent extends React.Component {
                                           </span>
                                         </a>
                                       </span>
-                                      {scheduleEvent?.map((events, indexID) => {
+                                      {employeeshiftData?.map((events, indexID) => {
                                         const {
                                           id,
-                                          employeeId,
-                                          houseId,
-                                          selectedDay,
-                                          shifts,
+                                          employee,
+                                          house,
+                                          date,
+                                          shift,
                                         } = events;
                                         if (
-                                          houseId == accomodationId &&
-                                          value === employeeId &&
-                                          selectedDay === recentDates[6]
+                                          house == accomodationId &&
+                                          value === employee &&
+                                          date.includes(recentDates[6])
                                         ) {
                                           return (
                                             <Shifts
+                                              key={indexID}
                                               id={id}
-                                              employeeId={employeeId}
-                                              houseId={houseId}
-                                              shifts={shifts}
+                                              employeeId={employee}
+                                              houseId={house}
+                                              shifts={shift}
                                               handleDayShiftIndex={
                                                 handleSundayShiftIndex
                                               }

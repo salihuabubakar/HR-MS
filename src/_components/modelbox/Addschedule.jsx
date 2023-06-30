@@ -4,54 +4,51 @@ import {
   PopupOverlay,
   PopupWrapper,
 } from "./Addemployee.style";
-import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import DeleteModal from "./DeleteModal";
 import RepeatModal from "./RepeatModal";
+import moment from "moment";
+import { toast } from "react-toastify";
 
 const AddSchedule = ({
-  employeeId,
+  employeeId: employee,
   dispatchSchedule,
-  selectedDay,
+  selectedDay: date,
   selectedDayIndex,
-  shiftList,
-  houseId,
+  shiftData,
+  houseId: house,
   event,
+  shiftScheduleId: id
 }) => {
+  
+
   const [selectedScheduleEvent] = useGlobalState("selectedScheduleEvent");
   const [deleteModal] = useGlobalState("deleteModal");
   const [repeatModal] = useGlobalState("repeatModal");
 
-  let isIdExist;
-  let isShiftExist;
-
-  if (
-    selectedScheduleEvent &&
-    selectedDayIndex !== undefined
-  ) {
-    isIdExist = selectedScheduleEvent[selectedDayIndex]?.id;
-    isShiftExist = selectedScheduleEvent[selectedDayIndex]?.shifts;
-  } else {
-    isIdExist = "";
-    isShiftExist = "";
-  }
-
-  const [shifts, setShifts] = useState(isShiftExist ? isShiftExist: "");
-  const [id] = useState( isIdExist ? isIdExist : Date.now());
+  const [shift, setShift] = useState(
+    selectedScheduleEvent[selectedDayIndex]?.shift || ""
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const scheduleE = {
-      shifts,
-      employeeId,
-      selectedDay,
-      houseId,
       id,
+      shift,
+      employee,
+      date,
+      house,
     };
-    if (isIdExist) {
+    if (selectedScheduleEvent[selectedDayIndex]?.id) {
       dispatchSchedule({ type: "update", payload: scheduleE });
+      toast.success("Shift Schedule Updated", {
+        autoClose: 1500,
+      });
     } else {
-      dispatchSchedule({ type: "push", payload: scheduleE });
+      dispatchSchedule({ type: "add", payload: scheduleE });
+      toast.success("Shift Schedule Added", {
+        autoClose: 1500,
+      });
     }
     setGlobalState("showAddSchedul", false);
   };
@@ -63,38 +60,8 @@ const AddSchedule = ({
     setGlobalState("repeatModal", true);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-  };
-
-  const shiftLists = [];
-  shiftList?.map((shift) => {
-    shiftLists.push({
-      value: shift.id,
-      label:
-        shift.title +
-        " " +
-        new Date(shift.startTime)
-          .toLocaleString()
-          .split(" ")
-          .splice(1)
-          .join(" ") +
-        " - " +
-        new Date(shift.endTime).toLocaleString().split(" ").splice(1).join(" "),
-    });
-  });
-
   const handleShiftChange = (event) => {
-    setShifts(event);
+    setShift(parseInt(event.target.value));
   };
 
   return (
@@ -109,11 +76,11 @@ const AddSchedule = ({
               <div className="modal-content">
                 <div style={{ position: "relative" }} className="card-header">
                   <h5 className="card-title">
-                    {isIdExist
+                    {selectedScheduleEvent[selectedDayIndex]?.id
                       ? "Edit Schedule"
                       : "Add Schedule"}
                   </h5>
-                  {isIdExist && (
+                  {selectedScheduleEvent[selectedDayIndex]?.id && (
                     <button
                       style={{
                         border: "none",
@@ -142,30 +109,32 @@ const AddSchedule = ({
                     <div className="row">
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">
-                            Select Shift <span className="text-danger">*</span>
-                          </label>
-                          <Select
+                          <label className="col-form-label">Select Shift</label>
+                          <select
+                            value={shift}
                             onChange={handleShiftChange}
-                            options={shiftLists}
-                            styles={customSelectStyles}
-                            placeholder="Select Shift"
-                            defaultValue={
-                              isShiftExist
-                                ? {
-                                    value:
-                                      isShiftExist?.value,
-                                    label:
-                                      isShiftExist?.label,
-                                  }
-                                : "Select Shift"
-                            }
-                          />
+                            className="form-control floating"
+                          >
+                            <option disabled value="">
+                              Select Shift
+                            </option>
+                            {shiftData?.map((shft) => (
+                              <option key={shft.id} value={shft.id}>
+                                {`${shft.name} - ${moment(
+                                  shft.start_time,
+                                  "HH:mm"
+                                ).format("hh:mm A")} : ${moment(
+                                  shft.end_time,
+                                  "HH:mm"
+                                ).format("hh:mm A")}`}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      {isIdExist && (
+                      {selectedScheduleEvent[selectedDayIndex]?.id && (
                         <button
                           onClick={handleRepeatShift}
                           className="btn btn-primary repeat-btn"
@@ -178,7 +147,9 @@ const AddSchedule = ({
                         onClick={handleSubmit}
                         className="btn btn-primary submit-btn"
                       >
-                        {isIdExist ? "Update" : "Save"}
+                        {selectedScheduleEvent[selectedDayIndex]?.id
+                          ? "Update"
+                          : "Save"}
                       </button>
                     </div>
                   </form>
@@ -191,9 +162,9 @@ const AddSchedule = ({
       {deleteModal && (
         <DeleteModal
           deleteAction={dispatchSchedule}
-          indexToDelete={selectedDayIndex}
           dispatch={selectedScheduleEvent}
           modalTitle={"Schedule"}
+          iDToDelete={id}
         />
       )}
       {repeatModal && (
