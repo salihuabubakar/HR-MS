@@ -1249,6 +1249,29 @@ export const useShiftFetching = () => {
   return { shiftData, isShiftLoading, shiftError };
 };
 
+// Get employeeshifts data
+export const useEmployeeShiftFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/shift/employeeshifts/?format=json`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: employeeshiftData,
+    isLoading: isEmployeeShiftLoading,
+    error: employeeshiftError,
+  } = useQuery("employeeshiftData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on employeeshiftData
+      queryClient.invalidateQueries(["employeeshiftData"]);
+    },
+  });
+
+  return { employeeshiftData, isEmployeeShiftLoading, employeeshiftError };
+};
+
+
 
 
 

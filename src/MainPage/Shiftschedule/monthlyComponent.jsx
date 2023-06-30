@@ -1,18 +1,20 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 class MonthlyComponent extends React.Component {
   render() {
     const {
-      selectedHouse: selectedAccomodation,
       houseId: accomodationId,
-      scheduleEvent,
       dayNames,
       currentMonthName,
       currentYear,
       tableData,
-      employeeAccts,
       DefaultImage,
+      allEmployee,
+      houseEmployeeData,
+      shiftData,
+      employeeshiftData,
     } = this.props;
 
     const handleDayShiftIndex = (
@@ -48,7 +50,7 @@ class MonthlyComponent extends React.Component {
 
     const Shifts = ({
       label,
-      image,
+      photo,
       id,
       employeeId,
       houseId,
@@ -83,7 +85,19 @@ class MonthlyComponent extends React.Component {
                   border: "2px dashed #1eb53a",
                 }}
               >
-                <span>{shifts.label}</span>
+                {shiftData?.map((shift, i) => {
+                  if (shift.id === shifts) {
+                    return (
+                      <span key={i}>{`${shift.name} ${moment(
+                        shift.start_time,
+                        "HH:mm"
+                      ).format("hh:mm A")} - ${moment(
+                        shift.end_time,
+                        "HH:mm"
+                      ).format("hh:mm A")}`}</span>
+                    );
+                  }
+                })}
                 <span className="userrole-info">
                   <img
                     style={{
@@ -92,7 +106,7 @@ class MonthlyComponent extends React.Component {
                       borderRadius: "50px",
                       backgroundColor: "#00000000",
                     }}
-                    src={image ? image : DefaultImage}
+                    src={photo ? photo : DefaultImage}
                   />{" "}
                   {label}
                 </span>
@@ -167,52 +181,73 @@ class MonthlyComponent extends React.Component {
                                 >
                                   {dayFigure}
                                 </span>
-                                {selectedAccomodation?.employee.map(
+                                {houseEmployeeData?.map(
                                   (staff, index) => {
-                                    const { value, label, image } = staff;
-                                    return (
-                                      <Fragment key={value}>
-                                        {scheduleEvent?.map(
-                                          (shift, shiftIndex) => {
-                                              const {
-                                                id,
-                                                employeeId,
-                                                houseId,
-                                                selectedDay,
-                                                shifts,
-                                              } = shift;
-                                              if (
-                                                selectedDay ==
-                                                  dayName +
-                                                    " " +
-                                                    dayFigure +
-                                                    " " +
-                                                    month &&
-                                                value == employeeId &&
-                                                houseId == accomodationId
-                                              ) {
-                                                return (
-                                                  <Shifts
-                                                    id={id}
-                                                    employeeId={employeeId}
-                                                    houseId={houseId}
-                                                    shifts={shifts}
-                                                    handleDayShiftIndex={
-                                                      handleDayShiftIndex
+                                    const { id: value, employee, house } = staff;
+                                    if(house === accomodationId) {
+                                      return (
+                                        <Fragment key={index}>
+                                          {allEmployee?.map((emp, empIndex) => {
+                                            const {
+                                              id: empId,
+                                              photo,
+                                              first_name,
+                                              middle_name,
+                                              last_name,
+                                            } = emp;
+                                            if(empId === employee) {
+                                              return (
+                                                <Fragment key={empIndex}>
+                                                  {employeeshiftData?.map(
+                                                    (event, shiftIndex) => {
+                                                      const {
+                                                        id,
+                                                        employee,
+                                                        house,
+                                                        date,
+                                                        shift,
+                                                      } = event;
+                                                      if (
+                                                        date ===
+                                                          `${dayName} ${dayFigure} ${month} ${year}` &&
+                                                        value === employee &&
+                                                        house === accomodationId
+                                                      ) {
+                                                        return (
+                                                          <Shifts
+                                                            id={id}
+                                                            employeeId={
+                                                              employee
+                                                            }
+                                                            houseId={house}
+                                                            shifts={shift}
+                                                            handleDayShiftIndex={
+                                                              handleDayShiftIndex
+                                                            }
+                                                            shiftIndex={
+                                                              shiftIndex
+                                                            }
+                                                            label={`${first_name} ${middle_name} ${last_name}`}
+                                                            photo={photo}
+                                                            weekIndex={
+                                                              weekIndex
+                                                            }
+                                                            dayIndex={dayIndex}
+                                                            dayFigure={
+                                                              dayFigure
+                                                            }
+                                                          />
+                                                        );
+                                                      }
                                                     }
-                                                    shiftIndex={shiftIndex}
-                                                    label={label}
-                                                    image={image}
-                                                    weekIndex={weekIndex}
-                                                    dayIndex={dayIndex}
-                                                    dayFigure={dayFigure}
-                                                  />
-                                                );
-                                              }
-                                          }
-                                        )}
-                                      </Fragment>
-                                    );
+                                                  )}
+                                                </Fragment>
+                                              );
+                                            }
+                                          })}
+                                        </Fragment>
+                                      );
+                                    }
                                   }
                                 )}
                               </td>
