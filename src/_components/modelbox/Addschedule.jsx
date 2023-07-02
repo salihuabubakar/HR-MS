@@ -64,6 +64,13 @@ const AddSchedule = ({
     setShift(parseInt(event.target.value));
   };
 
+  const notify = (e) => {
+    e.preventDefault();
+    toast.warn("Can't submit empty form", {
+      autoClose: 1500,
+    });
+  }
+
   return (
     <>
       <PopupWrapper>
@@ -105,7 +112,7 @@ const AddSchedule = ({
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form>
+                  <form onSubmit={shift === "" ? notify : handleSubmit}>
                     <div className="row">
                       <div className="col-sm-12">
                         <div className="form-group">
@@ -143,10 +150,7 @@ const AddSchedule = ({
                           Repeat
                         </button>
                       )}
-                      <button
-                        onClick={handleSubmit}
-                        className="btn btn-primary submit-btn"
-                      >
+                      <button className="btn btn-primary submit-btn">
                         {selectedScheduleEvent[selectedDayIndex]?.id
                           ? "Update"
                           : "Save"}
