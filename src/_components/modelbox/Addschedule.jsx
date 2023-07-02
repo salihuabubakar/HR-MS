@@ -41,14 +41,9 @@ const AddSchedule = ({
     };
     if (selectedScheduleEvent[selectedDayIndex]?.id) {
       dispatchSchedule({ type: "update", payload: scheduleE });
-      toast.success("Shift Schedule Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchSchedule({ type: "add", payload: scheduleE });
-      toast.success("Shift Schedule Added", {
-        autoClose: 1500,
-      });
+      
     }
     setGlobalState("showAddSchedul", false);
   };

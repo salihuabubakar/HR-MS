@@ -5,8 +5,6 @@ import {
   PopupOverlay,
   PopupContainer,
 } from "./Addemployee.style";
-import { toast } from "react-toastify";
-
 const DeleteModal = ({
   deleteAction,
   iDToDelete,
@@ -19,7 +17,6 @@ const DeleteModal = ({
         id: iDToDelete,
       },
     });
-    toast(`${modalTitle} deleted`, { autoClose: 1500 });
 
     setGlobalState("deleteModal", false);
     setGlobalState("showAddSchedul", false);
