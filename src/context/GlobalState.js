@@ -10,16 +10,31 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   isHouseError: [],
 
   selectedResident: [],
-  selectedScheduleEvent: [],
-  selectedShiftList: [],
+
   selectedProfileInfo: [],
-  deleteModal: false,
+
   showFileUploadModal: false,
   selectedFileUpload: [],
-
-  repeatModal: false,
+  showAddSchedul: false,
+  showTaskModal: false,
+  selectedUserAccount: [],
+  selectedTaskInfo: [],
+  showSubTaskModal: false,
+  selectedSubTaskInfo: [],
+  selectedComment: [],
+  showSalaryModal: false,
+  selectedSalary: [],
+  showUsersModal: false,
+  selectedUsers: [],
   deleteFile: false,
   deleteSubTask: false,
+  selectedShiftList: [],
+
+  // Delete Modal
+  deleteModal: false,
+
+  // Repeat Modal
+  repeatModal: false,
 
   // Depatment
   showDeptModal: false,
@@ -49,25 +64,9 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedReviewInfo: [],
   employeeReviewError: [],
 
-  showAddSchedul: false,
-  showEmergencyContactModal: false,
-  selectedEmergencyContact: [],
-  showEducationInformationModal: false,
-  selectedEducationalInfo: [],
-  showExperienceModal: false,
-  selectedExperienceModal: [],
-  showFamilyMenberModal: false,
-  selectedFamilyMemberInfo: [],
-  showTaskModal: false,
-  selectedUserAccount: [],
-  selectedTaskInfo: [],
-  showSubTaskModal: false,
-  selectedSubTaskInfo: [],
-  selectedComment: [],
-  showSalaryModal: false,
-  selectedSalary: [],
-  showUsersModal: false,
-  selectedUsers: [],
+  // Shift Schedule
+  employeeShiftError: [],
+  selectedScheduleEvent: [],
 
   // House Employee
   selectedHouseEmployee: [],

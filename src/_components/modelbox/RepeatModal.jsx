@@ -8,26 +8,26 @@ import {
 import { Checkbox } from "antd";
 import { useDateWeeklyCalendarCounter } from "../../utils/calendarCustomeHook";
 import { RepeatModalContainer } from "../../MainPage/Employees/Employees/styles";
+import { toast } from "react-toastify";
 
 const RepeatModal = ({ event, dispatchSchedule }) => {
 
   const {
     dateCounter,
-    recentDates,
-    activeCurrentDate,
     dayMonthYear,
+    activeCurrentDate,
     handleNavigation,
   } = useDateWeeklyCalendarCounter();
 
-  const [selectedDays, setSelectedDays] = useState([]);
+  const [date, setDate] = useState([]);
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
     if (checked) {
-      setSelectedDays((prevSelectedDays) => [...prevSelectedDays, value]);
+      setDate((prevSelectedDays) => [...prevSelectedDays, value]);
     } else {
-      setSelectedDays((prevSelectedDays) =>
+      setDate((prevSelectedDays) =>
         prevSelectedDays.filter((day) => day !== value)
       );
     }
@@ -36,20 +36,23 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
   const handleRepeat = (e) => {
     e.preventDefault();
     const newShifts = [];
-    const repeatDays = selectedDays.join(",");
-    repeatDays.split(",").forEach((day, index) => {
-      const newShift = { ...event, selectedDay: day, id: Date.now() + index };
+    const repeatDays = date.join(",");
+    repeatDays.split(",").forEach((day) => {
+      const newShift = { ...event, date: day };
       newShifts.push(newShift);
     });
     const newShiftEvent = newShifts.map((shift) => ({
-      shifts: shift.shifts,
-      employeeId: shift.employeeId,
-      selectedDay: shift.selectedDay,
-      houseId: shift.houseId,
-      id: shift.id,
+      shift: shift.shift,
+      employee: shift.employee,
+      date: shift.date,
+      house: shift.house,
     }));
-    dispatchSchedule({ type: "push", payload: newShiftEvent });
+    dispatchSchedule({ type: "add", payload: newShiftEvent });
+    toast.success("Shift Repeated", {
+      autoClose: 1500,
+    });
     setGlobalState("repeatModal", false);
+    setGlobalState("showAddSchedul", false);
   };
 
   return (
@@ -70,19 +73,15 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <div className="form-header"
-                    >
+                    <div className="form-header">
                       <h3>Repeat Shift</h3>
                       <p>
                         Select day(s) to repeat shift:{" "}
-                        {selectedDays.length > 0 && (
-                          <span>{selectedDays.join(", ")}</span>
-                        )}
+                        {date.length > 0 && <span>{date.join(", ")}</span>}
                       </p>
                     </div>
                     <div className="row">
-                      <div className="col-sm-12 nav-btn"
-                      >
+                      <div className="col-sm-12 nav-btn">
                         <button
                           onClick={() => handleNavigation("prev")}
                           style={{ border: "none", marginRight: "10px" }}
@@ -111,9 +110,9 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                           {">"}
                         </button>
                       </div>
-                      <div className="col-sm-12 check-box-div"
-                      >
-                        {recentDates?.map((data, index) => {
+                      <div className="col-sm-12 check-box-div">
+                        {dayMonthYear?.map((data, index) => {
+                          const truncatedData = data.slice(0, -5); // Remove the last 5 characters
                           return (
                             <Checkbox
                               style={{
@@ -123,9 +122,9 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                               key={index}
                               value={data}
                               onChange={handleCheckboxChange}
-                              checked={selectedDays.includes(data)}
+                              checked={date.includes(data)}
                             >
-                              {data}
+                              {truncatedData}
                             </Checkbox>
                           );
                         })}

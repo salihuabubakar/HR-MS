@@ -3831,19 +3831,24 @@ export const add_update_delete_employee_shift = async (state, { type, payload })
   switch (type) {
     case "add":
       try {
-        const response = await axios.post(
-          `${BaseUrl}/shift/employeeshifts/`,
-          payload
-        );
-
+        let response;
+        if (Array.isArray(payload)) {
+            console.log("resArray", [...payload]);
+            response = await axios.post(
+            `${BaseUrl}/shift/employeeshifts/`,
+              [...payload]
+            );
+          } else {
+            response = await axios.post(
+            `${BaseUrl}/shift/employeeshifts/`,
+              payload
+            );
+          }
+        
         // Check the response status
         if (response.status === 201) {
           const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          return responseData;
         } else {
           throw new Error("Failed to post data");
         }

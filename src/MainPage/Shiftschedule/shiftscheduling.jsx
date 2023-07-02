@@ -132,6 +132,7 @@ const { shiftData } = useShiftFetching();
   const [selectedDayIndex, setSelectedDayIndex] = useState(null);
   const [event, setEvent] = useState();
   const [shiftScheduleId, setShiftScheduleId] = useState(null)
+  const [isPrint, setIsPrint] = useState(false);
 
   const handleMondayShift = (value) => {
     setEmployeeId(value);
@@ -139,16 +140,10 @@ const { shiftData } = useShiftFetching();
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleMondayShiftIndex = (
-    shifts,
-    employeeId,
-    houseId,
-    index,
-    id
-  ) => {
+  const handleMondayShiftIndex = (shift, employee, house, indexID, id) => {
     setShiftScheduleId(id);
-    setSelectedDayIndex(index);
-    setEvent({ shifts, employeeId, houseId });
+    setSelectedDayIndex(indexID);
+    setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
     setGlobalState("showAddSchedul", true);
   };
@@ -159,15 +154,12 @@ const { shiftData } = useShiftFetching();
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleTuesdayShiftIndex = (
-    shifts,
-    employeeId,
-    houseId,
-    index,
-  ) => {
-    setSelectedDayIndex(index);
-    setEvent({ shifts, employeeId, houseId });
+  const handleTuesdayShiftIndex = (shift, employee, house, indexID, id) => {
+    setShiftScheduleId(id);
+    setSelectedDayIndex(indexID);
+    setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleWednesdayShift = (value) => {
@@ -176,15 +168,12 @@ const { shiftData } = useShiftFetching();
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleWednesdayShiftIndex = (
-    shifts,
-    employeeId,
-    houseId,
-    index,
-  ) => {
-    setSelectedDayIndex(index);
-    setEvent({ shifts, employeeId, houseId });
+  const handleWednesdayShiftIndex = (shift, employee, house, indexID, id) => {
+    setShiftScheduleId(id);
+    setSelectedDayIndex(indexID);
+    setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleThursdayShift = (value) => {
@@ -193,15 +182,12 @@ const { shiftData } = useShiftFetching();
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleThursdayShiftIndex = (
-    shifts,
-    employeeId,
-    houseId,
-    index,
-  ) => {
-    setSelectedDayIndex(index);
-    setEvent({ shifts, employeeId, houseId });
+  const handleThursdayShiftIndex = (shift, employee, house, indexID, id) => {
+    setShiftScheduleId(id);
+    setSelectedDayIndex(indexID);
+    setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleFridayShift = (value) => {
@@ -210,15 +196,12 @@ const { shiftData } = useShiftFetching();
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleFridayShiftIndex = (
-    shifts,
-    employeeId,
-    houseId,
-    index,
-  ) => {
-    setSelectedDayIndex(index);
-    setEvent({ shifts, employeeId, houseId });
+  const handleFridayShiftIndex = (shift, employee, house, indexID, id) => {
+    setShiftScheduleId(id);
+    setSelectedDayIndex(indexID);
+    setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handlSaturdayShift = (value) => {
@@ -227,15 +210,12 @@ const { shiftData } = useShiftFetching();
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleSaturdayShiftIndex = (
-    shifts,
-    employeeId,
-    houseId,
-    index,
-  ) => {
-    setSelectedDayIndex(index);
-    setEvent({ shifts, employeeId, houseId });
+  const handleSaturdayShiftIndex = (shift, employee, house, indexID, id) => {
+    setShiftScheduleId(id);
+    setSelectedDayIndex(indexID);
+    setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
+    setGlobalState("showAddSchedul", true);
   };
 
   const handleSundayShift = (value) => {
@@ -244,15 +224,12 @@ const { shiftData } = useShiftFetching();
     setGlobalState("showAddSchedul", true);
   };
 
-  const handleSundayShiftIndex = (
-    shifts,
-    employeeId,
-    houseId,
-    index,
-  ) => {
-    setSelectedDayIndex(index);
-    setEvent({ shifts, employeeId, houseId });
+  const handleSundayShiftIndex = (shift, employee, house, indexID, id) => {
+    setShiftScheduleId(id);
+    setSelectedDayIndex(indexID);
+    setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
+    setGlobalState("showAddSchedul", true);
   };
 
   const componentRef = useRef();
@@ -264,6 +241,13 @@ const { shiftData } = useShiftFetching();
   const handleMonthlyCalendarPrint = useReactToPrint({
     content: () => monthlyCalendarComponentRef.current,
   });
+
+
+  const [employeeShiftError] = useGlobalState("employeeShiftError");
+
+  const clearErrorMessage = () => {
+    setGlobalState("employeeShiftError", "");
+  };
 
   return (
     <>
@@ -283,7 +267,7 @@ const { shiftData } = useShiftFetching();
               <div className="row">
                 <div className="col">
                   <h3 className="page-title">Daily Scheduling</h3>
-                  <ul className="breadcrumb">
+                  <ul className="breadcrumb breadcrumb-nav">
                     <li className="breadcrumb-item">
                       <Link to="/app/shiftschedule/house">House</Link>
                     </li>
@@ -375,6 +359,8 @@ const { shiftData } = useShiftFetching();
                       ? handleWeeklyCalendarPrint
                       : handleMonthlyCalendarPrint
                   }
+                  onMouseEnter={() => setIsPrint(true)}
+                  onMouseLeave={() => setIsPrint(false)}
                   className="btn btn-white print-btn"
                 >
                   <i className="fa fa-print fa-lg" /> Print
@@ -439,11 +425,31 @@ const { shiftData } = useShiftFetching();
                 </NavButton>
               </div>
             </NavContainer>
+            <span style={{ color: "red", fontSize: "0.7rem" }}>
+              {employeeShiftError?.length > 0 && (
+                <>
+                  Error: {employeeShiftError}
+                  <button
+                    onClick={clearErrorMessage}
+                    style={{
+                      marginLeft: "10px",
+                      fontSize: "0.8rem",
+                      cursor: "pointer",
+                      color: "black",
+                    }}
+                  >
+                    <i className="fa fa-times" />
+                    Clear Error
+                  </button>
+                </>
+              )}
+            </span>
             {views === "weeklyView" && (
               <WeeklyComponent
                 activeCurrentDate={activeCurrentDate}
                 recentDates={recentDates}
                 ref={componentRef}
+                checkPrint={isPrint}
                 selectedHouse={selectedHouse}
                 houseId={houseId}
                 handleMondayShift={handleMondayShift}
@@ -465,6 +471,7 @@ const { shiftData } = useShiftFetching();
                 allEmployee={allEmployee}
                 houseEmployeeData={houseEmployeeData}
                 shiftData={shiftData}
+                dayMonthYear={dayMonthYear}
               />
             )}
             {views === "monthlyView" && (
