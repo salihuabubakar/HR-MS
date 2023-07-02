@@ -3833,20 +3833,26 @@ export const add_update_delete_employee_shift = async (state, { type, payload })
       try {
         let response;
         if (Array.isArray(payload)) {
-            console.log("resArray", [...payload]);
+          for (const item of payload) {
+            console.log(item);
             response = await axios.post(
-            `${BaseUrl}/shift/employeeshifts/`,
-              [...payload]
-            );
-          } else {
-            response = await axios.post(
-            `${BaseUrl}/shift/employeeshifts/`,
-              payload
+              `${BaseUrl}/shift/employeeshifts/`,
+              item
             );
           }
+        } else {
+          response = await axios.post(
+            `${BaseUrl}/shift/employeeshifts/`,
+            payload
+          );
+        }
+
         
         // Check the response status
         if (response.status === 201) {
+          toast.success("Shift Schedule Added", {
+            autoClose: 1500,
+          });
           const responseData = response.data;
           return responseData;
         } else {
@@ -3879,6 +3885,9 @@ export const add_update_delete_employee_shift = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Shift Schedule Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -3903,6 +3912,9 @@ export const add_update_delete_employee_shift = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 204) {
+          toast("Shift Schedule Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
