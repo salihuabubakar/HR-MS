@@ -134,6 +134,14 @@ const { shiftData } = useShiftFetching();
   const [shiftScheduleId, setShiftScheduleId] = useState(null)
   const [isPrint, setIsPrint] = useState(false);
 
+  // const handleMonthShiftEdit = (shift, employee, house, shiftIndex, id) => {
+  //   setShiftScheduleId(id);
+  //   setSelectedDayIndex(shiftIndex);
+  //   setEvent({ shift, employee, house });
+  //   setGlobalState("selectedScheduleEvent", employeeshiftData);
+  //   setGlobalState("showAddSchedul", true);
+  // };
+
   const handleMondayShift = (value) => {
     setEmployeeId(value);
     setSelectedDay(dayMonthYear[0]);
