@@ -183,17 +183,15 @@ const AddSchedule = ({
 
                               if (!isShiftAssigned || !filteredShift) {
                                 return (
-                                  <>
-                                    <option key={shft.id} value={shft.id}>
-                                      {`${shft.name} - 
-                                      ${moment(shft.start_time, "HH:mm").format(
-                                        "hh:mm A"
-                                      )} :
-                                      ${moment(shft.end_time, "HH:mm").format(
-                                        "hh:mm A"
-                                      )}`}
-                                    </option>
-                                  </>
+                                  <option key={shft.id} value={shft.id}>
+                                    {`${shft.name} - 
+                                    ${moment(shft.start_time, "HH:mm").format(
+                                      "hh:mm A"
+                                    )} :
+                                    ${moment(shft.end_time, "HH:mm").format(
+                                      "hh:mm A"
+                                    )}`}
+                                  </option>
                                 );
                               }
 
