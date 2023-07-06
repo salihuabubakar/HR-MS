@@ -9,25 +9,31 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedHouse: [],
   isHouseError: [],
 
+  //Resident
   selectedResident: [],
 
   selectedProfileInfo: [],
-
   showFileUploadModal: false,
   selectedFileUpload: [],
-  showAddSchedul: false,
+
+  // Task Manager
   showTaskModal: false,
-  selectedUserAccount: [],
+  taskError: [],
   selectedTaskInfo: [],
+
+  // Sub Task Manager
   showSubTaskModal: false,
   selectedSubTaskInfo: [],
+  deleteSubTask: false,
+  subTaskError: [],
+
+  selectedUserAccount: [],
   selectedComment: [],
   showSalaryModal: false,
   selectedSalary: [],
   showUsersModal: false,
   selectedUsers: [],
   deleteFile: false,
-  deleteSubTask: false,
   selectedShiftList: [],
 
   // Delete Modal
@@ -67,6 +73,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   // Shift Schedule
   employeeShiftError: [],
   selectedScheduleEvent: [],
+  showAddSchedul: false,
 
   // House Employee
   selectedHouseEmployee: [],

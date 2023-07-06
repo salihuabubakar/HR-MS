@@ -8,43 +8,67 @@ import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
-import { initTask, savedTaskReducer } from "../../utils/localStorage";
 import SmileImg from "../../assets/img/smile.png";
 import DefaultImage from "../../assets/img/placeholder.jpg";
-import { Span } from "./style";
 import AddTask from "../../_components/modelbox/AddTask";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
+import moment from "moment";
+import { add_update_delete_task } from "../../utils/sendToServer";
+import { useTaskFetching, useDataFetching } from "../../utils/employeeCustomFetchHook";
 
 const TaskManagerTable = () => {
-  const [tasks, dispatchTasks] = useReducer(savedTaskReducer, [], initTask);
+  const { taskData, isTaskLoading } = useTaskFetching();
+  const { data: allEmployees } = useDataFetching();
+  // Table pagination
+  const itemsPerPage = 10; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const startCount = (currentPage - 1) * itemsPerPage + 1;
+  const endCount = startCount + itemsPerPage - 1;
+  const paginationSettings = {
+    total: taskData?.length,
+    showTotal: (total, range) =>
+      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    itemRender: itemRender,
+    current: currentPage,
+    onChange: setCurrentPage,
+  };
+
   const [showTaskModal] = useGlobalState("showTaskModal");
   const [deleteModal] = useGlobalState("deleteModal");
 
-  useEffect(() => {
-    localStorage.setItem("task", JSON.stringify(tasks));
-  }, [tasks]);
+  const [taskError] = useGlobalState("taskError");
+
+  const clearErrorMessage = () => {
+    setGlobalState("taskError", "");
+  };
+
+  const [taskState, dispatchTasks] = useReducer(
+    add_update_delete_task,
+    []
+  );
+
   useEffect(() => {
     if (!showTaskModal) {
       setGlobalState("selectedTaskInfo", "");
     }
   }, [showTaskModal]);
 
-  const [taskList, setTaskList] = useState();
-  useEffect(() => {
-    setTaskList(tasks);
-  }, [tasks]);
 
   const [menu, setMenu] = useState(false);
-  const [indexToEdit, setIndexToEdit] = useState(0);
+  const [indexToEdit, setIndexToEdit] = useState();
+  const [taskId, setTaskId] = useState("");
 
   const handleTaskEdit = (id, index) => {
-    setIndexToEdit(index);
+    setTaskId(id);
+    setIndexToEdit((currentPage - 1) * itemsPerPage + index);
     setGlobalState("showTaskModal", true);
-    setGlobalState("selectedTaskInfo", tasks);
+    setGlobalState("selectedTaskInfo", taskData);
   };
 
-  const handleTaskDelete = (index) => {
-    setIndexToEdit(index);
+  const handleTaskDelete = (id) => {
+    setTaskId(id);
     setGlobalState("deleteModal", true);
   };
 
@@ -56,14 +80,16 @@ const TaskManagerTable = () => {
     {
       title: "#",
       render: (text, record, index) => {
-        return <React.Fragment>{index + 1}</React.Fragment>;
+        const actualIndex = (currentPage - 1) * itemsPerPage + index + 1;
+        return <React.Fragment>{actualIndex}</React.Fragment>;
       },
     },
     {
       title: "Task Title",
-      dataIndex: "taskTitle",
+      dataIndex: "name",
       render: (text, record, index) => {
-        const { id, taskTitle } = record;
+        const { id, name } = record;
+        const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
         return (
           <React.Fragment>
             <h2 className="table-avatar">
@@ -73,40 +99,66 @@ const TaskManagerTable = () => {
                   state: { id: id, index: index },
                 }}
               >
-                {taskTitle}
+                {name === formattedName ? name : formattedName}
               </Link>
             </h2>
           </React.Fragment>
         );
       },
-      // sorter: (a, b) => a.name.length - b.name.length,
     },
     {
       title: "Manager",
       dataIndex: "manager",
       render: (text, record, index) => {
-        const { id, manager } = record;
+        const { id, managers } = record;
         return (
           <React.Fragment>
-            <h2 className="table-avatar">
-              <Link
-                to={{
-                  pathname: "/app/taskmanagement/task-manager-detail",
-                  state: { id: id, index: index },
-                }}
-                className="avatar"
-              >
-                <img alt="" src={SmileImg} />
-              </Link>
-              <Link
-                to={{
-                  pathname: "/app/taskmanagement/task-manager-detail",
-                  state: { id: id, index: index },
-                }}
-              >
-                {manager}
-              </Link>
-            </h2>
+            {allEmployees?.map((user) => {
+              const {
+                id: value,
+                first_name,
+                middle_name,
+                last_name,
+                photo,
+              } = user;
+              if (managers.includes(value)) {
+                return (
+                  <h2 key={value} className="table-avatar">
+                    <Link
+                      to={{
+                        pathname: "/app/taskmanagement/task-manager-detail",
+                        state: { id: id, index: index },
+                      }}
+                      className="avatar"
+                      data-bs-toggle="tooltip"
+                      title={`${first_name} ${middle_name} ${last_name}`}
+                      style={{
+                        borderRadius: "5px",
+                        backgroundColor: "#00000000",
+                        height: "100%",
+                      }}
+                    >
+                      <img
+                        style={{
+                          width: "30px",
+                          borderRadius: "50px",
+                          backgroundColor: "#00000000",
+                          height: "30px",
+                        }}
+                        alt=""
+                        src={photo ? photo : DefaultImage}
+                      />
+                    </Link>
+                    <Link
+                      to={{
+                        pathname: "/app/taskmanagement/task-manager-detail",
+                        state: { id: id, index: index },
+                      }}
+                    ></Link>
+                  </h2>
+                );
+              }
+            })}
           </React.Fragment>
         );
       },
@@ -115,46 +167,54 @@ const TaskManagerTable = () => {
       title: "Assigned Team",
       dataIndex: "employee",
       render: (text, record, index) => {
-        const { id, employee } = record;
+        const { id, employees } = record;
         return (
           <React.Fragment>
-            {employee?.map((user, index) => {
-              const { value, label, image } = user;
-              return (
-                <h2 key={value} className="table-avatar">
-                  <Link
-                    to={{
-                      pathname: "/app/taskmanagement/task-manager-detail",
-                      state: { id: id, index: index },
-                    }}
-                    className="avatar"
-                    data-bs-toggle="tooltip"
-                    title={label}
-                    style={{
-                      borderRadius: "5px",
-                      backgroundColor: "#00000000",
-                      height: "100%",
-                    }}
-                  >
-                    <img
-                      style={{
-                        width: "30px",
-                        borderRadius: "50px",
-                        backgroundColor: "#00000000",
-                        height: "30px",
+            {allEmployees?.map((user) => {
+              const { 
+                id: value, 
+                first_name, 
+                middle_name, 
+                last_name, 
+                photo 
+              } = user;
+              if (employees.includes(value)) {
+                return (
+                  <h2 key={value} className="table-avatar">
+                    <Link
+                      to={{
+                        pathname: "/app/taskmanagement/task-manager-detail",
+                        state: { id: id, index: index },
                       }}
-                      alt=""
-                      src={image ? image : DefaultImage}
-                    />
-                  </Link>
-                  <Link
-                    to={{
-                      pathname: "/app/taskmanagement/task-manager-detail",
-                      state: { id: id, index: index },
-                    }}
-                  ></Link>
-                </h2>
-              );
+                      className="avatar"
+                      data-bs-toggle="tooltip"
+                      title={`${first_name} ${middle_name} ${last_name}`}
+                      style={{
+                        borderRadius: "5px",
+                        backgroundColor: "#00000000",
+                        height: "100%",
+                      }}
+                    >
+                      <img
+                        style={{
+                          width: "30px",
+                          borderRadius: "50px",
+                          backgroundColor: "#00000000",
+                          height: "30px",
+                        }}
+                        alt=""
+                        src={photo ? photo : DefaultImage}
+                      />
+                    </Link>
+                    <Link
+                      to={{
+                        pathname: "/app/taskmanagement/task-manager-detail",
+                        state: { id: id, index: index },
+                      }}
+                    ></Link>
+                  </h2>
+                );
+              }
             })}
           </React.Fragment>
         );
@@ -162,25 +222,33 @@ const TaskManagerTable = () => {
     },
     {
       title: "Hours Allocated",
-      dataIndex: "timeAllocated",
+      dataIndex: "hours",
     },
     {
       title: "Date Created",
-      dataIndex: "dateCreated",
+      dataIndex: "created_at",
+      render: (text, record, index) => {
+        const { created_at } = record;
+        return (
+          <React.Fragment>
+            {moment(created_at).format("DD MMM YYYY")}
+          </React.Fragment>
+        );
+      },
     },
     {
       title: "Priority",
-      dataIndex: "taskPriority",
+      dataIndex: "priority",
       render: (text, record, index) => {
-        const { taskPriority, id } = record;
+        const { priority, id } = record;
         return (
           <h2
             key={id}
             style={{
               backgroundColor:
-                (taskPriority?.label == "low" && "red") ||
-                (taskPriority?.label == "medium" && "#ff9b44") ||
-                (taskPriority?.label == "highest" && "#55CE63"),
+                (priority === "low" && "red") ||
+                (priority === "medium" && "#ff9b44") ||
+                (priority === "high" && "#55CE63"),
               color: "#fff",
               padding: "5px",
               borderRadius: "5px",
@@ -196,26 +264,40 @@ const TaskManagerTable = () => {
                 state: { id: id, index: index },
               }}
             >
-              {taskPriority?.label}
+              {priority}
             </Link>
           </h2>
         );
       },
     },
     {
-      title: "Status",
-      dataIndex: "taskStatus",
+      title: "Progress",
+      dataIndex: "progress",
       render: (text, record, index) => {
-        const { taskStatus, id } = record;
+        const { progress, id } = record;
+        let status = "";
+
+        if (progress === 0) {
+          status = "Not started";
+        } else if (progress >= 1 && progress <= 24) {
+          status = "Started";
+        } else if (progress >= 25 && progress <= 50) {
+          status = "Middle";
+        } else if (progress >= 51 && progress <= 75) {
+          status = "Rounding up";
+        } else if (progress >= 76 && progress <= 100) {
+          status = "Completed";
+        }
+
         return (
           <h2
             style={{
               backgroundColor:
-                (taskStatus?.label == "not-started" && "red") ||
-                (taskStatus?.label == "started" && "#f20d91") ||
-                (taskStatus?.label == "middle" && "#ff9b44") ||
-                (taskStatus?.label == "rounding-up" && "#73AB00") ||
-                (taskStatus?.label == "completed" && "#55CE63"),
+                (status === "Not started" && "red") ||
+                (status === "Started" && "#f20d91") ||
+                (status === "Middle" && "#ff9b44") ||
+                (status === "Rounding up" && "#73AB00") ||
+                (status === "Completed" && "#55CE63"),
               color: "#fff",
               padding: "5px",
               borderRadius: "5px",
@@ -231,11 +313,7 @@ const TaskManagerTable = () => {
                 state: { id: id, index: index },
               }}
             >
-              {(taskStatus?.label == "not-started" && "Not started") ||
-                (taskStatus?.label == "started" && "Started") ||
-                (taskStatus?.label == "middle" && "Middle") ||
-                (taskStatus?.label == "rounding-up" && "Rounding up") ||
-                (taskStatus?.label == "completed" && "Completed")}
+              {status}
             </Link>
           </h2>
         );
@@ -261,7 +339,7 @@ const TaskManagerTable = () => {
             </a>
             <a
               className="dropdown-item"
-              onClick={() => handleTaskDelete(index)}
+              onClick={() => handleTaskDelete(record.id)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -303,25 +381,38 @@ const TaskManagerTable = () => {
               </div>
             </div>
           </div>
+          <span style={{ color: "red", fontSize: "0.7rem" }}>
+            {taskError?.length > 0 && (
+              <>
+                Error: {taskError}
+                <button
+                  onClick={clearErrorMessage}
+                  style={{
+                    marginLeft: "10px",
+                    fontSize: "0.8rem",
+                    cursor: "pointer",
+                    color: "black",
+                  }}
+                >
+                  <i className="fa fa-times" />
+                  Clear Error
+                </button>
+              </>
+            )}
+          </span>
           {/* /Page Header */}
           <div className="row">
             <div className="col-md-12">
               <div className="table-responsive">
                 <Table
                   className="table-striped"
-                  pagination={{
-                    total: taskList?.length,
-                    showTotal: (total, range) =>
-                      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                    showSizeChanger: true,
-                    onShowSizeChange: onShowSizeChange,
-                    itemRender: itemRender,
-                  }}
+                  pagination={paginationSettings}
                   style={{ overflowX: "auto" }}
                   columns={columns}
-                  // bordered
-                  dataSource={taskList}
-                  rowKey={(task) => task.id}
+                  bordered
+                  dataSource={taskData}
+                  rowKey={(task) => task?.id}
+                  loading={isTaskLoading}
                 />
               </div>
             </div>
@@ -330,15 +421,18 @@ const TaskManagerTable = () => {
         {/* /Page Content */}
         {/* Add Department Modal */}
         {showTaskModal && (
-          <AddTask dispatchTasks={dispatchTasks} indexToEdit={indexToEdit} />
+          <AddTask
+            dispatchTasks={dispatchTasks}
+            indexToEdit={indexToEdit}
+            id={taskId}
+          />
         )}
-        {/* /Add Department Modal */}
+
         {/* Delete Department Modal */}
         {deleteModal && (
           <DeleteModal
             deleteAction={dispatchTasks}
-            indexToDelete={indexToEdit}
-            dispatch={tasks}
+            iDToDelete={taskId}
             modalTitle={"Task"}
           />
         )}

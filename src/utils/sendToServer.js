@@ -3804,6 +3804,9 @@ export const add_update_delete_shift = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast.success("Shift Schedule Added", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -3852,8 +3855,7 @@ export const add_update_delete_employee_shift = async (state, { type, payload })
           toast.success("Shift Schedule Added", {
             autoClose: 1500,
           });
-          const responseData = response.data;
-          return responseData;
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -3928,6 +3930,102 @@ export const add_update_delete_employee_shift = async (state, { type, payload })
           JSON.stringify(error.response.data)
         );
         throw new Error("Error occurred while deleting employeeshift");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Delete Task state
+export const add_update_delete_task = async (state, { type, payload }) => {
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(
+          `${BaseUrl}/task/task/`,
+          payload
+        );
+
+        // Check the response status
+        if (response.status === 201) {
+          toast.success("Task Added", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while posting task:",
+          error
+        );
+        setGlobalState(
+          "taskError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while posting task");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(
+          `${BaseUrl}/task/task/${payload.id}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+
+        // Check the response status
+        if (response.status === 200) {
+          toast.success("Task Updated", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while updating task:",
+          error
+        );
+        setGlobalState(
+          "taskError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while updating task");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(
+          `${BaseUrl}/task/task/${payload.id}/`
+        );
+
+        // Check the response status
+        if (response.status === 204) {
+          toast("Task Deleted", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error(
+          "Error occurred while deleting task",
+          error
+        );
+        setGlobalState(
+          "taskError",
+          JSON.stringify(error.response.data)
+        );
+        throw new Error("Error occurred while deleting task");
       }
     default:
       throw new Error();

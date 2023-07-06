@@ -1272,6 +1272,27 @@ export const useEmployeeShiftFetching = () => {
 };
 
 
+// Get task data
+export const useTaskFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/task/task/?format=json`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: taskData,
+    isLoading: isTaskLoading,
+    error: taskError,
+  } = useQuery("taskData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on taskData
+      queryClient.invalidateQueries(["taskData"]);
+    },
+  });
+
+  return { taskData, isTaskLoading, taskError };
+};
 
 
 
