@@ -10,7 +10,7 @@
 //     var uploadForm = document.getElementById('js-upload-form');
 
 //     var startUpload = function(files) {
-//         console.log(files)
+//         
 //     }
 
 //     uploadForm.addEventListener('submit', function(e) {

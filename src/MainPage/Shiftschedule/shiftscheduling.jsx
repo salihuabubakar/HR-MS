@@ -91,7 +91,7 @@ const { shiftData, isShiftLoading } = useShiftFetching();
 
   // const [isSelectedLoading, setIsSelectedLoading] = useState(false);
   // const [getSelectedData, setGetSelectedData] = useState();
-  // console.log("🚀 ~ file: shiftscheduling.jsx:128 ~ ShiftScheduling ~ getSelectedData:", getSelectedData)
+  // 
 
   // useEffect(() => {
   //   let isMounted = true;
