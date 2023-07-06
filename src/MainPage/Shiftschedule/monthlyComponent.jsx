@@ -36,7 +36,7 @@ class MonthlyComponent extends React.Component {
     //     dayIndex,
     //     dayFigure,
     //   };
-    //   console.log("eve..", eve);
+    //   
     // };
 
     // const handleDayEvent = (weekIndex, dayIndex, dayFigure) => {
@@ -45,7 +45,7 @@ class MonthlyComponent extends React.Component {
     //     dayIndex,
     //     dayFigure,
     //   };
-    //   console.log("daysInMonth..", evt);
+    //   
     // };
 
 

@@ -194,7 +194,7 @@ const AddProfileInfo = ({ dispatchUserAcct, userAcct, emIndex }) => {
 
   const handleDateOfBirth = (event) => {
     const d = event.target.value;
-    console.log("date: ", d);
+    
     setDOB(d);
   };
 

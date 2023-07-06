@@ -39,7 +39,7 @@ const Registrationpage = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("data", data);
+    
     const email = data.email;
     const password = data.password;
     if (email && password) {

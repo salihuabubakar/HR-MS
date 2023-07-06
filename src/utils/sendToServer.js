@@ -6,7 +6,7 @@ import { setGlobalState } from "../context/GlobalState";
 // Add - Update - Delete Employee state
 export const add_update_delete_employee = async (state, { type, payload }) => {
   const { id, formData } = payload;
-  console.log(id);
+  
   switch (type) {
     case "add":
       try {
@@ -84,7 +84,7 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
 
 // Add - Update - Delete Role state
 export const add_update_delete_role = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -177,7 +177,7 @@ export const add_update_delete_role = async (state, { type, payload }) => {
 
 // Add - Update - Delete Department state
 export const add_update_delete_department = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -271,7 +271,7 @@ export const add_update_delete_department = async (state, { type, payload }) => 
 // Add - Update - Delete House state
 export const add_update_delete_house = async (state, { type, payload }) => {
  const { id, formData } = payload;
- console.log(id);
+ 
   switch (type) {
     case "add":
       try {
@@ -347,7 +347,7 @@ export const add_update_delete_house = async (state, { type, payload }) => {
 // Add - Update - Delete Room state
 export const add_update_delete_room = async (state, { type, payload }) => {
   // const { id, formData } = payload;
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -421,7 +421,7 @@ export const add_update_delete_room = async (state, { type, payload }) => {
 
 // Add - Update - Delete House Employee state
 export const add_update_delete_house_employee = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -498,7 +498,7 @@ export const add_update_delete_house_employee = async (state, { type, payload })
 
 // Add - Update - Delete House Resident state
 export const add_update_delete_house_resident = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -577,7 +577,7 @@ export const add_update_delete_house_resident = async (state, { type, payload })
 // Add - Update - Delete House Image state
 export const add_update_delete_house_image = async (state, { type, payload }) => {
   const { id, formData } = payload;
-  console.log(id);
+  
   switch (type) {
     case "add":
       try {
@@ -651,7 +651,7 @@ export const add_update_delete_house_image = async (state, { type, payload }) =>
 // Add - Update - Delete House Document state
 export const add_update_delete_house_document = async (state, { type, payload }) => {
   const { id, formData } = payload;
-  console.log(id);
+  
   switch (type) {
     case "add":
       try {
@@ -730,7 +730,7 @@ export const add_update_delete_house_document = async (state, { type, payload })
 // Add - Update - Delete House Bill state
 export const add_update_delete_bill = async (state, { type, payload }) => {
   // const { id, formData } = payload;
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -806,7 +806,7 @@ export const add_update_delete_bill = async (state, { type, payload }) => {
 // Add - Update - Delete House Maintenance state
 export const add_update_delete_maintenance = async (state, { type, payload }) => {
   // const { id, formData } = payload;
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -886,7 +886,7 @@ export const add_update_delete_maintenance = async (state, { type, payload }) =>
 // Add - Update - Delete House Organisation state
 export const add_update_delete_organisation = async (state, { type, payload }) => {
   // const { id, formData } = payload;
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -965,7 +965,7 @@ export const add_update_delete_organisation = async (state, { type, payload }) =
 // Add - Update - Delete  Status state
 export const add_update_delete_status = async (state, { type, payload }) => {
   // const { id, formData } = payload;
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -1044,7 +1044,7 @@ export const add_update_delete_status = async (state, { type, payload }) => {
 // Add - Update - Delete Employee Address  state
 export const add_update_delete_employee_address = async (state, { type, payload }) => {
   // const { id, formData } = payload;
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -1123,7 +1123,7 @@ export const add_update_delete_employee_address = async (state, { type, payload 
 // Add - Update - Delete Employee Emergency state
 export const add_update_delete_employee_emergency = async (state, { type, payload }) => {
   // const { id, formData } = payload;
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -1595,7 +1595,7 @@ export const add_update_delete_employee_review = async (state, { type, payload }
 
 // Add - Update - Delete Notice state
 export const add_update_delete_notice = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -1679,7 +1679,7 @@ export const add_update_delete_notice = async (state, { type, payload }) => {
 
 // Add - Update - Delete Item state
 export const add_update_delete_item = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -1763,7 +1763,7 @@ export const add_update_delete_item = async (state, { type, payload }) => {
 
 // Add - Update - Delete Inspection state
 export const add_update_delete_inspection = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -1917,7 +1917,7 @@ export const add_update_delete_resident = async (state, { type, payload }) => {
 
 // Add - Update - Delete Resident GP state
 export const add_update_delete_resident_gp = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -1992,7 +1992,7 @@ export const add_update_delete_resident_gp = async (state, { type, payload }) =>
 
 // Add - Update - Delete Resident Solicitor state
 export const add_update_delete_resident_solicitor = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -2070,7 +2070,7 @@ export const add_update_delete_resident_document = async (
   { type, payload }
 ) => {
   const { id, formData } = payload;
-  console.log(id);
+  
   switch (type) {
     case "add":
       try {
@@ -2148,7 +2148,7 @@ export const add_update_delete_resident_document = async (
 
 // Add - Update - Delete Resident school state
 export const add_update_delete_resident_school = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -2223,7 +2223,7 @@ export const add_update_delete_resident_school = async (state, { type, payload }
 
 // Add - Update - Delete Resident Education state
 export const add_update_delete_resident_education = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -2620,7 +2620,7 @@ export const add_update_delete_resident_medication = async (
 
 // Add - Update - Delete Resident Appointment state
 export const add_update_delete_resident_appointment = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -2695,7 +2695,7 @@ export const add_update_delete_resident_appointment = async (state, { type, payl
 
 // Add - Update - Delete Resident Social Worker state
 export const add_update_delete_resident_social_worker = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -2857,7 +2857,7 @@ export const add_update_delete_resident_referral = async (
 
 // Add - Update - Delete Borough state
 export const add_update_delete_borough = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -2932,7 +2932,7 @@ export const add_update_delete_borough = async (state, { type, payload }) => {
 
 // Add - Update - Delete Social worker state
 export const add_update_delete_social_worker = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -3016,7 +3016,7 @@ export const add_update_delete_social_worker = async (state, { type, payload }) 
 
 // Add - Update - Delete Resident Visitor state
 export const add_update_delete_resident_visitor = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -3103,7 +3103,7 @@ export const add_update_delete_complaint = async (
   state,
   { type, payload }
 ) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -3190,7 +3190,7 @@ export const add_update_delete_resident_request = async (
   state,
   { type, payload }
 ) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -3278,7 +3278,7 @@ export const add_update_delete_resident_incident = async (
   state,
   { type, payload }
 ) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -3365,7 +3365,7 @@ export const add_update_delete_resident_misper = async (
   state,
   { type, payload }
 ) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -3452,7 +3452,7 @@ export const add_update_delete_resident_document_type = async (
   state,
   { type, payload }
 ) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -3545,7 +3545,7 @@ export const add_update_delete_resident_document_type = async (
 
 // Add - Update - Delete Resident Gp Type state
 export const add_update_delete_resident_gp_type = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -3641,7 +3641,6 @@ export const add_update_delete_resident_legal_status_type = async (
   state,
   { type, payload }
 ) => {
-  console.log(payload);
   switch (type) {
     case "add":
       try {
@@ -3734,7 +3733,7 @@ export const add_update_delete_resident_legal_status_type = async (
 
 // Add - Update - Delete Shift state
 export const add_update_delete_shift = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
@@ -3827,14 +3826,14 @@ export const add_update_delete_shift = async (state, { type, payload }) => {
 
 // Add - Update - Delete employeeshift state
 export const add_update_delete_employee_shift = async (state, { type, payload }) => {
-  console.log(payload);
+  
   switch (type) {
     case "add":
       try {
         let response;
         if (Array.isArray(payload)) {
           for (const item of payload) {
-            console.log(item);
+            
             response = await axios.post(
               `${BaseUrl}/shift/employeeshifts/`,
               item

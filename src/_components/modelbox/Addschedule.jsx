@@ -54,23 +54,40 @@ const AddSchedule = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    if (noShiftRemain) return;
-  
-    const scheduleE = {
-      id,
-      shift,
-      employee,
-      date,
-      house,
-    };
-    if (selectedScheduleEvent[selectedDayIndex]?.id) {
-      dispatchSchedule({ type: "update", payload: scheduleE });
+
+    const currentDate = new Date().toLocaleDateString();
+    const selected = new Date(date).toLocaleDateString();
+
+    if (selected >= currentDate) {
+      if (noShiftRemain) {
+        return null; // Skip further execution
+      }
+
+      const scheduleE = {
+        id,
+        shift,
+        employee,
+        date,
+        house,
+      };
+
+      if (selectedScheduleEvent[selectedDayIndex]?.id) {
+        dispatchSchedule({ type: "update", payload: scheduleE });
+      } else {
+        dispatchSchedule({ type: "add", payload: scheduleE });
+      }
+
+      setGlobalState("showAddSchedul", false);
     } else {
-      dispatchSchedule({ type: "add", payload: scheduleE });
-      
+      toast.warning("You can't add shift for past date.", {
+        autoClose: 2000,
+      });
+      setGlobalState("showAddSchedul", false);
+      return null; // Skip further execution
     }
-    setGlobalState("showAddSchedul", false);
+
+
+
   };
   const handleDeleteEvent = () => {
     setGlobalState("deleteModal", true);

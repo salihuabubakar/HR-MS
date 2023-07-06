@@ -31,7 +31,7 @@ const handleDashboard = () => {
 
 const toggleLvelTwo = (value) => {
   setLevel2Menu(value)
-  console.log("value", value);
+  
 }
 const toggleLevelThree = (value) => {
   setLevel3Menu(value)

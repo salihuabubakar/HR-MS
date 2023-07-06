@@ -34,7 +34,7 @@ const Loginpage = () => {
   const localPassword = localStorage.getItem("password");
 
   const onSubmit = (data) => {
-    console.log("data", data);
+    
     const email = data.email;
     const password = data.password;
     if (email === "sachin@gmail.com" && password == "123456") {
