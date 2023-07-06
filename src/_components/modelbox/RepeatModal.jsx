@@ -10,14 +10,9 @@ import { useDateWeeklyCalendarCounter } from "../../utils/calendarCustomeHook";
 import { RepeatModalContainer } from "../../MainPage/Employees/Employees/styles";
 import { toast } from "react-toastify";
 
-const RepeatModal = ({ event, dispatchSchedule }) => {
-
-  const {
-    dateCounter,
-    dayMonthYear,
-    activeCurrentDate,
-    handleNavigation,
-  } = useDateWeeklyCalendarCounter();
+const RepeatModal = ({ event, dispatchSchedule, date: selectedDate }) => {
+  const { dateCounter, dayMonthYear, activeCurrentDate, handleNavigation } =
+    useDateWeeklyCalendarCounter();
 
   const [date, setDate] = useState([]);
 
@@ -32,7 +27,7 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
       );
     }
   };
-  
+
   const handleRepeat = (e) => {
     e.preventDefault();
     const newShifts = [];
@@ -75,7 +70,10 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                   <div className="modal-body">
                     <div className="form-header">
                       <h3>Repeat Shift</h3>
-                      <p>
+                      <p style={{ fontSize: "0.7rem" }}>
+                        current Date: {selectedDate}
+                      </p>
+                      <p style={{ fontSize: "0.8rem" }}>
                         Select day(s) to repeat shift:{" "}
                         {date.length > 0 && <span>{date.join(", ")}</span>}
                       </p>
@@ -112,7 +110,15 @@ const RepeatModal = ({ event, dispatchSchedule }) => {
                       </div>
                       <div className="col-sm-12 check-box-div">
                         {dayMonthYear?.map((data, index) => {
-                          const truncatedData = data.slice(0, -5); // Remove the last 5 characters
+                          const truncatedData = data.slice(0, -5);
+
+                          const currentDate = new Date(data);
+                          const selected = new Date(selectedDate);
+
+                          if (currentDate <= selected) {
+                            return null; // Skip rendering this Checkbox
+                          }
+
                           return (
                             <Checkbox
                               style={{
