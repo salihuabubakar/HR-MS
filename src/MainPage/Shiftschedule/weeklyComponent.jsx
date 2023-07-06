@@ -32,6 +32,7 @@ class WeeklyComponent extends React.Component {
       isHouseDataLoading,
       isLoading,
       isShiftLoading,
+      roleData,
     } = this.props;
 
     return (
@@ -96,6 +97,7 @@ class WeeklyComponent extends React.Component {
                                 first_name,
                                 middle_name,
                                 last_name,
+                                role
                               } = emp;
                               if (empId === employee) {
                                 return (
@@ -115,7 +117,13 @@ class WeeklyComponent extends React.Component {
                                         </a>
                                         <a style={{ color: "#ff9b44" }}>
                                           {`${first_name} ${middle_name} ${last_name}`}
-                                          <span>Web Designer</span>
+                                          <span>
+                                            {roleData?.map((r) => {
+                                              if (r.id === role)
+                                                return r.role_name;
+                                            })}
+                                            {!role && "---"}
+                                          </span>
                                         </a>
                                       </h2>
                                     </td>

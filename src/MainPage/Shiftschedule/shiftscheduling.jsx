@@ -22,6 +22,7 @@ import {
   useHouseEmployeeFetching,
   useShiftFetching,
   useEmployeeShiftFetching,
+  useRoleFetching,
 } from "../../utils/employeeCustomFetchHook";
 import { BaseUrl } from "../../utils/baseUrl";
 import axios from "axios";
@@ -77,6 +78,7 @@ const [shiftSchedule, dispatchSchedule] = useReducer(
   []
 );
 const { employeeshiftData } = useEmployeeShiftFetching();
+const { roleData } = useRoleFetching();
 const [shiftState, dispatchShift] = useReducer(add_update_delete_shift, []); 
 const { shiftData, isShiftLoading } = useShiftFetching();
   const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
@@ -276,7 +278,10 @@ const { shiftData, isShiftLoading } = useShiftFetching();
                           {isHouseDataLoading ? (
                             <span className="skeleton-container1">
                               <span className="skeleton-content1">
-                                <div style={{width: "70px"}} className="skeleton-line3"></div>
+                                <div
+                                  style={{ width: "70px" }}
+                                  className="skeleton-line3"
+                                ></div>
                               </span>
                             </span>
                           ) : (
@@ -488,6 +493,7 @@ const { shiftData, isShiftLoading } = useShiftFetching();
                 isHouseDataLoading={isHouseDataLoading}
                 isLoading={isLoading}
                 isShiftLoading={isShiftLoading}
+                roleData={roleData}
               />
             )}
             {views === "monthlyView" && (
