@@ -220,9 +220,7 @@ const AddSchedule = ({
                         className="btn btn-primary submit-btn"
                       >
                         {noShiftRemain ? (
-                          <>
-                            Disabled
-                          </>
+                          <>Disabled</>
                         ) : (
                           <>
                             {selectedScheduleEvent[selectedDayIndex]?.id
@@ -248,7 +246,11 @@ const AddSchedule = ({
         />
       )}
       {repeatModal && (
-        <RepeatModal dispatchSchedule={dispatchSchedule} event={event} />
+        <RepeatModal
+          dispatchSchedule={dispatchSchedule}
+          event={event}
+          date={date}
+        />
       )}
     </>
   );

@@ -78,10 +78,10 @@ const [shiftSchedule, dispatchSchedule] = useReducer(
 );
 const { employeeshiftData } = useEmployeeShiftFetching();
 const [shiftState, dispatchShift] = useReducer(add_update_delete_shift, []); 
-const { shiftData } = useShiftFetching();
+const { shiftData, isShiftLoading } = useShiftFetching();
   const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
-  const { data: allEmployee } = useDataFetching();
-  const { houseEmployeeData } = useHouseEmployeeFetching();
+  const { data: allEmployee, isLoading } = useDataFetching();
+  const { houseEmployeeData, isHouseEmployeeLoading } = useHouseEmployeeFetching();
 
   const selectedHouse = houseData?.find((house) => house.id === houseId);
   const houseName = selectedHouse?.name;
@@ -153,7 +153,6 @@ const { shiftData } = useShiftFetching();
     setSelectedDayIndex(indexID);
     setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
-    setGlobalState("showAddSchedul", true);
   };
 
   const handleTuesDayShift = (value) => {
@@ -167,7 +166,6 @@ const { shiftData } = useShiftFetching();
     setSelectedDayIndex(indexID);
     setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
-    setGlobalState("showAddSchedul", true);
   };
 
   const handleWednesdayShift = (value) => {
@@ -181,7 +179,6 @@ const { shiftData } = useShiftFetching();
     setSelectedDayIndex(indexID);
     setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
-    setGlobalState("showAddSchedul", true);
   };
 
   const handleThursdayShift = (value) => {
@@ -195,7 +192,6 @@ const { shiftData } = useShiftFetching();
     setSelectedDayIndex(indexID);
     setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
-    setGlobalState("showAddSchedul", true);
   };
 
   const handleFridayShift = (value) => {
@@ -209,7 +205,6 @@ const { shiftData } = useShiftFetching();
     setSelectedDayIndex(indexID);
     setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
-    setGlobalState("showAddSchedul", true);
   };
 
   const handlSaturdayShift = (value) => {
@@ -223,7 +218,6 @@ const { shiftData } = useShiftFetching();
     setSelectedDayIndex(indexID);
     setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
-    setGlobalState("showAddSchedul", true);
   };
 
   const handleSundayShift = (value) => {
@@ -237,7 +231,6 @@ const { shiftData } = useShiftFetching();
     setSelectedDayIndex(indexID);
     setEvent({ shift, employee, house });
     setGlobalState("selectedScheduleEvent", employeeshiftData);
-    setGlobalState("showAddSchedul", true);
   };
 
   const componentRef = useRef();
@@ -277,11 +270,22 @@ const { shiftData } = useShiftFetching();
                   <h3 className="page-title">Daily Scheduling</h3>
                   <ul className="breadcrumb breadcrumb-nav">
                     <li className="breadcrumb-item">
-                      <Link to="/app/shiftschedule/house">House</Link>
+                      <Link to="/app/shiftschedule/house">
+                        House: {""}
+                        <span>
+                          {isHouseDataLoading ? (
+                            <span className="skeleton-container1">
+                              <span className="skeleton-content1">
+                                <div style={{width: "70px"}} className="skeleton-line3"></div>
+                              </span>
+                            </span>
+                          ) : (
+                            houseName
+                          )}
+                        </span>
+                      </Link>
                     </li>
-                    <li className="breadcrumb-item active">
-                      Shift Scheduling : {houseName}
-                    </li>
+                    <li className="breadcrumb-item active">Shift Scheduling</li>
                   </ul>
                 </div>
                 <div className="col-auto float-end ml-auto">
@@ -480,6 +484,10 @@ const { shiftData } = useShiftFetching();
                 houseEmployeeData={houseEmployeeData}
                 shiftData={shiftData}
                 dayMonthYear={dayMonthYear}
+                isHouseEmployeeLoading={isHouseEmployeeLoading}
+                isHouseDataLoading={isHouseDataLoading}
+                isLoading={isLoading}
+                isShiftLoading={isShiftLoading}
               />
             )}
             {views === "monthlyView" && (
