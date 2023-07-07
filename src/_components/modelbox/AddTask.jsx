@@ -6,210 +6,166 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import {
-  initUserAccount,
-  savedUserAccountReducer,
-  initResident,
-  savedResidentReducer,
-} from "../../utils/localStorage";
 import Select from "react-select";
 import { RadioBtn } from "./styles";
-import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 import "./style.css";
+import { useDataFetching, useResidentFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddTask = ({
   dispatchTasks,
   indexToEdit,
+  id
 }) => {
+  const { data: allEmployee, isLoading: allEmployeeLoading } =
+    useDataFetching();
+  const { residentData, isResidentLoading } = useResidentFetching();
+
   const [selectedTaskInfo] = useGlobalState("selectedTaskInfo");
-  const uniqueId = uuidv4();
 
-  const [userAcct] = useReducer(
-    savedUserAccountReducer,
-    [],
-    initUserAccount
-  );
-  const [employeeAccts, setEmployeeAccts] = useState();
-  useEffect(() => {
-    setEmployeeAccts(userAcct);
-  }, [userAcct]);
+  const [name, setName] = useState(selectedTaskInfo[indexToEdit]?.name || "");
 
-  const [residentAcct] = useReducer(
-    savedResidentReducer,
-    [],
-    initResident
-  );
-  const [residentAccts, setResidentAccts] = useState();
-  useEffect(() => {
-    setResidentAccts(residentAcct);
-  }, [residentAcct]);
-
-  const [taskTitle, setTaskTitle] = useState(
-    selectedTaskInfo[indexToEdit]?.taskTitle
-      ? selectedTaskInfo[indexToEdit]?.taskTitle
-      : ""
+  const [is_paid, setIsPaid] = useState(
+    selectedTaskInfo[indexToEdit]?.is_paid || false
   );
 
-  const [taskType, setTaskType] = useState(
-    selectedTaskInfo[indexToEdit]?.taskType
-      ? selectedTaskInfo[indexToEdit]?.taskType
-      : ""
+  const [concluded, setConcluded] = useState(
+    selectedTaskInfo[indexToEdit]?.concluded || false
   );
 
-  const [timeAllocated, setTimeAllocated] = useState(
-    selectedTaskInfo[indexToEdit]?.timeAllocated
-      ? selectedTaskInfo[indexToEdit]?.timeAllocated
-      : ""
+  const [hours, setHours] = useState(
+    selectedTaskInfo[indexToEdit]?.hours || ""
+  );
+
+  const [start_at, setStartAt] = useState(
+    selectedTaskInfo[indexToEdit]?.start_at || ""
+  );
+
+  const [end_at, setEndAt] = useState(
+    selectedTaskInfo[indexToEdit]?.end_at || ""
+  );
+
+  const [task_duration, setTaskDuration] = useState(
+    selectedTaskInfo[indexToEdit]?.task_duration || ""
   );
 
   const [description, setDescription] = useState(
-    selectedTaskInfo[indexToEdit]?.description
-      ? selectedTaskInfo[indexToEdit]?.description
-      : ""
+    selectedTaskInfo[indexToEdit]?.description || ""
   );
 
-  const [employee, setEmployee] = useState(
-    selectedTaskInfo[indexToEdit]?.employee
-      ? selectedTaskInfo[indexToEdit]?.employee
-      : ""
+  const [employees, setEmployee] = useState(
+    selectedTaskInfo[indexToEdit]?.employees || []
   );
 
-  const [taskPriority, setTaskPriority] = useState(
-    selectedTaskInfo[indexToEdit]?.taskPriority
-      ? selectedTaskInfo[indexToEdit]?.taskPriority
-      : ""
+  const [priority, setPriority] = useState(
+    selectedTaskInfo[indexToEdit]?.priority || ""
   );
 
-  const [taskStatus, setTaskStatus] = useState(
-    selectedTaskInfo[indexToEdit]?.taskStatus
-      ? selectedTaskInfo[indexToEdit]?.taskStatus
-      : ""
+  const [progress, setProgress] = useState(
+    selectedTaskInfo[indexToEdit]?.progress || ""
   );
 
-  const [manager, setManager] = useState(
-    selectedTaskInfo[indexToEdit]?.manager
-      ? selectedTaskInfo[indexToEdit]?.manager
-      : ""
+  const [managers, setManagers] = useState(
+    selectedTaskInfo[indexToEdit]?.managers || []
   );
 
-  const [resident, setResident] = useState(
-    selectedTaskInfo[indexToEdit]?.resident
-      ? selectedTaskInfo[indexToEdit]?.resident
-      : ""
+  const [residents, setResident] = useState(
+    selectedTaskInfo[indexToEdit]?.residents || []
   );
-
-  const [id, setId] = useState(
-    selectedTaskInfo[indexToEdit]?.id
-      ? selectedTaskInfo[indexToEdit]?.id
-      : uniqueId
-  );
-
-  const today = new Date();
-  const options = { month: "long", day: "numeric", year: "numeric" };
-  const now = today.toLocaleDateString("en-GB", options);
-
-  const [dateCreated] = useState(
-    selectedTaskInfo[indexToEdit]?.dateCreated
-      ? selectedTaskInfo[indexToEdit]?.dateCreated
-      : now
-  );
-
-  // let taskStatus = "In-progress";
-
-  const priorityOptions = [
-    { value: 1, label: "highest" },
-    { value: 2, label: "medium" },
-    { value: 3, label: "low" },
-  ];
-
-  
-
-    const statusOptions = [
-      { value: 1, label: "not-started" },
-      { value: 2, label: "started" },
-      { value: 3, label: "middle" },
-      { value: 4, label: "rounding-up" },
-      { value: 5, label: "completed" },
-    ];
-
 
   const [taskTitleError, setTaskTitleError] = useState("");
-  const [taskTypeError, setTaskTypeError] = useState("");
   const [timeAllocatedError, setTimeAllocatedError] = useState("");
+  const [durationError, setDurationError] = useState("");
   const [residentError, setResidentError] = useState("");
   const [taskStatusError, setTaskStatusError] = useState("");
   const [managerError, setManagerError] = useState("");
   const [employeeError, setEmployeeError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const [taskPriorityError, setTaskPriorityError] = useState("");
+  const [startAtError, setStartAtError] = useState("");
+  const [endAtError, setEndAtError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validate first name and last name
-    if (taskTitle === "") {
-      setTaskTitleError("Task Title is required.");
+    if (name === "") {
+      setTaskTitleError("Task Name is required.");
       return;
     }
-    if (manager === "") {
+    if (managers === "") {
       setManagerError("Manager is required.");
       return;
     }
-    if (taskType === "") {
-      setTaskTypeError("Task Type is required.");
+    if (hours === "") {
+      setTimeAllocatedError("Allocated Hour is required.");
       return;
     }
-    if (timeAllocated === "") {
-      setTimeAllocatedError("Allocated Time is required.");
+    if (task_duration === "") {
+      setDurationError("Task Duration is required.");
+      return;
+    }
+    if (priority === "") {
+      setTaskPriorityError("Task Priority is required.");
+      return;
+    }
+    if (progress === "") {
+      setTaskStatusError("Task Progress is required.");
+      return;
+    }
+    if (start_at === "") {
+      setStartAtError("Start Date/Time is required.");
+      return;
+    }
+    if (end_at === "") {
+      setEndAtError("End Date/Time is required.");
+      return;
+    }
+    if (employees === "") {
+      setEmployeeError("Employee is required.");
+      return;
+    }
+    if (residents === "") {
+      setResidentError("Resident is required.");
       return;
     }
     if (description === "") {
       setDescriptionError("Description is required.");
       return;
     }
-    if (taskPriority === "") {
-      setTaskPriorityError("Task Priority is required.");
-      return;
-    }
-    if (taskStatus === "") {
-      setTaskStatusError("Task Status is required.");
-      return;
-    }
-    if (employee === "") {
-      setEmployeeError("Employee is required.");
-      return;
-    }
-    if (resident === "") {
-      setResidentError("Resident is required.");
-      return;
-    }
 
     // Clear any existing error messages
     setTaskPriorityError("");
     setTaskTitleError("");
-    setTaskTypeError("");
+    setStartAtError("");
+    setEndAtError("");
     setTimeAllocatedError("");
     setTaskStatusError("");
     setDescriptionError("");
     setManagerError("");
     setEmployeeError("");
+    setDurationError("");
     setResidentError("");
+
     const task = {
-      taskTitle,
-      taskType,
-      timeAllocated,
-      employee,
-      resident,
+      name,
+      is_paid,
+      hours,
+      employees,
+      residents,
       description,
-      manager,
-      taskStatus,
-      taskPriority,
-      dateCreated,
+      managers,
+      progress,
+      priority,
+      task_duration,
+      start_at,
+      end_at,
+      concluded,
       id,
     };
     if (selectedTaskInfo[indexToEdit]?.id) {
       dispatchTasks({ type: "update", payload: task });
     } else {
-      dispatchTasks({ type: "push", payload: task });
+      dispatchTasks({ type: "add", payload: task });
     }
     setGlobalState("showTaskModal", false);
   };
@@ -228,85 +184,139 @@ const AddTask = ({
   };
 
   const handleEmployeeChange = (event) => {
-    setEmployee(event);
-    setEmployeeError("")
+    const mappedID = event?.map((resID) => resID.id);
+    setEmployee(mappedID);
+    setEmployeeError("");
   };
 
   const users = [];
-  employeeAccts?.map((user) => {
+  allEmployee?.map((user) => {
     users.push({
-      value: user.id,
-      label: user.firstName + " " + user.lastName,
-      image: user.photo,
-      role: user.role,
+      id: user.id,
+      first_name: user.first_name,
+      middle_name: user.middle_name,
+      last_name: user.last_name,
+      photo: user.photo,
     });
   });
 
   const handleResidentChange = (event) => {
-    setResident(event);
-    setResidentError("")
+    const mappedID = event?.map((employeeID) => employeeID.id);
+    setResident(mappedID);
+    setResidentError("");
   };
 
-  const residents = [];
-  residentAccts?.map((resident) => {
-    residents.push({
-      value: resident.id,
-      label: resident.residentName,
-      image: resident.image,
+  const resident = [];
+  residentData?.map((res) => {
+    resident.push({
+      id: res.id,
+      first_name: res.first_name,
+      middle_name: res.middle_name,
+      last_name: res.last_name,
+      photo: res.photo,
+    });
+  });
+
+  const manager = [];
+  allEmployee?.map((user) => {
+    manager.push({
+      id: user.id,
+      first_name: user.first_name,
+      middle_name: user.middle_name,
+      last_name: user.last_name,
+      photo: user.photo,
+      key: user.id,
     });
   });
 
   const handleManagerChange = (e) => {
-    setManager(e.target.value);
+    const mappedID = e?.map((managerID) => managerID.id);
+    setManagers(mappedID);
     setManagerError("");
   };
-  const handleTaskTitleChange = (e) => {
-    setTaskTitle(e.target.value);
+  const handleTaskNameChange = (e) => {
+    setName(e.target.value);
     setTaskTitleError("");
   };
   const handleTaskTypeChange = (e) => {
-    setTaskType(e.target.value);
-    setTaskTypeError("");
+    setIsPaid(e.target.checked);
   };
-  const handleTimeAllocatedChange = (e) => {
-    setTimeAllocated(e.target.value);
+  const handleTaskConcludedChange = (e) => {
+    setConcluded(e.target.checked);
+  };
+  const handleHoursChange = (e) => {
+    setHours(e.target.value);
     setTimeAllocatedError("");
+  };
+  const handleDurationChange = (e) => {
+    setTaskDuration(e.target.value);
+    setDurationError("");
   };
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
     setDescriptionError("");
   };
 
-  const handlePriorityChange = (event) => {
-    setTaskPriority(event);
+  const handlePriorityChange = (e) => {
+    setPriority(e.target.value);
     setTaskPriorityError("");
   };
-  const handleStatusChange = (event) => {
-    setTaskStatus(event);
+  const handleStartAtChange = (e) => {
+    setStartAt(e.target.value);
+    setStartAtError("");
+  };
+  const handleEndAtChange = (e) => {
+    setEndAt(e.target.value);
+    setEndAtError("");
+  };
+  const handleProgresChange = (e) => {
+    setProgress(e.target.value);
     setTaskStatusError("");
   };
 
-  const getEmployeeDefaultValues = (employeeData) => {
-    if (Array.isArray(employeeData)) {
-      return employeeData.map((employee) => ({
-        value: employee.value,
-        label: employee.label,
-        image: employee.photo,
-        role: employee.role,
-      }));
+  const getEmployeeDefaultValues = () => {
+    const val = selectedTaskInfo[indexToEdit]?.employees;
+    if (!selectedTaskInfo || !val) {
+      return [];
     }
-    return [];
+    return allEmployee
+      .filter((employee) => val.includes(employee.id))
+      .map((employee) => ({
+        id: employee.id,
+        first_name: employee.first_name,
+        middle_name: employee.middle_name,
+        last_name: employee.last_name,
+      }));
   };
 
-  const getResidentefaultValues = (residentData) => {
-    if (Array.isArray(residentData)) {
-      return residentData.map((resident) => ({
-        value: resident.value,
-        label: resident.label,
-        image: resident.image,
-      }));
+  const getManagerDefaultValues = () => {
+    const val = selectedTaskInfo[indexToEdit]?.managers;
+    if (!selectedTaskInfo || !val) {
+      return [];
     }
-    return [];
+    return allEmployee
+      .filter((manager) => val.includes(manager.id))
+      .map((manager) => ({
+        id: manager.id,
+        first_name: manager.first_name,
+        middle_name: manager.middle_name,
+        last_name: manager.last_name,
+      }));
+  };
+
+  const getResidentefaultValues = () => {
+    const val = selectedTaskInfo[indexToEdit]?.residents;
+    if (!selectedTaskInfo || !val) {
+      return [];
+    }
+    return allEmployee
+      .filter((resident) => val.includes(resident.id))
+      .map((resident) => ({
+        id: resident.id,
+        first_name: resident.first_name,
+        middle_name: resident.middle_name,
+        last_name: resident.last_name,
+      }));
   };
 
 
@@ -343,11 +353,11 @@ const AddTask = ({
                             Task Title <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={taskTitle}
-                            onChange={handleTaskTitleChange}
+                            value={name}
+                            onChange={handleTaskNameChange}
                             className="form-control floating"
                             type="text"
-                            placeholder="Task Title"
+                            placeholder="Task Name"
                           />
                           {taskTitleError && (
                             <p className="error-message">{taskTitleError}</p>
@@ -357,14 +367,26 @@ const AddTask = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Manager <span className="text-danger">*</span>
+                            Select Manager{" "}
+                            <span className="text-danger">*</span>
                           </label>
-                          <input
-                            value={manager}
+                          <Select
+                            defaultValue={getManagerDefaultValues()}
                             onChange={handleManagerChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Manager"
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={manager}
+                            isLoading={allEmployeeLoading}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) =>
+                              option.first_name +
+                              " " +
+                              option.middle_name +
+                              " " +
+                              option.last_name
+                            }
+                            placeholder="Select Manager"
                           />
                           {managerError && (
                             <p className="error-message">{managerError}</p>
@@ -373,57 +395,207 @@ const AddTask = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
-                            Task-type <span className="text-danger">*</span>
-                          </label>
+                          <label className="label">Task-type</label>
                           <RadioBtn>
                             <input
-                              type="radio"
+                              type="checkbox"
                               name="task-type"
-                              // checked={
-                              //   selectedTaskInfo[indexToEdit]?.id ? taskType : ""
-                              // }
+                              checked={is_paid}
                               id="paid"
-                              value={"Paid Task"}
+                              placeholder={"Paid"}
                               onChange={handleTaskTypeChange}
                             />
                             <label htmlFor="paid">
                               <span>Paid</span>
                             </label>
+                          </RadioBtn>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Task-Concluded</label>
+                          <RadioBtn>
                             <input
-                              type="radio"
-                              name="task-type"
-                              id="non-paid"
-                              value={"Non-Paid Task"}
-                              onChange={handleTaskTypeChange}
+                              type="checkbox"
+                              name="task-concluded"
+                              checked={concluded}
+                              id="concluded"
+                              placeholder={"Concluded"}
+                              onChange={handleTaskConcludedChange}
                             />
-                            <label htmlFor="non-paid">
-                              <span>Non-Paid</span>
+                            <label htmlFor="concluded">
+                              <span>Concluded</span>
                             </label>
                           </RadioBtn>
-                          {taskTypeError && (
-                            <p className="error-message">{taskTypeError}</p>
-                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Time Allocation{" "}
+                            Hours Allocation{" "}
                             <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={timeAllocated}
-                            onChange={handleTimeAllocatedChange}
+                            value={hours}
+                            onChange={handleHoursChange}
                             className="form-control floating"
                             type="number"
-                            placeholder="Time allocation e.g 5hr"
+                            placeholder="Hours allocation"
                             min={0}
                           />
                           {timeAllocatedError && (
                             <p className="error-message">
                               {timeAllocatedError}
                             </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Task Duration <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={task_duration}
+                            onChange={handleDurationChange}
+                            className="form-control floating"
+                            type="number"
+                            placeholder="Task Duration"
+                            min={0}
+                          />
+                          {durationError && (
+                            <p className="error-message">{durationError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Select Task Priority{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <select
+                            value={priority}
+                            onChange={handlePriorityChange}
+                            className="form-control floating"
+                          >
+                            <option disabled value="">
+                              Select Priority
+                            </option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                          </select>
+                          {taskPriorityError && (
+                            <p className="error-message">{taskPriorityError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Task Progress <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={progress}
+                            onChange={handleProgresChange}
+                            className="form-control floating"
+                            type="number"
+                            placeholder="Progress"
+                            min={0}
+                          />
+                          {taskStatusError && (
+                            <p className="error-message">{taskStatusError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Task Start At <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            value={start_at}
+                            onChange={handleStartAtChange}
+                            className="form-control floating"
+                            type="datetime-local"
+                            placeholder="Start At"
+                          />
+                          {startAtError && (
+                            <p className="error-message">{startAtError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Task End At</label>
+                          <input
+                            value={end_at}
+                            onChange={handleEndAtChange}
+                            className="form-control floating"
+                            type="datetime-local"
+                            placeholder="End At"
+                          />
+                          {endAtError && (
+                            <p className="error-message">{endAtError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Select Employees{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getEmployeeDefaultValues()}
+                            onChange={handleEmployeeChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={users}
+                            isLoading={allEmployeeLoading}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) =>
+                              option.first_name +
+                              " " +
+                              option.middle_name +
+                              " " +
+                              option.last_name
+                            }
+                            placeholder="Select Employees"
+                          />
+                          {employeeError && (
+                            <p className="error-message">{employeeError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Select Resident{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getResidentefaultValues()}
+                            onChange={handleResidentChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={resident}
+                            isLoading={isResidentLoading}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) =>
+                              option.first_name +
+                              " " +
+                              option.middle_name +
+                              " " +
+                              option.last_name
+                            }
+                            placeholder="Select Resident"
+                          />
+                          {residentError && (
+                            <p className="error-message">{residentError}</p>
                           )}
                         </div>
                       </div>
@@ -442,100 +614,6 @@ const AddTask = ({
                           />
                           {descriptionError && (
                             <p className="error-message">{descriptionError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select Task Priority{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={
-                              selectedTaskInfo
-                                ? {
-                                    value: taskPriority?.value,
-                                    label: taskPriority?.label,
-                                  }
-                                : "Select Priority"
-                            }
-                            onChange={handlePriorityChange}
-                            options={priorityOptions}
-                            styles={customSelectStyles}
-                            placeholder="Select Priority"
-                          />
-                          {taskPriorityError && (
-                            <p className="error-message">{taskPriorityError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select Task Status{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={
-                              selectedTaskInfo
-                                ? {
-                                    value: taskStatus?.value,
-                                    label: taskStatus?.label,
-                                  }
-                                : "Select Status"
-                            }
-                            onChange={handleStatusChange}
-                            options={statusOptions}
-                            styles={customSelectStyles}
-                            placeholder="Select Status"
-                          />
-                          {taskStatusError && (
-                            <p className="error-message">{taskStatusError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select Employees{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={getEmployeeDefaultValues(
-                              selectedTaskInfo[indexToEdit]?.employee
-                            )}
-                            onChange={handleEmployeeChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={users}
-                            styles={customSelectStyles}
-                            placeholder="Select Employees"
-                          />
-                          {employeeError && (
-                            <p className="error-message">{employeeError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select Resident{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={getResidentefaultValues(
-                              selectedTaskInfo[indexToEdit]?.resident
-                            )}
-                            onChange={handleResidentChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={residents}
-                            styles={customSelectStyles}
-                            placeholder="Select Resident"
-                          />
-                          {residentError && (
-                            <p className="error-message">{residentError}</p>
                           )}
                         </div>
                       </div>
