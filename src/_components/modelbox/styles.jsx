@@ -28,7 +28,7 @@ export const HtmlSelectInput = styled.input`
 
 export const RadioBtn = styled.div`
   display: flex;
-  input[type="radio"] {
+  input[type="checkbox"] {
     -webkit-appearance: none;
   }
   label {
@@ -38,12 +38,11 @@ export const RadioBtn = styled.div`
     border: 1px solid #ddd;
     position: relative;
     color: #808080;
-    font-weight: 900;
     transition: 0.5s;
     cursor: pointer;
-    padding: 2px;
+    padding: 10px;
   }
-  input[type="radio"]:checked + label {
+  input[type="checkbox"]:checked + label {
     background-color: #ff9b44;
     color: #ffffff;
   }
