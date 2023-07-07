@@ -108,7 +108,7 @@ const TaskManagerTable = () => {
     },
     {
       title: "Manager",
-      dataIndex: "manager",
+      dataIndex: "managers",
       render: (text, record, index) => {
         const { id, managers } = record;
         return (
@@ -165,18 +165,18 @@ const TaskManagerTable = () => {
     },
     {
       title: "Assigned Team",
-      dataIndex: "employee",
+      dataIndex: "employees",
       render: (text, record, index) => {
         const { id, employees } = record;
         return (
           <React.Fragment>
             {allEmployees?.map((user) => {
-              const { 
-                id: value, 
-                first_name, 
-                middle_name, 
-                last_name, 
-                photo 
+              const {
+                id: value,
+                first_name,
+                middle_name,
+                last_name,
+                photo,
               } = user;
               if (employees.includes(value)) {
                 return (
@@ -225,14 +225,64 @@ const TaskManagerTable = () => {
       dataIndex: "hours",
     },
     {
-      title: "Date Created",
-      dataIndex: "created_at",
+      title: "Task Type",
+      dataIndex: "is_paid",
       render: (text, record, index) => {
-        const { created_at } = record;
+        const { is_paid, id } = record;
         return (
-          <React.Fragment>
-            {moment(created_at).format("DD MMM YYYY")}
-          </React.Fragment>
+          <h2
+            key={id}
+            style={{
+              backgroundColor: is_paid === true ? "#55CE63" : "#ff9b44",
+              color: "#fff",
+              padding: "5px",
+              borderRadius: "5px",
+            }}
+            className="table-avatar"
+          >
+            <Link
+              style={{
+                color: "#fff",
+              }}
+              to={{
+                pathname: "/app/taskmanagement/task-manager-detail",
+                state: { id: id, index: index },
+              }}
+            >
+              {is_paid === true ? "Paid" : "Non Paid"}
+            </Link>
+          </h2>
+        );
+      },
+    },
+    {
+      title: "Task Conclusion",
+      dataIndex: "concluded",
+      render: (text, record, index) => {
+        const { concluded, id } = record;
+        return (
+          <h2
+            key={id}
+            style={{
+              backgroundColor: concluded === true ? "#55CE63" : "#ff9b44",
+              color: "#fff",
+              padding: "5px",
+              borderRadius: "5px",
+            }}
+            className="table-avatar"
+          >
+            <Link
+              style={{
+                color: "#fff",
+              }}
+              to={{
+                pathname: "/app/taskmanagement/task-manager-detail",
+                state: { id: id, index: index },
+              }}
+            >
+              {concluded === true ? "Concluded" : "In Progress"}
+            </Link>
+          </h2>
         );
       },
     },
@@ -281,11 +331,15 @@ const TaskManagerTable = () => {
           status = "Not started";
         } else if (progress >= 1 && progress <= 24) {
           status = "Started";
-        } else if (progress >= 25 && progress <= 50) {
-          status = "Middle";
-        } else if (progress >= 51 && progress <= 75) {
+        } else if (progress >= 25 && progress <= 49) {
+          status = "Getting there";
+        } else if (progress >= 50 && progress <= 75) {
+          status = "Almost there";
+        } else if (progress >= 76 && progress <= 85) {
           status = "Rounding up";
-        } else if (progress >= 76 && progress <= 100) {
+        } else if (progress >= 86 && progress <= 95) {
+          status = "Completing";
+        } else {
           status = "Completed";
         }
 
@@ -295,8 +349,10 @@ const TaskManagerTable = () => {
               backgroundColor:
                 (status === "Not started" && "red") ||
                 (status === "Started" && "#f20d91") ||
-                (status === "Middle" && "#ff9b44") ||
+                (status === "Getting there" && "#FD7C5E") ||
+                (status === "Almost there" && "#ff9b44") ||
                 (status === "Rounding up" && "#73AB00") ||
+                (status === "Completing" && "#55Ca52") ||
                 (status === "Completed" && "#55CE63"),
               color: "#fff",
               padding: "5px",
