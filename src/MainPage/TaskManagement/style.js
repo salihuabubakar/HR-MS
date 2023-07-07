@@ -40,11 +40,17 @@ export const DivContainer = styled.div`
   .bg-started {
     background-color: #f20d91;
   }
-  .bg-middle {
+  .bg-getting-there {
+    background-color: #fd7c5e;
+  }
+  .bg-almost-there {
     background-color: #ff9b44;
   }
   .bg-rounding-up {
     background-color: #73ab00;
+  }
+  .bg-completing {
+    background-color: #55ca52;
   }
   .bg-completed {
     background-color: #55ce63;
@@ -56,11 +62,17 @@ export const DivContainer = styled.div`
   .color-started {
     color: #f20d91;
   }
-  .color-middle {
+  .color-getting-there {
+    color: #fd7c5e;
+  }
+  .color-almost-there {
     color: #ff9b44;
   }
   .color-rounding-up {
     color: #73ab00;
+  }
+  .color-completing {
+    color: #55ca52;
   }
   .color-completed {
     color: #55ce63;

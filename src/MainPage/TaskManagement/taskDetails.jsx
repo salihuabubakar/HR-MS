@@ -18,31 +18,34 @@ import { useParams, useLocation } from "react-router-dom";
 import { Span, DivContainer } from "./style";
 import AddSubTask from "../../_components/modelbox/AddSubTask";
 import AddTask from "../../_components/modelbox/AddTask";
-import { async } from "regenerator-runtime";
 import CommentSection from "./component";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 import AddFileUploadModal from "../../_components/modelbox/AddFileUploadModal";
+import { add_update_delete_task } from "../../utils/sendToServer";
+import {
+  useTaskFetching,
+  useDataFetching,
+  useResidentFetching
+} from "../../utils/employeeCustomFetchHook";
+import moment from "moment";
 
 const TaskDetails = () => {
     const location = useLocation();
     const selectedTaskId = location?.state?.id;
     const selectedTaskIndex = location?.state?.index;
+
+    const { taskData, isTaskLoading } = useTaskFetching();
+    const { data: allEmployees } = useDataFetching();
+    const { residentData } = useResidentFetching();
+
     const [showTaskModal] = useGlobalState("showTaskModal");
     const [showSubTaskModal] = useGlobalState("showSubTaskModal");
     const [deleteModal] = useGlobalState("deleteModal");
     const [deleteSubTask] = useGlobalState("deleteSubTask");
     const [showFileUploadModal] = useGlobalState("showFileUploadModal");
 
-    const [tasks, dispatchTasks] = useReducer(savedTaskReducer, [], initTask);
+    const [taskState, dispatchTasks] = useReducer(add_update_delete_task, []);
 
-    useEffect(() => {
-      localStorage.setItem("task", JSON.stringify(tasks));
-    }, [tasks]);
-
-    const [taskList, setTaskList] = useState();
-    useEffect(() => {
-      setTaskList(tasks);
-    }, [tasks]);
 
     const [subTaskTitle, dispatchSubTaskTitle] = useReducer(
       savedSubTaskReducer,
@@ -68,24 +71,59 @@ const TaskDetails = () => {
     const [indexToEdit, setIndexToEdit] = useState(0);
     const [taskIndexToEdit, setTaskIndexToEdit] = useState(0);
 
-    const selectedTask = taskList?.find((task) => task?.id === selectedTaskId);
+    const selectedTask = taskData?.find((task) => task?.id === selectedTaskId);
 
     const taskId = selectedTask?.id;
-    const taskTitle = selectedTask?.taskTitle;
-    const taskType = selectedTask?.taskType;
-    const taskPriority = selectedTask?.taskPriority?.label;
-    const timeAllocated = selectedTask?.timeAllocated;
+    const taskName = selectedTask?.name;
+    const taskType = selectedTask?.is_paid;
+    const taskPriority = selectedTask?.priority;
+    const timeAllocated = selectedTask?.hours;
     const taskDescription = selectedTask?.description;
-    const totalAssignedEmployees = selectedTask?.employee;
-    const totalAssignedServiceWorkers = selectedTask?.resident;
-    const managerName = selectedTask?.manager;
-    const taskStatus = selectedTask?.taskStatus?.label;
-    const dateCreated = selectedTask?.dateCreated;
+    const totalAssignedEmployees = selectedTask?.employees;
+    const totalAssignedResident = selectedTask?.residents;
+    const totalAssignedManagers = selectedTask?.managers;
+    const taskProgress = selectedTask?.progress;
+    const taskDuration = selectedTask?.task_duration;
+    const taskConcluded = selectedTask?.concluded;
+    const taskStartAt = selectedTask?.start_at;
+    const taskEndAt = selectedTask?.end_at;
+
+    const formattedName = taskName?.charAt(0).toUpperCase() + taskName?.slice(1);
+
+    let status = "";
+    let progressCal;
+    const taskProgressFuction = (taskProgress, status) => {
+
+      if (taskProgress === 0) {
+        status = "Not started";
+        progressCal = taskProgress;
+      } else if (taskProgress >= 1 && taskProgress <= 24) {
+        status = "Started";
+        progressCal = taskProgress;
+      } else if (taskProgress >= 25 && taskProgress <= 49) {
+        status = "Getting there";
+        progressCal = taskProgress;
+      } else if (taskProgress >= 50 && taskProgress <= 75) {
+        status = "Almost there";
+        progressCal = taskProgress;
+      } else if (taskProgress >= 76 && taskProgress <= 85) {
+        status = "Rounding up";
+        progressCal = taskProgress;
+      } else if (taskProgress >= 86 && taskProgress <= 95) {
+        status = "Completing";
+        progressCal = taskProgress;
+      } else {
+        status = "Completed";
+        progressCal = taskProgress;
+      }
+      
+      return [status, taskProgress];
+    };
 
     const handleTaskEdit = (index) => {
       setTaskIndexToEdit(index);
       setGlobalState("showTaskModal", true);
-      setGlobalState("selectedTaskInfo", tasks);
+      setGlobalState("selectedTaskInfo", taskData);
     }
 
     const handleSubTaskEdit = (index) => {
@@ -192,7 +230,9 @@ const TaskDetails = () => {
               <div className="card">
                 <div className="card-body">
                   <div className="project-title">
-                    <h5 className="card-title">{taskTitle}</h5>
+                    <h5 className="card-title">
+                      {taskName === formattedName ? taskName : formattedName}
+                    </h5>
                   </div>
                   <p>{taskDescription}</p>
                 </div>
@@ -799,12 +839,12 @@ const TaskDetails = () => {
                         <td
                           style={{
                             backgroundColor:
-                              taskType == "Paid Task" ? "#55CE63" : "#ff9b44",
+                              taskType === true ? "#55CE63" : "#ff9b44",
                             color: "#fff",
                           }}
                           className="text-end"
                         >
-                          {taskType}
+                          {taskType === true ? "Paid" : "Non Paid"}
                         </td>
                       </tr>
                       <tr>
@@ -812,8 +852,16 @@ const TaskDetails = () => {
                         <td className="text-end">{timeAllocated}hr</td>
                       </tr>
                       <tr>
-                        <td>Created:</td>
-                        <td className="text-end">{dateCreated}</td>
+                        <td>Start At:</td>
+                        <td className="text-end">
+                          {moment(taskStartAt).format("DD MMM YYYY")}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>End At:</td>
+                        <td className="text-end">
+                          {moment(taskEndAt).format("DD MMM YYYY")}
+                        </td>
                       </tr>
                       {/* <tr>
                         <td>Deadline:</td>
@@ -824,125 +872,240 @@ const TaskDetails = () => {
                         <td
                           style={{
                             backgroundColor:
-                              (taskPriority == "highest" && "#55CE63") ||
-                              (taskPriority == "medium" && "#ff9b44") ||
-                              (taskPriority == "low" && "#f62d51"),
+                              (taskPriority === "high" && "#55CE63") ||
+                              (taskPriority === "medium" && "#ff9b44") ||
+                              (taskPriority === "low" && "#f62d51"),
                             color: "#fff",
                           }}
                           className="text-end"
                         >
-                          {taskPriority}
+                          {(taskPriority === "high" && "High") ||
+                            (taskPriority === "medium" && "Medium") ||
+                            (taskPriority === "low" && "Low")}
                         </td>
                       </tr>
                       <tr>
-                        <td>Created by:</td>
-                        <td className="text-end">
-                          <Link
-                            to="#"
-                            onClick={(event) => event.preventDefault()}
-                          >
-                            {managerName}
-                          </Link>
-                        </td>
+                        <td>Task Duration:</td>
+                        <td className="text-end">{taskDuration}</td>
                       </tr>
                       <tr>
+                        <td>Task Conclusion:</td>
+                        <td
+                          style={{
+                            backgroundColor:
+                              taskConcluded === true ? "#55CE63" : "#ff9b44",
+                            color: "#fff",
+                          }}
+                          className="text-end"
+                        >
+                          {taskConcluded === true ? "Concluded" : "In Progress"}
+                        </td>
+                      </tr>
+                      {/* <tr>
                         <td>Status:</td>
                         <td
                           style={{
                             color: "#fff",
                           }}
                           className={
-                            (taskStatus == "not-started"
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Not started"
+                            )
                               ? " text-end bg-not-started"
-                              : undefined) ||
-                            (taskStatus == "started"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Started"
+                            )
                               ? "text-end bg-started"
-                              : undefined) ||
-                            (taskStatus == "middle"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Middle"
+                            )
                               ? "text-end bg-middle"
-                              : undefined) ||
-                            (taskStatus == "rounding-up"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Rounding up"
+                            )
                               ? "text-end bg-rounding-up"
-                              : undefined) ||
-                            (taskStatus == "completed"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Completed"
+                            )
                               ? "text-end bg-completed"
-                              : undefined)
+                              : null)
                           }
                         >
-                          {(taskStatus == "not-started" && "Not started") ||
-                            (taskStatus == "started" &&
-                              "In-progress(Started)") ||
-                            (taskStatus == "middle" && "In-progress(Middle)") ||
-                            (taskStatus == "rounding-up" &&
-                              "In-progress(Rounding up)") ||
-                            (taskStatus == "completed" && "Completed")}
+                          {(taskProgressFuction(taskProgress, status).includes(
+                            "Not started"
+                          ) &&
+                            "Not started") ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Started"
+                            )
+                              ? "In-progress(Started)"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Middle"
+                            )
+                              ? "In-progress(Middle)"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Rounding up"
+                            )
+                              ? "In-progress(Rounding up)"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Completed"
+                            )
+                              ? "Completed"
+                              : null)}
                         </td>
-                      </tr>
+                      </tr> */}
                     </tbody>
                   </table>
                   <p className="m-b-5">
-                    Progress
+                    Task Progress
                     <span
                       className={
-                        (taskStatus == "not-started"
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Not Started"
+                        )
                           ? "float-end color-not-started"
-                          : undefined) ||
-                        (taskStatus == "started"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Started"
+                        )
                           ? "float-end color-started"
-                          : undefined) ||
-                        (taskStatus == "middle"
-                          ? "float-end color-middle"
-                          : undefined) ||
-                        (taskStatus == "rounding-up"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Getting there"
+                        )
+                          ? "float-end color-getting-there"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Almost there"
+                        )
+                          ? "float-end color-almost-there"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Rounding up"
+                        )
                           ? "float-end color-rounding-up"
-                          : undefined) ||
-                        (taskStatus == "completed"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Completing"
+                        )
+                          ? "float-end color-completing"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Completed"
+                        )
                           ? "float-end color-completed"
-                          : undefined)
+                          : null)
                       }
                     >
-                      {(taskStatus == "not-started" && "0%") ||
-                        (taskStatus == "started" && "25%") ||
-                        (taskStatus == "middle" && "50%") ||
-                        (taskStatus == "rounding-up" && "75%") ||
-                        (taskStatus == "completed" && "100%")}
+                      {(taskProgressFuction(taskProgress, status).includes(
+                        "Not Started" || taskProgress
+                      ) &&
+                        taskProgress + "%") ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Started" || taskProgress
+                        ) &&
+                          taskProgress + "%") ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Getting there" || taskProgress
+                        ) &&
+                          taskProgress + "%") ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Almost there" || taskProgress
+                        ) &&
+                          taskProgress + "%") ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Rounding up" || taskProgress
+                        ) &&
+                          taskProgress + "%") ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Completing" || taskProgress
+                        ) &&
+                          taskProgress + "%") ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Completed" || taskProgress
+                        ) &&
+                          taskProgress + "%")}
                     </span>
                   </p>
+
                   <div className="progress progress-xs mb-0">
                     <div
                       className={
-                        (taskStatus == "not-started"
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Not Started"
+                        )
                           ? " progress-bar bg-not-started"
-                          : undefined) ||
-                        (taskStatus == "started"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Started"
+                        )
                           ? "progress-bar bg-started"
-                          : undefined) ||
-                        (taskStatus == "middle"
-                          ? "progress-bar bg-middle"
-                          : undefined) ||
-                        (taskStatus == "rounding-up"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Getting there"
+                        )
+                          ? "progress-bar bg-getting-there"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Almost there"
+                        )
+                          ? "progress-bar bg-almost-there"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Rounding up"
+                        )
                           ? "progress-bar bg-rounding-up"
-                          : undefined) ||
-                        (taskStatus == "completed"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Completing"
+                        )
+                          ? "progress-bar bg-completing"
+                          : null) ||
+                        (taskProgressFuction(taskProgress, status).includes(
+                          "Completed"
+                        )
                           ? "progress-bar bg-completed"
-                          : undefined)
+                          : null)
                       }
                       role="progressbar"
                       data-bs-toggle="tooltip"
-                      title={
-                        (taskStatus == "not-started" ? "0%" : undefined) ||
-                        (taskStatus == "started" ? "25%" : undefined) ||
-                        (taskStatus == "middle" ? "50%" : undefined) ||
-                        (taskStatus == "rounding-up" ? "75%" : undefined) ||
-                        (taskStatus == "completed" && "100%")
-                      }
                       style={{
                         width:
-                          (taskStatus == "not-started" && "0%") ||
-                          (taskStatus == "started" && "25%") ||
-                          (taskStatus == "middle" && "50%") ||
-                          (taskStatus == "rounding-up" && "75%") ||
-                          (taskStatus == "completed" && "100%"),
+                          (taskProgressFuction(taskProgress, status).includes(
+                            "Not Started" || taskProgress
+                          ) &&
+                            taskProgress + "%") ||
+                          (taskProgressFuction(taskProgress, status).includes(
+                            "Started" || taskProgress
+                          ) &&
+                            taskProgress + "%") ||
+                          (taskProgressFuction(taskProgress, status).includes(
+                            "Getting there" || taskProgress
+                          ) &&
+                            taskProgress + "%") ||
+                          (taskProgressFuction(taskProgress, status).includes(
+                            "Almost there" || taskProgress
+                          ) &&
+                            taskProgress + "%") ||
+                          (taskProgressFuction(taskProgress, status).includes(
+                            "Rounding up" || taskProgress
+                          ) &&
+                            taskProgress + "%") ||
+                          (taskProgressFuction(taskProgress, status).includes(
+                            "Completing" || taskProgress
+                          ) &&
+                            taskProgress + "%") ||
+                          (taskProgressFuction(taskProgress, status).includes(
+                            "Completed" || taskProgress
+                          ) &&
+                            taskProgress + "%"),
                       }}
                     />
                   </div>
@@ -952,24 +1115,59 @@ const TaskDetails = () => {
                 <div className="card-body">
                   <h6 className="card-title m-b-20">Assigned Leader </h6>
                   <ul className="list-box">
-                    <li>
-                      <Link to="#" onClick={(event) => event.preventDefault()}>
-                        <div className="list-item">
-                          <div className="list-left">
-                            <span className="avatar">
-                              <img alt="" src={SmileImg} />
-                            </span>
-                          </div>
-                          <div className="list-body">
-                            <span className="message-author">
-                              {managerName}
-                            </span>
-                            <div className="clearfix" />
-                            <span className="message-content">Team Leader</span>
-                          </div>
-                        </div>
-                      </Link>
-                    </li>
+                    {totalAssignedManagers?.length > 0
+                      ? allEmployees?.map((user, index) => {
+                          const {
+                            id: value,
+                            first_name,
+                            middle_name,
+                            last_name,
+                            photo,
+                          } = user;
+                          if (totalAssignedManagers.includes(value)) {
+                            return (
+                              <li key={value}>
+                                <Link
+                                  to=""
+                                  onClick={(event) => event.preventDefault()}
+                                  title={`${first_name} ${middle_name} ${last_name}`}
+                                >
+                                  <div className="list-item">
+                                    <div className="list-left">
+                                      <span
+                                        style={{
+                                          borderRadius: "5px",
+                                          backgroundColor: "#00000000",
+                                          height: "100%",
+                                        }}
+                                        className="avatar"
+                                      >
+                                        <img
+                                          style={{
+                                            width: "30px",
+                                            height: "30px",
+                                          }}
+                                          alt=""
+                                          src={photo ? photo : DefaultImage}
+                                        />
+                                      </span>
+                                    </div>
+                                    <div className="list-body">
+                                      <span className="message-author">
+                                        {`${first_name} ${middle_name} ${last_name}`}
+                                      </span>
+                                      <div className="clearfix" />
+                                      <span className="message-content">
+                                        Team Lead
+                                      </span>
+                                    </div>
+                                  </div>
+                                </Link>
+                              </li>
+                            );
+                          }
+                        })
+                      : "No Team assigned"}
                   </ul>
                 </div>
               </div>
@@ -987,48 +1185,55 @@ const TaskDetails = () => {
                     </button> */}
                   </h6>
                   <ul className="list-box">
-                    {totalAssignedEmployees
-                      ? totalAssignedEmployees?.map((user, index) => {
-                          const { value, label, image, role } = user;
-                          return (
-                            <li key={value}>
-                              <Link
-                                to=""
-                                onClick={(event) => event.preventDefault()}
-                              >
-                                <div className="list-item">
-                                  <div className="list-left">
-                                    <span
-                                      style={{
-                                        borderRadius: "5px",
-                                        backgroundColor: "#00000000",
-                                        height: "100%",
-                                      }}
-                                      className="avatar"
-                                    >
-                                      <img
+                    {totalAssignedEmployees?.length > 0
+                      ? allEmployees?.map((user, index) => {
+                          const {
+                            id: value,
+                            first_name,
+                            middle_name,
+                            last_name,
+                            photo,
+                          } = user;
+                          if (totalAssignedEmployees.includes(value)) {
+                            return (
+                              <li key={value}>
+                                <Link
+                                  to=""
+                                  onClick={(event) => event.preventDefault()}
+                                  title={`${first_name} ${middle_name} ${last_name}`}
+                                >
+                                  <div className="list-item">
+                                    <div className="list-left">
+                                      <span
                                         style={{
-                                          width: "30px",
-                                          height: "30px",
+                                          borderRadius: "5px",
+                                          backgroundColor: "#00000000",
+                                          height: "100%",
                                         }}
-                                        alt=""
-                                        src={image ? image : DefaultImage}
-                                      />
-                                    </span>
+                                        className="avatar"
+                                      >
+                                        <img
+                                          style={{
+                                            width: "30px",
+                                            height: "30px",
+                                          }}
+                                          alt=""
+                                          src={photo ? photo : DefaultImage}
+                                        />
+                                      </span>
+                                    </div>
+                                    <div className="list-body">
+                                      <span className="message-author">
+                                        {`${first_name} ${middle_name} ${last_name}`}
+                                      </span>
+                                      <div className="clearfix" />
+                                      <span className="message-content"></span>
+                                    </div>
                                   </div>
-                                  <div className="list-body">
-                                    <span className="message-author">
-                                      {label}
-                                    </span>
-                                    <div className="clearfix" />
-                                    <span className="message-content">
-                                      {role?.label}
-                                    </span>
-                                  </div>
-                                </div>
-                              </Link>
-                            </li>
-                          );
+                                </Link>
+                              </li>
+                            );
+                          }
                         })
                       : "No Team assigned"}
                   </ul>
@@ -1038,47 +1243,57 @@ const TaskDetails = () => {
                 <div className="card-body">
                   <h6 className="card-title m-b-20">Residents</h6>
                   <ul className="list-box">
-                    {totalAssignedServiceWorkers
-                      ? totalAssignedServiceWorkers?.map((user, index) => {
-                          const { value, label, image } = user;
-                          return (
-                            <li key={value}>
-                              <Link
-                                to=""
-                                onClick={(event) => event.preventDefault()}
-                              >
-                                <div className="list-item">
-                                  <div className="list-left">
-                                    <span
-                                      style={{
-                                        borderRadius: "5px",
-                                        backgroundColor: "#00000000",
-                                        height: "100%",
-                                      }}
-                                      className="avatar"
-                                    >
-                                      <img
+                    {totalAssignedResident?.length > 0
+                      ? residentData?.map((user, index) => {
+                          const {
+                            id: value,
+                            first_name,
+                            middle_name,
+                            last_name,
+                            photo,
+                          } = user;
+                          if (totalAssignedResident.includes(value)) {
+                            return (
+                              <li key={value}>
+                                <Link
+                                  to=""
+                                  onClick={(event) => event.preventDefault()}
+                                  title={`${first_name} ${middle_name} ${last_name}`}
+                                >
+                                  <div className="list-item">
+                                    <div className="list-left">
+                                      <span
                                         style={{
-                                          width: "30px",
-                                          height: "30px",
+                                          borderRadius: "5px",
+                                          backgroundColor: "#00000000",
+                                          height: "100%",
                                         }}
-                                        alt=""
-                                        src={image ? image : DefaultImage}
-                                      />
-                                    </span>
+                                        className="avatar"
+                                      >
+                                        <img
+                                          style={{
+                                            width: "30px",
+                                            height: "30px",
+                                          }}
+                                          alt=""
+                                          src={photo ? photo : DefaultImage}
+                                        />
+                                      </span>
+                                    </div>
+                                    <div className="list-body">
+                                      <span className="message-author">
+                                        {`${first_name} ${middle_name} ${last_name}`}
+                                      </span>
+                                      <div className="clearfix" />
+                                      <span className="message-content"></span>
+                                    </div>
                                   </div>
-                                  <div className="list-body">
-                                    <span className="message-author">
-                                      {label}
-                                    </span>
-                                    <div className="clearfix" />
-                                  </div>
-                                </div>
-                              </Link>
-                            </li>
-                          );
+                                </Link>
+                              </li>
+                            );
+                          }
                         })
-                      : "No Team assigned"}
+                      : "No Resident assigned"}
                   </ul>
                 </div>
               </div>
@@ -1117,6 +1332,7 @@ const TaskDetails = () => {
           <AddTask
             dispatchTasks={dispatchTasks}
             indexToEdit={taskIndexToEdit}
+            id={taskId}
           />
         )}
       </div>
