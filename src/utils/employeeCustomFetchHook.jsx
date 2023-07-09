@@ -1294,5 +1294,48 @@ export const useTaskFetching = () => {
   return { taskData, isTaskLoading, taskError };
 };
 
+// Get Task Assignment data
+export const useTaskAssignmentFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/task/taskassignment/?format=json`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: taskAssignmentData,
+    isLoading: isTaskAssignmentLoading,
+    error: taskAssignmentError,
+  } = useQuery("taskAssignmentData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on taskAssignmentData
+      queryClient.invalidateQueries(["taskAssignmentData"]);
+    },
+  });
+
+  return { taskAssignmentData, isTaskAssignmentLoading, taskAssignmentError };
+};
+
+// Get Task Document data
+export const useTaskDocumentFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/task/taskdocument/?format=json`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: taskDocumentData,
+    isLoading: isTaskDocumentLoading,
+    error: taskDocumentError,
+  } = useQuery("taskDocumentData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on taskDocumentData
+      queryClient.invalidateQueries(["taskDocumentData"]);
+    },
+  });
+
+  return { taskDocumentData, isTaskDocumentLoading, taskDocumentError };
+};
 
 

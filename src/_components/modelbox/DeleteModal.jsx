@@ -21,7 +21,7 @@ const DeleteModal = ({
     setGlobalState("deleteModal", false);
     setGlobalState("showAddSchedul", false);
     setGlobalState("deleteFile", false);
-    setGlobalState("deleteSubTask", false);
+    setGlobalState("deleteTaskAssignment", false);
     setGlobalState("deleteRoleModal", false);
     setGlobalState("showAddReviewModal", false);
     setGlobalState("deleteDeptModal", false);
@@ -72,7 +72,7 @@ const DeleteModal = ({
     setGlobalState("deleteModal", false);
     setGlobalState("deleteFile", false);
     setGlobalState("showAddSchedul", false);
-    setGlobalState("deleteSubTask", false);
+    setGlobalState("deleteTaskAssignment", false);
     setGlobalState("deleteRoleModal", false);
     setGlobalState("showAddReviewModal", false);
     setGlobalState("deleteDeptModal", false);

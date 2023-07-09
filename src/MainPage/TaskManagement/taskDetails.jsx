@@ -4,168 +4,181 @@ import { Link } from "react-router-dom";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
-import {
-  initTask,
-  savedTaskReducer,
-  initSubTask,
-  savedSubTaskReducer,
-  initFileUpload,
-  savedFileUploadReducer,
-} from "../../utils/localStorage";
-import SmileImg from "../../assets/img/smile.png";
+import { initFileUpload, savedFileUploadReducer } from "../../utils/localStorage";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import { useParams, useLocation } from "react-router-dom";
 import { Span, DivContainer } from "./style";
-import AddSubTask from "../../_components/modelbox/AddSubTask";
+import AddTaskAssignment from "../../_components/modelbox/AddTaskAssignment";
 import AddTask from "../../_components/modelbox/AddTask";
 import CommentSection from "./component";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 import AddFileUploadModal from "../../_components/modelbox/AddFileUploadModal";
-import { add_update_delete_task } from "../../utils/sendToServer";
+import {
+  add_update_delete_task,
+  add_update_delete_task_assignment,
+} from "../../utils/sendToServer";
 import {
   useTaskFetching,
   useDataFetching,
-  useResidentFetching
+  useResidentFetching,
+  useTaskAssignmentFetching,
+  useTaskDocumentFetching,
 } from "../../utils/employeeCustomFetchHook";
 import moment from "moment";
+import AssignmentBody from "./component/assignmentBody";
 
 const TaskDetails = () => {
-    const location = useLocation();
-    const selectedTaskId = location?.state?.id;
-    const selectedTaskIndex = location?.state?.index;
+  const handleFileDownload = (file) => {
+    const a = document.createElement("a");
+    a.href = file;
 
-    const { taskData, isTaskLoading } = useTaskFetching();
-    const { data: allEmployees } = useDataFetching();
-    const { residentData } = useResidentFetching();
+    const fileExtension = file.split(".").pop().toLowerCase();
 
-    const [showTaskModal] = useGlobalState("showTaskModal");
-    const [showSubTaskModal] = useGlobalState("showSubTaskModal");
-    const [deleteModal] = useGlobalState("deleteModal");
-    const [deleteSubTask] = useGlobalState("deleteSubTask");
-    const [showFileUploadModal] = useGlobalState("showFileUploadModal");
-
-    const [taskState, dispatchTasks] = useReducer(add_update_delete_task, []);
-
-
-    const [subTaskTitle, dispatchSubTaskTitle] = useReducer(
-      savedSubTaskReducer,
-      [],
-      initSubTask
-    );
-
-    useEffect(() => {
-      localStorage.setItem("subTask", JSON.stringify(subTaskTitle));
-    }, [subTaskTitle]);
-    useEffect(() => {
-      if (!showSubTaskModal) {
-        setGlobalState("selectedSubTaskInfo", "");
-      }
-    }, [showSubTaskModal]);
-
-    const [subTaskTitleArray, setSubTaskTitleArray] = useState();
-    useEffect(() => {
-      setSubTaskTitleArray(subTaskTitle);
-    }, [subTaskTitle]);
-
-    const [menu, setMenu] = useState(false);
-    const [indexToEdit, setIndexToEdit] = useState(0);
-    const [taskIndexToEdit, setTaskIndexToEdit] = useState(0);
-
-    const selectedTask = taskData?.find((task) => task?.id === selectedTaskId);
-
-    const taskId = selectedTask?.id;
-    const taskName = selectedTask?.name;
-    const taskType = selectedTask?.is_paid;
-    const taskPriority = selectedTask?.priority;
-    const timeAllocated = selectedTask?.hours;
-    const taskDescription = selectedTask?.description;
-    const totalAssignedEmployees = selectedTask?.employees;
-    const totalAssignedResident = selectedTask?.residents;
-    const totalAssignedManagers = selectedTask?.managers;
-    const taskProgress = selectedTask?.progress;
-    const taskDuration = selectedTask?.task_duration;
-    const taskConcluded = selectedTask?.concluded;
-    const taskStartAt = selectedTask?.start_at;
-    const taskEndAt = selectedTask?.end_at;
-
-    const formattedName = taskName?.charAt(0).toUpperCase() + taskName?.slice(1);
-
-    let status = "";
-    let progressCal;
-    const taskProgressFuction = (taskProgress, status) => {
-
-      if (taskProgress === 0) {
-        status = "Not started";
-        progressCal = taskProgress;
-      } else if (taskProgress >= 1 && taskProgress <= 24) {
-        status = "Started";
-        progressCal = taskProgress;
-      } else if (taskProgress >= 25 && taskProgress <= 49) {
-        status = "Getting there";
-        progressCal = taskProgress;
-      } else if (taskProgress >= 50 && taskProgress <= 75) {
-        status = "Almost there";
-        progressCal = taskProgress;
-      } else if (taskProgress >= 76 && taskProgress <= 85) {
-        status = "Rounding up";
-        progressCal = taskProgress;
-      } else if (taskProgress >= 86 && taskProgress <= 95) {
-        status = "Completing";
-        progressCal = taskProgress;
-      } else {
-        status = "Completed";
-        progressCal = taskProgress;
-      }
-      
-      return [status, taskProgress];
-    };
-
-    const handleTaskEdit = (index) => {
-      setTaskIndexToEdit(index);
-      setGlobalState("showTaskModal", true);
-      setGlobalState("selectedTaskInfo", taskData);
+    // Set the MIME type based on the file extension
+    let mimeType;
+    if (fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "JPG") {
+      mimeType = "image/jpeg";
+    } else if (fileExtension === "png" || fileExtension === "PNG") {
+      mimeType = "image/png";
+    } else if (fileExtension === "pdf") {
+      mimeType = "application/pdf";
+    } else if (fileExtension === "webp") {
+      mimeType = "image/webp";
+    } else if (fileExtension === "txt") {
+      mimeType = "text/plain";
+    } else if (fileExtension === "xls" || fileExtension === "xlsx") {
+      mimeType = "application/vnd.ms-excel";
+    } else if (fileExtension === "doc" || fileExtension === "docx") {
+      mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    } else {
+      mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
     }
 
-    const handleSubTaskEdit = (index) => {
-      setIndexToEdit(index);
-      setGlobalState("showSubTaskModal", true);
-      setGlobalState("selectedSubTaskInfo", subTaskTitle);
-    };
+    // Set the MIME type of the file
+    a.type = mimeType;
 
-    const handleSubTaskDelete = (index) => {
-      setIndexToEdit(index);
-      setGlobalState("deleteSubTask", true);
-    };
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
 
+  const location = useLocation();
+  const selectedTaskId = location?.state?.id;
+  const selectedTaskIndex = location?.state?.index;
 
-    const toggleMobileMenu = () => {
-      setMenu(!menu);
-    };
+  const { taskData, isTaskLoading } = useTaskFetching();
+  const { data: allEmployees } = useDataFetching();
+  const { residentData } = useResidentFetching();
+  const { taskAssignmentData } = useTaskAssignmentFetching();
+  const { taskDocumentData } = useTaskDocumentFetching();
 
-    const [files, dispatchFiles] = useReducer(
-      savedFileUploadReducer,
-      [],
-      initFileUpload
-    );
+  const [showTaskModal] = useGlobalState("showTaskModal");
+  const [showTaskAssignmentModal] = useGlobalState("showTaskAssignmentModal");
+  const [deleteTaskAssignment] = useGlobalState("deleteTaskAssignment");
+  const [showFileUploadModal] = useGlobalState("showFileUploadModal");
 
-    useEffect(() => {
-      localStorage.setItem("fileUploaded", JSON.stringify(files));
-    }, [files]);
-    useEffect(() => {
-      if (!showFileUploadModal) {
-        setGlobalState("selectedFileUpload", "");
-      }
-    }, [showFileUploadModal]);
+  const [taskState, dispatchTasks] = useReducer(add_update_delete_task, []);
+  const [taskAssState, dispatchTaskAssignment] = useReducer(add_update_delete_task_assignment, []);
 
-    const [filesList, setFilesList] = useState();
-    useEffect(() => {
-      setFilesList(files);
-    }, [files]);
+  useEffect(() => {
+    if (!showTaskAssignmentModal) {
+      setGlobalState("selectedTaskAssignmentInfo", "");
+    }
+  }, [showTaskAssignmentModal]);
 
-    const selectedTaskDocument = filesList?.find(
-      (file) => file?.uniqueID === selectedTaskId
-    );
-    const selectedTaskDocumentId = selectedTaskDocument?.uniqueID;
+  const [menu, setMenu] = useState(false);
+  const [indexToEdit, setIndexToEdit] = useState();
+  const [taskAssId, setTaskAssId] = useState();
+  const [taskIndexToEdit, setTaskIndexToEdit] = useState();
+
+  const selectedTask = taskData?.find((task) => task?.id === selectedTaskId);
+
+  const taskId = selectedTask?.id;
+  const taskName = selectedTask?.name;
+  const taskType = selectedTask?.is_paid;
+  const taskPriority = selectedTask?.priority;
+  const timeAllocated = selectedTask?.hours;
+  const taskDescription = selectedTask?.description;
+  const totalAssignedEmployees = selectedTask?.employees;
+  const totalAssignedResident = selectedTask?.residents;
+  const totalAssignedManagers = selectedTask?.managers;
+  const taskProgress = selectedTask?.progress;
+  const taskDuration = selectedTask?.task_duration;
+  const taskConcluded = selectedTask?.concluded;
+  const taskStartAt = selectedTask?.start_at;
+  const taskEndAt = selectedTask?.end_at;
+
+  const formattedName = taskName?.charAt(0).toUpperCase() + taskName?.slice(1);
+
+  let status = "";
+  let progressCal;
+  const taskProgressFuction = (taskProgress, status) => {
+    if (taskProgress === 0) {
+      status = "Not started";
+      progressCal = taskProgress;
+    } else if (taskProgress >= 1 && taskProgress <= 24) {
+      status = "Started";
+      progressCal = taskProgress;
+    } else if (taskProgress >= 25 && taskProgress <= 49) {
+      status = "Getting there";
+      progressCal = taskProgress;
+    } else if (taskProgress >= 50 && taskProgress <= 75) {
+      status = "Almost there";
+      progressCal = taskProgress;
+    } else if (taskProgress >= 76 && taskProgress <= 85) {
+      status = "Rounding up";
+      progressCal = taskProgress;
+    } else if (taskProgress >= 86 && taskProgress <= 95) {
+      status = "Completing";
+      progressCal = taskProgress;
+    } else {
+      status = "Completed";
+      progressCal = taskProgress;
+    }
+
+    return [status, taskProgress];
+  };
+
+  const handleTaskEdit = (index, id) => {
+    setTaskIndexToEdit(index);
+    setGlobalState("showTaskModal", true);
+    setGlobalState("selectedTaskInfo", taskData);
+  };
+
+  const handleTaskAssignmentEdit = (index, id) => {
+    setIndexToEdit(index);
+    setTaskAssId(id);
+    setGlobalState("showTaskAssignmentModal", true);
+    setGlobalState("selectedTaskAssignmentInfo", taskAssignmentData);
+  };
+
+  const handleTaskAssignmentDelete = (id) => {
+    setTaskAssId(id);
+    setGlobalState("deleteTaskAssignment", true);
+  };
+
+  const toggleMobileMenu = () => {
+    setMenu(!menu);
+  };
+
+  const [files, dispatchFiles] = useReducer(savedFileUploadReducer, [], initFileUpload);
+
+  useEffect(() => {
+    localStorage.setItem("fileUploaded", JSON.stringify(files));
+  }, [files]);
+  useEffect(() => {
+    if (!showFileUploadModal) {
+      setGlobalState("selectedFileUpload", "");
+    }
+  }, [showFileUploadModal]);
+
+  const [filesList, setFilesList] = useState();
+  useEffect(() => {
+    setFilesList(files);
+  }, [files]);
+
+  const selectedTaskDocument = filesList?.find((file) => file?.uniqueID === selectedTaskId);
+  const selectedTaskDocumentId = selectedTaskDocument?.uniqueID;
 
   const [fileUploadIndex, setFileUploadIndex] = useState(0);
   const [fileUploadfieldIndex, setFileUploadfieldIndex] = useState(0);
@@ -189,6 +202,94 @@ const TaskDetails = () => {
       });
     }
   });
+
+  const [taskAssignmentError] = useGlobalState("taskAssignmentError");
+
+  const clearErrorMessage = () => {
+    setGlobalState("taskAssignmentError", "");
+  };
+
+  const getAllEmployees = (primaryKey) => {
+    return allEmployees?.map((emp, index) => {
+      const { id: empId, first_name, middle_name, last_name, photo } = emp;
+      if (Array.isArray(primaryKey) ? primaryKey.includes(empId) : primaryKey === empId) {
+        return (
+          <span
+            key={empId}
+            data-bs-toggle="tooltip"
+            title={`${first_name} ${middle_name} ${last_name}`}
+          >
+            <img src={photo ? photo : DefaultImage} alt="user Image" className="resident-image" />
+          </span>
+        );
+      }
+      return null;
+    });
+  };
+
+  const getAllResident = (primaryKey) => {
+    return residentData?.map((emp, index) => {
+      const { id: resId, first_name, middle_name, last_name, photo } = emp;
+      if (Array.isArray(primaryKey) ? primaryKey.includes(resId) : primaryKey === resId) {
+        return (
+          <span
+            key={resId}
+            data-bs-toggle="tooltip"
+            title={`${first_name} ${middle_name} ${last_name}`}
+          >
+            <img src={photo ? photo : DefaultImage} alt="user Image" className="resident-image" />
+          </span>
+        );
+      }
+      return null;
+    });
+  };
+
+  // Checks if the uploaded document contain any of this extentions.
+  const regex = /(png|jpg|webp|JPG|PNG)/;
+
+  const assignmentCategories = (
+    index,
+    id,
+    description,
+    Managers_comment,
+    manager,
+    resident,
+    employees,
+    status,
+    matchedDoc
+  ) => {
+    return (
+      <li
+        key={id}
+        className={
+          (status === "Approved" && "task") ||
+          (status === "Rejected" && "task") ||
+          (status === "Pending" && "task") ||
+          (status === "Completed" && "completed")
+        }
+      >
+        <AssignmentBody
+          inde={index}
+          id={id}
+          description={description}
+          Managers_comment={Managers_comment}
+          manager={manager}
+          resident={resident}
+          employees={employees}
+          status={status}
+          matchedDoc={matchedDoc}
+          getAllEmployees={getAllEmployees}
+          getAllResident={getAllResident}
+          handleFileDownload={handleFileDownload}
+          handleTaskAssignmentEdit={handleTaskAssignmentEdit}
+          handleTaskAssignmentDelete={handleTaskAssignmentDelete}
+          regex={regex}
+        />
+      </li>
+    );
+  };
+
   return (
     <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
       <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -207,9 +308,7 @@ const TaskDetails = () => {
                 <h3 className="page-title">Task Details</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/app/taskmanagement/task-manager-table">
-                      All Tasks
-                    </Link>
+                    <Link to="/app/taskmanagement/task-manager-table">All Tasks</Link>
                   </li>
                   <li className="breadcrumb-item active">Task Manager</li>
                 </ul>
@@ -217,7 +316,7 @@ const TaskDetails = () => {
               <div className="col-auto float-end ml-auto">
                 <a
                   className="btn add-btn"
-                  onClick={() => handleTaskEdit(selectedTaskIndex)}
+                  onClick={() => handleTaskEdit(selectedTaskIndex, selectedTaskId)}
                 >
                   <i className="fa fa-edit" /> Edit Task
                 </a>
@@ -237,12 +336,31 @@ const TaskDetails = () => {
                   <p>{taskDescription}</p>
                 </div>
               </div>
-              <div style={{ marginBottom: "20px" }} className="project-task">
+              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                {taskAssignmentError?.length > 0 && (
+                  <>
+                    Error: {taskAssignmentError}
+                    <button
+                      onClick={clearErrorMessage}
+                      style={{
+                        marginLeft: "10px",
+                        fontSize: "0.8rem",
+                        cursor: "pointer",
+                        color: "black",
+                      }}
+                    >
+                      <i className="fa fa-times" />
+                      Clear Error
+                    </button>
+                  </>
+                )}
+              </span>
+              <div style={{ marginBottom: "20px" }} className="project-task card">
                 <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                   <li className="nav-item">
                     <a
                       className="nav-link active"
-                      href="#all_tasks"
+                      href="#all_assignments"
                       data-bs-toggle="tab"
                       aria-expanded="true"
                     >
@@ -250,410 +368,287 @@ const TaskDetails = () => {
                         className="action-circle large"
                         style={{ marginRight: "10px" }}
                         title="Add Task"
-                        onClick={() => setGlobalState("showSubTaskModal", true)}
+                        onClick={() => setGlobalState("showTaskAssignmentModal", true)}
                       >
                         <i className="material-icons">add</i>
                       </span>
-                      All Tasks
+                      All Assignments
                     </a>
                   </li>
                   <li className="nav-item">
                     <a
                       className="nav-link"
-                      href="#pending_tasks"
+                      href="#pending_assignments"
                       data-bs-toggle="tab"
                       aria-expanded="false"
                     >
-                      Pending Tasks
+                      Pending Assignments{" "}
+                      <span
+                        style={{ backgroundColor: "grey" }}
+                        className="action-circle large complete-btn"
+                      >
+                        <i style={{ color: "white" }} className="material-icons">
+                          help_outline
+                        </i>
+                      </span>
                     </a>
                   </li>
                   <li className="nav-item">
                     <a
                       className="nav-link"
-                      href="#completed_tasks"
+                      href="#completed_assignments"
                       data-bs-toggle="tab"
                       aria-expanded="false"
                     >
-                      Completed Tasks
+                      Completed Assignments{" "}
+                      <span
+                        style={{ backgroundColor: "#35BA67" }}
+                        className="action-circle large complete-btn"
+                      >
+                        <i style={{ color: "white" }} className="material-icons">
+                          check
+                        </i>
+                      </span>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#approved_assignments"
+                      data-bs-toggle="tab"
+                      aria-expanded="false"
+                    >
+                      Approved Assignments{" "}
+                      <span
+                        style={{ backgroundColor: "#FF9B44" }}
+                        className="action-circle large complete-btn"
+                      >
+                        <i style={{ color: "white" }} className="material-icons">
+                          check
+                        </i>
+                      </span>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#rejected_assignments"
+                      data-bs-toggle="tab"
+                      aria-expanded="false"
+                    >
+                      Rejected Assignments{" "}
+                      <span
+                        style={{ backgroundColor: "red" }}
+                        className="action-circle large complete-btn"
+                      >
+                        <i style={{ color: "white" }} className="material-icons">
+                          cancel
+                        </i>
+                      </span>
                     </a>
                   </li>
                 </ul>
                 <div className="tab-content">
-                  <div className="tab-pane show active" id="all_tasks">
+                  <div className="tab-pane show active" id="all_assignments">
                     <div className="task-wrapper">
                       <div className="task-list-container">
                         <div className="task-list-body">
                           <ul id="task-list">
-                            {subTaskTitleArray
-                              ? subTaskTitleArray?.map((subtasks, index) => {
+                            {taskAssignmentData
+                              ? taskAssignmentData?.map((assignment, index) => {
                                   const {
                                     id,
-                                    taskId: taskIdInSubTask,
-                                    subTask,
+                                    description,
+                                    Managers_comment,
+                                    manager,
+                                    document,
                                     resident,
-                                    dateCreated,
-                                    dateUpdated,
-                                    checkToComplete,
-                                  } = subtasks;
-                                  if (taskIdInSubTask == selectedTaskId) {
-                                    return (
-                                      <li
-                                        key={id}
-                                        className={
-                                          checkToComplete ? "completed" : "task"
-                                        }
-                                      >
-                                        <div className="task-container">
-                                          <span className="task-action-btn task-check">
-                                            <span
-                                              className="action-circle large complete-btn"
-                                              title="Mark Complete"
-                                            >
-                                              <i className="material-icons">
-                                                check
-                                              </i>
-                                            </span>
-                                          </span>
-                                          <span className="task-label">
-                                            <span
-                                              style={{ marginRight: "5px" }}
-                                            >
-                                              {subTask}
-                                            </span>
-                                            {resident
-                                              ? resident?.map(
-                                                  (resident, index) => {
-                                                    const { label, image } =
-                                                      resident;
-                                                    return (
-                                                      <span
-                                                        key={index}
-                                                        data-bs-toggle="tooltip"
-                                                        title={label}
-                                                      >
-                                                        <img
-                                                          src={
-                                                            image
-                                                              ? image
-                                                              : DefaultImage
-                                                          }
-                                                          alt="user Image"
-                                                          className="resident-image"
-                                                        />
-                                                      </span>
-                                                    );
-                                                  }
-                                                )
-                                              : null}
-                                            {dateCreated && dateUpdated ? (
-                                              <>
-                                                <br />
-                                                <span>
-                                                  <h6
-                                                    style={{
-                                                      fontSize: "9px",
-                                                      margin: "3px 0 0 0",
-                                                    }}
-                                                  >
-                                                    Date Created: {dateCreated}
-                                                  </h6>
-                                                  <h6
-                                                    style={{
-                                                      fontSize: "9px",
-                                                      margin: "0",
-                                                    }}
-                                                  >
-                                                    last Updated: {dateUpdated}
-                                                  </h6>
-                                                </span>
-                                              </>
-                                            ) : null}
-                                          </span>
-                                          <span className="task-action-btn ">
-                                            <span
-                                              className="action-circle large"
-                                              title="Update"
-                                              onClick={() =>
-                                                handleSubTaskEdit(
-                                                  index,
-                                                  dateCreated
-                                                )
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                person_add
-                                              </i>
-                                            </span>
-                                            <span
-                                              className="action-circle large delete-btn"
-                                              title="Delete Task"
-                                              onClick={() =>
-                                                handleSubTaskDelete(index)
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                delete
-                                              </i>
-                                            </span>
-                                          </span>
-                                        </div>
-                                      </li>
+                                    employees,
+                                    status,
+                                    task,
+                                  } = assignment;
+                                  const matchedDoc = taskDocumentData?.filter((doc) =>
+                                    document.includes(doc.id)
+                                  );
+                                  if (task === selectedTaskId) {
+                                    return assignmentCategories(
+                                      index,
+                                      id,
+                                      description,
+                                      Managers_comment,
+                                      manager,
+                                      resident,
+                                      employees,
+                                      status,
+                                      matchedDoc
                                     );
                                   }
                                 })
-                              : "No sub tasks available"}
+                              : "No task assignment available"}
                           </ul>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="tab-pane" id="pending_tasks">
+                  <div className="tab-pane" id="pending_assignments">
                     <div className="task-wrapper">
                       <div className="task-list-container">
                         <div className="task-list-body">
                           <ul id="task-list">
-                            {subTaskTitleArray
-                              ? subTaskTitleArray?.map((subtasks, index) => {
+                            {taskAssignmentData
+                              ? taskAssignmentData?.map((assignment, index) => {
                                   const {
                                     id,
-                                    taskId: taskIdInSubTask,
-                                    subTask,
+                                    description,
+                                    Managers_comment,
+                                    manager,
+                                    document,
                                     resident,
-                                    dateCreated,
-                                    dateUpdated,
-                                    checkToComplete,
-                                  } = subtasks;
-                                  if (
-                                    checkToComplete != true &&
-                                    taskIdInSubTask == selectedTaskId
-                                  ) {
-                                    return (
-                                      <li key={id} className="task">
-                                        <div className="task-container">
-                                          <span className="task-action-btn task-check">
-                                            <span
-                                              className="action-circle large complete-btn"
-                                              title="Mark Complete"
-                                            >
-                                              <i className="material-icons">
-                                                check
-                                              </i>
-                                            </span>
-                                          </span>
-                                          <span className="task-label">
-                                            <span
-                                              style={{ marginRight: "5px" }}
-                                            >
-                                              {subTask}
-                                            </span>
-                                            {resident
-                                              ? resident?.map(
-                                                  (resident, index) => {
-                                                    const { label, image } =
-                                                      resident;
-                                                    return (
-                                                      <span
-                                                        key={index}
-                                                        data-bs-toggle="tooltip"
-                                                        title={label}
-                                                      >
-                                                        <img
-                                                          src={
-                                                            image
-                                                              ? image
-                                                              : DefaultImage
-                                                          }
-                                                          alt="user Image"
-                                                          className="resident-image"
-                                                        />
-                                                      </span>
-                                                    );
-                                                  }
-                                                )
-                                              : null}
-                                            {dateCreated && dateUpdated ? (
-                                              <>
-                                                <br />
-                                                <span>
-                                                  <h6
-                                                    style={{
-                                                      fontSize: "9px",
-                                                      margin: "3px 0 0 0",
-                                                    }}
-                                                  >
-                                                    Date Created: {dateCreated}
-                                                  </h6>
-                                                  <h6
-                                                    style={{
-                                                      fontSize: "9px",
-                                                      margin: "0",
-                                                    }}
-                                                  >
-                                                    Date Updated: {dateUpdated}
-                                                  </h6>
-                                                </span>
-                                              </>
-                                            ) : null}
-                                          </span>
-                                          <span className="task-action-btn ">
-                                            <span
-                                              className="action-circle large"
-                                              title="Update"
-                                              onClick={() =>
-                                                handleSubTaskEdit(
-                                                  index,
-                                                  dateCreated
-                                                )
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                person_add
-                                              </i>
-                                            </span>
-                                            <span
-                                              className="action-circle large delete-btn"
-                                              title="Delete Task"
-                                              onClick={() =>
-                                                handleSubTaskDelete(index)
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                delete
-                                              </i>
-                                            </span>
-                                          </span>
-                                        </div>
-                                      </li>
+                                    employees,
+                                    status,
+                                    task,
+                                  } = assignment;
+                                  const matchedDoc = taskDocumentData?.filter((doc) =>
+                                    document.includes(doc.id)
+                                  );
+                                  if (status === "Pending" && task === selectedTaskId) {
+                                    return assignmentCategories(
+                                      index,
+                                      id,
+                                      description,
+                                      Managers_comment,
+                                      manager,
+                                      resident,
+                                      employees,
+                                      status,
+                                      matchedDoc
                                     );
                                   }
                                 })
-                              : "No sub tasks available"}
+                              : "No task assignment available"}
                           </ul>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="tab-pane" id="completed_tasks">
+                  <div className="tab-pane" id="completed_assignments">
                     <div className="task-wrapper">
                       <div className="task-list-container">
                         <div className="task-list-body">
                           <ul id="task-list">
-                            {subTaskTitleArray
-                              ? subTaskTitleArray?.map((subtasks, index) => {
+                            {taskAssignmentData
+                              ? taskAssignmentData?.map((assignment, index) => {
                                   const {
                                     id,
-                                    taskId: taskIdInSubTask,
-                                    subTask,
+                                    description,
+                                    Managers_comment,
+                                    manager,
+                                    document,
                                     resident,
-                                    dateCreated,
-                                    dateUpdated,
-                                    checkToComplete,
-                                  } = subtasks;
-                                  if (
-                                    checkToComplete == true &&
-                                    taskIdInSubTask == selectedTaskId
-                                  ) {
-                                    return (
-                                      <li key={id} className="completed">
-                                        <div className="task-container">
-                                          <span className="task-action-btn task-check">
-                                            <span
-                                              className="action-circle large complete-btn"
-                                              title="Mark Complete"
-                                            >
-                                              <i className="material-icons">
-                                                check
-                                              </i>
-                                            </span>
-                                          </span>
-                                          <span className="task-label">
-                                            <span
-                                              style={{ marginRight: "5px" }}
-                                            >
-                                              {subTask}
-                                            </span>
-                                            {resident
-                                              ? resident?.map(
-                                                  (resident, index) => {
-                                                    const { label, image } =
-                                                      resident;
-                                                    return (
-                                                      <span
-                                                        key={index}
-                                                        data-bs-toggle="tooltip"
-                                                        title={label}
-                                                      >
-                                                        <img
-                                                          src={
-                                                            image
-                                                              ? image
-                                                              : DefaultImage
-                                                          }
-                                                          alt="user Image"
-                                                          className="resident-image"
-                                                        />
-                                                      </span>
-                                                    );
-                                                  }
-                                                )
-                                              : null}
-                                            {dateCreated && dateUpdated ? (
-                                              <>
-                                                <br />
-                                                <span>
-                                                  <h6
-                                                    style={{
-                                                      fontSize: "9px",
-                                                      margin: "3px 0 0 0",
-                                                    }}
-                                                  >
-                                                    Date Created: {dateCreated}
-                                                  </h6>
-                                                  <h6
-                                                    style={{
-                                                      fontSize: "9px",
-                                                      margin: "0",
-                                                    }}
-                                                  >
-                                                    Date Updated: {dateUpdated}
-                                                  </h6>
-                                                </span>
-                                              </>
-                                            ) : null}
-                                          </span>
-                                          <span className="task-action-btn ">
-                                            <span
-                                              className="action-circle large"
-                                              title="Update"
-                                              onClick={() =>
-                                                handleSubTaskEdit(
-                                                  index,
-                                                  dateCreated
-                                                )
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                person_add
-                                              </i>
-                                            </span>
-                                            <span
-                                              className="action-circle large delete-btn"
-                                              title="Delete Task"
-                                              onClick={() =>
-                                                handleSubTaskDelete(index)
-                                              }
-                                            >
-                                              <i className="material-icons">
-                                                delete
-                                              </i>
-                                            </span>
-                                          </span>
-                                        </div>
-                                      </li>
+                                    employees,
+                                    status,
+                                    task,
+                                  } = assignment;
+                                  const matchedDoc = taskDocumentData?.filter((doc) =>
+                                    document.includes(doc.id)
+                                  );
+                                  if (status === "Completed" && task === selectedTaskId) {
+                                    return assignmentCategories(
+                                      index,
+                                      id,
+                                      description,
+                                      Managers_comment,
+                                      manager,
+                                      resident,
+                                      employees,
+                                      status,
+                                      matchedDoc
                                     );
                                   }
                                 })
-                              : "No sub tasks available"}
+                              : "No task assignment available"}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tab-pane" id="approved_assignments">
+                    <div className="task-wrapper">
+                      <div className="task-list-container">
+                        <div className="task-list-body">
+                          <ul id="task-list">
+                            {taskAssignmentData
+                              ? taskAssignmentData?.map((assignment, index) => {
+                                  const {
+                                    id,
+                                    description,
+                                    Managers_comment,
+                                    manager,
+                                    document,
+                                    resident,
+                                    employees,
+                                    status,
+                                    task,
+                                  } = assignment;
+                                  const matchedDoc = taskDocumentData?.filter((doc) =>
+                                    document.includes(doc.id)
+                                  );
+                                  if (status === "Approved" && task === selectedTaskId) {
+                                    return assignmentCategories(
+                                      index,
+                                      id,
+                                      description,
+                                      Managers_comment,
+                                      manager,
+                                      resident,
+                                      employees,
+                                      status,
+                                      matchedDoc
+                                    );
+                                  }
+                                })
+                              : "No task assignment available"}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tab-pane" id="rejected_assignments">
+                    <div className="task-wrapper">
+                      <div className="task-list-container">
+                        <div className="task-list-body">
+                          <ul id="task-list">
+                            {taskAssignmentData
+                              ? taskAssignmentData?.map((assignment, index) => {
+                                  const {
+                                    id,
+                                    description,
+                                    Managers_comment,
+                                    manager,
+                                    document,
+                                    resident,
+                                    employees,
+                                    status,
+                                    task,
+                                  } = assignment;
+                                  const matchedDoc = taskDocumentData?.filter((doc) =>
+                                    document.includes(doc.id)
+                                  );
+                                  if (status === "Rejected" && task === selectedTaskId) {
+                                    return assignmentCategories(
+                                      index,
+                                      id,
+                                      description,
+                                      Managers_comment,
+                                      manager,
+                                      resident,
+                                      employees,
+                                      status,
+                                      matchedDoc
+                                    );
+                                  }
+                                })
+                              : "No task assignment available"}
                           </ul>
                         </div>
                       </div>
@@ -661,10 +656,7 @@ const TaskDetails = () => {
                   </div>
                 </div>
               </div>
-              <CommentSection
-                selecetedTaskId={selectedTaskId}
-                taskId={taskId}
-              />
+              <CommentSection selecetedTaskId={selectedTaskId} taskId={taskId} />
               <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
@@ -676,8 +668,7 @@ const TaskDetails = () => {
                     </h3>
                     <div className="experience-box">
                       <ul className="experience-list">
-                        {filesList?.length > 0 &&
-                        selectedTaskDocumentId === selectedTaskId
+                        {filesList?.length > 0 && selectedTaskDocumentId === selectedTaskId
                           ? filesList?.map((file, index) => {
                               const { id, inputFields, uniqueID } = file;
                               if (uniqueID == selectedTaskId) {
@@ -695,30 +686,20 @@ const TaskDetails = () => {
                                       } = fields;
 
                                       const handleFileDownload = () => {
-                                        const dataUrlParts =
-                                          fileDetails.data.split(",");
+                                        const dataUrlParts = fileDetails.data.split(",");
                                         const base64Data = dataUrlParts[1];
                                         const mimeType = dataUrlParts[0]
                                           .split(":")[1]
                                           .split(";")[0];
 
                                         const byteCharacters = atob(base64Data);
-                                        const byteNumbers = new Array(
-                                          byteCharacters.length
-                                        );
+                                        const byteNumbers = new Array(byteCharacters.length);
 
-                                        for (
-                                          let i = 0;
-                                          i < byteCharacters.length;
-                                          i++
-                                        ) {
-                                          byteNumbers[i] =
-                                            byteCharacters.charCodeAt(i);
+                                        for (let i = 0; i < byteCharacters.length; i++) {
+                                          byteNumbers[i] = byteCharacters.charCodeAt(i);
                                         }
 
-                                        const byteArray = new Uint8Array(
-                                          byteNumbers
-                                        );
+                                        const byteArray = new Uint8Array(byteNumbers);
                                         const blob = new Blob([byteArray], {
                                           type: mimeType,
                                         });
@@ -754,30 +735,20 @@ const TaskDetails = () => {
                                                     data-bs-toggle="dropdown"
                                                     aria-expanded="false"
                                                   >
-                                                    <i className="material-icons">
-                                                      more_vert
-                                                    </i>
+                                                    <i className="material-icons">more_vert</i>
                                                   </a>
                                                   <div className="dropdown-menu dropdown-menu-right">
                                                     <a
                                                       className="dropdown-item"
                                                       onClick={() =>
-                                                        handleFileUploadEdit(
-                                                          fieldsIndex,
-                                                          index
-                                                        )
+                                                        handleFileUploadEdit(fieldsIndex, index)
                                                       }
                                                     >
-                                                      <i className="fa fa-pencil m-r-5" />{" "}
-                                                      Edit
+                                                      <i className="fa fa-pencil m-r-5" /> Edit
                                                     </a>
                                                     <a
                                                       className="dropdown-item"
-                                                      onClick={() =>
-                                                        handleFileDownload(
-                                                          index
-                                                        )
-                                                      }
+                                                      onClick={() => handleFileDownload(index)}
                                                     >
                                                       <i className="fa fa-download m-r-5" />{" "}
                                                       Download
@@ -786,22 +757,17 @@ const TaskDetails = () => {
                                                 </div>
                                               </a>
                                               <div>{documentNumber}</div>
-                                              {selectedTaskId ==
-                                              uniqueID ? null : (
-                                                <span className="time">
-                                                  Type: {documentType}
-                                                </span>
+                                              {selectedTaskId == uniqueID ? null : (
+                                                <span className="time">Type: {documentType}</span>
                                               )}
                                               {issueDate && expiryDate ? (
                                                 <span className="time">
-                                                  Issue Date: {issueDate} -
-                                                  Expiry Date: {expiryDate}
+                                                  Issue Date: {issueDate} - Expiry Date:{" "}
+                                                  {expiryDate}
                                                 </span>
                                               ) : null}
                                               {fileDetails?.type &&
-                                              fileDetails?.type?.startsWith(
-                                                "image/"
-                                              ) ? (
+                                              fileDetails?.type?.startsWith("image/") ? (
                                                 <img
                                                   className="img-preview"
                                                   src={fileDetails?.data}
@@ -838,8 +804,7 @@ const TaskDetails = () => {
                         <td>Task Type:</td>
                         <td
                           style={{
-                            backgroundColor:
-                              taskType === true ? "#55CE63" : "#ff9b44",
+                            backgroundColor: taskType === true ? "#55CE63" : "#ff9b44",
                             color: "#fff",
                           }}
                           className="text-end"
@@ -853,20 +818,12 @@ const TaskDetails = () => {
                       </tr>
                       <tr>
                         <td>Start At:</td>
-                        <td className="text-end">
-                          {moment(taskStartAt).format("DD MMM YYYY")}
-                        </td>
+                        <td className="text-end">{moment(taskStartAt).format("DD MMM YYYY")}</td>
                       </tr>
                       <tr>
                         <td>End At:</td>
-                        <td className="text-end">
-                          {moment(taskEndAt).format("DD MMM YYYY")}
-                        </td>
+                        <td className="text-end">{moment(taskEndAt).format("DD MMM YYYY")}</td>
                       </tr>
-                      {/* <tr>
-                        <td>Deadline:</td>
-                        <td className="text-end">12 Jun, 2019</td>
-                      </tr> */}
                       <tr>
                         <td>Priority:</td>
                         <td
@@ -892,8 +849,7 @@ const TaskDetails = () => {
                         <td>Task Conclusion:</td>
                         <td
                           style={{
-                            backgroundColor:
-                              taskConcluded === true ? "#55CE63" : "#ff9b44",
+                            backgroundColor: taskConcluded === true ? "#55CE63" : "#ff9b44",
                             color: "#fff",
                           }}
                           className="text-end"
@@ -967,39 +923,25 @@ const TaskDetails = () => {
                     Task Progress
                     <span
                       className={
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Not Started"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Not Started")
                           ? "float-end color-not-started"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Started"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Started")
                           ? "float-end color-started"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Getting there"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Getting there")
                           ? "float-end color-getting-there"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Almost there"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Almost there")
                           ? "float-end color-almost-there"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Rounding up"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Rounding up")
                           ? "float-end color-rounding-up"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Completing"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Completing")
                           ? "float-end color-completing"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Completed"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Completed")
                           ? "float-end color-completed"
                           : null)
                       }
@@ -1038,39 +980,25 @@ const TaskDetails = () => {
                   <div className="progress progress-xs mb-0">
                     <div
                       className={
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Not Started"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Not Started")
                           ? " progress-bar bg-not-started"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Started"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Started")
                           ? "progress-bar bg-started"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Getting there"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Getting there")
                           ? "progress-bar bg-getting-there"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Almost there"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Almost there")
                           ? "progress-bar bg-almost-there"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Rounding up"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Rounding up")
                           ? "progress-bar bg-rounding-up"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Completing"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Completing")
                           ? "progress-bar bg-completing"
                           : null) ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Completed"
-                        )
+                        (taskProgressFuction(taskProgress, status).includes("Completed")
                           ? "progress-bar bg-completed"
                           : null)
                       }
@@ -1117,13 +1045,7 @@ const TaskDetails = () => {
                   <ul className="list-box">
                     {totalAssignedManagers?.length > 0
                       ? allEmployees?.map((user, index) => {
-                          const {
-                            id: value,
-                            first_name,
-                            middle_name,
-                            last_name,
-                            photo,
-                          } = user;
+                          const { id: value, first_name, middle_name, last_name, photo } = user;
                           if (totalAssignedManagers.includes(value)) {
                             return (
                               <li key={value}>
@@ -1157,9 +1079,7 @@ const TaskDetails = () => {
                                         {`${first_name} ${middle_name} ${last_name}`}
                                       </span>
                                       <div className="clearfix" />
-                                      <span className="message-content">
-                                        Team Lead
-                                      </span>
+                                      <span className="message-content">Team Lead</span>
                                     </div>
                                   </div>
                                 </Link>
@@ -1187,13 +1107,7 @@ const TaskDetails = () => {
                   <ul className="list-box">
                     {totalAssignedEmployees?.length > 0
                       ? allEmployees?.map((user, index) => {
-                          const {
-                            id: value,
-                            first_name,
-                            middle_name,
-                            last_name,
-                            photo,
-                          } = user;
+                          const { id: value, first_name, middle_name, last_name, photo } = user;
                           if (totalAssignedEmployees.includes(value)) {
                             return (
                               <li key={value}>
@@ -1245,13 +1159,7 @@ const TaskDetails = () => {
                   <ul className="list-box">
                     {totalAssignedResident?.length > 0
                       ? residentData?.map((user, index) => {
-                          const {
-                            id: value,
-                            first_name,
-                            middle_name,
-                            last_name,
-                            photo,
-                          } = user;
+                          const { id: value, first_name, middle_name, last_name, photo } = user;
                           if (totalAssignedResident.includes(value)) {
                             return (
                               <li key={value}>
@@ -1311,29 +1219,23 @@ const TaskDetails = () => {
             />
           </>
         )}
-        {showSubTaskModal && (
-          <AddSubTask
-            dispatchSubTaskTitle={dispatchSubTaskTitle}
+        {showTaskAssignmentModal && (
+          <AddTaskAssignment
+            dispatchTaskAssignment={dispatchTaskAssignment}
             indexToEdit={indexToEdit}
-            subTaskTitle={subTaskTitle}
-            taskId={taskId}
-            selecetedTaskId={selectedTaskId}
+            id={taskAssId}
+            task={selectedTaskId}
           />
         )}
-        {deleteSubTask && (
+        {deleteTaskAssignment && (
           <DeleteModal
-            deleteAction={dispatchSubTaskTitle}
-            indexToDelete={indexToEdit}
-            dispatch={subTaskTitle}
-            modalTitle={"SubTask"}
+            deleteAction={dispatchTaskAssignment}
+            iDToDelete={taskAssId}
+            modalTitle={"Task Assignment"}
           />
         )}
         {showTaskModal && (
-          <AddTask
-            dispatchTasks={dispatchTasks}
-            indexToEdit={taskIndexToEdit}
-            id={taskId}
-          />
+          <AddTask dispatchTasks={dispatchTasks} indexToEdit={taskIndexToEdit} id={taskId} />
         )}
       </div>
     </DivContainer>

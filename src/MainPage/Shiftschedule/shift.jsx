@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
-import { Table } from 'antd';
-import 'antd/dist/antd.css';
-import {itemRender,onShowSizeChange} from "../paginationfunction"
-import "../antdstyle.css"
-import  AddShift from "../../_components/modelbox/AddShift"
-import { useGlobalState, setGlobalState} from '../../context/GlobalState';
+import { Table } from "antd";
+import "antd/dist/antd.css";
+import { itemRender, onShowSizeChange } from "../paginationfunction";
+import "../antdstyle.css";
+import AddShift from "../../_components/modelbox/AddShift";
+import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { add_update_delete_shift } from "../../utils/sendToServer";
-import {
-  useShiftFetching
-} from "../../utils/employeeCustomFetchHook";
+import { useShiftFetching } from "../../utils/employeeCustomFetchHook";
 import "../ServiceWork/style.css";
 import moment from "moment";
 
@@ -27,8 +25,7 @@ const shift = () => {
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
     total: shiftData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -44,10 +41,7 @@ const shift = () => {
     setGlobalState("shiftError", "");
   };
 
-  const [shiftState, dispatchShift] = useReducer(
-    add_update_delete_shift,
-    []
-  );
+  const [shiftState, dispatchShift] = useReducer(add_update_delete_shift, []);
 
   useEffect(() => {
     if (!showShiftModal) {
@@ -84,7 +78,6 @@ const shift = () => {
     }
   });
 
-
   const columns = [
     {
       title: "#",
@@ -102,11 +95,7 @@ const shift = () => {
       dataIndex: "start_time",
       render: (text, record, index) => {
         const { start_time } = record;
-        return (
-          <React.Fragment>
-            {moment(start_time, "HH:mm").format("hh:mm A")}
-          </React.Fragment>
-        );
+        return <React.Fragment>{moment(start_time, "HH:mm").format("hh:mm A")}</React.Fragment>;
       },
     },
     {
@@ -114,11 +103,7 @@ const shift = () => {
       dataIndex: "end_time",
       render: (text, record, index) => {
         const { end_time } = record;
-        return (
-          <React.Fragment>
-            {moment(end_time, "HH:mm").format("hh:mm A")}
-          </React.Fragment>
-        );
+        return <React.Fragment>{moment(end_time, "HH:mm").format("hh:mm A")}</React.Fragment>;
       },
     },
     {
@@ -139,24 +124,14 @@ const shift = () => {
       title: "Action",
       render: (text, record, index) => (
         <div className="dropdown dropdown-action">
-          <a
-            className="action-icon dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
+          <a className="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a
-              className="dropdown-item"
-              onClick={() => handleEditShift(record.id, index)}
-            >
+            <a className="dropdown-item" onClick={() => handleEditShift(record.id, index)}>
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeleteShift(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeleteShift(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -191,10 +166,7 @@ const shift = () => {
                   </ul>
                 </div>
                 <div className="col-auto float-end ml-auto">
-                  <a
-                    className="btn add-btn m-r-5"
-                    onClick={() => setGlobalState("showShiftModal", true)}
-                  >
+                  <a className="btn add-btn m-r-5" onClick={() => setGlobalState("showShiftModal", true)}>
                     Add Shifts
                   </a>
                 </div>
@@ -265,22 +237,10 @@ const shift = () => {
         </div>
       </div>
       {/* /Page Wrapper */}
-      {showShiftModal && (
-        <AddShift
-          dispatchShift={dispatchShift}
-          indexToEdit={indexToEdit}
-          id={shiftId}
-        />
-      )}
-      {deleteShiftModal && (
-        <DeleteModal
-          deleteAction={dispatchShift}
-          iDToDelete={shiftId}
-          modalTitle={"Shift"}
-        />
-      )}
+      {showShiftModal && <AddShift dispatchShift={dispatchShift} indexToEdit={indexToEdit} id={shiftId} />}
+      {deleteShiftModal && <DeleteModal deleteAction={dispatchShift} iDToDelete={shiftId} modalTitle={"Shift"} />}
     </>
   );
-}
+};
 
 export default shift;
