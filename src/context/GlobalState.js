@@ -22,10 +22,10 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedTaskInfo: [],
 
   // Sub Task Manager
-  showSubTaskModal: false,
-  selectedSubTaskInfo: [],
-  deleteSubTask: false,
-  subTaskError: [],
+  showTaskAssignmentModal: false,
+  selectedTaskAssignmentInfo: [],
+  deleteTaskAssignment: false,
+  taskAssignmentError: [],
 
   selectedUserAccount: [],
   selectedComment: [],
