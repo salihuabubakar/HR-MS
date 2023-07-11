@@ -8,7 +8,6 @@ import {
 } from "./Addemployee.style";
 import "./style.css";
 import { useOrganisationFetching, useRoleFetching, useDepartmentFetching } from "../../utils/employeeCustomFetchHook";
-import { toast } from "react-toastify";
 
 const Addemployee = ({
   dispatchEmployee,
@@ -135,17 +134,11 @@ const Addemployee = ({
       formData.append(fieldName, fieldValue);
     });
     if (isIdExist) {
-      dispatchEmployee({ type: "update", payload: {id, formData} });
-      toast.success("Employee Updated", {
-        autoClose: 7000,
-      });
+      dispatchEmployee({ type: "update", payload: { id, formData } });
     } else {
       dispatchEmployee({
         type: "add",
         payload: formData,
-      });
-      toast.success("Employee Added", {
-        autoClose: 7000,
       });
     }
     setGlobalState("showModal", false);

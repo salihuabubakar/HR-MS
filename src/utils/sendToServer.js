@@ -14,12 +14,10 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Employee Added", {
+            autoClose: 7000,
+          });
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -35,6 +33,9 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Employee Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -51,6 +52,9 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast("Employee Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1082,13 +1086,10 @@ export const add_update_delete_employee_document = async (state, { type, payload
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            // setGlobalState("collectServerResponseTextError", response);
-            return [responseData];
-          }
+          toast.success("Employee Document Added", {
+            autoClose: 1500,
+          });
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -1104,6 +1105,9 @@ export const add_update_delete_employee_document = async (state, { type, payload
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Employee Document Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1120,6 +1124,9 @@ export const add_update_delete_employee_document = async (state, { type, payload
 
         // Check the response status
         if (response.status === 204) {
+          toast("Employee Document Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -3202,3 +3209,74 @@ export const add_update_delete_task_assignment = async (state, { type, payload }
       throw new Error();
   }
 };
+
+// Add - Update - Delete Task Document state
+export const add_update_delete_task_document = async (state, { type, payload }) => {
+  const { id, formData } = payload;
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${BaseUrl}/task/taskdocument/`, payload);
+
+        // Check the response status
+        if (response.status === 201) {
+          toast.success("Task Document Added", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting task document:", error);
+        setGlobalState("taskDocumentError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while posting task document");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(`${BaseUrl}/task/taskdocument/${id}/`, formData, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+
+        // Check the response status
+        if (response.status === 200) {
+          toast.success("Task Document Updated", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating task document:", error);
+        setGlobalState("taskDocumentError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while updating task document");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(`${BaseUrl}/task/taskdocument/${id}/`);
+
+        // Check the response status
+        if (response.status === 204) {
+          toast("Task Document Deleted", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting task document", error);
+        setGlobalState("taskDocumentError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while deleting task document");
+      }
+    default:
+      throw new Error();
+  }
+};
+
