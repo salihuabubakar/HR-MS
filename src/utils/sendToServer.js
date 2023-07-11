@@ -93,12 +93,7 @@ export const add_update_delete_role = async (state, { type, payload }) => {
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/employee/roles/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/employee/roles/${payload.id}/`, payload, );
 
         // Check the response status
         if (response.status === 200) {
@@ -162,12 +157,7 @@ export const add_update_delete_department = async (state, { type, payload }) => 
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/employee/departments/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/employee/departments/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -1334,12 +1324,7 @@ export const add_update_delete_notice = async (state, { type, payload }) => {
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/house/notices/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/house/notices/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -1402,12 +1387,7 @@ export const add_update_delete_item = async (state, { type, payload }) => {
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/house/items/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/house/items/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -1470,12 +1450,7 @@ export const add_update_delete_inspection = async (state, { type, payload }) => 
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/house/inspections/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/house/inspections/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -1602,12 +1577,7 @@ export const add_update_delete_resident_gp = async (state, { type, payload }) =>
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/residentgp/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/residentgp/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -1670,12 +1640,7 @@ export const add_update_delete_resident_solicitor = async (state, { type, payloa
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/solicitor/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/solicitor/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -1802,12 +1767,7 @@ export const add_update_delete_resident_school = async (state, { type, payload }
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/school/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/school/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -1870,12 +1830,7 @@ export const add_update_delete_resident_education = async (state, { type, payloa
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/education/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/education/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2194,12 +2149,7 @@ export const add_update_delete_resident_appointment = async (state, { type, payl
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/appointment/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/appointment/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2262,12 +2212,7 @@ export const add_update_delete_resident_social_worker = async (state, { type, pa
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/rsocialworker/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/rsocialworker/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2394,12 +2339,7 @@ export const add_update_delete_borough = async (state, { type, payload }) => {
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/borough/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/borough/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2462,12 +2402,7 @@ export const add_update_delete_social_worker = async (state, { type, payload }) 
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/socialworker/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/socialworker/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2530,12 +2465,7 @@ export const add_update_delete_resident_visitor = async (state, { type, payload 
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/visitor/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/visitor/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2598,12 +2528,7 @@ export const add_update_delete_complaint = async (state, { type, payload }) => {
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/complaint/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/complaint/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2666,12 +2591,7 @@ export const add_update_delete_resident_request = async (state, { type, payload 
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/request/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/request/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2734,12 +2654,7 @@ export const add_update_delete_resident_incident = async (state, { type, payload
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/incident/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/incident/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2802,12 +2717,7 @@ export const add_update_delete_resident_misper = async (state, { type, payload }
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/misper/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/misper/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2870,12 +2780,7 @@ export const add_update_delete_resident_document_type = async (state, { type, pa
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/documenttype/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/documenttype/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -2938,12 +2843,7 @@ export const add_update_delete_resident_gp_type = async (state, { type, payload 
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/gptype/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/gptype/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -3006,12 +2906,7 @@ export const add_update_delete_resident_legal_status_type = async (state, { type
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/resident/legalstatus/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/resident/legalstatus/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -3074,12 +2969,7 @@ export const add_update_delete_shift = async (state, { type, payload }) => {
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/shift/shifts/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/shift/shifts/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -3150,12 +3040,7 @@ export const add_update_delete_employee_shift = async (state, { type, payload })
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/shift/employeeshifts/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/shift/employeeshifts/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -3219,12 +3104,7 @@ export const add_update_delete_task = async (state, { type, payload }) => {
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/task/task/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/task/task/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -3288,12 +3168,7 @@ export const add_update_delete_task_assignment = async (state, { type, payload }
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/task/taskassignment/${payload.id}/`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/task/taskassignment/${payload.id}/`, payload);
 
         // Check the response status
         if (response.status === 200) {
@@ -3358,12 +3233,7 @@ export const add_update_delete_task_document = async (state, { type, payload }) 
 
     case "update":
       try {
-        const response = await axios.put(`${BaseUrl}/task/taskdocument/${id}/`, formData, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
+        const response = await axios.put(`${BaseUrl}/task/taskdocument/${id}/`, formData);
 
         // Check the response status
         if (response.status === 200) {
