@@ -4,18 +4,18 @@ import { Link } from "react-router-dom";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
-import { initFileUpload, savedFileUploadReducer } from "../../utils/localStorage";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import { useParams, useLocation } from "react-router-dom";
 import { Span, DivContainer } from "./style";
 import AddTaskAssignment from "../../_components/modelbox/AddTaskAssignment";
+import AddTaskDocument from "../../_components/modelbox/AddTaskDocument";
 import AddTask from "../../_components/modelbox/AddTask";
 import CommentSection from "./component";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
-import AddFileUploadModal from "../../_components/modelbox/AddFileUploadModal";
 import {
   add_update_delete_task,
   add_update_delete_task_assignment,
+  add_update_delete_task_document,
 } from "../../utils/sendToServer";
 import {
   useTaskFetching,
@@ -26,6 +26,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import moment from "moment";
 import AssignmentBody from "./component/assignmentBody";
+import { Wrapper } from "../ServiceWork/style";
 
 const TaskDetails = () => {
   const handleFileDownload = (file) => {
@@ -75,10 +76,12 @@ const TaskDetails = () => {
   const [showTaskModal] = useGlobalState("showTaskModal");
   const [showTaskAssignmentModal] = useGlobalState("showTaskAssignmentModal");
   const [deleteTaskAssignment] = useGlobalState("deleteTaskAssignment");
-  const [showFileUploadModal] = useGlobalState("showFileUploadModal");
+  const [showTaskDocumentModal] = useGlobalState("showTaskDocumentModal");
+  const [deleteTaskDocument] = useGlobalState("deleteTaskDocument");
 
   const [taskState, dispatchTasks] = useReducer(add_update_delete_task, []);
   const [taskAssState, dispatchTaskAssignment] = useReducer(add_update_delete_task_assignment, []);
+  const [taskDocState, dispatchTaskDocument] = useReducer(add_update_delete_task_document, []);
 
   useEffect(() => {
     if (!showTaskAssignmentModal) {
@@ -86,9 +89,16 @@ const TaskDetails = () => {
     }
   }, [showTaskAssignmentModal]);
 
+  useEffect(() => {
+    if (!showTaskDocumentModal) {
+      setGlobalState("selectedTaskDocumentInfo", "");
+    }
+  }, [showTaskDocumentModal]);
+
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [taskAssId, setTaskAssId] = useState();
+  const [taskDocId, setTaskDocId] = useState();
   const [taskIndexToEdit, setTaskIndexToEdit] = useState();
 
   const selectedTask = taskData?.find((task) => task?.id === selectedTaskId);
@@ -157,42 +167,26 @@ const TaskDetails = () => {
     setGlobalState("deleteTaskAssignment", true);
   };
 
+  const handleEditTaskDocuments = (index, id) => {
+    setIndexToEdit(index);
+    setTaskDocId(id);
+    setGlobalState("showTaskDocumentModal", true);
+    setGlobalState("selectedTaskDocumentInfo", taskDocumentData);
+  }
+
+  const handleTaskDocumentDelete = (id) => {
+    setTaskDocId(id);
+    setGlobalState("deleteTaskDocument", true);
+  };
+
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
 
-  const [files, dispatchFiles] = useReducer(savedFileUploadReducer, [], initFileUpload);
 
-  useEffect(() => {
-    localStorage.setItem("fileUploaded", JSON.stringify(files));
-  }, [files]);
-  useEffect(() => {
-    if (!showFileUploadModal) {
-      setGlobalState("selectedFileUpload", "");
-    }
-  }, [showFileUploadModal]);
+  const selectedTaskDocument = taskDocumentData?.find((doc) => doc?.task === selectedTaskId);
+  const selectedTaskDocumentId = selectedTaskDocument?.task;
 
-  const [filesList, setFilesList] = useState();
-  useEffect(() => {
-    setFilesList(files);
-  }, [files]);
-
-  const selectedTaskDocument = filesList?.find((file) => file?.uniqueID === selectedTaskId);
-  const selectedTaskDocumentId = selectedTaskDocument?.uniqueID;
-
-  const [fileUploadIndex, setFileUploadIndex] = useState(0);
-  const [fileUploadfieldIndex, setFileUploadfieldIndex] = useState(0);
-
-  const handleOpeneFileUpload = () => {
-    setGlobalState("showFileUploadModal", true);
-  };
-
-  const handleFileUploadEdit = (fieldsIndex, index) => {
-    setGlobalState("showFileUploadModal", true);
-    setGlobalState("selectedFileUpload", files);
-    setFileUploadIndex(index);
-    setFileUploadfieldIndex(fieldsIndex);
-  };
 
   useEffect(() => {
     if ($(".select").length > 0) {
@@ -204,9 +198,11 @@ const TaskDetails = () => {
   });
 
   const [taskAssignmentError] = useGlobalState("taskAssignmentError");
+  const [taskDocumentError] = useGlobalState("taskDocumentError");
 
   const clearErrorMessage = () => {
     setGlobalState("taskAssignmentError", "");
+    setGlobalState("taskDocumentError", "");
   };
 
   const getAllEmployees = (primaryKey) => {
@@ -270,7 +266,7 @@ const TaskDetails = () => {
         }
       >
         <AssignmentBody
-          inde={index}
+          index={index}
           id={id}
           description={description}
           Managers_comment={Managers_comment}
@@ -662,134 +658,96 @@ const TaskDetails = () => {
                   <div className="card-body">
                     <h3 className="card-title">
                       Upload Files{" "}
-                      <a onClick={handleOpeneFileUpload} className="edit-icon">
+                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+                        {taskDocumentError?.length > 0 && (
+                          <>
+                            Error: {taskDocumentError}
+                            <button
+                              onClick={clearErrorMessage}
+                              style={{
+                                marginLeft: "10px",
+                                fontSize: "0.8rem",
+                                cursor: "pointer",
+                                color: "black",
+                              }}
+                            >
+                              <i className="fa fa-times" />
+                              Clear Error
+                            </button>
+                          </>
+                        )}
+                      </span>
+                      <a
+                        onClick={() => setGlobalState("showTaskDocumentModal", true)}
+                        className="edit-icon"
+                      >
                         <i className="fa fa-plus" />
                       </a>
                     </h3>
-                    <div className="experience-box">
-                      <ul className="experience-list">
-                        {filesList?.length > 0 && selectedTaskDocumentId === selectedTaskId
-                          ? filesList?.map((file, index) => {
-                              const { id, inputFields, uniqueID } = file;
-                              if (uniqueID == selectedTaskId) {
-                                return (
-                                  <React.Fragment key={id}>
-                                    {inputFields?.map((fields, fieldsIndex) => {
-                                      const {
-                                        documentName,
-                                        documentNumber,
-                                        documentType,
-                                        expiryDate,
-                                        issueDate,
-                                        documentDescription,
-                                        fileDetails,
-                                      } = fields;
-
-                                      const handleFileDownload = () => {
-                                        const dataUrlParts = fileDetails.data.split(",");
-                                        const base64Data = dataUrlParts[1];
-                                        const mimeType = dataUrlParts[0]
-                                          .split(":")[1]
-                                          .split(";")[0];
-
-                                        const byteCharacters = atob(base64Data);
-                                        const byteNumbers = new Array(byteCharacters.length);
-
-                                        for (let i = 0; i < byteCharacters.length; i++) {
-                                          byteNumbers[i] = byteCharacters.charCodeAt(i);
-                                        }
-
-                                        const byteArray = new Uint8Array(byteNumbers);
-                                        const blob = new Blob([byteArray], {
-                                          type: mimeType,
-                                        });
-
-                                        const url = URL.createObjectURL(blob);
-                                        const a = document.createElement("a");
-                                        a.href = url;
-                                        a.download = fileDetails.name;
-                                        document.body.appendChild(a);
-                                        a.click();
-                                        document.body.removeChild(a);
-                                        URL.revokeObjectURL(url);
-                                      };
-
-                                      return (
-                                        <li key={fieldsIndex}>
-                                          <div className="experience-user">
-                                            <div className="before-circle" />
-                                          </div>
-                                          <div className="experience-content">
-                                            <div className="timeline-content">
-                                              <a className="name">
-                                                {documentDescription}
-                                                {/* <span
-                                                  className="edit-icon"
-                                                  
-                                                >
-                                                  <i className="fa fa-pencil" />
-                                                </span> */}
-                                                <div className="dropdown profile-action">
-                                                  <a
-                                                    className="action-icon dropdown-toggle"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false"
-                                                  >
-                                                    <i className="material-icons">more_vert</i>
-                                                  </a>
-                                                  <div className="dropdown-menu dropdown-menu-right">
-                                                    <a
-                                                      className="dropdown-item"
-                                                      onClick={() =>
-                                                        handleFileUploadEdit(fieldsIndex, index)
-                                                      }
-                                                    >
-                                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                                    </a>
-                                                    <a
-                                                      className="dropdown-item"
-                                                      onClick={() => handleFileDownload(index)}
-                                                    >
-                                                      <i className="fa fa-download m-r-5" />{" "}
-                                                      Download
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </a>
-                                              <div>{documentNumber}</div>
-                                              {selectedTaskId == uniqueID ? null : (
-                                                <span className="time">Type: {documentType}</span>
-                                              )}
-                                              {issueDate && expiryDate ? (
-                                                <span className="time">
-                                                  Issue Date: {issueDate} - Expiry Date:{" "}
-                                                  {expiryDate}
-                                                </span>
-                                              ) : null}
-                                              {fileDetails?.type &&
-                                              fileDetails?.type?.startsWith("image/") ? (
-                                                <img
-                                                  className="img-preview"
-                                                  src={fileDetails?.data}
-                                                  alt="Preview"
-                                                />
-                                              ) : (
-                                                <span className="files-icon">
-                                                  <i className="fa fa-file-pdf-o" />
-                                                </span>
-                                              )}
-                                            </div>
-                                          </div>
-                                        </li>
-                                      );
-                                    })}
-                                  </React.Fragment>
-                                );
-                              }
-                            })
-                          : "No uploaded file(s) yet"}
-                      </ul>
-                    </div>
+                    <Wrapper>
+                      {taskDocumentData?.length > 0 && selectedTaskDocumentId === selectedTaskId ? (
+                        taskDocumentData.map((doc, index) => {
+                          const { id, task, name, document } = doc;
+                          if (task == selectedTaskId) {
+                            return (
+                              <div key={id} className="card">
+                                <a className="name">
+                                  Document Name: {name}
+                                  <span
+                                    className="edit-icon"
+                                    style={{
+                                      background: "none",
+                                      border: "none",
+                                    }}
+                                  >
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">more_vert</i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() => handleFileDownload(document)}
+                                        >
+                                          <i className="fa fa-download m-r-5" /> Download
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() => handleEditTaskDocuments(index, id)}
+                                        >
+                                          <i className="fa fa-pencil m-r-5" /> Edit
+                                        </a>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() => handleTaskDocumentDelete(id)}
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" /> Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </span>
+                                </a>
+                                <div>
+                                  {document && regex.test(document) ? (
+                                    <img className="img-preview" src={document} alt="Preview" />
+                                  ) : !document ? null : (
+                                    <span className="files-icon">
+                                      <i className="fa fa-file-pdf-o" />
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          }
+                        })
+                      ) : (
+                        <></>
+                      )}
+                    </Wrapper>
                   </div>
                 </div>
               </div>
@@ -1208,16 +1166,22 @@ const TaskDetails = () => {
             </div>
           </div>
         </div>
-        {showFileUploadModal && (
+        {showTaskDocumentModal && (
           <>
-            <AddFileUploadModal
-              dispatchFiles={dispatchFiles}
-              fileUploadIndex={fileUploadIndex}
-              uniqueID={selectedTaskId}
-              fileUploadfieldIndex={fileUploadfieldIndex}
-              selectedTaskId={selectedTaskId}
+            <AddTaskDocument
+              dispatchTaskDocument={dispatchTaskDocument}
+              indexToEdit={indexToEdit}
+              id={taskDocId}
+              task={selectedTaskId}
             />
           </>
+        )}
+        {deleteTaskDocument && (
+          <DeleteModal
+            deleteAction={dispatchTaskDocument}
+            iDToDelete={taskDocId}
+            modalTitle={"Task Document"}
+          />
         )}
         {showTaskAssignmentModal && (
           <AddTaskAssignment

@@ -16,6 +16,12 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showFileUploadModal: false,
   selectedFileUpload: [],
 
+  // Task Document
+  taskDocumentError: [],
+  selectedTaskDocumentInfo: [],
+  showTaskDocumentModal: false,
+  deleteTaskDocument: false,
+
   // Task Manager
   showTaskModal: false,
   taskError: [],
