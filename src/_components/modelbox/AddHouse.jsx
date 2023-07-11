@@ -4,7 +4,6 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
 import "./style.css";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
-import { toast } from "react-toastify";
 
 const AddDepartment = ({
   dispatchHouse,
@@ -206,14 +205,8 @@ const AddDepartment = ({
 
     if (selectedHouse[indexToEdit]?.id) {
       dispatchHouse({ type: "update", payload: {id, formData} });
-      toast.success("House Updated", {
-        autoClose: 7000,
-      });
     } else {
       dispatchHouse({ type: "add", payload: formData });
-      toast.success("House Added", {
-        autoClose: 7000,
-      });
     }
     setGlobalState("showModal", false);
   };

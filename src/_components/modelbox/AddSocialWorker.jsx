@@ -3,11 +3,9 @@ import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
 import { useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddSocialWorker = ({
   indexToEdit,
@@ -86,14 +84,8 @@ const AddSocialWorker = ({
         type: "update",
         payload: boroughObject,
       });
-      toast.success("Social worker Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchSocialWorker({ type: "add", payload: boroughObject });
-      toast.success("Social worker Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showSocialWorkerModal", false);
   };

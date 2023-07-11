@@ -8,8 +8,6 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
-import { toast } from "react-toastify";
-
 const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
 
   const [selectedReviewInfo] = useGlobalState("selectedReviewInfo");
@@ -86,14 +84,8 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
 
     if (selectedReviewInfo[indexToEdit]?.id) {
       dispatchReviewDetails({ type: "update", payload: { id, formData } });
-      toast.success("Review Updated", {
-        autoClose: 7000,
-      });
     } else {
       dispatchReviewDetails({ type: "add", payload: formData });
-      toast.success("Review Updated", {
-        autoClose: 7000,
-      });
     }
     setGlobalState("showAddReviewModal", false);
   };

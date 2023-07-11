@@ -5,9 +5,7 @@ import {
   PopupWrapper,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 import "./style.css";
-import { useEffect } from "react";
 
 const AddShift = ({
   dispatchShift,
@@ -74,14 +72,8 @@ const AddShift = ({
     };
     if (selectedShift[indexToEdit]?.id) {
       dispatchShift({ type: "update", payload: shiftList });
-      toast.success("Shift Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchShift({ type: "add", payload: shiftList });
-      toast.success("Shift Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showShiftModal", false);
   };

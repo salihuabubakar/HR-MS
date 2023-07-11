@@ -6,7 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 import { useResidentGpFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentMedicationModal = ({
@@ -111,14 +110,8 @@ const AddResidentMedicationModal = ({
         type: "update",
         payload: { id, formData },
       });
-      toast.success("Resident Medication Updated", {
-        autoClose: 7000,
-      });
     } else {
       dispatchResidentMedication({ type: "add", payload: formData });
-      toast.success("Resident Medication Added", {
-        autoClose: 7000,
-      });
     }
     setGlobalState("showResidentMedicationModal", false);
   };

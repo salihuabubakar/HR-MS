@@ -6,14 +6,12 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
-import Dropzone from "react-dropzone";
 import {
   useHouseDocumentFetching,
   useHouseItemsFetching
 } from "../../utils/employeeCustomFetchHook";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import { toast } from "react-toastify";
 
 const AddHouseInspection = ({ dispatchInspection, inspectionIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
@@ -79,14 +77,8 @@ const [inspected_by, setInspectedBy] = useState(
 
     if (selectedInspection[inspectionIndexToEdit]?.id) {
       dispatchInspection({ type: "update", payload: fields });
-      toast.success("House Inspection Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchInspection({ type: "add", payload: fields });
-      toast.success("House Inspection Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showInspectionModal", false);
   };

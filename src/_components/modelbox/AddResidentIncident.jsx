@@ -3,7 +3,6 @@ import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
 import {
   useResidentFetching,
@@ -11,7 +10,6 @@ import {
   useResidentDocumentFetching,
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -80,14 +78,8 @@ const AddResidentIncident = ({
         type: "update",
         payload: visitorObject,
       });
-      toast.success("Incident Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentIncident({ type: "add", payload: visitorObject });
-      toast.success("Incident Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentIncidentModal", false);
   };

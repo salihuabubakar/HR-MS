@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddEmployeeEmergency = ({
   employeeEmergencyIndexToEdit,
@@ -73,14 +72,8 @@ const AddEmployeeEmergency = ({
     };
     if (selectedEmployeeEmergency[employeeEmergencyIndexToEdit]?.id) {
       dispatchEmployeeEmergency({ type: "update", payload: emergency });
-      toast.success("Emergency contact Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchEmployeeEmergency({ type: "add", payload: emergency });
-      toast.success("Emergency contact Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showEmployeeEmergencyModal", false);
   };

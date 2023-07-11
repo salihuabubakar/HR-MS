@@ -5,7 +5,6 @@ import {
   PopupWrapper,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddResidentDocumentType = ({
   indexToEdit,
@@ -55,14 +54,8 @@ const AddResidentDocumentType = ({
         type: "update",
         payload: docTypeObject,
       });
-      toast.success("Document Type Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentDocumentType({ type: "add", payload: docTypeObject });
-      toast.success("Document Type Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentDocumentTypeModal", false);
   };

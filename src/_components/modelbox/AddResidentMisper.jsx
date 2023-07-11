@@ -3,7 +3,6 @@ import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
 import {
   useHouseFetching,
@@ -11,7 +10,6 @@ import {
   useResidentFetching
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -128,14 +126,8 @@ const AddResidentMisper = ({
         type: "update",
         payload: misperObject,
       });
-      toast.success("Misper Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentMisper({ type: "add", payload: misperObject });
-      toast.success("Misper Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentMisperModal", false);
   };

@@ -7,7 +7,6 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
-import { toast } from "react-toastify";
 
 const AddHouseDocuments = ({
   house,
@@ -84,14 +83,8 @@ const AddHouseDocuments = ({
 
     if (selectedHouseDocuments[houseDocumentsIndexToEdit]?.id) {
       dispatchHouseDocuments({ type: "update", payload: { id, formData } });
-      toast.success("House Document Updated", {
-        autoClose: 7000,
-      });
     } else {
       dispatchHouseDocuments({ type: "add", payload: formData });
-      toast.success("House Document Added", {
-        autoClose: 7000,
-      });
     }
     setGlobalState("showHouseDocumentsModal", false);
   };

@@ -6,8 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
-import { useEffect } from "react";
 
 const AddResidentSchoolModal = ({
   residentSchoolIndexToEdit,
@@ -53,14 +51,8 @@ const AddResidentSchoolModal = ({
         type: "update",
         payload: schoolObj,
       });
-      toast.success("Resident School Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentSchool({ type: "add", payload: schoolObj });
-      toast.success("Resident School Updated", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentSchoolModal", false);
   };

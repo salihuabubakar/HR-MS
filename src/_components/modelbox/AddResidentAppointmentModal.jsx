@@ -6,7 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddResidentAppointmentModal = ({
   residentAppointmentIndexToEdit,
@@ -75,14 +74,8 @@ const AddResidentAppointmentModal = ({
         type: "update",
         payload: appObj,
       });
-      toast.success("Resident Appointment Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentAppointment({ type: "add", payload: appObj });
-      toast.success("Resident Appointment Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentAppointmentModal", false);
   };

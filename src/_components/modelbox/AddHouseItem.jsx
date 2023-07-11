@@ -6,14 +6,11 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
-import Dropzone from "react-dropzone";
 import {
   useHouseDocumentFetching,
 } from "../../utils/employeeCustomFetchHook";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import { toast } from "react-toastify";
-
 const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
   const [selectedItem] = useGlobalState("selectedItem");
@@ -92,14 +89,8 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
 
     if (selectedItem[itemIndexToEdit]?.id) {
       dispatchItem({ type: "update", payload: fields });
-      toast.success("House Item Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchItem({ type: "add", payload: fields });
-      toast.success("House Item Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showItemModal", false);
   };

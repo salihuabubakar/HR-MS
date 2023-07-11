@@ -5,7 +5,6 @@ import {
   PopupWrapper,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddRole = ({
   dispatchRole,
@@ -48,14 +47,8 @@ const AddRole = ({
     };
     if (selectedRole[indexToEdit]?.id) {
       dispatchRole({ type: "update", payload: role });
-      toast.success("Role Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchRole({ type: "add", payload: role });
-      toast.success("Role Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showRoleModal", false);
   };

@@ -3,14 +3,12 @@ import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
 import {
   useHouseFetching,
   useResidentDocumentFetching
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -106,14 +104,8 @@ const AddComplaint = ({
         type: "update",
         payload: complaintObject,
       });
-      toast.success("Complaint Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchComplaint({ type: "add", payload: complaintObject });
-      toast.success("Complaint Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showComplaintModal", false);
   };

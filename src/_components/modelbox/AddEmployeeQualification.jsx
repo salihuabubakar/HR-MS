@@ -6,8 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import Dropzone from "react-dropzone";
-import { toast } from "react-toastify";
 
 const AddEmployeeQualification = ({
   employeeQualificationIndexToEdit,
@@ -101,14 +99,8 @@ const AddEmployeeQualification = ({
         type: "update",
         payload: { id, formData },
       });
-      toast.success("Employee Qualification Updated", {
-        autoClose: 7000,
-      });
     } else {
       dispatchEmployeeQualification({ type: "add", payload: formData });
-      toast.success("Employee Qualification Added", {
-        autoClose: 7000,
-      });
     }
     setGlobalState("showEmployeeQualificationModal", false);
   };

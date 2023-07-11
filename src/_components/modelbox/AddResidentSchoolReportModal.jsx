@@ -6,7 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 import { useResidentSchoolFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentSchoolReportModal = ({
@@ -66,14 +65,8 @@ const AddResidentSchoolReportModal = ({
         type: "update",
         payload: { id, formData },
       });
-      toast.success("Resident Report Updated", {
-        autoClose: 7000,
-      });
     } else {
       dispatchResidentSchoolReport({ type: "add", payload: formData });
-      toast.success("Resident Report Added", {
-        autoClose: 7000,
-      });
     }
     setGlobalState("showResidentSchoolReportModal", false);
   };

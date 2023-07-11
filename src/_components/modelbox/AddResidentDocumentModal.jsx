@@ -5,7 +5,6 @@ import {
   PopupWrapper,
   Card,
 } from "./Addemployee.style";
-import { toast } from "react-toastify";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { useResidentDocumentTypeFetching } from "../../utils/employeeCustomFetchHook";
 
@@ -91,14 +90,8 @@ const AddResidentDocumentModal = ({
         type: "update",
         payload: { id, formData },
       });
-      toast.success("Resident Document Updated", {
-        autoClose: 8000,
-      });
     } else {
       dispatchResidentDocument({ type: "add", payload: formData });
-      toast.success("Resident Document Added", {
-        autoClose: 8000,
-      });
     }
     setGlobalState("showResidentDocumentModal", false);
   };

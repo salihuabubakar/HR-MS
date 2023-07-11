@@ -3,15 +3,12 @@ import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
 import {
   useResidentFetching,
   useHouseFetching,
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
-
 const AddResidentVisitor = ({
   indexToEdit,
   id,
@@ -116,14 +113,8 @@ const AddResidentVisitor = ({
         type: "update",
         payload: requestObject,
       });
-      toast.success("Request Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentRequest({ type: "add", payload: requestObject });
-      toast.success("Request Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentRequestModal", false);
   };

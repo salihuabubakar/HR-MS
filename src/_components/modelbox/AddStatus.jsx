@@ -7,7 +7,6 @@ import {
 } from "./Addemployee.style";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddStatus = ({
   indexToEdit,
@@ -75,14 +74,8 @@ const AddStatus = ({
         type: "update",
         payload: statusObject,
       });
-      toast.success("Status Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchStatus({ type: "add", payload: statusObject });
-      toast.success("Status Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showStatusModal", false);
   };

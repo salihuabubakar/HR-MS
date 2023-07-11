@@ -5,7 +5,6 @@ import {
   PopupWrapper,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddResidentLegalStatusType = ({
   indexToEdit,
@@ -50,14 +49,8 @@ const AddResidentLegalStatusType = ({
         type: "update",
         payload: legalStatusTypeObject,
       });
-      toast.success("Legal Status Type Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentLegalStatusType({ type: "add", payload: legalStatusTypeObject });
-      toast.success("Legal Status Type Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentLegalStatusTypeModal", false);
   };
