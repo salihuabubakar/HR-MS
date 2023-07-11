@@ -15,7 +15,6 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import { toast } from "react-toastify";
 
 const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
@@ -126,14 +125,8 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
 
     if (selectedMaintenance[maintenanceIndexToEdit]?.id) {
       dispatchMaintenance({ type: "update", payload: fields });
-      toast.success("House Maintenance Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchMaintenance({ type: "add", payload: fields });
-      toast.success("House Maintenance Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showMaintenanceModal", false);
   };

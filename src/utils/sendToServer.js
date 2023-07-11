@@ -78,12 +78,10 @@ export const add_update_delete_role = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Role Added", {
+            autoClose: 1500,
+          });
+          return
         } else {
           throw new Error("Failed to post data");
         }
@@ -104,10 +102,10 @@ export const add_update_delete_role = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
-          const updatedUser = response.data;
-          const updatedState = state.map((role) => (role.id === updatedUser.id ? updatedUser : role));
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          toast.success("Role Updated", {
+            autoClose: 1500,
+          });
+          return;
         } else {
           throw new Error("Failed to update data");
         }
@@ -123,10 +121,10 @@ export const add_update_delete_role = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
-          // Filter out the deleted user from state
-          const updatedState = state.filter((role) => role.id !== payload.id);
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          toast("Role Deleted", {
+            autoClose: 1500,
+          });
+          return;
         } else {
           throw new Error("Failed to delete data");
         }
@@ -149,12 +147,10 @@ export const add_update_delete_department = async (state, { type, payload }) => 
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Department Added", {
+            autoClose: 1500,
+          });
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -175,10 +171,10 @@ export const add_update_delete_department = async (state, { type, payload }) => 
 
         // Check the response status
         if (response.status === 200) {
-          const updatedUser = response.data;
-          const updatedState = state.map((dept) => (dept.id === updatedUser.id ? updatedUser : dept));
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          toast.success("Department Updated", {
+            autoClose: 1500,
+          });
+          return;
         } else {
           throw new Error("Failed to update data");
         }
@@ -194,10 +190,10 @@ export const add_update_delete_department = async (state, { type, payload }) => 
 
         // Check the response status
         if (response.status === 204) {
-          // Filter out the deleted user from state
-          const updatedState = state.filter((dept) => dept.id !== payload.id);
-          // Update state or perform any other necessary actions based on the response
-          return updatedState;
+          toast("Department Deleted", {
+            autoClose: 1500,
+          });
+          return;
         } else {
           throw new Error("Failed to delete data");
         }
@@ -222,12 +218,10 @@ export const add_update_delete_house = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Added", {
+            autoClose: 7000,
+          });
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -243,6 +237,9 @@ export const add_update_delete_house = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -259,6 +256,9 @@ export const add_update_delete_house = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast("House Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -284,12 +284,10 @@ export const add_update_delete_room = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Room Added", {
+            autoClose: 1500,
+          });
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -305,6 +303,9 @@ export const add_update_delete_room = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Room Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -321,6 +322,9 @@ export const add_update_delete_room = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast("House Room Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -344,12 +348,10 @@ export const add_update_delete_house_employee = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Employee Added", {
+            autoClose: 1500,
+          });
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -365,6 +367,9 @@ export const add_update_delete_house_employee = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Employee Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -381,6 +386,9 @@ export const add_update_delete_house_employee = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 204) {
+          toast("House Employee Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -404,12 +412,9 @@ export const add_update_delete_house_resident = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Resident Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -425,6 +430,9 @@ export const add_update_delete_house_resident = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Resident Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -441,6 +449,9 @@ export const add_update_delete_house_resident = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 204) {
+          toast("House Resident Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -466,12 +477,10 @@ export const add_update_delete_house_image = async (state, { type, payload }) =>
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Image Added", {
+            autoClose: 7000,
+          });
+          return
         } else {
           throw new Error("Failed to post data");
         }
@@ -487,6 +496,9 @@ export const add_update_delete_house_image = async (state, { type, payload }) =>
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Image Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -503,6 +515,9 @@ export const add_update_delete_house_image = async (state, { type, payload }) =>
 
         // Check the response status
         if (response.status === 200) {
+          toast("House Image Deleted", {
+            autoClose: 15000,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -528,12 +543,9 @@ export const add_update_delete_house_document = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Document Added", {
+            autoClose: 7000,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -549,6 +561,9 @@ export const add_update_delete_house_document = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Document Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -565,6 +580,9 @@ export const add_update_delete_house_document = async (state, { type, payload })
 
         // Check the response status
         if (response.status === 200) {
+          toast("House Document Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -590,12 +608,9 @@ export const add_update_delete_bill = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Bill Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -611,6 +626,9 @@ export const add_update_delete_bill = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Bill Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -627,6 +645,9 @@ export const add_update_delete_bill = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast("House Bill Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -652,12 +673,9 @@ export const add_update_delete_maintenance = async (state, { type, payload }) =>
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Maintenance Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -673,6 +691,9 @@ export const add_update_delete_maintenance = async (state, { type, payload }) =>
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Maintenance Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -689,6 +710,9 @@ export const add_update_delete_maintenance = async (state, { type, payload }) =>
 
         // Check the response status
         if (response.status === 204) {
+          toast("House Maintenance Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -714,12 +738,9 @@ export const add_update_delete_organisation = async (state, { type, payload }) =
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Organisation Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -735,6 +756,9 @@ export const add_update_delete_organisation = async (state, { type, payload }) =
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Organisation Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -751,6 +775,9 @@ export const add_update_delete_organisation = async (state, { type, payload }) =
 
         // Check the response status
         if (response.status === 204) {
+          toast("Organisation Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -776,12 +803,9 @@ export const add_update_delete_status = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Status Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -797,6 +821,9 @@ export const add_update_delete_status = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Status Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -813,6 +840,9 @@ export const add_update_delete_status = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast("Status Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -838,12 +868,9 @@ export const add_update_delete_employee_address = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Employee Address Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -859,6 +886,9 @@ export const add_update_delete_employee_address = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Employee Address Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -875,6 +905,9 @@ export const add_update_delete_employee_address = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 204) {
+          toast("Employee Address Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -900,13 +933,10 @@ export const add_update_delete_employee_emergency = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            // setGlobalState("collectServerResponseTextError", response);
-            return [responseData];
-          }
+          toast.success("Emergency contact Added", {
+            autoClose: 1500,
+          });
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -922,6 +952,9 @@ export const add_update_delete_employee_emergency = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Emergency contact Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -938,6 +971,9 @@ export const add_update_delete_employee_emergency = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 204) {
+          toast("Emergency contact Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -962,13 +998,10 @@ export const add_update_delete_employee_qualification = async (state, { type, pa
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            // setGlobalState("collectServerResponseTextError", response);
-            return [responseData];
-          }
+          toast.success("Employee Qualification Added", {
+            autoClose: 7000,
+          });
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -984,6 +1017,9 @@ export const add_update_delete_employee_qualification = async (state, { type, pa
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Employee Qualification Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1000,6 +1036,9 @@ export const add_update_delete_employee_qualification = async (state, { type, pa
 
         // Check the response status
         if (response.status === 204) {
+          toast("Employee Qualification Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1024,13 +1063,9 @@ export const add_update_delete_employee_experience = async (state, { type, paylo
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            // setGlobalState("collectServerResponseTextError", response);
-            return [responseData];
-          }
+          toast.success("Employee Experience Added", {
+            autoClose: 7000,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1046,6 +1081,9 @@ export const add_update_delete_employee_experience = async (state, { type, paylo
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Employee Experience Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1062,6 +1100,9 @@ export const add_update_delete_employee_experience = async (state, { type, paylo
 
         // Check the response status
         if (response.status === 204) {
+          toast("Employee Experience Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1087,7 +1128,7 @@ export const add_update_delete_employee_document = async (state, { type, payload
         // Check the response status
         if (response.status === 201) {
           toast.success("Employee Document Added", {
-            autoClose: 1500,
+            autoClose: 7000,
           });
           return;
         } else {
@@ -1106,7 +1147,7 @@ export const add_update_delete_employee_document = async (state, { type, payload
         // Check the response status
         if (response.status === 200) {
           toast.success("Employee Document Updated", {
-            autoClose: 1500,
+            autoClose: 7000,
           });
           return;
         } else {
@@ -1151,13 +1192,9 @@ export const add_update_delete_employee_bank = async (state, { type, payload }) 
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            // setGlobalState("collectServerResponseTextError", response);
-            return [responseData];
-          }
+          toast.success("Employee Bank Added", {
+            autoClose: 7000,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1173,6 +1210,9 @@ export const add_update_delete_employee_bank = async (state, { type, payload }) 
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Employee Bank Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1189,6 +1229,9 @@ export const add_update_delete_employee_bank = async (state, { type, payload }) 
 
         // Check the response status
         if (response.status === 204) {
+          toast("Employee Bank Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1213,13 +1256,10 @@ export const add_update_delete_employee_review = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            // setGlobalState("collectServerResponseTextError", response);
-            return [responseData];
-          }
+          toast.success("Review Added", {
+            autoClose: 7000,
+          });
+          return;
         } else {
           throw new Error("Failed to post data");
         }
@@ -1235,6 +1275,9 @@ export const add_update_delete_employee_review = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Review Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1251,6 +1294,9 @@ export const add_update_delete_employee_review = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 204) {
+          toast("Review Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1274,12 +1320,9 @@ export const add_update_delete_notice = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Notice Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1300,6 +1343,9 @@ export const add_update_delete_notice = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Notice Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1316,6 +1362,9 @@ export const add_update_delete_notice = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast("House Notice Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1339,12 +1388,9 @@ export const add_update_delete_item = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Item Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1365,6 +1411,9 @@ export const add_update_delete_item = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Item Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1381,6 +1430,9 @@ export const add_update_delete_item = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast("House Item Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1404,12 +1456,9 @@ export const add_update_delete_inspection = async (state, { type, payload }) => 
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("House Inspection Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1430,6 +1479,9 @@ export const add_update_delete_inspection = async (state, { type, payload }) => 
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("House Inspection Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1446,6 +1498,9 @@ export const add_update_delete_inspection = async (state, { type, payload }) => 
 
         // Check the response status
         if (response.status === 204) {
+          toast("House Inspection Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1470,13 +1525,9 @@ export const add_update_delete_resident = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            // setGlobalState("collectServerResponseTextError", response);
-            return [responseData];
-          }
+          toast.success("Resident Added", {
+            autoClose: 7000,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1492,6 +1543,9 @@ export const add_update_delete_resident = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1508,6 +1562,9 @@ export const add_update_delete_resident = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1531,12 +1588,9 @@ export const add_update_delete_resident_gp = async (state, { type, payload }) =>
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Gp Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1557,6 +1611,9 @@ export const add_update_delete_resident_gp = async (state, { type, payload }) =>
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Gp Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1573,6 +1630,9 @@ export const add_update_delete_resident_gp = async (state, { type, payload }) =>
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Gp Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1596,12 +1656,9 @@ export const add_update_delete_resident_solicitor = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Solicitor Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1622,6 +1679,9 @@ export const add_update_delete_resident_solicitor = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Solicitor Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1638,6 +1698,9 @@ export const add_update_delete_resident_solicitor = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Solicitor Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1662,12 +1725,9 @@ export const add_update_delete_resident_document = async (state, { type, payload
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Document Added", {
+            autoClose: 7000,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1683,6 +1743,9 @@ export const add_update_delete_resident_document = async (state, { type, payload
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Document Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1699,6 +1762,9 @@ export const add_update_delete_resident_document = async (state, { type, payload
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Document Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1722,12 +1788,9 @@ export const add_update_delete_resident_school = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident School Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1748,6 +1811,9 @@ export const add_update_delete_resident_school = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident School Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1764,6 +1830,9 @@ export const add_update_delete_resident_school = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident School Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1787,12 +1856,9 @@ export const add_update_delete_resident_education = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Education Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1813,6 +1879,9 @@ export const add_update_delete_resident_education = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Education Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1829,6 +1898,9 @@ export const add_update_delete_resident_education = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Education Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1853,12 +1925,9 @@ export const add_update_delete_resident_school_report = async (state, { type, pa
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Report Added", {
+            autoClose: 7000,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1874,6 +1943,9 @@ export const add_update_delete_resident_school_report = async (state, { type, pa
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Report Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1890,6 +1962,9 @@ export const add_update_delete_resident_school_report = async (state, { type, pa
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Report Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1914,12 +1989,9 @@ export const add_update_delete_resident_school_timetable = async (state, { type,
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Timetable Added", {
+            autoClose: 7000,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1935,6 +2007,9 @@ export const add_update_delete_resident_school_timetable = async (state, { type,
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Timetable Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -1951,6 +2026,9 @@ export const add_update_delete_resident_school_timetable = async (state, { type,
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Timetable Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -1975,12 +2053,9 @@ export const add_update_delete_resident_medical_condition = async (state, { type
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Medical Condition Added", {
+            autoClose: 7000,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -1996,6 +2071,9 @@ export const add_update_delete_resident_medical_condition = async (state, { type
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Medical Condition Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2012,6 +2090,9 @@ export const add_update_delete_resident_medical_condition = async (state, { type
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Medical Condition Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2036,12 +2117,9 @@ export const add_update_delete_resident_medication = async (state, { type, paylo
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Medication Added", {
+            autoClose: 7000,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2057,6 +2135,9 @@ export const add_update_delete_resident_medication = async (state, { type, paylo
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Medication Updated", {
+            autoClose: 7000,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2073,6 +2154,9 @@ export const add_update_delete_resident_medication = async (state, { type, paylo
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Medication Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2096,12 +2180,9 @@ export const add_update_delete_resident_appointment = async (state, { type, payl
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Appointment Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2122,6 +2203,9 @@ export const add_update_delete_resident_appointment = async (state, { type, payl
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Appointment Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2138,6 +2222,9 @@ export const add_update_delete_resident_appointment = async (state, { type, payl
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Appointment Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2161,12 +2248,9 @@ export const add_update_delete_resident_social_worker = async (state, { type, pa
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Social worker Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2187,6 +2271,9 @@ export const add_update_delete_resident_social_worker = async (state, { type, pa
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Social worker Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2203,6 +2290,9 @@ export const add_update_delete_resident_social_worker = async (state, { type, pa
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Social worker Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2227,12 +2317,9 @@ export const add_update_delete_resident_referral = async (state, { type, payload
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Resident Referral Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2248,6 +2335,9 @@ export const add_update_delete_resident_referral = async (state, { type, payload
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Resident Referral Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2264,6 +2354,9 @@ export const add_update_delete_resident_referral = async (state, { type, payload
 
         // Check the response status
         if (response.status === 204) {
+          toast("Resident Referral Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2287,12 +2380,9 @@ export const add_update_delete_borough = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Borough Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2313,6 +2403,9 @@ export const add_update_delete_borough = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Borough Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2329,6 +2422,9 @@ export const add_update_delete_borough = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast("Borough Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2352,12 +2448,9 @@ export const add_update_delete_social_worker = async (state, { type, payload }) 
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Social worker Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2378,6 +2471,9 @@ export const add_update_delete_social_worker = async (state, { type, payload }) 
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Social worker Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2394,6 +2490,9 @@ export const add_update_delete_social_worker = async (state, { type, payload }) 
 
         // Check the response status
         if (response.status === 204) {
+          toast("Social worker Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2417,12 +2516,9 @@ export const add_update_delete_resident_visitor = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Visitor Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2443,6 +2539,9 @@ export const add_update_delete_resident_visitor = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Visitor Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2459,6 +2558,9 @@ export const add_update_delete_resident_visitor = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 204) {
+          toast("Visitor Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2482,12 +2584,9 @@ export const add_update_delete_complaint = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Complaint Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2508,6 +2607,9 @@ export const add_update_delete_complaint = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Complaint Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2524,6 +2626,9 @@ export const add_update_delete_complaint = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
+          toast("Complaint Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2547,12 +2652,9 @@ export const add_update_delete_resident_request = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Request Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2573,6 +2675,9 @@ export const add_update_delete_resident_request = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Request Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2589,6 +2694,9 @@ export const add_update_delete_resident_request = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 204) {
+          toast("Request Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2612,12 +2720,9 @@ export const add_update_delete_resident_incident = async (state, { type, payload
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Incident Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2638,6 +2743,9 @@ export const add_update_delete_resident_incident = async (state, { type, payload
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Incident Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2654,6 +2762,9 @@ export const add_update_delete_resident_incident = async (state, { type, payload
 
         // Check the response status
         if (response.status === 204) {
+          toast("Incident Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2677,12 +2788,9 @@ export const add_update_delete_resident_misper = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Misper Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2703,6 +2811,9 @@ export const add_update_delete_resident_misper = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Misper Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2719,6 +2830,9 @@ export const add_update_delete_resident_misper = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 204) {
+          toast("Misper Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2742,12 +2856,9 @@ export const add_update_delete_resident_document_type = async (state, { type, pa
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Document Type Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2768,6 +2879,9 @@ export const add_update_delete_resident_document_type = async (state, { type, pa
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Document Type Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2784,6 +2898,9 @@ export const add_update_delete_resident_document_type = async (state, { type, pa
 
         // Check the response status
         if (response.status === 204) {
+          toast("Document Type Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2807,12 +2924,9 @@ export const add_update_delete_resident_gp_type = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Gp Type Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2833,6 +2947,9 @@ export const add_update_delete_resident_gp_type = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Gp Type Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2849,6 +2966,9 @@ export const add_update_delete_resident_gp_type = async (state, { type, payload 
 
         // Check the response status
         if (response.status === 204) {
+          toast("Gp Type Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2872,12 +2992,9 @@ export const add_update_delete_resident_legal_status_type = async (state, { type
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Legal Status Type Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2898,6 +3015,9 @@ export const add_update_delete_resident_legal_status_type = async (state, { type
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Legal Status Type Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2914,6 +3034,9 @@ export const add_update_delete_resident_legal_status_type = async (state, { type
 
         // Check the response status
         if (response.status === 204) {
+          toast("Legal Status Type Deleted", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to delete data");
@@ -2937,12 +3060,9 @@ export const add_update_delete_shift = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 201) {
-          const responseData = response.data;
-          if (Array.isArray(payload)) {
-            return [...state, ...responseData];
-          } else {
-            return [responseData];
-          }
+          toast.success("Shift Added", {
+            autoClose: 1500,
+          });
         } else {
           throw new Error("Failed to post data");
         }
@@ -2963,6 +3083,9 @@ export const add_update_delete_shift = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 200) {
+          toast.success("Shift Updated", {
+            autoClose: 1500,
+          });
           return;
         } else {
           throw new Error("Failed to update data");
@@ -2979,7 +3102,7 @@ export const add_update_delete_shift = async (state, { type, payload }) => {
 
         // Check the response status
         if (response.status === 204) {
-          toast.success("Shift Schedule Added", {
+          toast("Shift Deleted", {
             autoClose: 1500,
           });
           return;

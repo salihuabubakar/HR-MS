@@ -6,7 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddResidentMedicalConditionModal = ({
   residentMedicalConditionIndexToEdit,
@@ -81,14 +80,8 @@ const AddResidentMedicalConditionModal = ({
         type: "update",
         payload: { id, formData },
       });
-      toast.success("Resident Medical Condition Updated", {
-        autoClose: 7000,
-      });
     } else {
       dispatchResidentMedicalCondition({ type: "add", payload: formData });
-      toast.success("Resident Medical Condition Added", {
-        autoClose: 7000,
-      });
     }
     setGlobalState("showResidentMedicalConditionModal", false);
   };

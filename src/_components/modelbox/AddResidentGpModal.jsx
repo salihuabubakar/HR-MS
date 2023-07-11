@@ -3,11 +3,9 @@ import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { useGpTypeFetching } from "../../utils/employeeCustomFetchHook";
-import { toast } from "react-toastify";
 
 const AddResidentGpModal = ({
   residentGpIndexToEdit,
@@ -86,10 +84,8 @@ const AddResidentGpModal = ({
     };
     if (selectedResidentGp[residentGpIndexToEdit]?.id) {
       dispatchResidentGp({ type: "update", payload: gpPractice });
-      toast.success("Resident Gp Updated", { autoClose: 1500 });
     } else {
       dispatchResidentGp({ type: "add", payload: gpPractice });
-      toast.success("Resident Gp Added", { autoClose: 1500 });
     }
     setGlobalState("showResidentGpModal", false);
   };

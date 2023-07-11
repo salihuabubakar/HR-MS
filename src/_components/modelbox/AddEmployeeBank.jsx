@@ -6,7 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddEmployeeBank = ({
   employeeBankIndexToEdit,
@@ -128,14 +127,8 @@ const AddEmployeeBank = ({
         type: "update",
         payload: { id, formData },
       });
-      toast.success("Bank Updated", {
-        autoClose: 7000,
-      });
     } else {
       dispatchEmployeeBank({ type: "add", payload: formData });
-      toast.success("Bank Added", {
-        autoClose: 7000,
-      });
     }
     setGlobalState("showEmployeeBankModal", false);
   };

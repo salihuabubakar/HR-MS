@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddEmployeeAddress = ({
   employeeAddressIndexToEdit,
@@ -78,14 +77,8 @@ const AddEmployeeAddress = ({
     };
     if (selectedEmployeeAddress[employeeAddressIndexToEdit]?.id) {
       dispatchEmployeeAddress({ type: "update", payload: address });
-      toast.success("Employee Address Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchEmployeeAddress({ type: "add", payload: address });
-      toast.success("Employee Address Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showEmployeeAddressModal", false);
   };

@@ -6,11 +6,9 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
-import Dropzone from "react-dropzone";
 import { useHouseDocumentFetching } from "../../utils/employeeCustomFetchHook";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import { toast } from "react-toastify";
 
 const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
@@ -80,14 +78,8 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
 
     if (selectedBill[billIndexToEdit]?.id) {
       dispatchBill({ type: "update", payload: fields });
-      toast.success("House Bill Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchBill({ type: "add", payload: fields });
-      toast.success("House Bill Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showBillModal", false);
   };

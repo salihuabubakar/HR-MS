@@ -5,7 +5,6 @@ import {
   PopupWrapper,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddResidentGpType = ({
   indexToEdit,
@@ -48,14 +47,8 @@ const AddResidentGpType = ({
         type: "update",
         payload: gpTypeObject,
       });
-      toast.success("Gp Type Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentGpType({ type: "add", payload: gpTypeObject });
-      toast.success("Gp Type Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentGpTypeModal", false);
   };

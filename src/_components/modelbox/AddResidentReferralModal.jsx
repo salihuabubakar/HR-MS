@@ -6,7 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddResidentReferralModal = ({
   residentReferralIndexToEdit,
@@ -72,14 +71,8 @@ const AddResidentReferralModal = ({
         type: "update",
         payload: appObj,
       });
-      toast.success("Resident Referral Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentReferral({ type: "add", payload: appObj });
-      toast.success("Resident Referral Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentReferralModal", false);
   };

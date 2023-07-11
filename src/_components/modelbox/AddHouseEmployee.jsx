@@ -8,7 +8,6 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
-import { toast } from "react-toastify";
 
 const AddHouseEmployee = ({
   house,
@@ -47,14 +46,8 @@ const AddHouseEmployee = ({
     };
     if (selectedHouseEmployee[houseEmployeeIndexToEdit]?.id) {
       dispatchHouseEmployee({ type: "update", payload: houseEmployee });
-      toast.success("House Employee Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchHouseEmployee({ type: "add", payload: houseEmployee });
-      toast.success("House Employee Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showHouseEmployeeModal", false);
   };

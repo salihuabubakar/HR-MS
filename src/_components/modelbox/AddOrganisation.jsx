@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddOrganisation = ({
   indexToEdit,
@@ -73,14 +72,8 @@ const AddOrganisation = ({
     };
     if (selectedOrganisation[indexToEdit]?.id) {
       dispatchOrganisation({ type: "update", payload: organisation });
-      toast.success("Organisation Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchOrganisation({ type: "add", payload: organisation });
-      toast.success("Organisation Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showOrganisationModal", false);
   };

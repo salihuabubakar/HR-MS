@@ -6,8 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import Dropzone from "react-dropzone";
-import { toast } from "react-toastify";
 
 const AddEmployeeExperience = ({
   employeeExperienceIndexToEdit,
@@ -100,14 +98,8 @@ const AddEmployeeExperience = ({
         type: "update",
         payload: { id, formData },
       });
-      toast.success("Employee Experience Updated", {
-        autoClose: 7000,
-      });
     } else {
       dispatchEmployeeExperience({ type: "add", payload: formData });
-      toast.success("Employee Experience Added", {
-        autoClose: 7000,
-      });
     }
     setGlobalState("showEmployeeExperienceModal", false);
   };

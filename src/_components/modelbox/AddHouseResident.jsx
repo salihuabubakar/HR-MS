@@ -8,7 +8,6 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import { useResidentFetching } from '../../utils/employeeCustomFetchHook';
-import { toast } from "react-toastify";
 
 const AddHouseResident = ({
   house,
@@ -52,14 +51,8 @@ const AddHouseResident = ({
     };
     if (selectedHouseResident[houseResidentIndexToEdit]?.id) {
       dispatchHouseResident({ type: "update", payload: houseResident });
-      toast.success("House Resident Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchHouseResident({ type: "add", payload: houseResident });
-      toast.success("House Resident Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showHouseResidentModal", false);
   };

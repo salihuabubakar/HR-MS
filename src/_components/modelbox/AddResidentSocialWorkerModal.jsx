@@ -6,7 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 import { useSocialWorkerFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentSocialWorkerModal = ({
@@ -76,14 +75,8 @@ const AddResidentSocialWorkerModal = ({
         type: "update",
         payload: appObj,
       });
-      toast.success("Resident Social worker Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentSocialWorker({ type: "add", payload: appObj });
-      toast.success("Resident Social worker Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentSocialWorkerModal", false);
   };

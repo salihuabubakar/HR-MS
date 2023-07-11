@@ -6,7 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddResidentSolicitorModal = ({
   residentSolicitorIndexToEdit,
@@ -89,14 +88,8 @@ const AddResidentSolicitorModal = ({
     };
     if (selectedResidentSolicitor[residentSolicitorIndexToEdit]?.id) {
       dispatchResidentSolicitor({ type: "update", payload: solicitor });
-      toast.success("Resident Solicitor Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchResidentSolicitor({ type: "add", payload: solicitor });
-      toast.success("Resident Solicitor Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showResidentSolicitorModal", false);
   };
