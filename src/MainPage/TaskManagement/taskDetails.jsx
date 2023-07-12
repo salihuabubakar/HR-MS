@@ -332,327 +332,357 @@ const TaskDetails = () => {
                   <p>{taskDescription}</p>
                 </div>
               </div>
-              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                {taskAssignmentError?.length > 0 && (
-                  <>
-                    Error: {taskAssignmentError}
-                    <button
-                      onClick={clearErrorMessage}
-                      style={{
-                        marginLeft: "10px",
-                        fontSize: "0.8rem",
-                        cursor: "pointer",
-                        color: "black",
-                      }}
-                    >
-                      <i className="fa fa-times" />
-                      Clear Error
-                    </button>
-                  </>
-                )}
-              </span>
-              <div style={{ marginBottom: "20px" }} className="project-task card">
+              <div className="project-task card">
                 <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                   <li className="nav-item">
                     <a
                       className="nav-link active"
-                      href="#all_assignments"
+                      href="#comment_tab"
                       data-bs-toggle="tab"
                       aria-expanded="true"
                     >
-                      <span
-                        className="action-circle large"
-                        style={{ marginRight: "10px" }}
-                        title="Add Task"
-                        onClick={() => setGlobalState("showTaskAssignmentModal", true)}
-                      >
-                        <i className="material-icons">add</i>
-                      </span>
-                      All Assignments
+                      Comment Tab
                     </a>
                   </li>
                   <li className="nav-item">
                     <a
                       className="nav-link"
-                      href="#pending_assignments"
+                      href="#assignment_tab"
                       data-bs-toggle="tab"
-                      aria-expanded="false"
+                      aria-expanded="true"
                     >
-                      Pending Assignments{" "}
-                      <span
-                        style={{ backgroundColor: "grey" }}
-                        className="action-circle large complete-btn"
-                      >
-                        <i style={{ color: "white" }} className="material-icons">
-                          help_outline
-                        </i>
-                      </span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      href="#completed_assignments"
-                      data-bs-toggle="tab"
-                      aria-expanded="false"
-                    >
-                      Completed Assignments{" "}
-                      <span
-                        style={{ backgroundColor: "#35BA67" }}
-                        className="action-circle large complete-btn"
-                      >
-                        <i style={{ color: "white" }} className="material-icons">
-                          check
-                        </i>
-                      </span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      href="#approved_assignments"
-                      data-bs-toggle="tab"
-                      aria-expanded="false"
-                    >
-                      Approved Assignments{" "}
-                      <span
-                        style={{ backgroundColor: "#FF9B44" }}
-                        className="action-circle large complete-btn"
-                      >
-                        <i style={{ color: "white" }} className="material-icons">
-                          check
-                        </i>
-                      </span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      href="#rejected_assignments"
-                      data-bs-toggle="tab"
-                      aria-expanded="false"
-                    >
-                      Rejected Assignments{" "}
-                      <span
-                        style={{ backgroundColor: "red" }}
-                        className="action-circle large complete-btn"
-                      >
-                        <i style={{ color: "white" }} className="material-icons">
-                          cancel
-                        </i>
-                      </span>
+                      Assignment Tab
                     </a>
                   </li>
                 </ul>
                 <div className="tab-content">
-                  <div className="tab-pane show active" id="all_assignments">
-                    <div className="task-wrapper">
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {taskAssignmentData
-                              ? taskAssignmentData?.map((assignment, index) => {
-                                  const {
-                                    id,
-                                    description,
-                                    Managers_comment,
-                                    manager,
-                                    document,
-                                    resident,
-                                    employees,
-                                    status,
-                                    task,
-                                  } = assignment;
-                                  const matchedDoc = taskDocumentData?.filter((doc) =>
-                                    document.includes(doc.id)
-                                  );
-                                  if (task === selectedTaskId) {
-                                    return assignmentCategories(
-                                      index,
-                                      id,
-                                      description,
-                                      Managers_comment,
-                                      manager,
-                                      resident,
-                                      employees,
-                                      status,
-                                      matchedDoc
-                                    );
-                                  }
-                                })
-                              : "No task assignment available"}
-                          </ul>
+                  <div className="tab-pane" id="assignment_tab">
+                    <span style={{ color: "red", fontSize: "0.7rem" }}>
+                      {taskAssignmentError?.length > 0 && (
+                        <>
+                          Error: {taskAssignmentError}
+                          <button
+                            onClick={clearErrorMessage}
+                            style={{
+                              marginLeft: "10px",
+                              fontSize: "0.8rem",
+                              cursor: "pointer",
+                              color: "black",
+                            }}
+                          >
+                            <i className="fa fa-times" />
+                            Clear Error
+                          </button>
+                        </>
+                      )}
+                    </span>
+                    <div style={{ marginBottom: "20px" }} className="project-task card">
+                      <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
+                        <li className="nav-item">
+                          <a
+                            className="nav-link active"
+                            href="#all_assignments"
+                            data-bs-toggle="tab"
+                            aria-expanded="true"
+                          >
+                            <span
+                              className="action-circle large"
+                              style={{ marginRight: "10px" }}
+                              title="Add Task"
+                              onClick={() => setGlobalState("showTaskAssignmentModal", true)}
+                            >
+                              <i className="material-icons">add</i>
+                            </span>
+                            All Assignments
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            href="#pending_assignments"
+                            data-bs-toggle="tab"
+                            aria-expanded="false"
+                          >
+                            Pending Assignments{" "}
+                            <span
+                              style={{ backgroundColor: "grey" }}
+                              className="action-circle large complete-btn"
+                            >
+                              <i style={{ color: "white" }} className="material-icons">
+                                help_outline
+                              </i>
+                            </span>
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            href="#completed_assignments"
+                            data-bs-toggle="tab"
+                            aria-expanded="false"
+                          >
+                            Completed Assignments{" "}
+                            <span
+                              style={{ backgroundColor: "#35BA67" }}
+                              className="action-circle large complete-btn"
+                            >
+                              <i style={{ color: "white" }} className="material-icons">
+                                check
+                              </i>
+                            </span>
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            href="#approved_assignments"
+                            data-bs-toggle="tab"
+                            aria-expanded="false"
+                          >
+                            Approved Assignments{" "}
+                            <span
+                              style={{ backgroundColor: "#FF9B44" }}
+                              className="action-circle large complete-btn"
+                            >
+                              <i style={{ color: "white" }} className="material-icons">
+                                check
+                              </i>
+                            </span>
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            href="#rejected_assignments"
+                            data-bs-toggle="tab"
+                            aria-expanded="false"
+                          >
+                            Rejected Assignments{" "}
+                            <span
+                              style={{ backgroundColor: "red" }}
+                              className="action-circle large complete-btn"
+                            >
+                              <i style={{ color: "white" }} className="material-icons">
+                                cancel
+                              </i>
+                            </span>
+                          </a>
+                        </li>
+                      </ul>
+                      <div className="tab-content">
+                        <div className="tab-pane show active" id="all_assignments">
+                          <div className="task-wrapper">
+                            <div className="task-list-container">
+                              <div className="task-list-body">
+                                <ul id="task-list">
+                                  {taskAssignmentData
+                                    ? taskAssignmentData?.map((assignment, index) => {
+                                        const {
+                                          id,
+                                          description,
+                                          Managers_comment,
+                                          manager,
+                                          document,
+                                          resident,
+                                          employees,
+                                          status,
+                                          task,
+                                        } = assignment;
+                                        const matchedDoc = taskDocumentData?.filter((doc) =>
+                                          document.includes(doc.id)
+                                        );
+                                        if (task === selectedTaskId) {
+                                          return assignmentCategories(
+                                            index,
+                                            id,
+                                            description,
+                                            Managers_comment,
+                                            manager,
+                                            resident,
+                                            employees,
+                                            status,
+                                            matchedDoc
+                                          );
+                                        }
+                                      })
+                                    : "No task assignment available"}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="tab-pane" id="pending_assignments">
+                          <div className="task-wrapper">
+                            <div className="task-list-container">
+                              <div className="task-list-body">
+                                <ul id="task-list">
+                                  {taskAssignmentData
+                                    ? taskAssignmentData?.map((assignment, index) => {
+                                        const {
+                                          id,
+                                          description,
+                                          Managers_comment,
+                                          manager,
+                                          document,
+                                          resident,
+                                          employees,
+                                          status,
+                                          task,
+                                        } = assignment;
+                                        const matchedDoc = taskDocumentData?.filter((doc) =>
+                                          document.includes(doc.id)
+                                        );
+                                        if (status === "Pending" && task === selectedTaskId) {
+                                          return assignmentCategories(
+                                            index,
+                                            id,
+                                            description,
+                                            Managers_comment,
+                                            manager,
+                                            resident,
+                                            employees,
+                                            status,
+                                            matchedDoc
+                                          );
+                                        }
+                                      })
+                                    : "No task assignment available"}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="tab-pane" id="completed_assignments">
+                          <div className="task-wrapper">
+                            <div className="task-list-container">
+                              <div className="task-list-body">
+                                <ul id="task-list">
+                                  {taskAssignmentData
+                                    ? taskAssignmentData?.map((assignment, index) => {
+                                        const {
+                                          id,
+                                          description,
+                                          Managers_comment,
+                                          manager,
+                                          document,
+                                          resident,
+                                          employees,
+                                          status,
+                                          task,
+                                        } = assignment;
+                                        const matchedDoc = taskDocumentData?.filter((doc) =>
+                                          document.includes(doc.id)
+                                        );
+                                        if (status === "Completed" && task === selectedTaskId) {
+                                          return assignmentCategories(
+                                            index,
+                                            id,
+                                            description,
+                                            Managers_comment,
+                                            manager,
+                                            resident,
+                                            employees,
+                                            status,
+                                            matchedDoc
+                                          );
+                                        }
+                                      })
+                                    : "No task assignment available"}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="tab-pane" id="approved_assignments">
+                          <div className="task-wrapper">
+                            <div className="task-list-container">
+                              <div className="task-list-body">
+                                <ul id="task-list">
+                                  {taskAssignmentData
+                                    ? taskAssignmentData?.map((assignment, index) => {
+                                        const {
+                                          id,
+                                          description,
+                                          Managers_comment,
+                                          manager,
+                                          document,
+                                          resident,
+                                          employees,
+                                          status,
+                                          task,
+                                        } = assignment;
+                                        const matchedDoc = taskDocumentData?.filter((doc) =>
+                                          document.includes(doc.id)
+                                        );
+                                        if (status === "Approved" && task === selectedTaskId) {
+                                          return assignmentCategories(
+                                            index,
+                                            id,
+                                            description,
+                                            Managers_comment,
+                                            manager,
+                                            resident,
+                                            employees,
+                                            status,
+                                            matchedDoc
+                                          );
+                                        }
+                                      })
+                                    : "No task assignment available"}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="tab-pane" id="rejected_assignments">
+                          <div className="task-wrapper">
+                            <div className="task-list-container">
+                              <div className="task-list-body">
+                                <ul id="task-list">
+                                  {taskAssignmentData
+                                    ? taskAssignmentData?.map((assignment, index) => {
+                                        const {
+                                          id,
+                                          description,
+                                          Managers_comment,
+                                          manager,
+                                          document,
+                                          resident,
+                                          employees,
+                                          status,
+                                          task,
+                                        } = assignment;
+                                        const matchedDoc = taskDocumentData?.filter((doc) =>
+                                          document.includes(doc.id)
+                                        );
+                                        if (status === "Rejected" && task === selectedTaskId) {
+                                          return assignmentCategories(
+                                            index,
+                                            id,
+                                            description,
+                                            Managers_comment,
+                                            manager,
+                                            resident,
+                                            employees,
+                                            status,
+                                            matchedDoc
+                                          );
+                                        }
+                                      })
+                                    : "No task assignment available"}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="tab-pane" id="pending_assignments">
-                    <div className="task-wrapper">
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {taskAssignmentData
-                              ? taskAssignmentData?.map((assignment, index) => {
-                                  const {
-                                    id,
-                                    description,
-                                    Managers_comment,
-                                    manager,
-                                    document,
-                                    resident,
-                                    employees,
-                                    status,
-                                    task,
-                                  } = assignment;
-                                  const matchedDoc = taskDocumentData?.filter((doc) =>
-                                    document.includes(doc.id)
-                                  );
-                                  if (status === "Pending" && task === selectedTaskId) {
-                                    return assignmentCategories(
-                                      index,
-                                      id,
-                                      description,
-                                      Managers_comment,
-                                      manager,
-                                      resident,
-                                      employees,
-                                      status,
-                                      matchedDoc
-                                    );
-                                  }
-                                })
-                              : "No task assignment available"}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="tab-pane" id="completed_assignments">
-                    <div className="task-wrapper">
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {taskAssignmentData
-                              ? taskAssignmentData?.map((assignment, index) => {
-                                  const {
-                                    id,
-                                    description,
-                                    Managers_comment,
-                                    manager,
-                                    document,
-                                    resident,
-                                    employees,
-                                    status,
-                                    task,
-                                  } = assignment;
-                                  const matchedDoc = taskDocumentData?.filter((doc) =>
-                                    document.includes(doc.id)
-                                  );
-                                  if (status === "Completed" && task === selectedTaskId) {
-                                    return assignmentCategories(
-                                      index,
-                                      id,
-                                      description,
-                                      Managers_comment,
-                                      manager,
-                                      resident,
-                                      employees,
-                                      status,
-                                      matchedDoc
-                                    );
-                                  }
-                                })
-                              : "No task assignment available"}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="tab-pane" id="approved_assignments">
-                    <div className="task-wrapper">
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {taskAssignmentData
-                              ? taskAssignmentData?.map((assignment, index) => {
-                                  const {
-                                    id,
-                                    description,
-                                    Managers_comment,
-                                    manager,
-                                    document,
-                                    resident,
-                                    employees,
-                                    status,
-                                    task,
-                                  } = assignment;
-                                  const matchedDoc = taskDocumentData?.filter((doc) =>
-                                    document.includes(doc.id)
-                                  );
-                                  if (status === "Approved" && task === selectedTaskId) {
-                                    return assignmentCategories(
-                                      index,
-                                      id,
-                                      description,
-                                      Managers_comment,
-                                      manager,
-                                      resident,
-                                      employees,
-                                      status,
-                                      matchedDoc
-                                    );
-                                  }
-                                })
-                              : "No task assignment available"}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="tab-pane" id="rejected_assignments">
-                    <div className="task-wrapper">
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {taskAssignmentData
-                              ? taskAssignmentData?.map((assignment, index) => {
-                                  const {
-                                    id,
-                                    description,
-                                    Managers_comment,
-                                    manager,
-                                    document,
-                                    resident,
-                                    employees,
-                                    status,
-                                    task,
-                                  } = assignment;
-                                  const matchedDoc = taskDocumentData?.filter((doc) =>
-                                    document.includes(doc.id)
-                                  );
-                                  if (status === "Rejected" && task === selectedTaskId) {
-                                    return assignmentCategories(
-                                      index,
-                                      id,
-                                      description,
-                                      Managers_comment,
-                                      manager,
-                                      resident,
-                                      employees,
-                                      status,
-                                      matchedDoc
-                                    );
-                                  }
-                                })
-                              : "No task assignment available"}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="tab-pane show active" id="comment_tab">
+                    <CommentSection selecetedTaskId={selectedTaskId} task={taskId} />
                   </div>
                 </div>
               </div>
-              <CommentSection selecetedTaskId={selectedTaskId} task={taskId} />
               <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
