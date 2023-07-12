@@ -1338,4 +1338,25 @@ export const useTaskDocumentFetching = () => {
   return { taskDocumentData, isTaskDocumentLoading, taskDocumentError };
 };
 
+// Get Task Chat data
+export const useTaskChatFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/task/taskchat/?format=json`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: taskChatData,
+    isLoading: isTaskChatLoading,
+    error: taskChatError,
+  } = useQuery("taskChatData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on taskChatData
+      queryClient.invalidateQueries(["taskChatData"]);
+    },
+  });
+
+  return { taskChatData, isTaskChatLoading, taskChatError };
+};
 

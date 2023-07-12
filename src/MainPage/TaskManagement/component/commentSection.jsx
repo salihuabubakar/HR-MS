@@ -1,74 +1,37 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "./style";
-import SmileImg from "../../../assets/img/smile.png";
-import Logo from "../../../assets/img/circle-logo.png";
+import { useTaskChatFetching, useDataFetching } from "../../../utils/employeeCustomFetchHook";
+import { add_update_delete_task_chat } from "../../../utils/sendToServer";
+import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
+import moment from "moment";
 
-const CommentSection = ({ taskId, selecetedTaskId }) => {
-  const [comments, setComments] = useState([]);
-  const [commentText, setCommentText] = useState("");
-  const [replyText, setReplyText] = useState("");
-  const [activeCommentId, setActiveCommentId] = useState("");
-  const [admin, setAdmin] = useState("");
-  const [user, setUser] = useState("");
+const CommentSection = ({ task, selecetedTaskId }) => {
+  const { taskChatData } = useTaskChatFetching();
+  const { data: allEmployee } = useDataFetching();
+  const [message, setMessage] = useState("");
 
-  const AdminAccount = localStorage.getItem("email");
+  const [chatState, dispatchTaskChat] = useReducer(add_update_delete_task_chat, []);
+  const [taskChatError] = useGlobalState("taskChatError");
 
-  useEffect(() => {
-    const storedComments = JSON.parse(localStorage.getItem("comments"));
-    if (storedComments) {
-      setComments(storedComments);
-    }
-    if (AdminAccount) {
-      setAdmin(AdminAccount);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("comments", JSON.stringify(comments));
-  }, [comments]);
-
+  const sender = 100;
   const handleCommentSubmit = (e) => {
     e.preventDefault();
-    if (commentText.trim() !== "") {
-      setComments([
-        ...comments,
-        {
-          id: new Date().getTime(),
-          text: commentText,
-          replies: [],
-          taskId,
-          admin: admin,
-        },
-      ]);
-      setCommentText("");
+    if (message.trim() === "") {
+      console.log("Empty input");
+      return;
     }
+    const chatsObject = {
+      task,
+      message,
+      sender,
+    };
+    dispatchTaskChat({ type: "add", payload: chatsObject });
+    setMessage("");
   };
 
-  const handleReplySubmit = (e) => {
-    e.preventDefault();
-    if (replyText.trim() !== "") {
-      setComments((prevComments) =>
-        prevComments.map((comment) => {
-          if (comment.id === activeCommentId) {
-            return {
-              ...comment,
-              replies: [
-                ...comment.replies,
-                {
-                  id: new Date().getTime(),
-                  text: replyText,
-                  admin: admin,
-                },
-              ],
-            };
-          }
-          return comment;
-        })
-      );
-      setReplyText("");
-      setActiveCommentId("");
-    }
+  const clearErrorMessage = () => {
+    setGlobalState("taskChatError", "");
   };
 
   return (
@@ -80,6 +43,25 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
               <Link onClick={(e) => e.preventDefault()}>
                 <span>Comment Section</span>{" "}
               </Link>
+              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                {taskChatError?.length > 0 && (
+                  <>
+                    Error: {taskChatError}
+                    <button
+                      onClick={clearErrorMessage}
+                      style={{
+                        marginLeft: "10px",
+                        fontSize: "0.8rem",
+                        cursor: "pointer",
+                        color: "black",
+                      }}
+                    >
+                      <i className="fa fa-times" />
+                      Clear Error
+                    </button>
+                  </>
+                )}
+              </span>
             </div>
           </div>
         </div>
@@ -93,8 +75,8 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
                   className="form-control"
                   placeholder="Type message..."
                   id="comment"
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   name="comment"
                 />
                 <span className="input-group-append">
@@ -112,113 +94,65 @@ const CommentSection = ({ taskId, selecetedTaskId }) => {
           <div>
             <div>
               <div className="chat-box">
-                {comments?.map((comment, index) => {
-                  const { id, text, replies, taskId, admin } = comment;
-                  if (taskId === selecetedTaskId) {
-                    return (
-                      <div key={id} className="chats">
-                        <div className="chat chat-left">
-                          <div className="chat-avatar">
-                            <Link
-                              onClick={(e) => e.preventDefault()}
-                              className="avatar"
-                            >
-                              <img alt="" src={Logo} />
-                            </Link>
-                          </div>
-                          <div className="chat-body">
-                            <div className="chat-bubble">
-                              <div className="chat-content">
-                                <span className="chat-time">
-                                  {admin ? admin : "other user"}
-                                </span>
-                                <p>{text}</p>
-                                <div style={{ display: "flex" }}>
-                                  <span className="chat-time">2hr</span>
-                                  <span
-                                    className="chat-time reply-btn"
-                                    onClick={() => setActiveCommentId(id)}
-                                  >
-                                    Reply
+                {taskChatData
+                  ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort in descending order based on created_at
+                  .map((comment, index) => {
+                    const { id, message, task, sender, created_at } = comment;
+                    const currentSender = allEmployee?.find((s) => s.id === sender);
+                    if (task === selecetedTaskId) {
+                      {/* const timestamp = created_at;
+                      const formattedTime = moment
+                        .utc(timestamp)
+                        .utcOffset("+00:00")
+                        .format("hh:mm A"); */}
+                        const currentTime = moment(); // Current time
+                        const messageTime = moment(created_at); // Time when the message was sent
+
+                        const diffInMinutes = currentTime.diff(messageTime, "minutes");
+                        const diffInHours = currentTime.diff(messageTime, "hours");
+                        const diffInDays = currentTime.diff(messageTime, "days");
+                        let timeAgo;
+                        if (diffInMinutes < 1) {
+                          timeAgo = `1s ago`;
+                        } else if (diffInMinutes < 60) {
+                          timeAgo = `${diffInMinutes}m ago`;
+                        } else if (diffInHours < 24) {
+                          timeAgo = `${diffInHours}h ago`;
+                        } else if (diffInDays < 5) {
+                          timeAgo = `${diffInDays}d ago`;
+                        } else {
+                          timeAgo = messageTime.format("DD MMM YYYY");
+                        }
+                      return (
+                        <div key={id} className="chats">
+                          <div className="chat chat-left">
+                            <div className="chat-avatar">
+                              <Link onClick={(e) => e.preventDefault()} className="avatar">
+                                <img alt="" src={currentSender?.photo} />
+                              </Link>
+                            </div>
+                            <div className="chat-body">
+                              <div className="chat-bubble">
+                                <div className="chat-content">
+                                  <span className="chat-time">
+                                    {sender &&
+                                      ` ${currentSender?.first_name}
+                                        ${currentSender?.middle_name}
+                                        ${currentSender?.last_name}
+                                    `}
                                   </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {activeCommentId === id && (
-                          <div className="message-bar activeForm">
-                            <div className="message-inner">
-                              <div className="message-area">
-                                <form
-                                  // onSubmit={handleReplySubmit}
-                                  className="input-group"
-                                >
-                                  <textarea
-                                    className="form-control"
-                                    placeholder="Leave a reply"
-                                    id="reply"
-                                    value={replyText}
-                                    onChange={(e) =>
-                                      setReplyText(e.target.value)
-                                    }
-                                    name="comment"
-                                  />
-                                </form>
-                                <div className="input-group-append-">
-                                  <button
-                                    onClick={handleReplySubmit}
-                                    className="btn btn-custom btn-send"
-                                    type="submit"
-                                  >
-                                    <i className="fa fa-send" />
-                                  </button>
-                                  <button
-                                    onClick={() => setActiveCommentId(null)}
-                                    type="button"
-                                    className="btn btn-custom"
-                                  >
-                                    <i className="fa fa-times-circle" />
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                        <div className="replies">
-                          {replies?.map((reply) => {
-                            const { id, text: replies, admin } = reply;
-                            return (
-                              <div key={id} className="chat chat-left">
-                                <div className="chat-avatar">
-                                  <Link
-                                    onClick={(e) => e.preventDefault()}
-                                    className="avatar reply-avatar"
-                                  >
-                                    <img alt="" src={AdminAccount ? Logo : SmileImg} />
-                                  </Link>
-                                </div>
-                                <div className="chat-body">
-                                  <div className="chat-bubble">
-                                    <div className="chat-content">
-                                      <span className="chat-time">
-                                        {admin ? admin : "other user"}
-                                      </span>
-                                      <p>{replies}</p>
-                                      <div>
-                                        <span className="chat-time">2hr</span>
-                                      </div>
-                                    </div>
+                                  <p>{message}</p>
+                                  <div style={{ display: "flex" }}>
+                                    <span className="chat-time">{timeAgo}</span>
                                   </div>
                                 </div>
                               </div>
-                            );
-                          })}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  }
-                })}
+                      );
+                    }
+                  })}
               </div>
             </div>
           </div>

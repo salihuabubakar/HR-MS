@@ -652,7 +652,7 @@ const TaskDetails = () => {
                   </div>
                 </div>
               </div>
-              <CommentSection selecetedTaskId={selectedTaskId} taskId={taskId} />
+              <CommentSection selecetedTaskId={selectedTaskId} task={taskId} />
               <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
