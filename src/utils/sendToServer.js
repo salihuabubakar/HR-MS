@@ -3273,3 +3273,67 @@ export const add_update_delete_task_document = async (state, { type, payload }) 
   }
 };
 
+// Add - Update - Delete Task Chat state
+export const add_update_delete_task_chat = async (state, { type, payload }) => {
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${BaseUrl}/task/taskchat/`, payload);
+
+        // Check the response status
+        if (response.status === 201) {
+          // toast.success("Task Chat Added", {
+          //   autoClose: 1500,
+          // });
+          return;
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting task chat:", error);
+        setGlobalState("taskChatError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while posting task chat");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(`${BaseUrl}/task/taskchat/${payload.id}/`, payload);
+
+        // Check the response status
+        if (response.status === 200) {
+          // toast.success("Task Chat Updated", {
+          //   autoClose: 1500,
+          // });
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating task chat:", error);
+        setGlobalState("taskChatError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while updating task chat");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(`${BaseUrl}/task/taskchat/${payload.id}/`);
+
+        // Check the response status
+        if (response.status === 204) {
+          // toast("Task Chat Deleted", {
+          //   autoClose: 1500,
+          // });
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting task chat", error);
+        setGlobalState("taskChatError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while deleting task chat");
+      }
+    default:
+      throw new Error();
+  }
+};
+

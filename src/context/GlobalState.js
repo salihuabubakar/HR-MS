@@ -16,6 +16,9 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showFileUploadModal: false,
   selectedFileUpload: [],
 
+  // Task Chat
+  taskChatError: [],
+
   // Task Document
   taskDocumentError: [],
   selectedTaskDocumentInfo: [],
