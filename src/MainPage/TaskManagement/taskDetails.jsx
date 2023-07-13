@@ -27,6 +27,7 @@ import {
 import moment from "moment";
 import AssignmentBody from "./component/assignmentBody";
 import { Wrapper } from "../ServiceWork/style";
+import "./loadspiner.css"
 
 const TaskDetails = () => {
   const handleFileDownload = (file) => {
@@ -68,10 +69,10 @@ const TaskDetails = () => {
   const selectedTaskIndex = location?.state?.index;
 
   const { taskData, isTaskLoading } = useTaskFetching();
-  const { data: allEmployees } = useDataFetching();
-  const { residentData } = useResidentFetching();
-  const { taskAssignmentData } = useTaskAssignmentFetching();
-  const { taskDocumentData } = useTaskDocumentFetching();
+  const { data: allEmployees, isLoading } = useDataFetching();
+  const { residentData, isResidentLoading } = useResidentFetching();
+  const { taskAssignmentData, isTaskAssignmentLoading } = useTaskAssignmentFetching();
+  const { taskDocumentData, isTaskDocumentLoading } = useTaskDocumentFetching();
 
   const [showTaskModal] = useGlobalState("showTaskModal");
   const [showTaskAssignmentModal] = useGlobalState("showTaskAssignmentModal");
@@ -324,12 +325,23 @@ const TaskDetails = () => {
             <div className="col-lg-8 col-xl-9">
               <div className="card">
                 <div className="card-body">
-                  <div className="project-title">
-                    <h5 className="card-title">
-                      {taskName === formattedName ? taskName : formattedName}
-                    </h5>
-                  </div>
-                  <p>{taskDescription}</p>
+                  {isTaskLoading ? (
+                    <div className="skeleton-container1">
+                      <div className="skeleton-content1">
+                        <div className="skeleton-line5"></div>
+                        <div className="skeleton-line1"></div>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="project-title">
+                        <h5 className="card-title">
+                          {taskName === formattedName ? taskName : formattedName}
+                        </h5>
+                      </div>
+                      <p>{taskDescription}</p>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="project-task card">
@@ -714,70 +726,82 @@ const TaskDetails = () => {
                         <i className="fa fa-plus" />
                       </a>
                     </h3>
-                    <Wrapper>
-                      {taskDocumentData?.length > 0 && selectedTaskDocumentId === selectedTaskId ? (
-                        taskDocumentData.map((doc, index) => {
-                          const { id, task, name, document } = doc;
-                          if (task == selectedTaskId) {
-                            return (
-                              <div key={id} className="card">
-                                <a className="name">
-                                  Document Name: {name}
-                                  <span
-                                    className="edit-icon"
-                                    style={{
-                                      background: "none",
-                                      border: "none",
-                                    }}
-                                  >
-                                    <div className="dropdown dropdown-action text-end">
-                                      <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
+                    {isTaskLoading || isTaskDocumentLoading ? (
+                      <div className="skeleton-container-profile">
+                        <div className="skeleton-content-profile">
+                          <div className="skeleton-line-profile"></div>
+                          <div className="skeleton-line-profile"></div>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <Wrapper>
+                          {taskDocumentData?.length > 0 &&
+                          selectedTaskDocumentId === selectedTaskId ? (
+                            taskDocumentData.map((doc, index) => {
+                              const { id, task, name, document } = doc;
+                              if (task == selectedTaskId) {
+                                return (
+                                  <div key={id} className="card">
+                                    <a className="name">
+                                      Document Name: {name}
+                                      <span
+                                        className="edit-icon"
+                                        style={{
+                                          background: "none",
+                                          border: "none",
+                                        }}
                                       >
-                                        <i className="material-icons">more_vert</i>
-                                      </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() => handleFileDownload(document)}
-                                        >
-                                          <i className="fa fa-download m-r-5" /> Download
-                                        </a>
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() => handleEditTaskDocuments(index, id)}
-                                        >
-                                          <i className="fa fa-pencil m-r-5" /> Edit
-                                        </a>
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() => handleTaskDocumentDelete(id)}
-                                        >
-                                          <i className="fa fa-trash-o m-r-5" /> Delete
-                                        </a>
-                                      </div>
+                                        <div className="dropdown dropdown-action text-end">
+                                          <a
+                                            className="action-icon dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            <i className="material-icons">more_vert</i>
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleFileDownload(document)}
+                                            >
+                                              <i className="fa fa-download m-r-5" /> Download
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleEditTaskDocuments(index, id)}
+                                            >
+                                              <i className="fa fa-pencil m-r-5" /> Edit
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleTaskDocumentDelete(id)}
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" /> Delete
+                                            </a>
+                                          </div>
+                                        </div>
+                                      </span>
+                                    </a>
+                                    <div>
+                                      {document && regex.test(document) ? (
+                                        <img className="img-preview" src={document} alt="Preview" />
+                                      ) : !document ? null : (
+                                        <span className="files-icon">
+                                          <i className="fa fa-file-pdf-o" />
+                                        </span>
+                                      )}
                                     </div>
-                                  </span>
-                                </a>
-                                <div>
-                                  {document && regex.test(document) ? (
-                                    <img className="img-preview" src={document} alt="Preview" />
-                                  ) : !document ? null : (
-                                    <span className="files-icon">
-                                      <i className="fa fa-file-pdf-o" />
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          }
-                        })
-                      ) : (
-                        <></>
-                      )}
-                    </Wrapper>
+                                  </div>
+                                );
+                              }
+                            })
+                          ) : (
+                            <></>
+                          )}
+                        </Wrapper>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -790,60 +814,116 @@ const TaskDetails = () => {
                     <tbody>
                       <tr>
                         <td>Task Type:</td>
-                        <td
-                          style={{
-                            backgroundColor: taskType === true ? "#55CE63" : "#ff9b44",
-                            color: "#fff",
-                          }}
-                          className="text-end"
-                        >
-                          {taskType === true ? "Paid" : "Non Paid"}
-                        </td>
+                        {isTaskLoading ? (
+                          <div class="spinner">
+                            <div class="loader"></div>
+                          </div>
+                        ) : (
+                          <td
+                            style={{
+                              backgroundColor: taskType === true ? "#55CE63" : "#ff9b44",
+                              color: "#fff",
+                            }}
+                            className="text-end"
+                          >
+                            {taskType === true ? "Paid" : "Non Paid"}
+                          </td>
+                        )}
                       </tr>
                       <tr>
                         <td>Total Hours:</td>
-                        <td className="text-end">{timeAllocated}hr</td>
+                        {isTaskLoading ? (
+                          <div class="spinner">
+                            <div class="loader"></div>
+                          </div>
+                        ) : (
+                          <>
+                            <td className="text-end">{timeAllocated}hr</td>
+                          </>
+                        )}
                       </tr>
                       <tr>
                         <td>Start At:</td>
-                        <td className="text-end">{moment(taskStartAt).format("DD MMM YYYY")}</td>
+                        {isTaskLoading ? (
+                          <div class="spinner">
+                            <div class="loader"></div>
+                          </div>
+                        ) : (
+                          <>
+                            <td className="text-end">
+                              {moment(taskStartAt).format("DD MMM YYYY")}
+                            </td>
+                          </>
+                        )}
                       </tr>
                       <tr>
                         <td>End At:</td>
-                        <td className="text-end">{moment(taskEndAt).format("DD MMM YYYY")}</td>
+                        {isTaskLoading ? (
+                          <div class="spinner">
+                            <div class="loader"></div>
+                          </div>
+                        ) : (
+                          <>
+                            <td className="text-end">{moment(taskEndAt).format("DD MMM YYYY")}</td>
+                          </>
+                        )}
                       </tr>
                       <tr>
                         <td>Priority:</td>
-                        <td
-                          style={{
-                            backgroundColor:
-                              (taskPriority === "high" && "#55CE63") ||
-                              (taskPriority === "medium" && "#ff9b44") ||
-                              (taskPriority === "low" && "#f62d51"),
-                            color: "#fff",
-                          }}
-                          className="text-end"
-                        >
-                          {(taskPriority === "high" && "High") ||
-                            (taskPriority === "medium" && "Medium") ||
-                            (taskPriority === "low" && "Low")}
-                        </td>
+                        {isTaskLoading ? (
+                          <div class="spinner">
+                            <div class="loader"></div>
+                          </div>
+                        ) : (
+                          <>
+                            <td
+                              style={{
+                                backgroundColor:
+                                  (taskPriority === "high" && "#55CE63") ||
+                                  (taskPriority === "medium" && "#ff9b44") ||
+                                  (taskPriority === "low" && "#f62d51"),
+                                color: "#fff",
+                              }}
+                              className="text-end"
+                            >
+                              {(taskPriority === "high" && "High") ||
+                                (taskPriority === "medium" && "Medium") ||
+                                (taskPriority === "low" && "Low")}
+                            </td>
+                          </>
+                        )}
                       </tr>
                       <tr>
                         <td>Task Duration:</td>
-                        <td className="text-end">{taskDuration}</td>
+                        {isTaskLoading ? (
+                          <div class="spinner">
+                            <div class="loader"></div>
+                          </div>
+                        ) : (
+                          <>
+                            <td className="text-end">{taskDuration}</td>
+                          </>
+                        )}
                       </tr>
                       <tr>
                         <td>Task Conclusion:</td>
-                        <td
-                          style={{
-                            backgroundColor: taskConcluded === true ? "#55CE63" : "#ff9b44",
-                            color: "#fff",
-                          }}
-                          className="text-end"
-                        >
-                          {taskConcluded === true ? "Concluded" : "In Progress"}
-                        </td>
+                        {isTaskLoading ? (
+                          <div class="spinner">
+                            <div class="loader"></div>
+                          </div>
+                        ) : (
+                          <>
+                            <td
+                              style={{
+                                backgroundColor: taskConcluded === true ? "#55CE63" : "#ff9b44",
+                                color: "#fff",
+                              }}
+                              className="text-end"
+                            >
+                              {taskConcluded === true ? "Concluded" : "In Progress"}
+                            </td>
+                          </>
+                        )}
                       </tr>
                       {/* <tr>
                         <td>Status:</td>
@@ -909,60 +989,68 @@ const TaskDetails = () => {
                   </table>
                   <p className="m-b-5">
                     Task Progress
-                    <span
-                      className={
-                        (taskProgressFuction(taskProgress, status).includes("Not Started")
-                          ? "float-end color-not-started"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Started")
-                          ? "float-end color-started"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Getting there")
-                          ? "float-end color-getting-there"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Almost there")
-                          ? "float-end color-almost-there"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Rounding up")
-                          ? "float-end color-rounding-up"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Completing")
-                          ? "float-end color-completing"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Completed")
-                          ? "float-end color-completed"
-                          : null)
-                      }
-                    >
-                      {(taskProgressFuction(taskProgress, status).includes(
-                        "Not Started" || taskProgress
-                      ) &&
-                        taskProgress + "%") ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Started" || taskProgress
-                        ) &&
-                          taskProgress + "%") ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Getting there" || taskProgress
-                        ) &&
-                          taskProgress + "%") ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Almost there" || taskProgress
-                        ) &&
-                          taskProgress + "%") ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Rounding up" || taskProgress
-                        ) &&
-                          taskProgress + "%") ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Completing" || taskProgress
-                        ) &&
-                          taskProgress + "%") ||
-                        (taskProgressFuction(taskProgress, status).includes(
-                          "Completed" || taskProgress
-                        ) &&
-                          taskProgress + "%")}
-                    </span>
+                    {isTaskLoading ? (
+                      <span style={{display: "inline"}} class="spinner">
+                        <span class="loader"></span>
+                      </span>
+                    ) : (
+                      <>
+                        <span
+                          className={
+                            (taskProgressFuction(taskProgress, status).includes("Not Started")
+                              ? "float-end color-not-started"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes("Started")
+                              ? "float-end color-started"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes("Getting there")
+                              ? "float-end color-getting-there"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes("Almost there")
+                              ? "float-end color-almost-there"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes("Rounding up")
+                              ? "float-end color-rounding-up"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes("Completing")
+                              ? "float-end color-completing"
+                              : null) ||
+                            (taskProgressFuction(taskProgress, status).includes("Completed")
+                              ? "float-end color-completed"
+                              : null)
+                          }
+                        >
+                          {(taskProgressFuction(taskProgress, status).includes(
+                            "Not Started" || taskProgress
+                          ) &&
+                            taskProgress + "%") ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Started" || taskProgress
+                            ) &&
+                              taskProgress + "%") ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Getting there" || taskProgress
+                            ) &&
+                              taskProgress + "%") ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Almost there" || taskProgress
+                            ) &&
+                              taskProgress + "%") ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Rounding up" || taskProgress
+                            ) &&
+                              taskProgress + "%") ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Completing" || taskProgress
+                            ) &&
+                              taskProgress + "%") ||
+                            (taskProgressFuction(taskProgress, status).includes(
+                              "Completed" || taskProgress
+                            ) &&
+                              taskProgress + "%")}
+                        </span>
+                      </>
+                    )}
                   </p>
 
                   <div className="progress progress-xs mb-0">
