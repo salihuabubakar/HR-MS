@@ -18,6 +18,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
+import HoverText from "../Employees/Employees/HoverText";
 
 const visitor = () => {
   const { residentVisitorData, residentVisitorLoading } = useResidentVisitorFetching();
@@ -63,6 +64,14 @@ const visitor = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentVisitorId, setResidentVisitorId] = useState("");
+  const [isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
 
   const handleEditResidentVisitor = (id, index) => {
     setResidentVisitorId(id);
@@ -85,6 +94,11 @@ const visitor = () => {
     }
   });
 
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
+
   const columns = [
     {
       title: "#",
@@ -104,9 +118,7 @@ const visitor = () => {
       title: "Visitor Date",
       dataIndex: "visit_date",
       render: (text, record, index) => {
-        return (
-          <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>
-        );
+        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
       },
     },
     {
@@ -157,11 +169,15 @@ const visitor = () => {
       title: "Comment",
       dataIndex: "comment",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
     {
@@ -182,10 +198,7 @@ const visitor = () => {
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeleteResidentVisitor(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeleteResidentVisitor(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -220,9 +233,7 @@ const visitor = () => {
               <div className="col-auto float-end ml-auto">
                 <a
                   className="btn add-btn"
-                  onClick={() =>
-                    setGlobalState("showResidentVisitorModal", true)
-                  }
+                  onClick={() => setGlobalState("showResidentVisitorModal", true)}
                 >
                   <i className="fa fa-plus" /> Add Resident Visitor
                 </a>
@@ -288,6 +299,12 @@ const visitor = () => {
             </div>
           </div>
         </div>
+
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
 
         {showResidentVisitorModal && (
           <AddResidentVisitor

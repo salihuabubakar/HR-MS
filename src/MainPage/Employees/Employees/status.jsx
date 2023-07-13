@@ -19,6 +19,7 @@ import {
 } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
 import DefaultImage from "../../../assets/img/placeholder.jpg";
+import HoverText from "./HoverText";
 
 const Status = () => {
   const { statusData, isStatusDataLoading } = useStatusFetching();
@@ -56,6 +57,14 @@ useEffect(() => {
 const [menu, setMenu] = useState(false);
 const [indexToEdit, setIndexToEdit] = useState();
 const [statusId, setStatusId] = useState("");
+const [isHover] = useGlobalState("isHover");
+const [isHoverText] = useGlobalState("isHoverText");
+
+useEffect(() => {
+  if (!isHover) {
+    setGlobalState("isHoverText", "");
+  }
+}, [isHover]);
 
 const handleEditStatus = (id, index) => {
   setStatusId(id);
@@ -78,6 +87,11 @@ const handleDeleteStatus = (id) => {
       });
     }
   });
+
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
 
   const [statusError] = useGlobalState("statusError");
 
@@ -132,11 +146,15 @@ const handleDeleteStatus = (id) => {
       title: "Comment",
       dataIndex: "comments",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
 
@@ -144,9 +162,7 @@ const handleDeleteStatus = (id) => {
       title: "Start Date",
       dataIndex: "start_date",
       render: (text, record, index) => {
-        return (
-          <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>
-        );
+        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
       },
     },
 
@@ -154,9 +170,7 @@ const handleDeleteStatus = (id) => {
       title: "End Date",
       dataIndex: "end_date",
       render: (text, record, index) => {
-        return (
-          <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>
-        );
+        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
       },
     },
     {
@@ -171,16 +185,10 @@ const handleDeleteStatus = (id) => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a
-              className="dropdown-item"
-              onClick={() => handleEditStatus(record.id, index)}
-            >
+            <a className="dropdown-item" onClick={() => handleEditStatus(record.id, index)}>
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeleteStatus(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeleteStatus(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -212,10 +220,7 @@ const handleDeleteStatus = (id) => {
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
-                <a
-                  className="btn add-btn"
-                  onClick={() => setGlobalState("showStatusModal", true)}
-                >
+                <a className="btn add-btn" onClick={() => setGlobalState("showStatusModal", true)}>
                   <i className="fa fa-plus" /> Add Status
                 </a>
               </div>
@@ -281,19 +286,17 @@ const handleDeleteStatus = (id) => {
           </div>
         </div>
 
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
+
         {showStatusModal && (
-          <AddStatus
-            dispatchStatus={dispatchStatus}
-            indexToEdit={indexToEdit}
-            id={statusId}
-          />
+          <AddStatus dispatchStatus={dispatchStatus} indexToEdit={indexToEdit} id={statusId} />
         )}
         {deleteStatusModal && (
-          <DeleteModal
-            deleteAction={dispatchStatus}
-            iDToDelete={statusId}
-            modalTitle={"Status"}
-          />
+          <DeleteModal deleteAction={dispatchStatus} iDToDelete={statusId} modalTitle={"Status"} />
         )}
       </div>
     </div>

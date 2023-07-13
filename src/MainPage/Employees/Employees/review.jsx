@@ -17,6 +17,7 @@ import {
 import { add_update_delete_employee_review } from "../../../utils/sendToServer";
 import { useEmployeeReviewFetching, useDataFetching } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
+import HoverText from "./HoverText";
 
 const Review = () => {
 
@@ -43,6 +44,8 @@ const Review = () => {
 
   const [showAddReviewModal] = useGlobalState("showAddReviewModal");
   const [deleteModal] = useGlobalState("deleteModal");
+  const [isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
 
   const [reviewState, dispatchReviewDetails] = useReducer(
     add_update_delete_employee_review,
@@ -54,6 +57,12 @@ const Review = () => {
       setGlobalState("selectedReviewInfo", "");
     }
   }, [showAddReviewModal]);
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
 
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
@@ -123,6 +132,10 @@ const Review = () => {
     }
   });
 
+const handleHoverEffect = (text) => {
+  setGlobalState("isHover", true);
+  setGlobalState("isHoverText", text);
+};
 
   const [employeeReviewError] = useGlobalState("employeeReviewError");
 
@@ -130,11 +143,13 @@ const Review = () => {
     setGlobalState("employeeReviewError", "");
   };
 
+  let actualIndex;
+
   const columns = [
     {
       title: "#",
       render: (text, record, index) => {
-        const actualIndex = (currentPage - 1) * itemsPerPage + index + 1;
+        actualIndex = (currentPage - 1) * itemsPerPage + index + 1;
         return <React.Fragment>{actualIndex}</React.Fragment>;
       },
     },
@@ -173,9 +188,7 @@ const Review = () => {
       title: "Review Date",
       dataIndex: "review_date",
       render: (text, record, index) => {
-        return (
-          <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>
-        );
+        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
       },
     },
     {
@@ -198,11 +211,15 @@ const Review = () => {
       title: "Description",
       dataIndex: "description",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
     {
@@ -219,11 +236,7 @@ const Review = () => {
             <h2 className="table-avatar">
               <Link to="#" onClick={(e) => e.preventDefault()}>
                 {review_file && regex.test(review_file) ? (
-                  <img
-                    className="img-preview"
-                    src={review_file}
-                    alt="Preview"
-                  />
+                  <img className="img-preview" src={review_file} alt="Preview" />
                 ) : !review_file ? null : (
                   <span className="files-icon">
                     <i className="fa fa-file-pdf-o" />
@@ -247,22 +260,13 @@ const Review = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a
-              className="dropdown-item"
-              onClick={() => handleFileDownload(record.review_file)}
-            >
+            <a className="dropdown-item" onClick={() => handleFileDownload(record.review_file)}>
               <i className="fa fa-download m-r-5" /> Download
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleEditReview(record.id, index)}
-            >
+            <a className="dropdown-item" onClick={() => handleEditReview(record.id, index)}>
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeleteReview(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeleteReview(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -362,6 +366,12 @@ const Review = () => {
             </div>
           </div>
         </div>
+
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
 
         {showAddReviewModal && (
           <AddReview

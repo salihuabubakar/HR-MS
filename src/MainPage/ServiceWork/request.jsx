@@ -17,6 +17,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
+import HoverText from "../Employees/Employees/HoverText";
 
 const request = () => {
   const { residentRequestData, residentRequestLoading } = useResidentRequestFetching();
@@ -61,6 +62,14 @@ const request = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentRequestId, setResidentRequestId] = useState("");
+  const[isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
 
   const handleEditResidentRequest = (id, index) => {
     setResidentRequestId(id);
@@ -83,6 +92,11 @@ const request = () => {
     }
   });
 
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
+
   const columns = [
     {
       title: "#",
@@ -102,9 +116,7 @@ const request = () => {
       title: "Request Date",
       dataIndex: "date_requested",
       render: (text, record, index) => {
-        return (
-          <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>
-        );
+        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
       },
     },
     {
@@ -115,9 +127,7 @@ const request = () => {
       title: "Date Completed",
       dataIndex: "date_completed",
       render: (text, record, index) => {
-        return (
-          <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>
-        );
+        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
       },
     },
     {
@@ -151,11 +161,15 @@ const request = () => {
       title: "Description",
       dataIndex: "description",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
     {
@@ -176,10 +190,7 @@ const request = () => {
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeleteResidentRequest(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeleteResidentRequest(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -214,9 +225,7 @@ const request = () => {
               <div className="col-auto float-end ml-auto">
                 <a
                   className="btn add-btn"
-                  onClick={() =>
-                    setGlobalState("showResidentRequestModal", true)
-                  }
+                  onClick={() => setGlobalState("showResidentRequestModal", true)}
                 >
                   <i className="fa fa-plus" /> Add Resident Request
                 </a>
@@ -282,6 +291,12 @@ const request = () => {
             </div>
           </div>
         </div>
+
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
 
         {showResidentRequestModal && (
           <AddResidentRequest

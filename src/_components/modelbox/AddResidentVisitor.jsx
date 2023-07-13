@@ -50,6 +50,8 @@ const AddResidentVisitor = ({
     selectedResidentVisitor[indexToEdit]?.resident || ""
   );
 
+  const [comment, setComment] = useState(selectedResidentVisitor[indexToEdit]?.comment || "");
+
  
   const [statusError, setStatusError] = useState("");
   const [visitDateError, setVisitDateError] = useState("")
@@ -96,7 +98,8 @@ const AddResidentVisitor = ({
       status,
       left_time,
       house,
-      resident
+      resident,
+      comment,
     };
 
 
@@ -141,23 +144,16 @@ const AddResidentVisitor = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">
-                    {selectedResidentVisitor[indexToEdit]?.id
-                      ? "Edit Visitor"
-                      : "Add Visitor"}
+                    {selectedResidentVisitor[indexToEdit]?.id ? "Edit Visitor" : "Add Visitor"}
                   </h5>
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showResidentVisitorModal", false)
-                    }
+                    onClick={() => setGlobalState("showResidentVisitorModal", false)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -188,9 +184,7 @@ const AddResidentVisitor = ({
                             type="date"
                             placeholder="Visit Date"
                           />
-                          {visitDateError && (
-                            <p className="error-message">{visitDateError}</p>
-                          )}
+                          {visitDateError && <p className="error-message">{visitDateError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -204,9 +198,7 @@ const AddResidentVisitor = ({
                             type="time"
                             placeholder="Visit Time"
                           />
-                          {visitTimeError && (
-                            <p className="error-message">{visitTimeError}</p>
-                          )}
+                          {visitTimeError && <p className="error-message">{visitTimeError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -249,9 +241,7 @@ const AddResidentVisitor = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Visit Purpose
-                          </label>
+                          <label className="col-form-label">Visit Purpose</label>
                           <input
                             value={purpose}
                             onChange={(e) => setPurpose(e.target.value)}
@@ -275,9 +265,7 @@ const AddResidentVisitor = ({
                             </option>
                             <option value="Left">Left</option>
                           </select>
-                          {statusError && (
-                            <p className="error-message">{statusError}</p>
-                          )}
+                          {statusError && <p className="error-message">{statusError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -290,20 +278,28 @@ const AddResidentVisitor = ({
                             className="form-control floating"
                             type="time"
                           />
-                          {leftTimeError && (
-                            <p className="error-message">{leftTimeError}</p>
-                          )}
+                          {leftTimeError && <p className="error-message">{leftTimeError}</p>}
+                        </div>
+                      </div>
+                      <div className="col-sm-12">
+                        <div className="form-group">
+                          <label className="label">
+                            Comment
+                          </label>
+                          <textarea
+                            className="form-control floating"
+                            name="description"
+                            placeholder="Comment"
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            style={{ height: "120px" }}
+                          />
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedResidentVisitor[indexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedResidentVisitor[indexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>
