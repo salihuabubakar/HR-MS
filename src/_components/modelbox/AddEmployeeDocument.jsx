@@ -6,6 +6,7 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { RadioBtn } from "./styles";
 const AddEmployeeDocument = ({
   employeeDocumentIndexToEdit,
   id,
@@ -136,10 +137,7 @@ const AddEmployeeDocument = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">
@@ -150,9 +148,7 @@ const AddEmployeeDocument = ({
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showEmployeeDocumentModal", false)
-                    }
+                    onClick={() => setGlobalState("showEmployeeDocumentModal", false)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -162,14 +158,10 @@ const AddEmployeeDocument = ({
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Document Name
-                          </label>
+                          <label className="col-form-label">Document Name</label>
                           <input
                             value={document_name}
-                            onChange={(event) =>
-                              setDocumentName(event.target.value)
-                            }
+                            onChange={(event) => setDocumentName(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Document Name"
@@ -178,14 +170,10 @@ const AddEmployeeDocument = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Document Number
-                          </label>
+                          <label className="col-form-label">Document Number</label>
                           <input
                             value={document_number}
-                            onChange={(event) =>
-                              setDocumentNumber(event.target.value)
-                            }
+                            onChange={(event) => setDocumentNumber(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Document Number"
@@ -208,16 +196,12 @@ const AddEmployeeDocument = ({
                             <option value="Expired">Expired</option>
                             <option value="Pending">Pending</option>
                           </select>
-                          {statusError && (
-                            <p className="error-message">{statusError}</p>
-                          )}
+                          {statusError && <p className="error-message">{statusError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Document Type
-                          </label>
+                          <label className="col-form-label">Document Type</label>
                           <select
                             value={document_type}
                             onChange={(e) => setDocumentType(e.target.value)}
@@ -245,9 +229,7 @@ const AddEmployeeDocument = ({
                             type="date"
                             placeholder="Issue Date"
                           />
-                          {issueDateError && (
-                            <p className="error-message">{issueDateError}</p>
-                          )}
+                          {issueDateError && <p className="error-message">{issueDateError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -268,13 +250,19 @@ const AddEmployeeDocument = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Verify</label>
-                          <input
-                            checked={verified}
-                            onChange={(e) => setVarified(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Verify"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="Verify"
+                              checked={verified}
+                              id="Verify"
+                              placeholder="Verify"
+                              onChange={(e) => setVarified(e.target.checked)}
+                            />
+                            <label htmlFor="Verify">
+                              <span>Verify</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -289,20 +277,14 @@ const AddEmployeeDocument = ({
                             placeholder="Document File Upload"
                           />
                           {documentUploadError && (
-                            <p className="error-message">
-                              {documentUploadError}
-                            </p>
+                            <p className="error-message">{documentUploadError}</p>
                           )}
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedEmployeeDocument[employeeDocumentIndexToEdit]
-                          ?.id
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedEmployeeDocument[employeeDocumentIndexToEdit]?.id
                           ? "Update"
                           : "Save"}
                       </button>

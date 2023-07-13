@@ -4,6 +4,7 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
 import "./style.css";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
+import { RadioBtn } from './styles';
 
 const AddDepartment = ({
   dispatchHouse,
@@ -258,16 +259,11 @@ const AddDepartment = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer top={true} className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedHouse[indexToEdit]?.id
-                      ? "Edit House"
-                      : "Add House"}
+                    {selectedHouse[indexToEdit]?.id ? "Edit House" : "Add House"}
                   </h5>
                   <button
                     type="button"
@@ -281,25 +277,16 @@ const AddDepartment = ({
                   <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-sm-12">
-                        <div
-                          style={{ borderRadius: "5px" }}
-                          className="profile-img-wrap edit-img"
-                        >
+                        <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
                           <img
                             style={{ borderRadius: "5px" }}
                             className="inline-block"
-                            src={
-                              photo
-                                ? URL.createObjectURL(photo)
-                                : imageUrlFromServer
-                            }
+                            src={photo ? URL.createObjectURL(photo) : imageUrlFromServer}
                             alt="house_image"
                           />
                           <div className="fileupload btn">
                             <span className="btn-text">
-                              {selectedHouse[indexToEdit]?.id
-                                ? "Update"
-                                : "Upload"}
+                              {selectedHouse[indexToEdit]?.id ? "Update" : "Upload"}
                             </span>
                             <input
                               className="upload"
@@ -322,9 +309,7 @@ const AddDepartment = ({
                             type="text"
                             placeholder="House Name"
                           />
-                          {houseNameError && (
-                            <p className="error-message">{houseNameError}</p>
-                          )}
+                          {houseNameError && <p className="error-message">{houseNameError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -339,16 +324,13 @@ const AddDepartment = ({
                             type="text"
                             placeholder="City"
                           />
-                          {cityError && (
-                            <p className="error-message">{cityError}</p>
-                          )}
+                          {cityError && <p className="error-message">{cityError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Street Address{" "}
-                            <span className="text-danger">*</span>
+                            Street Address <span className="text-danger">*</span>
                           </label>
                           <input
                             value={street_address}
@@ -357,9 +339,7 @@ const AddDepartment = ({
                             type="text"
                             placeholder="Street Address"
                           />
-                          {streetAddError && (
-                            <p className="error-message">{streetAddError}</p>
-                          )}
+                          {streetAddError && <p className="error-message">{streetAddError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -374,9 +354,7 @@ const AddDepartment = ({
                             type="text"
                             placeholder="Postcode"
                           />
-                          {postcodeError && (
-                            <p className="error-message">{postcodeError}</p>
-                          )}
+                          {postcodeError && <p className="error-message">{postcodeError}</p>}
                         </div>
                       </div>
                       {/* <div className="col-sm-6">
@@ -497,49 +475,73 @@ const AddDepartment = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Garage</label>
-                          <input
-                            checked={garage}
-                            onChange={(e) => setGarage(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Garage"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="Garage"
+                              checked={garage}
+                              id="Garage"
+                              placeholder="Garage"
+                              onChange={(e) => setGarage(e.target.checked)}
+                            />
+                            <label htmlFor="Garage">
+                              <span>Garage</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Basement</label>
-                          <input
-                            checked={basement}
-                            onChange={(e) => setBasement(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Basement"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="Garage"
+                              checked={basement}
+                              id="Basement"
+                              placeholder="Basement"
+                              onChange={(e) => setBasement(e.target.checked)}
+                            />
+                            <label htmlFor="Basement">
+                              <span>Basement</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Pool</label>
-                          <input
-                            checked={pool}
-                            onChange={(e) => setPool(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Pool"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="Pool"
+                              checked={pool}
+                              id="Pool"
+                              placeholder="Pool"
+                              onChange={(e) => setPool(e.target.checked)}
+                            />
+                            <label htmlFor="Pool">
+                              <span>Pool</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Back Yard</label>
-                          <input
-                            checked={back_yard}
-                            onChange={(e) => setBackYard(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Back yard"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="Back_Yard"
+                              checked={back_yard}
+                              id="Back_Yard"
+                              placeholder="Back Yard"
+                              onChange={(e) => setBackYard(e.target.checked)}
+                            />
+                            <label htmlFor="Back_Yard">
+                              <span>Back Yard</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -557,15 +559,19 @@ const AddDepartment = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Air Conditioning</label>
-                          <input
-                            checked={air_conditioning}
-                            onChange={(e) =>
-                              setAirConditioning(e.target.checked)
-                            }
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Air Conditioning"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="air_conditioning"
+                              checked={air_conditioning}
+                              id="air_conditioning"
+                              placeholder="Air Conditioning"
+                              onChange={(e) => setAirConditioning(e.target.checked)}
+                            />
+                            <label htmlFor="air_conditioning">
+                              <span>Air Conditioning</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -595,38 +601,55 @@ const AddDepartment = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Fire Place</label>
-                          <input
-                            checked={fireplace}
-                            onChange={(e) => setFireplace(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Fire Place"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="fireplace"
+                              checked={fireplace}
+                              id="fireplace"
+                              placeholder="Fire Place"
+                              onChange={(e) => setFireplace(e.target.checked)}
+                            />
+                            <label htmlFor="fireplace">
+                              <span>Fire Place</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Security System</label>
-                          <input
-                            checked={security_system}
-                            onChange={(e) =>
-                              setSecuritySystem(e.target.checked)
-                            }
-                            type="checkbox"
-                            placeholder="Security System"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="security_system"
+                              checked={security_system}
+                              id="security_system"
+                              placeholder="Security System"
+                              onChange={(e) => setSecuritySystem(e.target.checked)}
+                            />
+                            <label htmlFor="security_system">
+                              <span>Security System</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Solar Panels</label>
-                          <input
-                            checked={solar_panels}
-                            onChange={(e) => setSolarPanels(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Solar Panels"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="solar_panels"
+                              checked={solar_panels}
+                              id="solar_panels"
+                              placeholder="Solar Panels"
+                              onChange={(e) => setSolarPanels(e.target.checked)}
+                            />
+                            <label htmlFor="solar_panels">
+                              <span>Solar Panels</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -665,17 +688,12 @@ const AddDepartment = ({
                             onChange={handleDescriptionChange}
                             style={{ height: "70px" }}
                           />
-                          {descriptionError && (
-                            <p className="error-message">{descriptionError}</p>
-                          )}
+                          {descriptionError && <p className="error-message">{descriptionError}</p>}
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
+                      <button type="submit" className="btn btn-primary submit-btn">
                         {selectedHouse[indexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
