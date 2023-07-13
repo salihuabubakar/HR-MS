@@ -216,30 +216,83 @@
 }
 
 
-[data-title]:hover:after {
-  opacity: 1;
-  transition: all 0.1s ease 0.5s;
-  visibility: visible;
+/* Display text on hover*/
+#tooltip {
+  position: relative;
   cursor: pointer;
+  width: 750px;
+  bottom: 330px;
+  display: flex;
+  flex-direction: column;
 }
 
-[data-title]:after {
-  content: attr(data-title);
-  background-color: #f9f9f9;
-  font-size: 1rem;
-  position: absolute;
-  left: 10px;
-  color: #333;
-  /* Customize the tooltip text color */
-  padding: 5px;
-  /* Adjust the padding of the tooltip */
-  border: 1px solid #ccc;
-  /* Customize the tooltip border */
-  border-radius: 4px;
-  opacity: 0;
-  z-index: 99999;
-  visibility: hidden;
-  word-wrap: break-word;
-  overflow-x: auto;
-  width: 100%;
+@media screen and (max-width: 764px) {
+  #tooltip {
+      width: 450px;
+      bottom: 230px;
+    }
 }
+
+@media screen and (max-width: 474px) {
+  #tooltip {
+    width: 350px;
+    bottom: 200px;
+  }
+
+    #tooltipText {
+      right: auto;
+      left: auto;
+    }
+  
+    #tooltipText::before {
+      right: auto;
+      left: auto;
+    }
+}
+
+@media screen and (max-width: 370px) {
+  #tooltip {
+    width: 250px;
+    bottom: 150px;
+  }
+
+  #tooltipText {
+    right: auto;
+    left: auto;
+  }
+
+  #tooltipText::before {
+    right: auto;
+    left: auto;
+  }
+}
+
+#tooltip #tooltipText {
+  top: -130%;
+  visibility: visible;
+  opacity: 1;
+}
+
+#tooltipText {
+  position: absolute;
+  right: 30px;
+  top: 0;
+  background-color: #ccc;
+  color: #000;
+  white-space: normal;
+  padding: 15px 10px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+#tooltipText::before {
+  content: "";
+  position: absolute;
+  right: 30px;
+  top: 100%;
+  border: 15px solid;
+  border-color: #ccc #0000 #0000 #0000;
+}
+
+

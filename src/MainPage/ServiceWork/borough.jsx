@@ -13,6 +13,7 @@ import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { add_update_delete_borough } from "../../utils/sendToServer";
 import { useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
+import HoverText from "../Employees/Employees/HoverText";
 
 const borough = () => {
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
@@ -54,6 +55,14 @@ useEffect(() => {
 const [menu, setMenu] = useState(false);
 const [indexToEdit, setIndexToEdit] = useState();
 const [boroughId, setBoroughId] = useState("");
+const [isHover] = useGlobalState("isHover");
+const [isHoverText] = useGlobalState("isHoverText");
+
+useEffect(() => {
+  if (!isHover) {
+    setGlobalState("isHoverText", "");
+  }
+}, [isHover]);
 
 const handleEditBorough = (id, index) => {
   setBoroughId(id);
@@ -75,6 +84,11 @@ const handleDeleteBorough = (id) => {
       });
     }
   });
+
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
 
   const columns = [
     {
@@ -135,11 +149,15 @@ const handleDeleteBorough = (id) => {
       title: "Description",
       dataIndex: "borough_description",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
 
@@ -155,16 +173,10 @@ const handleDeleteBorough = (id) => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a
-              className="dropdown-item"
-              onClick={() => handleEditBorough(record.id, index)}
-            >
+            <a className="dropdown-item" onClick={() => handleEditBorough(record.id, index)}>
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeleteBorough(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeleteBorough(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -196,10 +208,7 @@ const handleDeleteBorough = (id) => {
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
-                <a
-                  className="btn add-btn"
-                  onClick={() => setGlobalState("showBoroughModal", true)}
-                >
+                <a className="btn add-btn" onClick={() => setGlobalState("showBoroughModal", true)}>
                   <i className="fa fa-plus" /> Add Borough
                 </a>
               </div>
@@ -265,12 +274,14 @@ const handleDeleteBorough = (id) => {
           </div>
         </div>
 
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
+
         {showBoroughModal && (
-          <AddBorough
-            dispatchBorough={dispatchBorough}
-            indexToEdit={indexToEdit}
-            id={boroughId}
-          />
+          <AddBorough dispatchBorough={dispatchBorough} indexToEdit={indexToEdit} id={boroughId} />
         )}
         {deleteBoroughModal && (
           <DeleteModal

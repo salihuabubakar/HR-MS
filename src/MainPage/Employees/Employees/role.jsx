@@ -10,6 +10,7 @@ import "../../antdstyle.css"
 import AddRole from '../../../_components/modelbox/AddRole';
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
+import HoverText from './HoverText';
 
 const Role = ({
   roleData,
@@ -38,6 +39,14 @@ const Role = ({
   const [deleteRoleModal] = useGlobalState("deleteRoleModal");
   const [indexToEdit, setIndexToEdit] = useState();
   const [getRoleId, setGetRoleId] = useState();
+  const [isHoverForRole] = useGlobalState("isHoverForRole");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHoverForRole) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHoverForRole]);
 
   useEffect(() => {
     if (!showRoleModal) {
@@ -65,6 +74,11 @@ const Role = ({
     setGlobalState("departmentError", "");
   };
 
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHoverForRole", true);
+    setGlobalState("isHoverText", text);
+  };
+
   const columns = [
     {
       title: "#",
@@ -78,13 +92,9 @@ const Role = ({
       dataIndex: "department",
       render: (text, record, index) => {
         const { department } = record;
-        const matchedDepartment = departmentData?.find(
-          (d) => d.id === department
-        );
+        const matchedDepartment = departmentData?.find((d) => d.id === department);
         if (matchedDepartment) {
-          return (
-            <React.Fragment>{`${matchedDepartment.department_name}`}</React.Fragment>
-          );
+          return <React.Fragment>{`${matchedDepartment.department_name}`}</React.Fragment>;
         } else {
           return null; // or return a default value if no match is found
         }
@@ -97,6 +107,17 @@ const Role = ({
     {
       title: "Description",
       dataIndex: "description",
+      render: (text, record, index) => {
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
+      },
     },
     {
       title: "Action",
@@ -110,16 +131,10 @@ const Role = ({
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a
-              className="dropdown-item"
-              onClick={() => handleRoleEdit(record.id, index)}
-            >
+            <a className="dropdown-item" onClick={() => handleRoleEdit(record.id, index)}>
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleRoleDelete(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleRoleDelete(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -158,10 +173,7 @@ const Role = ({
               </span>
             </div>
             <div className="col-auto float-end ml-auto">
-              <a
-                className="btn add-btn"
-                onClick={() => setGlobalState("showRoleModal", true)}
-              >
+              <a className="btn add-btn" onClick={() => setGlobalState("showRoleModal", true)}>
                 <i className="fa fa-plus" /> Add Role
               </a>
             </div>
@@ -186,6 +198,11 @@ const Role = ({
         </div>
       </div>
       {/* /Page Content */}
+      {isHoverForRole && (
+        <>
+          <HoverText isHoverText={isHoverText} />
+        </>
+      )}
       {/* Add Designation Modal */}
       {showRoleModal && (
         <AddRole
@@ -197,11 +214,7 @@ const Role = ({
       )}
       {/* /Add Designation Modal */}
       {deleteRoleModal && (
-        <DeleteModal
-          deleteAction={dispatchRole}
-          iDToDelete={getRoleId}
-          modalTitle={"Role"}
-        />
+        <DeleteModal deleteAction={dispatchRole} iDToDelete={getRoleId} modalTitle={"Role"} />
       )}
       {/* /Delete Department Modal */}
     </div>

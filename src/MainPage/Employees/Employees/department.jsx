@@ -11,6 +11,7 @@ import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import { initDept, savedDeptReducer } from "../../../utils/localStorage";
 import AddDepartment from "../../../_components/modelbox/AddDepartment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
+import HoverText from "./HoverText";
 
 const Department = ({
   departmentData,
@@ -38,6 +39,14 @@ const Department = ({
   const [deleteDeptModal] = useGlobalState("deleteDeptModal");
   const [indexToEdit, setIndexToEdit] = useState();
   const [deptIdToEdit, setDeptIdToEdit] = useState("");
+  const [isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
 
   useEffect(() => {
     if (!showDeptModal) {
@@ -66,6 +75,11 @@ const Department = ({
     setGlobalState("departmentError", "");
   };
 
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
+
   const columns = [
     {
       title: "#",
@@ -81,6 +95,17 @@ const Department = ({
     {
       title: "Description",
       dataIndex: "description",
+      render: (text, record, index) => {
+        if(text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
+      },
     },
     {
       title: "Action",
@@ -94,16 +119,10 @@ const Department = ({
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeptEdit(record.id, index)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeptEdit(record.id, index)}>
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeptDelete(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeptDelete(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -141,10 +160,7 @@ const Department = ({
               </span>
             </div>
             <div className="col-auto float-end ml-auto">
-              <a
-                className="btn add-btn"
-                onClick={() => setGlobalState("showDeptModal", true)}
-              >
+              <a className="btn add-btn" onClick={() => setGlobalState("showDeptModal", true)}>
                 <i className="fa fa-plus" /> Add Department
               </a>
             </div>
@@ -168,6 +184,12 @@ const Department = ({
           </div>
         </div>
       </div>
+
+      {isHover && (
+        <>
+          <HoverText isHoverText={isHoverText} />
+        </>
+      )}
       {/* /Page Content */}
       {/* Add Department Modal */}
       {showDeptModal && (

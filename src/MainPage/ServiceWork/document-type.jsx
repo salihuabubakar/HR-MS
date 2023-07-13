@@ -16,6 +16,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
+import HoverText from "../Employees/Employees/HoverText";
 
 const documenttype = () => {
   const { residentDocumentTypeData, residentDocumentTypeLoading } = useResidentDocumentTypeFetching();
@@ -63,6 +64,14 @@ const documenttype = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentDocumentTypeId, setResidentDocumentTypeId] = useState("");
+  const [isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
 
   const handleEditResidentDocumentType = (id, index) => {
     setResidentDocumentTypeId(id);
@@ -84,6 +93,11 @@ const documenttype = () => {
       });
     }
   });
+
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
 
   const columns = [
     {
@@ -111,11 +125,15 @@ const documenttype = () => {
       title: "Description",
       dataIndex: "description",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
     {
@@ -168,17 +186,13 @@ const documenttype = () => {
                   <li className="breadcrumb-item">
                     <Link to="/app/main/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">
-                    Resident Document Type
-                  </li>
+                  <li className="breadcrumb-item active">Resident Document Type</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
                 <a
                   className="btn add-btn"
-                  onClick={() =>
-                    setGlobalState("showResidentDocumentTypeModal", true)
-                  }
+                  onClick={() => setGlobalState("showResidentDocumentTypeModal", true)}
                 >
                   <i className="fa fa-plus" /> Add Resident Document Type
                 </a>
@@ -197,9 +211,7 @@ const documenttype = () => {
             <div className="col-sm-6 col-md-4">
               <div className="form-group form-focus">
                 <input type="text" className="form-control floating" />
-                <label className="focus-label">
-                  Resident Document Type Name
-                </label>
+                <label className="focus-label">Resident Document Type Name</label>
               </div>
             </div>
             <div className="col-sm-6 col-md-4">
@@ -247,6 +259,11 @@ const documenttype = () => {
           </div>
         </div>
         {/* /Page Content */}
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
         {showResidentDocumentTypeModal && (
           <AddResidentDocumentType
             dispatchResidentDocumentType={dispatchResidentDocumentType}

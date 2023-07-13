@@ -25,6 +25,11 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showTaskDocumentModal: false,
   deleteTaskDocument: false,
 
+  // Hover to show and hide text and store text
+  isHover: false,
+  isHoverText: [],
+  isHoverForRole: false,
+
   // Task Manager
   showTaskModal: false,
   taskError: [],

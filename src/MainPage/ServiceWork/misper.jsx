@@ -18,6 +18,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
+import HoverText from "../Employees/Employees/HoverText";
 
 const Misper = () => {
   const { residentMisperData, residentMisperLoading } = useResidentMisperFetching();
@@ -63,6 +64,14 @@ const Misper = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentMisperId, setResidentMisperId] = useState("");
+  const [isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
 
   const handleEditResidentMisper = (id, index) => {
     setResidentMisperId(id);
@@ -85,6 +94,11 @@ const Misper = () => {
     }
   });
 
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
+
   const columns = [
     {
       title: "#",
@@ -98,11 +112,7 @@ const Misper = () => {
       dataIndex: "date_last_seen",
       render: (text, record, index) => {
         const { date_last_seen } = record;
-        return (
-          <React.Fragment>
-            {moment(date_last_seen).format("DD MMM YYYY")}
-          </React.Fragment>
-        );
+        return <React.Fragment>{moment(date_last_seen).format("DD MMM YYYY")}</React.Fragment>;
       },
     },
     {
@@ -130,11 +140,7 @@ const Misper = () => {
       dataIndex: "date_returned",
       render: (text, record, index) => {
         const { date_returned } = record;
-        return (
-          <React.Fragment>
-            {moment(date_returned).format("DD MMM YYYY")}
-          </React.Fragment>
-        );
+        return <React.Fragment>{moment(date_returned).format("DD MMM YYYY")}</React.Fragment>;
       },
     },
     {
@@ -185,11 +191,15 @@ const Misper = () => {
       title: "Description",
       dataIndex: "description",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
     {
@@ -204,16 +214,10 @@ const Misper = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a
-              className="dropdown-item"
-              onClick={() => handleEditResidentMisper(record.id, index)}
-            >
+            <a className="dropdown-item" onClick={() => handleEditResidentMisper(record.id, index)}>
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeleteResidentMisper(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeleteResidentMisper(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -248,9 +252,7 @@ const Misper = () => {
               <div className="col-auto float-end ml-auto">
                 <a
                   className="btn add-btn"
-                  onClick={() =>
-                    setGlobalState("showResidentMisperModal", true)
-                  }
+                  onClick={() => setGlobalState("showResidentMisperModal", true)}
                 >
                   <i className="fa fa-plus" /> Add Resident Misper
                 </a>
@@ -316,6 +318,12 @@ const Misper = () => {
             </div>
           </div>
         </div>
+
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
 
         {showResidentMisperModal && (
           <AddResidentMisper

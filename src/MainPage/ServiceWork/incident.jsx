@@ -18,6 +18,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
+import HoverText from "../Employees/Employees/HoverText";
 
 const Incident = () => {
   const { residentIncidentData, residentIncidentLoading } = useResidentIncidentFetching();
@@ -65,6 +66,14 @@ const Incident = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentIncidentId, setResidentIncidentId] = useState("");
+  const [isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
 
   const handleEditResidentIncident = (id, index) => {
     setResidentIncidentId(id);
@@ -87,6 +96,11 @@ const Incident = () => {
     }
   });
 
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
+
   const columns = [
     {
       title: "#",
@@ -105,12 +119,10 @@ const Incident = () => {
         const month = dateObj.getMonth();
         const hours = dateObj.getHours();
         const minutes = dateObj.getMinutes();
-        const seconds = dateObj.getSeconds(); 
+        const seconds = dateObj.getSeconds();
         return (
           <React.Fragment>
-            {`${moment(dateObj).format(
-              "DD MMM YYYY"
-            )} - ${hours}:${minutes}:${seconds}`}
+            {`${moment(dateObj).format("DD MMM YYYY")} - ${hours}:${minutes}:${seconds}`}
           </React.Fragment>
         );
       },
@@ -151,11 +163,15 @@ const Incident = () => {
       title: "Description",
       dataIndex: "description",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
     {
@@ -176,10 +192,7 @@ const Incident = () => {
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeleteResidentIncident(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeleteResidentIncident(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -214,9 +227,7 @@ const Incident = () => {
               <div className="col-auto float-end ml-auto">
                 <a
                   className="btn add-btn"
-                  onClick={() =>
-                    setGlobalState("showResidentIncidentModal", true)
-                  }
+                  onClick={() => setGlobalState("showResidentIncidentModal", true)}
                 >
                   <i className="fa fa-plus" /> Add Resident Incident
                 </a>
@@ -282,6 +293,12 @@ const Incident = () => {
             </div>
           </div>
         </div>
+
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
 
         {showResidentIncidentModal && (
           <AddResidentIncident

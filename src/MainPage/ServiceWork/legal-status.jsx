@@ -14,6 +14,7 @@ import { add_update_delete_resident_legal_status_type } from "../../utils/sendTo
 import { useResidentLegalStatusTypeFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
+import HoverText from "../Employees/Employees/HoverText";
 
 const legalStatus = () => {
   const { residentLegalStatusTypeData, residentLegalStatusTypeLoading } =
@@ -62,6 +63,14 @@ const legalStatus = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentLegalStatusTypeId, setResidentLegalStatusTypeId] = useState("");
+  const [isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
 
   const handleEditResidentLegalStatusType = (id, index) => {
     setResidentLegalStatusTypeId(id);
@@ -84,6 +93,11 @@ const legalStatus = () => {
     }
   });
 
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
+
   const columns = [
     {
       title: "#",
@@ -103,11 +117,15 @@ const legalStatus = () => {
       title: "Description",
       dataIndex: "legal_status_description",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
     {
@@ -160,17 +178,13 @@ const legalStatus = () => {
                   <li className="breadcrumb-item">
                     <Link to="/app/main/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">
-                    Resident Legal Status Type
-                  </li>
+                  <li className="breadcrumb-item active">Resident Legal Status Type</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
                 <a
                   className="btn add-btn"
-                  onClick={() =>
-                    setGlobalState("showResidentLegalStatusTypeModal", true)
-                  }
+                  onClick={() => setGlobalState("showResidentLegalStatusTypeModal", true)}
                 >
                   <i className="fa fa-plus" /> Add Resident Legal Status Type
                 </a>
@@ -183,17 +197,13 @@ const legalStatus = () => {
             <div className="col-sm-6 col-md-4">
               <div className="form-group form-focus">
                 <input type="text" className="form-control floating" />
-                <label className="focus-label">
-                  Resident Legal Status Type ID
-                </label>
+                <label className="focus-label">Resident Legal Status Type ID</label>
               </div>
             </div>
             <div className="col-sm-6 col-md-4">
               <div className="form-group form-focus">
                 <input type="text" className="form-control floating" />
-                <label className="focus-label">
-                  Resident Legal Status Type Name
-                </label>
+                <label className="focus-label">Resident Legal Status Type Name</label>
               </div>
             </div>
             <div className="col-sm-6 col-md-4">
@@ -232,9 +242,7 @@ const legalStatus = () => {
                   pagination={paginationSettings}
                   dataSource={residentLegalStatusTypeData}
                   columns={columns}
-                  rowKey={(residentLegalStatusType) =>
-                    residentLegalStatusType?.id
-                  }
+                  rowKey={(residentLegalStatusType) => residentLegalStatusType?.id}
                   bordered
                   loading={residentLegalStatusTypeLoading}
                 />
@@ -243,6 +251,11 @@ const legalStatus = () => {
           </div>
         </div>
         {/* /Page Content */}
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
         {showResidentLegalStatusTypeModal && (
           <AddResidentLegalStatusType
             dispatchResidentLegalStatusType={dispatchResidentLegalStatusType}

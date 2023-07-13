@@ -47,6 +47,7 @@ import AddResidentSocialWorkerModal from "../../_components/modelbox/AddResident
 import AddResidentReferralModal from "../../_components/modelbox/AddResidentReferralModal";
 import { Wrapper } from "./style";
 import "../Employees/Employees/style.css";
+import HoverText from "../Employees/Employees/HoverText";
 
 const Profile = ({
   getSelectedData,
@@ -545,6 +546,21 @@ useEffect(() => {
 }, [showResidentReferralModal]);
 
 
+const [isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
+
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
+
+
   const selectedResidentId = getSelectedData?.id;
   const first_name = getSelectedData?.first_name;
   const middle_name = getSelectedData?.middle_name;
@@ -820,9 +836,13 @@ useEffect(() => {
                                       <td>{status}</td>
                                       <td>{start_date}</td>
                                       <td>{end_date}</td>
-                                      <td data-title={description}>
-                                        Hover to show
-                                      </td>
+                                      {description && description && (
+                                        <>
+                                          <td onMouseEnter={() => handleHoverEffect(description)}>
+                                            Hover to show
+                                          </td>
+                                        </>
+                                      )}
                                       <td className="dropdown dropdown-action text-end">
                                         <a
                                           className="action-icon dropdown-toggle"
@@ -936,9 +956,13 @@ useEffect(() => {
                                     <tr style={{ height: "90px" }} key={id}>
                                       <td>{referral_name}</td>
                                       <td>{referral_date}</td>
-                                      <td data-title={referral_description}>
-                                        Hover to show
-                                      </td>
+                                      {referral_description && referral_description && (
+                                        <>
+                                          <td onMouseEnter={() => handleHoverEffect(referral_description)}>
+                                            Hover to show
+                                          </td>
+                                        </>
+                                      )}
                                       <td>
                                         {referral_document &&
                                         regex.test(referral_document) ? (
@@ -1353,9 +1377,13 @@ useEffect(() => {
                                       <td>{appointment_name}</td>
                                       <td>{appointment_time}</td>
                                       <td>{appointment_date}</td>
-                                      <td data-title={appointment_description}>
-                                        Hover to show
-                                      </td>
+                                      {appointment_description && appointment_description && (
+                                        <>
+                                          <td onMouseEnter={() => handleHoverEffect(appointment_description)}>
+                                            Hover to show
+                                          </td>
+                                        </>
+                                      )}
                                       <td className="dropdown dropdown-action text-end">
                                         <a
                                           className="action-icon dropdown-toggle"
@@ -2704,6 +2732,12 @@ useEffect(() => {
         </div>
         {/* /Document Upload Tab */}
       </div>
+
+      {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
 
       {/* Resident Gp */}
       {showResidentGpModal && (

@@ -14,6 +14,7 @@ import { add_update_delete_resident_gp_type } from "../../utils/sendToServer";
 import { useResidentGpTypeFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
+import HoverText from "../Employees/Employees/HoverText";
 
 const GpType = () => {
   const { residentGpTypeData, residentGpTypeLoading } = useResidentGpTypeFetching();
@@ -57,6 +58,14 @@ const GpType = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentGpTypeId, setResidentGpTypeId] = useState("");
+  const [isHover] = useGlobalState("isHover");
+  const [isHoverText] = useGlobalState("isHoverText");
+
+  useEffect(() => {
+    if (!isHover) {
+      setGlobalState("isHoverText", "");
+    }
+  }, [isHover]);
 
   const handleEditResidentGpType = (id, index) => {
     setResidentGpTypeId(id);
@@ -79,6 +88,11 @@ const GpType = () => {
     }
   });
 
+  const handleHoverEffect = (text) => {
+    setGlobalState("isHover", true);
+    setGlobalState("isHoverText", text);
+  };
+
   const columns = [
     {
       title: "#",
@@ -98,11 +112,15 @@ const GpType = () => {
       title: "Description",
       dataIndex: "gp_type_description",
       render: (text, record, index) => {
-        return (
-          <div style={{ width: "100%" }} data-title={text}>
-            Hover to show
-          </div>
-        );
+        if (text && text) {
+          return (
+            <div>
+              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
+            </div>
+          );
+        } else {
+          return;
+        }
       },
     },
     {
@@ -117,16 +135,10 @@ const GpType = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a
-              className="dropdown-item"
-              onClick={() => handleEditResidentGpType(record.id, index)}
-            >
+            <a className="dropdown-item" onClick={() => handleEditResidentGpType(record.id, index)}>
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
-              className="dropdown-item"
-              onClick={() => handleDeleteResidentGpType(record.id)}
-            >
+            <a className="dropdown-item" onClick={() => handleDeleteResidentGpType(record.id)}>
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -161,9 +173,7 @@ const GpType = () => {
               <div className="col-auto float-end ml-auto">
                 <a
                   className="btn add-btn"
-                  onClick={() =>
-                    setGlobalState("showResidentGpTypeModal", true)
-                  }
+                  onClick={() => setGlobalState("showResidentGpTypeModal", true)}
                 >
                   <i className="fa fa-plus" /> Add Resident Gp Type
                 </a>
@@ -230,6 +240,11 @@ const GpType = () => {
           </div>
         </div>
         {/* /Page Content */}
+        {isHover && (
+          <>
+            <HoverText isHoverText={isHoverText} />
+          </>
+        )}
         {showResidentGpTypeModal && (
           <AddResidentGpType
             dispatchResidentGpType={dispatchResidentGpType}
