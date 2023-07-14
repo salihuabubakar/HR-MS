@@ -5,6 +5,7 @@ import {
   PopupWrapper,
   Card,
 } from "./Addemployee.style";
+import { RadioBtn } from "./styles";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { useResidentDocumentTypeFetching } from "../../utils/employeeCustomFetchHook";
 
@@ -117,10 +118,7 @@ const AddResidentDocumentModal = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">
@@ -131,9 +129,7 @@ const AddResidentDocumentModal = ({
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showResidentDocumentModal", false)
-                    }
+                    onClick={() => setGlobalState("showResidentDocumentModal", false)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -143,14 +139,10 @@ const AddResidentDocumentModal = ({
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Document Name
-                          </label>
+                          <label className="col-form-label">Document Name</label>
                           <input
                             value={document_name}
-                            onChange={(event) =>
-                              setDocumentName(event.target.value)
-                            }
+                            onChange={(event) => setDocumentName(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Document Name"
@@ -159,14 +151,10 @@ const AddResidentDocumentModal = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Document Number
-                          </label>
+                          <label className="col-form-label">Document Number</label>
                           <input
                             value={document_number}
-                            onChange={(event) =>
-                              setDocumentNumber(event.target.value)
-                            }
+                            onChange={(event) => setDocumentNumber(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Document Number"
@@ -189,16 +177,12 @@ const AddResidentDocumentModal = ({
                             <option value="Expired">Expired</option>
                             <option value="Pending">Pending</option>
                           </select>
-                          {statusError && (
-                            <p className="error-message">{statusError}</p>
-                          )}
+                          {statusError && <p className="error-message">{statusError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Document Type
-                          </label>
+                          <label className="col-form-label">Document Type</label>
                           <select
                             value={document_type}
                             onChange={(e) => setDocumentType(e.target.value)}
@@ -207,7 +191,7 @@ const AddResidentDocumentModal = ({
                             <option disabled value="">
                               Select
                             </option>
-                            {residentDocumentTypeData?.map(type => {
+                            {residentDocumentTypeData?.map((type) => {
                               return (
                                 <option key={type.id} value={type.id}>
                                   {type.document_type}
@@ -219,7 +203,7 @@ const AddResidentDocumentModal = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Issue Date <span className="text-danger">*</span>
                           </label>
                           <input
@@ -233,7 +217,7 @@ const AddResidentDocumentModal = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Expiry Date</label>
+                          <label className="col-form-label">Expiry Date</label>
                           <input
                             value={expiry_date}
                             onChange={(e) => setExpiryDate(e.target.value)}
@@ -245,19 +229,25 @@ const AddResidentDocumentModal = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Verify</label>
-                          <input
-                            checked={verified}
-                            onChange={(e) => setVerified(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Verify"
-                          />
+                          <label className="col-form-label">Verify</label>
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="verified"
+                              checked={verified}
+                              id="verified"
+                              placeholder="Verify"
+                              onChange={(e) => setVerified(e.target.checked)}
+                            />
+                            <label htmlFor="verified">
+                              <span>Verify</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document File Upload</label>{" "}
+                          <label className="col-form-label">Document File Upload</label>{" "}
                           <span className="text-danger">*</span>
                           <input
                             onChange={handleFileUpload}
@@ -266,19 +256,13 @@ const AddResidentDocumentModal = ({
                             accept=".png, .jpg, .pdf, .doc, .docx, .xls, .xlsx, .txt, .webp"
                             placeholder="Document File Upload"
                           />
-                          {documentError && (
-                            <p className="error-message">{documentError}</p>
-                          )}
+                          {documentError && <p className="error-message">{documentError}</p>}
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedResidentDocument[residentDocumentIndexToEdit]
-                          ?.id
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedResidentDocument[residentDocumentIndexToEdit]?.id
                           ? "Update"
                           : "Save"}
                       </button>

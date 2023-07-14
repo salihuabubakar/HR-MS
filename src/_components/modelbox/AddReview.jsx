@@ -123,16 +123,11 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer top={true} className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedReviewInfo[indexToEdit]?.id
-                      ? "Edit Review"
-                      : "Add Review"}
+                    {selectedReviewInfo[indexToEdit]?.id ? "Edit Review" : "Add Review"}
                   </h5>
                   <button
                     type="button"
@@ -163,14 +158,12 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
                               </option>
                             ))}
                           </select>
-                          {employeeError && (
-                            <p className="error-message">{employeeError}</p>
-                          )}
+                          {employeeError && <p className="error-message">{employeeError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Review Type <span className="text-danger">*</span>
                           </label>
                           <input
@@ -181,14 +174,12 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
                             type="text"
                             onChange={handleReviewTypeChange}
                           />
-                          {reviewTypeError && (
-                            <p className="error-message">{reviewTypeError}</p>
-                          )}
+                          {reviewTypeError && <p className="error-message">{reviewTypeError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Review Date <span className="text-danger">*</span>
                           </label>
                           <input
@@ -198,14 +189,12 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
                             type="date"
                             placeholder="Review Date"
                           />
-                          {reviewDateError && (
-                            <p className="error-message">{reviewDateError}</p>
-                          )}
+                          {reviewDateError && <p className="error-message">{reviewDateError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Review Status</label>
+                          <label className="col-form-label">Review Status</label>
                           <input
                             value={review_status}
                             onChange={(e) => setReviewStatus(e.target.value)}
@@ -217,9 +206,7 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
-                            Review Manager
-                          </label>
+                          <label className="col-form-label">Review Manager</label>
                           <select
                             value={review_manager}
                             onChange={(e) => setReviewManager(e.target.value)}
@@ -238,9 +225,7 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
-                            Review File
-                          </label>
+                          <label className="col-form-label">Review File</label>
                           <input
                             onChange={handleReviewFileChange}
                             className="form-control floating"
@@ -251,9 +236,7 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">
-                            Description
-                          </label>
+                          <label className="col-form-label">Description</label>
                           <textarea
                             className="form-control floating"
                             name="description"
@@ -266,13 +249,8 @@ const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        onClick={handleSubmit}
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedReviewInfo[indexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                      <button onClick={handleSubmit} className="btn btn-primary submit-btn">
+                        {selectedReviewInfo[indexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>

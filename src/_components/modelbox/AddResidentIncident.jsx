@@ -10,8 +10,7 @@ import {
   useResidentDocumentFetching,
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { MenuItem, Autocomplete, TextField } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import Select from "react-select";
 
 const AddResidentIncident = ({
   indexToEdit,
@@ -84,6 +83,19 @@ const AddResidentIncident = ({
     setGlobalState("showResidentIncidentModal", false);
   };
 
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
+
   const handleDateTimeChange = (e) => {
     setDateTime(e.target.value);
     setDateTimeError("");
@@ -103,19 +115,22 @@ const AddResidentIncident = ({
     });
   });
 
-  const handleDocumentChange = (event, value) => {
-    const list = value?.map((v) => v.id);
-    setDocument(list);
-    // setDocumentError("");
+  const handleDocumentChange = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setDocument(mappedID);
   };
 
   const getDocumentDefaultValues = (document) => {
-    if (Array.isArray(document)) {
-      return document?.map((doc) => ({
-        id: doc.id,
-      }));
+    const val = selectedResidentIncident[indexToEdit]?.documents;
+    if (!selectedResidentIncident || !val) {
+      return [];
     }
-    return [];
+    return residentDocumentData
+      .filter((document) => val.includes(document.id))
+      .map((document) => ({
+        id: document.id,
+        document_name: document.document_name,
+      }));
   };
 
 
@@ -124,23 +139,16 @@ const AddResidentIncident = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">
-                    {selectedResidentIncident[indexToEdit]?.id
-                      ? "Edit Incident"
-                      : "Add Incident"}
+                    {selectedResidentIncident[indexToEdit]?.id ? "Edit Incident" : "Add Incident"}
                   </h5>
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showResidentIncidentModal", false)
-                    }
+                    onClick={() => setGlobalState("showResidentIncidentModal", false)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -159,9 +167,7 @@ const AddResidentIncident = ({
                             type="datetime-local"
                             placeholder="Visit Date"
                           />
-                          {dateTimeError && (
-                            <p className="error-message">{dateTimeError}</p>
-                          )}
+                          {dateTimeError && <p className="error-message">{dateTimeError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -204,46 +210,25 @@ const AddResidentIncident = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document</label>
-                          <Autocomplete
-                            multiple
-                            id="tags-standard"
+                          <label className="col-form-label">
+                            Select Document <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getDocumentDefaultValues()}
+                            onChange={handleDocumentChange}
+                            isMulti
+                            closeMenuOnSelect={false}
                             options={document}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
                             getOptionLabel={(option) => option.document_name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
-                            defaultValue={getDocumentDefaultValues(
-                              selectedResidentIncident[indexToEdit]?.documents
-                            )}
-                            onChange={(event, value) =>
-                              handleDocumentChange(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.document_name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Document"
-                              />
-                            )}
+                            placeholder="Select Multiple Document"
                           />
                         </div>
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">Description</label>{" "}
+                          <label className="col-form-label">Description</label>{" "}
                           <span className="text-danger">*</span>
                           <textarea
                             value={description}
@@ -253,20 +238,13 @@ const AddResidentIncident = ({
                             placeholder="Description"
                             style={{ height: "90px" }}
                           />
-                          {descriptionError && (
-                            <p className="error-message">{descriptionError}</p>
-                          )}
+                          {descriptionError && <p className="error-message">{descriptionError}</p>}
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedResidentIncident[indexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedResidentIncident[indexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>

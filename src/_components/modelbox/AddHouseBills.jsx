@@ -7,8 +7,8 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import { useHouseDocumentFetching } from "../../utils/employeeCustomFetchHook";
-import { MenuItem, Autocomplete, TextField } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import { RadioBtn } from "./styles";
+import Select from "react-select";
 
 const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
@@ -84,6 +84,19 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
     setGlobalState("showBillModal", false);
   };
 
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
     setTitleError("");
@@ -102,24 +115,28 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
   const document = [];
   houseDocumentsData?.map((doc) => {
     document.push({
-      name: doc.title,
+      title: doc.title,
       id: doc.id,
     });
   });
 
-  const handleHouseDocuments = (event, value) => {
-    const list = value?.map((v) => v.id);
-    setDocuments(list);
+  const handleHouseDocuments = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setDocuments(mappedID);
     setDocumentsError("");
   };
 
-  const getHouseDocumentDefaultValues = (document) => {
-    if (Array.isArray(document)) {
-      return document.map((doc) => ({
-        id: doc.id,
-      }));
+  const getHouseDocumentDefaultValues = () => {
+    const val = selectedBill[billIndexToEdit]?.documents;
+    if (!selectedBill || !val) {
+      return [];
     }
-    return [];
+    return houseDocumentsData
+      .filter((document) => val.includes(document.id))
+      .map((document) => ({
+        id: document.id,
+        title: document.title,
+      }));
   };
 
   return (
@@ -127,16 +144,11 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer top={true} className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedBill[billIndexToEdit]?.id
-                      ? "Edit Bill"
-                      : "Add Bill"}
+                    {selectedBill[billIndexToEdit]?.id ? "Edit Bill" : "Add Bill"}
                   </h5>
                   <button
                     type="button"
@@ -161,9 +173,7 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
                             type="text"
                             placeholder="Title"
                           />
-                          {titleError && (
-                            <p className="error-message">{titleError}</p>
-                          )}
+                          {titleError && <p className="error-message">{titleError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -178,9 +188,7 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
                             type="text"
                             placeholder="Amount"
                           />
-                          {amountError && (
-                            <p className="error-message">{amountError}</p>
-                          )}
+                          {amountError && <p className="error-message">{amountError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -195,80 +203,49 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
                             type="date"
                             placeholder="Date"
                           />
-                          {dateError && (
-                            <p className="error-message">{dateError}</p>
-                          )}
+                          {dateError && <p className="error-message">{dateError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document</label> {""}
-                          <span className="text-danger">*</span>
-                          <Autocomplete
-                            sx={{
-                              m: 1,
-                              width: 350,
-                              // "& .MuiInputBase-root": {
-                              //   height: "45px", // Adjust the height here
-                              // },
-                            }}
-                            multiple
-                            id="tags-standard"
+                          <label className="col-form-label">
+                            Select Document <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getHouseDocumentDefaultValues()}
+                            onChange={handleHouseDocuments}
+                            isMulti
+                            closeMenuOnSelect={false}
                             options={document}
-                            getOptionLabel={(option) => option.name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
-                            defaultValue={getHouseDocumentDefaultValues(
-                              selectedBill[billIndexToEdit]?.documents
-                            )}
-                            onChange={(event, value) =>
-                              handleHouseDocuments(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Names"
-                                placeholder="Photo Names"
-                              />
-                            )}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.title}
+                            placeholder="Select Multiple Document"
                           />
-                          {documentsError && (
-                            <p className="error-message">{documentsError}</p>
-                          )}
+                          {documentsError && <p className="error-message">{documentsError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Paid</label>
-                          <input
-                            checked={paid}
-                            onChange={(e) => setPaid(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Paid"
-                          />
+                          <label className="col-form-label">Paid</label>
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="paid"
+                              checked={paid}
+                              id="paid"
+                              placeholder="Paid"
+                              onChange={(e) => setPaid(e.target.checked)}
+                            />
+                            <label htmlFor="paid">
+                              <span>Paid</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
+                      <button type="submit" className="btn btn-primary submit-btn">
                         {selectedBill[billIndexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>

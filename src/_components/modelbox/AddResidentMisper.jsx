@@ -10,8 +10,7 @@ import {
   useResidentFetching
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { MenuItem, Autocomplete, TextField } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import Select from "react-select";
 
 const AddResidentMisper = ({
   indexToEdit,
@@ -132,6 +131,19 @@ const AddResidentMisper = ({
     setGlobalState("showResidentMisperModal", false);
   };
 
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
+
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
     setStatusError("");
@@ -150,18 +162,22 @@ const AddResidentMisper = ({
     });
   });
 
-  const handleDocumentChange = (event, value) => {
-    const list = value?.map((v) => v.id);
-    setDocument(list);
+  const handleDocumentChange = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setDocument(mappedID);
   };
 
   const getDocumentDefaultValues = (document) => {
-    if (Array.isArray(document)) {
-      return document?.map((doc) => ({
-        id: doc.id,
-      }));
+    const val = selectedResidentMisper[indexToEdit]?.documents;
+    if (!selectedResidentMisper || !val) {
+      return [];
     }
-    return [];
+    return residentDocumentData
+      .filter((document) => val.includes(document.id))
+      .map((document) => ({
+        id: document.id,
+        document_name: document.document_name,
+      }));
   };
 
 
@@ -170,23 +186,16 @@ const AddResidentMisper = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">
-                    {selectedResidentMisper[indexToEdit]?.id
-                      ? "Edit Misper"
-                      : "Add Misper"}
+                    {selectedResidentMisper[indexToEdit]?.id ? "Edit Misper" : "Add Misper"}
                   </h5>
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showResidentMisperModal", false)
-                    }
+                    onClick={() => setGlobalState("showResidentMisperModal", false)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -196,9 +205,7 @@ const AddResidentMisper = ({
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Last seen Date
-                          </label>{" "}
+                          <label className="col-form-label">Last seen Date</label>{" "}
                           <span className="text-danger">*</span>
                           <input
                             value={date_last_seen}
@@ -211,9 +218,7 @@ const AddResidentMisper = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Time last Seen
-                          </label>{" "}
+                          <label className="col-form-label">Time last Seen</label>{" "}
                           <span className="text-danger">*</span>
                           <input
                             value={time_last_seen}
@@ -238,9 +243,7 @@ const AddResidentMisper = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Police CAD Closed
-                          </label>
+                          <label className="col-form-label">Police CAD Closed</label>
                           <input
                             value={police_CAD_closed}
                             onChange={(e) => setPoliceCADclose(e.target.value)}
@@ -252,9 +255,7 @@ const AddResidentMisper = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            EDT Reference
-                          </label>
+                          <label className="col-form-label">EDT Reference</label>
                           <input
                             value={edt_reference}
                             onChange={(e) => setEdtRef(e.target.value)}
@@ -266,9 +267,7 @@ const AddResidentMisper = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            EDT Reference Closed
-                          </label>
+                          <label className="col-form-label">EDT Reference Closed</label>
                           <input
                             value={edt_reference_closed}
                             onChange={(e) => setEdtRefClose(e.target.value)}
@@ -280,9 +279,7 @@ const AddResidentMisper = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Date Returned
-                          </label>{" "}
+                          <label className="col-form-label">Date Returned</label>{" "}
                           <span className="text-danger">*</span>
                           <input
                             value={date_returned}
@@ -295,9 +292,7 @@ const AddResidentMisper = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Time Returned
-                          </label>{" "}
+                          <label className="col-form-label">Time Returned</label>{" "}
                           <span className="text-danger">*</span>
                           <input
                             value={time_returned}
@@ -323,9 +318,7 @@ const AddResidentMisper = ({
                             <option value="Open">Open</option>
                             <option value="Closed">Closed</option>
                           </select>
-                          {statusError && (
-                            <p className="error-message">{statusError}</p>
-                          )}
+                          {statusError && <p className="error-message">{statusError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -368,46 +361,25 @@ const AddResidentMisper = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document</label>
-                          <Autocomplete
-                            multiple
-                            id="tags-standard"
+                          <label className="col-form-label">
+                            Select Document <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getDocumentDefaultValues()}
+                            onChange={handleDocumentChange}
+                            isMulti
+                            closeMenuOnSelect={false}
                             options={document}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
                             getOptionLabel={(option) => option.document_name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
-                            defaultValue={getDocumentDefaultValues(
-                              selectedResidentMisper[indexToEdit]?.documents
-                            )}
-                            onChange={(event, value) =>
-                              handleDocumentChange(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.document_name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Document"
-                              />
-                            )}
+                            placeholder="Select Multiple Document"
                           />
                         </div>
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">Description</label>{" "}
+                          <label className="col-form-label">Description</label>{" "}
                           <span className="text-danger">*</span>
                           <textarea
                             value={description}
@@ -417,20 +389,13 @@ const AddResidentMisper = ({
                             placeholder="Description"
                             style={{ height: "90px" }}
                           />
-                          {descrptionError && (
-                            <p className="error-message">{descrptionError}</p>
-                          )}
+                          {descrptionError && <p className="error-message">{descrptionError}</p>}
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedResidentMisper[indexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedResidentMisper[indexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>

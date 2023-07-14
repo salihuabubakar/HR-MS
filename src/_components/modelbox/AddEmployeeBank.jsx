@@ -174,23 +174,16 @@ const AddEmployeeBank = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">
-                    {selectedEmployeeBank[employeeBankIndexToEdit]?.id
-                      ? "Edit Bank"
-                      : "Add Bank"}
+                    {selectedEmployeeBank[employeeBankIndexToEdit]?.id ? "Edit Bank" : "Add Bank"}
                   </h5>
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showEmployeeBankModal", false)
-                    }
+                    onClick={() => setGlobalState("showEmployeeBankModal", false)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -209,9 +202,7 @@ const AddEmployeeBank = ({
                             type="text"
                             placeholder="Bank Name"
                           />
-                          {bankNameError && (
-                            <p className="error-message">{bankNameError}</p>
-                          )}
+                          {bankNameError && <p className="error-message">{bankNameError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -225,16 +216,12 @@ const AddEmployeeBank = ({
                             type="text"
                             placeholder="Account Name"
                           />
-                          {accountNameError && (
-                            <p className="error-message">{accountNameError}</p>
-                          )}
+                          {accountNameError && <p className="error-message">{accountNameError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Account Number
-                          </label>{" "}
+                          <label className="col-form-label">Account Number</label>{" "}
                           <span className="text-danger">*</span>
                           <input
                             value={account_number}
@@ -244,9 +231,7 @@ const AddEmployeeBank = ({
                             placeholder="Account Number"
                           />
                           {accountNumberError && (
-                            <p className="error-message">
-                              {accountNumberError}
-                            </p>
+                            <p className="error-message">{accountNumberError}</p>
                           )}
                         </div>
                       </div>
@@ -261,9 +246,7 @@ const AddEmployeeBank = ({
                             type="text"
                             placeholder="Sort Code"
                           />
-                          {sortCodeError && (
-                            <p className="error-message">{sortCodeError}</p>
-                          )}
+                          {sortCodeError && <p className="error-message">{sortCodeError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -277,9 +260,7 @@ const AddEmployeeBank = ({
                             type="date"
                             placeholder="Date"
                           />
-                          {uploadDateError && (
-                            <p className="error-message">{uploadDateError}</p>
-                          )}
+                          {uploadDateError && <p className="error-message">{uploadDateError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -367,7 +348,7 @@ const AddEmployeeBank = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document File Upload</label>
+                          <label className="col-form-label">Document File Upload</label>
                           <input
                             onChange={handleFileUpload}
                             className="form-control floating"
@@ -379,13 +360,8 @@ const AddEmployeeBank = ({
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedEmployeeBank[employeeBankIndexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedEmployeeBank[employeeBankIndexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>

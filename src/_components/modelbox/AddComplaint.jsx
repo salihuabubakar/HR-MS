@@ -9,8 +9,7 @@ import {
   useResidentDocumentFetching
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { MenuItem, Autocomplete, TextField } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import Select from "react-select";
 
 const AddComplaint = ({
   indexToEdit,
@@ -110,6 +109,19 @@ const AddComplaint = ({
     setGlobalState("showComplaintModal", false);
   };
 
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
     setTitleError("");
@@ -128,19 +140,23 @@ const AddComplaint = ({
     });
   });
 
-  const handleDocumentChange = (event, value) => {
-    const list = value?.map((v) => v.id);
-    setDocument(list);
+  const handleDocumentChange = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setDocument(mappedID);
     setDocumentError("");
   };
 
-  const getDocumentDefaultValues = (document) => {
-    if (Array.isArray(document)) {
-      return document?.map((doc) => ({
-        id: doc.id,
-      }));
+  const getDocumentDefaultValues = () => {
+    const val = selectedComplaint[indexToEdit]?.documents;
+    if (!selectedComplaint || !val) {
+      return [];
     }
-    return [];
+    return residentDocumentData
+      .filter((document) => val.includes(document.id))
+      .map((document) => ({
+        id: document.id,
+        document_name: document.document_name,
+      }));
   };
 
 
@@ -149,16 +165,11 @@ const AddComplaint = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">
-                    {selectedComplaint[indexToEdit]?.id
-                      ? "Edit Complaint"
-                      : "Add Complaint"}
+                    {selectedComplaint[indexToEdit]?.id ? "Edit Complaint" : "Add Complaint"}
                   </h5>
                   <button
                     type="button"
@@ -182,9 +193,7 @@ const AddComplaint = ({
                             type="text"
                             placeholder="Title"
                           />
-                          {titleError && (
-                            <p className="error-message">{titleError}</p>
-                          )}
+                          {titleError && <p className="error-message">{titleError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -232,9 +241,7 @@ const AddComplaint = ({
                             <option value="Pending">Pending</option>
                             <option value="Resolved">Resolved</option>
                           </select>
-                          {statusError && (
-                            <p className="error-message">{statusError}</p>
-                          )}
+                          {statusError && <p className="error-message">{statusError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -258,50 +265,26 @@ const AddComplaint = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document</label> {""}
-                          <span className="text-danger">*</span>
-                          <Autocomplete
-                            multiple
-                            id="tags-standard"
+                          <label className="col-form-label">
+                            Select Document <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getDocumentDefaultValues()}
+                            onChange={handleDocumentChange}
+                            isMulti
+                            closeMenuOnSelect={false}
                             options={document}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
                             getOptionLabel={(option) => option.document_name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
-                            defaultValue={getDocumentDefaultValues(
-                              selectedComplaint[indexToEdit]?.documents
-                            )}
-                            onChange={(event, value) =>
-                              handleDocumentChange(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.document_name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Document"
-                              />
-                            )}
+                            placeholder="Select Multiple Document"
                           />
-                          {documentError && (
-                            <p className="error-message">{documentError}</p>
-                          )}
+                          {documentError && <p className="error-message">{documentError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">Resolved Comment</label>
+                          <label className="col-form-label">Resolved Comment</label>
                           <textarea
                             value={resolved_comment}
                             onChange={(e) => setResolvedComment(e.target.value)}
@@ -314,7 +297,7 @@ const AddComplaint = ({
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">Description</label>
+                          <label className="col-form-label">Description</label>
                           <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -327,10 +310,7 @@ const AddComplaint = ({
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
+                      <button type="submit" className="btn btn-primary submit-btn">
                         {selectedComplaint[indexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>

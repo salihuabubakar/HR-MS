@@ -9,8 +9,9 @@ import "./style.css";
 import {
   useHouseDocumentFetching,
 } from "../../utils/employeeCustomFetchHook";
-import { MenuItem, Autocomplete, TextField } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import Select from "react-select";
+
+
 const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
   const [selectedItem] = useGlobalState("selectedItem");
@@ -95,6 +96,19 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
     setGlobalState("showItemModal", false);
   };
 
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
+
   const handleNameChange = (e) => {
     setName(e.target.value);
     setNameError("");
@@ -112,24 +126,28 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
   const document = [];
   houseDocumentsData?.map((doc) => {
     document.push({
-      name: doc.title,
+      title: doc.title,
       id: doc.id,
     });
   });
 
-  const handleHouseDocuments = (event, value) => {
-    const list = value?.map((v) => v.id);
-    setDocuments(list);
+  const handleHouseDocuments = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setDocuments(mappedID);
     setDocumentsError("");
   };
 
-  const getHouseDocumentDefaultValues = (document) => {
-    if (Array.isArray(document)) {
-      return document?.map((doc) => ({
-        id: doc.id,
-      }));
+  const getHouseDocumentDefaultValues = () => {
+    const val = selectedItem[itemIndexToEdit]?.documents;
+    if (!selectedItem || !val) {
+      return [];
     }
-    return [];
+    return houseDocumentsData
+      .filter((document) => val.includes(document.id))
+      .map((document) => ({
+        id: document.id,
+        title: document.title,
+      }));
   };
 
   return (
@@ -137,16 +155,11 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer top={true} className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedItem[itemIndexToEdit]?.id
-                      ? "Edit Item"
-                      : "Add Item"}
+                    {selectedItem[itemIndexToEdit]?.id ? "Edit Item" : "Add Item"}
                   </h5>
                   <button
                     type="button"
@@ -171,9 +184,7 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
                             type="text"
                             placeholder="Name"
                           />
-                          {nameError && (
-                            <p className="error-message">{nameError}</p>
-                          )}
+                          {nameError && <p className="error-message">{nameError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -204,9 +215,7 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
                             <option value="Electronics">Electronics</option>
                             <option value="Others">Others</option>
                           </select>
-                          {categoryError && (
-                            <p className="error-message">{categoryError}</p>
-                          )}
+                          {categoryError && <p className="error-message">{categoryError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -223,9 +232,7 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Purchase Date
-                          </label>
+                          <label className="col-form-label">Purchase Date</label>
                           <input
                             value={purchase_date}
                             onChange={(e) => setPurchaseDate(e.target.value)}
@@ -249,53 +256,21 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document</label> {""}
-                          <span className="text-danger">*</span>
-                          <Autocomplete
-                            sx={{
-                              m: 1,
-                              width: 350,
-                              // "& .MuiInputBase-root": {
-                              //   height: "45px", // Adjust the height here
-                              // },
-                            }}
-                            multiple
-                            id="tags-standard"
+                          <label className="col-form-label">
+                            Select Document <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getHouseDocumentDefaultValues()}
+                            onChange={handleHouseDocuments}
+                            isMulti
+                            closeMenuOnSelect={false}
                             options={document}
-                            getOptionLabel={(option) => option.name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
-                            defaultValue={getHouseDocumentDefaultValues(
-                              selectedItem[itemIndexToEdit]?.documents
-                            )}
-                            onChange={(event, value) =>
-                              handleHouseDocuments(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Document"
-                                placeholder="Photo Names"
-                              />
-                            )}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.title}
+                            placeholder="Select Multiple Document"
                           />
-                          {documentsError && (
-                            <p className="error-message">{documentsError}</p>
-                          )}
+                          {documentsError && <p className="error-message">{documentsError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-12">
@@ -313,10 +288,7 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
+                      <button type="submit" className="btn btn-primary submit-btn">
                         {selectedItem[itemIndexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>

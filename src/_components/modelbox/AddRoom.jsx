@@ -8,8 +8,7 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import Dropzone from "react-dropzone";
 import { useHouseImageFetching } from "../../utils/employeeCustomFetchHook";
-import { MenuItem, Autocomplete, TextField } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import Select from "react-select";
 
 const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
   const { houseImagesData } = useHouseImageFetching();
@@ -71,22 +70,25 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
       room_photos,
     };
 
-    // Object.entries(fields).forEach(([fieldName, fieldValue]) => {
-    //   formData.append(fieldName, fieldValue);
-    // });
-
-    // if (selectedRoom[roomIndexToEdit]?.id) {
-    //   dispatchRoom({ type: "update", payload: {id, formData} });
-    // } else {
-    //   dispatchRoom({ type: "add", payload: formData });
-    // }
-
     if (selectedRoom[roomIndexToEdit]?.id) {
       dispatchRoom({ type: "update", payload: fields });
     } else {
       dispatchRoom({ type: "add", payload: fields });
     }
     setGlobalState("showRoomModal", false);
+  };
+
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
   };
 
   const handleRoomType = (e) => {
@@ -98,34 +100,6 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
     setRoomNameError("");
   };
 
-  //  const handleFileDrop = (acceptedFiles) => {
-  //    const updatedFilePreviews = acceptedFiles.reduce((acc, file) => {
-  //      if (file.size <= 5 * 1024 * 1024) {
-  //        // 5MB in bytes
-  //        return [
-  //          ...acc,
-  //          {
-  //            room_photos: file,
-  //          },
-  //        ];
-  //      } else {
-  //        alert(`File '${file.name}' is larger than 5MB`);
-  //        return acc;
-  //      }
-  //    }, []);
-
-  //    setRoomPhotos((prevFilePreviews) => [
-  //      ...prevFilePreviews,
-  //      ...updatedFilePreviews,
-  //    ]);
-  //    setRoomPhotosError("");
-  //  };
-
-  //  const handleFileRemove = (previewIndex) => {
-  //    setRoomPhotos((prevFilePreviews) =>
-  //      prevFilePreviews.filter((_, index) => index !== previewIndex)
-  //    );
-  //  };
 
   const photos = [];
   houseImagesData?.map((image) => {
@@ -135,19 +109,22 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
     })
   })
 
-  const handleRoomPhotos = (event, value) => {
-    const list = value?.map((v) =>v.id);
-    setRoomPhotos(list);
+  const handleRoomPhotos = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setRoomPhotos(mappedID);
     setRoomPhotosError("");
   };
 
   const getRoomPhotosDefaultValues = (photo) => {
-    if (Array.isArray(photo)) {
-      return photo.map((image) => ({
-        id: image.id,
-      }));
+    if (!selectedRoom || !photo) {
+      return [];
     }
-    return [];
+    return houseImagesData
+      .filter((image) => photo.includes(image.id))
+      .map((image) => ({
+        id: image.id,
+        name: image.name,
+      }));
   };
 
   return (
@@ -155,16 +132,11 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer top={true} className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedRoom[roomIndexToEdit]?.id
-                      ? "Edit Room"
-                      : "Add Room"}
+                    {selectedRoom[roomIndexToEdit]?.id ? "Edit Room" : "Add Room"}
                   </h5>
                   <button
                     type="button"
@@ -179,7 +151,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Room Name <span className="text-danger">*</span>
                           </label>
                           <input
@@ -189,14 +161,12 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                             type="text"
                             placeholder="Room Name"
                           />
-                          {roomNameError && (
-                            <p className="error-message">{roomNameError}</p>
-                          )}
+                          {roomNameError && <p className="error-message">{roomNameError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Room Type <span className="text-danger">*</span>
                           </label>
                           <select
@@ -211,14 +181,12 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                             <option value="Double">Double</option>
                             <option value="Triple">Triple</option>
                           </select>
-                          {roomTypeError && (
-                            <p className="error-message">{roomTypeError}</p>
-                          )}
+                          {roomTypeError && <p className="error-message">{roomTypeError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Room Status</label>
+                          <label className="col-form-label">Room Status</label>
                           <select
                             value={room_status}
                             onChange={(e) => setRoomStatus(e.target.value)}
@@ -229,80 +197,34 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                             </option>
                             <option value="Vacant">Vacant</option>
                             <option value="Occupied">Occupied</option>
-                            <option value="Under Maintenance">
-                              Under Maintenance
-                            </option>
+                            <option value="Under Maintenance">Under Maintenance</option>
                           </select>
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Room Photos</label> {""}
-                          <span className="text-danger">*</span>
-                          {/* <select
-                            value={room_photos}
-                            className="form-control floating"
-                            onChange={handleRoomPhotos}
-                          >
-                            <option disabled value="">
-                              Select Room Photos
-                            </option>
-                            {houseImageData?.map((image) => (
-                              <option key={image.id} value={image.id}>
-                                {`${image.name}`}
-                              </option>
-                            ))}
-                          </select> */}
-                          <Autocomplete
-                            sx={{
-                              m: 1,
-                              width: 350,
-                              "& .MuiInputBase-root": {
-                                height: "45px", // Adjust the height here
-                              },
-                            }}
-                            multiple
-                            id="tags-standard"
-                            options={photos}
-                            getOptionLabel={(option) => option.name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
+                          <label className="col-form-label">
+                            Room Photos <span className="text-danger">*</span>
+                          </label>
+                          <Select
                             defaultValue={getRoomPhotosDefaultValues(
                               selectedRoom[roomIndexToEdit]?.room_photos
                             )}
-                            onChange={(event, value) =>
-                              handleRoomPhotos(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Names"
-                                placeholder="Photo Names"
-                              />
-                            )}
+                            onChange={handleRoomPhotos}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={photos}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.name}
+                            placeholder="Select Multiple Image"
                           />
-                          {roomPhotosError && (
-                            <p className="error-message">{roomPhotosError}</p>
-                          )}
+                          {roomPhotosError && <p className="error-message">{roomPhotosError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">Description</label>
+                          <label className="col-form-label">Description</label>
                           <textarea
                             value={room_description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -380,10 +302,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
                       </div> */}
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
+                      <button type="submit" className="btn btn-primary submit-btn">
                         {selectedRoom[roomIndexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>

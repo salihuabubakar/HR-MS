@@ -3,10 +3,10 @@ import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
+import { RadioBtn } from "./styles";
 
 const AddHouseImages = ({
   house,
@@ -100,10 +100,7 @@ const AddHouseImages = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
@@ -114,9 +111,7 @@ const AddHouseImages = ({
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showHouseImagesModal", false)
-                    }
+                    onClick={() => setGlobalState("showHouseImagesModal", false)}
                   >
                     <span aria-hidden="true">×</span>
                   </button>
@@ -125,24 +120,15 @@ const AddHouseImages = ({
                   <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-sm-12">
-                        <div
-                          style={{ borderRadius: "5px" }}
-                          className="profile-img-wrap edit-img"
-                        >
+                        <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
                           <img
                             style={{ borderRadius: "5px" }}
                             className="inline-block"
-                            src={
-                              image
-                                ? URL.createObjectURL(image)
-                                : imageUrlFromServer
-                            }
+                            src={image ? URL.createObjectURL(image) : imageUrlFromServer}
                             alt=""
                           />
                           <div className="fileupload btn">
-                            {imageError && (
-                              <p className="error-message">{imageError}</p>
-                            )}
+                            {imageError && <p className="error-message">{imageError}</p>}
                             <span className="btn-text">
                               {selectedHouseImages[houseImagesIndexToEdit]?.id
                                 ? "Update"
@@ -157,7 +143,7 @@ const AddHouseImages = ({
                           </div>
                         </div>
                       </div>
-                      <div className="col-sm-12">
+                      <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">
                             Name <span className="text-danger">*</span>
@@ -169,9 +155,7 @@ const AddHouseImages = ({
                             type="text"
                             placeholder="Name"
                           />
-                          {nameError && (
-                            <p className="error-message">{nameError}</p>
-                          )}
+                          {nameError && <p className="error-message">{nameError}</p>}
                         </div>
                       </div>
                       {/* {selectedHouseImages[houseImagesIndexToEdit]
@@ -192,14 +176,20 @@ const AddHouseImages = ({
                       )} */}
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Cover Image</label>
-                          <input
-                            checked={cover_image}
-                            onChange={(e) => setCoverImage(e.target.checked)}
-                            // className="form-control floating"
-                            type="checkbox"
-                            placeholder="Cover Image"
-                          />
+                          <label className="col-form-label">Cover Image</label>
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="cover_image"
+                              checked={cover_image}
+                              id="cover_image"
+                              placeholder="Cover Image"
+                              onChange={(e) => setCoverImage(e.target.checked)}
+                            />
+                            <label htmlFor="cover_image">
+                              <span>Cover Image</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-12">
@@ -214,20 +204,13 @@ const AddHouseImages = ({
                             onChange={handleDescriptionChange}
                             style={{ height: "70px" }}
                           />
-                          {descriptionError && (
-                            <p className="error-message">{descriptionError}</p>
-                          )}
+                          {descriptionError && <p className="error-message">{descriptionError}</p>}
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedHouseImages[houseImagesIndexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedHouseImages[houseImagesIndexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>
