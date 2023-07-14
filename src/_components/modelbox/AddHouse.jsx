@@ -299,7 +299,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             House Name <span className="text-danger">*</span>
                           </label>
                           <input
@@ -314,7 +314,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             City <span className="text-danger">*</span>
                           </label>
                           <input
@@ -329,7 +329,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Street Address <span className="text-danger">*</span>
                           </label>
                           <input
@@ -344,7 +344,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Postcode <span className="text-danger">*</span>
                           </label>
                           <input
@@ -390,7 +390,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Mobile</label>
+                          <label className="col-form-label">Mobile</label>
                           <input
                             value={mobile}
                             onChange={(e) => setMobile(e.target.value)}
@@ -402,7 +402,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Email</label>
+                          <label className="col-form-label">Email</label>
                           <input
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -414,7 +414,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">House Type</label>
+                          <label className="col-form-label">House Type</label>
                           <input
                             value={house_type}
                             onChange={(e) => setHouseType(e.target.value)}
@@ -426,7 +426,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">No of Bedrooms</label>
+                          <label className="col-form-label">No of Bedrooms</label>
                           <input
                             value={num_bedrooms}
                             onChange={(e) => setNumBedrooms(e.target.value)}
@@ -438,7 +438,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">No of Bathrooms</label>
+                          <label className="col-form-label">No of Bathrooms</label>
                           <input
                             value={num_bathrooms}
                             onChange={(e) => setNumBathrooms(e.target.value)}
@@ -450,7 +450,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">No of Kitchens</label>
+                          <label className="col-form-label">No of Kitchens</label>
                           <input
                             value={num_kitchens}
                             onChange={(e) => setNumKitchens(e.target.value)}
@@ -462,7 +462,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Square Footage</label>
+                          <label className="col-form-label">Square Footage</label>
                           <input
                             value={square_footage}
                             onChange={(e) => setSquareFootage(e.target.value)}
@@ -474,7 +474,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Garage</label>
+                          <label className="col-form-label">Garage</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -492,7 +492,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Basement</label>
+                          <label className="col-form-label">Basement</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -510,7 +510,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Pool</label>
+                          <label className="col-form-label">Pool</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -528,7 +528,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Back Yard</label>
+                          <label className="col-form-label">Back Yard</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -546,7 +546,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Year Built</label>
+                          <label className="col-form-label">Year Built</label>
                           <input
                             value={year_built}
                             onChange={(e) => setYearBuilt(e.target.value)}
@@ -558,7 +558,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Air Conditioning</label>
+                          <label className="col-form-label">Air Conditioning</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -576,7 +576,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Heating System</label>
+                          <label className="col-form-label">Heating System</label>
                           <input
                             value={heating_system}
                             onChange={(e) => setHeatingSystem(e.target.value)}
@@ -588,7 +588,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Roof Type</label>
+                          <label className="col-form-label">Roof Type</label>
                           <input
                             value={roof_type}
                             onChange={(e) => setRoofType(e.target.value)}
@@ -600,7 +600,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Fire Place</label>
+                          <label className="col-form-label">Fire Place</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -618,7 +618,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Security System</label>
+                          <label className="col-form-label">Security System</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -636,7 +636,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Solar Panels</label>
+                          <label className="col-form-label">Solar Panels</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -654,7 +654,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">No FLoors</label>
+                          <label className="col-form-label">No FLoors</label>
                           <input
                             value={num_floors}
                             onChange={(e) => setNumFloors(e.target.value)}
@@ -666,7 +666,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">FLoor Type</label>
+                          <label className="col-form-label">FLoor Type</label>
                           <input
                             value={floor_type}
                             onChange={(e) => setFloorType(e.target.value)}
@@ -678,7 +678,7 @@ const AddDepartment = ({
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">Description</label>{" "}
+                          <label className="col-form-label">Description</label>{" "}
                           <span className="text-danger">*</span>
                           <textarea
                             className="form-control floating"

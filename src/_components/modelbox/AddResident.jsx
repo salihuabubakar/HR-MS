@@ -8,6 +8,7 @@ import {
   Card,
 } from "./Addemployee.style";
 import "./style.css";
+import { RadioBtn } from "./styles";
 import { useOrganisationFetching, useRoleFetching, useDepartmentFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResident = ({
@@ -207,15 +208,10 @@ const AddResident = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer top={true} className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="card-title">
-                    {isIdExist ? "Edit Resident" : "Add Resident"}
-                  </h5>
+                  <h5 className="card-title">{isIdExist ? "Edit Resident" : "Add Resident"}</h5>
                   <button
                     type="button"
                     className="close"
@@ -229,24 +225,15 @@ const AddResident = ({
                   <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-sm-12">
-                        <div
-                          style={{ borderRadius: "5px" }}
-                          className="profile-img-wrap edit-img"
-                        >
+                        <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
                           <img
                             style={{ borderRadius: "5px" }}
                             className="inline-block"
-                            src={
-                              photo
-                                ? URL.createObjectURL(photo)
-                                : imageUrlFromServer
-                            }
+                            src={photo ? URL.createObjectURL(photo) : imageUrlFromServer}
                             alt="resident_image"
                           />
                           <div className="fileupload btn">
-                            <span className="btn-text">
-                              {isIdExist ? "Update" : "Upload"}
-                            </span>
+                            <span className="btn-text">{isIdExist ? "Update" : "Upload"}</span>
                             <input
                               className="upload"
                               type="file"
@@ -268,9 +255,7 @@ const AddResident = ({
                             type="text"
                             placeholder="First Name"
                           />
-                          {firstNameError && (
-                            <p className="error-message">{firstNameError}</p>
-                          )}
+                          {firstNameError && <p className="error-message">{firstNameError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -285,9 +270,7 @@ const AddResident = ({
                             type="text"
                             placeholder="Last Name"
                           />
-                          {lastNameError && (
-                            <p className="error-message">{lastNameError}</p>
-                          )}
+                          {lastNameError && <p className="error-message">{lastNameError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -295,9 +278,7 @@ const AddResident = ({
                           <label className="col-form-label">Middle Name</label>
                           <input
                             value={middle_name}
-                            onChange={(event) =>
-                              setMiddleName(event.target.value)
-                            }
+                            onChange={(event) => setMiddleName(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Middle Name"
@@ -320,9 +301,7 @@ const AddResident = ({
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
                           </select>
-                          {genderError && (
-                            <p className="error-message">{genderError}</p>
-                          )}
+                          {genderError && <p className="error-message">{genderError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -351,14 +330,10 @@ const AddResident = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Date of Birth
-                          </label>
+                          <label className="col-form-label">Date of Birth</label>
                           <input
                             value={date_of_birth}
-                            onChange={(event) =>
-                              setDateOfBirth(event.target.value)
-                            }
+                            onChange={(event) => setDateOfBirth(event.target.value)}
                             className="form-control floating"
                             type="date"
                             placeholder="Date of Birth"
@@ -370,9 +345,7 @@ const AddResident = ({
                           <label className="col-form-label">Eye Colour</label>
                           <input
                             value={eye_colour}
-                            onChange={(event) =>
-                              setEyeColour(event.target.value)
-                            }
+                            onChange={(event) => setEyeColour(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Eye Colour"
@@ -384,9 +357,7 @@ const AddResident = ({
                           <label className="col-form-label">Hair Colour</label>
                           <input
                             value={hair_colour}
-                            onChange={(event) =>
-                              setHairColour(event.target.value)
-                            }
+                            onChange={(event) => setHairColour(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Hair Colour"
@@ -493,9 +464,7 @@ const AddResident = ({
                             type="text"
                             placeholder="Nationality"
                           />
-                          {nationalityError && (
-                            <p className="error-message">{nationalityError}</p>
-                          )}
+                          {nationalityError && <p className="error-message">{nationalityError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -503,9 +472,7 @@ const AddResident = ({
                           <label className="col-form-label">Phone Number</label>
                           <input
                             value={phone_number}
-                            onChange={(event) =>
-                              setPhoneNumber(event.target.value)
-                            }
+                            onChange={(event) => setPhoneNumber(event.target.value)}
                             className="form-control floating"
                             type="text"
                             placeholder="Phone Number"
@@ -530,16 +497,20 @@ const AddResident = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
-                            Subject Child Protection
-                          </label>
-                          <input
-                            checked={Subject_child_protection}
-                            onChange={(e) =>
-                              setSubjectChildProtection(e.target.checked)
-                            }
-                            type="checkbox"
-                          />
+                          <label className="label">Subject Child Protection</label>
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="Subject_child_protection"
+                              checked={Subject_child_protection}
+                              id="Subject_child_protection"
+                              placeholder="Subject Child Protection"
+                              onChange={(e) => setSubjectChildProtection(e.target.checked)}
+                            />
+                            <label htmlFor="Subject_child_protection">
+                              <span>Subject Child Protection</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-12">
@@ -557,10 +528,7 @@ const AddResident = ({
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
+                      <button type="submit" className="btn btn-primary submit-btn">
                         {isIdExist ? "Update" : "Save"}
                       </button>
                     </div>

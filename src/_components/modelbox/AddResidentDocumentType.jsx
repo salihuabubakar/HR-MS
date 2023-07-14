@@ -5,6 +5,7 @@ import {
   PopupWrapper,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { RadioBtn } from "./styles";
 
 const AddResidentDocumentType = ({
   indexToEdit,
@@ -71,10 +72,7 @@ const AddResidentDocumentType = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">
@@ -85,9 +83,7 @@ const AddResidentDocumentType = ({
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showResidentDocumentTypeModal", false)
-                    }
+                    onClick={() => setGlobalState("showResidentDocumentTypeModal", false)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -97,9 +93,7 @@ const AddResidentDocumentType = ({
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
-                            Document Type
-                          </label>{" "}
+                          <label className="col-form-label">Document Type</label>{" "}
                           <span className="text-danger">*</span>
                           <input
                             value={document_type}
@@ -108,19 +102,25 @@ const AddResidentDocumentType = ({
                             type="text"
                             placeholder="Document Type"
                           />
-                          {docTypeError && (
-                            <p className="error-message">{docTypeError}</p>
-                          )}
+                          {docTypeError && <p className="error-message">{docTypeError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">Required</label>
-                          <input
-                            checked={required}
-                            onChange={(e) => setRequired(e.target.checked)}
-                            type="checkbox"
-                          />
+                          <RadioBtn>
+                            <input
+                              type="checkbox"
+                              name="required"
+                              checked={required}
+                              id="required"
+                              placeholder="Required"
+                              onChange={(e) => setRequired(e.target.checked)}
+                            />
+                            <label htmlFor="required">
+                              <span>Required</span>
+                            </label>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-12">
@@ -138,13 +138,8 @@ const AddResidentDocumentType = ({
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedResidentDocumentType[indexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedResidentDocumentType[indexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>

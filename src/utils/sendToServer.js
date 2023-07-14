@@ -1366,6 +1366,7 @@ export const add_update_delete_notice = async (state, { type, payload }) => {
 
 // Add - Update - Delete Item state
 export const add_update_delete_item = async (state, { type, payload }) => {
+  console.log("type", type);
   switch (type) {
     case "add":
       try {

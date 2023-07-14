@@ -139,24 +139,18 @@ const AddEmployeeExperience = ({
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">
-                    {selectedEmployeeExperience[employeeExperienceIndexToEdit]
-                      ?.id
+                    {selectedEmployeeExperience[employeeExperienceIndexToEdit]?.id
                       ? "Edit Experience"
                       : "Add Experience"}
                   </h5>
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showEmployeeExperienceModal", false)
-                    }
+                    onClick={() => setGlobalState("showEmployeeExperienceModal", false)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -166,7 +160,7 @@ const AddEmployeeExperience = ({
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Job Title <span className="text-danger">*</span>
                           </label>
                           <input
@@ -176,14 +170,12 @@ const AddEmployeeExperience = ({
                             type="text"
                             placeholder="Job Title"
                           />
-                          {jobTitleError && (
-                            <p className="error-message">{jobTitleError}</p>
-                          )}
+                          {jobTitleError && <p className="error-message">{jobTitleError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Company Name <span className="text-danger">*</span>
                           </label>
                           <input
@@ -193,14 +185,12 @@ const AddEmployeeExperience = ({
                             type="text"
                             placeholder="Company Name"
                           />
-                          {companyNameError && (
-                            <p className="error-message">{companyNameError}</p>
-                          )}
+                          {companyNameError && <p className="error-message">{companyNameError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Start Date <span className="text-danger">*</span>
                           </label>
                           <input
@@ -210,14 +200,12 @@ const AddEmployeeExperience = ({
                             type="date"
                             placeholder="Start Date"
                           />
-                          {startDateError && (
-                            <p className="error-message">{startDateError}</p>
-                          )}
+                          {startDateError && <p className="error-message">{startDateError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             End Date <span className="text-danger">*</span>
                           </label>
                           <input
@@ -227,16 +215,12 @@ const AddEmployeeExperience = ({
                             type="date"
                             placeholder="End Date"
                           />
-                          {endDateError && (
-                            <p className="error-message">{endDateError}</p>
-                          )}
+                          {endDateError && <p className="error-message">{endDateError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
-                            Experience File Upload
-                          </label>
+                          <label className="col-form-label">Experience File Upload</label>
                           <input
                             onChange={handleFileUpload}
                             className="form-control floating"
@@ -248,7 +232,7 @@ const AddEmployeeExperience = ({
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">Description</label>
+                          <label className="col-form-label">Description</label>
                           <textarea
                             className="form-control floating"
                             name="description"
@@ -261,13 +245,8 @@ const AddEmployeeExperience = ({
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedEmployeeExperience[
-                          employeeExperienceIndexToEdit
-                        ]?.id
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedEmployeeExperience[employeeExperienceIndexToEdit]?.id
                           ? "Update"
                           : "Save"}
                       </button>

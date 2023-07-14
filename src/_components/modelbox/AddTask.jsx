@@ -309,7 +309,7 @@ const AddTask = ({
     if (!selectedTaskInfo || !val) {
       return [];
     }
-    return allEmployee
+    return residentData
       .filter((resident) => val.includes(resident.id))
       .map((resident) => ({
         id: resident.id,

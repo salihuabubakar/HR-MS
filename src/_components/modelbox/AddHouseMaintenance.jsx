@@ -6,15 +6,13 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
-import Dropzone from "react-dropzone";
 import {
   useHouseDocumentFetching,
   useDataFetching,
   useHouseImageFetching,
   useOrganisationFetching
 } from "../../utils/employeeCustomFetchHook";
-import { MenuItem, Autocomplete, TextField } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import Select from "react-select";
 
 const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
@@ -131,6 +129,19 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
     setGlobalState("showMaintenanceModal", false);
   };
 
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
+
   const handleCostChange = (e) => {
     setCost(e.target.value);
     setCostError("");
@@ -141,35 +152,39 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
     setDateError("");
   };
 
-  const image = [];
-  houseImagesData?.map((img) => {
-    image.push({id: img.id, name: img.name});
-  })
-
-  const handleBeforeImageChange = (e, value) => {
-    const list = value?.map((v) => v.id);
-    setBeforeImage(list);
-    setBeforeImageError("");
-  };
-
-  const handleAfterImageChange = (e, value) => {
-    const list = value?.map((v) => v.id);
-    setAfterImage(list);
-    setAfterImageError("");
-  };
 
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
     setStatusError("");
   };
 
-  const getHouseImagesDefaultValues = (image) => {
-    if (Array.isArray(image)) {
-      return image?.map((img) => ({
-        id: img.id,
-      }));
+  const image = [];
+  houseImagesData?.map((img) => {
+    image.push({ id: img.id, name: img.name });
+  });
+
+  const handleBeforeImageChange = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setBeforeImage(mappedID);
+    setBeforeImageError("");
+  };
+
+  const handleAfterImageChange = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setAfterImage(mappedID);
+    setAfterImageError("");
+  };
+
+  const getHouseImagesDefaultValues = (photo) => {
+    if (!selectedMaintenance || !photo) {
+      return [];
     }
-    return [];
+    return houseImagesData
+      .filter((image) => photo.includes(image.id))
+      .map((image) => ({
+        id: image.id,
+        name: image.name,
+      }));
   };
 
   const handleDescriptionChange = (e) => {
@@ -180,24 +195,29 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
   const document = [];
   houseDocumentsData?.map((doc) => {
     document.push({
-      name: doc.title,
+      title: doc.title,
       id: doc.id,
     });
   });
 
-  const handleHouseDocuments = (event, value) => {
-    const list = value?.map((v) => v.id);
-    setDocuments(list);
+  const handleHouseDocuments = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setDocuments(mappedID);
     setDocumentsError("");
   };
 
-  const getHouseDocumentDefaultValues = (document) => {
-    if (Array.isArray(document)) {
-      return document?.map((doc) => ({
-        id: doc.id,
-      }));
+
+  const getHouseDocumentDefaultValues = () => {
+    const val = selectedMaintenance[maintenanceIndexToEdit]?.documents;
+    if (!selectedMaintenance || !val) {
+      return [];
     }
-    return [];
+    return houseDocumentsData
+      .filter((document) => val.includes(document.id))
+      .map((document) => ({
+        id: document.id,
+        title: document.title,
+      }));
   };
 
   return (
@@ -205,10 +225,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer top={true} className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
@@ -219,9 +236,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showMaintenanceModal", false)
-                    }
+                    onClick={() => setGlobalState("showMaintenanceModal", false)}
                   >
                     <span aria-hidden="true">×</span>
                   </button>
@@ -241,9 +256,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
                             type="text"
                             placeholder="Cost"
                           />
-                          {costError && (
-                            <p className="error-message">{costError}</p>
-                          )}
+                          {costError && <p className="error-message">{costError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -258,113 +271,49 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
                             type="date"
                             placeholder="Date"
                           />
-                          {dateError && (
-                            <p className="error-message">{dateError}</p>
-                          )}
+                          {dateError && <p className="error-message">{dateError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Before Image</label> {""}
-                          <span className="text-danger">*</span>
-                          <Autocomplete
-                            sx={{
-                              m: 1,
-                              width: 350,
-                              // "& .MuiInputBase-root": {
-                              //   height: "45px", // Adjust the height here
-                              // },
-                            }}
-                            multiple
-                            id="tags-standard"
-                            options={image}
-                            getOptionLabel={(option) => option.name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
+                          <label className="col-form-label">
+                            Before Image <span className="text-danger">*</span>
+                          </label>
+                          <Select
                             defaultValue={getHouseImagesDefaultValues(
-                              selectedMaintenance[maintenanceIndexToEdit]
-                                ?.Before_Image
+                              selectedMaintenance[maintenanceIndexToEdit]?.Before_Image
                             )}
-                            onChange={(event, value) =>
-                              handleBeforeImageChange(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Image"
-                                placeholder="Before Image"
-                              />
-                            )}
+                            onChange={handleBeforeImageChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={image}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.name}
+                            placeholder="Select Multiple Image"
                           />
-                          {beforeImageError && (
-                            <p className="error-message">{beforeImageError}</p>
-                          )}
+                          {beforeImageError && <p className="error-message">{beforeImageError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">After Image</label> {""}
-                          <span className="text-danger">*</span>
-                          <Autocomplete
-                            sx={{
-                              m: 1,
-                              width: 350,
-                              // "& .MuiInputBase-root": {
-                              //   height: "45px", // Adjust the height here
-                              // },
-                            }}
-                            multiple
-                            id="tags-standard"
-                            options={image}
-                            getOptionLabel={(option) => option.name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
+                          <label className="col-form-label">
+                            After Image <span className="text-danger">*</span>
+                          </label>
+                          <Select
                             defaultValue={getHouseImagesDefaultValues(
-                              selectedMaintenance[maintenanceIndexToEdit]
-                                ?.After_Image
+                              selectedMaintenance[maintenanceIndexToEdit]?.After_Image
                             )}
-                            onChange={(event, value) =>
-                              handleAfterImageChange(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Image"
-                                placeholder="After Image"
-                              />
-                            )}
+                            onChange={handleAfterImageChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={image}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.name}
+                            placeholder="Select Multiple Image"
                           />
-                          {afterImageError && (
-                            <p className="error-message">{afterImageError}</p>
-                          )}
+                          {afterImageError && <p className="error-message">{afterImageError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -384,9 +333,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
                             <option value="Progress">Progress</option>
                             <option value="Completed">Completed</option>
                           </select>
-                          {statusError && (
-                            <p className="error-message">{statusError}</p>
-                          )}
+                          {statusError && <p className="error-message">{statusError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -429,54 +376,21 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document</label> {""}
-                          <span className="text-danger">*</span>
-                          <Autocomplete
-                            sx={{
-                              m: 1,
-                              width: 350,
-                              // "& .MuiInputBase-root": {
-                              //   height: "45px", // Adjust the height here
-                              // },
-                            }}
-                            multiple
-                            id="tags-standard"
+                          <label className="col-form-label">
+                            Select Document <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getHouseDocumentDefaultValues()}
+                            onChange={handleHouseDocuments}
+                            isMulti
+                            closeMenuOnSelect={false}
                             options={document}
-                            getOptionLabel={(option) => option.name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
-                            defaultValue={getHouseDocumentDefaultValues(
-                              selectedMaintenance[maintenanceIndexToEdit]
-                                ?.documents
-                            )}
-                            onChange={(event, value) =>
-                              handleHouseDocuments(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Document"
-                                placeholder="Photo Names"
-                              />
-                            )}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.title}
+                            placeholder="Select Multiple Document"
                           />
-                          {documentsError && (
-                            <p className="error-message">{documentsError}</p>
-                          )}
+                          {documentsError && <p className="error-message">{documentsError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-12">
@@ -491,20 +405,13 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
                             onChange={handleDescriptionChange}
                             style={{ height: "70px" }}
                           />
-                          {descriptionError && (
-                            <p className="error-message">{descriptionError}</p>
-                          )}
+                          {descriptionError && <p className="error-message">{descriptionError}</p>}
                         </div>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedMaintenance[maintenanceIndexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedMaintenance[maintenanceIndexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>

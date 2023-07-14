@@ -11,8 +11,7 @@ import {
   useHouseResidentFetching,
   useResidentFetching
 } from "../../utils/employeeCustomFetchHook";
-import { MenuItem, Autocomplete, TextField } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import Select from "react-select";
 
 const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();
@@ -86,6 +85,19 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
     setGlobalState("showNoticeModal", false);
   };
 
+  const customSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      backgroundColor: state.isSelected && "#FF9B44",
+      color: state.isSelected && "#262626",
+      "&:hover": {
+        backgroundColor: "#FF9B44",
+        color: "#262626",
+      },
+    }),
+  };
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
     setTitleError("");
@@ -105,19 +117,25 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
     });
   });
 
-  const handleBeforeImageChange = (e, value) => {
-    const list = value?.map((v) => v.id);
-    setResidentApplicable(list);
+  const handleResidentChange = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setResidentApplicable(mappedID);
     setResidentApplicableError("");
   };
 
-  const getHouseResidentDefaultValues = (res) => {
-    if (Array.isArray(res)) {
-      return res?.map((res) => ({
-        id: res.id,
-      }));
+  const getHouseResidentDefaultValues = () => {
+    const val = selectedNotice[noticeIndexToEdit]?.residents_applicable;
+    if (!selectedNotice || !val) {
+      return [];
     }
-    return [];
+    return residentData
+      .filter((resident) => val.includes(resident.id))
+      .map((resident) => ({
+        id: resident.id,
+        first_name: resident.first_name,
+        middle_name: resident.middle_name,
+        last_name: resident.last_name,
+      }));
   };
 
   const handleDescriptionChange = (e) => {
@@ -127,24 +145,28 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
   const document = [];
   houseDocumentsData?.map((doc) => {
     document.push({
-      name: doc.title,
+      title: doc.title,
       id: doc.id,
     });
   });
 
-  const handleHouseDocuments = (event, value) => {
-    const list = value?.map((v) => v.id);
-    setDocuments(list);
+  const handleHouseDocuments = (event) => {
+    const mappedID = event?.map((resID) => resID.id);
+    setDocuments(mappedID);
     setDocumentsError("");
   };
 
-  const getHouseDocumentDefaultValues = (document) => {
-    if (Array.isArray(document)) {
-      return document?.map((doc) => ({
-        id: doc.id,
-      }));
+  const getHouseDocumentDefaultValues = () => {
+    const val = selectedNotice[noticeIndexToEdit]?.documents;
+    if (!selectedNotice || !val) {
+      return [];
     }
-    return [];
+    return houseDocumentsData
+      .filter((document) => val.includes(document.id))
+      .map((document) => ({
+        id: document.id,
+        title: document.title,
+      }));
   };
 
   return (
@@ -152,16 +174,11 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
       <PopupWrapper>
         <PopupOverlay>
           <PopupContainer top={true} className="custom-modal" role="dialog">
-            <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-            >
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedNotice[noticeIndexToEdit]?.id
-                      ? "Edit Notice"
-                      : "Add Notice"}
+                    {selectedNotice[noticeIndexToEdit]?.id ? "Edit Notice" : "Add Notice"}
                   </h5>
                   <button
                     type="button"
@@ -176,7 +193,7 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Title <span className="text-danger">*</span>
                           </label>
                           <input
@@ -186,9 +203,7 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
                             type="text"
                             placeholder="Title"
                           />
-                          {titleError && (
-                            <p className="error-message">{titleError}</p>
-                          )}
+                          {titleError && <p className="error-message">{titleError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -205,115 +220,49 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Resident Applicable</label>{" "}
-                          {""}
-                          <span className="text-danger">*</span>
-                          <Autocomplete
-                            sx={{
-                              m: 1,
-                              width: 350,
-                              // "& .MuiInputBase-root": {
-                              //   height: "45px", // Adjust the height here
-                              // },
-                            }}
-                            multiple
-                            id="tags-standard"
+                          <label className="col-form-label">
+                            Resident Applicable <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getHouseResidentDefaultValues()}
+                            onChange={handleResidentChange}
+                            isMulti
+                            closeMenuOnSelect={false}
                             options={resident}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
                             getOptionLabel={(option) =>
-                              `${option.first_name} ${option.middle_name} ${option.last_name}`
+                              option.first_name + " " + option.middle_name + " " + option.last_name
                             }
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
-                            defaultValue={getHouseResidentDefaultValues(
-                              selectedNotice[noticeIndexToEdit]
-                                ?.residents_applicable
-                            )}
-                            onChange={(event, value) =>
-                              handleBeforeImageChange(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {`${option.first_name} ${option.middle_name} ${option.last_name}`}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Resident"
-                                placeholder="Resident Applicable"
-                              />
-                            )}
+                            placeholder="Select Multiple Resident"
                           />
                           {residentsApplicableError && (
-                            <p className="error-message">
-                              {residentsApplicableError}
-                            </p>
+                            <p className="error-message">{residentsApplicableError}</p>
                           )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document</label> {""}
-                          <span className="text-danger">*</span>
-                          <Autocomplete
-                            sx={{
-                              m: 1,
-                              width: 350,
-                              // "& .MuiInputBase-root": {
-                              //   height: "45px", // Adjust the height here
-                              // },
-                            }}
-                            multiple
-                            id="tags-standard"
+                          <label className="col-form-label">
+                            Select Document <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getHouseDocumentDefaultValues()}
+                            onChange={handleHouseDocuments}
+                            isMulti
+                            closeMenuOnSelect={false}
                             options={document}
-                            getOptionLabel={(option) => option.name}
-                            isOptionEqualToValue={(option, value) =>
-                              option.id === value.id
-                            }
-                            defaultValue={getHouseDocumentDefaultValues(
-                              selectedNotice[noticeIndexToEdit]?.documents
-                            )}
-                            onChange={(event, value) =>
-                              handleHouseDocuments(event, value)
-                            }
-                            disableCloseOnSelect
-                            renderOption={(props, option, { selected }) => (
-                              <MenuItem
-                                key={option.id}
-                                value={option.id}
-                                sx={{ justifyContent: "space-between" }}
-                                {...props}
-                              >
-                                {option.name}
-                                {selected ? <CheckIcon color="info" /> : null}
-                              </MenuItem>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Select Multiple Document"
-                                placeholder="Photo Names"
-                              />
-                            )}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.title}
+                            placeholder="Select Multiple Document"
                           />
-                          {documentsError && (
-                            <p className="error-message">{documentsError}</p>
-                          )}
+                          {documentsError && <p className="error-message">{documentsError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">Description</label>
+                          <label className="col-form-label">Description</label>
                           <textarea
                             className="form-control floating"
                             name="description"
@@ -326,13 +275,8 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {selectedNotice[noticeIndexToEdit]?.id
-                          ? "Update"
-                          : "Save"}
+                      <button type="submit" className="btn btn-primary submit-btn">
+                        {selectedNotice[noticeIndexToEdit]?.id ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>
