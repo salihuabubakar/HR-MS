@@ -17,7 +17,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
-import { Popup } from "semantic-ui-react";
+import PopUpText from "../../_components/modelbox/PopUpText";
 
 const request = () => {
   const { residentRequestData, residentRequestLoading } = useResidentRequestFetching();
@@ -83,11 +83,6 @@ const request = () => {
       });
     }
   });
-
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHover", true);
-    setGlobalState("isHoverText", text);
-  };
 
   const columns = [
     {
@@ -155,12 +150,7 @@ const request = () => {
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <Popup
-              mouseEnterDelay={500}
-              mouseLeaveDelay={200}
-              content={text}
-              trigger={<span>Hover to show</span>}
-            />
+            <PopUpText text={text}/>
           );
         } else {
           return;

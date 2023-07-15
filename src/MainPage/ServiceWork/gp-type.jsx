@@ -14,7 +14,7 @@ import { add_update_delete_resident_gp_type } from "../../utils/sendToServer";
 import { useResidentGpTypeFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
-import { Popup } from "semantic-ui-react";
+import PopUpText from "../../_components/modelbox/PopUpText";
 
 const GpType = () => {
   const { residentGpTypeData, residentGpTypeLoading } = useResidentGpTypeFetching();
@@ -100,14 +100,7 @@ const GpType = () => {
       dataIndex: "gp_type_description",
       render: (text, record, index) => {
         if (text && text) {
-          return (
-            <Popup
-              mouseEnterDelay={500}
-              mouseLeaveDelay={200}
-              content={text}
-              trigger={<span>Hover to show</span>}
-            />
-          );
+          return <PopUpText text={text} />;
         } else {
           return;
         }

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import moment from "moment";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { Popup } from "semantic-ui-react";
+import PopUpText from "../../_components/modelbox/PopUpText";
 import axios from "axios";
 import { BaseUrl } from "../../utils/baseUrl";
 import {
@@ -869,12 +869,7 @@ useEffect(() => {
                                             {description && description && (
                                               <>
                                                 <td>
-                                                  <Popup
-                                                    mouseEnterDelay={500}
-                                                    mouseLeaveDelay={200}
-                                                    content={description}
-                                                    trigger={<span>Hover to show</span>}
-                                                  />
+                                                  <PopUpText text={description}/>
                                                 </td>
                                               </>
                                             )}
@@ -981,12 +976,7 @@ useEffect(() => {
                                             {referral_description && referral_description && (
                                               <>
                                                 <td>
-                                                  <Popup
-                                                    mouseEnterDelay={500}
-                                                    mouseLeaveDelay={200}
-                                                    content={referral_description}
-                                                    trigger={<span>Hover to show</span>}
-                                                  />
+                                                  <PopUpText text={referral_description}/>
                                                 </td>
                                               </>
                                             )}
@@ -1363,12 +1353,7 @@ useEffect(() => {
                                             {appointment_description && appointment_description && (
                                               <>
                                                 <td>
-                                                  <Popup
-                                                    mouseEnterDelay={500}
-                                                    mouseLeaveDelay={200}
-                                                    content={appointment_description}
-                                                    trigger={<span>Hover to show</span>}
-                                                  />
+                                                  <PopUpText text={appointment_description}/>
                                                 </td>
                                               </>
                                             )}

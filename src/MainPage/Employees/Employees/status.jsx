@@ -18,7 +18,7 @@ import {
   useDataFetching,
 } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
-import { Popup } from "semantic-ui-react";
+import PopUpText from "../../../_components/modelbox/PopUpText";
 
 const Status = () => {
   const { statusData, isStatusDataLoading } = useStatusFetching();
@@ -133,14 +133,7 @@ const handleDeleteStatus = (id) => {
       dataIndex: "comments",
       render: (text, record, index) => {
         if (text && text) {
-          return (
-            <Popup
-              mouseEnterDelay={500}
-              mouseLeaveDelay={200}
-              content={text}
-              trigger={<span>Hover to show</span>}
-            />
-          );
+          return <PopUpText text={text} />;
         } else {
           return;
         }

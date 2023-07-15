@@ -14,7 +14,7 @@ import { add_update_delete_resident_legal_status_type } from "../../utils/sendTo
 import { useResidentLegalStatusTypeFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
-import { Popup } from "semantic-ui-react";
+import PopUpText from "../../_components/modelbox/PopUpText";
 
 const legalStatus = () => {
   const { residentLegalStatusTypeData, residentLegalStatusTypeLoading } =
@@ -105,14 +105,7 @@ const legalStatus = () => {
       dataIndex: "legal_status_description",
       render: (text, record, index) => {
         if (text && text) {
-          return (
-            <Popup
-              mouseEnterDelay={500}
-              mouseLeaveDelay={200}
-              content={text}
-              trigger={<span>Hover to show</span>}
-            />
-          );
+          return <PopUpText text={text} />;
         } else {
           return;
         }

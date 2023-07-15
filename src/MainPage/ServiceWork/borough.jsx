@@ -13,7 +13,7 @@ import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { add_update_delete_borough } from "../../utils/sendToServer";
 import { useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
-import { Popup } from "semantic-ui-react";
+import PopUpText from "../../_components/modelbox/PopUpText";
 
 const borough = () => {
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
@@ -137,14 +137,7 @@ const handleDeleteBorough = (id) => {
       dataIndex: "borough_description",
       render: (text, record, index) => {
         if (text && text) {
-          return (
-            <Popup
-              mouseEnterDelay={500}
-              mouseLeaveDelay={200}
-              content={text}
-              trigger={<span>Hover to show</span>}
-            />
-          );
+          return <PopUpText text={text} />;
         } else {
           return;
         }

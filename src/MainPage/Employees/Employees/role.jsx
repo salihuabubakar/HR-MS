@@ -10,7 +10,7 @@ import "../../antdstyle.css"
 import AddRole from '../../../_components/modelbox/AddRole';
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
-import { Popup } from "semantic-ui-react";
+import PopUpText from '../../../_components/modelbox/PopUpText';
 
 const Role = ({
   roleData,
@@ -96,14 +96,7 @@ const Role = ({
       dataIndex: "description",
       render: (text, record, index) => {
         if (text && text) {
-          return (
-            <Popup
-              mouseEnterDelay={500}
-              mouseLeaveDelay={200}
-              content={text}
-              trigger={<span>Hover to show</span>}
-            />
-          );
+          return <PopUpText text={text} />;
         } else {
           return;
         }
