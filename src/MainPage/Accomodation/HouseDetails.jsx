@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useMemo, useReducer } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import AddRoom from '../../_components/modelbox/AddRoom';
 import AddHouseEmployee from "../../_components/modelbox/AddHouseEmployee";
@@ -13,6 +13,8 @@ import AddHouseItem from '../../_components/modelbox/AddHouseItem';
 import AddHouseInspection from "../../_components/modelbox/AddHouseInspection";
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import { Wrapper } from "../ServiceWork/style";
+import axios from "axios"
+import { BaseUrl } from '../../utils/baseUrl';
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
@@ -42,9 +44,11 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
 import moment from "moment";
-import { useReactToPrint } from 'react-to-print';
+import Header from '../../initialpage/Sidebar/header';
+import Sidebar from '../../initialpage/Sidebar/sidebar';
+import { Helmet } from 'react-helmet';
 
-const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
+const HouseDetails = () => {
   const handleFileDownload = (file) => {
     const a = document.createElement("a");
     a.href = file;
@@ -83,6 +87,42 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
     a.click();
     document.body.removeChild(a);
   };
+
+  const location = useLocation();
+  let getHouseId = location?.state?.id;
+  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
+  const [getSelectedData, setGetSelectedData] = useState();
+
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchHouseSelectedData = async () => {
+      try {
+        setIsSelectedLoading(true);
+        const response = await axios.get(
+          `${BaseUrl}/house/details/${getHouseId}/?format=json`
+        );
+        if (isMounted) {
+          setGetSelectedData(response.data);
+          setIsSelectedLoading(false);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setIsSelectedLoading(false);
+      }
+    };
+    getHouseId != null ? fetchHouseSelectedData() : null;
+
+    return () => {
+      isMounted = false;
+    };
+  }, [getHouseId]);
+
+  const [menu, setMenu] = useState(false);
+const toggleMobileMenu = () => {
+    setMenu(!menu);
+  };
+
 
 
   const [houseEmployeeError] = useGlobalState("houseEmployeeError");
@@ -495,7 +535,29 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
 
   return (
     <>
-      <div className="card mb-0">
+    <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+      <Header onMenuClick={(value) => toggleMobileMenu()}/>
+      <Sidebar />
+      <div className='page-wrapper'>
+        <Helmet>
+          <title>House Profile - Peepal Tree HRMS</title>
+          <meta name="description" content="House Profile" />
+        </Helmet>
+        <div className="content container-fluid">
+          <div className='page-header'>
+            <div className="row">
+              <div className="col-sm-12">
+                <h3 className="page-title">Profile</h3>
+                <ul className="breadcrumb breadcrumb-nav">
+                  <li className="breadcrumb-item">
+                    <Link to="/app/accomodation/accomodations">All House</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Profile</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="card mb-0">
         <div className="card-body">
           <div className="row">
             <div className="col-md-12">
@@ -2145,6 +2207,9 @@ const HouseDetails = ({ isSelectedLoading, getSelectedData, getHouseId }) => {
         </div>
         {/* /Inspection Info Tab */}
       </div>
+        </div>
+      </div>
+    </div>
 
       {/* House Employee Modals */}
       {showHouseEmployeeModal && (

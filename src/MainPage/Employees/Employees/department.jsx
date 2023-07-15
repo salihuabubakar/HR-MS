@@ -8,10 +8,9 @@ import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../../paginationfunction";
 import "../../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
-import { initDept, savedDeptReducer } from "../../../utils/localStorage";
 import AddDepartment from "../../../_components/modelbox/AddDepartment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
-import HoverText from "./HoverText";
+import { Popup } from "semantic-ui-react";
 
 const Department = ({
   departmentData,
@@ -39,14 +38,6 @@ const Department = ({
   const [deleteDeptModal] = useGlobalState("deleteDeptModal");
   const [indexToEdit, setIndexToEdit] = useState();
   const [deptIdToEdit, setDeptIdToEdit] = useState("");
-  const [isHover] = useGlobalState("isHover");
-  const [isHoverText] = useGlobalState("isHoverText");
-
-  useEffect(() => {
-    if (!isHover) {
-      setGlobalState("isHoverText", "");
-    }
-  }, [isHover]);
 
   useEffect(() => {
     if (!showDeptModal) {
@@ -75,10 +66,6 @@ const Department = ({
     setGlobalState("departmentError", "");
   };
 
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHover", true);
-    setGlobalState("isHoverText", text);
-  };
 
   const columns = [
     {
@@ -98,9 +85,12 @@ const Department = ({
       render: (text, record, index) => {
         if(text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -185,11 +175,6 @@ const Department = ({
         </div>
       </div>
 
-      {isHover && (
-        <>
-          <HoverText isHoverText={isHoverText} />
-        </>
-      )}
       {/* /Page Content */}
       {/* Add Department Modal */}
       {showDeptModal && (

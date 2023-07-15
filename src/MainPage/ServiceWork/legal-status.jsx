@@ -14,7 +14,7 @@ import { add_update_delete_resident_legal_status_type } from "../../utils/sendTo
 import { useResidentLegalStatusTypeFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
-import HoverText from "../Employees/Employees/HoverText";
+import { Popup } from "semantic-ui-react";
 
 const legalStatus = () => {
   const { residentLegalStatusTypeData, residentLegalStatusTypeLoading } =
@@ -63,14 +63,6 @@ const legalStatus = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentLegalStatusTypeId, setResidentLegalStatusTypeId] = useState("");
-  const [isHover] = useGlobalState("isHover");
-  const [isHoverText] = useGlobalState("isHoverText");
-
-  useEffect(() => {
-    if (!isHover) {
-      setGlobalState("isHoverText", "");
-    }
-  }, [isHover]);
 
   const handleEditResidentLegalStatusType = (id, index) => {
     setResidentLegalStatusTypeId(id);
@@ -93,11 +85,6 @@ const legalStatus = () => {
     }
   });
 
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHover", true);
-    setGlobalState("isHoverText", text);
-  };
-
   const columns = [
     {
       title: "#",
@@ -119,9 +106,12 @@ const legalStatus = () => {
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -251,11 +241,6 @@ const legalStatus = () => {
           </div>
         </div>
         {/* /Page Content */}
-        {isHover && (
-          <>
-            <HoverText isHoverText={isHoverText} />
-          </>
-        )}
         {showResidentLegalStatusTypeModal && (
           <AddResidentLegalStatusType
             dispatchResidentLegalStatusType={dispatchResidentLegalStatusType}

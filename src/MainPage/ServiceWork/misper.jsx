@@ -18,7 +18,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
-import HoverText from "../Employees/Employees/HoverText";
+import { Popup } from "semantic-ui-react";
 
 const Misper = () => {
   const { residentMisperData, residentMisperLoading } = useResidentMisperFetching();
@@ -64,14 +64,6 @@ const Misper = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentMisperId, setResidentMisperId] = useState("");
-  const [isHover] = useGlobalState("isHover");
-  const [isHoverText] = useGlobalState("isHoverText");
-
-  useEffect(() => {
-    if (!isHover) {
-      setGlobalState("isHoverText", "");
-    }
-  }, [isHover]);
 
   const handleEditResidentMisper = (id, index) => {
     setResidentMisperId(id);
@@ -93,11 +85,6 @@ const Misper = () => {
       });
     }
   });
-
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHover", true);
-    setGlobalState("isHoverText", text);
-  };
 
   const columns = [
     {
@@ -193,9 +180,12 @@ const Misper = () => {
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -318,12 +308,6 @@ const Misper = () => {
             </div>
           </div>
         </div>
-
-        {isHover && (
-          <>
-            <HoverText isHoverText={isHoverText} />
-          </>
-        )}
 
         {showResidentMisperModal && (
           <AddResidentMisper

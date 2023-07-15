@@ -10,7 +10,7 @@ import "../../antdstyle.css"
 import AddRole from '../../../_components/modelbox/AddRole';
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
-import HoverText from './HoverText';
+import { Popup } from "semantic-ui-react";
 
 const Role = ({
   roleData,
@@ -39,14 +39,6 @@ const Role = ({
   const [deleteRoleModal] = useGlobalState("deleteRoleModal");
   const [indexToEdit, setIndexToEdit] = useState();
   const [getRoleId, setGetRoleId] = useState();
-  const [isHoverForRole] = useGlobalState("isHoverForRole");
-  const [isHoverText] = useGlobalState("isHoverText");
-
-  useEffect(() => {
-    if (!isHoverForRole) {
-      setGlobalState("isHoverText", "");
-    }
-  }, [isHoverForRole]);
 
   useEffect(() => {
     if (!showRoleModal) {
@@ -72,11 +64,6 @@ const Role = ({
   
   const clearErrorMessage = () => {
     setGlobalState("departmentError", "");
-  };
-
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHoverForRole", true);
-    setGlobalState("isHoverText", text);
   };
 
   const columns = [
@@ -110,9 +97,12 @@ const Role = ({
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -198,11 +188,6 @@ const Role = ({
         </div>
       </div>
       {/* /Page Content */}
-      {isHoverForRole && (
-        <>
-          <HoverText isHoverText={isHoverText} />
-        </>
-      )}
       {/* Add Designation Modal */}
       {showRoleModal && (
         <AddRole

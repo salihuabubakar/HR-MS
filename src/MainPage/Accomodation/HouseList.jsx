@@ -10,15 +10,10 @@ const HouseList = ({
   houseData,
   houseError,
   isHouseDataLoading,
-  setTab, 
-  setGetHouseId,
   handleHouseEdit,
   handleHouseDelete,
  }) => {
-  const handleHouseDetailPage = (id) => {
-    setTab("houseDetail");
-    setGetHouseId(id);
-  };
+  
 
 
   const columns = [
@@ -36,13 +31,16 @@ const HouseList = ({
         return (
           <React.Fragment>
             <h2 className="table-avatar">
-              <a
-                onClick={() => handleHouseDetailPage(id)}
+              <Link
                 className="avatar"
                 style={{
                   borderRadius: "5px",
                   backgroundColor: "#00000000",
                   height: "100%",
+                }}
+                to={{
+                  pathname: "/app/accomodation/HouseDetails",
+                  state: { id: id, index: index },
                 }}
               >
                 <img
@@ -50,8 +48,15 @@ const HouseList = ({
                   alt=""
                   src={photo ? photo : DefaultImage}
                 />
-              </a>
-              <a onClick={() => handleHouseDetailPage(id)}>{name}</a>
+              </Link>
+              <Link
+                to={{
+                  pathname: "/app/accomodation/HouseDetails",
+                  state: { id: id, index: index },
+                }}
+              >
+                {name}
+              </Link>
             </h2>
           </React.Fragment>
         );

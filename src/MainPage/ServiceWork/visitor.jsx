@@ -18,7 +18,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
-import HoverText from "../Employees/Employees/HoverText";
+import { Popup } from "semantic-ui-react";
 
 const visitor = () => {
   const { residentVisitorData, residentVisitorLoading } = useResidentVisitorFetching();
@@ -94,11 +94,6 @@ const visitor = () => {
     }
   });
 
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHover", true);
-    setGlobalState("isHoverText", text);
-  };
-
   const columns = [
     {
       title: "#",
@@ -171,9 +166,12 @@ const visitor = () => {
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -299,12 +297,6 @@ const visitor = () => {
             </div>
           </div>
         </div>
-
-        {isHover && (
-          <>
-            <HoverText isHoverText={isHoverText} />
-          </>
-        )}
 
         {showResidentVisitorModal && (
           <AddResidentVisitor
