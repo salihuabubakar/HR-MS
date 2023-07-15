@@ -10,7 +10,7 @@ import "../../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import AddDepartment from "../../../_components/modelbox/AddDepartment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
-import { Popup } from "semantic-ui-react";
+import PopUpText from "../../../_components/modelbox/PopUpText";
 
 const Department = ({
   departmentData,
@@ -84,14 +84,7 @@ const Department = ({
       dataIndex: "description",
       render: (text, record, index) => {
         if(text && text) {
-          return (
-            <Popup
-              mouseEnterDelay={500}
-              mouseLeaveDelay={200}
-              content={text}
-              trigger={<span>Hover to show</span>}
-            />
-          );
+          return <PopUpText text={text} />;
         } else {
           return;
         }

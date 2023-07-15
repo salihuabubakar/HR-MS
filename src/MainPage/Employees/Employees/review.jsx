@@ -17,7 +17,7 @@ import {
 import { add_update_delete_employee_review } from "../../../utils/sendToServer";
 import { useEmployeeReviewFetching, useDataFetching } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
-import { Popup } from "semantic-ui-react";
+import PopUpText from "../../../_components/modelbox/PopUpText";
 
 const Review = () => {
 
@@ -199,14 +199,7 @@ const Review = () => {
       dataIndex: "description",
       render: (text, record, index) => {
         if (text && text) {
-          return (
-            <Popup
-              mouseEnterDelay={500}
-              mouseLeaveDelay={200}
-              content={text}
-              trigger={<span>Hover to show</span>}
-            />
-          );
+          return <PopUpText text={text} />;
         } else {
           return;
         }
