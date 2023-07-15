@@ -13,8 +13,6 @@ const AllEmployeeList = ({
   handleDeleteAcct,
   isLoading,
   data,
-  setTab,
-  setGetEmployeeId,
   itemsPerPage,
   currentPage,
   setCurrentPage,
@@ -33,11 +31,6 @@ const AllEmployeeList = ({
     itemRender: itemRender,
     current: currentPage,
     onChange: setCurrentPage,
-  };
-
-  const handleEmployeeProfilePage = (id, index) => {
-    setTab("employeeProfile");
-    setGetEmployeeId(id);
   };
 
   const columns = [
@@ -59,12 +52,11 @@ const AllEmployeeList = ({
               // <React.Fragment>{`${matchedRole.role_name}`}</React.Fragment>
               <React.Fragment>
                 <h2 className="table-avatar">
-                  <a
-                    // to={{
-                    //   pathname: "/app/profile/employee-profile",
-                    //   state: { id: id, index: index },
-                    // }}
-                    onClick={() => handleEmployeeProfilePage(id, index)}
+                  <Link
+                    to={{
+                      pathname: "/app/employee/Profile",
+                      state: { id: id, index: index },
+                    }}
                     className="avatar"
                     style={{
                       borderRadius: "5px",
@@ -77,17 +69,16 @@ const AllEmployeeList = ({
                       alt=""
                       src={photo ? photo : DefaultImage}
                     />
-                  </a>
-                  <a
-                    // to={{
-                    //   pathname: "/app/profile/employee-profile",
-                    //   state: { id: id, index: index },
-                    // }}
-                    onClick={() => handleEmployeeProfilePage(id, index)}
+                  </Link>
+                  <Link
+                    to={{
+                      pathname: "/app/employee/Profile",
+                      state: { id: id, index: index },
+                    }}
                   >
                     {`${first_name} ${middle_name} ${last_name}`}{" "}
                     <span>{matchedRole.role_name}</span>
-                  </a>
+                  </Link>
                 </h2>
               </React.Fragment>
             );

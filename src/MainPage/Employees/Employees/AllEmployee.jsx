@@ -10,8 +10,6 @@ const AllEmployee = ({
   isLoading,
   showSkeleton,
   error,
-  setTab,
-  setGetEmployeeId,
 }) => {
 
   const {roleData} = useRoleFetching();
@@ -22,13 +20,6 @@ const AllEmployee = ({
     setItemsToShow(itemsToShow + 16);
   };
 
-
-  
-
-  const handleEmployeeProfilePage = (id, index) => {
-    setTab("employeeProfile");
-    setGetEmployeeId(id);
-  };
   return (
     <div className="row staff-grid-row">
       {isLoading || showSkeleton ? (
@@ -51,19 +42,19 @@ const AllEmployee = ({
                   staff;
                 return (
                   <React.Fragment key={id}>
-                    <div
-                      key={id}
-                      className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
-                    >
+                    <div key={id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                       <div className="profile-widget">
                         <div className="profile-img">
-                          <a
-                            onClick={() => handleEmployeeProfilePage(id, index)}
+                          <Link
                             className="avatar"
                             style={{
                               borderRadius: "5px",
                               backgroundColor: "#00000000",
                               height: "100%",
+                            }}
+                            to={{
+                              pathname: "/app/employee/Profile",
+                              state: { id: id, index: index },
                             }}
                           >
                             <img
@@ -75,7 +66,7 @@ const AllEmployee = ({
                               src={photo ? photo : DefaultImage}
                               alt=""
                             />
-                          </a>
+                          </Link>
                         </div>
                         <div className="dropdown profile-action">
                           <a
@@ -94,16 +85,14 @@ const AllEmployee = ({
                             </a>
                             {/* <a
                               className="dropdown-item"
-                              onClick={() => handleDeleteAcct(index)}
+                              onClick={() => handleDeleteAcct(id)}
                             >
                               <i className="fa fa-trash-o m-r-5" /> Delete
                             </a> */}
                           </div>
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <a
-                            onClick={() => handleEmployeeProfilePage(id, index)}
-                          >
+                          <a onClick={() => handleEmployeeProfilePage(id, index)}>
                             {`${first_name} ${middle_name} ${last_name}`}
                           </a>
                         </h4>

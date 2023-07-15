@@ -16,7 +16,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
-import HoverText from "../Employees/Employees/HoverText";
+import { Popup } from "semantic-ui-react";
 
 const documenttype = () => {
   const { residentDocumentTypeData, residentDocumentTypeLoading } = useResidentDocumentTypeFetching();
@@ -64,14 +64,6 @@ const documenttype = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentDocumentTypeId, setResidentDocumentTypeId] = useState("");
-  const [isHover] = useGlobalState("isHover");
-  const [isHoverText] = useGlobalState("isHoverText");
-
-  useEffect(() => {
-    if (!isHover) {
-      setGlobalState("isHoverText", "");
-    }
-  }, [isHover]);
 
   const handleEditResidentDocumentType = (id, index) => {
     setResidentDocumentTypeId(id);
@@ -127,9 +119,12 @@ const documenttype = () => {
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -259,11 +254,6 @@ const documenttype = () => {
           </div>
         </div>
         {/* /Page Content */}
-        {isHover && (
-          <>
-            <HoverText isHoverText={isHoverText} />
-          </>
-        )}
         {showResidentDocumentTypeModal && (
           <AddResidentDocumentType
             dispatchResidentDocumentType={dispatchResidentDocumentType}

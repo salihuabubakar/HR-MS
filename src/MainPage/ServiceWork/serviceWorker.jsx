@@ -16,44 +16,14 @@ import AllResident from "./AllResident";
 import AllResidentList from "./AllResidentList";
 import Profile from "./Profile";
 import { DivContainer } from "../TaskManagement/style";
-import axios from "axios";
-import { BaseUrl } from "../../utils/baseUrl";
 
 const AllServiceWorkers = () => {
   const [showModal] = useGlobalState("showModal");
   const [deleteModal] = useGlobalState("deleteModal");
-  const [tab, setTab] = useState(
-    "residentAll" || "residentList" || "residentProfile"
-  );
+  const [tab, setTab] = useState("residentAll" || "residentList");
 const [getResidentId, setGetResidentId] = useState(null);
 const { residentData, isResidentLoading, residentError } =
   useResidentFetching();
-const [getSelectedData, setGetSelectedData] = useState();
-const [isSelectedLoading, setIsSelectedLoading] = useState(false);
-
-useEffect(() => {
-  let isMounted = true;
-  const fetchResidentSelectedData = async () => {
-    try {
-      setIsSelectedLoading(true);
-      const response = await axios.get(
-        `${BaseUrl}/resident/detail/${getResidentId}?format=json`
-      );
-      if (isMounted) {
-        setGetSelectedData(response.data);
-        setIsSelectedLoading(false);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setIsSelectedLoading(false);
-    }
-  };
-  getResidentId != null ? fetchResidentSelectedData() : null;
-
-  return () => {
-    isMounted = false;
-  };
-}, [getResidentId]);
 
 const initialUserData = [];
 
@@ -121,29 +91,12 @@ const handleDeleteAcct = (id) => {
       <div className="page-wrapper">
         <Helmet>
           <title>Resident - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Resident page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
           {/* Page Header */}
           <div className="page-header">
-            {tab == "residentProfile" ? (
-              <>
-                <div className="row">
-                  <div className="col-sm-12">
-                    <h3 className="page-title">Profile</h3>
-                    <ul className="breadcrumb breadcrumb-nav">
-                      <li className="breadcrumb-item">
-                        <a onClick={() => setTab("residentAll")}>
-                          All Resident
-                        </a>
-                      </li>
-                      <li className="breadcrumb-item active">Profile</li>
-                    </ul>
-                  </div>
-                </div>
-              </>
-            ) : (
               <>
                 <div className="row align-items-center">
                   <div className="col">
@@ -180,10 +133,8 @@ const handleDeleteAcct = (id) => {
                   </div>
                 </div>
               </>
-            )}
           </div>
           {/* /Page Header */}
-          {tab != "residentProfile" ? (
             <>
               {/* Search Filter */}
               <div className="row filter-row">
@@ -227,7 +178,6 @@ const handleDeleteAcct = (id) => {
               </span>
               {/* Search Filter */}
             </>
-          ) : null}
           {tab == "residentAll" && (
             <AllResident
               data={residentData}
@@ -236,8 +186,6 @@ const handleDeleteAcct = (id) => {
               handleEditResident={handleEditResident}
               handleDeleteAcct={handleDeleteAcct}
               DefaultImage={DefaultImage}
-              setTab={setTab}
-              setGetResidentId={setGetResidentId}
             />
           )}
           {tab == "residentList" && (
@@ -246,20 +194,10 @@ const handleDeleteAcct = (id) => {
               handleDeleteAcct={handleDeleteAcct}
               DefaultImage={DefaultImage}
               data={residentData}
-              setTab={setTab}
               isResidentLoading={isResidentLoading}
-              setGetResidentId={setGetResidentId}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
-            />
-          )}
-          {tab == "residentProfile" && (
-            <Profile
-              getSelectedData={getSelectedData}
-              DefaultImage={DefaultImage}
-              isSelectedLoading={isSelectedLoading}
-              getResidentId={getResidentId}
             />
           )}
         </div>

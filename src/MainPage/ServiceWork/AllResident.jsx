@@ -9,8 +9,6 @@ const AllResident = ({
   data,
   isLoading,
   error,
-  setTab,
-  setGetResidentId,
 }) => {
 
   const {roleData} = useRoleFetching();
@@ -21,13 +19,6 @@ const AllResident = ({
     setItemsToShow(itemsToShow + 16);
   };
 
-
-  
-
-  const handleResidentProfilePage = (id, index) => {
-    setTab("residentProfile");
-    setGetResidentId(id);
-  };
   return (
     <div className="row staff-grid-row">
       {isLoading ? (
@@ -50,19 +41,19 @@ const AllResident = ({
                   staff;
                 return (
                   <React.Fragment key={id}>
-                    <div
-                      key={id}
-                      className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
-                    >
+                    <div key={id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                       <div className="profile-widget">
                         <div className="profile-img">
-                          <a
-                            onClick={() => handleResidentProfilePage(id, index)}
+                          <Link
                             className="avatar"
                             style={{
                               borderRadius: "5px",
                               backgroundColor: "#00000000",
                               height: "100%",
+                            }}
+                            to={{
+                              pathname: "/app/servicework/Profile",
+                              state: { id: id, index: index },
                             }}
                           >
                             <img
@@ -74,7 +65,7 @@ const AllResident = ({
                               src={photo ? photo : DefaultImage}
                               alt=""
                             />
-                          </a>
+                          </Link>
                         </div>
                         <div className="dropdown profile-action">
                           <a
@@ -91,20 +82,18 @@ const AllResident = ({
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
                             </a>
-                            <a
-                              className="dropdown-item"
-                              onClick={() => handleDeleteAcct(id)}
-                            >
+                            <a className="dropdown-item" onClick={() => handleDeleteAcct(id)}>
                               <i className="fa fa-trash-o m-r-5" /> Delete
                             </a>
                           </div>
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <a
-                            onClick={() => handleResidentProfilePage(id, index)}
-                          >
-                            {`${first_name} ${middle_name} ${last_name}`}
-                          </a>
+                          <Link
+                            to={{
+                              pathname: "/app/servicework/Profile",
+                              state: { id: id, index: index },
+                            }}
+                          >{`${first_name} ${middle_name} ${last_name}`}</Link>
                         </h4>
                         <div className="small text-muted">
                           {roleData?.map((r) => {

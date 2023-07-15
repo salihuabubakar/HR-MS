@@ -15,11 +15,13 @@ import Misper from "./misper";
 import DocumentType from "./document-type";
 import LegalStatus from "./legal-status";
 import GpType from "./gp-type";
+import Profile from "./Profile";
 
 const ServiceRoute = ({ match }) => (
   <Switch>
     <Redirect exact from={`${match.url}/`} to={`${match.url}/service-worker`} />
     <Route path={`${match.url}/service-worker`} component={ServiceWorker} />
+    <Route path={`${match.url}/Profile`} component={Profile} />
     <Route path={`${match.url}/borough`} component={Borough} />
     <Route path={`${match.url}/social-worker`} component={SocialWorker} />
     <Route path={`${match.url}/visitor`} component={Visitor} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import React, { useState, useEffect, useReducer, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
@@ -18,8 +18,7 @@ import {
   useDataFetching,
 } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
-import DefaultImage from "../../../assets/img/placeholder.jpg";
-import HoverText from "./HoverText";
+import { Popup } from "semantic-ui-react";
 
 const Status = () => {
   const { statusData, isStatusDataLoading } = useStatusFetching();
@@ -57,14 +56,6 @@ useEffect(() => {
 const [menu, setMenu] = useState(false);
 const [indexToEdit, setIndexToEdit] = useState();
 const [statusId, setStatusId] = useState("");
-const [isHover] = useGlobalState("isHover");
-const [isHoverText] = useGlobalState("isHoverText");
-
-useEffect(() => {
-  if (!isHover) {
-    setGlobalState("isHoverText", "");
-  }
-}, [isHover]);
 
 const handleEditStatus = (id, index) => {
   setStatusId(id);
@@ -87,11 +78,6 @@ const handleDeleteStatus = (id) => {
       });
     }
   });
-
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHover", true);
-    setGlobalState("isHoverText", text);
-  };
 
   const [statusError] = useGlobalState("statusError");
 
@@ -148,9 +134,12 @@ const handleDeleteStatus = (id) => {
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -285,12 +274,6 @@ const handleDeleteStatus = (id) => {
             </div>
           </div>
         </div>
-
-        {isHover && (
-          <>
-            <HoverText isHoverText={isHoverText} />
-          </>
-        )}
 
         {showStatusModal && (
           <AddStatus dispatchStatus={dispatchStatus} indexToEdit={indexToEdit} id={statusId} />

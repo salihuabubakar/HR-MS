@@ -17,7 +17,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
-import HoverText from "../Employees/Employees/HoverText";
+import { Popup } from "semantic-ui-react";
 
 const request = () => {
   const { residentRequestData, residentRequestLoading } = useResidentRequestFetching();
@@ -62,14 +62,6 @@ const request = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentRequestId, setResidentRequestId] = useState("");
-  const[isHover] = useGlobalState("isHover");
-  const [isHoverText] = useGlobalState("isHoverText");
-
-  useEffect(() => {
-    if (!isHover) {
-      setGlobalState("isHoverText", "");
-    }
-  }, [isHover]);
 
   const handleEditResidentRequest = (id, index) => {
     setResidentRequestId(id);
@@ -163,9 +155,12 @@ const request = () => {
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -291,12 +286,6 @@ const request = () => {
             </div>
           </div>
         </div>
-
-        {isHover && (
-          <>
-            <HoverText isHoverText={isHoverText} />
-          </>
-        )}
 
         {showResidentRequestModal && (
           <AddResidentRequest

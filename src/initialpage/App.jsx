@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "Assets/css/font-awesome.min.css";
+import "semantic-ui-css/semantic.min.css";
 
 const App = ({ match, location }) => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");

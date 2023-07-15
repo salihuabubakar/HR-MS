@@ -13,7 +13,7 @@ import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { add_update_delete_borough } from "../../utils/sendToServer";
 import { useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
-import HoverText from "../Employees/Employees/HoverText";
+import { Popup } from "semantic-ui-react";
 
 const borough = () => {
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
@@ -55,14 +55,6 @@ useEffect(() => {
 const [menu, setMenu] = useState(false);
 const [indexToEdit, setIndexToEdit] = useState();
 const [boroughId, setBoroughId] = useState("");
-const [isHover] = useGlobalState("isHover");
-const [isHoverText] = useGlobalState("isHoverText");
-
-useEffect(() => {
-  if (!isHover) {
-    setGlobalState("isHoverText", "");
-  }
-}, [isHover]);
 
 const handleEditBorough = (id, index) => {
   setBoroughId(id);
@@ -84,11 +76,6 @@ const handleDeleteBorough = (id) => {
       });
     }
   });
-
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHover", true);
-    setGlobalState("isHoverText", text);
-  };
 
   const columns = [
     {
@@ -151,9 +138,12 @@ const handleDeleteBorough = (id) => {
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -273,12 +263,6 @@ const handleDeleteBorough = (id) => {
             </div>
           </div>
         </div>
-
-        {isHover && (
-          <>
-            <HoverText isHoverText={isHoverText} />
-          </>
-        )}
 
         {showBoroughModal && (
           <AddBorough dispatchBorough={dispatchBorough} indexToEdit={indexToEdit} id={boroughId} />

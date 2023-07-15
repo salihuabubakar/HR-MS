@@ -30,7 +30,6 @@ import {
   add_update_delete_shift,
   add_update_delete_employee_shift,
 } from "../../utils/sendToServer";
-import "regenerator-runtime/runtime";
 import { useReactToPrint } from "react-to-print";
 import WeeklyComponent from "./weeklyComponent";
 import MonthlyComponent from "./monthlyComponent";

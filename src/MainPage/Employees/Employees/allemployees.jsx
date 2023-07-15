@@ -12,49 +12,14 @@ import { useDataFetching, useDataEdit } from '../../../utils/employeeCustomFetch
 import "./style.css";
 import AllEmployee from './AllEmployee';
 import AllEmployeeList from './AllEmployeeList';
-import Profile from './Profile';
 import { DivContainer } from '../../TaskManagement/style';
-import axios from "axios";
-import { BaseUrl } from '../../../utils/baseUrl';
-
 
 const AllEmployees = () => {
   const [showModal] = useGlobalState("showModal");
   const [deleteModal] = useGlobalState("deleteModal");
-  const [tab, setTab] = useState("employeeAll" || "employeeList" || "employeeProfile");
+  const [tab, setTab] = useState("employeeAll" || "employeeList");
   const [getEmployeeId, setGetEmployeeId] = useState(null)
   const { data, isLoading, error, showSkeleton } = useDataFetching();
-  const [getSelectedData, setGetSelectedData] = useState();
-  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
-  const [skeletonLoading, setSkeletonLoading] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchEmployeeSelectedData = async () => {
-      try {
-        setIsSelectedLoading(true);
-        setSkeletonLoading(true);
-        const response = await axios.get(
-          `${BaseUrl}/employee/detail/${getEmployeeId}?format=json`
-        );
-        if(isMounted) {
-          setGetSelectedData(response.data);
-          setIsSelectedLoading(false);
-          setSkeletonLoading(false);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setIsSelectedLoading(false);
-        setSkeletonLoading(false);
-      }
-    };
-    getEmployeeId != null ? fetchEmployeeSelectedData() : null;
-    
-    return () => {
-      isMounted = false;
-    };
-  }, [getEmployeeId]);
-  
 
   const initialUserData = [];
 
@@ -89,14 +54,14 @@ const AllEmployees = () => {
     setGlobalState("selectedEmployeeAccount", data);
   };
 
-   const handleDeleteAcct = (index) => {
-    setIndexToEdit(index);
+  const handleDeleteAcct = (id) => {
+    setGetEmployeeId(id);
     setGlobalState("deleteModal", true);
-   };
+  };
 
 	const toggleMobileMenu = () => {
 		setMenu(!menu)
-	  }
+	}
 
     useEffect( ()=>{
       if($('.select').length > 0) {
@@ -120,29 +85,13 @@ const AllEmployees = () => {
           <div className="page-wrapper">
             <Helmet>
               <title>Employee - Peepal Tree HRMS</title>
-              <meta name="description" content="Login page" />
+              <meta name="description" content="Employee page" />
             </Helmet>
             {/* Page Content */}
             <div className="content container-fluid">
               {/* Page Header */}
               <div className="page-header">
-                {tab == "employeeProfile" ? (
-                  <>
-                    <div className="row">
-                      <div className="col-sm-12">
-                        <h3 className="page-title">Profile</h3>
-                        <ul className="breadcrumb breadcrumb-nav">
-                          <li className="breadcrumb-item">
-                            <a onClick={() => setTab("employeeAll")}>
-                              All Employees
-                            </a>
-                          </li>
-                          <li className="breadcrumb-item active">Profile</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </>
-                ) : (
+                {
                   <>
                     <div className="row align-items-center">
                       <div className="col">
@@ -179,10 +128,9 @@ const AllEmployees = () => {
                       </div>
                     </div>
                   </>
-                )}
+                }
               </div>
               {/* /Page Header */}
-              {tab != "employeeProfile" ? (
                 <>
                   {/* Search Filter */}
                   <div className="row filter-row">
@@ -226,7 +174,6 @@ const AllEmployees = () => {
                   </span>
                   {/* Search Filter */}
                 </>
-              ) : null}
               {tab == "employeeAll" && (
                 <AllEmployee
                   data={data}
@@ -236,8 +183,6 @@ const AllEmployees = () => {
                   handleEditEmployee={handleEditEmployee}
                   handleDeleteAcct={handleDeleteAcct}
                   DefaultImage={DefaultImage}
-                  setTab={setTab}
-                  setGetEmployeeId={setGetEmployeeId}
                 />
               )}
               {tab == "employeeList" && (
@@ -247,20 +192,9 @@ const AllEmployees = () => {
                   DefaultImage={DefaultImage}
                   data={data}
                   isLoading={isLoading}
-                  setTab={setTab}
-                  setGetEmployeeId={setGetEmployeeId}
                   itemsPerPage={itemsPerPage}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
-                />
-              )}
-              {tab == "employeeProfile" && (
-                <Profile
-                  getSelectedData={getSelectedData}
-                  DefaultImage={DefaultImage}
-                  isSelectedLoading={isSelectedLoading}
-                  skeletonLoading={skeletonLoading}
-                  getEmployeeId={getEmployeeId}
                 />
               )}
             </div>

@@ -14,7 +14,7 @@ import { add_update_delete_resident_gp_type } from "../../utils/sendToServer";
 import { useResidentGpTypeFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
-import HoverText from "../Employees/Employees/HoverText";
+import { Popup } from "semantic-ui-react";
 
 const GpType = () => {
   const { residentGpTypeData, residentGpTypeLoading } = useResidentGpTypeFetching();
@@ -58,14 +58,6 @@ const GpType = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentGpTypeId, setResidentGpTypeId] = useState("");
-  const [isHover] = useGlobalState("isHover");
-  const [isHoverText] = useGlobalState("isHoverText");
-
-  useEffect(() => {
-    if (!isHover) {
-      setGlobalState("isHoverText", "");
-    }
-  }, [isHover]);
 
   const handleEditResidentGpType = (id, index) => {
     setResidentGpTypeId(id);
@@ -88,11 +80,6 @@ const GpType = () => {
     }
   });
 
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHover", true);
-    setGlobalState("isHoverText", text);
-  };
-
   const columns = [
     {
       title: "#",
@@ -114,9 +101,12 @@ const GpType = () => {
       render: (text, record, index) => {
         if (text && text) {
           return (
-            <div>
-              <span onMouseEnter={() => handleHoverEffect(text)}>Hover to show</span>
-            </div>
+            <Popup
+              mouseEnterDelay={500}
+              mouseLeaveDelay={200}
+              content={text}
+              trigger={<span>Hover to show</span>}
+            />
           );
         } else {
           return;
@@ -240,11 +230,6 @@ const GpType = () => {
           </div>
         </div>
         {/* /Page Content */}
-        {isHover && (
-          <>
-            <HoverText isHoverText={isHoverText} />
-          </>
-        )}
         {showResidentGpTypeModal && (
           <AddResidentGpType
             dispatchResidentGpType={dispatchResidentGpType}

@@ -10,8 +10,6 @@ const AllResidentList = ({
   handleEditResident,
   handleDeleteAcct,
   data,
-  setTab,
-  setGetResidentId,
   itemsPerPage,
   currentPage,
   setCurrentPage,
@@ -33,11 +31,6 @@ const AllResidentList = ({
     onChange: setCurrentPage,
   };
 
-  const handleResidentProfilePage = (id, index) => {
-    setTab("residentProfile");
-    setGetResidentId(id);
-  };
-
   const columns = [
     {
       title: "#",
@@ -54,17 +47,16 @@ const AllResidentList = ({
         return (
           <React.Fragment>
             <h2 className="table-avatar">
-              <a
-                // to={{
-                //   pathname: "/app/profile/employee-profile",
-                //   state: { id: id, index: index },
-                // }}
-                onClick={() => handleResidentProfilePage(id, index)}
+              <Link
                 className="avatar"
                 style={{
                   borderRadius: "5px",
                   backgroundColor: "#00000000",
                   height: "100%",
+                }}
+                to={{
+                  pathname: "/app/servicework/Profile",
+                  state: { id: id, index: index },
                 }}
               >
                 <img
@@ -72,17 +64,16 @@ const AllResidentList = ({
                   alt=""
                   src={photo ? photo : DefaultImage}
                 />
-              </a>
-              <a
-                // to={{
-                //   pathname: "/app/profile/employee-profile",
-                //   state: { id: id, index: index },
-                // }}
-                onClick={() => handleResidentProfilePage(id, index)}
+              </Link>
+              <Link
+                to={{
+                  pathname: "/app/servicework/Profile",
+                  state: { id: id, index: index },
+                }}
               >
                 {`${first_name} ${middle_name} ${last_name}`}{" "}
                 <span>{role_name ? role_name : "--"}</span>
-              </a>
+              </Link>
             </h2>
           </React.Fragment>
         );

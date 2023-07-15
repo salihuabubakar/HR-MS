@@ -1,31 +1,21 @@
 import React, {useEffect, useState, useMemo, useReducer } from 'react';
 import { Helmet } from "react-helmet";
 import { Link, withRouter } from "react-router-dom";
-import  Addemployee from "../../_components/modelbox/Addemployee"
-import  Editemployee from "../../_components/modelbox/Editemployee"
 import Header from '../../initialpage/Sidebar/header'
 import Sidebar from '../../initialpage/Sidebar/sidebar'
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
-import { initHouse, savedHouseReducer } from "../../utils/localStorage";
-import SmileImg from "../../assets/img/smile.png";
-import HouseImg from "../../assets/img/house.png";
 import AddHouse from "../../_components/modelbox/AddHouse";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
-import DefaultImage from "../../assets/img/placeholder.jpg";
 import HouseDetails from './HouseDetails';
 import AllHouse from './AllHouse';
 import HouseList from './HouseList';
 import { useHouseFetching } from '../../utils/employeeCustomFetchHook';
 import { add_update_delete_house } from '../../utils/sendToServer';
 import "../Employees/Employees/style.css"
-import axios from "axios"
-import { BaseUrl } from '../../utils/baseUrl';
 
 
 const Accomodations = () => {
-  const [tab, setTab] = useState(
-    "allHouse" || "houseList" || "houseDetail"
-  );
+  const [tab, setTab] = useState("allHouse" || "houseList");
   const { houseData, houseError, isHouseDataLoading } =
     useHouseFetching();
   const [state, dispatchHouse] = useReducer(add_update_delete_house, []);
@@ -35,34 +25,6 @@ const Accomodations = () => {
   const [indexToEdit, setIndexToEdit] = useState(0);
   const [houseIdToEdit, setHouseIdToEdit] = useState("");
   const [getHouseId, setGetHouseId] = useState();
-  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
-  const [getSelectedData, setGetSelectedData] = useState();
-
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchHouseSelectedData = async () => {
-      try {
-        setIsSelectedLoading(true);
-        const response = await axios.get(
-          `${BaseUrl}/house/details/${getHouseId}/?format=json`
-        );
-        if (isMounted) {
-          setGetSelectedData(response.data);
-          setIsSelectedLoading(false);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setIsSelectedLoading(false);
-      }
-    };
-    getHouseId != null ? fetchHouseSelectedData() : null;
-
-    return () => {
-      isMounted = false;
-    };
-  }, [getHouseId]);
-
 
   useEffect(() => {
     if (!showModal) {
@@ -110,27 +72,12 @@ const Accomodations = () => {
           <div className="page-wrapper">
             <Helmet>
               <title>Accomodation - Peepal Tree HRMS</title>
-              <meta name="description" content="Login page" />
+              <meta name="description" content="Accomodation page" />
             </Helmet>
             {/* Page Content */}
             <div className="content container-fluid">
               {/* Page Header */}
               <div className="page-header">
-                {tab == "houseDetail" ? (
-                  <>
-                    <div className="row">
-                      <div className="col-sm-12">
-                        <h3 className="page-title">Profile</h3>
-                        <ul className="breadcrumb breadcrumb-nav">
-                          <li className="breadcrumb-item">
-                            <a onClick={() => setTab("allHouse")}>All House</a>
-                          </li>
-                          <li className="breadcrumb-item active">Profile</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </>
-                ) : (
                   <>
                     <div className="row align-items-center">
                       <div className="col">
@@ -170,11 +117,9 @@ const Accomodations = () => {
                       </div>
                     </div>
                   </>
-                )}
               </div>
               {/* /Page Header */}
               {/* Search Filter */}
-              {tab != "houseDetail" ? (
                 <>
                   {/* Search Filter */}
                   <div className="row filter-row">
@@ -218,7 +163,6 @@ const Accomodations = () => {
                   </span>
                   {/* Search Filter */}
                 </>
-              ) : null}
               {/* Search Filter */}
 
               {tab == "allHouse" && (
@@ -234,19 +178,10 @@ const Accomodations = () => {
               )}
               {tab == "houseList" && (
                 <HouseList
-                  setTab={setTab}
                   houseData={houseData}
-                  setGetHouseId={setGetHouseId}
                   isHouseDataLoading={isHouseDataLoading}
                   handleHouseEdit={handleHouseEdit}
                   handleHouseDelete={handleHouseDelete}
-                />
-              )}
-              {tab == "houseDetail" && (
-                <HouseDetails
-                  isSelectedLoading={isSelectedLoading}
-                  getSelectedData={getSelectedData}
-                  getHouseId={getHouseId}
                 />
               )}
             </div>

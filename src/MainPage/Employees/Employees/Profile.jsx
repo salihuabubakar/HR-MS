@@ -3,6 +3,7 @@ import moment from "moment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import { Wrapper } from "../../ServiceWork/style";
+import { Link, useLocation } from "react-router-dom";
 import {
   useEmployeeAddressFetching,
   useEmployeeEmergencyFetching,
@@ -25,13 +26,15 @@ import AddEmployeeQualification from "../../../_components/modelbox/AddEmployeeQ
 import AddEmployeeExperience from "../../../_components/modelbox/AddEmployeeExperience";
 import AddEmployeeDocument from "../../../_components/modelbox/AddEmployeeDocument";
 import AddEmployeeBank from "../../../_components/modelbox/AddEmployeeBank";
+import { DivContainer } from "../../TaskManagement/style";
+import Header from "../../../initialpage/Sidebar/header";
+import Sidebar from "../../../initialpage/Sidebar/sidebar";
+import { Helmet } from "react-helmet";
+import axios from "axios";
+import { BaseUrl } from "../../../utils/baseUrl";
 
 const Profile = ({
-  getSelectedData,
   DefaultImage,
-  isSelectedLoading,
-  skeletonLoading,
-  getEmployeeId,
 }) => {
 
     const handleFileDownload = (file) => {
@@ -72,6 +75,45 @@ const Profile = ({
       a.click();
       document.body.removeChild(a);
     };
+
+  const location = useLocation();
+  let getEmployeeId = location?.state?.id;
+
+  const [getSelectedData, setGetSelectedData] = useState();
+  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
+  const [skeletonLoading, setSkeletonLoading] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchEmployeeSelectedData = async () => {
+      try {
+        setIsSelectedLoading(true);
+        setSkeletonLoading(true);
+        const response = await axios.get(
+          `${BaseUrl}/employee/detail/${getEmployeeId}?format=json`
+        );
+        if(isMounted) {
+          setGetSelectedData(response.data);
+          setIsSelectedLoading(false);
+          setSkeletonLoading(false);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setIsSelectedLoading(false);
+        setSkeletonLoading(false);
+      }
+    };
+    getEmployeeId != null ? fetchEmployeeSelectedData() : null;
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [getEmployeeId]);
+
+  const [menu, setMenu] = useState(false)
+  const toggleMobileMenu = () => {
+		setMenu(!menu)
+	}
 
     const [employeeBankError] = useGlobalState("employeeBankError");
     const [employeeEmergencyError] = useGlobalState("employeeEmergencyError");
@@ -341,1182 +383,1091 @@ const Profile = ({
 
   return (
     <>
-      <div className="card mb-0">
-        <div className="card-body">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="profile-view">
-                <div className="profile-img-wrap">
-                  {isSelectedLoading || skeletonLoading ? (
-                    <div className="skeleton-container1">
-                      <div className="skeleton-avatar1"></div>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="profile-img">
-                        <a>
-                          <img alt="" src={photo ? photo : DefaultImage} />
-                        </a>
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div className="profile-basic">
-                  <div className="row">
-                    {isSelectedLoading || skeletonLoading ? (
-                      <div className="skeleton-container1">
-                        <div className="skeleton-content1">
-                          <div className="skeleton-line1"></div>
-                          <div className="skeleton-line2"></div>
-                          <div className="skeleton-line3"></div>
-                          <div className="skeleton-line4"></div>
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="col-md-5">
-                          <div className="profile-info-left">
-                            <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
-
-                            <h6
-                              style={{ display: "flex" }}
-                              className="text-muted"
-                            >
-                              <div
-                                style={{
-                                  borderRadius: "50%",
-                                  height: "10px",
-                                  width: "10px",
-                                  backgroundColor: "lightgreen",
-                                  marginRight: "5px",
-                                }}
-                              ></div>
-                              {employeeStatus == Number(employeeStatus)
-                                ? "Active"
-                                : employeeStatus}
-                            </h6>
-                            <h6 className="text-muted">
-                              Role: {role ? role?.role_name : "--"}
-                            </h6>
-                            <div className="small doj text-muted">
-                              Employee ID :{" "}
-                              {employee_number ? employee_number : "--"}
-                            </div>
-                            <div className="small doj text-muted">
-                              NI Number : {ni_numbber ? ni_numbber : "--"}
-                            </div>
-                            <div className="small doj text-muted">
-                              Date of Join:{" "}
-                              {hire_date
-                                ? moment(hire_date).format("DD MMM YYYY")
-                                : "--"}
-                            </div>
-                            <div className="small doj text-muted">
-                              Nationality: {nationality ? nationality : "--"}
-                            </div>
-                            <div className="small doj text-muted">
-                              Department: {department?.department_name}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="col-md-7">
-                          <ul className="personal-info">
-                            <li>
-                              <div className="title">Phone:</div>
-                              <div className="text">
-                                <a>{phone_number ? phone_number : "--"}</a>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">Email:</div>
-                              <div className="text">
-                                <a>{email ? email : "--"}</a>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">Birthday:</div>
-                              <div className="text">
-                                {date_of_birth
-                                  ? moment(date_of_birth).format("DD MMM YYYY")
-                                  : "--"}
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">Gender:</div>
-                              <div className="text">
-                                {gender ? gender : "--"}
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">Marital Status:</div>
-                              <div className="text">
-                                {marital_status ? marital_status : "--"}
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">Organisation:</div>
-                              <div className="text">
-                                {organisation?.organisation_name
-                                  ? organisation?.organisation_name
-                                  : "--"}
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="card tab-box">
-        <div className="row user-tabs">
-          <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
-            <ul className="nav nav-tabs nav-tabs-bottom">
-              <li className="nav-item">
-                <a
-                  href="#emp_profile"
-                  data-bs-toggle="tab"
-                  className="nav-link active"
-                >
-                  Profile
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#emp_tasks" data-bs-toggle="tab" className="nav-link">
-                  Tasks
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#document_upload"
-                  data-bs-toggle="tab"
-                  className="nav-link"
-                >
-                  Document Upload
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="tab-content">
-        {/* Profile Info Tab */}
-        <div
-          id="emp_profile"
-          className="pro-overview tab-pane fade show active"
-        >
-          {isSelectedLoading || skeletonLoading ? (
-            <div className="skeleton-container-profile">
-              <div className="skeleton-content-profile">
-                <div className="skeleton-line-profile"></div>
-                <div className="skeleton-line-profile"></div>
-              </div>
-            </div>
-          ) : (
-            <>
+      <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+        <Header onMenuClick={(value) => toggleMobileMenu()} />
+        <Sidebar />
+        <div className="page-wrapper">
+          <Helmet>
+            <title>Employee Profile - Peepal Tree HRMS</title>
+            <meta name="description" content="Profile page" />
+          </Helmet>
+          <div className="content container-fluid">
+            <div className="page-header">
               <div className="row">
-                <div className="col-md-12 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Bank Information{" "}
-                        <span style={{ color: "red", fontSize: "0.7rem" }}>
-                          {employeeBankError?.length > 0 && (
-                            <>
-                              Error: {employeeBankError}
-                              <button
-                                onClick={clearErrorMessage}
-                                style={{
-                                  marginLeft: "10px",
-                                  fontSize: "0.8rem",
-                                  cursor: "pointer",
-                                  color: "black",
-                                }}
-                              >
-                                <i className="fa fa-times" />
-                                Clear Error
-                              </button>
-                            </>
-                          )}
-                        </span>
-                        <a
-                          className="edit-icon"
-                          onClick={() =>
-                            setGlobalState("showEmployeeBankModal", true)
-                          }
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      <div className="table-responsive">
-                        <table className="table table-nowrap">
-                          <thead>
-                            <tr>
-                              <th>Bank name</th>
-                              <th>Account Name</th>
-                              <th>Account No</th>
-                              <th>Account Type</th>
-                              <th>Currency</th>
-                              <th>Address</th>
-                              <th>Sort Code</th>
-                              <th>Swift Code</th>
-                              <th>Iban</th>
-                              <th>Routing No</th>
-                              <th>Date</th>
-                              <th>Document</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {employeeBankData?.length > 0 ? (
-                              employeeBankData?.map((bank, index) => {
-                                const {
-                                  id,
-                                  employee,
-                                  bank_name,
-                                  account_name,
-                                  account_number,
-                                  account_type,
-                                  currency,
-                                  bank_address,
-                                  sort_code,
-                                  swift_code,
-                                  iban,
-                                  routing_number,
-                                  upload_date,
-                                  upload_document,
-                                } = bank;
-                                if (employee == selectedEmployeeId) {
-                                  return (
-                                    <tr style={{ height: "90px" }} key={id}>
-                                      <td>{bank_name}</td>
-                                      <td>{account_name}</td>
-                                      <td>{account_number}</td>
-                                      <td>{account_type}</td>
-                                      <td>{currency}</td>
-                                      <td>{bank_address}</td>
-                                      <td>{sort_code}</td>
-                                      <td>{swift_code}</td>
-                                      <td>{iban}</td>
-                                      <td>{routing_number}</td>
-                                      <td>{upload_date}</td>
-                                      <td>
-                                        {upload_document &&
-                                        regex.test(upload_document) ? (
-                                          <img
-                                            className="img-preview"
-                                            src={upload_document}
-                                            alt="Preview"
-                                          />
-                                        ) : !upload_document ? null : (
-                                          <span className="files-icon">
-                                            <i className="fa fa-file-pdf-o" />
-                                          </span>
-                                        )}
-                                      </td>
-                                      <td className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleFileDownload(
-                                                upload_document
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-download m-r-5" />{" "}
-                                            Download
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditEmployeeBank(id, index)
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteEmployeeBank(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                }
-                              })
-                            ) : (
-                              <tr>
-                                <td>No Bank detail attach to this employee</td>
-                              </tr>
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
+                <div className="col-sm-12">
+                  <h3 className="page-title">Profile</h3>
+                  <ul className="breadcrumb breadcrumb-nav">
+                    <li className="breadcrumb-item">
+                      <Link to="/app/employee/allemployees">All Employees</Link>
+                    </li>
+                    <li className="breadcrumb-item active">Profile</li>
+                  </ul>
                 </div>
-
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Emergency Contact{" "}
-                        <span style={{ color: "red", fontSize: "0.7rem" }}>
-                          {employeeEmergencyError?.length > 0 && (
-                            <>
-                              Error: {employeeEmergencyError}
-                              <button
-                                onClick={clearErrorMessage}
-                                style={{
-                                  marginLeft: "10px",
-                                  fontSize: "0.8rem",
-                                  cursor: "pointer",
-                                  color: "black",
-                                }}
-                              >
-                                <i className="fa fa-times" />
-                                Clear Error
-                              </button>
-                            </>
-                          )}
-                        </span>
-                        <a
-                          className="edit-icon"
-                          onClick={() =>
-                            setGlobalState("showEmployeeEmergencyModal", true)
-                          }
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      <div className="table-responsive">
-                        <table className="table table-nowrap">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Relationship</th>
-                              <th>Phone Number</th>
-                              <th>Address</th>
-                              <th>Email</th>
-                              <th>Post Code</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {employeeEmergencyData?.length > 0 ? (
-                              employeeEmergencyData?.map((emergency, index) => {
-                                const {
-                                  id,
-                                  employee,
-                                  name,
-                                  relationship,
-                                  phone_number,
-                                  address,
-                                  email,
-                                  post_code,
-                                } = emergency;
-                                if (employee == selectedEmployeeId) {
-                                  return (
-                                    <tr style={{ height: "90px" }} key={id}>
-                                      <td>{name}</td>
-                                      <td>{relationship}</td>
-                                      <td>{phone_number}</td>
-                                      <td>{address}</td>
-                                      <td>{email}</td>
-                                      <td>{post_code}</td>
-                                      <td className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditEmployeeEmergency(
-                                                id,
-                                                index
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteEmployeeEmergency(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                }
-                              })
-                            ) : (
-                              <tr>
-                                <td>
-                                  No Emergency Contact attach to this employee
-                                </td>
-                              </tr>
-                            )}
-                          </tbody>
-                        </table>
+              </div>
+            </div>
+            <div className="card mb-0">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="profile-view">
+                      <div className="profile-img-wrap">
+                        {isSelectedLoading || skeletonLoading ? (
+                          <div className="skeleton-container1">
+                            <div className="skeleton-avatar1"></div>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="profile-img">
+                              <a>
+                                <img alt="" src={photo ? photo : DefaultImage} />
+                              </a>
+                            </div>
+                          </>
+                        )}
                       </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Address{" "}
-                        <span style={{ color: "red", fontSize: "0.7rem" }}>
-                          {employeeAddressError?.length > 0 && (
+                      <div className="profile-basic">
+                        <div className="row">
+                          {isSelectedLoading || skeletonLoading ? (
+                            <div className="skeleton-container1">
+                              <div className="skeleton-content1">
+                                <div className="skeleton-line1"></div>
+                                <div className="skeleton-line2"></div>
+                                <div className="skeleton-line3"></div>
+                                <div className="skeleton-line4"></div>
+                              </div>
+                            </div>
+                          ) : (
                             <>
-                              Error: {employeeAddressError}
-                              <button
-                                onClick={clearErrorMessage}
-                                style={{
-                                  marginLeft: "10px",
-                                  fontSize: "0.8rem",
-                                  cursor: "pointer",
-                                  color: "black",
-                                }}
-                              >
-                                <i className="fa fa-times" />
-                                Clear Error
-                              </button>
-                            </>
-                          )}
-                        </span>
-                        <a
-                          className="edit-icon"
-                          onClick={() =>
-                            setGlobalState("showEmployeeAddressModal", true)
-                          }
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      <div className="table-responsive">
-                        <table className="table table-nowrap">
-                          <thead>
-                            <tr>
-                              <th>Street</th>
-                              <th>City</th>
-                              <th>State</th>
-                              <th>Country</th>
-                              <th>Postal Code</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {employeeAddressData?.length > 0 ? (
-                              employeeAddressData?.map((address, index) => {
-                                const {
-                                  id,
-                                  employee,
-                                  street,
-                                  city,
-                                  state,
-                                  country,
-                                  postal_code,
-                                } = address;
-                                if (employee == selectedEmployeeId) {
-                                  return (
-                                    <tr style={{ height: "90px" }} key={id}>
-                                      <td>{street}</td>
-                                      <td>{city}</td>
-                                      <td>{state}</td>
-                                      <td>{country}</td>
-                                      <td>{postal_code}</td>
-                                      <td className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditEmployeeAddress(
-                                                id,
-                                                index
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteEmployeeAddress(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                }
-                              })
-                            ) : (
-                              <tr>
-                                <td>No Address attach to this employee</td>
-                              </tr>
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                              <div className="col-md-5">
+                                <div className="profile-info-left">
+                                  <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
 
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">Review</h3>
-                      <Wrapper>
-                        {employee_review?.length > 0 ? (
-                          employee_review.map((review, index) => {
-                            const {
-                              id,
-                              employee,
-                              review_type,
-                              description,
-                              review_date,
-                              review_status,
-                              review_file,
-                              review_manager,
-                            } = review;
-                            if (employee === selectedEmployeeId) {
-                              return (
-                                <div key={id} className="card plain-card">
-                                  <div className="text">
-                                    <div className="dropdown dropdown-action text-end">
-                                      <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
-                                      </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleFileDownload(review_file)
-                                          }
-                                        >
-                                          <i className="fa fa-download m-r-5" />{" "}
-                                          Download
-                                        </a>
-                                      </div>
-                                    </div>
-                                    Review Type: <span>{review_type}</span>
+                                  <h6 style={{ display: "flex" }} className="text-muted">
+                                    <div
+                                      style={{
+                                        borderRadius: "50%",
+                                        height: "10px",
+                                        width: "10px",
+                                        backgroundColor: "lightgreen",
+                                        marginRight: "5px",
+                                      }}
+                                    ></div>
+                                    {employeeStatus == Number(employeeStatus)
+                                      ? "Active"
+                                      : employeeStatus}
+                                  </h6>
+                                  <h6 className="text-muted">
+                                    Role: {role ? role?.role_name : "--"}
+                                  </h6>
+                                  <div className="small doj text-muted">
+                                    Employee ID : {employee_number ? employee_number : "--"}
                                   </div>
-                                  <div className="text">
-                                    Review Manager:
-                                    {review_manager != Number(review_manager)
-                                      ? review_manager
-                                      : " Admin"}
+                                  <div className="small doj text-muted">
+                                    NI Number : {ni_numbber ? ni_numbber : "--"}
                                   </div>
-                                  <div className="text">
-                                    Review Date: <span>{review_date}</span>
+                                  <div className="small doj text-muted">
+                                    Date of Join:{" "}
+                                    {hire_date ? moment(hire_date).format("DD MMM YYYY") : "--"}
                                   </div>
-                                  <div className="text">
-                                    Review Status: <span>{review_status}</span>
+                                  <div className="small doj text-muted">
+                                    Nationality: {nationality ? nationality : "--"}
                                   </div>
-                                  <div className="text">
-                                    Description:{" "}
-                                    <span className="c">{description}</span>
-                                  </div>
-                                  <div>
-                                    {review_file && regex.test(review_file) ? (
-                                      <img
-                                        className="img-preview"
-                                        src={review_file}
-                                        alt="Preview"
-                                      />
-                                    ) : !review_file ? null : (
-                                      <span className="files-icon">
-                                        <i className="fa fa-file-pdf-o" />
-                                      </span>
-                                    )}
+                                  <div className="small doj text-muted">
+                                    Department: {department?.department_name}
                                   </div>
                                 </div>
-                              );
-                            }
-                          })
-                        ) : (
-                          <></>
-                        )}
-                      </Wrapper>
+                              </div>
+
+                              <div className="col-md-7">
+                                <ul className="personal-info">
+                                  <li>
+                                    <div className="title">Phone:</div>
+                                    <div className="text">
+                                      <a>{phone_number ? phone_number : "--"}</a>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div className="title">Email:</div>
+                                    <div className="text">
+                                      <a>{email ? email : "--"}</a>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div className="title">Birthday:</div>
+                                    <div className="text">
+                                      {date_of_birth
+                                        ? moment(date_of_birth).format("DD MMM YYYY")
+                                        : "--"}
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div className="title">Gender:</div>
+                                    <div className="text">{gender ? gender : "--"}</div>
+                                  </li>
+                                  <li>
+                                    <div className="title">Marital Status:</div>
+                                    <div className="text">
+                                      {marital_status ? marital_status : "--"}
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div className="title">Organisation:</div>
+                                    <div className="text">
+                                      {organisation?.organisation_name
+                                        ? organisation?.organisation_name
+                                        : "--"}
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </>
-          )}
+            </div>
 
-          {isSelectedLoading || skeletonLoading ? (
-            <div className="skeleton-container-profile">
-              <div className="skeleton-content-profile">
-                <div className="skeleton-line-profile"></div>
-                <div className="skeleton-line-profile"></div>
+            <div className="card tab-box">
+              <div className="row user-tabs">
+                <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                  <ul className="nav nav-tabs nav-tabs-bottom">
+                    <li className="nav-item">
+                      <a href="#emp_profile" data-bs-toggle="tab" className="nav-link active">
+                        Profile
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="#emp_tasks" data-bs-toggle="tab" className="nav-link">
+                        Tasks
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="#document_upload" data-bs-toggle="tab" className="nav-link">
+                        Document Upload
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          ) : (
-            <>
-              <div className="row">
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Qualifications{" "}
-                        <span style={{ color: "red", fontSize: "0.7rem" }}>
-                          {employeeQualificationError?.length > 0 && (
-                            <>
-                              Error: {employeeQualificationError}
-                              <button
-                                onClick={clearErrorMessage}
-                                style={{
-                                  marginLeft: "10px",
-                                  fontSize: "0.8rem",
-                                  cursor: "pointer",
-                                  color: "black",
-                                }}
+
+            <div className="tab-content">
+              {/* Profile Info Tab */}
+              <div id="emp_profile" className="pro-overview tab-pane fade show active">
+                {isSelectedLoading || skeletonLoading ? (
+                  <div className="skeleton-container-profile">
+                    <div className="skeleton-content-profile">
+                      <div className="skeleton-line-profile"></div>
+                      <div className="skeleton-line-profile"></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="row">
+                      <div className="col-md-12 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">
+                              Bank Information{" "}
+                              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                                {employeeBankError?.length > 0 && (
+                                  <>
+                                    Error: {employeeBankError}
+                                    <button
+                                      onClick={clearErrorMessage}
+                                      style={{
+                                        marginLeft: "10px",
+                                        fontSize: "0.8rem",
+                                        cursor: "pointer",
+                                        color: "black",
+                                      }}
+                                    >
+                                      <i className="fa fa-times" />
+                                      Clear Error
+                                    </button>
+                                  </>
+                                )}
+                              </span>
+                              <a
+                                className="edit-icon"
+                                onClick={() => setGlobalState("showEmployeeBankModal", true)}
                               >
-                                <i className="fa fa-times" />
-                                Clear Error
-                              </button>
-                            </>
-                          )}
-                        </span>
-                        <a
-                          onClick={() =>
-                            setGlobalState(
-                              "showEmployeeQualificationModal",
-                              true
-                            )
-                          }
-                          className="edit-icon"
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      <div className="experience-box">
-                        <ul className="experience-list">
-                          {employeeQualificationData?.map(
-                            (qualifications, index) => {
-                              const {
-                                id,
-                                employee,
-                                qualification_name,
-                                institute_name,
-                                start_date,
-                                end_date,
-                                description,
-                                qualification_upload,
-                              } = qualifications;
-                              if (employee == selectedEmployeeId) {
-                                return (
-                                  <li key={id}>
-                                    <div className="experience-user">
-                                      <div className="before-circle" />
-                                    </div>
-                                    <div className="experience-content">
-                                      <div className="timeline-content">
-                                        <a className="name">
-                                          Institution Name: {institute_name}
-                                          <span
-                                            className="edit-icon"
-                                            style={{
-                                              background: "none",
-                                              border: "none",
-                                            }}
-                                          >
-                                            <div className="dropdown dropdown-action text-end">
+                                <i className="fa fa-plus" />
+                              </a>
+                            </h3>
+                            <div className="table-responsive">
+                              <table className="table table-nowrap">
+                                <thead>
+                                  <tr>
+                                    <th>Bank name</th>
+                                    <th>Account Name</th>
+                                    <th>Account No</th>
+                                    <th>Account Type</th>
+                                    <th>Currency</th>
+                                    <th>Address</th>
+                                    <th>Sort Code</th>
+                                    <th>Swift Code</th>
+                                    <th>Iban</th>
+                                    <th>Routing No</th>
+                                    <th>Date</th>
+                                    <th>Document</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {employeeBankData?.length > 0 ? (
+                                    employeeBankData?.map((bank, index) => {
+                                      const {
+                                        id,
+                                        employee,
+                                        bank_name,
+                                        account_name,
+                                        account_number,
+                                        account_type,
+                                        currency,
+                                        bank_address,
+                                        sort_code,
+                                        swift_code,
+                                        iban,
+                                        routing_number,
+                                        upload_date,
+                                        upload_document,
+                                      } = bank;
+                                      if (employee == selectedEmployeeId) {
+                                        return (
+                                          <tr style={{ height: "90px" }} key={id}>
+                                            <td>{bank_name}</td>
+                                            <td>{account_name}</td>
+                                            <td>{account_number}</td>
+                                            <td>{account_type}</td>
+                                            <td>{currency}</td>
+                                            <td>{bank_address}</td>
+                                            <td>{sort_code}</td>
+                                            <td>{swift_code}</td>
+                                            <td>{iban}</td>
+                                            <td>{routing_number}</td>
+                                            <td>{upload_date}</td>
+                                            <td>
+                                              {upload_document && regex.test(upload_document) ? (
+                                                <img
+                                                  className="img-preview"
+                                                  src={upload_document}
+                                                  alt="Preview"
+                                                />
+                                              ) : !upload_document ? null : (
+                                                <span className="files-icon">
+                                                  <i className="fa fa-file-pdf-o" />
+                                                </span>
+                                              )}
+                                            </td>
+                                            <td className="dropdown dropdown-action text-end">
                                               <a
                                                 className="action-icon dropdown-toggle"
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false"
                                               >
-                                                <i className="material-icons">
-                                                  more_vert
-                                                </i>
+                                                <i className="material-icons">more_vert</i>
                                               </a>
                                               <div className="dropdown-menu dropdown-menu-right">
                                                 <a
                                                   className="dropdown-item"
                                                   onClick={() =>
-                                                    handleFileDownload(
-                                                      qualification_upload
-                                                    )
+                                                    handleFileDownload(upload_document)
                                                   }
                                                 >
-                                                  <i className="fa fa-download m-r-5" />{" "}
-                                                  Download
+                                                  <i className="fa fa-download m-r-5" /> Download
                                                 </a>
                                                 <a
                                                   className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditEmployeeQualification(
-                                                      id,
-                                                      index
-                                                    )
-                                                  }
+                                                  onClick={() => handleEditEmployeeBank(id, index)}
                                                 >
-                                                  <i className="fa fa-pencil m-r-5" />{" "}
-                                                  Edit
+                                                  <i className="fa fa-pencil m-r-5" /> Edit
                                                 </a>
                                                 <a
                                                   className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleDeleteEmployeeQualification(
-                                                      id
-                                                    )
-                                                  }
+                                                  onClick={() => handleDeleteEmployeeBank(id)}
                                                 >
-                                                  <i className="fa fa-trash-o m-r-5" />{" "}
-                                                  Delete
+                                                  <i className="fa fa-trash-o m-r-5" /> Delete
                                                 </a>
                                               </div>
-                                            </div>
-                                          </span>
-                                        </a>
-                                        <div style={{ fontWeight: "900" }}>
-                                          Qualification: {qualification_name}
-                                        </div>
-                                        <div>
-                                          Start Date: {start_date} - End Date:{" "}
-                                          {end_date}
-                                        </div>
-                                        <div>
-                                          Description:{" "}
-                                          {description ? description : "--"}
-                                        </div>
-                                        <div>
-                                          File{" "}
-                                          {qualification_upload &&
-                                          regex.test(qualification_upload) ? (
-                                            <img
-                                              className="img-preview"
-                                              src={qualification_upload}
-                                              alt="Preview"
-                                            />
-                                          ) : !qualification_upload ? (
-                                            "--"
-                                          ) : (
-                                            <span className="files-icon">
-                                              <i className="fa fa-file-pdf-o" />
-                                            </span>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </li>
-                                );
-                              }
-                            }
-                          )}
-                        </ul>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    })
+                                  ) : (
+                                    <tr>
+                                      <td>No Bank detail attach to this employee</td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Experience{" "}
-                        <span style={{ color: "red", fontSize: "0.7rem" }}>
-                          {employeeExperiencError?.length > 0 && (
-                            <>
-                              Error: {employeeExperiencError}
-                              <button
-                                onClick={clearErrorMessage}
-                                style={{
-                                  marginLeft: "10px",
-                                  fontSize: "0.8rem",
-                                  cursor: "pointer",
-                                  color: "black",
-                                }}
+                      <div className="col-md-6 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">
+                              Emergency Contact{" "}
+                              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                                {employeeEmergencyError?.length > 0 && (
+                                  <>
+                                    Error: {employeeEmergencyError}
+                                    <button
+                                      onClick={clearErrorMessage}
+                                      style={{
+                                        marginLeft: "10px",
+                                        fontSize: "0.8rem",
+                                        cursor: "pointer",
+                                        color: "black",
+                                      }}
+                                    >
+                                      <i className="fa fa-times" />
+                                      Clear Error
+                                    </button>
+                                  </>
+                                )}
+                              </span>
+                              <a
+                                className="edit-icon"
+                                onClick={() => setGlobalState("showEmployeeEmergencyModal", true)}
                               >
-                                <i className="fa fa-times" />
-                                Clear Error
-                              </button>
-                            </>
-                          )}
-                        </span>
-                        <a
-                          onClick={() =>
-                            setGlobalState("showEmployeeExperienceModal", true)
-                          }
-                          className="edit-icon"
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      <div className="experience-box">
-                        <ul className="experience-list">
-                          {employeeExperienceData?.map((experience, index) => {
-                            const {
-                              id,
-                              employee,
-                              job_title,
-                              company_name,
-                              start_date,
-                              end_date,
-                              description,
-                              experience_upload,
-                            } = experience;
-                            if (employee == selectedEmployeeId) {
-                              return (
-                                <li key={id}>
-                                  <div className="experience-user">
-                                    <div className="before-circle" />
-                                  </div>
-                                  <div className="experience-content">
-                                    <div className="timeline-content">
-                                      <a className="name">
-                                        Company Name: {company_name}
-                                        <span
-                                          className="edit-icon"
-                                          style={{
-                                            background: "none",
-                                            border: "none",
-                                          }}
-                                        >
+                                <i className="fa fa-plus" />
+                              </a>
+                            </h3>
+                            <div className="table-responsive">
+                              <table className="table table-nowrap">
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Relationship</th>
+                                    <th>Phone Number</th>
+                                    <th>Address</th>
+                                    <th>Email</th>
+                                    <th>Post Code</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {employeeEmergencyData?.length > 0 ? (
+                                    employeeEmergencyData?.map((emergency, index) => {
+                                      const {
+                                        id,
+                                        employee,
+                                        name,
+                                        relationship,
+                                        phone_number,
+                                        address,
+                                        email,
+                                        post_code,
+                                      } = emergency;
+                                      if (employee == selectedEmployeeId) {
+                                        return (
+                                          <tr style={{ height: "90px" }} key={id}>
+                                            <td>{name}</td>
+                                            <td>{relationship}</td>
+                                            <td>{phone_number}</td>
+                                            <td>{address}</td>
+                                            <td>{email}</td>
+                                            <td>{post_code}</td>
+                                            <td className="dropdown dropdown-action text-end">
+                                              <a
+                                                className="action-icon dropdown-toggle"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                <i className="material-icons">more_vert</i>
+                                              </a>
+                                              <div className="dropdown-menu dropdown-menu-right">
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleEditEmployeeEmergency(id, index)
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil m-r-5" /> Edit
+                                                </a>
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() => handleDeleteEmployeeEmergency(id)}
+                                                >
+                                                  <i className="fa fa-trash-o m-r-5" /> Delete
+                                                </a>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    })
+                                  ) : (
+                                    <tr>
+                                      <td>No Emergency Contact attach to this employee</td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-6 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">
+                              Address{" "}
+                              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                                {employeeAddressError?.length > 0 && (
+                                  <>
+                                    Error: {employeeAddressError}
+                                    <button
+                                      onClick={clearErrorMessage}
+                                      style={{
+                                        marginLeft: "10px",
+                                        fontSize: "0.8rem",
+                                        cursor: "pointer",
+                                        color: "black",
+                                      }}
+                                    >
+                                      <i className="fa fa-times" />
+                                      Clear Error
+                                    </button>
+                                  </>
+                                )}
+                              </span>
+                              <a
+                                className="edit-icon"
+                                onClick={() => setGlobalState("showEmployeeAddressModal", true)}
+                              >
+                                <i className="fa fa-plus" />
+                              </a>
+                            </h3>
+                            <div className="table-responsive">
+                              <table className="table table-nowrap">
+                                <thead>
+                                  <tr>
+                                    <th>Street</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                    <th>Country</th>
+                                    <th>Postal Code</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {employeeAddressData?.length > 0 ? (
+                                    employeeAddressData?.map((address, index) => {
+                                      const {
+                                        id,
+                                        employee,
+                                        street,
+                                        city,
+                                        state,
+                                        country,
+                                        postal_code,
+                                      } = address;
+                                      if (employee == selectedEmployeeId) {
+                                        return (
+                                          <tr style={{ height: "90px" }} key={id}>
+                                            <td>{street}</td>
+                                            <td>{city}</td>
+                                            <td>{state}</td>
+                                            <td>{country}</td>
+                                            <td>{postal_code}</td>
+                                            <td className="dropdown dropdown-action text-end">
+                                              <a
+                                                className="action-icon dropdown-toggle"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                <i className="material-icons">more_vert</i>
+                                              </a>
+                                              <div className="dropdown-menu dropdown-menu-right">
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleEditEmployeeAddress(id, index)
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil m-r-5" /> Edit
+                                                </a>
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() => handleDeleteEmployeeAddress(id)}
+                                                >
+                                                  <i className="fa fa-trash-o m-r-5" /> Delete
+                                                </a>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    })
+                                  ) : (
+                                    <tr>
+                                      <td>No Address attach to this employee</td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-6 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">Review</h3>
+                            <Wrapper>
+                              {employee_review?.length > 0 ? (
+                                employee_review.map((review, index) => {
+                                  const {
+                                    id,
+                                    employee,
+                                    review_type,
+                                    description,
+                                    review_date,
+                                    review_status,
+                                    review_file,
+                                    review_manager,
+                                  } = review;
+                                  if (employee === selectedEmployeeId) {
+                                    return (
+                                      <div key={id} className="card plain-card">
+                                        <div className="text">
                                           <div className="dropdown dropdown-action text-end">
                                             <a
                                               className="action-icon dropdown-toggle"
                                               data-bs-toggle="dropdown"
                                               aria-expanded="false"
                                             >
-                                              <i className="material-icons">
-                                                more_vert
-                                              </i>
+                                              <i className="material-icons">more_vert</i>
+                                            </a>
+                                            <div className="dropdown-menu dropdown-menu-right">
+                                              <a
+                                                className="dropdown-item"
+                                                onClick={() => handleFileDownload(review_file)}
+                                              >
+                                                <i className="fa fa-download m-r-5" /> Download
+                                              </a>
+                                            </div>
+                                          </div>
+                                          Review Type: <span>{review_type}</span>
+                                        </div>
+                                        <div className="text">
+                                          Review Manager:
+                                          {review_manager != Number(review_manager)
+                                            ? review_manager
+                                            : " Admin"}
+                                        </div>
+                                        <div className="text">
+                                          Review Date: <span>{review_date}</span>
+                                        </div>
+                                        <div className="text">
+                                          Review Status: <span>{review_status}</span>
+                                        </div>
+                                        <div className="text">
+                                          Description: <span className="c">{description}</span>
+                                        </div>
+                                        <div>
+                                          {review_file && regex.test(review_file) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={review_file}
+                                              alt="Preview"
+                                            />
+                                          ) : !review_file ? null : (
+                                            <span className="files-icon">
+                                              <i className="fa fa-file-pdf-o" />
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                })
+                              ) : (
+                                <></>
+                              )}
+                            </Wrapper>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {isSelectedLoading || skeletonLoading ? (
+                  <div className="skeleton-container-profile">
+                    <div className="skeleton-content-profile">
+                      <div className="skeleton-line-profile"></div>
+                      <div className="skeleton-line-profile"></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="row">
+                      <div className="col-md-6 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">
+                              Qualifications{" "}
+                              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                                {employeeQualificationError?.length > 0 && (
+                                  <>
+                                    Error: {employeeQualificationError}
+                                    <button
+                                      onClick={clearErrorMessage}
+                                      style={{
+                                        marginLeft: "10px",
+                                        fontSize: "0.8rem",
+                                        cursor: "pointer",
+                                        color: "black",
+                                      }}
+                                    >
+                                      <i className="fa fa-times" />
+                                      Clear Error
+                                    </button>
+                                  </>
+                                )}
+                              </span>
+                              <a
+                                onClick={() =>
+                                  setGlobalState("showEmployeeQualificationModal", true)
+                                }
+                                className="edit-icon"
+                              >
+                                <i className="fa fa-plus" />
+                              </a>
+                            </h3>
+                            <div className="experience-box">
+                              <ul className="experience-list">
+                                {employeeQualificationData?.map((qualifications, index) => {
+                                  const {
+                                    id,
+                                    employee,
+                                    qualification_name,
+                                    institute_name,
+                                    start_date,
+                                    end_date,
+                                    description,
+                                    qualification_upload,
+                                  } = qualifications;
+                                  if (employee == selectedEmployeeId) {
+                                    return (
+                                      <li key={id}>
+                                        <div className="experience-user">
+                                          <div className="before-circle" />
+                                        </div>
+                                        <div className="experience-content">
+                                          <div className="timeline-content">
+                                            <a className="name">
+                                              Institution Name: {institute_name}
+                                              <span
+                                                className="edit-icon"
+                                                style={{
+                                                  background: "none",
+                                                  border: "none",
+                                                }}
+                                              >
+                                                <div className="dropdown dropdown-action text-end">
+                                                  <a
+                                                    className="action-icon dropdown-toggle"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                  >
+                                                    <i className="material-icons">more_vert</i>
+                                                  </a>
+                                                  <div className="dropdown-menu dropdown-menu-right">
+                                                    <a
+                                                      className="dropdown-item"
+                                                      onClick={() =>
+                                                        handleFileDownload(qualification_upload)
+                                                      }
+                                                    >
+                                                      <i className="fa fa-download m-r-5" />{" "}
+                                                      Download
+                                                    </a>
+                                                    <a
+                                                      className="dropdown-item"
+                                                      onClick={() =>
+                                                        handleEditEmployeeQualification(id, index)
+                                                      }
+                                                    >
+                                                      <i className="fa fa-pencil m-r-5" /> Edit
+                                                    </a>
+                                                    <a
+                                                      className="dropdown-item"
+                                                      onClick={() =>
+                                                        handleDeleteEmployeeQualification(id)
+                                                      }
+                                                    >
+                                                      <i className="fa fa-trash-o m-r-5" /> Delete
+                                                    </a>
+                                                  </div>
+                                                </div>
+                                              </span>
+                                            </a>
+                                            <div style={{ fontWeight: "900" }}>
+                                              Qualification: {qualification_name}
+                                            </div>
+                                            <div>
+                                              Start Date: {start_date} - End Date: {end_date}
+                                            </div>
+                                            <div>
+                                              Description: {description ? description : "--"}
+                                            </div>
+                                            <div>
+                                              File{" "}
+                                              {qualification_upload &&
+                                              regex.test(qualification_upload) ? (
+                                                <img
+                                                  className="img-preview"
+                                                  src={qualification_upload}
+                                                  alt="Preview"
+                                                />
+                                              ) : !qualification_upload ? (
+                                                "--"
+                                              ) : (
+                                                <span className="files-icon">
+                                                  <i className="fa fa-file-pdf-o" />
+                                                </span>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    );
+                                  }
+                                })}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-6 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">
+                              Experience{" "}
+                              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                                {employeeExperiencError?.length > 0 && (
+                                  <>
+                                    Error: {employeeExperiencError}
+                                    <button
+                                      onClick={clearErrorMessage}
+                                      style={{
+                                        marginLeft: "10px",
+                                        fontSize: "0.8rem",
+                                        cursor: "pointer",
+                                        color: "black",
+                                      }}
+                                    >
+                                      <i className="fa fa-times" />
+                                      Clear Error
+                                    </button>
+                                  </>
+                                )}
+                              </span>
+                              <a
+                                onClick={() => setGlobalState("showEmployeeExperienceModal", true)}
+                                className="edit-icon"
+                              >
+                                <i className="fa fa-plus" />
+                              </a>
+                            </h3>
+                            <div className="experience-box">
+                              <ul className="experience-list">
+                                {employeeExperienceData?.map((experience, index) => {
+                                  const {
+                                    id,
+                                    employee,
+                                    job_title,
+                                    company_name,
+                                    start_date,
+                                    end_date,
+                                    description,
+                                    experience_upload,
+                                  } = experience;
+                                  if (employee == selectedEmployeeId) {
+                                    return (
+                                      <li key={id}>
+                                        <div className="experience-user">
+                                          <div className="before-circle" />
+                                        </div>
+                                        <div className="experience-content">
+                                          <div className="timeline-content">
+                                            <a className="name">
+                                              Company Name: {company_name}
+                                              <span
+                                                className="edit-icon"
+                                                style={{
+                                                  background: "none",
+                                                  border: "none",
+                                                }}
+                                              >
+                                                <div className="dropdown dropdown-action text-end">
+                                                  <a
+                                                    className="action-icon dropdown-toggle"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                  >
+                                                    <i className="material-icons">more_vert</i>
+                                                  </a>
+                                                  <div className="dropdown-menu dropdown-menu-right">
+                                                    <a
+                                                      className="dropdown-item"
+                                                      onClick={() =>
+                                                        handleFileDownload(experience_upload)
+                                                      }
+                                                    >
+                                                      <i className="fa fa-download m-r-5" />{" "}
+                                                      Download
+                                                    </a>
+                                                    <a
+                                                      className="dropdown-item"
+                                                      onClick={() =>
+                                                        handleEditEmployeeExperience(id, index)
+                                                      }
+                                                    >
+                                                      <i className="fa fa-pencil m-r-5" /> Edit
+                                                    </a>
+                                                    <a
+                                                      className="dropdown-item"
+                                                      onClick={() =>
+                                                        handleDeleteEmployeeExperience(id)
+                                                      }
+                                                    >
+                                                      <i className="fa fa-trash-o m-r-5" /> Delete
+                                                    </a>
+                                                  </div>
+                                                </div>
+                                              </span>
+                                            </a>
+                                            <div style={{ fontWeight: "900" }}>
+                                              Job Title: {job_title}
+                                            </div>
+                                            <div>
+                                              Start Date: {start_date} - End Date: {end_date}
+                                            </div>
+                                            <div>
+                                              Description: {description ? description : "--"}
+                                            </div>
+                                            <div>
+                                              File:{" "}
+                                              {experience_upload &&
+                                              regex.test(experience_upload) ? (
+                                                <img
+                                                  className="img-preview"
+                                                  src={experience_upload}
+                                                  alt="Preview"
+                                                />
+                                              ) : !experience_upload ? (
+                                                "--"
+                                              ) : (
+                                                <span className="files-icon">
+                                                  <i className="fa fa-file-pdf-o" />
+                                                </span>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    );
+                                  }
+                                })}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {isSelectedLoading || skeletonLoading ? (
+                  <div className="skeleton-container-profile">
+                    <div className="skeleton-content-profile">
+                      <div className="skeleton-line-profile"></div>
+                      <div className="skeleton-line-profile"></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="row">
+                      <div className="col-md-6 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">Contract</h3>
+                            <Wrapper>
+                              {employee_contract?.length > 0 ? (
+                                employee_contract.map((contract, index) => {
+                                  const {
+                                    id,
+                                    employee_contract,
+                                    contract_owner,
+                                    description,
+                                    contract_type,
+                                    start_date,
+                                    end_date,
+                                    contract_status,
+                                    contract_file,
+                                  } = contract;
+                                  if (employee_contract === selectedEmployeeId) {
+                                    return (
+                                      <div key={id} className="card plain-card">
+                                        <div className="text">
+                                          <div className="dropdown dropdown-action text-end">
+                                            <a
+                                              className="action-icon dropdown-toggle"
+                                              data-bs-toggle="dropdown"
+                                              aria-expanded="false"
+                                            >
+                                              <i className="material-icons">more_vert</i>
+                                            </a>
+                                            <div className="dropdown-menu dropdown-menu-right">
+                                              <a
+                                                className="dropdown-item"
+                                                onClick={() => handleFileDownload(contract_file)}
+                                              >
+                                                <i className="fa fa-download m-r-5" /> Download
+                                              </a>
+                                            </div>
+                                          </div>
+                                          Contract Owner: <span>{contract_owner}</span>
+                                        </div>
+                                        <div className="text">
+                                          Contract Type: <span>{contract_type}</span>
+                                        </div>
+                                        <div className="text">
+                                          Start Date: <span>{start_date}</span>
+                                        </div>
+                                        <div className="text">
+                                          End Date: <span>{end_date}</span>
+                                        </div>
+                                        <div className="text">
+                                          Contract Status: <span>{contract_status}</span>
+                                        </div>
+                                        <div className="text">
+                                          Description: <span className="c">{description}</span>
+                                        </div>
+                                        <div>
+                                          {contract_file && regex.test(contract_file) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={contract_file}
+                                              alt="Preview"
+                                            />
+                                          ) : !contract_file ? null : (
+                                            <span className="files-icon">
+                                              <i className="fa fa-file-pdf-o" />
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                })
+                              ) : (
+                                <></>
+                              )}
+                            </Wrapper>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-6 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">Leave</h3>
+                            <Wrapper>
+                              {employee_leave?.length > 0 ? (
+                                employee_leave.map((doc, index) => {
+                                  const {
+                                    id,
+                                    employee,
+                                    number_of_days,
+                                    comments,
+                                    authorising_manager,
+                                    start_date,
+                                    end_date,
+                                    status,
+                                    supporting_document,
+                                    leave_type,
+                                    authorised_by,
+                                  } = doc;
+                                  if (employee === selectedEmployeeId) {
+                                    return (
+                                      <div key={id} className="card plain-card">
+                                        <div className="text">
+                                          <div className="dropdown dropdown-action text-end">
+                                            <a
+                                              className="action-icon dropdown-toggle"
+                                              data-bs-toggle="dropdown"
+                                              aria-expanded="false"
+                                            >
+                                              <i className="material-icons">more_vert</i>
                                             </a>
                                             <div className="dropdown-menu dropdown-menu-right">
                                               <a
                                                 className="dropdown-item"
                                                 onClick={() =>
-                                                  handleFileDownload(
-                                                    experience_upload
-                                                  )
+                                                  handleFileDownload(supporting_document)
                                                 }
                                               >
-                                                <i className="fa fa-download m-r-5" />{" "}
-                                                Download
-                                              </a>
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleEditEmployeeExperience(
-                                                    id,
-                                                    index
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-pencil m-r-5" />{" "}
-                                                Edit
-                                              </a>
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleDeleteEmployeeExperience(
-                                                    id
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa fa-trash-o m-r-5" />{" "}
-                                                Delete
+                                                <i className="fa fa-download m-r-5" /> Download
                                               </a>
                                             </div>
                                           </div>
-                                        </span>
-                                      </a>
-                                      <div style={{ fontWeight: "900" }}>
-                                        Job Title: {job_title}
+                                          Authorising Manager: <span>{authorising_manager}</span>
+                                        </div>
+                                        <div className="text">
+                                          Number of days: <span>{number_of_days}</span>
+                                        </div>
+                                        <div className="text">
+                                          Start Date: <span>{start_date}</span>
+                                        </div>
+                                        <div className="text">
+                                          End Date: <span>{end_date}</span>
+                                        </div>
+                                        <div className="text">
+                                          Leave Status: <span>{status}</span>
+                                        </div>
+                                        <div className="text">
+                                          Comment: <span className="c">{comments}</span>
+                                        </div>
+                                        <div>
+                                          {supporting_document &&
+                                          regex.test(supporting_document) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={supporting_document}
+                                              alt="Preview"
+                                            />
+                                          ) : !supporting_document ? null : (
+                                            <span className="files-icon">
+                                              <i className="fa fa-file-pdf-o" />
+                                            </span>
+                                          )}
+                                        </div>
                                       </div>
-                                      <div>
-                                        Start Date: {start_date} - End Date:{" "}
-                                        {end_date}
-                                      </div>
-                                      <div>
-                                        Description:{" "}
-                                        {description ? description : "--"}
-                                      </div>
-                                      <div>
-                                        File:{" "}
-                                        {experience_upload &&
-                                        regex.test(experience_upload) ? (
-                                          <img
-                                            className="img-preview"
-                                            src={experience_upload}
-                                            alt="Preview"
-                                          />
-                                        ) : !experience_upload ? (
-                                          "--"
-                                        ) : (
-                                          <span className="files-icon">
-                                            <i className="fa fa-file-pdf-o" />
-                                          </span>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </li>
-                              );
-                            }
-                          })}
-                        </ul>
+                                    );
+                                  }
+                                })
+                              ) : (
+                                <></>
+                              )}
+                            </Wrapper>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
 
-          {isSelectedLoading || skeletonLoading ? (
-            <div className="skeleton-container-profile">
-              <div className="skeleton-content-profile">
-                <div className="skeleton-line-profile"></div>
-                <div className="skeleton-line-profile"></div>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="row">
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">Contract</h3>
-                      <Wrapper>
-                        {employee_contract?.length > 0 ? (
-                          employee_contract.map((contract, index) => {
-                            const {
-                              id,
-                              employee_contract,
-                              contract_owner,
-                              description,
-                              contract_type,
-                              start_date,
-                              end_date,
-                              contract_status,
-                              contract_file,
-                            } = contract;
-                            if (employee_contract === selectedEmployeeId) {
-                              return (
-                                <div key={id} className="card plain-card">
-                                  <div className="text">
-                                    <div className="dropdown dropdown-action text-end">
-                                      <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
-                                      </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleFileDownload(contract_file)
-                                          }
-                                        >
-                                          <i className="fa fa-download m-r-5" />{" "}
-                                          Download
-                                        </a>
-                                      </div>
-                                    </div>
-                                    Contract Owner:{" "}
-                                    <span>{contract_owner}</span>
-                                  </div>
-                                  <div className="text">
-                                    Contract Type: <span>{contract_type}</span>
-                                  </div>
-                                  <div className="text">
-                                    Start Date: <span>{start_date}</span>
-                                  </div>
-                                  <div className="text">
-                                    End Date: <span>{end_date}</span>
-                                  </div>
-                                  <div className="text">
-                                    Contract Status:{" "}
-                                    <span>{contract_status}</span>
-                                  </div>
-                                  <div className="text">
-                                    Description:{" "}
-                                    <span className="c">{description}</span>
-                                  </div>
-                                  <div>
-                                    {contract_file &&
-                                    regex.test(contract_file) ? (
-                                      <img
-                                        className="img-preview"
-                                        src={contract_file}
-                                        alt="Preview"
-                                      />
-                                    ) : !contract_file ? null : (
-                                      <span className="files-icon">
-                                        <i className="fa fa-file-pdf-o" />
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            }
-                          })
-                        ) : (
-                          <></>
-                        )}
-                      </Wrapper>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">Leave</h3>
-                      <Wrapper>
-                        {employee_leave?.length > 0 ? (
-                          employee_leave.map((doc, index) => {
-                            const {
-                              id,
-                              employee,
-                              number_of_days,
-                              comments,
-                              authorising_manager,
-                              start_date,
-                              end_date,
-                              status,
-                              supporting_document,
-                              leave_type,
-                              authorised_by,
-                            } = doc;
-                            if (employee === selectedEmployeeId) {
-                              return (
-                                <div key={id} className="card plain-card">
-                                  <div className="text">
-                                    <div className="dropdown dropdown-action text-end">
-                                      <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
-                                      </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleFileDownload(
-                                              supporting_document
-                                            )
-                                          }
-                                        >
-                                          <i className="fa fa-download m-r-5" />{" "}
-                                          Download
-                                        </a>
-                                      </div>
-                                    </div>
-                                    Authorising Manager:{" "}
-                                    <span>{authorising_manager}</span>
-                                  </div>
-                                  <div className="text">
-                                    Number of days:{" "}
-                                    <span>{number_of_days}</span>
-                                  </div>
-                                  <div className="text">
-                                    Start Date: <span>{start_date}</span>
-                                  </div>
-                                  <div className="text">
-                                    End Date: <span>{end_date}</span>
-                                  </div>
-                                  <div className="text">
-                                    Leave Status: <span>{status}</span>
-                                  </div>
-                                  <div className="text">
-                                    Comment:{" "}
-                                    <span className="c">{comments}</span>
-                                  </div>
-                                  <div>
-                                    {supporting_document &&
-                                    regex.test(supporting_document) ? (
-                                      <img
-                                        className="img-preview"
-                                        src={supporting_document}
-                                        alt="Preview"
-                                      />
-                                    ) : !supporting_document ? null : (
-                                      <span className="files-icon">
-                                        <i className="fa fa-file-pdf-o" />
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            }
-                          })
-                        ) : (
-                          <></>
-                        )}
-                      </Wrapper>
-                    </div>
-                  </div>
-                </div>
-
-                {/* <div className="col-md-6 d-flex">
+                      {/* <div className="col-md-6 d-flex">
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
@@ -1568,14 +1519,14 @@ const Profile = ({
                     </div>
                   </div>
                 </div> */}
+                    </div>
+                  </>
+                )}
               </div>
-            </>
-          )}
-        </div>
 
-        {/* /Profile Info Tab */}
-        {/* Tasks Tab */}
-        {/* <div className="tab-pane fade" id="emp_tasks">
+              {/* /Profile Info Tab */}
+              {/* Tasks Tab */}
+              {/* <div className="tab-pane fade" id="emp_tasks">
           <div className="row">
             {taskList?.map((task, index) => {
               const {
@@ -1825,174 +1776,158 @@ const Profile = ({
             })}
           </div>
         </div> */}
-        {/* /Tasks Tab */}
+              {/* /Tasks Tab */}
 
-        {/* Document Upload Tab */}
-        <div className="tab-pane fade" id="document_upload">
-          {isSelectedLoading || skeletonLoading ? (
-            <div className="skeleton-container-profile">
-              <div className="skeleton-content-profile">
-                <div className="skeleton-line-profile"></div>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="row">
-                <div className="col-md-12 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Document{" "}
-                        <span style={{ color: "red", fontSize: "0.7rem" }}>
-                          {employeeDocumentError?.length > 0 && (
-                            <>
-                              Error: {employeeDocumentError}
-                              <button
-                                onClick={clearErrorMessage}
-                                style={{
-                                  marginLeft: "10px",
-                                  fontSize: "0.8rem",
-                                  cursor: "pointer",
-                                  color: "black",
-                                }}
-                              >
-                                <i className="fa fa-times" />
-                                Clear Error
-                              </button>
-                            </>
-                          )}
-                        </span>
-                        <a
-                          onClick={() =>
-                            setGlobalState("showEmployeeDocumentModal", true)
-                          }
-                          className="edit-icon"
-                        >
-                          <i className="fa fa-plus" />
-                        </a>
-                      </h3>
-                      <Wrapper>
-                        {employeeDocumentData?.length > 0 ? (
-                          employeeDocumentData.map((doc, index) => {
-                            const {
-                              id,
-                              employee,
-                              document_name,
-                              document_number,
-                              issue_date,
-                              expiry_date,
-                              document_type,
-                              document_upload,
-                              status,
-                              verified,
-                            } = doc;
-                            if (employee === selectedEmployeeId) {
-                              return (
-                                <div key={id} className="card">
-                                  <a className="name">
-                                    Document Number: {document_number}
-                                    <span
-                                      className="edit-icon"
-                                      style={{
-                                        background: "none",
-                                        border: "none",
-                                      }}
-                                    >
-                                      <div className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleFileDownload(
-                                                document_upload
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-download m-r-5" />{" "}
-                                            Download
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditEmployeeDocument(
-                                                id,
-                                                index
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteEmployeeDocument(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </span>
-                                  </a>
-                                  <div className="document-name">
-                                    Document Name: {document_name}
-                                  </div>
-                                  <span>
-                                    Date:{" "}
-                                    {moment(issue_date).format("DD MMM YYYY")} -{" "}
-                                    {expiry_date &&
-                                      moment(expiry_date).format("DD MMM YYYY")}
-                                  </span>
-                                  <div>Status: {status}</div>
-                                  <div>
-                                    Verification:{" "}
-                                    {verified === true
-                                      ? "Varified"
-                                      : "Not varified"}
-                                  </div>
-                                  <div>Document Type: {document_type}</div>
-                                  <div>
-                                    {document_upload &&
-                                    regex.test(document_upload) ? (
-                                      <img
-                                        className="img-preview"
-                                        src={document_upload}
-                                        alt="Preview"
-                                      />
-                                    ) : !document_upload ? null : (
-                                      <span className="files-icon">
-                                        <i className="fa fa-file-pdf-o" />
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            }
-                          })
-                        ) : (
-                          <></>
-                        )}
-                      </Wrapper>
+              {/* Document Upload Tab */}
+              <div className="tab-pane fade" id="document_upload">
+                {isSelectedLoading || skeletonLoading ? (
+                  <div className="skeleton-container-profile">
+                    <div className="skeleton-content-profile">
+                      <div className="skeleton-line-profile"></div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    <div className="row">
+                      <div className="col-md-12 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">
+                              Document{" "}
+                              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                                {employeeDocumentError?.length > 0 && (
+                                  <>
+                                    Error: {employeeDocumentError}
+                                    <button
+                                      onClick={clearErrorMessage}
+                                      style={{
+                                        marginLeft: "10px",
+                                        fontSize: "0.8rem",
+                                        cursor: "pointer",
+                                        color: "black",
+                                      }}
+                                    >
+                                      <i className="fa fa-times" />
+                                      Clear Error
+                                    </button>
+                                  </>
+                                )}
+                              </span>
+                              <a
+                                onClick={() => setGlobalState("showEmployeeDocumentModal", true)}
+                                className="edit-icon"
+                              >
+                                <i className="fa fa-plus" />
+                              </a>
+                            </h3>
+                            <Wrapper>
+                              {employeeDocumentData?.length > 0 ? (
+                                employeeDocumentData.map((doc, index) => {
+                                  const {
+                                    id,
+                                    employee,
+                                    document_name,
+                                    document_number,
+                                    issue_date,
+                                    expiry_date,
+                                    document_type,
+                                    document_upload,
+                                    status,
+                                    verified,
+                                  } = doc;
+                                  if (employee === selectedEmployeeId) {
+                                    return (
+                                      <div key={id} className="card">
+                                        <a className="name">
+                                          Document Number: {document_number}
+                                          <span
+                                            className="edit-icon"
+                                            style={{
+                                              background: "none",
+                                              border: "none",
+                                            }}
+                                          >
+                                            <div className="dropdown dropdown-action text-end">
+                                              <a
+                                                className="action-icon dropdown-toggle"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                <i className="material-icons">more_vert</i>
+                                              </a>
+                                              <div className="dropdown-menu dropdown-menu-right">
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleFileDownload(document_upload)
+                                                  }
+                                                >
+                                                  <i className="fa fa-download m-r-5" /> Download
+                                                </a>
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleEditEmployeeDocument(id, index)
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil m-r-5" /> Edit
+                                                </a>
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() => handleDeleteEmployeeDocument(id)}
+                                                >
+                                                  <i className="fa fa-trash-o m-r-5" /> Delete
+                                                </a>
+                                              </div>
+                                            </div>
+                                          </span>
+                                        </a>
+                                        <div className="document-name">
+                                          Document Name: {document_name}
+                                        </div>
+                                        <span>
+                                          Date: {moment(issue_date).format("DD MMM YYYY")} -{" "}
+                                          {expiry_date && moment(expiry_date).format("DD MMM YYYY")}
+                                        </span>
+                                        <div>Status: {status}</div>
+                                        <div>
+                                          Verification:{" "}
+                                          {verified === true ? "Varified" : "Not varified"}
+                                        </div>
+                                        <div>Document Type: {document_type}</div>
+                                        <div>
+                                          {document_upload && regex.test(document_upload) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={document_upload}
+                                              alt="Preview"
+                                            />
+                                          ) : !document_upload ? null : (
+                                            <span className="files-icon">
+                                              <i className="fa fa-file-pdf-o" />
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                })
+                              ) : (
+                                <></>
+                              )}
+                            </Wrapper>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
-            </>
-          )}
+              {/* /Document Upload Tab */}
+            </div>
+          </div>
         </div>
-        {/* /Document Upload Tab */}
-      </div>
+      </DivContainer>
 
       {/* Employee Address */}
       {showEmployeeAddressModal && (
