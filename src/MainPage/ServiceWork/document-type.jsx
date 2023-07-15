@@ -86,10 +86,7 @@ const documenttype = () => {
     }
   });
 
-  const handleHoverEffect = (text) => {
-    setGlobalState("isHover", true);
-    setGlobalState("isHoverText", text);
-  };
+
 
   const columns = [
     {

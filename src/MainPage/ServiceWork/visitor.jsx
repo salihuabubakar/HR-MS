@@ -64,14 +64,6 @@ const visitor = () => {
   const [menu, setMenu] = useState(false);
   const [indexToEdit, setIndexToEdit] = useState();
   const [residentVisitorId, setResidentVisitorId] = useState("");
-  const [isHover] = useGlobalState("isHover");
-  const [isHoverText] = useGlobalState("isHoverText");
-
-  useEffect(() => {
-    if (!isHover) {
-      setGlobalState("isHoverText", "");
-    }
-  }, [isHover]);
 
   const handleEditResidentVisitor = (id, index) => {
     setResidentVisitorId(id);
