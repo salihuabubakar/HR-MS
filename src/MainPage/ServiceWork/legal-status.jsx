@@ -15,19 +15,22 @@ import { useResidentLegalStatusTypeFetching } from "../../utils/employeeCustomFe
 import "./style.css";
 import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
+import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../_components/SearchComponent";
 
 const legalStatus = () => {
   const { residentLegalStatusTypeData, residentLegalStatusTypeLoading } =
     useResidentLegalStatusTypeFetching();
+    const { searchQuery, handleSearch, filteredResults } = useSearch(residentLegalStatusTypeData);
+    let searchResult = !searchQuery ? residentLegalStatusTypeData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: residentLegalStatusTypeData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    total: searchResult?.length,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -176,26 +179,11 @@ const legalStatus = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Resident Legal Status Type ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Resident Legal Status Type Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
+          <SearchComponent
+            searchType={"Legal Status"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentLegalStatusTypeError?.length > 0 && (
               <>
@@ -223,7 +211,7 @@ const legalStatus = () => {
                   className="table-striped"
                   style={{ overflowX: "auto" }}
                   pagination={paginationSettings}
-                  dataSource={residentLegalStatusTypeData}
+                  dataSource={searchResult}
                   columns={columns}
                   rowKey={(residentLegalStatusType) => residentLegalStatusType?.id}
                   bordered

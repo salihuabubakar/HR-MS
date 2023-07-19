@@ -6,13 +6,11 @@ import AddSchedule from "../../_components/modelbox/Addschedule";
 import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import Smile from "../../assets/img/smile.png";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import {
   Body,
-  DesignationDiv,
   NavContainer,
   NavButton,
 } from "../Employees/Employees/styles";
@@ -24,8 +22,6 @@ import {
   useEmployeeShiftFetching,
   useRoleFetching,
 } from "../../utils/employeeCustomFetchHook";
-import { BaseUrl } from "../../utils/baseUrl";
-import axios from "axios";
 import {
   add_update_delete_shift,
   add_update_delete_employee_shift,
@@ -86,38 +82,6 @@ const { shiftData, isShiftLoading } = useShiftFetching();
 
   const selectedHouse = houseData?.find((house) => house.id === houseId);
   const houseName = selectedHouse?.name;
-  
-  // const selectedHouseEmployee = 
-
-
-  // const [isSelectedLoading, setIsSelectedLoading] = useState(false);
-  // const [getSelectedData, setGetSelectedData] = useState();
-  // 
-
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const fetchHouseSelectedData = async () => {
-  //     try {
-  //       setIsSelectedLoading(true);
-  //       const response = await axios.get(
-  //         `${BaseUrl}/house/details/${houseId}/?format=json`
-  //       );
-  //       if (isMounted) {
-  //         setGetSelectedData(response.data);
-  //         setIsSelectedLoading(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //       setIsSelectedLoading(false);
-  //     }
-  //   };
-  //   houseId != null ? fetchHouseSelectedData() : null;
-
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, [houseId]);
-
 
   useEffect(() => {
     if ($(".select").length > 0) {

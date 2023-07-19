@@ -16,6 +16,8 @@ import AllResident from "./AllResident";
 import AllResidentList from "./AllResidentList";
 import Profile from "./Profile";
 import { DivContainer } from "../TaskManagement/style";
+import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../_components/SearchComponent";
 
 const AllServiceWorkers = () => {
   const [showModal] = useGlobalState("showModal");
@@ -24,6 +26,7 @@ const AllServiceWorkers = () => {
 const [getResidentId, setGetResidentId] = useState(null);
 const { residentData, isResidentLoading, residentError } =
   useResidentFetching();
+const { searchQuery, handleSearch, filteredResults } = useSearch(residentData);
 
 const initialUserData = [];
 
@@ -97,90 +100,71 @@ const handleDeleteAcct = (id) => {
         <div className="content container-fluid">
           {/* Page Header */}
           <div className="page-header">
-              <>
-                <div className="row align-items-center">
-                  <div className="col">
-                    <h3 className="page-title">Resident</h3>
-                    <ul className="breadcrumb">
-                      <li className="breadcrumb-item">
-                        <Link to="/app/main/dashboard">Dashboard</Link>
-                      </li>
-                      <li className="breadcrumb-item active">Resident</li>
-                    </ul>
-                  </div>
-                  <div className="col-auto float-end ml-auto">
-                    <a className="btn add-btn" onClick={handleAddResident}>
-                      <i className="fa fa-plus" /> Add Resident
-                    </a>
-                    <div className="view-icons">
-                      <a
-                        onClick={() => setTab("residentAll")}
-                        className={`grid-view btn btn-link ${
-                          tab == `residentAll` ? `active` : null
-                        }`}
-                      >
-                        <i className="fa fa-th" />
-                      </a>
-                      <a
-                        onClick={() => setTab("residentList")}
-                        className={`list-view btn btn-link ${
-                          tab == `residentList` ? `active` : null
-                        }`}
-                      >
-                        <i className="fa fa-bars" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </>
-          </div>
-          {/* /Page Header */}
             <>
-              {/* Search Filter */}
-              <div className="row filter-row">
-                <div className="col-sm-6 col-md-4">
-                  <div className="form-group form-focus">
-                    <input type="text" className="form-control floating" />
-                    <label className="focus-label">Resident ID</label>
-                  </div>
+              <div className="row align-items-center">
+                <div className="col">
+                  <h3 className="page-title">Resident</h3>
+                  <ul className="breadcrumb">
+                    <li className="breadcrumb-item">
+                      <Link to="/app/main/dashboard">Dashboard</Link>
+                    </li>
+                    <li className="breadcrumb-item active">Resident</li>
+                  </ul>
                 </div>
-                <div className="col-sm-6 col-md-4">
-                  <div className="form-group form-focus">
-                    <input type="text" className="form-control floating" />
-                    <label className="focus-label">Resident Name</label>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4">
-                  <a href="#" className="btn btn-success btn-block w-100">
-                    {" "}
-                    Search{" "}
+                <div className="col-auto float-end ml-auto">
+                  <a className="btn add-btn" onClick={handleAddResident}>
+                    <i className="fa fa-plus" /> Add Resident
                   </a>
+                  <div className="view-icons">
+                    <a
+                      onClick={() => setTab("residentAll")}
+                      className={`grid-view btn btn-link ${tab == `residentAll` ? `active` : null}`}
+                    >
+                      <i className="fa fa-th" />
+                    </a>
+                    <a
+                      onClick={() => setTab("residentList")}
+                      className={`list-view btn btn-link ${
+                        tab == `residentList` ? `active` : null
+                      }`}
+                    >
+                      <i className="fa fa-bars" />
+                    </a>
+                  </div>
                 </div>
               </div>
-              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                {isResidentError?.length > 0 && (
-                  <>
-                    Error: {isResidentError}
-                    <button
-                      onClick={clearErrorMessage}
-                      style={{
-                        marginLeft: "10px",
-                        fontSize: "0.8rem",
-                        cursor: "pointer",
-                        color: "black",
-                      }}
-                    >
-                      <i className="fa fa-times" />
-                      Clear Error
-                    </button>
-                  </>
-                )}
-              </span>
-              {/* Search Filter */}
             </>
+          </div>
+          {/* /Page Header */}
+          <>
+            <SearchComponent
+              searchType={"Resident Name"}
+              searchQuery={searchQuery}
+              handleSearch={handleSearch}
+            />
+            <span style={{ color: "red", fontSize: "0.7rem" }}>
+              {isResidentError?.length > 0 && (
+                <>
+                  Error: {isResidentError}
+                  <button
+                    onClick={clearErrorMessage}
+                    style={{
+                      marginLeft: "10px",
+                      fontSize: "0.8rem",
+                      cursor: "pointer",
+                      color: "black",
+                    }}
+                  >
+                    <i className="fa fa-times" />
+                    Clear Error
+                  </button>
+                </>
+              )}
+            </span>
+          </>
           {tab == "residentAll" && (
             <AllResident
-              data={residentData}
+              data={!searchQuery ? residentData : filteredResults}
               isLoading={isResidentLoading}
               error={residentError}
               handleEditResident={handleEditResident}
@@ -193,7 +177,7 @@ const handleDeleteAcct = (id) => {
               handleEditResident={handleEditResident}
               handleDeleteAcct={handleDeleteAcct}
               DefaultImage={DefaultImage}
-              data={residentData}
+              data={!searchQuery ? residentData : filteredResults}
               isResidentLoading={isResidentLoading}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
