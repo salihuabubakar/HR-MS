@@ -19,19 +19,22 @@ import {
 } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
 import PopUpText from "../../../_components/modelbox/PopUpText";
+import { useSearch } from "../../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../../_components/SearchComponent";
 
 const Status = () => {
   const { statusData, isStatusDataLoading } = useStatusFetching();
   const { data } = useDataFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(statusData);
+  let statuData = !searchQuery ? statusData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: statusData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    total: statuData?.length,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -210,26 +213,11 @@ const handleDeleteStatus = (id) => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Employee ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Employee Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
+          <SearchComponent
+            searchType={"Employee Name"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {statusError?.length > 0 && (
               <>
@@ -259,7 +247,7 @@ const handleDeleteStatus = (id) => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   bordered
-                  dataSource={statusData}
+                  dataSource={statuData}
                   rowKey={(status) => status?.id}
                   loading={isStatusDataLoading}
                 />

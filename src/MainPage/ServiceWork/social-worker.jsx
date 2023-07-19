@@ -13,19 +13,22 @@ import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { add_update_delete_social_worker } from "../../utils/sendToServer";
 import { useSocialWorkerFetching, useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
+import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../_components/SearchComponent";
 
 const socialworker = () => {
   const { socialWorkerData, socialWorkerLoading } = useSocialWorkerFetching();
   const { residentBoroughData } = useResidentBoroughFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(socialWorkerData);
+  let searchResult = !searchQuery ? socialWorkerData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: socialWorkerData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    total: searchResult?.length,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -86,24 +89,11 @@ const socialworker = () => {
       },
     },
     {
-      title: "First Name",
+      title: "Full Name",
       dataIndex: "first_name",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
-      },
-    },
-    {
-      title: "Middle Name",
-      dataIndex: "middle_name",
-      render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
-      },
-    },
-    {
-      title: "Last Name",
-      dataIndex: "last_name",
-      render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        const { first_name, middle_name, last_name } = record;
+        return <React.Fragment>{`${first_name} ${middle_name} ${last_name}`}</React.Fragment>;
       },
     },
     {
@@ -202,26 +192,11 @@ const socialworker = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Social Worker ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Social Worker Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
+          <SearchComponent
+            searchType={"Social Worker"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {socialWorkerError?.length > 0 && (
               <>
@@ -251,7 +226,7 @@ const socialworker = () => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   bordered
-                  dataSource={socialWorkerData}
+                  dataSource={searchResult}
                   rowKey={(socialWorker) => socialWorker?.id}
                   loading={socialWorkerLoading}
                 />

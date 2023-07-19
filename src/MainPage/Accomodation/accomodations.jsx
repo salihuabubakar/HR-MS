@@ -12,12 +12,14 @@ import HouseList from './HouseList';
 import { useHouseFetching } from '../../utils/employeeCustomFetchHook';
 import { add_update_delete_house } from '../../utils/sendToServer';
 import "../Employees/Employees/style.css"
-
+import { useSearch } from '../../utils/Hooks/searchFunctionCustomHook';
+import SearchComponent from '../../_components/SearchComponent';
 
 const Accomodations = () => {
   const [tab, setTab] = useState("allHouse" || "houseList");
   const { houseData, houseError, isHouseDataLoading } =
     useHouseFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(houseData);
   const [state, dispatchHouse] = useReducer(add_update_delete_house, []);
   const [showModal] = useGlobalState("showModal");
   const [deleteModal] = useGlobalState("deleteModal");
@@ -78,97 +80,77 @@ const Accomodations = () => {
             <div className="content container-fluid">
               {/* Page Header */}
               <div className="page-header">
-                  <>
-                    <div className="row align-items-center">
-                      <div className="col">
-                        <h3 className="page-title">House</h3>
-                        <ul className="breadcrumb">
-                          <li className="breadcrumb-item">
-                            <Link to="/app/main/dashboard">Dashboard</Link>
-                          </li>
-                          <li className="breadcrumb-item active">House</li>
-                        </ul>
-                      </div>
-                      <div className="col-auto float-end ml-auto">
+                <>
+                  <div className="row align-items-center">
+                    <div className="col">
+                      <h3 className="page-title">House</h3>
+                      <ul className="breadcrumb">
+                        <li className="breadcrumb-item">
+                          <Link to="/app/main/dashboard">Dashboard</Link>
+                        </li>
+                        <li className="breadcrumb-item active">House</li>
+                      </ul>
+                    </div>
+                    <div className="col-auto float-end ml-auto">
+                      <a className="btn add-btn" onClick={() => setGlobalState("showModal", true)}>
+                        <i className="fa fa-plus" /> Add House
+                      </a>
+                      <div className="view-icons">
                         <a
-                          className="btn add-btn"
-                          onClick={() => setGlobalState("showModal", true)}
+                          onClick={() => setTab("allHouse")}
+                          className={`grid-view btn btn-link ${
+                            tab == `allHouse` ? `active` : null
+                          }`}
                         >
-                          <i className="fa fa-plus" /> Add House
+                          <i className="fa fa-th" />
                         </a>
-                        <div className="view-icons">
-                          <a
-                            onClick={() => setTab("allHouse")}
-                            className={`grid-view btn btn-link ${
-                              tab == `allHouse` ? `active` : null
-                            }`}
-                          >
-                            <i className="fa fa-th" />
-                          </a>
-                          <a
-                            onClick={() => setTab("houseList")}
-                            className={`list-view btn btn-link ${
-                              tab == `houseList` ? `active` : null
-                            }`}
-                          >
-                            <i className="fa fa-bars" />
-                          </a>
-                        </div>
+                        <a
+                          onClick={() => setTab("houseList")}
+                          className={`list-view btn btn-link ${
+                            tab == `houseList` ? `active` : null
+                          }`}
+                        >
+                          <i className="fa fa-bars" />
+                        </a>
                       </div>
                     </div>
-                  </>
+                  </div>
+                </>
               </div>
               {/* /Page Header */}
               {/* Search Filter */}
-                <>
-                  {/* Search Filter */}
-                  <div className="row filter-row">
-                    <div className="col-sm-6 col-md-4">
-                      <div className="form-group form-focus">
-                        <input type="text" className="form-control floating" />
-                        <label className="focus-label">House ID</label>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-md-4">
-                      <div className="form-group form-focus">
-                        <input type="text" className="form-control floating" />
-                        <label className="focus-label">House Name</label>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-md-4">
-                      <a href="#" className="btn btn-success btn-block w-100">
-                        {" "}
-                        Search{" "}
-                      </a>
-                    </div>
-                  </div>
-                  <span style={{ color: "red", fontSize: "0.7rem" }}>
-                    {isHouseError?.length > 0 && (
-                      <>
-                        Error: {isHouseError}
-                        <button
-                          onClick={clearErrorMessage}
-                          style={{
-                            marginLeft: "10px",
-                            fontSize: "0.8rem",
-                            cursor: "pointer",
-                            color: "black",
-                          }}
-                        >
-                          <i className="fa fa-times" />
-                          Clear Error
-                        </button>
-                      </>
-                    )}
-                  </span>
-                  {/* Search Filter */}
-                </>
+              <>
+                <SearchComponent
+                  searchType={"House Name"}
+                  searchQuery={searchQuery}
+                  handleSearch={handleSearch}
+                />
+                <span style={{ color: "red", fontSize: "0.7rem" }}>
+                  {isHouseError?.length > 0 && (
+                    <>
+                      Error: {isHouseError}
+                      <button
+                        onClick={clearErrorMessage}
+                        style={{
+                          marginLeft: "10px",
+                          fontSize: "0.8rem",
+                          cursor: "pointer",
+                          color: "black",
+                        }}
+                      >
+                        <i className="fa fa-times" />
+                        Clear Error
+                      </button>
+                    </>
+                  )}
+                </span>
+              </>
               {/* Search Filter */}
 
               {tab == "allHouse" && (
                 <AllHouse
                   setTab={setTab}
-                  houseData={houseData}
+                  houseData={!searchQuery ? houseData : filteredResults}
                   houseError={houseError}
                   isHouseDataLoading={isHouseDataLoading}
                   setGetHouseId={setGetHouseId}
@@ -178,7 +160,7 @@ const Accomodations = () => {
               )}
               {tab == "houseList" && (
                 <HouseList
-                  houseData={houseData}
+                  houseData={!searchQuery ? houseData : filteredResults}
                   isHouseDataLoading={isHouseDataLoading}
                   handleHouseEdit={handleHouseEdit}
                   handleHouseDelete={handleHouseDelete}

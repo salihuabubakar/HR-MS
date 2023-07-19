@@ -14,18 +14,21 @@ import { add_update_delete_borough } from "../../utils/sendToServer";
 import { useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import PopUpText from "../../_components/modelbox/PopUpText";
+import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../_components/SearchComponent";
 
 const borough = () => {
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(residentBoroughData);
+  let searchResult = !searchQuery ? residentBoroughData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: residentBoroughData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    total: searchResult?.length,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -199,26 +202,11 @@ const handleDeleteBorough = (id) => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Borough ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Borough Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
+          <SearchComponent
+            searchType={"Borough"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {boroughError?.length > 0 && (
               <>
@@ -248,7 +236,7 @@ const handleDeleteBorough = (id) => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   bordered
-                  dataSource={residentBoroughData}
+                  dataSource={searchResult}
                   rowKey={(borough) => borough?.id}
                   loading={isResidentBoroughLoading}
                 />
