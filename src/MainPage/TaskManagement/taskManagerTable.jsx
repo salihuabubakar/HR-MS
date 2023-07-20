@@ -65,6 +65,7 @@ const TaskManagerTable = () => {
     setIndexToEdit((currentPage - 1) * itemsPerPage + index);
     setGlobalState("showTaskModal", true);
     setGlobalState("selectedTaskInfo", taskData);
+    
   };
 
   const handleTaskDelete = (id) => {
