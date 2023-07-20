@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useReducer } from "react";
 import { Helmet } from "react-helmet";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AddResident from "../../_components/modelbox/AddResident";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
