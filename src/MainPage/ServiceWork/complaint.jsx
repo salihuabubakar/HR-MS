@@ -19,20 +19,23 @@ import {
 import "./style.css";
 import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
+import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../_components/SearchComponent";
 
 const Complaint = () => {
   const { complaintData, complaintLoading } = useComplaintFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(complaintData);
+  let searchResult = !searchQuery ? complaintData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: complaintData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    total: searchResult?.length,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -231,26 +234,11 @@ const Complaint = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Resident Complaint ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Resident Complaint Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
+          <SearchComponent
+            searchType={"Complain"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {complaintError?.length > 0 && (
               <>
@@ -280,7 +268,7 @@ const Complaint = () => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   bordered
-                  dataSource={complaintData}
+                  dataSource={searchResult}
                   rowKey={(complaint) => complaint?.id}
                   loading={complaintLoading}
                 />

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import DefaultImage from "../../assets/img/placeholder.jpg";
+import NoDataComponent from '../../_components/noDataComponent';
 
 const AllHouse = ({
   houseData,
@@ -25,7 +26,7 @@ const AllHouse = ({
         <p>{houseError}</p>
       ) : (
         <>
-          {houseData ? (
+          {houseData?.length != 0 || !houseData ? (
             <>
               {houseData?.map((house, index) => {
                 const { id, photo, name, manager } = house;
@@ -89,7 +90,7 @@ const AllHouse = ({
               })}
             </>
           ) : (
-            <p>No data available</p>
+            <NoDataComponent />
           )}
         </>
       )}

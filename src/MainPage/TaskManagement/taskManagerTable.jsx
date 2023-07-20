@@ -15,19 +15,22 @@ import DeleteModal from "../../_components/modelbox/DeleteModal";
 import moment from "moment";
 import { add_update_delete_task } from "../../utils/sendToServer";
 import { useTaskFetching, useDataFetching } from "../../utils/employeeCustomFetchHook";
+import SearchComponent from "../../_components/SearchComponent";
+import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 
 const TaskManagerTable = () => {
   const { taskData, isTaskLoading } = useTaskFetching();
   const { data: allEmployees } = useDataFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(taskData);
+  let searchResult = !searchQuery ? taskData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: taskData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    total: searchResult?.length,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -428,15 +431,17 @@ const TaskManagerTable = () => {
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
-                <a
-                  className="btn add-btn"
-                  onClick={() => setGlobalState("showTaskModal", true)}
-                >
+                <a className="btn add-btn" onClick={() => setGlobalState("showTaskModal", true)}>
                   <i className="fa fa-plus" /> Add Task
                 </a>
               </div>
             </div>
           </div>
+          <SearchComponent
+            searchType={"Task"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {taskError?.length > 0 && (
               <>
@@ -466,7 +471,7 @@ const TaskManagerTable = () => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   bordered
-                  dataSource={taskData}
+                  dataSource={searchResult}
                   rowKey={(task) => task?.id}
                   loading={isTaskLoading}
                 />
@@ -477,20 +482,12 @@ const TaskManagerTable = () => {
         {/* /Page Content */}
         {/* Add Department Modal */}
         {showTaskModal && (
-          <AddTask
-            dispatchTasks={dispatchTasks}
-            indexToEdit={indexToEdit}
-            id={taskId}
-          />
+          <AddTask dispatchTasks={dispatchTasks} indexToEdit={indexToEdit} id={taskId} />
         )}
 
         {/* Delete Department Modal */}
         {deleteModal && (
-          <DeleteModal
-            deleteAction={dispatchTasks}
-            iDToDelete={taskId}
-            modalTitle={"Task"}
-          />
+          <DeleteModal deleteAction={dispatchTasks} iDToDelete={taskId} modalTitle={"Task"} />
         )}
         {/* /Delete Department Modal */}
       </div>

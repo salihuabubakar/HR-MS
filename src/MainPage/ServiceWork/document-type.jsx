@@ -17,18 +17,21 @@ import {
 import "./style.css";
 import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
+import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../_components/SearchComponent";
 
 const documenttype = () => {
   const { residentDocumentTypeData, residentDocumentTypeLoading } = useResidentDocumentTypeFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(residentDocumentTypeData);
+  let searchResult = !searchQuery ? residentDocumentTypeData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: residentDocumentTypeData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    total: searchResult?.length,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -186,26 +189,11 @@ const documenttype = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Resident Document Type ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Resident Document Type Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
+          <SearchComponent
+            searchType={"Document Type"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentDocumentTypeError?.length > 0 && (
               <>
@@ -233,7 +221,7 @@ const documenttype = () => {
                   className="table-striped"
                   style={{ overflowX: "auto" }}
                   pagination={paginationSettings}
-                  dataSource={residentDocumentTypeData}
+                  dataSource={searchResult}
                   columns={columns}
                   rowKey={(residentdocType) => residentdocType?.id}
                   bordered

@@ -13,6 +13,8 @@ import "./style.css";
 import AllEmployee from './AllEmployee';
 import AllEmployeeList from './AllEmployeeList';
 import { DivContainer } from '../../TaskManagement/style';
+import { useSearch } from '../../../utils/Hooks/searchFunctionCustomHook';
+import SearchComponent from '../../../_components/SearchComponent';
 
 const AllEmployees = () => {
   const [showModal] = useGlobalState("showModal");
@@ -20,8 +22,10 @@ const AllEmployees = () => {
   const [tab, setTab] = useState("employeeAll" || "employeeList");
   const [getEmployeeId, setGetEmployeeId] = useState(null)
   const { data, isLoading, error, showSkeleton } = useDataFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(data);
 
   const initialUserData = [];
+
 
   const [state, dispatchEmployee] = useReducer(
     add_update_delete_employee,
@@ -131,52 +135,37 @@ const AllEmployees = () => {
                 }
               </div>
               {/* /Page Header */}
-                <>
-                  {/* Search Filter */}
-                  <div className="row filter-row">
-                    <div className="col-sm-6 col-md-4">
-                      <div className="form-group form-focus">
-                        <input type="text" className="form-control floating" />
-                        <label className="focus-label">Employee ID</label>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-md-4">
-                      <div className="form-group form-focus">
-                        <input type="text" className="form-control floating" />
-                        <label className="focus-label">Employee Name</label>
-                      </div>
-                    </div>
-                    <div className="col-sm-6 col-md-4">
-                      <a href="#" className="btn btn-success btn-block w-100">
-                        {" "}
-                        Search{" "}
-                      </a>
-                    </div>
-                  </div>
-                  <span style={{ color: "red", fontSize: "0.7rem" }}>
-                    {employeeError?.length > 0 && (
-                      <>
-                        Error: {employeeError}
-                        <button
-                          onClick={clearErrorMessage}
-                          style={{
-                            marginLeft: "10px",
-                            fontSize: "0.8rem",
-                            cursor: "pointer",
-                            color: "black",
-                          }}
-                        >
-                          <i className="fa fa-times" />
-                          Clear Error
-                        </button>
-                      </>
-                    )}
-                  </span>
-                  {/* Search Filter */}
-                </>
+              <>
+                {/* Search Filter */}
+                <SearchComponent 
+                  searchType={"Employee Name"} 
+                  searchQuery={searchQuery} 
+                  handleSearch={handleSearch}
+                />
+                <span style={{ color: "red", fontSize: "0.7rem" }}>
+                  {employeeError?.length > 0 && (
+                    <>
+                      Error: {employeeError}
+                      <button
+                        onClick={clearErrorMessage}
+                        style={{
+                          marginLeft: "10px",
+                          fontSize: "0.8rem",
+                          cursor: "pointer",
+                          color: "black",
+                        }}
+                      >
+                        <i className="fa fa-times" />
+                        Clear Error
+                      </button>
+                    </>
+                  )}
+                </span>
+                {/* Search Filter */}
+              </>
               {tab == "employeeAll" && (
                 <AllEmployee
-                  data={data}
+                  data={!searchQuery ? data : filteredResults}
                   isLoading={isLoading}
                   showSkeleton={showSkeleton}
                   error={error}
@@ -190,7 +179,7 @@ const AllEmployees = () => {
                   handleEditEmployee={handleEditEmployee}
                   handleDeleteAcct={handleDeleteAcct}
                   DefaultImage={DefaultImage}
-                  data={data}
+                  data={!searchQuery ? data : filteredResults}
                   isLoading={isLoading}
                   itemsPerPage={itemsPerPage}
                   currentPage={currentPage}

@@ -14,13 +14,15 @@ import { useEmployeeShiftFetching } from "../../utils/employeeCustomFetchHook";
 const AddSchedule = ({
   employeeId: employee,
   dispatchSchedule,
-  selectedDay: date,
+  selectedDay,
   selectedDayIndex,
   shiftData,
   houseId: house,
   event,
   shiftScheduleId: id
 }) => {
+
+  let date = moment(selectedDay, "ddd DD MMM YYYY").format("YYYY-MM-DD");
 
   const { employeeshiftData } = useEmployeeShiftFetching();
   const [selectedScheduleEvent] = useGlobalState("selectedScheduleEvent");
@@ -44,7 +46,7 @@ const AddSchedule = ({
 
   const noShiftRemain = !shiftData?.some(
     (shft) =>
-      !filteredShift?.some((fs) => fs.date === date && fs.shift === shft.id)
+      !filteredShift?.some((fs) => fs.date === selectedDay && fs.shift === shft.id)
   );
 
 
@@ -56,13 +58,12 @@ const AddSchedule = ({
     e.preventDefault();
 
     const currentDate = new Date().toLocaleDateString();
-    const selected = new Date(date).toLocaleDateString();
+    const selected = new Date(selectedDay).toLocaleDateString();
 
     if (selected >= currentDate) {
       if (noShiftRemain) {
         return null; // Skip further execution
       }
-
       const scheduleE = {
         id,
         shift,
@@ -195,7 +196,7 @@ const AddSchedule = ({
 
                             {shiftData?.map((shft) => {
                               const isShiftAssigned = filteredShift?.some(
-                                (fs) => fs.date === date && fs.shift === shft.id
+                                (fs) => fs.date === selectedDay && fs.shift === shft.id
                               );
 
                               if (!isShiftAssigned || !filteredShift) {
@@ -266,7 +267,7 @@ const AddSchedule = ({
         <RepeatModal
           dispatchSchedule={dispatchSchedule}
           event={event}
-          date={date}
+          date={selectedDay}
         />
       )}
     </>

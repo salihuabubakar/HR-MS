@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useRoleFetching } from "../../utils/employeeCustomFetchHook";
+import NoDataComponent from "../../_components/noDataComponent";
 
 const AllResident = ({
   DefaultImage,
@@ -34,7 +35,7 @@ const AllResident = ({
         <p>{error}</p>
       ) : (
         <>
-          {data ? (
+          {data?.length != 0 || !data ? (
             <>
               {data?.slice(0, itemsToShow)?.map((staff, index) => {
                 const { id, photo, first_name, middle_name, last_name, role } =
@@ -108,7 +109,7 @@ const AllResident = ({
               })}
             </>
           ) : (
-            <p>No data available</p>
+            <NoDataComponent />
           )}
         </>
       )}

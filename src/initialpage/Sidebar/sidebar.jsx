@@ -379,7 +379,7 @@ const toggleLevelThree = (value) => {
                           }
                           to="/app/servicework/gp-type"
                         >
-                          gp type
+                          GP Type
                         </Link>
                       </li>
                       <li>

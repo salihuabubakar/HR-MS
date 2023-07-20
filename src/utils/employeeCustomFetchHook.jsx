@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import debounce from "lodash/debounce";
 import { BaseUrl } from "./baseUrl";
 import {
   useQuery,
-  useMutation,
   useQueryClient,
-  QueryClient,
-  QueryClientProvider,
 } from 'react-query'
 
 // Get employee data

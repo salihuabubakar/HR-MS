@@ -14,9 +14,13 @@ import { add_update_delete_shift } from "../../utils/sendToServer";
 import { useShiftFetching } from "../../utils/employeeCustomFetchHook";
 import "../ServiceWork/style.css";
 import moment from "moment";
+import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../_components/SearchComponent";
 
 const shift = () => {
   const { shiftData, isShiftLoading } = useShiftFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(shiftData);
+  let shiftResult = !searchQuery ? shiftData : filteredResults;
 
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -24,7 +28,7 @@ const shift = () => {
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: shiftData?.length,
+    total: shiftResult?.length,
     showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
@@ -166,7 +170,10 @@ const shift = () => {
                   </ul>
                 </div>
                 <div className="col-auto float-end ml-auto">
-                  <a className="btn add-btn m-r-5" onClick={() => setGlobalState("showShiftModal", true)}>
+                  <a
+                    className="btn add-btn m-r-5"
+                    onClick={() => setGlobalState("showShiftModal", true)}
+                  >
                     Add Shifts
                   </a>
                 </div>
@@ -174,26 +181,11 @@ const shift = () => {
             </div>
             {/* /Page Header */}
             {/* Search Filter */}
-            <div className="row filter-row">
-              <div className="col-sm-6 col-md-4">
-                <div className="form-group form-focus">
-                  <input type="text" className="form-control floating" />
-                  <label className="focus-label">Shifts ID</label>
-                </div>
-              </div>
-              <div className="col-sm-6 col-md-4">
-                <div className="form-group form-focus">
-                  <input type="text" className="form-control floating" />
-                  <label className="focus-label">Shifts Name</label>
-                </div>
-              </div>
-              <div className="col-sm-6 col-md-4">
-                <a href="#" className="btn btn-success btn-block w-100">
-                  {" "}
-                  Search{" "}
-                </a>
-              </div>
-            </div>
+            <SearchComponent
+              searchType={"Shift"}
+              searchQuery={searchQuery}
+              handleSearch={handleSearch}
+            />
             <span style={{ color: "red", fontSize: "0.7rem" }}>
               {shiftError?.length > 0 && (
                 <>
@@ -224,7 +216,7 @@ const shift = () => {
                     style={{ overflowX: "auto" }}
                     columns={columns}
                     bordered
-                    dataSource={shiftData}
+                    dataSource={shiftResult}
                     rowKey={(shift) => shift?.id}
                     loading={isShiftLoading}
                   />
@@ -237,8 +229,12 @@ const shift = () => {
         </div>
       </div>
       {/* /Page Wrapper */}
-      {showShiftModal && <AddShift dispatchShift={dispatchShift} indexToEdit={indexToEdit} id={shiftId} />}
-      {deleteShiftModal && <DeleteModal deleteAction={dispatchShift} iDToDelete={shiftId} modalTitle={"Shift"} />}
+      {showShiftModal && (
+        <AddShift dispatchShift={dispatchShift} indexToEdit={indexToEdit} id={shiftId} />
+      )}
+      {deleteShiftModal && (
+        <DeleteModal deleteAction={dispatchShift} iDToDelete={shiftId} modalTitle={"Shift"} />
+      )}
     </>
   );
 };

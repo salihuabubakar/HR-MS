@@ -10,26 +10,26 @@ import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
-import {
-  initReview,
-  savedReviewReducer,
-} from "../../../utils/localStorage";
 import { add_update_delete_employee_review } from "../../../utils/sendToServer";
 import { useEmployeeReviewFetching, useDataFetching } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
 import PopUpText from "../../../_components/modelbox/PopUpText";
+import { useSearch } from "../../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../../_components/SearchComponent";
 
 const Review = () => {
 
   const { employeeReviewData, isEmployeeReviewDataLoading } = useEmployeeReviewFetching();
   const { data } = useDataFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(employeeReviewData);
+  let reviewData = !searchQuery ? employeeReviewData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: employeeReviewData?.length,
+    total: reviewData?.length,
     showTotal: (total, range) =>
       `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
@@ -342,7 +342,7 @@ const Review = () => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   bordered
-                  dataSource={employeeReviewData}
+                  dataSource={reviewData}
                   rowKey={(review) => review?.id}
                   loading={isEmployeeReviewDataLoading}
                 />
