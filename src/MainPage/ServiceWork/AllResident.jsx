@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useRoleFetching } from "../../utils/employeeCustomFetchHook";
-import NoDataComponent from "../../_components/noDataComponent";
+// import NoDataComponent from "../../_components/noDataComponent";
 
 const AllResident = ({
   DefaultImage,
@@ -38,8 +38,7 @@ const AllResident = ({
           {data?.length != 0 || !data ? (
             <>
               {data?.slice(0, itemsToShow)?.map((staff, index) => {
-                const { id, photo, first_name, middle_name, last_name, role } =
-                  staff;
+                const { id, photo, first_name, middle_name, last_name, role } = staff;
                 return (
                   <React.Fragment key={id}>
                     <div key={id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
@@ -109,15 +108,14 @@ const AllResident = ({
               })}
             </>
           ) : (
-            <NoDataComponent />
+            <>
+              {/* <NoDataComponent /> */} <p>No Data Available</p>
+            </>
           )}
         </>
       )}
       {itemsToShow < data?.length && (
-        <button
-          className="btn btn-primary col-md-2 mt-3"
-          onClick={handleViewMore}
-        >
+        <button className="btn btn-primary col-md-2 mt-3" onClick={handleViewMore}>
           Load More
         </button>
       )}

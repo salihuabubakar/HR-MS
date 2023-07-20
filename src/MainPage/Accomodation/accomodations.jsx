@@ -13,7 +13,7 @@ import { useHouseFetching } from '../../utils/employeeCustomFetchHook';
 import { add_update_delete_house } from '../../utils/sendToServer';
 import "../Employees/Employees/style.css"
 import { useSearch } from '../../utils/Hooks/searchFunctionCustomHook';
-import SearchComponent from '../../_components/SearchComponent';
+// import SearchComponent from '../../_components/SearchComponent';
 
 const Accomodations = () => {
   const [tab, setTab] = useState("allHouse" || "houseList");
@@ -120,11 +120,11 @@ const Accomodations = () => {
               {/* /Page Header */}
               {/* Search Filter */}
               <>
-                <SearchComponent
+                {/* <SearchComponent
                   searchType={"House Name"}
                   searchQuery={searchQuery}
                   handleSearch={handleSearch}
-                />
+                /> */}
                 <span style={{ color: "red", fontSize: "0.7rem" }}>
                   {isHouseError?.length > 0 && (
                     <>

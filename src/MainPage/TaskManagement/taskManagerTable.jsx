@@ -15,7 +15,7 @@ import DeleteModal from "../../_components/modelbox/DeleteModal";
 import moment from "moment";
 import { add_update_delete_task } from "../../utils/sendToServer";
 import { useTaskFetching, useDataFetching } from "../../utils/employeeCustomFetchHook";
-import SearchComponent from "../../_components/SearchComponent";
+// import SearchComponent from "../../_components/SearchComponent";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 
 const TaskManagerTable = () => {
@@ -437,11 +437,11 @@ const TaskManagerTable = () => {
               </div>
             </div>
           </div>
-          <SearchComponent
+          {/* <SearchComponent
             searchType={"Task"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
-          />
+          /> */}
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {taskError?.length > 0 && (
               <>

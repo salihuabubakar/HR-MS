@@ -20,7 +20,7 @@ import "./style.css";
 import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
-import SearchComponent from "../../_components/SearchComponent";
+// import SearchComponent from "../../_components/SearchComponent";
 
 const visitor = () => {
   const { residentVisitorData, residentVisitorLoading } = useResidentVisitorFetching();
@@ -230,11 +230,11 @@ const visitor = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <SearchComponent
+          {/* <SearchComponent
             searchType={"Visitor"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
-          />
+          /> */}
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentVisitorError?.length > 0 && (
               <>

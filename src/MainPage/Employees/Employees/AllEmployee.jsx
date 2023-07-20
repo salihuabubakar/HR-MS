@@ -109,7 +109,10 @@ const AllEmployee = ({
               })}
             </>
           ) : (
-            <NoDataComponent />
+            <>
+              <p>No Data Available</p>
+              {/* <NoDataComponent /> */}
+            </>
           )}
         </>
       )}

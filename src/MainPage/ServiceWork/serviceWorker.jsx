@@ -17,7 +17,7 @@ import AllResidentList from "./AllResidentList";
 import Profile from "./Profile";
 import { DivContainer } from "../TaskManagement/style";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
-import SearchComponent from "../../_components/SearchComponent";
+// import SearchComponent from "../../_components/SearchComponent";
 
 const AllServiceWorkers = () => {
   const [showModal] = useGlobalState("showModal");
@@ -137,11 +137,11 @@ const handleDeleteAcct = (id) => {
           </div>
           {/* /Page Header */}
           <>
-            <SearchComponent
+            {/* <SearchComponent
               searchType={"Resident Name"}
               searchQuery={searchQuery}
               handleSearch={handleSearch}
-            />
+            /> */}
             <span style={{ color: "red", fontSize: "0.7rem" }}>
               {isResidentError?.length > 0 && (
                 <>
