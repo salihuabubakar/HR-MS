@@ -18,20 +18,23 @@ import { add_update_delete_employee_review } from "../../../utils/sendToServer";
 import { useEmployeeReviewFetching, useDataFetching } from "../../../utils/employeeCustomFetchHook";
 import moment from "moment";
 import PopUpText from "../../../_components/modelbox/PopUpText";
+import { useSearch } from "../../../utils/Hooks/searchCustomeHook";
+import SearchComponent from "../../../_components/SearchComponent";
 
 const Review = () => {
 
   const { employeeReviewData, isEmployeeReviewDataLoading } = useEmployeeReviewFetching();
   const { data } = useDataFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(employeeReviewData);
+  let searchResult = !searchQuery ? employeeReviewData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: employeeReviewData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    total: searchResult?.length,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -292,26 +295,11 @@ const Review = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Employee ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Employee Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
+          <SearchComponent
+            searchType={"Employee Name"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {employeeReviewError?.length > 0 && (
               <>
@@ -341,7 +329,7 @@ const Review = () => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   bordered
-                  dataSource={employeeReviewData}
+                  dataSource={searchResult}
                   rowKey={(review) => review?.id}
                   loading={isEmployeeReviewDataLoading}
                 />
