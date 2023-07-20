@@ -83,12 +83,6 @@ const AllEmployee = ({
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
                             </a>
-                            {/* <a
-                              className="dropdown-item"
-                              onClick={() => handleDeleteAcct(id)}
-                            >
-                              <i className="fa fa-trash-o m-r-5" /> Delete
-                            </a> */}
                           </div>
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
