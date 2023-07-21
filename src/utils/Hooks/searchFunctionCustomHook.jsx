@@ -51,7 +51,7 @@ export const useSearch = (data) => {
     });
 
     setFilteredResults(filteredData);
-  }, 300); // Set the debounce delay (in milliseconds) according to your preference
+  }, 500); // Set the debounce delay (in milliseconds) according to your preference
 
   useEffect(() => {
     performSearch(searchQuery);

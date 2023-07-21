@@ -14,7 +14,7 @@ import AllEmployee from './AllEmployee';
 import AllEmployeeList from './AllEmployeeList';
 import { DivContainer } from '../../TaskManagement/style';
 import { useSearch } from '../../../utils/Hooks/searchFunctionCustomHook';
-// import SearchComponent from '../../../_components/SearchComponent';
+import SearchComponent from '../../../_components/SearchComponent';
 
 const AllEmployees = () => {
   const [showModal] = useGlobalState("showModal");
@@ -137,11 +137,11 @@ const AllEmployees = () => {
               {/* /Page Header */}
               <>
                 {/* Search Filter */}
-                {/* <SearchComponent 
+                <SearchComponent 
                   searchType={"Employee Name"} 
                   searchQuery={searchQuery} 
                   handleSearch={handleSearch}
-                /> */}
+                />
                 <span style={{ color: "red", fontSize: "0.7rem" }}>
                   {employeeError?.length > 0 && (
                     <>
