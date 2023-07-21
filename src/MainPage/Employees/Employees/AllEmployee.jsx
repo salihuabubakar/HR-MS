@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useRoleFetching } from "../../../utils/employeeCustomFetchHook";
-import NoDataComponent from "../../../_components/noDataComponent";
+import NoAvailableData from "../../../_components/noAvailableData";
 
 const AllEmployee = ({
   DefaultImage,
@@ -104,7 +104,7 @@ const AllEmployee = ({
             </>
           ) : (
             <>
-              <NoDataComponent />
+              <NoAvailableData />
             </>
           )}
         </>
