@@ -95,7 +95,6 @@ const AddResidentVisitor = ({
       visit_date,
       purpose,
       status,
-      status,
       left_time,
       house,
       resident,
@@ -263,6 +262,7 @@ const AddResidentVisitor = ({
                             <option disabled value="">
                               Select
                             </option>
+                            <option value="Present">Present</option>
                             <option value="Left">Left</option>
                           </select>
                           {statusError && <p className="error-message">{statusError}</p>}

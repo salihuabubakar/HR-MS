@@ -118,6 +118,15 @@ const visitor = () => {
     {
       title: "Purpose",
       dataIndex: "purpose",
+      render: (text, record, index) => {
+        if (text && text) {
+          return (
+            <PopUpText text={text}/>
+          );
+        } else {
+          return;
+        }
+      },
     },
     {
       title: "Status",
