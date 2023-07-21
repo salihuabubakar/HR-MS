@@ -567,148 +567,6 @@ const Profile = ({
                 ) : (
                   <>
                     <div className="row">
-                      <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Bank Information{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {employeeBankError?.length > 0 && (
-                                  <>
-                                    Error: {employeeBankError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                className="edit-icon"
-                                onClick={() => setGlobalState("showEmployeeBankModal", true)}
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Bank name</th>
-                                    <th>Account Name</th>
-                                    <th>Account No</th>
-                                    <th>Account Type</th>
-                                    <th>Currency</th>
-                                    <th>Address</th>
-                                    <th>Sort Code</th>
-                                    <th>Swift Code</th>
-                                    <th>Iban</th>
-                                    <th>Routing No</th>
-                                    <th>Date</th>
-                                    <th>Document</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {employeeBankData?.length > 0 ? (
-                                    employeeBankData?.map((bank, index) => {
-                                      const {
-                                        id,
-                                        employee,
-                                        bank_name,
-                                        account_name,
-                                        account_number,
-                                        account_type,
-                                        currency,
-                                        bank_address,
-                                        sort_code,
-                                        swift_code,
-                                        iban,
-                                        routing_number,
-                                        upload_date,
-                                        upload_document,
-                                      } = bank;
-                                      if (employee == selectedEmployeeId) {
-                                        return (
-                                          <tr style={{ height: "90px" }} key={id}>
-                                            <td>{bank_name}</td>
-                                            <td>{account_name}</td>
-                                            <td>{account_number}</td>
-                                            <td>{account_type}</td>
-                                            <td>{currency}</td>
-                                            <td>{bank_address}</td>
-                                            <td>{sort_code}</td>
-                                            <td>{swift_code}</td>
-                                            <td>{iban}</td>
-                                            <td>{routing_number}</td>
-                                            <td>{upload_date}</td>
-                                            <td>
-                                              {upload_document && regex.test(upload_document) ? (
-                                                <img
-                                                  className="img-preview"
-                                                  src={upload_document}
-                                                  alt="Preview"
-                                                />
-                                              ) : !upload_document ? null : (
-                                                <span className="files-icon">
-                                                  <i className="fa fa-file-pdf-o" />
-                                                </span>
-                                              )}
-                                            </td>
-                                            <td className="dropdown dropdown-action text-end">
-                                              <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <i className="material-icons">more_vert</i>
-                                              </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleFileDownload(upload_document)
-                                                  }
-                                                >
-                                                  <i className="fa fa-download m-r-5" /> Download
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleEditEmployeeBank(id, index)}
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleDeleteEmployeeBank(id)}
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No Bank detail attach to this employee</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
                           <div className="card-body">
@@ -1463,6 +1321,148 @@ const Profile = ({
                                 <></>
                               )}
                             </Wrapper>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-12 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">
+                              Bank Information{" "}
+                              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                                {employeeBankError?.length > 0 && (
+                                  <>
+                                    Error: {employeeBankError}
+                                    <button
+                                      onClick={clearErrorMessage}
+                                      style={{
+                                        marginLeft: "10px",
+                                        fontSize: "0.8rem",
+                                        cursor: "pointer",
+                                        color: "black",
+                                      }}
+                                    >
+                                      <i className="fa fa-times" />
+                                      Clear Error
+                                    </button>
+                                  </>
+                                )}
+                              </span>
+                              <a
+                                className="edit-icon"
+                                onClick={() => setGlobalState("showEmployeeBankModal", true)}
+                              >
+                                <i className="fa fa-plus" />
+                              </a>
+                            </h3>
+                            <div className="table-responsive">
+                              <table className="table table-nowrap">
+                                <thead>
+                                  <tr>
+                                    <th>Bank name</th>
+                                    <th>Account Name</th>
+                                    <th>Account No</th>
+                                    <th>Account Type</th>
+                                    <th>Currency</th>
+                                    <th>Address</th>
+                                    <th>Sort Code</th>
+                                    <th>Swift Code</th>
+                                    <th>Iban</th>
+                                    <th>Routing No</th>
+                                    <th>Date</th>
+                                    <th>Document</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {employeeBankData?.length > 0 ? (
+                                    employeeBankData?.map((bank, index) => {
+                                      const {
+                                        id,
+                                        employee,
+                                        bank_name,
+                                        account_name,
+                                        account_number,
+                                        account_type,
+                                        currency,
+                                        bank_address,
+                                        sort_code,
+                                        swift_code,
+                                        iban,
+                                        routing_number,
+                                        upload_date,
+                                        upload_document,
+                                      } = bank;
+                                      if (employee == selectedEmployeeId) {
+                                        return (
+                                          <tr style={{ height: "90px" }} key={id}>
+                                            <td>{bank_name}</td>
+                                            <td>{account_name}</td>
+                                            <td>{account_number}</td>
+                                            <td>{account_type}</td>
+                                            <td>{currency}</td>
+                                            <td>{bank_address}</td>
+                                            <td>{sort_code}</td>
+                                            <td>{swift_code}</td>
+                                            <td>{iban}</td>
+                                            <td>{routing_number}</td>
+                                            <td>{upload_date}</td>
+                                            <td>
+                                              {upload_document && regex.test(upload_document) ? (
+                                                <img
+                                                  className="img-preview"
+                                                  src={upload_document}
+                                                  alt="Preview"
+                                                />
+                                              ) : !upload_document ? null : (
+                                                <span className="files-icon">
+                                                  <i className="fa fa-file-pdf-o" />
+                                                </span>
+                                              )}
+                                            </td>
+                                            <td className="dropdown dropdown-action text-end">
+                                              <a
+                                                className="action-icon dropdown-toggle"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                <i className="material-icons">more_vert</i>
+                                              </a>
+                                              <div className="dropdown-menu dropdown-menu-right">
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleFileDownload(upload_document)
+                                                  }
+                                                >
+                                                  <i className="fa fa-download m-r-5" /> Download
+                                                </a>
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() => handleEditEmployeeBank(id, index)}
+                                                >
+                                                  <i className="fa fa-pencil m-r-5" /> Edit
+                                                </a>
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() => handleDeleteEmployeeBank(id)}
+                                                >
+                                                  <i className="fa fa-trash-o m-r-5" /> Delete
+                                                </a>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    })
+                                  ) : (
+                                    <tr>
+                                      <td>No Bank detail attach to this employee</td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
                       </div>
