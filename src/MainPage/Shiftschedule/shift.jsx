@@ -15,7 +15,7 @@ import { useShiftFetching } from "../../utils/employeeCustomFetchHook";
 import "../ServiceWork/style.css";
 import moment from "moment";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
-// import SearchComponent from "../../_components/SearchComponent";
+import SearchComponent from "../../_components/searchComponent";
 
 const shift = () => {
   const { shiftData, isShiftLoading } = useShiftFetching();
@@ -181,11 +181,11 @@ const shift = () => {
             </div>
             {/* /Page Header */}
             {/* Search Filter */}
-            {/* <SearchComponent
+            <SearchComponent
               searchType={"Shift"}
               searchQuery={searchQuery}
               handleSearch={handleSearch}
-            /> */}
+            />
             <span style={{ color: "red", fontSize: "0.7rem" }}>
               {shiftError?.length > 0 && (
                 <>
