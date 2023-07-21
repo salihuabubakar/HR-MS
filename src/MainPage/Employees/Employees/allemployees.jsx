@@ -14,7 +14,7 @@ import AllEmployee from './AllEmployee';
 import AllEmployeeList from './AllEmployeeList';
 import { DivContainer } from '../../TaskManagement/style';
 import { useSearch } from '../../../utils/Hooks/searchFunctionCustomHook';
-import SearchComponent from '../../../_components/SearchComponent';
+import SearchComponent from '../../../_components/searchComponent';
 
 const AllEmployees = () => {
   const [showModal] = useGlobalState("showModal");
