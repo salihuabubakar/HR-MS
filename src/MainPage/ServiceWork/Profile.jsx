@@ -2247,15 +2247,15 @@ useEffect(() => {
                 ) : (
                   <>
                     <div className="row">
-                    <div className="col-md-6 d-flex">
+                    <div className="col-md-12 d-flex">
                         <div className="card profile-box flex-fill">
                           <div className="card-body">
                             <h3 className="card-title">
-                              Resident Referral{" "}
+                              Resident Appointment{" "}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {referralError?.length > 0 && (
+                                {appointmentError?.length > 0 && (
                                   <>
-                                    Error: {referralError}
+                                    Error: {appointmentError}
                                     <button
                                       onClick={clearErrorMessage}
                                       style={{
@@ -2273,7 +2273,7 @@ useEffect(() => {
                               </span>
                               <a
                                 className="edit-icon"
-                                onClick={() => setGlobalState("showResidentReferralModal", true)}
+                                onClick={() => setGlobalState("showResidentAppointmentModal", true)}
                               >
                                 <i className="fa fa-plus" />
                               </a>
@@ -2283,50 +2283,35 @@ useEffect(() => {
                                 <thead>
                                   <tr>
                                     <th>Name</th>
+                                    <th>Time</th>
                                     <th>Date</th>
                                     <th>Description</th>
-                                    <th>Document</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {residentReferralData?.length > 0 ? (
-                                    residentReferralData?.map((address, index) => {
+                                  {residentAppointmentData?.length > 0 ? (
+                                    residentAppointmentData?.map((app, index) => {
                                       const {
                                         id,
                                         resident,
-                                        referral_name,
-                                        referral_date,
-                                        referral_description,
-                                        referral_document,
-                                      } = address;
+                                        appointment_name,
+                                        appointment_time,
+                                        appointment_date,
+                                        appointment_description,
+                                      } = app;
                                       if (resident == selectedResidentId) {
                                         return (
                                           <tr style={{ height: "90px" }} key={id}>
-                                            <td>{referral_name}</td>
-                                            <td>{referral_date}</td>
-                                            {referral_description && referral_description && (
+                                            <td>{appointment_name}</td>
+                                            <td>{appointment_time}</td>
+                                            <td>{appointment_date}</td>
+                                            {appointment_description && appointment_description && (
                                               <>
                                                 <td>
-                                                  <PopUpText text={referral_description}/>
+                                                  <PopUpText text={appointment_description}/>
                                                 </td>
                                               </>
                                             )}
-                                            <td>
-                                              {referral_document &&
-                                              regex.test(referral_document) ? (
-                                                <img
-                                                  className="img-preview"
-                                                  src={referral_document}
-                                                  alt="Preview"
-                                                />
-                                              ) : !referral_document ? (
-                                                "--"
-                                              ) : (
-                                                <span className="files-icon">
-                                                  <i className="fa fa-file-pdf-o" />
-                                                </span>
-                                              )}
-                                            </td>
                                             <td className="dropdown dropdown-action text-end">
                                               <a
                                                 className="action-icon dropdown-toggle"
@@ -2339,14 +2324,16 @@ useEffect(() => {
                                                 <a
                                                   className="dropdown-item"
                                                   onClick={() =>
-                                                    handleEditResidentReferral(id, index)
+                                                    handleEditResidentAppointment(id, index)
                                                   }
                                                 >
                                                   <i className="fa fa-pencil m-r-5" /> Edit
                                                 </a>
                                                 <a
                                                   className="dropdown-item"
-                                                  onClick={() => handleDeleteResidentReferral(id)}
+                                                  onClick={() =>
+                                                    handleDeleteResidentAppointment(id)
+                                                  }
                                                 >
                                                   <i className="fa fa-trash-o m-r-5" /> Delete
                                                 </a>
