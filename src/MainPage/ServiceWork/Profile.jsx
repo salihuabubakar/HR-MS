@@ -20,7 +20,8 @@ import {
   useResidentMedicationFetching,
   useResidentAppointmentFetching,
   useResidentReferralFetching,
-  useResidentDocumentTypeFetching
+  useResidentDocumentTypeFetching,
+  useGpracticeFetching
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_resident_gp,
@@ -627,6 +628,7 @@ useEffect(() => {
   const resident_incident = getSelectedData?.resident_incident;
 
   const { gpTypeData } = useGpTypeFetching();
+  const { gPracticeData } = useGpracticeFetching();
   const { socialWorkerData } = useSocialWorkerFetching();
   const { residentDocumentTypeData } = useResidentDocumentTypeFetching();
 
@@ -1207,21 +1209,21 @@ useEffect(() => {
                                   const {
                                     id,
                                     resident,
-                                    gp_practice_name,
-                                    gp_practice_description,
-                                    gp_practice_address,
-                                    gp_practice_status,
-                                    gp_practice_postcode,
-                                    gp_practice_phone_number,
-                                    gp_practice_email,
-                                    gp_practice_website,
-                                    gp_practice_type,
+                                    status,
+                                    gp: generalPractice,
+                                    start_date,
+                                    description,
+                                    end_date,
                                   } = gp;
-                                  if (resident === selectedResidentId) {
+                                  if (resident === selectedResidentId && status === "Active") {
                                     return (
                                       <div key={id} className="card plain-card">
                                         <div className="text">
-                                          Name: <span>{gp_practice_name}</span>
+                                          Gp: <span>
+                                          {gPracticeData?.map((Gp) => {
+                                              if (Gp.id === generalPractice) return Gp.gp_practice_name;
+                                            })}
+                                          </span>
                                           <span
                                             className="edit-icon"
                                             style={{
@@ -1255,41 +1257,19 @@ useEffect(() => {
                                           </span>
                                         </div>
                                         <div className="text">
-                                          Email: <span>{gp_practice_email}</span>
+                                          Start Date:{" "}
+                                          <span>{start_date}</span>
                                         </div>
-                                        <div className="text">
-                                          Website:{" "}
-                                          <span>
-                                            <a target={"_blank"} href={gp_practice_website}>
-                                              {gp_practice_website}
-                                            </a>
-                                          </span>
-                                        </div>
-                                        <div className="text">
-                                          Phone: <span>{gp_practice_phone_number}</span>
-                                        </div>
-                                        <div className="text">
-                                          Address: <span>{gp_practice_address}</span>
-                                        </div>
-                                        <div className="text">
-                                          Status: <span>{gp_practice_status}</span>
-                                        </div>
-                                        <div className="text">
-                                          Type:{" "}
-                                          <span>
-                                            {gpTypeData?.map((_gp) => {
-                                              if (_gp.id === gp_practice_type)
-                                                return _gp.gp_type_name;
-                                            })}
-                                          </span>
-                                        </div>
-                                        <div className="text">
-                                          Post Code: <span>{gp_practice_postcode}</span>
-                                        </div>
-                                        <div className="text">
-                                          Description:{" "}
-                                          <span className="c">{gp_practice_description}</span>
-                                        </div>
+                                        {description && description && (
+                                          <>
+                                            <div className="text">
+                                              Description:{" "}
+                                              <span>
+                                                <PopUpText text={description}/>
+                                              </span>
+                                            </div>
+                                          </>
+                                        )}
                                       </div>
                                     );
                                   }
