@@ -5,7 +5,7 @@ import {
   PopupWrapper,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { useGpTypeFetching } from "../../utils/employeeCustomFetchHook";
+import { useGpracticeFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentGpModal = ({
   residentGpIndexToEdit,
@@ -14,73 +14,53 @@ const AddResidentGpModal = ({
   resident,
 }) => {
   const [selectedResidentGp] = useGlobalState("selectedResidentGp");
-  const { gpTypeData } = useGpTypeFetching();
+  const { gPracticeData } = useGpracticeFetching();
 
-  const [gp_practice_name, setGpPracticeName] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.gp_practice_name || ""
+  const [start_date, setStart_date] = useState(
+    selectedResidentGp[residentGpIndexToEdit]?.start_date || ""
   );
 
-  const [gp_practice_type, setGpPracticeType] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.gp_practice_type || ""
+  const [end_date, setEnd_date] = useState(
+    selectedResidentGp[residentGpIndexToEdit]?.end_date || ""
   );
 
-  const [gp_practice_address, setGpPracticeAddress] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.gp_practice_address || ""
+  const [gp, setGp] = useState(
+    selectedResidentGp[residentGpIndexToEdit]?.gp || ""
   );
 
-  const [gp_practice_postcode, setGpPracticePostCode] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.gp_practice_postcode || ""
+  const [status, setStatus] = useState(
+    selectedResidentGp[residentGpIndexToEdit]?.status || ""
   );
 
-  const [gp_practice_phone_number, setGpPracticeNumber] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.gp_practice_phone_number || ""
+  const [description, setDescription] = useState(
+    selectedResidentGp[residentGpIndexToEdit]?.description || ""
   );
 
-  const [gp_practice_email, setGpPracticeEmail] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.gp_practice_email || ""
-  );
-
-  const [gp_practice_website, setGpPracticeWebsite] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.gp_practice_website || ""
-  );
-
-  const [gp_practice_status, setGpPracticeStatus] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.gp_practice_status || ""
-  );
-
-  const [gp_practice_description, setGpPracticeDescription] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.gp_practice_description || ""
-  );
-
-  const [nameError, setNameError] = useState("");
+  const [dateError, setDateError] = useState("");
   const [statusError, setStatusError] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (gp_practice_name === "") {
-      setNameError("Name is required.");
+    if (start_date === "") {
+      setDateError("Start date is required.");
       return;
     }
-    if (gp_practice_status === "") {
+    if (status === "") {
       setStatusError("Status is required");
       return;
     }
 
     // Clear any existing error messages
-    setNameError("");
+    setDateError("");
     setStatusError("");
     const gpPractice = {
       id,
       resident,
-      gp_practice_name,
-      gp_practice_address,
-      gp_practice_postcode,
-      gp_practice_phone_number,
-      gp_practice_email,
-      gp_practice_website,
-      gp_practice_description,
-      gp_practice_status,
-      gp_practice_type,
+      start_date,
+      end_date,
+      description,
+      status,
+      gp,
     };
     if (selectedResidentGp[residentGpIndexToEdit]?.id) {
       dispatchResidentGp({ type: "update", payload: gpPractice });
@@ -90,13 +70,13 @@ const AddResidentGpModal = ({
     setGlobalState("showResidentGpModal", false);
   };
 
-  const handleNameChange = (event) => {
-    setGpPracticeName(event.target.value);
-    setNameError("");
+  const handleDateChange = (event) => {
+    setStart_date(event.target.value);
+    setDateError("");
   };
 
   const handleStatusChange = (e) => {
-    setGpPracticeStatus(e.target.value);
+    setStatus(e.target.value);
     setStatusError("");
   };
 
@@ -130,34 +110,48 @@ const AddResidentGpModal = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Name <span className="text-danger">*</span>
+                            Start Date <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={gp_practice_name}
-                            onChange={handleNameChange}
+                            value={start_date}
+                            onChange={handleDateChange}
                             className="form-control floating"
-                            type="text"
-                            placeholder="Name"
+                            type="date"
+                            placeholder="Start Date"
                           />
-                          {nameError && (
-                            <p className="error-message">{nameError}</p>
+                          {dateError && (
+                            <p className="error-message">{dateError}</p>
                           )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Gp practice type</label>
+                          <label className="label">
+                            End Date
+                          </label>
+                          <input
+                            value={end_date}
+                            onChange={(e) => setEnd_date(e.target.value)}
+                            className="form-control floating"
+                            type="date"
+                            placeholder="End Date"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">Gpractice</label>
                           <select
-                            value={gp_practice_type}
-                            onChange={(e) => setGpPracticeType(e.target.value)}
+                            value={gp}
+                            onChange={(e) => setGp(e.target.value)}
                             className="form-control floating"
                           >
                             <option disabled value="">
                               Select
                             </option>
-                            {gpTypeData?.map((gp) => (
+                            {gPracticeData?.map((gp) => (
                               <option key={gp.id} value={gp.id}>
-                                {`${gp.gp_type_name}`}
+                                {`${gp.gp_practice_name}`}
                               </option>
                             ))}
                           </select>
@@ -165,64 +159,10 @@ const AddResidentGpModal = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Phone Number</label>
-                          <input
-                            value={gp_practice_phone_number}
-                            onChange={(e) =>
-                              setGpPracticeNumber(e.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Phone Number"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Address</label>
-                          <input
-                            value={gp_practice_address}
-                            onChange={(e) =>
-                              setGpPracticeAddress(e.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Address"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Email</label>
-                          <input
-                            value={gp_practice_email}
-                            onChange={(e) => setGpPracticeEmail(e.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Email"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Website</label>
-                          <input
-                            value={gp_practice_website}
-                            onChange={(e) =>
-                              setGpPracticeWebsite(e.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Website"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
                           <label className="label">Status</label>{" "}
                           <span className="text-danger">*</span>
                           <select
-                            value={gp_practice_status}
+                            value={status}
                             onChange={handleStatusChange}
                             className="form-control floating"
                           >
@@ -235,20 +175,6 @@ const AddResidentGpModal = ({
                           )}
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Post Code</label>
-                          <input
-                            value={gp_practice_postcode}
-                            onChange={(e) =>
-                              setGpPracticePostCode(e.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Post Code"
-                          />
-                        </div>
-                      </div>
                       <div className="col-sm-12">
                         <div className="form-group">
                           <label className="label">Description</label>
@@ -256,8 +182,8 @@ const AddResidentGpModal = ({
                             className="form-control floating"
                             name="description"
                             placeholder="Description"
-                            value={gp_practice_description}
-                            onChange={(e) => setGpPracticeDescription(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             style={{ height: "70px" }}
                           />
                         </div>

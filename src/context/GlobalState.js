@@ -19,6 +19,12 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   // Task Chat
   taskChatError: [],
 
+  // GPractice
+  gPracticeError: [],
+  showGpracticeModal: false,
+  deleteGpracticeModal: false,
+  selectedGpractice: [],
+
   // Task Document
   taskDocumentError: [],
   selectedTaskDocumentInfo: [],

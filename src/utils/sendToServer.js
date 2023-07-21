@@ -3338,3 +3338,66 @@ export const add_update_delete_task_chat = async (state, { type, payload }) => {
   }
 };
 
+// Add - Update - Delete GPractice state
+export const add_update_delete_gPractice = async (state, { type, payload }) => {
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${BaseUrl}/resident/gpractice/`, payload);
+
+        // Check the response status
+        if (response.status === 201) {
+          toast.success("GPractice Added", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        setGlobalState("gPracticeError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(`${BaseUrl}/resident/gpractice/${payload.id}/`, payload);
+
+        // Check the response status
+        if (response.status === 200) {
+          toast.success("GPractice Updated", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        setGlobalState("gPracticeError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(`${BaseUrl}/resident/gpractice/${payload.id}/`);
+
+        // Check the response status
+        if (response.status === 204) {
+          toast("GPractice Deleted", {
+            autoClose: 1500,
+          })
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        setGlobalState("gPracticeError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};

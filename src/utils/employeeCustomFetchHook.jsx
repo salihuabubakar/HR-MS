@@ -689,6 +689,28 @@ export const useResidentGpFetching = () => {
   return { residentGpData, isResidentGpLoading, residentGpError };
 };
 
+// Get g practice data
+export const useGpracticeFetching = () => {
+  const fetchResidentGpData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/gpractice/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: gPracticeData,
+    isLoading: isGPracticeDataLoading,
+    error: gPracticeError,
+  } = useQuery("gPracticeData", fetchResidentGpData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on gPracticeData
+      queryClient.invalidateQueries(["gPracticeData"]);
+    },
+  });
+
+  return { gPracticeData, isGPracticeDataLoading, gPracticeError };
+};
+
 // Get gptype data
 export const useGpTypeFetching = () => {
   const fetchGpTypeData = async () => {

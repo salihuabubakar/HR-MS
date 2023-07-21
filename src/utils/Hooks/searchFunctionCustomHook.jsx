@@ -30,6 +30,7 @@ export const useSearch = (data) => {
         borough_name,
         gp_type_name,
         resident,
+        gp_practice_name
       } = item;
       const matchedEmployee = allEmployee?.find((e) => e.id === employee);
       const matchedResident = residentData?.find((r) => r.id === resident);
@@ -56,7 +57,8 @@ export const useSearch = (data) => {
           legal_status_name?.toLocaleLowerCase()?.includes(query) ||
           gp_type_name?.toLocaleLowerCase()?.includes(query) ||
           borough_name?.toLocaleLowerCase()?.includes(query) ||
-          resident?.toLocaleLowerCase()?.includes(query)
+          resident?.toLocaleLowerCase()?.includes(query) ||
+          gp_practice_name?.toLocaleLowerCase()?.includes(query)
         );
       }
     });
