@@ -26,7 +26,7 @@ const Complaint = () => {
   const { complaintData, complaintLoading } = useComplaintFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(complaintData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(complaintData);
   let searchResult = !searchQuery ? complaintData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -238,6 +238,7 @@ const Complaint = () => {
             searchType={"Complain"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {complaintError?.length > 0 && (

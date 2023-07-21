@@ -13,7 +13,7 @@ const house = () => {
   const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
   const { data } = useDataFetching();
   const [menu, setMenu] = useState(false);
-  const { searchQuery, handleSearch, filteredResults } = useSearch(houseData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(houseData);
   let searchResult = !searchQuery ? houseData : filteredResults;
   // const filteredEmployees = houseEmployeeData?.filter(
   //   (employee) => employee.house === houseId
@@ -63,6 +63,7 @@ const house = () => {
             searchType={"House Name"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           {/* Search Filter */}
           <div className="row staff-grid-row">

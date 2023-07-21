@@ -6,6 +6,7 @@ export const useSearch = (data) => {
   const { data: allEmployee } = useDataFetching();
   const { residentData } = useResidentFetching();
   const [searchQuery, setSearchQuery] = useState("");
+  const [clearQuery, setClearQuery] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
 
   const handleSearch = (event) => {
@@ -67,5 +68,5 @@ export const useSearch = (data) => {
     performSearch(searchQuery);
   }, [searchQuery]);
 
-  return { searchQuery, handleSearch, filteredResults };
+  return { searchQuery, setSearchQuery, handleSearch, filteredResults };
 };

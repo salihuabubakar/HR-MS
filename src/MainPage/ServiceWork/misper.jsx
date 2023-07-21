@@ -26,7 +26,7 @@ const Misper = () => {
   const { residentMisperData, residentMisperLoading } = useResidentMisperFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(residentMisperData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentMisperData);
   let searchResult = !searchQuery ? residentMisperData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -251,6 +251,7 @@ const Misper = () => {
             searchType={"Resident"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentMisperError?.length > 0 && (

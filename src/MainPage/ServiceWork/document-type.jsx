@@ -22,7 +22,7 @@ import SearchComponent from "../../_components/searchComponent";
 
 const documenttype = () => {
   const { residentDocumentTypeData, residentDocumentTypeLoading } = useResidentDocumentTypeFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(residentDocumentTypeData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentDocumentTypeData);
   let searchResult = !searchQuery ? residentDocumentTypeData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -193,6 +193,7 @@ const documenttype = () => {
             searchType={"Document Type"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentDocumentTypeError?.length > 0 && (

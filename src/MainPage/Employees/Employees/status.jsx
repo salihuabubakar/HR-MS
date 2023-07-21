@@ -25,7 +25,7 @@ import SearchComponent from "../../../_components/searchComponent";
 const Status = () => {
   const { statusData, isStatusDataLoading } = useStatusFetching();
   const { data } = useDataFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(statusData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(statusData);
   let statuData = !searchQuery ? statusData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -217,6 +217,7 @@ const handleDeleteStatus = (id) => {
             searchType={"Employee Name"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {statusError?.length > 0 && (

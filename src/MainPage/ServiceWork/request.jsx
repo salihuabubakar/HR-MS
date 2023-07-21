@@ -24,7 +24,7 @@ import SearchComponent from "../../_components/searchComponent";
 const request = () => {
   const { residentRequestData, residentRequestLoading } = useResidentRequestFetching();
   const { residentData } = useResidentFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(residentRequestData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentRequestData);
   let searchResult = !searchQuery ? residentRequestData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -226,6 +226,7 @@ const request = () => {
             searchType={"Request"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentRequestError?.length > 0 && (

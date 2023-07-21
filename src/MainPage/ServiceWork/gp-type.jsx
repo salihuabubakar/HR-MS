@@ -20,7 +20,7 @@ import SearchComponent from "../../_components/searchComponent";
 
 const GpType = () => {
   const { residentGpTypeData, residentGpTypeLoading } = useResidentGpTypeFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(residentGpTypeData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentGpTypeData);
   let searchResult = !searchQuery ? residentGpTypeData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -172,6 +172,7 @@ const GpType = () => {
             searchType={"GP Type"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentGpTypeError?.length > 0 && (

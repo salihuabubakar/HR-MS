@@ -19,7 +19,7 @@ import SearchComponent from "../../_components/searchComponent";
 const socialworker = () => {
   const { socialWorkerData, socialWorkerLoading } = useSocialWorkerFetching();
   const { residentBoroughData } = useResidentBoroughFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(socialWorkerData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(socialWorkerData);
   let searchResult = !searchQuery ? socialWorkerData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -196,6 +196,7 @@ const socialworker = () => {
             searchType={"Social Worker"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {socialWorkerError?.length > 0 && (

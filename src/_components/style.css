@@ -34,3 +34,22 @@
 .removeBtn:hover {
   background-color: #c0392b;
 }
+
+/* Style the clear input button */
+.form-group {
+  position: relative;
+}
+.clear-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  font-size: 1.2rem;
+}
+
+/* Style the clear input button on hover */
+.clear-icon:hover {
+  color: #333;
+}

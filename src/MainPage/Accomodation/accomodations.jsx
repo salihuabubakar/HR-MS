@@ -19,7 +19,7 @@ const Accomodations = () => {
   const [tab, setTab] = useState("allHouse" || "houseList");
   const { houseData, houseError, isHouseDataLoading } =
     useHouseFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(houseData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(houseData);
   const [state, dispatchHouse] = useReducer(add_update_delete_house, []);
   const [showModal] = useGlobalState("showModal");
   const [deleteModal] = useGlobalState("deleteModal");
@@ -124,6 +124,7 @@ const Accomodations = () => {
                   searchType={"House Name"}
                   searchQuery={searchQuery}
                   handleSearch={handleSearch}
+                  setSearchQuery={setSearchQuery}
                 />
                 <span style={{ color: "red", fontSize: "0.7rem" }}>
                   {isHouseError?.length > 0 && (

@@ -26,7 +26,7 @@ const Incident = () => {
   const { residentIncidentData, residentIncidentLoading } = useResidentIncidentFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(residentIncidentData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentIncidentData);
   let searchResult = !searchQuery ? residentIncidentData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -226,6 +226,7 @@ const Incident = () => {
             searchType={"Resident"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentIncidentError?.length > 0 && (

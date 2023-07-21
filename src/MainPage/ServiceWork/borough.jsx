@@ -19,7 +19,7 @@ import SearchComponent from "../../_components/searchComponent";
 
 const borough = () => {
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(residentBoroughData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentBoroughData);
   let searchResult = !searchQuery ? residentBoroughData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -206,6 +206,7 @@ const handleDeleteBorough = (id) => {
             searchType={"Borough"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {boroughError?.length > 0 && (

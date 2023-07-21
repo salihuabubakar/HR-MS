@@ -21,7 +21,7 @@ import SearchComponent from "../../_components/searchComponent";
 const legalStatus = () => {
   const { residentLegalStatusTypeData, residentLegalStatusTypeLoading } =
     useResidentLegalStatusTypeFetching();
-    const { searchQuery, handleSearch, filteredResults } = useSearch(residentLegalStatusTypeData);
+    const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentLegalStatusTypeData);
     let searchResult = !searchQuery ? residentLegalStatusTypeData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -183,6 +183,7 @@ const legalStatus = () => {
             searchType={"Legal Status"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentLegalStatusTypeError?.length > 0 && (
