@@ -15,7 +15,7 @@ import { useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook"
 import "./style.css";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
-// import SearchComponent from "../../_components/SearchComponent";
+import SearchComponent from "../../_components/searchComponent";
 
 const borough = () => {
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
@@ -202,11 +202,11 @@ const handleDeleteBorough = (id) => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          {/* <SearchComponent
+          <SearchComponent
             searchType={"Borough"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
-          /> */}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {boroughError?.length > 0 && (
               <>

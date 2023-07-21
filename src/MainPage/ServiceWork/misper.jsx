@@ -19,20 +19,23 @@ import {
 import "./style.css";
 import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
+import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
+import SearchComponent from "../../_components/searchComponent";
 
 const Misper = () => {
   const { residentMisperData, residentMisperLoading } = useResidentMisperFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
+  const { searchQuery, handleSearch, filteredResults } = useSearch(residentMisperData);
+  let searchResult = !searchQuery ? residentMisperData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
   const startCount = (currentPage - 1) * itemsPerPage + 1;
   const endCount = startCount + itemsPerPage - 1;
   const paginationSettings = {
-    total: residentMisperData?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    total: searchResult?.length,
+    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
@@ -95,6 +98,21 @@ const Misper = () => {
       },
     },
     {
+      title: "Resident",
+      dataIndex: "resident",
+      render: (text, record, index) => {
+        const { resident } = record;
+        const matchedResident = residentData?.find((r) => r.id === resident);
+        if (matchedResident) {
+          return (
+            <React.Fragment>{`${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`}</React.Fragment>
+          );
+        } else {
+          return null; // or return a default value if no match is found
+        }
+      },
+    },
+    {
       title: "Date Last Seen",
       dataIndex: "date_last_seen",
       render: (text, record, index) => {
@@ -146,21 +164,6 @@ const Misper = () => {
         const matchedHouse = houseData?.find((h) => h.id === house);
         if (matchedHouse) {
           return <React.Fragment>{matchedHouse.name}</React.Fragment>;
-        } else {
-          return null; // or return a default value if no match is found
-        }
-      },
-    },
-    {
-      title: "Resident",
-      dataIndex: "resident",
-      render: (text, record, index) => {
-        const { resident } = record;
-        const matchedResident = residentData?.find((r) => r.id === resident);
-        if (matchedResident) {
-          return (
-            <React.Fragment>{`${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`}</React.Fragment>
-          );
         } else {
           return null; // or return a default value if no match is found
         }
@@ -244,26 +247,11 @@ const Misper = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Resident Misper ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Resident Misper Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
+          <SearchComponent
+            searchType={"Resident"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentMisperError?.length > 0 && (
               <>
@@ -293,7 +281,7 @@ const Misper = () => {
                   style={{ overflowX: "auto" }}
                   columns={columns}
                   bordered
-                  dataSource={residentMisperData}
+                  dataSource={searchResult}
                   rowKey={(residentMisper) => residentMisper?.id}
                   loading={residentMisperLoading}
                 />

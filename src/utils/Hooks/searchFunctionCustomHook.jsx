@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { debounce } from "lodash";
-import { useDataFetching } from "../employeeCustomFetchHook";
+import { useDataFetching, useResidentFetching } from "../employeeCustomFetchHook";
 
 export const useSearch = (data) => {
   const { data: allEmployee } = useDataFetching();
+  const { residentData } = useResidentFetching();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
 
@@ -27,14 +28,22 @@ export const useSearch = (data) => {
         legal_status_name,
         borough_name,
         gp_type_name,
+        resident,
       } = item;
       const matchedEmployee = allEmployee?.find((e) => e.id === employee);
+      const matchedResident = residentData?.find((r) => r.id === resident);
       const fullName = first_name?.toLocaleLowerCase() + " " + middle_name?.toLocaleLowerCase() + " " + last_name?.toLocaleLowerCase();
       const title = name?.toLocaleLowerCase();
       if(matchedEmployee) {
         const employeefullName =
           `${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`.toLocaleLowerCase();
         return employeefullName.includes(query);
+
+      } else if(matchedResident) {
+        const residentfullName =
+          `${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`.toLocaleLowerCase();
+        return residentfullName.includes(query);
+
       } else {
         return (
           fullName?.includes(query) ||
@@ -45,13 +54,14 @@ export const useSearch = (data) => {
           document_type?.toLocaleLowerCase()?.includes(query) ||
           legal_status_name?.toLocaleLowerCase()?.includes(query) ||
           gp_type_name?.toLocaleLowerCase()?.includes(query) ||
-          borough_name?.toLocaleLowerCase()?.includes(query)
+          borough_name?.toLocaleLowerCase()?.includes(query) ||
+          resident?.toLocaleLowerCase()?.includes(query)
         );
-      } 
+      }
     });
 
     setFilteredResults(filteredData);
-  }, 500); // Set the debounce delay (in milliseconds) according to your preference
+  }, 500);
 
   useEffect(() => {
     performSearch(searchQuery);
