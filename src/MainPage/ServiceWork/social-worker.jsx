@@ -14,7 +14,7 @@ import { add_update_delete_social_worker } from "../../utils/sendToServer";
 import { useSocialWorkerFetching, useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
-// import SearchComponent from "../../_components/SearchComponent";
+import SearchComponent from "../../_components/searchComponent";
 
 const socialworker = () => {
   const { socialWorkerData, socialWorkerLoading } = useSocialWorkerFetching();
@@ -192,11 +192,11 @@ const socialworker = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          {/* <SearchComponent
+          <SearchComponent
             searchType={"Social Worker"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
-          /> */}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {socialWorkerError?.length > 0 && (
               <>
