@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import DefaultImage from "../../assets/img/placeholder.jpg";
-// import NoDataComponent from '../../_components/noDataComponent';
+import NoAvailableData from '../../_components/noAvailableData';
 
 const AllHouse = ({
   houseData,
@@ -91,8 +91,7 @@ const AllHouse = ({
             </>
           ) : (
             <>
-              {/* <NoDataComponent /> */}
-              <p>No Data Available</p>
+              <NoAvailableData />
             </>
           )}
         </>
