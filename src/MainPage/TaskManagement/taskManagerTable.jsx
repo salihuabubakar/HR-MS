@@ -19,7 +19,7 @@ import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 const TaskManagerTable = () => {
   const { taskData, isTaskLoading } = useTaskFetching();
   const { data: allEmployees } = useDataFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(taskData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(taskData);
   let searchResult = !searchQuery ? taskData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -440,6 +440,7 @@ const TaskManagerTable = () => {
             searchType={"Task"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {taskError?.length > 0 && (

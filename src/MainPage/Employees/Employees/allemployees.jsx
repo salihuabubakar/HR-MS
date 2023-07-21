@@ -22,7 +22,7 @@ const AllEmployees = () => {
   const [tab, setTab] = useState("employeeAll" || "employeeList");
   const [getEmployeeId, setGetEmployeeId] = useState(null)
   const { data, isLoading, error, showSkeleton } = useDataFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(data);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(data);
 
   const initialUserData = [];
 
@@ -137,10 +137,11 @@ const AllEmployees = () => {
               {/* /Page Header */}
               <>
                 {/* Search Filter */}
-                <SearchComponent 
-                  searchType={"Employee Name"} 
-                  searchQuery={searchQuery} 
+                <SearchComponent
+                  searchType={"Employee Name"}
+                  searchQuery={searchQuery}
                   handleSearch={handleSearch}
+                  setSearchQuery={setSearchQuery}
                 />
                 <span style={{ color: "red", fontSize: "0.7rem" }}>
                   {employeeError?.length > 0 && (

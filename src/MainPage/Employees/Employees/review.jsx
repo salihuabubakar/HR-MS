@@ -21,7 +21,7 @@ const Review = () => {
 
   const { employeeReviewData, isEmployeeReviewDataLoading } = useEmployeeReviewFetching();
   const { data } = useDataFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(employeeReviewData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults} = useSearch(employeeReviewData);
   let reviewData = !searchQuery ? employeeReviewData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -296,6 +296,7 @@ const Review = () => {
             searchType={"Employee Name"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
+            setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {employeeReviewError?.length > 0 && (

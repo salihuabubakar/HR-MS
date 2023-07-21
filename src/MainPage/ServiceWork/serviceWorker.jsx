@@ -26,7 +26,7 @@ const AllServiceWorkers = () => {
 const [getResidentId, setGetResidentId] = useState(null);
 const { residentData, isResidentLoading, residentError } =
   useResidentFetching();
-const { searchQuery, handleSearch, filteredResults } = useSearch(residentData);
+const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentData);
 
 const initialUserData = [];
 
@@ -141,6 +141,7 @@ const handleDeleteAcct = (id) => {
               searchType={"Resident Name"}
               searchQuery={searchQuery}
               handleSearch={handleSearch}
+              setSearchQuery={setSearchQuery}
             />
             <span style={{ color: "red", fontSize: "0.7rem" }}>
               {isResidentError?.length > 0 && (

@@ -19,7 +19,7 @@ import SearchComponent from "../../_components/searchComponent";
 
 const shift = () => {
   const { shiftData, isShiftLoading } = useShiftFetching();
-  const { searchQuery, handleSearch, filteredResults } = useSearch(shiftData);
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(shiftData);
   let shiftResult = !searchQuery ? shiftData : filteredResults;
 
   // Table pagination
@@ -185,6 +185,7 @@ const shift = () => {
               searchType={"Shift"}
               searchQuery={searchQuery}
               handleSearch={handleSearch}
+              setSearchQuery={setSearchQuery}
             />
             <span style={{ color: "red", fontSize: "0.7rem" }}>
               {shiftError?.length > 0 && (
