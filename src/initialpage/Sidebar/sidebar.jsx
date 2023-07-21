@@ -1,7 +1,7 @@
 import React, { useEffect,useState} from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from "react-custom-scrollbars-2";
 import { HeaderContainer } from './style';
 
  

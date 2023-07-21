@@ -15,7 +15,7 @@ import { useEmployeeReviewFetching, useDataFetching } from "../../../utils/emplo
 import moment from "moment";
 import PopUpText from "../../../_components/modelbox/PopUpText";
 import { useSearch } from "../../../utils/Hooks/searchFunctionCustomHook";
-import SearchComponent from "../../../_components/SearchComponent";
+// import SearchComponent from "../../../_components/SearchComponent";
 
 const Review = () => {
 
@@ -292,27 +292,11 @@ const Review = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Employee ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Employee Name</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
-          
+          {/* <SearchComponent
+            searchType={"Employee Name"}
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+          /> */}
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {employeeReviewError?.length > 0 && (
               <>

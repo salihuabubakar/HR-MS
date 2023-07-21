@@ -6,8 +6,8 @@ import Sidebar from "../../initialpage/Sidebar/sidebar";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import { useHouseFetching, useDataFetching, } from "../../utils/employeeCustomFetchHook";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
-import SearchComponent from "../../_components/SearchComponent";
-import NoDataComponent from "../../_components/noDataComponent";
+// import SearchComponent from "../../_components/SearchComponent";
+// import NoDataComponent from "../../_components/noDataComponent";
 
 const house = () => {
   const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
@@ -59,11 +59,11 @@ const house = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <SearchComponent
+          {/* <SearchComponent
             searchType={"House Name"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
-          />
+          /> */}
           {/* Search Filter */}
           <div className="row staff-grid-row">
             {isHouseDataLoading ? (
@@ -131,7 +131,7 @@ const house = () => {
                     );
                   })
                 ) : (
-                  <NoDataComponent />
+                  <>{/* <NoDataComponent /> */} <p>No Data Available</p></>
                 )}
               </>
             )}

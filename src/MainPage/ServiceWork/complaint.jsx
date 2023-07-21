@@ -20,7 +20,7 @@ import "./style.css";
 import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
-import SearchComponent from "../../_components/SearchComponent";
+// import SearchComponent from "../../_components/SearchComponent";
 
 const Complaint = () => {
   const { complaintData, complaintLoading } = useComplaintFetching();
@@ -234,11 +234,11 @@ const Complaint = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <SearchComponent
+          {/* <SearchComponent
             searchType={"Complain"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
-          />
+          /> */}
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {complaintError?.length > 0 && (
               <>

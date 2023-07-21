@@ -16,7 +16,7 @@ import "./style.css";
 import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
-import SearchComponent from "../../_components/SearchComponent";
+// import SearchComponent from "../../_components/SearchComponent";
 
 const GpType = () => {
   const { residentGpTypeData, residentGpTypeLoading } = useResidentGpTypeFetching();
@@ -168,11 +168,11 @@ const GpType = () => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          <SearchComponent
+          {/* <SearchComponent
             searchType={"GP Type"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
-          />
+          /> */}
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {residentGpTypeError?.length > 0 && (
               <>
