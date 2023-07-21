@@ -20,7 +20,7 @@ import {
 import moment from "moment";
 import PopUpText from "../../../_components/modelbox/PopUpText";
 import { useSearch } from "../../../utils/Hooks/searchFunctionCustomHook";
-// import SearchComponent from "../../../_components/SearchComponent";
+import SearchComponent from "../../../_components/searchComponent";
 
 const Status = () => {
   const { statusData, isStatusDataLoading } = useStatusFetching();
@@ -213,11 +213,11 @@ const handleDeleteStatus = (id) => {
           </div>
           {/* /Page Header */}
           {/* Search Filter */}
-          {/* <SearchComponent
+          <SearchComponent
             searchType={"Employee Name"}
             searchQuery={searchQuery}
             handleSearch={handleSearch}
-          /> */}
+          />
           <span style={{ color: "red", fontSize: "0.7rem" }}>
             {statusError?.length > 0 && (
               <>
