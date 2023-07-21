@@ -776,6 +776,11 @@ useEffect(() => {
                       </a>
                     </li>
                     <li className="nav-item">
+                      <a href="#appointment" data-bs-toggle="tab" className="nav-link">
+                        Appointments
+                      </a>
+                    </li>
+                    <li className="nav-item">
                       <a href="#document_upload" data-bs-toggle="tab" className="nav-link">
                         Document Upload
                       </a>
@@ -1289,113 +1294,6 @@ useEffect(() => {
                                 <></>
                               )}
                             </Wrapper>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident Appointment{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {appointmentError?.length > 0 && (
-                                  <>
-                                    Error: {appointmentError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                className="edit-icon"
-                                onClick={() => setGlobalState("showResidentAppointmentModal", true)}
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Name</th>
-                                    <th>Time</th>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {residentAppointmentData?.length > 0 ? (
-                                    residentAppointmentData?.map((app, index) => {
-                                      const {
-                                        id,
-                                        resident,
-                                        appointment_name,
-                                        appointment_time,
-                                        appointment_date,
-                                        appointment_description,
-                                      } = app;
-                                      if (resident == selectedResidentId) {
-                                        return (
-                                          <tr style={{ height: "90px" }} key={id}>
-                                            <td>{appointment_name}</td>
-                                            <td>{appointment_time}</td>
-                                            <td>{appointment_date}</td>
-                                            {appointment_description && appointment_description && (
-                                              <>
-                                                <td>
-                                                  <PopUpText text={appointment_description}/>
-                                                </td>
-                                              </>
-                                            )}
-                                            <td className="dropdown dropdown-action text-end">
-                                              <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <i className="material-icons">more_vert</i>
-                                              </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditResidentAppointment(id, index)
-                                                  }
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleDeleteResidentAppointment(id)
-                                                  }
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No referrals attach to this resident</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -2418,6 +2316,130 @@ useEffect(() => {
           </div>
         </div> */}
               {/* /Tasks Tab */}
+
+              {/* Appointment Tab */}
+              <div className="tab-pane fade" id="appointment">
+                {isSelectedLoading ? (
+                  <div className="skeleton-container-profile">
+                    <div className="skeleton-content-profile">
+                      <div className="skeleton-line-profile"></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="row">
+                    <div className="col-md-12 d-flex">
+                        <div className="card profile-box flex-fill">
+                          <div className="card-body">
+                            <h3 className="card-title">
+                              Resident Appointment{" "}
+                              <span style={{ color: "red", fontSize: "0.7rem" }}>
+                                {appointmentError?.length > 0 && (
+                                  <>
+                                    Error: {appointmentError}
+                                    <button
+                                      onClick={clearErrorMessage}
+                                      style={{
+                                        marginLeft: "10px",
+                                        fontSize: "0.8rem",
+                                        cursor: "pointer",
+                                        color: "black",
+                                      }}
+                                    >
+                                      <i className="fa fa-times" />
+                                      Clear Error
+                                    </button>
+                                  </>
+                                )}
+                              </span>
+                              <a
+                                className="edit-icon"
+                                onClick={() => setGlobalState("showResidentAppointmentModal", true)}
+                              >
+                                <i className="fa fa-plus" />
+                              </a>
+                            </h3>
+                            <div className="table-responsive">
+                              <table className="table table-nowrap">
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Time</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {residentAppointmentData?.length > 0 ? (
+                                    residentAppointmentData?.map((app, index) => {
+                                      const {
+                                        id,
+                                        resident,
+                                        appointment_name,
+                                        appointment_time,
+                                        appointment_date,
+                                        appointment_description,
+                                      } = app;
+                                      if (resident == selectedResidentId) {
+                                        return (
+                                          <tr style={{ height: "90px" }} key={id}>
+                                            <td>{appointment_name}</td>
+                                            <td>{appointment_time}</td>
+                                            <td>{appointment_date}</td>
+                                            {appointment_description && appointment_description && (
+                                              <>
+                                                <td>
+                                                  <PopUpText text={appointment_description}/>
+                                                </td>
+                                              </>
+                                            )}
+                                            <td className="dropdown dropdown-action text-end">
+                                              <a
+                                                className="action-icon dropdown-toggle"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                <i className="material-icons">more_vert</i>
+                                              </a>
+                                              <div className="dropdown-menu dropdown-menu-right">
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleEditResidentAppointment(id, index)
+                                                  }
+                                                >
+                                                  <i className="fa fa-pencil m-r-5" /> Edit
+                                                </a>
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() =>
+                                                    handleDeleteResidentAppointment(id)
+                                                  }
+                                                >
+                                                  <i className="fa fa-trash-o m-r-5" /> Delete
+                                                </a>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    })
+                                  ) : (
+                                    <tr>
+                                      <td>No referrals attach to this resident</td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+              {/* /Appointment Tab */}
 
               {/* Document Upload Tab */}
               <div className="tab-pane fade" id="document_upload">
