@@ -1618,8 +1618,8 @@ export const add_update_delete_resident_gp = async (state, { type, payload }) =>
   }
 };
 
-// Add - Update - Delete Resident Solicitor state
-export const add_update_delete_resident_solicitor = async (state, { type, payload }) => {
+// Add - Update - Delete Solicitor state
+export const add_update_delete_solicitor = async (state, { type, payload }) => {
   switch (type) {
     case "add":
       try {
@@ -1627,7 +1627,7 @@ export const add_update_delete_resident_solicitor = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 201) {
-          toast.success("Resident Solicitor Added", {
+          toast.success("Solicitor Added", {
             autoClose: 1500,
           });
         } else {
@@ -1645,7 +1645,7 @@ export const add_update_delete_resident_solicitor = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 200) {
-          toast.success("Resident Solicitor Updated", {
+          toast.success("Solicitor Updated", {
             autoClose: 1500,
           });
           return;
@@ -1664,7 +1664,7 @@ export const add_update_delete_resident_solicitor = async (state, { type, payloa
 
         // Check the response status
         if (response.status === 204) {
-          toast("Resident Solicitor Deleted", {
+          toast("Solicitor Deleted", {
             autoClose: 1500,
           });
           return;
@@ -1674,6 +1674,69 @@ export const add_update_delete_resident_solicitor = async (state, { type, payloa
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
         setGlobalState("solicitorError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Delete RSolicitor state
+export const add_update_delete_rsolicitor = async (state, { type, payload }) => {
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${BaseUrl}/resident/rsolicitor/`, payload);
+
+        // Check the response status
+        if (response.status === 201) {
+          toast.success("Resident Solicitor Added", {
+            autoClose: 1500,
+          });
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        setGlobalState("residentSolicitorError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(`${BaseUrl}/resident/rsolicitor/${payload.id}/`, payload);
+
+        // Check the response status
+        if (response.status === 200) {
+          toast.success("Resident Solicitor Updated", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        setGlobalState("residentSolicitorError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(`${BaseUrl}/resident/rsolicitor/${payload.id}/`);
+
+        // Check the response status
+        if (response.status === 204) {
+          toast("Resident Solicitor Deleted", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        setGlobalState("residentSolicitorError", JSON.stringify(error.response.data));
         throw new Error("Error occurred while deleting data");
       }
     default:
@@ -3401,3 +3464,4 @@ export const add_update_delete_gPractice = async (state, { type, payload }) => {
       throw new Error();
   }
 };
+

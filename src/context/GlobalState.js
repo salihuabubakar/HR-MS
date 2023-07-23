@@ -25,6 +25,12 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   deleteGpracticeModal: false,
   selectedGpractice: [],
 
+  // Solicitor
+  showSolicitorModal: false,
+  selectedSolicitor: [],
+  deleteSolicitorModal: false,
+  solicitorError: [],
+
   // Task Document
   taskDocumentError: [],
   selectedTaskDocumentInfo: [],
@@ -213,7 +219,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showResidentSolicitorModal: false,
   selectedResidentSolicitor: [],
   deleteResidentSolicitorModal: false,
-  solicitorError: [],
+  residentSolicitorError: [],
 
   // Resident Document
   deleteResidentDocumentModal: false,

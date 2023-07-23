@@ -21,11 +21,12 @@ import {
   useResidentAppointmentFetching,
   useResidentReferralFetching,
   useResidentDocumentTypeFetching,
-  useGpracticeFetching
+  useGpracticeFetching,
+  useSolicitorFetching
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_resident_gp,
-  add_update_delete_resident_solicitor,
+  add_update_delete_rsolicitor,
   add_update_delete_resident_document,
   add_update_delete_resident_school,
   add_update_delete_resident_education,
@@ -61,7 +62,7 @@ const Profile = ({
   DefaultImage,
 }) => {
   const [gpError] = useGlobalState("gpError");
-  const [solicitorError] = useGlobalState("solicitorError");
+  const [residentSolicitorError] = useGlobalState("residentSolicitorError");
   const [residentdocumentError] = useGlobalState("residentdocumentError");
   const [schoolError] = useGlobalState("schoolError");
   const [educationError] = useGlobalState("educationError");
@@ -74,7 +75,7 @@ const Profile = ({
   const [referralError] = useGlobalState("referralError");
   const clearErrorMessage = () => {
     setGlobalState("gpError", "");
-    setGlobalState("solicitorError", "");
+    setGlobalState("residentSolicitorError", "");
     setGlobalState("residentdocumentError", "");
     setGlobalState("schoolError", "");
     setGlobalState("educationError", "");
@@ -194,13 +195,11 @@ const Profile = ({
 
   // Resident Solicitor
   const [residentSolicitorState, dispatchResidentSolicitor] = useReducer(
-    add_update_delete_resident_solicitor,
+    add_update_delete_rsolicitor,
     []
   );
   const {
-    residentSolicitorData,
-    isResidentSolicitorDataLoading,
-    residentSolicitorError,
+    residentSolicitorData
   } = useResidentSolicitorFetching();
   const [getResidentSolicitorId, setGetResidentSolicitorId] = useState();
   const [residentSolicitorIndexToEdit, setResidentSolicitorIndexToEdit] =
@@ -629,6 +628,7 @@ useEffect(() => {
 
   const { gpTypeData } = useGpTypeFetching();
   const { gPracticeData } = useGpracticeFetching();
+  const { solicitorData } = useSolicitorFetching();
   const { socialWorkerData } = useSocialWorkerFetching();
   const { residentDocumentTypeData } = useResidentDocumentTypeFetching();
 
@@ -1054,9 +1054,9 @@ useEffect(() => {
                             <h3 className="card-title">
                               Resident Solicitor{" "}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {solicitorError?.length > 0 && (
+                                {residentSolicitorError?.length > 0 && (
                                   <>
-                                    Error: {solicitorError}
+                                    Error: {residentSolicitorError}
                                     <button
                                       onClick={clearErrorMessage}
                                       style={{
@@ -1085,20 +1085,21 @@ useEffect(() => {
                                   const {
                                     id,
                                     resident,
-                                    solicitor_name,
-                                    solicitor_description,
-                                    solicitor_address,
-                                    solicitor_status,
-                                    solicitor_postcode,
-                                    solicitor_phone_number,
-                                    solicitor_email,
-                                    solicitor_website,
+                                    status,
+                                    solicitor,
+                                    start_date,
+                                    description,
+                                    end_date,
                                   } = solicit;
-                                  if (resident === selectedResidentId) {
+                                  if (resident === selectedResidentId && status === "Active") {
                                     return (
                                       <div key={id} className="card plain-card">
                                         <div className="text">
-                                          Name: <span>{solicitor_name}</span>
+                                          Solicitor: <span>
+                                          {solicitorData?.map((s) => {
+                                              if (s.id === solicitor) return s.solicitor_name;
+                                            })}
+                                          </span>
                                           <span
                                             className="edit-icon"
                                             style={{
@@ -1117,9 +1118,7 @@ useEffect(() => {
                                               <div className="dropdown-menu dropdown-menu-right">
                                                 <a
                                                   className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditResidentSolicitor(id, index)
-                                                  }
+                                                  onClick={() => handleEditResidentSolicitor(id, index)}
                                                 >
                                                   <i className="fa fa-pencil m-r-5" /> Edit
                                                 </a>
@@ -1134,32 +1133,19 @@ useEffect(() => {
                                           </span>
                                         </div>
                                         <div className="text">
-                                          Email: <span>{solicitor_email}</span>
+                                          Start Date:{" "}
+                                          <span>{start_date}</span>
                                         </div>
-                                        <div className="text">
-                                          Website:{" "}
-                                          <span>
-                                            <a target={"_blank"} href={solicitor_website}>
-                                              {solicitor_website}
-                                            </a>
-                                          </span>
-                                        </div>
-                                        <div className="text">
-                                          Phone: <span>{solicitor_phone_number}</span>
-                                        </div>
-                                        <div className="text">
-                                          Address: <span>{solicitor_address}</span>
-                                        </div>
-                                        <div className="text">
-                                          Status: <span>{solicitor_status}</span>
-                                        </div>
-                                        <div className="text">
-                                          Post Code: <span>{solicitor_postcode}</span>
-                                        </div>
-                                        <div className="text">
-                                          Description:{" "}
-                                          <span className="c">{solicitor_description}</span>
-                                        </div>
+                                        {description && description && (
+                                          <>
+                                            <div className="text">
+                                              Description:{" "}
+                                              <span>
+                                                <PopUpText text={description}/>
+                                              </span>
+                                            </div>
+                                          </>
+                                        )}
                                       </div>
                                     );
                                   }

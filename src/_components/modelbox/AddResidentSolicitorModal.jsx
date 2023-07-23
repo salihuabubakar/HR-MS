@@ -3,9 +3,9 @@ import {
   PopupContainer,
   PopupOverlay,
   PopupWrapper,
-  Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { useSolicitorFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentSolicitorModal = ({
   residentSolicitorIndexToEdit,
@@ -13,94 +13,70 @@ const AddResidentSolicitorModal = ({
   dispatchResidentSolicitor,
   resident,
 }) => {
-  const [selectedResidentSolicitor] = useGlobalState(
-    "selectedResidentSolicitor"
+  const [selectedResidentSolicitor] = useGlobalState("selectedResidentSolicitor");
+  const { solicitorData } = useSolicitorFetching();
+
+  const [start_date, setStart_date] = useState(
+    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.start_date || ""
   );
 
-  const [solicitor_name, setSolicitorName] = useState(
-    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.solicitor_name ||
-      ""
+  const [end_date, setEnd_date] = useState(
+    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.end_date || ""
   );
 
-  const [solicitor_address, setSolicitorAddress] = useState(
-    selectedResidentSolicitor[residentSolicitorIndexToEdit]
-      ?.solicitor_address || ""
+  const [solicitor, setSolicitor] = useState(
+    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.solicitor || ""
   );
 
-  const [solicitor_postcode, setSolicitorPostCode] = useState(
-    selectedResidentSolicitor[residentSolicitorIndexToEdit]
-      ?.solicitor_postcode || ""
+  const [status, setStatus] = useState(
+    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.status || ""
   );
 
-  const [solicitor_phone_number, setSolicitorNumber] = useState(
-    selectedResidentSolicitor[residentSolicitorIndexToEdit]
-      ?.solicitor_phone_number || ""
+  const [description, setDescription] = useState(
+    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.description || ""
   );
 
-  const [solicitor_email, setSolicitorEmail] = useState(
-    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.solicitor_email ||
-      ""
-  );
-
-  const [solicitor_website, setSolicitorWebsite] = useState(
-    selectedResidentSolicitor[residentSolicitorIndexToEdit]
-      ?.solicitor_website || ""
-  );
-
-  const [solicitor_status, setSolicitorStatus] = useState(
-    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.solicitor_status ||
-      ""
-  );
-
-  const [solicitor_description, setSolicitorDescription] = useState(
-    selectedResidentSolicitor[residentSolicitorIndexToEdit]
-      ?.solicitor_description || ""
-  );
-
-  const [nameError, setNameError] = useState("");
+  const [dateError, setDateError] = useState("");
   const [statusError, setStatusError] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (solicitor_name === "") {
-      setNameError("Name is required.");
+    if (start_date === "") {
+      setDateError("Start date is required.");
       return;
     }
-    if (solicitor_status === "") {
+    if (status === "") {
       setStatusError("Status is required");
       return;
     }
 
     // Clear any existing error messages
-    setNameError("");
+    setDateError("");
     setStatusError("");
-    const solicitor = {
+    const gpPractice = {
       id,
       resident,
-      solicitor_name,
-      solicitor_address,
-      solicitor_postcode,
-      solicitor_phone_number,
-      solicitor_email,
-      solicitor_website,
-      solicitor_description,
-      solicitor_status,
+      start_date,
+      end_date,
+      description,
+      status,
+      solicitor,
     };
     if (selectedResidentSolicitor[residentSolicitorIndexToEdit]?.id) {
-      dispatchResidentSolicitor({ type: "update", payload: solicitor });
+      dispatchResidentSolicitor({ type: "update", payload: gpPractice });
     } else {
-      dispatchResidentSolicitor({ type: "add", payload: solicitor });
+      dispatchResidentSolicitor({ type: "add", payload: gpPractice });
     }
     setGlobalState("showResidentSolicitorModal", false);
   };
 
-  const handleNameChange = (event) => {
-    setSolicitorName(event.target.value);
-    setNameError("");
+  const handleDateChange = (event) => {
+    setStart_date(event.target.value);
+    setDateError("");
   };
 
   const handleStatusChange = (e) => {
-    setSolicitorStatus(e.target.value);
+    setStatus(e.target.value);
     setStatusError("");
   };
 
@@ -117,15 +93,13 @@ const AddResidentSolicitorModal = ({
                 <div className="modal-header">
                   <h5 className="card-title">
                     {selectedResidentSolicitor[residentSolicitorIndexToEdit]?.id
-                      ? "Edit Resident Solicitor"
-                      : "Add Resident Solicitor"}
+                      ? "Edit Solicitor"
+                      : "Add Solicitor"}
                   </h5>
                   <button
                     type="button"
                     className="close"
-                    onClick={() =>
-                      setGlobalState("showResidentSolicitorModal", false)
-                    }
+                    onClick={() => setGlobalState("showResidentSolicitorModal", false)}
                   >
                     <span aria-hidden="true">×</span>
                   </button>
@@ -136,70 +110,51 @@ const AddResidentSolicitorModal = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
-                            Name <span className="text-danger">*</span>
+                            Start Date <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={solicitor_name}
-                            onChange={handleNameChange}
+                            value={start_date}
+                            onChange={handleDateChange}
                             className="form-control floating"
-                            type="text"
-                            placeholder="Name"
+                            type="date"
+                            placeholder="Start Date"
                           />
-                          {nameError && (
-                            <p className="error-message">{nameError}</p>
+                          {dateError && (
+                            <p className="error-message">{dateError}</p>
                           )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Phone Number</label>
+                          <label className="label">
+                            End Date
+                          </label>
                           <input
-                            value={solicitor_phone_number}
-                            onChange={(e) => setSolicitorNumber(e.target.value)}
+                            value={end_date}
+                            onChange={(e) => setEnd_date(e.target.value)}
                             className="form-control floating"
-                            type="text"
-                            placeholder="Phone Number"
+                            type="date"
+                            placeholder="End Date"
                           />
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Address</label>
-                          <input
-                            value={solicitor_address}
-                            onChange={(e) =>
-                              setSolicitorAddress(e.target.value)
-                            }
+                          <label className="label">Solicitor</label>
+                          <select
+                            value={solicitor}
+                            onChange={(e) => setSolicitor(e.target.value)}
                             className="form-control floating"
-                            type="text"
-                            placeholder="Address"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Email</label>
-                          <input
-                            value={solicitor_email}
-                            onChange={(e) => setSolicitorEmail(e.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Email"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Website</label>
-                          <input
-                            value={solicitor_website}
-                            onChange={(e) =>
-                              setSolicitorWebsite(e.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Website"
-                          />
+                          >
+                            <option disabled value="">
+                              Select
+                            </option>
+                            {solicitorData?.map((s) => (
+                              <option key={s.id} value={s.id}>
+                                {`${s.solicitor_name}`}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -207,7 +162,7 @@ const AddResidentSolicitorModal = ({
                           <label className="label">Status</label>{" "}
                           <span className="text-danger">*</span>
                           <select
-                            value={solicitor_status}
+                            value={status}
                             onChange={handleStatusChange}
                             className="form-control floating"
                           >
@@ -220,20 +175,6 @@ const AddResidentSolicitorModal = ({
                           )}
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Post Code</label>
-                          <input
-                            value={solicitor_postcode}
-                            onChange={(e) =>
-                              setSolicitorPostCode(e.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Post Code"
-                          />
-                        </div>
-                      </div>
                       <div className="col-sm-12">
                         <div className="form-group">
                           <label className="label">Description</label>
@@ -241,10 +182,8 @@ const AddResidentSolicitorModal = ({
                             className="form-control floating"
                             name="description"
                             placeholder="Description"
-                            value={solicitor_description}
-                            onChange={(e) =>
-                              setSolicitorDescription(e.target.value)
-                            }
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             style={{ height: "70px" }}
                           />
                         </div>
@@ -255,8 +194,7 @@ const AddResidentSolicitorModal = ({
                         type="submit"
                         className="btn btn-primary submit-btn"
                       >
-                        {selectedResidentSolicitor[residentSolicitorIndexToEdit]
-                          ?.id
+                        {selectedResidentSolicitor[residentSolicitorIndexToEdit]?.id
                           ? "Update"
                           : "Save"}
                       </button>
