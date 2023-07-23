@@ -405,6 +405,16 @@ const toggleLevelThree = (value) => {
                       <li>
                         <Link
                           className={
+                            pathname.includes("school") ? "active" : ""
+                          }
+                          to="/app/servicework/school"
+                        >
+                          School
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
                             pathname.includes("incident") ? "active" : ""
                           }
                           to="/app/servicework/incident"

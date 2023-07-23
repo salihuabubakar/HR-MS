@@ -18,6 +18,7 @@ import GpType from "./gp-type";
 import Profile from "./Profile";
 import Gp from "./general-practice";
 import Solicitor from "./solicitor";
+import School from "./school";
 
 const ServiceRoute = ({ match }) => (
   <Switch>
@@ -36,6 +37,7 @@ const ServiceRoute = ({ match }) => (
     <Route path={`${match.url}/gp-type`} component={GpType} />
     <Route path={`${match.url}/general-practice`} component={Gp} />
     <Route path={`${match.url}/solicitor`} component={Solicitor} />
+    <Route path={`${match.url}/school`} component={School} />
   </Switch>
 );
 

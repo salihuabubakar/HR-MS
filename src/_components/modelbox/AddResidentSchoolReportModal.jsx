@@ -128,7 +128,7 @@ const AddResidentSchoolReportModal = ({
                             </option>
                             {residentSchoolData?.map((schl) => (
                               <option key={schl.id} value={schl.id}>
-                                {`${schl.school}`}
+                                {`${schl.school_name}`}
                               </option>
                             ))}
                           </select>

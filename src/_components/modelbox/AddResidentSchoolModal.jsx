@@ -6,6 +6,7 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { useResidentSchoolFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentSchoolModal = ({
   residentSchoolIndexToEdit,
@@ -14,6 +15,7 @@ const AddResidentSchoolModal = ({
   resident,
 }) => {
 
+  const { residentSchoolData } = useResidentSchoolFetching();
   const [selectedResidentSchool] = useGlobalState("selectedResidentSchool");
 
 
@@ -94,14 +96,20 @@ const AddResidentSchoolModal = ({
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">School Name</label>
-                          <input
+                          <label className="col-form-label">School</label>
+                          <select
                             value={school}
                             onChange={(e) => setSchool(e.target.value)}
                             className="form-control floating"
-                            type="text"
-                            placeholder="School Name"
-                          />
+                            placeholder="Select School"
+                          >
+                            <option disabled value="">
+                              Select School
+                            </option>
+                            {residentSchoolData?.map(s => {
+                              return <option value={s.id} key={s.id}>{s.school_name}</option>
+                            })}
+                          </select>
                         </div>
                       </div>
                       <div className="col-sm-6">

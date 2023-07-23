@@ -983,7 +983,9 @@ useEffect(() => {
                                         <div className="experience-content">
                                           <div className="timeline-content">
                                             <a className="name">
-                                              School: <span>{school}</span>
+                                              School: <span>{residentSchoolData?.map((s) => {
+                                              if (s.id === school) return s.school_name;
+                                            })}</span>
                                               <span
                                                 className="edit-icon"
                                                 style={{
@@ -1628,7 +1630,7 @@ useEffect(() => {
                                           <tr style={{ height: "90px" }} key={id}>
                                             <td>
                                               {residentSchoolData?.map((schl) => {
-                                                if (schl.id === school) return schl.school;
+                                                if (schl.id === school) return schl.school_name;
                                               })}
                                             </td>
                                             <td>{year}</td>
@@ -1746,7 +1748,7 @@ useEffect(() => {
                                           <tr style={{ height: "90px" }} key={id}>
                                             <td>
                                               {residentSchoolData?.map((schl) => {
-                                                if (schl.id === school) return schl.school;
+                                                if (schl.id === school) return schl.school_name;
                                               })}
                                             </td>
                                             <td>{year}</td>

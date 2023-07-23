@@ -6,7 +6,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 
-const AddGpractice = ({
+const AddSolicitor = ({
   indexToEdit,
   id,
   dispatchSolicitor
@@ -222,4 +222,4 @@ const AddGpractice = ({
   );
 };
 
-export default AddGpractice;
+export default AddSolicitor;
