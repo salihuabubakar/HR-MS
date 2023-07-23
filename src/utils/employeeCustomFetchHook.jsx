@@ -622,10 +622,32 @@ export const useResidentFetching = () => {
   return { residentData, isResidentLoading, residentError };
 };
 
+// Get school data
+export const useSchoolFetching = () => {
+  const fetchSchoolData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/school/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: schoolData,
+    isLoading: isSchoolLoading,
+    error: schoolError,
+  } = useQuery("schoolData", fetchSchoolData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on schoolData
+      queryClient.invalidateQueries(["schoolData"]);
+    },
+  });
+
+  return { schoolData, isSchoolLoading, schoolError };
+};
+
 // Get resident school data
 export const useResidentSchoolFetching = () => {
   const fetchResidentSchoolData = async () => {
-    const response = await axios.get(`${BaseUrl}/resident/school/`);
+    const response = await axios.get(`${BaseUrl}/resident/rschool/`);
     return response.data;
   };
   const queryClient = useQueryClient();

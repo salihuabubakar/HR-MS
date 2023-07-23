@@ -6,7 +6,7 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { useResidentSchoolFetching } from "../../utils/employeeCustomFetchHook";
+import { useSchoolFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentSchoolReportModal = ({
   residentSchoolTimetableIndexToEdit,
@@ -15,7 +15,7 @@ const AddResidentSchoolReportModal = ({
   resident,
 }) => {
 
-  const { residentSchoolData } = useResidentSchoolFetching();
+  const { schoolData } = useSchoolFetching();
 
   const [selectedResidentSchoolTimetable] = useGlobalState(
     "selectedResidentSchoolReport"
@@ -126,7 +126,7 @@ const AddResidentSchoolReportModal = ({
                             <option disabled value="">
                               Select School
                             </option>
-                            {residentSchoolData?.map((schl) => (
+                            {schoolData?.map((schl) => (
                               <option key={schl.id} value={schl.id}>
                                 {`${schl.school_name}`}
                               </option>

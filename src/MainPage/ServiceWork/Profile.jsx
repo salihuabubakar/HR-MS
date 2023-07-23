@@ -22,7 +22,8 @@ import {
   useResidentReferralFetching,
   useResidentDocumentTypeFetching,
   useGpracticeFetching,
-  useSolicitorFetching
+  useSolicitorFetching,
+  useSchoolFetching
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_resident_gp,
@@ -64,7 +65,7 @@ const Profile = ({
   const [gpError] = useGlobalState("gpError");
   const [residentSolicitorError] = useGlobalState("residentSolicitorError");
   const [residentdocumentError] = useGlobalState("residentdocumentError");
-  const [schoolError] = useGlobalState("schoolError");
+  const [residentSchoolError] = useGlobalState("residentSchoolError");
   const [educationError] = useGlobalState("educationError");
   const [schoolReportError] = useGlobalState("schoolReportError");
   const [schoolTimetableError] = useGlobalState("schoolTimetableError");
@@ -77,7 +78,7 @@ const Profile = ({
     setGlobalState("gpError", "");
     setGlobalState("residentSolicitorError", "");
     setGlobalState("residentdocumentError", "");
-    setGlobalState("schoolError", "");
+    setGlobalState("residentSchoolError", "");
     setGlobalState("educationError", "");
     setGlobalState("schoolReportError", "");
     setGlobalState("schoolTimetableError", "");
@@ -272,8 +273,7 @@ const [residentSchoolState, dispatchResidentSchool] = useReducer(
 );
 const {
   residentSchoolData,
-  isResidentSchoolDataLoading,
-  residentSchoolError,
+  isResidentSchoolDataLoading
 } = useResidentSchoolFetching();
 const [getResidentSchoolId, setGetResidentSchoolId] = useState();
 const [residentSchoolIndexToEdit, setResidentSchoolIndexToEdit] =
@@ -631,6 +631,7 @@ useEffect(() => {
   const { solicitorData } = useSolicitorFetching();
   const { socialWorkerData } = useSocialWorkerFetching();
   const { residentDocumentTypeData } = useResidentDocumentTypeFetching();
+  const { schoolData } = useSchoolFetching();
 
   // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
@@ -945,9 +946,9 @@ useEffect(() => {
                             <h3 className="card-title">
                               Resident School{" "}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {schoolError?.length > 0 && (
+                                {residentSchoolError?.length > 0 && (
                                   <>
-                                    Error: {schoolError}
+                                    Error: {residentSchoolError}
                                     <button
                                       onClick={clearErrorMessage}
                                       style={{
@@ -983,7 +984,7 @@ useEffect(() => {
                                         <div className="experience-content">
                                           <div className="timeline-content">
                                             <a className="name">
-                                              School: <span>{residentSchoolData?.map((s) => {
+                                              School: <span>{schoolData?.map((s) => {
                                               if (s.id === school) return s.school_name;
                                             })}</span>
                                               <span

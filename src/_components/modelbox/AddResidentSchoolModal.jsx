@@ -6,7 +6,7 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { useResidentSchoolFetching } from "../../utils/employeeCustomFetchHook";
+import { useSchoolFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentSchoolModal = ({
   residentSchoolIndexToEdit,
@@ -15,7 +15,7 @@ const AddResidentSchoolModal = ({
   resident,
 }) => {
 
-  const { residentSchoolData } = useResidentSchoolFetching();
+  const { schoolData } = useSchoolFetching();
   const [selectedResidentSchool] = useGlobalState("selectedResidentSchool");
 
 
@@ -106,7 +106,7 @@ const AddResidentSchoolModal = ({
                             <option disabled value="">
                               Select School
                             </option>
-                            {residentSchoolData?.map(s => {
+                            {schoolData?.map(s => {
                               return <option value={s.id} key={s.id}>{s.school_name}</option>
                             })}
                           </select>
