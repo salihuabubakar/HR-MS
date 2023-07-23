@@ -1808,8 +1808,10 @@ export const add_update_delete_resident_document = async (state, { type, payload
   }
 };
 
-// Add - Update - Delete Resident school state
-export const add_update_delete_resident_school = async (state, { type, payload }) => {
+// Add - Update - Delete school state
+export const add_update_delete_school = async (state, { type, payload }) => {
+  console.log("🚀 ~ file: sendToServer.js:1813 ~ constadd_update_delete_school= ~ type:", type)
+  
   switch (type) {
     case "add":
       try {
@@ -1817,7 +1819,7 @@ export const add_update_delete_resident_school = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 201) {
-          toast.success("Resident School Added", {
+          toast.success("School Added", {
             autoClose: 1500,
           });
         } else {
@@ -1835,7 +1837,7 @@ export const add_update_delete_resident_school = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 200) {
-          toast.success("Resident School Updated", {
+          toast.success("School Updated", {
             autoClose: 1500,
           });
           return;
@@ -1854,7 +1856,7 @@ export const add_update_delete_resident_school = async (state, { type, payload }
 
         // Check the response status
         if (response.status === 204) {
-          toast("Resident School Deleted", {
+          toast("School Deleted", {
             autoClose: 1500,
           });
           return;

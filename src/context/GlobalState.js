@@ -227,11 +227,17 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedResidentDocument: [],
   residentdocumentError: [],
 
+  // School
+  deleteSchoolModal: false,
+  showSchoolModal: false,
+  selectedSchool: [],
+  schoolError: [],
+
   // Resident School
   deleteResidentSchoolModal: false,
   showResidentSchoolModal: false,
   selectedResidentSchool: [],
-  schoolError: [],
+  residentSchoolError: [],
 
   // Resident Education
   deleteResidentEducationModal: false,
