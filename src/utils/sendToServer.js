@@ -1810,7 +1810,6 @@ export const add_update_delete_resident_document = async (state, { type, payload
 
 // Add - Update - Delete school state
 export const add_update_delete_school = async (state, { type, payload }) => {
-  console.log("🚀 ~ file: sendToServer.js:1813 ~ constadd_update_delete_school= ~ type:", type)
   
   switch (type) {
     case "add":
@@ -1866,6 +1865,70 @@ export const add_update_delete_school = async (state, { type, payload }) => {
       } catch (error) {
         console.error("Error occurred while deleting data:", error);
         setGlobalState("schoolError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Delete Resident School state
+export const add_update_delete_resident_school = async (state, { type, payload }) => {
+  
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${BaseUrl}/resident/rschool/`, payload);
+
+        // Check the response status
+        if (response.status === 201) {
+          toast.success("Resident School Added", {
+            autoClose: 1500,
+          });
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        setGlobalState("residentSchoolError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(`${BaseUrl}/resident/rschool/${payload.id}/`, payload);
+
+        // Check the response status
+        if (response.status === 200) {
+          toast.success("Resident School Updated", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        setGlobalState("residentSchoolError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(`${BaseUrl}/resident/rschool/${payload.id}/`);
+
+        // Check the response status
+        if (response.status === 204) {
+          toast("Resident School Deleted", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        setGlobalState("residentSchoolError", JSON.stringify(error.response.data));
         throw new Error("Error occurred while deleting data");
       }
     default:

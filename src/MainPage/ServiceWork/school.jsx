@@ -11,7 +11,7 @@ import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { add_update_delete_school } from "../../utils/sendToServer";
-import { useResidentSchoolFetching } from "../../utils/employeeCustomFetchHook";
+import { useSchoolFetching } from "../../utils/employeeCustomFetchHook";
 import "./style.css";
 import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
@@ -19,9 +19,9 @@ import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
 
 const School = () => {
-  const { residentSchoolData, isResidentSchoolLoading } = useResidentSchoolFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentSchoolData);
-  let searchResult = !searchQuery ? residentSchoolData : filteredResults;
+  const { schoolData, isSchoolLoading } = useSchoolFetching();
+  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(schoolData);
+  let searchResult = !searchQuery ? schoolData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,7 +66,7 @@ const School = () => {
     setSchoolId(id);
     setIndexToEdit((currentPage - 1) * itemsPerPage + index);
     setGlobalState("showSchoolModal", true);
-    setGlobalState("selectedSchool", residentSchoolData);
+    setGlobalState("selectedSchool", schoolData);
   };
 
   const handleDeleteSchool = (id) => {
@@ -247,7 +247,7 @@ const School = () => {
                   columns={columns}
                   rowKey={(schoolData) => schoolData?.id}
                   bordered
-                  loading={isResidentSchoolLoading}
+                  loading={isSchoolLoading}
                 />
               </div>
             </div>
