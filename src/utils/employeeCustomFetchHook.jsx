@@ -711,6 +711,28 @@ export const useGpracticeFetching = () => {
   return { gPracticeData, isGPracticeDataLoading, gPracticeError };
 };
 
+// Get Solicitor data
+export const useSolicitorFetching = () => {
+  const fetchResidentSolicitorData = async () => {
+    const response = await axios.get(`${BaseUrl}/resident/solicitor/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: solicitorData,
+    isLoading: solicitorDataLoading,
+    error: solicitorError,
+  } = useQuery("solicitor", fetchResidentSolicitorData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on solicitor
+      queryClient.invalidateQueries(["solicitor"]);
+    },
+  });
+
+  return { solicitorData, solicitorDataLoading, solicitorError };
+};
+
 // Get gptype data
 export const useGpTypeFetching = () => {
   const fetchGpTypeData = async () => {
@@ -736,7 +758,7 @@ export const useGpTypeFetching = () => {
 // Get resident solicitor data
 export const useResidentSolicitorFetching = () => {
   const fetchResidentSolicitorData = async () => {
-    const response = await axios.get(`${BaseUrl}/resident/solicitor/`);
+    const response = await axios.get(`${BaseUrl}/resident/rsolicitor/`);
     return response.data;
   };
   const queryClient = useQueryClient();
