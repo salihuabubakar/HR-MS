@@ -1531,8 +1531,8 @@ useEffect(() => {
                                         <div className="text">
                                           GP:{" "}
                                           <span>
-                                            {residentGpData?.map((rGp) => {
-                                              if (rGp.id === gp) return rGp.gp_practice_name;
+                                            {gPracticeData?.map((Gp) => {
+                                              if (Gp.id === gp) return Gp.gp_practice_name;
                                             })}
                                           </span>
                                         </div>
