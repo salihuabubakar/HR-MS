@@ -11,6 +11,7 @@ import { RadioBtn } from "./styles";
 import moment from "moment";
 import "./style.css";
 import { useDataFetching, useResidentFetching } from "../../utils/employeeCustomFetchHook";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const AddTask = ({
   dispatchTasks,
@@ -168,19 +169,6 @@ const AddTask = ({
       dispatchTasks({ type: "add", payload: task });
     }
     setGlobalState("showTaskModal", false);
-  };
-
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
   };
 
   const handleEmployeeChange = (event) => {
