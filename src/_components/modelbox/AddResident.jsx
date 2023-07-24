@@ -9,7 +9,15 @@ import {
 } from "./Addemployee.style";
 import "./style.css";
 import { RadioBtn } from "./styles";
-import { useOrganisationFetching, useRoleFetching, useDepartmentFetching } from "../../utils/employeeCustomFetchHook";
+import { 
+  useOrganisationFetching, 
+  useRoleFetching, 
+  useDepartmentFetching,
+  useResidentBoroughFetching,
+  useDataFetching,
+  useResidentLegalStatusTypeFetching 
+} from "../../utils/employeeCustomFetchHook";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const AddResident = ({
   dispatchResident,
@@ -19,7 +27,11 @@ const AddResident = ({
 
   const { organisationData } = useOrganisationFetching();
   const { roleData } = useRoleFetching();
-  const { departmentData } = useDepartmentFetching()
+  const { data: allEmployee, isLoading: allEmployeeLoading } =
+    useDataFetching();
+  const { residentLegalStatusTypeData } = useResidentLegalStatusTypeFetching();
+  const { departmentData } = useDepartmentFetching();
+  const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
 
   const [selectedResidentAccount] = useGlobalState("selectedResidentAccount");
   const imageUrlFromServer = selectedResidentAccount[indexToEdit]?.photo;
@@ -58,7 +70,7 @@ const AddResident = ({
     selectedResidentAccount[indexToEdit]?.nationality || ""
   );
   const [key_worker, setKeyWorker] = useState(
-    selectedResidentAccount[indexToEdit]?.key_worker || ""
+    selectedResidentAccount[indexToEdit]?.key_worker || []
   );
   const [phone_number, setPhoneNumber] = useState(
     selectedResidentAccount[indexToEdit]?.phone_number || ""
@@ -92,6 +104,9 @@ const AddResident = ({
   );
   const [Subject_child_protection, setSubjectChildProtection] = useState(
     selectedResidentAccount[indexToEdit]?.Subject_child_protection || ""
+  );
+  const [borough, setBorough] = useState(
+    selectedResidentAccount[indexToEdit]?.borough || ""
   );
   const [legal_status, setLegalStatus] = useState(
     selectedResidentAccount[indexToEdit]?.legal_status || ""
@@ -150,6 +165,7 @@ const AddResident = ({
       tattoos: tattoos,
       piercings: piercings,
       Subject_child_protection: Subject_child_protection,
+      borough: borough,
       legal_status: legal_status,
       Any_comment: Any_comment,
       key_worker: key_worker,
@@ -169,6 +185,64 @@ const AddResident = ({
     }
     setGlobalState("showModal", false);
   };
+
+  const boroughData = [];
+  residentBoroughData?.map((b) => {
+    boroughData.push({
+      id: b.id,
+      borough_name: b.borough_name,
+    });
+  });
+
+  const handleBoroughChange = (event) => {
+    const { id } = event;
+    setBorough(id)
+  }
+
+  const getBoroughDefaultValues = () => {
+    const val = selectedResidentAccount[indexToEdit]?.borough;
+    if (!selectedResidentAccount || !val) {
+      return null;
+    }
+    const boroughValue = residentBoroughData?.find((b) => b.id === val);
+    if(boroughValue) {
+      return {
+        id: boroughValue?.id,
+        borough_name: boroughValue?.borough_name
+      }
+    }
+  };
+
+  const employeesData = [];
+  allEmployee?.map((employee) => {
+    employeesData.push({
+      id: employee.id,
+      first_name: employee.first_name,
+      middle_name: employee.middle_name,
+      last_name: employee.last_name,
+    });
+  });
+  
+  const getEmployeeDefaultValues = () => {
+    const val = selectedResidentAccount[indexToEdit]?.key_worker;
+    if (!selectedResidentAccount || !val) {
+      return [];
+    }
+    return allEmployee
+      .filter((employee) => val.includes(employee.id))
+      .map((employee) => ({
+        id: employee.id,
+        first_name: employee.first_name,
+        middle_name: employee.middle_name,
+        last_name: employee.last_name,
+      }));
+  };
+
+  const handleKeyworkerChange = (event) => {
+    const mappedID = event?.map((kw) => kw.id);
+    setKeyWorker(mappedID);
+  };
+  
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
@@ -444,12 +518,12 @@ const AddResident = ({
                             onChange={handleLegalStatusChange}
                             className="form-control floating"
                           >
-                            <option value="">Select</option>
-                            <option value={1}>Legal 1</option>
-                            <option value={2}>Legal 2</option>
-                            <option value={3}>Legal 3</option>
-                            <option value={4}>Legal 4</option>
-                            <option value={5}>Legal 5</option>
+                            <option disabled value="">Select Legal Status</option>
+                            {residentLegalStatusTypeData?.map(lgs => {
+                              return (
+                                <option key={lgs.id} value={lgs.id}>{lgs.legal_status_name}</option>
+                              )
+                            })}
                           </select>
                         </div>
                       </div>
@@ -481,23 +555,32 @@ const AddResident = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">Key Workers</label>{" "}
-                          <span className="text-danger">*</span>
-                          <select
-                            value={key_worker}
-                            onChange={(e) => setKeyWorker(e.target.value)}
-                            className="form-control floating"
-                          >
-                            <option value="">Select</option>
-                            <option value={1}>Finance</option>
-                            <option value={2}>Sales</option>
-                            <option value={3}>Office</option>
-                          </select>
+                          <label className="col-form-label">
+                            Select Key Worker
+                          </label>
+                          <Select
+                            defaultValue={getEmployeeDefaultValues()}
+                            onChange={handleKeyworkerChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={employeesData}
+                            isLoading={allEmployeeLoading}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) =>
+                              option.first_name +
+                              " " +
+                              option.middle_name +
+                              " " +
+                              option.last_name
+                            }
+                            placeholder="Select Key Worker"
+                          />
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Subject Child Protection</label>
+                          <label className="col-form-label">Subject Child Protection</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -511,6 +594,23 @@ const AddResident = ({
                               <span>Subject Child Protection</span>
                             </label>
                           </RadioBtn>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Select Borough
+                          </label>
+                          <Select
+                            defaultValue={getBoroughDefaultValues()}
+                            onChange={handleBoroughChange}
+                            options={boroughData}
+                            isLoading={isResidentBoroughLoading}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) =>option.borough_name}
+                            placeholder="Select Borough"
+                          />
                         </div>
                       </div>
                       <div className="col-sm-12">
