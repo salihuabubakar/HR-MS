@@ -6,7 +6,7 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { useResidentGpFetching } from "../../utils/employeeCustomFetchHook";
+import { useGpracticeFetching } from "../../utils/employeeCustomFetchHook";
 
 const AddResidentMedicationModal = ({
   residentMedicationIndexToEdit,
@@ -15,7 +15,7 @@ const AddResidentMedicationModal = ({
   resident,
 }) => {
 
-  const { residentGpData } = useResidentGpFetching();
+  const { gPracticeData, isGPracticeDataLoading } = useGpracticeFetching();
 
   const [selectedResidentMedication] = useGlobalState(
     "selectedResidentMedication"
@@ -192,11 +192,13 @@ const AddResidentMedicationModal = ({
                             <option disabled value="">
                               Select Gp
                             </option>
-                            {residentGpData?.map((rgp) => (
-                              <option key={rgp.id} value={rgp.id}>
-                                {`${rgp.gp_practice_name}`}
-                              </option>
-                            ))}
+                            {gPracticeData?.map((rgp) => {
+                              return (
+                                <option key={rgp.id} value={rgp.id}>
+                                  {`${rgp.gp_practice_name}`}
+                                </option>
+                              )
+                            })}
                           </select>
                         </div>
                       </div>
