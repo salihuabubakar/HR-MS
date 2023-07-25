@@ -30,6 +30,8 @@ import { useReactToPrint } from "react-to-print";
 import WeeklyComponent from "./weeklyComponent";
 import MonthlyComponent from "./monthlyComponent";
 import { useDateWeeklyCalendarCounter, useDateMonthlyCalendarCounter } from "../../utils/calendarCustomeHook";
+import { Popup, Segment  } from "semantic-ui-react";
+import moment from "moment";
 
 
 const ShiftScheduling = () => {
@@ -257,12 +259,37 @@ const { shiftData, isShiftLoading } = useShiftFetching();
                   </ul>
                 </div>
                 <div className="col-auto float-end ml-auto">
-                  <Link
-                    to="/app/shiftschedule/shift-list"
-                    className="btn add-btn m-r-5"
-                  >
-                    Shifts
-                  </Link>
+                    <Popup
+                      inline
+                      hoverable
+                      position="bottom left"
+                      delay={{
+                        show: 300,
+                        hide: 800,
+                      }}
+                      content={
+                        <Segment.Group>
+                          {shiftData?.map(shft => {
+                            const { id, name, start_time, end_time, hours, status } = shft;
+                            return (
+                              <Segment style={{ width: "250px" }}>
+                                <div className="ui column relaxed divided grid">
+                                  <div key={id} className="column">
+                                    <h4>{name}</h4>
+                                    <div className="ui link list">
+                                      <a className="item">{`TIME: ${moment(start_time, "HH:mm").format("hh:mm A")} - ${moment(end_time, "HH:mm").format("hh:mm A")}`}</a>
+                                      <a className="item">{`HOURS: ${hours}`}</a>
+                                      <a className="item">{`STATUS: ${status}`}</a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Segment>
+                            )
+                          })}
+                        </Segment.Group>
+                      }
+                      trigger={<a className="browse item btn add-btn m-r-5">Shifts<i className="dropdown icon"></i></a>}
+                    />
                   <a
                     className="btn add-btn m-r-5"
                     onClick={() => setGlobalState("showShiftModal", true)}
