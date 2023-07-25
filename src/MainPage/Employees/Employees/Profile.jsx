@@ -11,6 +11,7 @@ import {
   useEmployeeExperienceFetching,
   useEmployeeDocumentFetching,
   useEmployeeBankFetching,
+  useDataFetching,
 } from "../../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_employee_address,
@@ -32,6 +33,8 @@ import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { Helmet } from "react-helmet";
 import axios from "axios";
 import { BaseUrl } from "../../../utils/baseUrl";
+import NoAvailableData from "../../../_components/noAvailableData";
+import { ProgressSpan, ProgressDiv } from "../../../utils/helperFucntions";
 
 const Profile = ({
   DefaultImage,
@@ -369,6 +372,7 @@ const Profile = ({
   const employee_leave = getSelectedData?.employee_leave;
   const employee_status = getSelectedData?.employee_status;
   const employee_documents = getSelectedData?.employee_documents;
+  const employee_task = getSelectedData?.employee_task;
 
 
   const employeeStatus = employee_status?.map(s => {
@@ -376,6 +380,8 @@ const Profile = ({
       return s.status
     }
   })
+
+  const { data: allEmployee } = useDataFetching();
 
 
 // Checks if the uploaded document contain any of this extentions.
@@ -1466,59 +1472,6 @@ const Profile = ({
                           </div>
                         </div>
                       </div>
-
-                      {/* <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Status{" "}
-                        
-                      </h3>
-                      <div className="experience-box">
-                        <ul className="experience-list">
-                          {employee_status?.map((employee_status, index) => {
-                            const {
-                              id,
-                              employee,
-                              status,
-                              authorising_manager,
-                              comments,
-                              start_date,
-                              end_date,
-                              authorised_by,
-                            } = employee_status;
-                            if (employee == selectedEmployeeId) {
-                              return (
-                                <li key={id}>
-                                  <div className="experience-user">
-                                    <div className="before-circle" />
-                                  </div>
-                                  <div className="experience-content">
-                                    <div className="timeline-content">
-                                      <a className="name">
-                                        {authorising_manager}
-                                        
-                                      </a>
-                                      <a style={{ fontWeight: "900" }}>
-                                        {status == Number(status)
-                                          ? "Active"
-                                          : status}
-                                      </a>
-                                      <div>{comments}</div>
-                                      <span className="time">
-                                        {start_date} - {end_date}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </li>
-                              );
-                            }
-                          })}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
                     </div>
                   </>
                 )}
@@ -1526,256 +1479,169 @@ const Profile = ({
 
               {/* /Profile Info Tab */}
               {/* Tasks Tab */}
-              {/* <div className="tab-pane fade" id="emp_tasks">
-          <div className="row">
-            {taskList?.map((task, index) => {
-              const {
-                id,
-                dateCreated,
-                description,
-                employee,
-                manager,
-                resident,
-                taskPriority,
-                taskStatus,
-                taskType,
-                taskTitle,
-                timeAllocated,
-              } = task;
-              return (
-                <Fragment key={id}>
-                  {employee?.map((employee, index) => {
-                    const { value, label, role, image } = employee;
-                    if (value === selectedEmployeeId) {
+              <div className="tab-pane fade" id="emp_tasks">
+                <div className="row">
+                  {employee_task?.length > 0 ? employee_task?.map((task, index) => {
+                    const {
+                      id,
+                      start_at,
+                      end_at,
+                      description,
+                      employees,
+                      managers,
+                      priority,
+                      concluded,
+                      is_paid,
+                      name,
+                      hours,
+                      progress
+                    } = task;
+                    const employee = allEmployee?.filter(emp => managers.includes(emp.id))
+                    if(employees.includes(selectedEmployeeId)) {
                       return (
-                        <>
-                          <div
-                            key={value}
-                            className="col-lg-6 col-sm-12 col-md-6 col-xl-4"
-                          >
-                            <div className="card">
-                              <div className="card-body">
-                                <h4 className="project-title">
-                                  <Link
-                                    onClick={(e) => e.preventDefault()}
-                                    to="#"
-                                  >
-                                    {taskTitle}
-                                  </Link>
-                                </h4>
-                                <p className="text-muted">{description}</p>
-                                <small className="block text-ellipsis m-b-15">
-                                  <span className="text-xs">Task Type: </span>
-                                  <span
-                                    style={{
-                                      backgroundColor:
-                                        taskType == "Paid Task"
-                                          ? "#55CE63"
-                                          : "#ff9b44",
-                                      color: "#fff",
-                                      padding: "5px",
-                                      borderRadius: "4px",
-                                    }}
-                                  >
-                                    {taskType ? taskType : "--"}
-                                  </span>{" "}
-                                </small>
+                        <React.Fragment key={id}>
+                          <>
+                            <div
+                              key={id}
+                              className="col-lg-6 col-sm-12 col-md-6 col-xl-4"
+                            >
+                              <div className="card">
+                                <div className="card-body">
+                                  <h4 className="project-title">
+                                    <Link
+                                      onClick={(e) => e.preventDefault()}
+                                      to="#"
+                                    >
+                                      {name}
+                                    </Link>
+                                  </h4>
+                                  <p className="text-muted">{description}</p>
+                                  <small className="block text-ellipsis m-b-15">
+                                    <span className="text-xs">Task Type: </span>
+                                    <span
+                                      style={{
+                                        backgroundColor: is_paid === true ? "#55CE63" : "#ff9b44",
+                                        color: "#fff",
+                                        padding: "5px",
+                                        borderRadius: "5px",
+                                      }}
+                                    >
+                                      {is_paid === true ? "Paid" : "Non Paid"}
+                                    </span>{" "}
+                                  </small>
+                                    
+                                  <small className="block text-ellipsis m-b-15">
+                                    <span className="text-xs">
+                                      Task Priority:{" "}
+                                    </span>
+                                    <span
+                                      style={{
+                                        backgroundColor:
+                                          (priority === "low" && "red") ||
+                                          (priority === "medium" && "#ff9b44") ||
+                                          (priority === "high" && "#55CE63"),
+                                        color: "#fff",
+                                        padding: "5px",
+                                        borderRadius: "5px",
+                                      }}
+                                    >
+                                      {priority}
+                                    </span>{" "}
+                                  </small>
+                                    
+                                  <small className="block text-ellipsis m-b-15">
+                                    <span className="text-xs">Task Status: </span>
+                                    <span
+                                      style={{
+                                        backgroundColor: concluded === true ? "#55CE63" : "#ff9b44",
+                                        color: "#fff",
+                                        padding: "5px",
+                                        borderRadius: "5px",
+                                      }}
+                                    >
+                                      {concluded === true ? "Concluded" : "In Progress"}
+                                    </span>{" "}
+                                  </small>
+                                      
+                                  <small className="block text-ellipsis m-b-15">
+                                    <span className="text-xs">
+                                      Start At:{" "}
+                                    </span>
+                                    <span className="text-muted">
+                                      {start_at ? moment(start_at).format("DD MMM YYYY") : "--"}
+                                    </span>{" "}
+                                  </small>
 
-                                <small className="block text-ellipsis m-b-15">
-                                  <span className="text-xs">
-                                    Task Priority:{" "}
-                                  </span>
-                                  <span
-                                    style={{
-                                      backgroundColor:
-                                        (taskPriority?.label == "low" &&
-                                          "red") ||
-                                        (taskPriority?.label == "medium" &&
-                                          "#ff9b44") ||
-                                        (taskPriority?.label == "highest" &&
-                                          "#55CE63"),
-                                      color: "#fff",
-                                      padding: "5px",
-                                      borderRadius: "4px",
-                                    }}
-                                  >
-                                    {taskPriority ? taskPriority.label : "--"}
-                                  </span>{" "}
-                                </small>
-
-                                <small className="block text-ellipsis m-b-15">
-                                  <span className="text-xs">Task Status: </span>
-                                  <span
-                                    style={{
-                                      backgroundColor:
-                                        (taskStatus?.label == "not-started" &&
-                                          "red") ||
-                                        (taskStatus?.label == "started" &&
-                                          "#f20d91") ||
-                                        (taskStatus?.label == "middle" &&
-                                          "#ff9b44") ||
-                                        (taskStatus?.label == "rounding-up" &&
-                                          "#73AB00") ||
-                                        (taskStatus?.label == "completed" &&
-                                          "#55CE63"),
-                                      color: "#fff",
-                                      padding: "5px",
-                                      borderRadius: "4px",
-                                    }}
-                                  >
-                                    {taskStatus
-                                      ? (taskStatus?.label == "not-started" &&
-                                          "Not started") ||
-                                        (taskStatus?.label == "started" &&
-                                          "Started") ||
-                                        (taskStatus?.label == "middle" &&
-                                          "Middle") ||
-                                        (taskStatus?.label == "rounding-up" &&
-                                          "Rounding up") ||
-                                        (taskStatus?.label == "completed" &&
-                                          "Completed")
-                                      : "--"}
-                                  </span>{" "}
-                                </small>
-
-                                <small className="block text-ellipsis m-b-15">
-                                  <span className="text-xs">
-                                    Date Created:{" "}
-                                  </span>
-                                  <span className="text-muted">
-                                    {dateCreated ? dateCreated : "--"}
-                                  </span>{" "}
-                                </small>
-
-                                <small className="block text-ellipsis m-b-15">
-                                  <span className="text-xs">
-                                    Task Manager:{" "}
-                                  </span>
-                                  <span className="text-muted">
-                                    {manager ? manager : "--"}
-                                  </span>{" "}
-                                </small>
-
-                                <small className="block text-ellipsis m-b-15">
-                                  <span className="text-xs">
-                                    Time Allocated:{" "}
-                                  </span>
-                                  <span className="text-muted">
-                                    {timeAllocated
-                                      ? timeAllocated + "hr"
-                                      : "--"}
-                                  </span>{" "}
-                                </small>
-                                <div className="project-members m-b-15">
-                                  <div>Team:</div>
-                                  <ul className="team-members">
-                                    <li>
-                                      <a data-bs-toggle="tooltip" title={label}>
-                                        <img
-                                          alt=""
-                                          src={image ? image : DefaultImage}
-                                        />
-                                      </a>
-                                    </li>
-                                  </ul>
-                                </div>
-                                <p className="m-b-5">
-                                  Progress
-                                  <span
-                                    className={
-                                      (taskStatus?.label == "not-started"
-                                        ? "float-end color-not-started"
-                                        : undefined) ||
-                                      (taskStatus?.label == "started"
-                                        ? "float-end color-started"
-                                        : undefined) ||
-                                      (taskStatus?.label == "middle"
-                                        ? "float-end color-middle"
-                                        : undefined) ||
-                                      (taskStatus?.label == "rounding-up"
-                                        ? "float-end color-rounding-up"
-                                        : undefined) ||
-                                      (taskStatus?.label == "completed"
-                                        ? "float-end color-completed"
-                                        : undefined)
+                                  <small className="block text-ellipsis m-b-15">
+                                    <span className="text-xs">
+                                      End At:{" "}
+                                    </span>
+                                    <span className="text-muted">
+                                      {end_at ? moment(end_at).format("DD MMM YYYY") : "--"}
+                                    </span>{" "}
+                                  </small>
+                                      
+                                  <small className="block text-ellipsis m-b-15">
+                                    <span className="text-xs">
+                                      Task Manager:{" "}
+                                    </span>
+                                    {employee?.map(e => {
+                                        return (
+                                          
+                                            <img
+                                              style={{
+                                                width: "25px",
+                                                borderRadius: "50px",
+                                                backgroundColor: "#00000000",
+                                                height: "25px",
+                                              }}
+                                              key={e.id}
+                                              title={`${e.first_name} ${e.middle_name} ${e.last_name}`}
+                                              alt=""
+                                              src={e.photo}
+                                            />
+                                        )})
                                     }
-                                  >
-                                    {(taskStatus?.label == "not-started" &&
-                                      "0%") ||
-                                      (taskStatus?.label == "started" &&
-                                        "25%") ||
-                                      (taskStatus?.label == "middle" &&
-                                        "50%") ||
-                                      (taskStatus?.label == "rounding-up" &&
-                                        "75%") ||
-                                      (taskStatus?.label == "completed" &&
-                                        "100%")}
-                                  </span>
-                                </p>
-                                <div className="progress progress-xs mb-0">
-                                  <div
-                                    className={
-                                      (taskStatus?.label == "not-started"
-                                        ? " progress-bar bg-not-started"
-                                        : undefined) ||
-                                      (taskStatus?.label == "started"
-                                        ? "progress-bar bg-started"
-                                        : undefined) ||
-                                      (taskStatus?.label == "middle"
-                                        ? "progress-bar bg-middle"
-                                        : undefined) ||
-                                      (taskStatus?.label == "rounding-up"
-                                        ? "progress-bar bg-rounding-up"
-                                        : undefined) ||
-                                      (taskStatus?.label == "completed"
-                                        ? "progress-bar bg-completed"
-                                        : undefined)
-                                    }
-                                    role="progressbar"
-                                    data-bs-toggle="tooltip"
-                                    title={
-                                      (taskStatus?.label == "not-started"
-                                        ? "0%"
-                                        : undefined) ||
-                                      (taskStatus?.label == "started"
-                                        ? "25%"
-                                        : undefined) ||
-                                      (taskStatus?.label == "middle"
-                                        ? "50%"
-                                        : undefined) ||
-                                      (taskStatus?.label == "rounding-up"
-                                        ? "75%"
-                                        : undefined) ||
-                                      (taskStatus?.label == "completed" &&
-                                        "100%")
-                                    }
-                                    style={{
-                                      width:
-                                        (taskStatus?.label == "not-started" &&
-                                          "0%") ||
-                                        (taskStatus?.label == "started" &&
-                                          "25%") ||
-                                        (taskStatus?.label == "middle" &&
-                                          "50%") ||
-                                        (taskStatus?.label == "rounding-up" &&
-                                          "75%") ||
-                                        (taskStatus?.label == "completed" &&
-                                          "100%"),
-                                    }}
-                                  />
+                                  </small>
+                                      
+                                  <small className="block text-ellipsis m-b-15">
+                                    <span className="text-xs">
+                                      Time Allocated:{" "}
+                                    </span>
+                                    <span className="text-muted">
+                                      {hours
+                                        ? hours + "hr"
+                                        : "--"}
+                                    </span>{" "}
+                                  </small>
+                                  <div className="project-members m-b-15">
+                                    <div>Team:</div>
+                                    <ul className="team-members">
+                                      <li>
+                                        <a data-bs-toggle="tooltip" title={`${first_name} ${middle_name} ${last_name}`}>
+                                          <img
+                                            alt=""
+                                            src={photo ? photo : DefaultImage}
+                                          />
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <p className="m-b-5">
+                                    Progress
+                                    <ProgressSpan progress={progress} />
+                                  </p>
+                                  <ProgressDiv progress={progress} />
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </>
+                          </>
+                        </React.Fragment>
                       );
                     }
-                  })}
-                </Fragment>
-              );
-            })}
-          </div>
-        </div> */}
+                  }) : <NoAvailableData />}
+                </div>
+              </div>
               {/* /Tasks Tab */}
 
               {/* Document Upload Tab */}

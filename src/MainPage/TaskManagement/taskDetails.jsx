@@ -5,8 +5,8 @@ import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import DefaultImage from "../../assets/img/placeholder.jpg";
-import { useParams, useLocation } from "react-router-dom";
-import { Span, DivContainer } from "./style";
+import { useLocation } from "react-router-dom";
+import { DivContainer } from "./style";
 import AddTaskAssignment from "../../_components/modelbox/AddTaskAssignment";
 import AddTaskDocument from "../../_components/modelbox/AddTaskDocument";
 import AddTask from "../../_components/modelbox/AddTask";
@@ -28,6 +28,7 @@ import moment from "moment";
 import AssignmentBody from "./component/assignmentBody";
 import { Wrapper } from "../ServiceWork/style";
 import "./loadspiner.css"
+import { ProgressDiv, ProgressSpan } from "../../utils/helperFucntions";
 
 const TaskDetails = () => {
   const handleFileDownload = (file) => {
@@ -120,35 +121,7 @@ const TaskDetails = () => {
   const taskEndAt = selectedTask?.end_at;
 
   const formattedName = taskName?.charAt(0).toUpperCase() + taskName?.slice(1);
-
-  let status = "";
-  let progressCal;
-  const taskProgressFuction = (taskProgress, status) => {
-    if (taskProgress === 0) {
-      status = "Not started";
-      progressCal = taskProgress;
-    } else if (taskProgress >= 1 && taskProgress <= 24) {
-      status = "Started";
-      progressCal = taskProgress;
-    } else if (taskProgress >= 25 && taskProgress <= 49) {
-      status = "Getting there";
-      progressCal = taskProgress;
-    } else if (taskProgress >= 50 && taskProgress <= 75) {
-      status = "Almost there";
-      progressCal = taskProgress;
-    } else if (taskProgress >= 76 && taskProgress <= 85) {
-      status = "Rounding up";
-      progressCal = taskProgress;
-    } else if (taskProgress >= 86 && taskProgress <= 95) {
-      status = "Completing";
-      progressCal = taskProgress;
-    } else {
-      status = "Completed";
-      progressCal = taskProgress;
-    }
-
-    return [status, taskProgress];
-  };
+  
 
   const handleTaskEdit = (index, id) => {
     setTaskIndexToEdit(index);
@@ -925,66 +898,6 @@ const TaskDetails = () => {
                           </>
                         )}
                       </tr>
-                      {/* <tr>
-                        <td>Status:</td>
-                        <td
-                          style={{
-                            color: "#fff",
-                          }}
-                          className={
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Not started"
-                            )
-                              ? " text-end bg-not-started"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Started"
-                            )
-                              ? "text-end bg-started"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Middle"
-                            )
-                              ? "text-end bg-middle"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Rounding up"
-                            )
-                              ? "text-end bg-rounding-up"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Completed"
-                            )
-                              ? "text-end bg-completed"
-                              : null)
-                          }
-                        >
-                          {(taskProgressFuction(taskProgress, status).includes(
-                            "Not started"
-                          ) &&
-                            "Not started") ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Started"
-                            )
-                              ? "In-progress(Started)"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Middle"
-                            )
-                              ? "In-progress(Middle)"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Rounding up"
-                            )
-                              ? "In-progress(Rounding up)"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Completed"
-                            )
-                              ? "Completed"
-                              : null)}
-                        </td>
-                      </tr> */}
                     </tbody>
                   </table>
                   <p className="m-b-5">
@@ -995,124 +908,12 @@ const TaskDetails = () => {
                       </span>
                     ) : (
                       <>
-                        <span
-                          className={
-                            (taskProgressFuction(taskProgress, status).includes("Not Started")
-                              ? "float-end color-not-started"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes("Started")
-                              ? "float-end color-started"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes("Getting there")
-                              ? "float-end color-getting-there"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes("Almost there")
-                              ? "float-end color-almost-there"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes("Rounding up")
-                              ? "float-end color-rounding-up"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes("Completing")
-                              ? "float-end color-completing"
-                              : null) ||
-                            (taskProgressFuction(taskProgress, status).includes("Completed")
-                              ? "float-end color-completed"
-                              : null)
-                          }
-                        >
-                          {(taskProgressFuction(taskProgress, status).includes(
-                            "Not Started" || taskProgress
-                          ) &&
-                            taskProgress + "%") ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Started" || taskProgress
-                            ) &&
-                              taskProgress + "%") ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Getting there" || taskProgress
-                            ) &&
-                              taskProgress + "%") ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Almost there" || taskProgress
-                            ) &&
-                              taskProgress + "%") ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Rounding up" || taskProgress
-                            ) &&
-                              taskProgress + "%") ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Completing" || taskProgress
-                            ) &&
-                              taskProgress + "%") ||
-                            (taskProgressFuction(taskProgress, status).includes(
-                              "Completed" || taskProgress
-                            ) &&
-                              taskProgress + "%")}
-                        </span>
+                        <ProgressSpan progress={taskProgress} />
                       </>
                     )}
                   </p>
 
-                  <div className="progress progress-xs mb-0">
-                    <div
-                      className={
-                        (taskProgressFuction(taskProgress, status).includes("Not Started")
-                          ? " progress-bar bg-not-started"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Started")
-                          ? "progress-bar bg-started"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Getting there")
-                          ? "progress-bar bg-getting-there"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Almost there")
-                          ? "progress-bar bg-almost-there"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Rounding up")
-                          ? "progress-bar bg-rounding-up"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Completing")
-                          ? "progress-bar bg-completing"
-                          : null) ||
-                        (taskProgressFuction(taskProgress, status).includes("Completed")
-                          ? "progress-bar bg-completed"
-                          : null)
-                      }
-                      role="progressbar"
-                      data-bs-toggle="tooltip"
-                      style={{
-                        width:
-                          (taskProgressFuction(taskProgress, status).includes(
-                            "Not Started" || taskProgress
-                          ) &&
-                            taskProgress + "%") ||
-                          (taskProgressFuction(taskProgress, status).includes(
-                            "Started" || taskProgress
-                          ) &&
-                            taskProgress + "%") ||
-                          (taskProgressFuction(taskProgress, status).includes(
-                            "Getting there" || taskProgress
-                          ) &&
-                            taskProgress + "%") ||
-                          (taskProgressFuction(taskProgress, status).includes(
-                            "Almost there" || taskProgress
-                          ) &&
-                            taskProgress + "%") ||
-                          (taskProgressFuction(taskProgress, status).includes(
-                            "Rounding up" || taskProgress
-                          ) &&
-                            taskProgress + "%") ||
-                          (taskProgressFuction(taskProgress, status).includes(
-                            "Completing" || taskProgress
-                          ) &&
-                            taskProgress + "%") ||
-                          (taskProgressFuction(taskProgress, status).includes(
-                            "Completed" || taskProgress
-                          ) &&
-                            taskProgress + "%"),
-                      }}
-                    />
-                  </div>
+                  <ProgressDiv progress={taskProgress} />
                 </div>
               </div>
               <div className="card project-user">
