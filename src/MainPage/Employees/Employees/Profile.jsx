@@ -35,6 +35,7 @@ import axios from "axios";
 import { BaseUrl } from "../../../utils/baseUrl";
 import NoAvailableData from "../../../_components/noAvailableData";
 import { ProgressSpan, ProgressDiv } from "../../../utils/helperFucntions";
+import { Popup, Segment  } from "semantic-ui-react";
 
 const Profile = ({
   DefaultImage,

@@ -5,6 +5,7 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import axios from "axios";
 import { BaseUrl } from "../../utils/baseUrl";
+import { Popup, Segment  } from "semantic-ui-react";
 import {
   useResidentSchoolFetching,
   useResidentEducationFetching,
@@ -61,6 +62,7 @@ import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { Helmet } from "react-helmet";
 import { ProgressSpan, ProgressDiv } from "../../utils/helperFucntions";
 import NoAvailableData from "../../_components/noAvailableData";
+import { left } from "@popperjs/core";
 
 const Profile = ({
   DefaultImage,
@@ -1100,59 +1102,89 @@ useEffect(() => {
                                   } = solicit;
                                   if (resident === selectedResidentId && status === "Active") {
                                     return (
-                                      <div key={id} className="card plain-card">
-                                        <div className="text">
-                                          Solicitor: <span>
-                                          {solicitorData?.map((s) => {
-                                              if (s.id === solicitor) return s.solicitor_name;
-                                            })}
-                                          </span>
-                                          <span
-                                            className="edit-icon"
-                                            style={{
-                                              background: "none",
-                                              border: "none",
+                                      <div style={{position: "relative"}} key={id} className="card">
+                                        <span style={{width: "90%"}}>
+                                          <Popup
+                                            inline
+                                            hoverable
+                                            position="bottom left"
+                                            delay={{
+                                              show: 300,
+                                              hide: 800,
                                             }}
-                                          >
-                                            <div className="dropdown dropdown-action text-end">
+                                            content={
+                                              <Segment.Group>
+                                                    <Segment style={{ width: "250px" }}>
+                                                      <div className="ui column relaxed divided grid">
+                                                        <div className="column">
+                                                          <h4>
+                                                            {solicitorData?.map((s) => {
+                                                              if (s.id === solicitor) return s.solicitor_name;
+                                                            })}
+                                                          </h4>
+                                                          <div className="ui link list">
+                                                            <a className="item">{`Start Date: ${start_date}`}</a>
+                                                            <a className="item">
+                                                              {description && description && (
+                                                                  <>
+                                                                    <div className="text">
+                                                                      Description:{" "}
+                                                                      <span>
+                                                                        <PopUpText text={description}/>
+                                                                      </span>
+                                                                    </div>
+                                                                  </>
+                                                                )}
+                                                            </a>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </Segment>
+                                              </Segment.Group>
+                                            }
+                                            trigger={
+                                                <a style={{color: "black"}}>
+                                                  {solicitorData?.map((s) => {
+                                                    if (s.id === solicitor) return s.solicitor_name;
+                                                  })}
+                                                  <i className="dropdown icon"></i>
+                                                </a>
+                                            }
+                                          />
+                                        </span>
+                                        <span
+                                          className="edit-icon"
+                                          style={{
+                                            background: "none",
+                                            border: "none",
+                                            position: "absolute",
+                                            right: "0"
+                                          }}
+                                        >
+                                          <div className="dropdown dropdown-action text-end">
+                                            <a
+                                              className="action-icon dropdown-toggle"
+                                              data-bs-toggle="dropdown"
+                                              aria-expanded="false"
+                                            >
+                                              <i className="material-icons">more_vert</i>
+                                            </a>
+                                            <div className="dropdown-menu dropdown-menu-right">
                                               <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
+                                                className="dropdown-item"
+                                                onClick={() => handleEditResidentSolicitor(id, index)}
                                               >
-                                                <i className="material-icons">more_vert</i>
+                                                <i className="fa fa-pencil m-r-5" /> Edit
                                               </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleEditResidentSolicitor(id, index)}
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleDeleteResidentSolicitor(id)}
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
+                                              <a
+                                                className="dropdown-item"
+                                                onClick={() => handleDeleteResidentSolicitor(id)}
+                                              >
+                                                <i className="fa fa-trash-o m-r-5" /> Delete
+                                              </a>
                                             </div>
-                                          </span>
-                                        </div>
-                                        <div className="text">
-                                          Start Date:{" "}
-                                          <span>{start_date}</span>
-                                        </div>
-                                        {description && description && (
-                                          <>
-                                            <div className="text">
-                                              Description:{" "}
-                                              <span>
-                                                <PopUpText text={description}/>
-                                              </span>
-                                            </div>
-                                          </>
-                                        )}
+                                          </div>
+                                        </span>
                                       </div>
                                     );
                                   }
@@ -1210,18 +1242,63 @@ useEffect(() => {
                                   } = gp;
                                   if (resident === selectedResidentId && status === "Active") {
                                     return (
-                                      <div key={id} className="card plain-card">
-                                        <div className="text">
-                                          Gp: <span>
-                                          {gPracticeData?.map((Gp) => {
-                                              if (Gp.id === generalPractice) return Gp.gp_practice_name;
-                                            })}
+                                        <div style={{position: "relative"}} key={id} className="card">
+                                          <span style={{width: "90%"}}>
+                                            <Popup
+                                              inline
+                                              hoverable
+                                              position="bottom left"
+                                              delay={{
+                                                show: 300,
+                                                hide: 800,
+                                              }}
+                                              content={
+                                                <Segment.Group>
+                                                      <Segment style={{ width: "250px" }}>
+                                                        <div className="ui column relaxed divided grid">
+                                                          <div className="column">
+                                                            <h4>
+                                                            {gPracticeData?.map((Gp) => {
+                                                              if (Gp.id === generalPractice) return Gp.gp_practice_name;
+                                                            })}
+                                                            </h4>
+                                                            <div className="ui link list">
+                                                              <a className="item">{`Start Date: ${start_date}`}</a>
+                                                              <a className="item">
+                                                                {description && description && (
+                                                                    <>
+                                                                      <div className="text">
+                                                                        Description:{" "}
+                                                                        <span>
+                                                                          <PopUpText text={description}/>
+                                                                        </span>
+                                                                      </div>
+                                                                    </>
+                                                                  )}
+                                                              </a>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </Segment>
+                                                </Segment.Group>
+                                              }
+                                              trigger={
+                                                  <a style={{color: "black"}}>
+                                                    {gPracticeData?.map((Gp) => {
+                                                      if (Gp.id === generalPractice) return Gp.gp_practice_name;
+                                                    })}
+                                                    <i className="dropdown icon"></i>
+                                                  </a>
+                                              }
+                                            />
                                           </span>
                                           <span
                                             className="edit-icon"
                                             style={{
                                               background: "none",
                                               border: "none",
+                                              position: "absolute",
+                                              right: "0"
                                             }}
                                           >
                                             <div className="dropdown dropdown-action text-end">
@@ -1249,21 +1326,6 @@ useEffect(() => {
                                             </div>
                                           </span>
                                         </div>
-                                        <div className="text">
-                                          Start Date:{" "}
-                                          <span>{start_date}</span>
-                                        </div>
-                                        {description && description && (
-                                          <>
-                                            <div className="text">
-                                              Description:{" "}
-                                              <span>
-                                                <PopUpText text={description}/>
-                                              </span>
-                                            </div>
-                                          </>
-                                        )}
-                                      </div>
                                     );
                                   }
                                 })
@@ -1336,14 +1398,81 @@ useEffect(() => {
                                   } = med;
                                   if (resident === selectedResidentId) {
                                     return (
-                                      <div key={id} className="card plain-card">
-                                        <div className="text">
-                                          Name: <span>{medical_condition_name}</span>
+                                      <>
+                                      <div style={{position: "relative"}} key={id} className="card">
+                                          <span style={{width: "90%"}}>
+                                            <Popup
+                                              inline
+                                              hoverable
+                                              position="bottom left"
+                                              delay={{
+                                                show: 300,
+                                                hide: 800,
+                                              }}
+                                              content={
+                                                <Segment.Group>
+                                                      <Segment style={{ width: "250px" }}>
+                                                        <div className="ui column relaxed divided grid">
+                                                          <div className="column">
+                                                            <h4>{medical_condition_name}</h4>
+                                                            <div className="ui link list">
+                                                              <a className="item">{`Start Date: ${medical_condition_start_date}`}</a>
+                                                              <a className="item">{`End Date: ${medical_condition_end_date}`}</a>
+                                                              <a className="item">{`Status: ${medical_condition_state}`}</a>
+                                                              <a className="item">
+                                                                {medical_condition_description && medical_condition_description && (
+                                                                    <>
+                                                                      <div className="text">
+                                                                        Description:{" "}
+                                                                        <span>
+                                                                          <PopUpText text={medical_condition_description}/>
+                                                                        </span>
+                                                                      </div>
+                                                                    </>
+                                                                  )}
+                                                              </a>
+                                                              <a className="item">
+                                                                <div className="text">
+                                                                  Document:{" "}
+                                                                  <span>
+                                                                    {medical_condition_document &&
+                                                                    regex.test(medical_condition_document) ? (
+                                                                      <img
+                                                                        className="img-preview"
+                                                                        src={medical_condition_document}
+                                                                        alt="Preview"
+                                                                      />
+                                                                    ) : !medical_condition_document ? (
+                                                                      "--"
+                                                                    ) : (
+                                                                      <span className="files-icon">
+                                                                        <i className="fa fa-file-pdf-o" />
+                                                                      </span>
+                                                                    )}
+                                                                  </span>
+                                                                </div>
+                                                              </a>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </Segment>
+                                                </Segment.Group>
+                                              }
+                                              trigger={
+                                                  <a style={{color: "black"}}>
+                                                    {medical_condition_name}
+                                                    <i className="dropdown icon"></i>
+                                                  </a>
+                                              }
+                                            />
+                                          </span>
                                           <span
                                             className="edit-icon"
                                             style={{
                                               background: "none",
                                               border: "none",
+                                              position: "absolute",
+                                              right: "0"
                                             }}
                                           >
                                             <div className="dropdown dropdown-action text-end">
@@ -1383,39 +1512,7 @@ useEffect(() => {
                                             </div>
                                           </span>
                                         </div>
-                                        <div className="text">
-                                          Start Date: <span>{medical_condition_start_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          End Date: <span>{medical_condition_end_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          Status: <span>{medical_condition_state}</span>
-                                        </div>
-                                        <div className="text">
-                                          Description:{" "}
-                                          <span className="c">{medical_condition_description}</span>
-                                        </div>
-                                        <div className="text">
-                                          Document:{" "}
-                                          <span>
-                                            {medical_condition_document &&
-                                            regex.test(medical_condition_document) ? (
-                                              <img
-                                                className="img-preview"
-                                                src={medical_condition_document}
-                                                alt="Preview"
-                                              />
-                                            ) : !medical_condition_document ? (
-                                              "--"
-                                            ) : (
-                                              <span className="files-icon">
-                                                <i className="fa fa-file-pdf-o" />
-                                              </span>
-                                            )}
-                                          </span>
-                                        </div>
-                                      </div>
+                                      </>
                                     );
                                   }
                                 })
@@ -1477,14 +1574,89 @@ useEffect(() => {
                                   } = med;
                                   if (resident === selectedResidentId) {
                                     return (
-                                      <div key={id} className="card plain-card">
-                                        <div className="text">
-                                          Name: <span>{medication_name}</span>
+                                      <div style={{position: "relative"}} key={id} className="card">
+                                          <span style={{width: "90%"}}>
+                                            <Popup
+                                              inline
+                                              hoverable
+                                              position="bottom left"
+                                              delay={{
+                                                show: 300,
+                                                hide: 800,
+                                              }}
+                                              content={
+                                                <Segment.Group>
+                                                      <Segment style={{ width: "250px" }}>
+                                                        <div className="ui column relaxed divided grid">
+                                                          <div className="column">
+                                                            <h4>{medication_name}</h4>
+                                                            <div className="ui link list">
+                                                              <a className="item">{`Start Date: ${medication_start_date}`}</a>
+                                                              <a className="item">{`End Date: ${medication_end_date}`}</a>
+                                                              <a className="item">{`Dosage: ${medication_dosage}`}</a>
+                                                              <a className="item">{`Prescription Date: ${medication_prescription_date}`}</a>
+                                                              <a className="item">{`Frequency: ${medication_frequency}`}</a>
+                                                              <a className="item">{`Status: ${medication_state}`}</a>
+                                                              <a className="item">
+                                                                {gPracticeData?.map((Gp) => {
+                                                                    if (Gp.id === gp) return Gp.gp_practice_name;
+                                                                  }
+                                                                )}
+                                                              </a>
+                                                              <a className="item">
+                                                                {medication_description && medication_description && (
+                                                                    <>
+                                                                      <div className="text">
+                                                                        Description:{" "}
+                                                                        <span>
+                                                                          <PopUpText text={medication_description}/>
+                                                                        </span>
+                                                                      </div>
+                                                                    </>
+                                                                  )}
+                                                              </a>
+                                                              <a className="item">
+                                                                <div className="text">
+                                                                  Document:{" "}
+                                                                  <span>
+                                                                    {medication_document &&
+                                                                    regex.test(medication_document) ? (
+                                                                      <img
+                                                                        className="img-preview"
+                                                                        src={medication_document}
+                                                                        alt="Preview"
+                                                                      />
+                                                                    ) : !medication_document ? (
+                                                                      "--"
+                                                                    ) : (
+                                                                      <span className="files-icon">
+                                                                        <i className="fa fa-file-pdf-o" />
+                                                                      </span>
+                                                                    )}
+                                                                  </span>
+                                                                </div>
+                                                              </a>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </Segment>
+                                                </Segment.Group>
+                                              }
+                                              trigger={
+                                                  <a style={{color: "black"}}>
+                                                    {medication_name}
+                                                    <i className="dropdown icon"></i>
+                                                  </a>
+                                              }
+                                            />
+                                          </span>
                                           <span
                                             className="edit-icon"
                                             style={{
                                               background: "none",
                                               border: "none",
+                                              position: "absolute",
+                                              right: "0"
                                             }}
                                           >
                                             <div className="dropdown dropdown-action text-end">
@@ -1514,7 +1686,9 @@ useEffect(() => {
                                                 </a>
                                                 <a
                                                   className="dropdown-item"
-                                                  onClick={() => handleDeleteResidentMedication(id)}
+                                                  onClick={() =>
+                                                    handleDeleteResidentMedication(id)
+                                                  }
                                                 >
                                                   <i className="fa fa-trash-o m-r-5" /> Delete
                                                 </a>
@@ -1522,57 +1696,6 @@ useEffect(() => {
                                             </div>
                                           </span>
                                         </div>
-                                        <div className="text">
-                                          Start Date: <span>{medication_start_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          End Date: <span>{medication_end_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          Prescription Date:{" "}
-                                          <span>{medication_prescription_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          GP:{" "}
-                                          <span>
-                                            {gPracticeData?.map((Gp) => {
-                                              if (Gp.id === gp) return Gp.gp_practice_name;
-                                            })}
-                                          </span>
-                                        </div>
-                                        <div className="text">
-                                          Dosage: <span>{medication_dosage}</span>
-                                        </div>
-                                        <div className="text">
-                                          Frequency: <span>{medication_frequency}</span>
-                                        </div>
-                                        <div className="text">
-                                          Status: <span>{medication_state}</span>
-                                        </div>
-                                        <div className="text">
-                                          Description:{" "}
-                                          <span className="c">{medication_description}</span>
-                                        </div>
-                                        <div className="text">
-                                          Document:{" "}
-                                          <span>
-                                            {medication_document &&
-                                            regex.test(medication_document) ? (
-                                              <img
-                                                className="img-preview"
-                                                src={medication_document}
-                                                alt="Preview"
-                                              />
-                                            ) : !medication_document ? (
-                                              "--"
-                                            ) : (
-                                              <span className="files-icon">
-                                                <i className="fa fa-file-pdf-o" />
-                                              </span>
-                                            )}
-                                          </span>
-                                        </div>
-                                      </div>
                                     );
                                   }
                                 })
