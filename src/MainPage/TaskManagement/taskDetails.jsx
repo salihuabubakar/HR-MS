@@ -29,41 +29,11 @@ import AssignmentBody from "./component/assignmentBody";
 import { Wrapper } from "../ServiceWork/style";
 import "./loadspiner.css"
 import { ProgressDiv, ProgressSpan } from "../../utils/helperFucntions";
+import { Popup, Segment  } from "semantic-ui-react";
+import { CardWidth } from "../Employees/Employees/styles";
+import { handleFileDownload } from "../../utils/helperFucntions";
 
 const TaskDetails = () => {
-  const handleFileDownload = (file) => {
-    const a = document.createElement("a");
-    a.href = file;
-
-    const fileExtension = file.split(".").pop().toLowerCase();
-
-    // Set the MIME type based on the file extension
-    let mimeType;
-    if (fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "JPG") {
-      mimeType = "image/jpeg";
-    } else if (fileExtension === "png" || fileExtension === "PNG") {
-      mimeType = "image/png";
-    } else if (fileExtension === "pdf") {
-      mimeType = "application/pdf";
-    } else if (fileExtension === "webp") {
-      mimeType = "image/webp";
-    } else if (fileExtension === "txt") {
-      mimeType = "text/plain";
-    } else if (fileExtension === "xls" || fileExtension === "xlsx") {
-      mimeType = "application/vnd.ms-excel";
-    } else if (fileExtension === "doc" || fileExtension === "docx") {
-      mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    } else {
-      mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
-    }
-
-    // Set the MIME type of the file
-    a.type = mimeType;
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
 
   const location = useLocation();
   const selectedTaskId = location?.state?.id;
@@ -715,57 +685,82 @@ const TaskDetails = () => {
                               const { id, task, name, document } = doc;
                               if (task == selectedTaskId) {
                                 return (
-                                  <div key={id} className="card">
-                                    <a className="name">
-                                      Document Name: {name}
-                                      <span
-                                        className="edit-icon"
-                                        style={{
-                                          background: "none",
-                                          border: "none",
-                                        }}
-                                      >
-                                        <div className="dropdown dropdown-action text-end">
+                                  <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3">
+                                      <div className="dropdown-file">
+                                        <a href="" className="dropdown-link" data-bs-toggle="dropdown"><i className="fa fa-ellipsis-v" /></a>
+                                        <div className="dropdown-menu dropdown-menu-right">
                                           <a
-                                            className="action-icon dropdown-toggle"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false"
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditTaskDocuments(index, id)
+                                            }
                                           >
-                                            <i className="material-icons">more_vert</i>
+                                            <i className="fa fa-pencil m-r-5" /> Edit
                                           </a>
-                                          <div className="dropdown-menu dropdown-menu-right">
+                                          {document && (
                                             <a
                                               className="dropdown-item"
-                                              onClick={() => handleFileDownload(document)}
+                                              onClick={() =>
+                                                handleFileDownload(document)
+                                              }
                                             >
                                               <i className="fa fa-download m-r-5" /> Download
                                             </a>
-                                            <a
-                                              className="dropdown-item"
-                                              onClick={() => handleEditTaskDocuments(index, id)}
-                                            >
-                                              <i className="fa fa-pencil m-r-5" /> Edit
-                                            </a>
-                                            <a
-                                              className="dropdown-item"
-                                              onClick={() => handleTaskDocumentDelete(id)}
-                                            >
-                                              <i className="fa fa-trash-o m-r-5" /> Delete
-                                            </a>
-                                          </div>
+                                          )}
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() => handleTaskDocumentDelete(id)}
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" /> Delete
+                                          </a>
                                         </div>
-                                      </span>
-                                    </a>
-                                    <div>
-                                      {document && regex.test(document) ? (
-                                        <img className="img-preview" src={document} alt="Preview" />
-                                      ) : !document ? null : (
-                                        <span className="files-icon">
-                                          <i className="fa fa-file-pdf-o" />
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
+                                      </div>
+                                      <div className="card-file-thumb">
+                                        {document &&
+                                          regex.test(document) ? (
+                                            <img
+                                              className="img-preview doc-image"
+                                              src={document}
+                                              alt="Preview"
+                                            />
+                                          ) : !document ? (
+                                            <span>No File</span>
+                                          ) : (
+                                            <i className="fa fa-file-o" />
+                                        )}
+                                      </div>
+                                      <div className="card-body">
+                                        <h6>
+                                          <a href="">
+                                            <Popup
+                                              inline
+                                              hoverable
+                                              position="top left"
+                                              delay={{
+                                                show: 300,
+                                                hide: 800,
+                                              }}
+                                              content={
+                                                <Segment.Group>
+                                                      <Segment style={{ width: "250px" }}>
+                                                        <div className="ui column relaxed divided grid">
+                                                          <div className="column">
+                                                            <h4>{`Doc Name: ${name}`}</h4>
+                                                          </div>
+                                                        </div>
+                                                      </Segment>
+                                                </Segment.Group>
+                                              }
+                                              trigger={
+                                                  <a style={{color: "black"}}>
+                                                    {name}
+                                                  </a>
+                                              }
+                                            />
+                                          </a>
+                                        </h6>
+                                      </div>
+                                  </CardWidth>
                                 );
                               }
                             })
@@ -972,14 +967,6 @@ const TaskDetails = () => {
                 <div className="card-body">
                   <h6 className="card-title m-b-20">
                     Assigned Team
-                    {/* <button
-                      type="button"
-                      className="float-end btn btn-primary btn-sm"
-                      data-bs-toggle="modal"
-                      data-bs-target="#assign_user"
-                    >
-                      <i className="fa fa-plus" /> Update
-                    </button> */}
                   </h6>
                   <ul className="list-box">
                     {totalAssignedEmployees?.length > 0

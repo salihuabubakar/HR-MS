@@ -6,6 +6,7 @@ import PopUpText from "../../_components/modelbox/PopUpText";
 import axios from "axios";
 import { BaseUrl } from "../../utils/baseUrl";
 import { Popup, Segment  } from "semantic-ui-react";
+import { CardWidth } from "../Employees/Employees/styles";
 import {
   useResidentSchoolFetching,
   useResidentEducationFetching,
@@ -62,7 +63,7 @@ import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { Helmet } from "react-helmet";
 import { ProgressSpan, ProgressDiv } from "../../utils/helperFucntions";
 import NoAvailableData from "../../_components/noAvailableData";
-import { left } from "@popperjs/core";
+import { handleFileDownload } from "../../utils/helperFucntions";
 
 const Profile = ({
   DefaultImage,
@@ -92,44 +93,6 @@ const Profile = ({
     setGlobalState("appointmentError", "");
     setGlobalState("rSocialWorkerError", "");
     setGlobalState("referralError", "");
-  };
-  const handleFileDownload = (file) => {
-    const a = document.createElement("a");
-    a.href = file;
-
-    const fileExtension = file.split(".").pop().toLowerCase();
-
-    // Set the MIME type based on the file extension
-    let mimeType;
-    if (
-      fileExtension === "jpg" ||
-      fileExtension === "jpeg" ||
-      fileExtension === "JPG"
-    ) {
-      mimeType = "image/jpeg";
-    } else if (fileExtension === "png" || fileExtension === "PNG") {
-      mimeType = "image/png";
-    } else if (fileExtension === "pdf") {
-      mimeType = "application/pdf";
-    } else if (fileExtension === "webp") {
-      mimeType = "image/webp";
-    } else if (fileExtension === "txt") {
-      mimeType = "text/plain";
-    } else if (fileExtension === "xls" || fileExtension === "xlsx") {
-      mimeType = "application/vnd.ms-excel";
-    } else if (fileExtension === "doc" || fileExtension === "docx") {
-      mimeType =
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    } else {
-      mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
-    }
-
-    // Set the MIME type of the file
-    a.type = mimeType;
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
   };
 
   const location = useLocation();
@@ -2513,81 +2476,90 @@ useEffect(() => {
                                   } = doc;
                                   if (resident === selectedResidentId) {
                                     return (
-                                      <div key={id} className="card">
-                                        <a className="name">
-                                          Document Number: {document_number}
-                                          <span
-                                            className="edit-icon"
-                                            style={{
-                                              background: "none",
-                                              border: "none",
-                                            }}
-                                          >
-                                            <div className="dropdown dropdown-action text-end">
+                                      <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3">
+                                        <div className="dropdown-file">
+                                          <a href="" className="dropdown-link" data-bs-toggle="dropdown"><i className="fa fa-ellipsis-v" /></a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleEditResidentDocument(id, index)
+                                              }
+                                            >
+                                              <i className="fa fa-pencil m-r-5" /> Edit
+                                            </a>
+                                            {document && (
                                               <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
+                                                className="dropdown-item"
+                                                onClick={() =>
+                                                  handleFileDownload(document)
+                                                }
                                               >
-                                                <i className="material-icons">more_vert</i>
+                                                <i className="fa fa-download m-r-5" /> Download
                                               </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleFileDownload(document)}
-                                                >
-                                                  <i className="fa fa-download m-r-5" /> Download
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditResidentDocument(id, index)
-                                                  }
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleDeleteResidentDocument(id)}
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </div>
-                                          </span>
-                                        </a>
-                                        <div className="document-name">
-                                          Document Name: {document_name}
+                                            )}
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleDeleteResidentDocument(id)}
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" /> Delete
+                                            </a>
+                                          </div>
                                         </div>
-                                        <span>
-                                          Date: {moment(issue_date).format("DD MMM YYYY")} -{" "}
-                                          {expiry_date && moment(expiry_date).format("DD MMM YYYY")}
-                                        </span>
-                                        <div>Status: {status}</div>
-                                        <div>
-                                          Verification:{" "}
-                                          {verified === true ? "Varified" : "Not varified"}
-                                        </div>
-                                        <div>
-                                          Document Type:{" "}
-                                          {residentDocumentTypeData?.map((doc) => {
-                                            if (doc.id === document_type) return doc.document_type;
-                                          })}
-                                        </div>
-                                        <div>
-                                          {document && regex.test(document) ? (
-                                            <img
-                                              className="img-preview"
-                                              src={document}
-                                              alt="Preview"
-                                            />
-                                          ) : !document ? null : (
-                                            <span className="files-icon">
-                                              <i className="fa fa-file-pdf-o" />
-                                            </span>
+                                        <div className="card-file-thumb">
+                                          {document &&
+                                            regex.test(document) ? (
+                                              <img
+                                                className="img-preview doc-image"
+                                                src={document}
+                                                alt="Preview"
+                                              />
+                                            ) : !document ? (
+                                              <span>No File</span>
+                                            ) : (
+                                              <i className="fa fa-file-o" />
                                           )}
                                         </div>
-                                      </div>
+                                        <div className="card-body">
+                                          <h6>
+                                            <a href="">
+                                              <Popup
+                                                inline
+                                                hoverable
+                                                position="top left"
+                                                delay={{
+                                                  show: 300,
+                                                  hide: 800,
+                                                }}
+                                                content={
+                                                  <Segment.Group>
+                                                        <Segment style={{ width: "250px" }}>
+                                                          <div className="ui column relaxed divided grid">
+                                                            <div className="column">
+                                                              <h4>{`Doc Name: ${document_name}`}</h4>
+                                                              <div className="ui link list">
+                                                                <a className="item">{`Doc Number: ${document_number}`}</a>
+                                                                <a className="item">{`Issue Date: ${issue_date}`}</a>
+                                                                <a className="item">{`Expiry Date: ${expiry_date}`}</a>
+                                                                <a className="item">{`Doc Type: ${document_type}`}</a>
+                                                                <a className="item">{`Verification: ${verified}`}</a>
+                                                                <a className="item">{`Status: ${status}`}</a>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </Segment>
+                                                  </Segment.Group>
+                                                }
+                                                trigger={
+                                                    <a style={{color: "black"}}>
+                                                      {document_name}
+                                                    </a>
+                                                }
+                                              />
+                                            </a>
+                                          </h6>
+                                        </div>
+                                      </CardWidth>
                                     );
                                   }
                                 })

@@ -16,6 +16,7 @@ import moment from "moment";
 import PopUpText from "../../../_components/modelbox/PopUpText";
 import { useSearch } from "../../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../../_components/searchComponent";
+import { handleFileDownload } from "../../../utils/helperFucntions";
 
 const Review = () => {
 
@@ -70,45 +71,6 @@ const Review = () => {
   const handleDeleteReview = (id) => {
     setReviewId(id);
     setGlobalState("deleteModal", true);
-  };
-
-  const handleFileDownload = (file) => {
-    const a = document.createElement("a");
-    a.href = file;
-
-    const fileExtension = file.split(".").pop().toLowerCase();
-
-    // Set the MIME type based on the file extension
-    let mimeType;
-    if (
-      fileExtension === "jpg" ||
-      fileExtension === "jpeg" ||
-      fileExtension === "JPG"
-    ) {
-      mimeType = "image/jpeg";
-    } else if (fileExtension === "png" || fileExtension === "PNG") {
-      mimeType = "image/png";
-    } else if (fileExtension === "pdf") {
-      mimeType = "application/pdf";
-    } else if (fileExtension === "webp") {
-      mimeType = "image/webp";
-    } else if (fileExtension === "txt") {
-      mimeType = "text/plain";
-    } else if (fileExtension === "xls" || fileExtension === "xlsx") {
-      mimeType = "application/vnd.ms-excel";
-    } else if (fileExtension === "doc" || fileExtension === "docx") {
-      mimeType =
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    } else {
-      mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
-    }
-
-    // Set the MIME type of the file
-    a.type = mimeType;
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
   };
 
   const toggleMobileMenu = () => {

@@ -138,3 +138,30 @@ export const RepeatModalContainer = styled.div`
     margin-top: 20px;
   }
 `;
+
+export const CardWidth = styled.div`
+  width: 15% !important;
+
+  @media (max-width: 1444px) {
+    width: 20% !important;
+  }
+
+  @media (max-width: 1121px) {
+    width: 25% !important;
+  }
+
+  ${smallScreenLaptop} {
+    width: 45% !important;
+  }
+
+  ${mobile} {
+    width: 45% !important;
+  }
+
+  .doc-image {
+    width: 100px;
+    height: 100px;
+    border: none;
+    border-radius: 2px;
+  }
+`;

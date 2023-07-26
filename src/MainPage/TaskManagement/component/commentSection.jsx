@@ -95,18 +95,13 @@ const CommentSection = ({ task, selecetedTaskId }) => {
             <div>
               <div className="chat-box">
                 {taskChatData
-                  ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort in descending order based on created_at
+                  ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                   .map((comment, index) => {
                     const { id, message, task, sender, created_at } = comment;
                     const currentSender = allEmployee?.find((s) => s.id === sender);
                     if (task === selecetedTaskId) {
-                      {/* const timestamp = created_at;
-                      const formattedTime = moment
-                        .utc(timestamp)
-                        .utcOffset("+00:00")
-                        .format("hh:mm A"); */}
-                        const currentTime = moment(); // Current time
-                        const messageTime = moment(created_at); // Time when the message was sent
+                        const currentTime = moment();
+                        const messageTime = moment(created_at);
 
                         const diffInMinutes = currentTime.diff(messageTime, "minutes");
                         const diffInHours = currentTime.diff(messageTime, "hours");

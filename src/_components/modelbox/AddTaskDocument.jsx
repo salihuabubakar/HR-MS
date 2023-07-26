@@ -113,7 +113,7 @@ const AddEmployeeDocument = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document File Upload</label>{" "}
+                          <label className="col-form-label">Document File Upload</label>{" "}
                           <span className="text-danger">*</span>
                           <input
                             onChange={handleFileUpload}
