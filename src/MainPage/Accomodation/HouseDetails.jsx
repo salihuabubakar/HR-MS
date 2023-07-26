@@ -15,6 +15,9 @@ import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import { Wrapper } from "../ServiceWork/style";
 import axios from "axios"
 import { BaseUrl } from '../../utils/baseUrl';
+import { Popup, Segment  } from "semantic-ui-react";
+import { CardWidth } from '../Employees/Employees/styles';
+import PopUpText from '../../_components/modelbox/PopUpText';
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
@@ -47,47 +50,9 @@ import moment from "moment";
 import Header from '../../initialpage/Sidebar/header';
 import Sidebar from '../../initialpage/Sidebar/sidebar';
 import { Helmet } from 'react-helmet';
+import { handleFileDownload } from '../../utils/helperFucntions';
 
 const HouseDetails = () => {
-  const handleFileDownload = (file) => {
-    const a = document.createElement("a");
-    a.href = file;
-
-    const fileExtension = file.split(".").pop().toLowerCase();
-
-    // Set the MIME type based on the file extension
-    let mimeType;
-    if (
-      fileExtension === "jpg" ||
-      fileExtension === "jpeg" ||
-      fileExtension === "JPG"
-    ) {
-      mimeType = "image/jpeg";
-    } else if (fileExtension === "png" || fileExtension === "PNG") {
-      mimeType = "image/png";
-    } else if (fileExtension === "pdf") {
-      mimeType = "application/pdf";
-    } else if (fileExtension === "webp") {
-      mimeType = "image/webp";
-    } else if (fileExtension === "txt") {
-      mimeType = "text/plain";
-    } else if (fileExtension === "xls" || fileExtension === "xlsx") {
-      mimeType = "application/vnd.ms-excel";
-    } else if (fileExtension === "doc" || fileExtension === "docx") {
-      mimeType =
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    } else {
-      mimeType = "application/octet-stream"; // Fallback MIME type for unknown file types
-    }
-
-    // Set the MIME type of the file
-    a.type = mimeType;
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-
   const location = useLocation();
   let getHouseId = location?.state?.id;
   const [isSelectedLoading, setIsSelectedLoading] = useState(false);
@@ -1607,86 +1572,99 @@ const toggleMobileMenu = () => {
                             } = doc;
                             if (house == houseId) {
                               return (
-                                <div key={id} className="card">
-                                  <a className="name">
-                                    Document Name: {title}
-                                    <span
-                                      className="edit-icon"
-                                      style={{
-                                        background: "none",
-                                        border: "none",
-                                      }}
-                                    >
-                                      <div className="dropdown dropdown-action text-end">
+                                <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3">
+                                  <div className="dropdown-file">
+                                    <a href="" className="dropdown-link" data-bs-toggle="dropdown"><i className="fa fa-ellipsis-v" /></a>
+                                    <div className="dropdown-menu dropdown-menu-right">
+                                      <a
+                                        className="dropdown-item"
+                                        onClick={() =>
+                                          handleEditHouseDocuments(id, index)
+                                        }
+                                      >
+                                        <i className="fa fa-pencil m-r-5" /> Edit
+                                      </a>
+                                      {file && (
                                         <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleFileDownload(file)
+                                          }
                                         >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
+                                          <i className="fa fa-download m-r-5" /> Download
                                         </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleFileDownload(
-                                                file
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-download m-r-5" />{" "}
-                                            Download
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditHouseDocuments(
-                                                id,
-                                                index
-                                              )
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteHouseDocuments(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </span>
-                                  </a>
-                                  <span>
-                                    Valid From: {""}
-                                    {moment(valid_from).format("DD MMM YYYY")} - To: {" "}
-                                    {expiry_date &&
-                                      moment(expiry_date).format("DD MMM YYYY")}
-                                  </span>
-                                  <div>Status: {status}</div>
-                                  <div>Description: {description}</div>
-                                  <div>
+                                      )}
+                                      <a
+                                        className="dropdown-item"
+                                        onClick={() => handleDeleteHouseDocuments(id)}
+                                      >
+                                        <i className="fa fa-trash-o m-r-5" /> Delete
+                                      </a>
+                                    </div>
+                                  </div>
+                                  <div className="card-file-thumb">
                                     {file &&
-                                    regex.test(file) ? (
-                                      <img
-                                        className="img-preview"
-                                        src={file}
-                                        alt="Preview"
-                                      />
-                                    ) : !file ? null : (
-                                      <span className="files-icon">
-                                        <i className="fa fa-file-pdf-o" />
-                                      </span>
+                                      regex.test(file) ? (
+                                        <img
+                                          className="img-preview doc-image"
+                                          src={file}
+                                          alt="Preview"
+                                        />
+                                      ) : !file ? (
+                                        <span>No File</span>
+                                      ) : (
+                                        <i className="fa fa-file-o" />
                                     )}
                                   </div>
-                                </div>
+                                  <div className="card-body">
+                                    <h6>
+                                      <a href="">
+                                        <Popup
+                                          inline
+                                          hoverable={true}
+                                          position="top left"
+                                          delay={{
+                                            show: 300,
+                                            hide: 800,
+                                          }}
+                                          content={
+                                            <Segment.Group>
+                                                  <Segment style={{ width: "250px" }}>
+                                                    <div className="ui column relaxed divided grid">
+                                                      <div className="column">
+                                                        <h4>{`Doc Name: ${title}`}</h4>
+                                                        <div className="ui link list">
+                                                          <a className="item">{`Valid From: ${valid_from}`}</a>
+                                                          <a className="item">{`Expiry Date: ${expiry_date}`}</a>
+                                                          <a className="item">
+                                                              {description && description && (
+                                                                  <>
+                                                                    <div className="text">
+                                                                      Description:{" "}
+                                                                      <span>
+                                                                        <PopUpText text={description}/>
+                                                                      </span>
+                                                                    </div>
+                                                                  </>
+                                                                )}
+                                                            </a>
+                                                          <a className="item">{`Status: ${status}`}</a>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </Segment>
+                                            </Segment.Group>
+                                          }
+                                          trigger={
+                                              <a style={{color: "black"}}>
+                                                {title}
+                                              </a>
+                                          }
+                                        />
+                                      </a>
+                                    </h6>
+                                  </div>
+                                </CardWidth>
                               );
                             }
                           })
