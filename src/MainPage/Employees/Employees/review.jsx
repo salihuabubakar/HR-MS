@@ -225,7 +225,7 @@ const Review = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Employee - Peepal Tree HRMS</title>
+          <title>Review - Peepal Tree HRMS</title>
           <meta name="description" content="Login page" />
         </Helmet>
         {/* Page Content */}

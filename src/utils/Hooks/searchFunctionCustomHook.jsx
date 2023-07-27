@@ -32,7 +32,8 @@ export const useSearch = (data) => {
         resident,
         gp_practice_name,
         solicitor_name,
-        school_name
+        school_name,
+        organisation_name
       } = item;
       const matchedEmployee = allEmployee?.find((e) => e.id === employee);
       const matchedResident = residentData?.find((r) => r.id === resident);
@@ -62,7 +63,8 @@ export const useSearch = (data) => {
           resident?.toLocaleLowerCase()?.includes(query) ||
           gp_practice_name?.toLocaleLowerCase()?.includes(query) ||
           solicitor_name?.toLocaleLowerCase()?.includes(query) ||
-          school_name?.toLocaleLowerCase()?.includes(query)
+          school_name?.toLocaleLowerCase()?.includes(query) ||
+          organisation_name?.toLocaleLowerCase()?.includes(query)
         );
       }
     });

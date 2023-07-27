@@ -388,8 +388,9 @@ const Profile = ({
                         ) : (
                           <>
                             <div className="profile-img">
-                              <a>
+                              <a className="avatar">
                                 <img alt="" src={photo ? photo : DefaultImage} />
+                                <span className="status online" />
                               </a>
                             </div>
                           </>
@@ -413,15 +414,7 @@ const Profile = ({
                                   <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
 
                                   <h6 style={{ display: "flex" }} className="text-muted">
-                                    <div
-                                      style={{
-                                        borderRadius: "50%",
-                                        height: "10px",
-                                        width: "10px",
-                                        backgroundColor: "lightgreen",
-                                        marginRight: "5px",
-                                      }}
-                                    ></div>
+                                    <span className="status online" />
                                     {employeeStatus == Number(employeeStatus)
                                       ? "Active"
                                       : employeeStatus}
