@@ -296,3 +296,20 @@
 }
 
 
+/* Styling for contact page */
+.main-container {
+  position: relative;
+}
+
+.aside {
+  margin: 1%;
+}
+
+.right-content {
+  border: 1px solid #ddd;
+}
+
+.right-content > li {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1%;
+}
