@@ -3,6 +3,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const fs = require('fs');
+const Dotenv = require('dotenv-webpack');
 
   //const publicPath = '/orange/';
 const publicPath = '/';
@@ -154,6 +155,7 @@ performance: {
           $: 'jquery',
           jQuery: 'jquery',
           'window.jQuery': 'jquery'
-        })
+        }),
+        new Dotenv(),
     ]
 };
