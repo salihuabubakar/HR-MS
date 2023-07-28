@@ -18,6 +18,7 @@ import { BaseUrl } from '../../utils/baseUrl';
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from '../Employees/Employees/styles';
 import PopUpText from '../../_components/modelbox/PopUpText';
+import { EmployeeImgCard } from '../Employees/Employees/styles';
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
@@ -488,11 +489,11 @@ const toggleMobileMenu = () => {
   );
 
   const filteredResidents = houseResidentData?.filter(
-    (resident) => resident.house === houseId
+    (resident) => resident.house === houseId && resident.status === "Active"
   );
 
   const filteredEmployees = houseEmployeeData?.filter(
-    (employee) => employee.house === houseId
+    (employee) => employee.house === houseId && employee.status === "Active"
   );
 
   // Checks if the uploaded document contain any of this extentions.
@@ -573,51 +574,50 @@ const toggleMobileMenu = () => {
                             </h6>
                             <h6 className="text-muted">Mobile: {mobile}</h6>
                             <h6 className="text-muted">Email: {email}</h6>
-                            <h6 className="text-muted">
-                              House Type: {house_type}
-                            </h6>
-                            <h6 className="text-muted">
-                              Roof Type: {roof_type}
-                            </h6>
-                            <h6 className="text-muted">
-                              Floor Type: {floor_type}
-                            </h6>
-                            <h6 className="text-muted">
-                              Garage: {garage ? "True" : "False"}
-                            </h6>
-                            <h6 className="text-muted">
-                              Basement: {basement ? "True" : "False"}
-                            </h6>
-                            <h6 className="text-muted">
-                              Pool: {pool ? "True" : "False"}
-                            </h6>
-                            <h6 className="text-muted">
-                              Back Yard: {back_yard ? "True" : "False"}
-                            </h6>
-                            <h6 className="text-muted">
-                              Air Condition:{" "}
-                              {air_conditioning ? "True" : "False"}
-                            </h6>
-                            <h6 className="text-muted">
-                              Heating System:{" "}
-                              {heating_system ? "True" : "False"}
-                            </h6>
+                            <Popup
+                              inline
+                              hoverable
+                              position="bottom left"
+                              delay={{
+                                show: 300,
+                                hide: 800,
+                              }}
+                              content={
+                                <Segment.Group>
+                                      <Segment style={{ width: "250px" }}>
+                                        <div className="ui column relaxed divided grid">
+                                          <div className="column">
+                                            <div className="ui link list">
+                                              {/* <a className="item">{`Start Date: ${moment(join_date).format("DD MMM YYYY")}`}</a> */}
+                                              <a className="item">{`House Type: ${house_type}`}</a>
+                                              <a className="item">{`Roof Type: ${roof_type}`}</a>
+                                              <a className="item">{`Floor Type: ${floor_type}`}</a>
+                                              <a className="item">{`Garage: ${garage ? "True" : "False"}`}</a>
+                                              <a className="item">{`Basement: ${basement ? "True" : "False"}`}</a>
+                                              <a className="item">{`Pool: ${pool ? "True" : "False"}`}</a>
+                                              <a className="item">{`Back Yard: ${back_yard ? "True" : "False"}`}</a>
+                                              <a className="item">{`Air Condition: ${air_conditioning ? "True" : "False"}`}</a>
+                                              <a className="item">{`Heating System: ${heating_system ? "True" : "False"}`}</a>
+                                              <a className="item">{`Security System: ${security_system ? "True" : "False"}`}</a>
+                                              <a className="item">{`Solar Panel: ${solar_panels ? "True" : "False"}`}</a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </Segment>
+                                </Segment.Group>
+                              }
+                              trigger={
+                                  <a>
+                                    View More
+                                  </a>
+                              }
+                            />
                           </div>
-                          <h6 className="text-muted">
-                            Fire Place: {fireplace ? "True" : "False"}
-                          </h6>
-                          <h6 className="text-muted">
-                            Security System:{" "}
-                            {security_system ? "True" : "False"}
-                          </h6>
-                          <h6 className="text-muted">
-                            Solar Panel: {solar_panels ? "True" : "False"}
-                          </h6>
                         </div>
 
                         <div className="col-md-7">
                           <ul className="personal-info">
-                            <li>
+                            {/* <li>
                               <div className="title">Address:</div>
                               <div className="text">
                                 <a>{`${street_address}, ${city}`}</a>
@@ -664,7 +664,7 @@ const toggleMobileMenu = () => {
                               <div className="text">
                                 <a>{`${num_floors}`}</a>
                               </div>
-                            </li>
+                            </li> */}
                             <li>
                               <div className="title">
                                 Total no of employees:
@@ -689,6 +689,41 @@ const toggleMobileMenu = () => {
                                 </a>
                               </div>
                             </li>
+                            <Popup
+                              inline
+                              hoverable
+                              position="bottom left"
+                              delay={{
+                                show: 300,
+                                hide: 800,
+                              }}
+                              content={
+                                <Segment.Group>
+                                      <Segment style={{ width: "250px" }}>
+                                        <div className="ui column relaxed divided grid">
+                                          <div className="column">
+                                            <div className="ui link list">
+                                              {/* <a className="item">{`Start Date: ${moment(join_date).format("DD MMM YYYY")}`}</a> */}
+                                              <a className="item">{`Address: ${street_address}, ${city}`}</a>
+                                              <a className="item">{`Post Code: ${postcode}`}</a>
+                                              <a className="item">{`Year Built: ${year_built}`}</a>
+                                              <a className="item">{`Square Footage: ${square_footage}`}</a>
+                                              <a className="item">{`No of bedromm: ${num_bedrooms}`}</a>
+                                              <a className="item">{`No of bathroom: ${num_bathrooms}`}</a>
+                                              <a className="item">{`No of kitchens: ${num_kitchens}`}</a>
+                                              <a className="item">{`No of floors: ${num_floors}`}</a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </Segment>
+                                </Segment.Group>
+                              }
+                              trigger={
+                                  <a>
+                                    View More
+                                  </a>
+                              }
+                            />
                           </ul>
                         </div>
                       </>
@@ -706,11 +741,11 @@ const toggleMobileMenu = () => {
             <ul className="nav nav-tabs nav-tabs-bottom">
               <li className="nav-item">
                 <a
-                  href="#residents"
+                  href="#persons"
                   data-bs-toggle="tab"
                   className="nav-link active"
                 >
-                  Residents
+                  Persons
                 </a>
               </li>
               <li className="nav-item">
@@ -775,7 +810,7 @@ const toggleMobileMenu = () => {
       </div>
       <div className="tab-content">
         {/* Resident Info Tab */}
-        <div id="residents" className="pro-overview tab-pane fade show active">
+        <div id="persons" className="pro-overview tab-pane fade show active">
           <div className="row">
             {isSelectedLoading ? (
               <div className="skeleton-container-profile">
@@ -817,82 +852,118 @@ const toggleMobileMenu = () => {
                           <i className="fa fa-plus" />
                         </a>
                       </h3>
-                      <div className="table-responsive">
-                        <table className="table table-nowrap">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {houseEmployeeData?.length > 0 ? (
-                              houseEmployeeData?.map((employees, index) => {
-                                const {
-                                  id,
-                                  employee,
-                                  status,
-                                  house,
-                                  join_date,
-                                  end_date,
-                                } = employees;
-                                if (house === houseId) {
-                                  return (
-                                    <tr style={{ height: "90px" }} key={id}>
-                                      <td>
-                                        {allEmployee?.map((allE) => {
-                                          if (employee === allE.id)
-                                            return (
-                                              <React.Fragment key={employee}>
-                                                {`${allE.first_name} ${allE.middle_name} ${allE.last_name}`}
-                                              </React.Fragment>
-                                            );
-                                        })}
-                                      </td>
-                                      <td>{status}</td>
-                                      <td className="dropdown dropdown-action text-end">
+                      <Wrapper>
+                        {houseEmployeeData?.length > 0 ? (
+                          houseEmployeeData.map((employees, index) => {
+                            const {
+                              id,
+                              employee,
+                              status,
+                              house,
+                              join_date,
+                              end_date,
+                            } = employees;
+                            if (house === houseId && status === "Active") {
+                              return (
+                                <EmployeeImgCard key={id} className="card employee-img-card">
+                                  <span style={{width: "90%"}}>
+                                    <Popup
+                                      inline
+                                      hoverable
+                                      position="bottom left"
+                                      delay={{
+                                        show: 300,
+                                        hide: 800,
+                                      }}
+                                      content={
+                                        <Segment.Group>
+                                              <Segment style={{ width: "250px" }}>
+                                                <div className="ui column relaxed divided grid">
+                                                  <div className="column">
+                                                    <h4>
+                                                    {allEmployee?.map((allE) => {
+                                                      if (employee === allE.id)
+                                                        return (
+                                                          <React.Fragment key={employee}>
+                                                            {`${allE.first_name} ${allE.middle_name} ${allE.last_name}`}
+                                                          </React.Fragment>
+                                                        );
+                                                    })}
+                                                    </h4>
+                                                    <div className="ui link list">
+                                                      <a className="item">{`Start Date: ${moment(join_date).format("DD MMM YYYY")}`}</a>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </Segment>
+                                        </Segment.Group>
+                                      }
+                                      trigger={
+                                          <a style={{color: "black"}}>
+                                            {allEmployee?.map((allE) => {
+                                              if (employee === allE.id)
+                                                return (
+                                                  <React.Fragment key={allE.id}>
+                                                    <h2 className="table-avatar">
+                                                      <Link
+                                                        to="#"
+                                                        onClick={(e) => e.preventDefault()}
+                                                        className="avatar"
+                                                        style={{
+                                                          borderRadius: "5px",
+                                                          backgroundColor: "#00000000",
+                                                          height: "100%",
+                                                        }}
+                                                      >
+                                                        <img
+                                                          style={{ width: "40px", height: "40px" }}
+                                                          alt=""
+                                                          src={allE.photo ? allE.photo : DefaultImage}
+                                                        />
+                                                      </Link>
+                                                    </h2>
+                                                  </React.Fragment>
+                                                );
+                                            })}
+                                          </a>
+                                      }
+                                    />
+                                  </span>
+                                  <span
+                                    className="edit-icon"
+                                  >
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">more_vert</i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
                                         <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
+                                          className="dropdown-item"
+                                          onClick={() => handleEditHouseEmployee(id, index)}
                                         >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
+                                          <i className="fa fa-pencil m-r-5" /> Edit
                                         </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditHouseEmployee(id, index)
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteHouseEmployee(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                }
-                              })
-                            ) : (
-                              <tr>
-                                <td>Ops! No employee in the house.</td>
-                              </tr>
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() => handleDeleteHouseEmployee(id)}
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" /> Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </span>
+                                </EmployeeImgCard>
+                              );
+                            }
+                          })
+                        ) : (
+                          <><p>Ops! No employee in the house.</p></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
@@ -928,94 +999,129 @@ const toggleMobileMenu = () => {
                           <i className="fa fa-plus" />
                         </a>
                       </h3>
-                      <div className="table-responsive">
-                        <table className="table table-nowrap">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Room</th>
-                              <th>Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {houseResidentData?.length > 0 ? (
-                              houseResidentData?.map((residents, index) => {
-                                const {
-                                  id,
-                                  status,
-                                  house,
-                                  room,
-                                  resident,
-                                  occupancy_start_date,
-                                  occupancy_end_date,
-                                } = residents;
-                                if (house === houseId) {
-                                  return (
-                                    <tr style={{ height: "90px" }} key={id}>
-                                      <td>
-                                        {residentData?.map((allR) => {
-                                          if (resident === allR.id)
-                                            return (
-                                              <React.Fragment key={resident}>
-                                                {`${allR.first_name} ${allR.middle_name} ${allR.last_name}`}
-                                              </React.Fragment>
-                                            );
-                                        })}
-                                      </td>
-                                      <td>
-                                        {roomData?.map((allR) => {
-                                          if (room === allR.id)
-                                            return (
-                                              <React.Fragment key={room}>
-                                                {`${allR.name}`}
-                                              </React.Fragment>
-                                            );
-                                        })}
-                                      </td>
-                                      <td>{status}</td>
-                                      <td className="dropdown dropdown-action text-end">
+                      <Wrapper>
+                        {houseResidentData?.length > 0 ? (
+                          houseResidentData.map((residents, index) => {
+                            const {
+                              id,
+                              status,
+                              house,
+                              room,
+                              resident,
+                              occupancy_start_date,
+                              occupancy_end_date,
+                            } = residents;
+                            if (house === houseId && status === "Active") {
+                              return (
+                                <EmployeeImgCard key={id} className="card employee-img-card">
+                                  <span style={{width: "90%"}}>
+                                    <Popup
+                                      inline
+                                      hoverable
+                                      position="bottom left"
+                                      delay={{
+                                        show: 300,
+                                        hide: 800,
+                                      }}
+                                      content={
+                                        <Segment.Group>
+                                              <Segment style={{ width: "250px" }}>
+                                                <div className="ui column relaxed divided grid">
+                                                  <div className="column">
+                                                    <h4>
+                                                    {residentData?.map((allR) => {
+                                                      if (resident === allR.id)
+                                                        return (
+                                                          <React.Fragment key={allR.id}>
+                                                            {`${allR.first_name} ${allR.middle_name} ${allR.last_name}`}
+                                                          </React.Fragment>
+                                                        );
+                                                    })}
+                                                    </h4>
+                                                    <div className="ui link list">
+                                                      <a className="item">
+                                                      {roomData?.map((allR) => {
+                                                        if (room === allR.id)
+                                                          return (
+                                                            <React.Fragment key={room}>
+                                                              {`Room: ${allR.name}`}
+                                                            </React.Fragment>
+                                                          );
+                                                      })}
+                                                      </a>
+                                                      <a className="item">{`Start Date: ${moment(occupancy_start_date).format("DD MMM YYYY")}`}</a>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </Segment>
+                                        </Segment.Group>
+                                      }
+                                      trigger={
+                                          <a style={{color: "black"}}>
+                                            {residentData?.map((allR) => {
+                                              if (resident === allR.id)
+                                                return (
+                                                  <React.Fragment key={resident}>
+                                                    <h2 className="table-avatar">
+                                                      <Link
+                                                        to="#"
+                                                        onClick={(e) => e.preventDefault()}
+                                                        className="avatar"
+                                                        style={{
+                                                          borderRadius: "5px",
+                                                          backgroundColor: "#00000000",
+                                                          height: "100%",
+                                                        }}
+                                                      >
+                                                        <img
+                                                          style={{ width: "40px", height: "40px" }}
+                                                          alt=""
+                                                          src={allR.photo ? allR.photo : DefaultImage}
+                                                        />
+                                                      </Link>
+                                                    </h2>
+                                                  </React.Fragment>
+                                                );
+                                            })}
+                                          </a>
+                                      }
+                                    />
+                                  </span>
+                                  <span
+                                    className="edit-icon"
+                                  >
+                                    <div className="dropdown dropdown-action text-end">
+                                      <a
+                                        className="action-icon dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="material-icons">more_vert</i>
+                                      </a>
+                                      <div className="dropdown-menu dropdown-menu-right">
                                         <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
+                                          className="dropdown-item"
+                                          onClick={() => handleEditHouseResident(id, index)}
                                         >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
+                                          <i className="fa fa-pencil m-r-5" /> Edit
                                         </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditHouseResident(id, index)
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteHouseResident(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                }
-                              })
-                            ) : (
-                              <tr>
-                                <td>Ops! No resident in the house.</td>
-                              </tr>
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() => handleDeleteHouseResident(id)}
+                                        >
+                                          <i className="fa fa-trash-o m-r-5" /> Delete
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </span>
+                                </EmployeeImgCard>
+                              );
+                            }
+                          })
+                        ) : (
+                          <><p>Ops! No resident in the house.</p></>
+                        )}
+                      </Wrapper>
                     </div>
                   </div>
                 </div>
