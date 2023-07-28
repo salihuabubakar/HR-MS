@@ -83,7 +83,7 @@ const Accomodations = () => {
                 <>
                   <div className="row align-items-center">
                     <div className="col">
-                      <h3 className="page-title">House</h3>
+                      <h3 className="page-title">Houses</h3>
                       <ul className="breadcrumb">
                         <li className="breadcrumb-item">
                           <Link to="/app/main/dashboard">Dashboard</Link>
