@@ -165,3 +165,24 @@ export const CardWidth = styled.div`
     border-radius: 2px;
   }
 `;
+
+export const EmployeeImgCard = styled.div`
+  width: 13% !important;
+
+  @media (max-width: 1444px) {
+    width: 25% !important;
+  }
+
+  /* ${mobile} {
+    width: 20% !important;
+  } */
+
+  position: relative;
+
+  .edit-icon {
+    background: none;
+    border: none;
+    position: absolute;
+    right: 0;
+  }
+`;
