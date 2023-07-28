@@ -33,10 +33,10 @@ jobs:
 
       - name: Deploy to production
         env:
-          DEVELOPMENT_URL: ${{ secrets.DEVELOPMENT_URL }}
-          PRODUCTION_URL: ${{ secrets.PRODUCTION_URL }}
+          REACT_APP_DEVELOPMENT_URL: ${{ secrets.REACT_APP_DEVELOPMENT_URL }}
+          REACT_APP_PRODUCTION_URL: ${{ secrets.REACT_APP_PRODUCTION_URL }}
         run: |
-          echo "DEVELOPMENT_URL=$DEVELOPMENT_URL" >> .env
-          echo "PRODUCTION_URL=$PRODUCTION_URL" >> .env
+          echo "REACT_APP_DEVELOPMENT_URL=$REACT_APP_DEVELOPMENT_URL" >> .env
+          echo "REACT_APP_PRODUCTION_URL=$REACT_APP_PRODUCTION_URL" >> .env
           npm install -g serve
           serve -s build
