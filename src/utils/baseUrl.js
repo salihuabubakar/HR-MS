@@ -6,7 +6,7 @@ const vercelEnv = process.env.VERCEL_ENV;
 export const BaseUrl =
   vercelEnv === "preview"
     ? developmentUrl
-    : nodeEnv === "production"
+    : nodeEnv === "production" || vercelEnv === "production"
     ? productionUrl
     : developmentUrl;
 
