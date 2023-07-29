@@ -1,6 +1,13 @@
 const developmentUrl = process.env.REACT_APP_DEVELOPMENT_URL;
 const productionUrl = process.env.REACT_APP_PRODUCTION_URL;
-const environment = process.env.NODE_ENV;
+const nodeEnv = process.env.NODE_ENV;
+const vercelEnv = process.env.VERCEL_ENV;
 
-console.log("dev", developmentUrl, "pro", productionUrl, "env", environment);
-export const BaseUrl = environment === "production" ? productionUrl : environment === "development" && developmentUrl ;
+export const BaseUrl =
+  vercelEnv === "preview"
+    ? developmentUrl
+    : nodeEnv === "production" || vercelEnv === "production"
+    ? productionUrl
+    : developmentUrl;
+
+console.log("baseUrl: ", BaseUrl, "nodeEnv: ", nodeEnv, "vercelEnv: ", vercelEnv);
