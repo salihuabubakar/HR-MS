@@ -3,4 +3,4 @@ const productionUrl = process.env.REACT_APP_PRODUCTION_URL;
 const environment = process.env.NODE_ENV;
 
 console.log("dev", developmentUrl, "pro", productionUrl, "env", environment);
-export const BaseUrl = environment === "production" ? productionUrl : developmentUrl;
+export const BaseUrl = environment === "production" ? productionUrl : environment === "development" && developmentUrl ;
