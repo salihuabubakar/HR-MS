@@ -14,7 +14,7 @@ import {BarChart,Bar, Cell,ResponsiveContainer,
 import Header from '../../../initialpage/Sidebar/header'
 import Sidebar from '../../../initialpage/Sidebar/sidebar'
 import "../../index.css"
-import { useDataFetching, useHouseFetching, useResidentFetching } from '../../../utils/employeeCustomFetchHook.jsx';
+import { useDataFetching, useHouseFetching, useResidentFetching, useTaskFetching } from '../../../utils/employeeCustomFetchHook.jsx';
 
 const barchartdata = [
       { y: '2006', "Total Income" : 100, 'Total Outcome' : 90 },
@@ -57,6 +57,7 @@ const toggleMobileMenu = () => {
  const {data: allEmployee} = useDataFetching(); 
  const {houseData} = useHouseFetching();
  const {residentData} = useResidentFetching();
+ const { taskData } = useTaskFetching()
 
       return (
         <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -102,7 +103,7 @@ const toggleMobileMenu = () => {
                         <i className="fa fa-diamond" />
                       </span>
                       <div className="dash-widget-info">
-                        <h3>37</h3>
+                        <h3>{taskData?.length}</h3>
                         <span>Tasks</span>
                       </div>
                     </div>
@@ -115,7 +116,7 @@ const toggleMobileMenu = () => {
                         <i className="fa fa-user" />
                       </span>
                       <div className="dash-widget-info">
-                        <h3>44</h3>
+                        <h3>{residentData?.length}</h3>
                         <span>Residents</span>
                       </div>
                     </div>
