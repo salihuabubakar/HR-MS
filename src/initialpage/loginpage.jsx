@@ -9,12 +9,12 @@ import { alphaNumericPattern, emailrgx } from "../constant";
 import { useHistory } from "react-router-dom";
 
 const schema = yup.object({
-  email: yup
+  username: yup
     .string()
-    .matches(emailrgx, "Email is required")
-    .required("Email is required")
+    // .matches(emailrgx, "Email is required")
+    .required("Username is required")
     .trim(),
-  password: yup.string().min(6).max(6).required("Password is required").trim(),
+  password: yup.string().required("Password is required").trim(),
 });
 
 const Loginpage = () => {
@@ -35,14 +35,14 @@ const Loginpage = () => {
 
   const onSubmit = (data) => {
     
-    const email = data.email;
+    const username = data.username;
     const password = data.password;
-    if (email === "sachin@gmail.com" && password == "123456") {
+    if (username === "sachin" && password == "sachin2023") {
       localStorage.setItem("isLoggedIn", true);
       history.push("/app/main/dashboard");
     } else {
       setError("password", {
-        message: "email or password is mismatch",
+        message: "username or password is mismatch",
       });
     }
   };
@@ -80,14 +80,14 @@ const Loginpage = () => {
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-group">
-                    <label>Email Address</label>
+                    <label>Username</label>
                     <Controller
-                      name="email"
+                      name="username"
                       control={control}
                       render={({ field: { value, onChange } }) => (
                         <input
                           className={`form-control  ${
-                            errors?.email ? "error-input" : ""
+                            errors?.username ? "error-input" : ""
                           }`}
                           type="text"
                           value={value}
@@ -97,7 +97,7 @@ const Loginpage = () => {
                       )}
                       defaultValue=""
                     />
-                    <small>{errors?.email?.message}</small>
+                    <small>{errors?.username?.message}</small>
                   </div>
                   <div className="form-group">
                     <div className="row">
