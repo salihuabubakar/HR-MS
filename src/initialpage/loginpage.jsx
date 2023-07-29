@@ -39,6 +39,7 @@ const Loginpage = () => {
     const password = data.password;
     if (username === "sachin" && password == "Sachin2023") {
       localStorage.setItem("isLoggedIn", true);
+      localStorage.setItem("username", username);
       history.push("/app/main/dashboard");
     } else {
       setError("password", {

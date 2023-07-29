@@ -30,6 +30,7 @@ const Header = (props) => {
 
   const handleLogOut = () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
     history.push("/login");
   };
 

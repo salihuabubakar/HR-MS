@@ -52,7 +52,7 @@ const toggleMobileMenu = () => {
     }
  });
 
- const user = localStorage.getItem("email");
+ const user = localStorage.getItem("username");
 
  const {data: allEmployee} = useDataFetching(); 
  const {houseData} = useHouseFetching();
@@ -83,7 +83,7 @@ const toggleMobileMenu = () => {
               </div>
               {/* /Page Header */}
               <div className="row">
-                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                {/* <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                   <div className="card dash-widget">
                     <div className="card-body">
                       <span className="dash-widget-icon">
@@ -95,7 +95,7 @@ const toggleMobileMenu = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                   <div className="card dash-widget">
                     <div className="card-body">
