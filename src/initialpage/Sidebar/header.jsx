@@ -34,6 +34,8 @@ const Header = (props) => {
     history.push("/login");
   };
 
+  const user = localStorage.getItem("username");
+
   return (
     <HeaderContainer className="header" style={{ right: "0px" }}>
       {/* Logo */}
@@ -175,7 +177,7 @@ const Header = (props) => {
         </li>
         {/* /Notifications */}
         {/* Message Notifications */}
-        <li className="nav-item dropdown">
+        {/* <li className="nav-item dropdown">
           <a
             href="#"
             className="dropdown-toggle nav-link"
@@ -257,7 +259,7 @@ const Header = (props) => {
               </Link>
             </div>
           </div>
-        </li>
+        </li> */}
         {/* /Message Notifications */}
         <li className="nav-item dropdown has-arrow main-drop">
           <a
@@ -269,10 +271,10 @@ const Header = (props) => {
               <img src={Avatar_21} alt="" />
               <span className="status online" />
             </span>
-            <span>Admin</span>
+            <span>{user ? user : "sachin"}</span>
           </a>
           <div className="dropdown-menu">
-            <Link
+            {/* <Link
               className="dropdown-item"
               to={{
                 pathname: "/app/profile/AddminProfile",
@@ -283,7 +285,7 @@ const Header = (props) => {
             </Link>
             <Link className="dropdown-item" to="/settings/companysetting">
               Settings
-            </Link>
+            </Link> */}
             <button onClick={handleLogOut} className="dropdown-item">
               Logout
             </button>

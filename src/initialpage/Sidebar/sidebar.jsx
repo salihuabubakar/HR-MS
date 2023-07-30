@@ -513,11 +513,11 @@ const toggleLevelThree = (value) => {
                     <i className="la la-user-plus" /> <span>Users</span>
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/settings/companysetting">
                     <i className="la la-cog" /> <span>Settings</span>
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
