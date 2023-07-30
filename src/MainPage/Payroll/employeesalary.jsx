@@ -256,60 +256,11 @@ const EmployeeSalary = () => {
           {/* /Page Header */}
           {/* Search Filter */}
           <div className="row filter-row">
-            <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div className="col-4">
               <div className="form-group form-focus">
                 <input type="text" className="form-control floating" />
                 <label className="focus-label">Employee Name</label>
               </div>
-            </div>
-            <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-              <div className="form-group form-focus select-focus">
-                <select className="select floating">
-                  <option value> -- Select -- </option>
-                  <option value>Employee</option>
-                  <option value={1}>Manager</option>
-                </select>
-                <label className="focus-label">Role</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-              <div className="form-group form-focus select-focus">
-                <select className="select floating">
-                  <option> -- Select -- </option>
-                  <option> Pending </option>
-                  <option> Approved </option>
-                  <option> Rejected </option>
-                </select>
-                <label className="focus-label">Leave Status</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-              <div className="form-group form-focus select-focus">
-                <div>
-                  <input
-                    className="form-control floating datetimepicker"
-                    type="date"
-                  />
-                </div>
-                <label className="focus-label">From</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-              <div className="form-group form-focus select-focus">
-                <div>
-                  <input
-                    className="form-control floating datetimepicker"
-                    type="date"
-                  />
-                </div>
-                <label className="focus-label">To</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
             </div>
           </div>
           {/* /Search Filter */}
