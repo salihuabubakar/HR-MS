@@ -74,7 +74,7 @@ const toggleMobileMenu = () => {
               <div className="page-header">
                 <div className="row">
                   <div className="col-sm-12">
-                    <h3 className="page-title">Welcome {user}</h3>
+                    <h3 className="page-title">Welcome {user ? user : "sachin"}</h3>
                     <ul className="breadcrumb">
                       <li className="breadcrumb-item active">Dashboard</li>
                     </ul>

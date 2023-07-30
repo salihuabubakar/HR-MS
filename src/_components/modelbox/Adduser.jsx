@@ -295,19 +295,11 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             <th className="text-center">Write</th>
                             <th className="text-center">Create</th>
                             <th className="text-center">Delete</th>
-                            <th className="text-center">Import</th>
-                            <th className="text-center">Export</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td>Employee</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
                             <td className="text-center">
                               <input defaultChecked type="checkbox" />
                             </td>
@@ -335,12 +327,6 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             <td className="text-center">
                               <input defaultChecked type="checkbox" />
                             </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
                           </tr>
                           <tr>
                             <td>Leaves</td>
@@ -356,21 +342,9 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             <td className="text-center">
                               <input defaultChecked type="checkbox" />
                             </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
                           </tr>
                           <tr>
                             <td>Events</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
                             <td className="text-center">
                               <input defaultChecked type="checkbox" />
                             </td>
