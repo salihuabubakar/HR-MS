@@ -780,7 +780,7 @@ const TaskDetails = () => {
                   <h6 className="card-title m-b-15">Project details</h6>
                   <table className="table table-striped table-border">
                     <tbody>
-                      <tr>
+                      {/* <tr>
                         <td>Task Type:</td>
                         {isTaskLoading ? (
                           <div class="spinner">
@@ -797,19 +797,7 @@ const TaskDetails = () => {
                             {taskType === true ? "Paid" : "Non Paid"}
                           </td>
                         )}
-                      </tr>
-                      <tr>
-                        <td>Total Hours:</td>
-                        {isTaskLoading ? (
-                          <div class="spinner">
-                            <div class="loader"></div>
-                          </div>
-                        ) : (
-                          <>
-                            <td className="text-end">{timeAllocated}hr</td>
-                          </>
-                        )}
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td>Start At:</td>
                         {isTaskLoading ? (
@@ -869,7 +857,7 @@ const TaskDetails = () => {
                           </div>
                         ) : (
                           <>
-                            <td className="text-end">{taskDuration}</td>
+                            <td className="text-end">{taskDuration}hr</td>
                           </>
                         )}
                       </tr>
@@ -1095,6 +1083,9 @@ const TaskDetails = () => {
             indexToEdit={indexToEdit}
             id={taskAssId}
             task={selectedTaskId}
+            totalAssignedEmployees={totalAssignedEmployees}
+            totalAssignedManagers={totalAssignedManagers}
+            totalAssignedResident={totalAssignedResident}
           />
         )}
         {deleteTaskAssignment && (
@@ -1105,7 +1096,11 @@ const TaskDetails = () => {
           />
         )}
         {showTaskModal && (
-          <AddTask dispatchTasks={dispatchTasks} indexToEdit={taskIndexToEdit} id={taskId} />
+          <AddTask 
+            dispatchTasks={dispatchTasks} 
+            indexToEdit={taskIndexToEdit} 
+            id={taskId} 
+          />
         )}
       </div>
     </DivContainer>

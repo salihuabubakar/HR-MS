@@ -8,7 +8,15 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
 import { useDataFetching, useResidentFetching, useTaskDocumentFetching } from "../../utils/employeeCustomFetchHook";
 
-const AddTaskAssignment = ({ dispatchTaskAssignment, indexToEdit, id, task }) => {
+const AddTaskAssignment = ({ 
+  dispatchTaskAssignment, 
+  indexToEdit, 
+  id, 
+  task,
+  totalAssignedEmployees,
+  totalAssignedManagers,
+  totalAssignedResident,
+}) => {
   const { data: allEmployee, isLoading: allEmployeeLoading } = useDataFetching();
   const { residentData, isResidentLoading } = useResidentFetching();
   const { taskDocumentData, isTaskDocumentLoading } = useTaskDocumentFetching();
@@ -121,13 +129,16 @@ const AddTaskAssignment = ({ dispatchTaskAssignment, indexToEdit, id, task }) =>
 
   const users = [];
   allEmployee?.map((user) => {
-    users.push({
-      id: user.id,
-      first_name: user.first_name,
-      middle_name: user.middle_name,
-      last_name: user.last_name,
-      photo: user.photo,
-    });
+    const taskEmployees = totalAssignedEmployees;
+    if(taskEmployees.includes(user.id)) {
+      users.push({
+        id: user.id,
+        first_name: user.first_name,
+        middle_name: user.middle_name,
+        last_name: user.last_name,
+        photo: user.photo,
+      });
+    }
   });
 
   const handleResidentChange = (event) => {
@@ -137,13 +148,16 @@ const AddTaskAssignment = ({ dispatchTaskAssignment, indexToEdit, id, task }) =>
 
   const residents = [];
   residentData?.map((res) => {
-    residents.push({
-      id: res.id,
-      first_name: res.first_name,
-      middle_name: res.middle_name,
-      last_name: res.last_name,
-      photo: res.photo,
-    });
+    const taskResidents = totalAssignedResident;
+    if(taskResidents.includes(res.id)) {
+      residents.push({
+        id: res.id,
+        first_name: res.first_name,
+        middle_name: res.middle_name,
+        last_name: res.last_name,
+        photo: res.photo,
+      });
+    }
   });
 
 
@@ -240,11 +254,14 @@ const AddTaskAssignment = ({ dispatchTaskAssignment, indexToEdit, id, task }) =>
                               Select Manager
                             </option>
                             {allEmployee?.map((emp) => {
-                              return (
-                                <option value={emp.id}>
-                                  {`${emp.first_name} ${emp.middle_name} ${emp.last_name}`}
-                                </option>
-                              );
+                              const taskManagers = totalAssignedManagers;
+                              if(taskManagers.includes(emp.id)) {
+                                return (
+                                  <option value={emp.id}>
+                                    {`${emp.first_name} ${emp.middle_name} ${emp.last_name}`}
+                                  </option>
+                                )
+                              }
                             })}
                           </select>
                           {managerError && <p className="error-message">{managerError}</p>}
