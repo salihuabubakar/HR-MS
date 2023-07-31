@@ -223,40 +223,40 @@ const TaskManagerTable = () => {
       },
     },
     {
-      title: "Hours Allocated",
-      dataIndex: "hours",
+      title: "Task Duration",
+      dataIndex: "task_duration",
     },
-    {
-      title: "Task Type",
-      dataIndex: "is_paid",
-      render: (text, record, index) => {
-        const { is_paid, id } = record;
-        return (
-          <h2
-            key={id}
-            style={{
-              backgroundColor: is_paid === true ? "#55CE63" : "#ff9b44",
-              color: "#fff",
-              padding: "5px",
-              borderRadius: "5px",
-            }}
-            className="table-avatar"
-          >
-            <Link
-              style={{
-                color: "#fff",
-              }}
-              to={{
-                pathname: "/app/taskmanagement/task-manager-detail",
-                state: { id: id, index: index },
-              }}
-            >
-              {is_paid === true ? "Paid" : "Non Paid"}
-            </Link>
-          </h2>
-        );
-      },
-    },
+    // {
+    //   title: "Task Type",
+    //   dataIndex: "is_paid",
+    //   render: (text, record, index) => {
+    //     const { is_paid, id } = record;
+    //     return (
+    //       <h2
+    //         key={id}
+    //         style={{
+    //           backgroundColor: is_paid === true ? "#55CE63" : "#ff9b44",
+    //           color: "#fff",
+    //           padding: "5px",
+    //           borderRadius: "5px",
+    //         }}
+    //         className="table-avatar"
+    //       >
+    //         <Link
+    //           style={{
+    //             color: "#fff",
+    //           }}
+    //           to={{
+    //             pathname: "/app/taskmanagement/task-manager-detail",
+    //             state: { id: id, index: index },
+    //           }}
+    //         >
+    //           {is_paid === true ? "Paid" : "Non Paid"}
+    //         </Link>
+    //       </h2>
+    //     );
+    //   },
+    // },
     {
       title: "Task Conclusion",
       dataIndex: "concluded",
