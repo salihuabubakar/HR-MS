@@ -10,8 +10,14 @@ import Select from "react-select";
 import { RadioBtn } from "./styles";
 import moment from "moment";
 import "./style.css";
-import { useDataFetching, useResidentFetching } from "../../utils/employeeCustomFetchHook";
+import { 
+  useDataFetching, 
+  useResidentFetching, 
+  useResidentBoroughFetching,
+  useHouseFetching 
+} from "../../utils/employeeCustomFetchHook";
 import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
+
 
 const AddTask = ({
   dispatchTasks,
@@ -21,8 +27,12 @@ const AddTask = ({
   const { data: allEmployee, isLoading: allEmployeeLoading } =
     useDataFetching();
   const { residentData, isResidentLoading } = useResidentFetching();
+  const { residentBoroughData } = useResidentBoroughFetching();
+  const { houseData } = useHouseFetching();
 
+  
   const [selectedTaskInfo] = useGlobalState("selectedTaskInfo");
+  const currentTaskId = selectedTaskInfo[indexToEdit]?.id;
 
   const [name, setName] = useState(selectedTaskInfo[indexToEdit]?.name || "");
 
@@ -163,7 +173,7 @@ const AddTask = ({
       concluded,
       id,
     };
-    if (selectedTaskInfo[indexToEdit]?.id) {
+    if (currentTaskId) {
       dispatchTasks({ type: "update", payload: task });
     } else {
       dispatchTasks({ type: "add", payload: task });
@@ -320,7 +330,7 @@ const AddTask = ({
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="card-title">
-                    {selectedTaskInfo[indexToEdit]?.id
+                    {currentTaskId
                       ? "Edit Task"
                       : "Add Task"}
                   </h5>
@@ -381,7 +391,7 @@ const AddTask = ({
                           )}
                         </div>
                       </div>
-                      <div className="col-sm-6">
+                      {/* <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">Task-type</label>
                           <RadioBtn>
@@ -398,26 +408,28 @@ const AddTask = ({
                             </label>
                           </RadioBtn>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Task-Concluded</label>
-                          <RadioBtn>
-                            <input
-                              type="checkbox"
-                              name="task-concluded"
-                              checked={concluded}
-                              id="concluded"
-                              placeholder={"Concluded"}
-                              onChange={handleTaskConcludedChange}
-                            />
-                            <label htmlFor="concluded">
-                              <span>Concluded</span>
-                            </label>
-                          </RadioBtn>
+                      </div> */}
+                      {currentTaskId && (
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">Task-Concluded</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="task-concluded"
+                                checked={concluded}
+                                id="concluded"
+                                placeholder={"Concluded"}
+                                onChange={handleTaskConcludedChange}
+                              />
+                              <label htmlFor="concluded">
+                                <span>Concluded</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
+                      )}
+                      {/* <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
                             Hours Allocation{" "}
@@ -437,7 +449,7 @@ const AddTask = ({
                             </p>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
@@ -529,6 +541,25 @@ const AddTask = ({
                           )}
                         </div>
                       </div>
+                      {/* <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="col-form-label">House</label>
+                          <select
+                            value={employee}
+                            onChange={handleHouseEmployeeChange}
+                            className="form-control floating"
+                          >
+                            <option disabled value="">
+                              Select Employee
+                            </option>
+                            {allEmployee?.map((employee) => (
+                              <option key={employee.id} value={employee.id}>
+                                {`${employee.first_name} ${employee.middle_name} ${employee.last_name}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div> */}
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="label">
@@ -611,7 +642,7 @@ const AddTask = ({
                         onClick={handleSubmit}
                         className="btn btn-primary submit-btn"
                       >
-                        {selectedTaskInfo[indexToEdit]?.id ? "Update" : "Save"}
+                        {currentTaskId ? "Update" : "Save"}
                       </button>
                     </div>
                   </form>
