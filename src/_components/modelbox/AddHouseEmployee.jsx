@@ -27,11 +27,11 @@ const AddHouseEmployee = ({
   );
 
   const [join_date, setJoinDate] = useState(
-    selectedHouseEmployee[houseEmployeeIndexToEdit]?.join_date || ""
+    selectedHouseEmployee[houseEmployeeIndexToEdit]?.join_date || null
   );
 
   const [end_date, setEndDate] = useState(
-    selectedHouseEmployee[houseEmployeeIndexToEdit]?.end_date || ""
+    selectedHouseEmployee[houseEmployeeIndexToEdit]?.end_date || null
   );
 
   const handleSubmit = (e) => {

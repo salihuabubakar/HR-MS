@@ -56,7 +56,7 @@ const AddEmployeeBank = ({
   );
 
   const [upload_date, setDateUpload] = useState(
-    selectedEmployeeBank[employeeBankIndexToEdit]?.upload_date || ""
+    selectedEmployeeBank[employeeBankIndexToEdit]?.upload_date || null
   );
 
   const [upload_document, setUploadDocument] = useState(

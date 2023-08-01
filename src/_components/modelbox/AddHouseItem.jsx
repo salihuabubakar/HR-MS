@@ -21,7 +21,7 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
   );
 
   const [quantity, setQuantity] = useState(
-    selectedItem[itemIndexToEdit]?.quantity || ""
+    selectedItem[itemIndexToEdit]?.quantity || null
   );
 
   const [location, setLocation] = useState(
@@ -33,11 +33,11 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
   );
 
   const [purchase_date, setPurchaseDate] = useState(
-    selectedItem[itemIndexToEdit]?.purchase_date || ""
+    selectedItem[itemIndexToEdit]?.purchase_date || null
   );
 
   const [expiry_date, setExpiryDate] = useState(
-    selectedItem[itemIndexToEdit]?.expiry_date || ""
+    selectedItem[itemIndexToEdit]?.expiry_date || null
   );
 
   const [documents, setDocuments] = useState(
@@ -211,7 +211,7 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
                             <option disabled value="">
                               Select Category
                             </option>
-                            <option value="Funiture">Funiture</option>
+                            <option value="Furniture">Furniture</option>
                             <option value="Electronics">Electronics</option>
                             <option value="Others">Others</option>
                           </select>

@@ -45,7 +45,7 @@ const AddTask = ({
   );
 
   const [hours, setHours] = useState(
-    selectedTaskInfo[indexToEdit]?.hours || ""
+    selectedTaskInfo[indexToEdit]?.hours || 0
   );
 
   const [start_at, setStartAt] = useState(
@@ -103,14 +103,14 @@ const AddTask = ({
       setTaskTitleError("Task Name is required.");
       return;
     }
-    if (managers === "") {
+    if (managers.length === 0) {
       setManagerError("Manager is required.");
       return;
     }
-    if (hours === "") {
-      setTimeAllocatedError("Allocated Hour is required.");
-      return;
-    }
+    // if (hours === "") {
+    //   setTimeAllocatedError("Allocated Hour is required.");
+    //   return;
+    // }
     if (task_duration === "") {
       setDurationError("Task Duration is required.");
       return;
@@ -131,11 +131,11 @@ const AddTask = ({
       setEndAtError("End Date/Time is required.");
       return;
     }
-    if (employees === "") {
+    if (employees.length === 0) {
       setEmployeeError("Employee is required.");
       return;
     }
-    if (residents === "") {
+    if (residents.length === 0) {
       setResidentError("Resident is required.");
       return;
     }
@@ -149,7 +149,7 @@ const AddTask = ({
     setTaskTitleError("");
     setStartAtError("");
     setEndAtError("");
-    setTimeAllocatedError("");
+    // setTimeAllocatedError("");
     setTaskStatusError("");
     setDescriptionError("");
     setManagerError("");
@@ -242,10 +242,10 @@ const AddTask = ({
   const handleTaskConcludedChange = (e) => {
     setConcluded(e.target.checked);
   };
-  const handleHoursChange = (e) => {
-    setHours(e.target.value);
-    setTimeAllocatedError("");
-  };
+  // const handleHoursChange = (e) => {
+  //   setHours(e.target.value);
+  //   setTimeAllocatedError("");
+  // };
   const handleDurationChange = (e) => {
     setTaskDuration(e.target.value);
     setDurationError("");
@@ -528,7 +528,7 @@ const AddTask = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Task End At</label>
+                          <label className="label">Task End At <span className="text-danger">*</span></label>
                           <input
                             value={end_at}
                             onChange={handleEndAtChange}

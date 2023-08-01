@@ -46,45 +46,40 @@ const AllEmployeeList = ({
       render: (text, record, index) => {
         const { id, photo, first_name, middle_name, last_name, role } =
           record;
-          const matchedRole = roleData?.find((r) => r.id === role);
-          if (matchedRole) {
-            return (
-              // <React.Fragment>{`${matchedRole.role_name}`}</React.Fragment>
-              <React.Fragment>
-                <h2 className="table-avatar">
-                  <Link
-                    to={{
-                      pathname: "/app/employee/Profile",
-                      state: { id: id, index: index },
-                    }}
-                    className="avatar"
-                    style={{
-                      borderRadius: "5px",
-                      backgroundColor: "#00000000",
-                      height: "100%",
-                    }}
-                  >
-                    <img
-                      style={{ width: "40px", height: "40px" }}
-                      alt=""
-                      src={photo ? photo : DefaultImage}
-                    />
-                  </Link>
-                  <Link
-                    to={{
-                      pathname: "/app/employee/Profile",
-                      state: { id: id, index: index },
-                    }}
-                  >
-                    {`${first_name} ${middle_name} ${last_name}`}{" "}
-                    <span>{matchedRole.role_name}</span>
-                  </Link>
-                </h2>
-              </React.Fragment>
-            );
-          } else {
-            return null; // or return a default value if no match is found
-          }
+        const matchedRole = roleData?.find((r) => r.id === role);
+        return (
+          <React.Fragment>
+            <h2 className="table-avatar">
+              <Link
+                to={{
+                  pathname: "/app/employee/Profile",
+                  state: { id: id, index: index },
+                }}
+                className="avatar"
+                style={{
+                  borderRadius: "5px",
+                  backgroundColor: "#00000000",
+                  height: "100%",
+                }}
+              >
+                <img
+                  style={{ width: "40px", height: "40px" }}
+                  alt=""
+                  src={photo ? photo : DefaultImage}
+                />
+              </Link>
+              <Link
+                to={{
+                  pathname: "/app/employee/Profile",
+                  state: { id: id, index: index },
+                }}
+              >
+                {`${first_name} ${middle_name} ${last_name}`}{" "}
+                <span>{matchedRole ? matchedRole.role_name : "--"}</span>
+              </Link>
+            </h2>
+          </React.Fragment>
+        )
       },
       // sorter: (a, b) => a.name.length - b.name.length,
     },
@@ -125,7 +120,7 @@ const AllEmployeeList = ({
             </a>
             {/* <a
               className="dropdown-item"
-              onClick={() => handleDeleteAcct(index)}
+              onClick={() => handleDeleteAcct(record.id)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a> */}
