@@ -24,7 +24,7 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
   );
 
   const [notice_date, setNoticeDate] = useState(
-    selectedNotice[noticeIndexToEdit]?.notice_date || ""
+    selectedNotice[noticeIndexToEdit]?.notice_date || null
   );
 
   const [residents_applicable, setResidentApplicable] = useState(
