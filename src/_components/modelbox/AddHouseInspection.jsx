@@ -29,7 +29,7 @@ const AddHouseInspection = ({ dispatchInspection, inspectionIndexToEdit, house, 
 
 
   const [inspection_date, setInspectionDate] = useState(
-    selectedInspection[inspectionIndexToEdit]?.inspection_date || ""
+    selectedInspection[inspectionIndexToEdit]?.inspection_date || null
   );
 
 const [inspected_by, setInspectedBy] = useState(

@@ -355,7 +355,7 @@ const toggleMobileMenu = () => {
     add_update_delete_notice,
     []
   );
-  const [noticeIndexToEdit, setNoticeIndexToEdit] = useState(null);
+  const [noticeIndexToEdit, setNoticeIndexToEdit] = useState();
   const [showNoticeModal] = useGlobalState("showNoticeModal");
   const { houseNoticeData } =
     useHouseNoticesFetching();
@@ -892,7 +892,9 @@ const toggleMobileMenu = () => {
                                                     })}
                                                     </h4>
                                                     <div className="ui link list">
-                                                      <a className="item">{`Start Date: ${moment(join_date).format("DD MMM YYYY")}`}</a>
+                                                      {join_date && (
+                                                        <a className="item">{`Start Date: ${moment(join_date).format("DD MMM YYYY")}`}</a>
+                                                      )}
                                                     </div>
                                                   </div>
                                                 </div>
@@ -1050,7 +1052,9 @@ const toggleMobileMenu = () => {
                                                           );
                                                       })}
                                                       </a>
-                                                      <a className="item">{`Start Date: ${moment(occupancy_start_date).format("DD MMM YYYY")}`}</a>
+                                                      {occupancy_start_date && (
+                                                        <a className="item">{`Start Date: ${moment(occupancy_start_date).format("DD MMM YYYY")}`}</a>
+                                                      )}
                                                     </div>
                                                   </div>
                                                 </div>

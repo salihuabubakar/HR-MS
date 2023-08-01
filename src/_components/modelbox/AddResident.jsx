@@ -119,6 +119,7 @@ const AddResident = ({
   const [lastNameError, setLastNameError] = useState("");
   const [genderError, setGenderError] = useState("");
   const [nationalityError, setNationalityError] = useState("");
+  const [keyWorkerError, setKeyWorkerError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -139,12 +140,17 @@ const AddResident = ({
       setNationalityError("Nationality is required.");
       return;
     }
+    if (key_worker.length === 0) {
+      setKeyWorkerError("Key worker is required.");
+      return;
+    }
 
     // // Clear any existing error messages
     setFirstNameError("");
     setLastNameError("");
     setGenderError("");
     setNationalityError("");
+    setKeyWorkerError("");
 
     const fields = {
       id: id,
@@ -240,7 +246,9 @@ const AddResident = ({
 
   const handleKeyworkerChange = (event) => {
     const mappedID = event?.map((kw) => kw.id);
-    setKeyWorker(mappedID);
+    console.log("🚀 ~ file: AddResident.jsx:249 ~ handleKeyworkerChange ~ mappedID:", mappedID)
+    setKeyWorker(parseInt(mappedID));
+    setKeyWorkerError("");
   };
   
 
@@ -557,7 +565,7 @@ const AddResident = ({
                         <div className="form-group">
                           <label className="col-form-label">
                             Select Key Worker
-                          </label>
+                          </label> <span className="text-danger">*</span>
                           <Select
                             defaultValue={getEmployeeDefaultValues()}
                             onChange={handleKeyworkerChange}
@@ -576,6 +584,7 @@ const AddResident = ({
                             }
                             placeholder="Select Key Worker"
                           />
+                          {keyWorkerError && <p className="error-message">{keyWorkerError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">

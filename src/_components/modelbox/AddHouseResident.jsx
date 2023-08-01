@@ -31,11 +31,11 @@ const AddHouseResident = ({
   );
 
   const [occupancy_start_date, setOccupancyStartDate] = useState(
-    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_start_date || ""
+    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_start_date || null
   );
 
   const [occupancy_end_date, setOccupancyEndDate] = useState(
-    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_end_date || ""
+    selectedHouseResident[houseResidentIndexToEdit]?.occupancy_end_date || null
   );
 
   const handleSubmit = (e) => {

@@ -30,11 +30,11 @@ const AddComplaint = ({
   );
 
   const [complaint_date, setComplaintDate] = useState(
-    selectedComplaint[indexToEdit]?.complaint_date || ""
+    selectedComplaint[indexToEdit]?.complaint_date || null
   );
 
   const [resolved_date, setResolvedDate] = useState(
-    selectedComplaint[indexToEdit]?.resolved_date || ""
+    selectedComplaint[indexToEdit]?.resolved_date || null
   );
 
   const [resolved_comment, setResolvedComment] = useState(

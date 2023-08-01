@@ -42,9 +42,14 @@ const AddResidentAppointmentModal = ({
 
   const [appointmentDateError, setAppointmentDateError] = useState("");
   const [appointmentTimeError, setAppointmentTimeError] = useState("");
+  const [nameError, setNameError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (appointment_name === "") {
+      setNameError("Appointment Name is required");
+      return;
+    }
     if (appointment_time === "") {
       setAppointmentTimeError("Time is required");
       return;
@@ -54,6 +59,7 @@ const AddResidentAppointmentModal = ({
       return;
     }
 
+    setNameError("");    
     setAppointmentTimeError("");
     setAppointmentDateError("");
 
@@ -78,6 +84,11 @@ const AddResidentAppointmentModal = ({
       dispatchResidentAppointment({ type: "add", payload: appObj });
     }
     setGlobalState("showResidentAppointmentModal", false);
+  };
+
+  const handleNameChange = (e) => {
+    setAppointmentName(e.target.value);
+    setNameError("");
   };
 
   const handleDateChange = (e) => {
@@ -129,11 +140,16 @@ const AddResidentAppointmentModal = ({
                           </label>
                           <input
                             value={appointment_name}
-                            onChange={(e) => setAppointmentName(e.target.value)}
+                            onChange={handleNameChange}
                             className="form-control floating"
                             type="text"
                             placeholder="Appointment Name"
                           />
+                          {nameError && (
+                            <p className="error-message">
+                              {nameError}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">

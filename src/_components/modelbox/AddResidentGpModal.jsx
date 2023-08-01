@@ -21,7 +21,7 @@ const AddResidentGpModal = ({
   );
 
   const [end_date, setEnd_date] = useState(
-    selectedResidentGp[residentGpIndexToEdit]?.end_date || ""
+    selectedResidentGp[residentGpIndexToEdit]?.end_date || null
   );
 
   const [gp, setGp] = useState(
@@ -38,11 +38,16 @@ const AddResidentGpModal = ({
 
   const [dateError, setDateError] = useState("");
   const [statusError, setStatusError] = useState();
+  const [gpError, setGpError] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (start_date === "") {
       setDateError("Start date is required.");
+      return;
+    }
+    if (gp === "") {
+      setGpError("Gp is required");
       return;
     }
     if (status === "") {
@@ -52,6 +57,7 @@ const AddResidentGpModal = ({
 
     // Clear any existing error messages
     setDateError("");
+    setGpError("");
     setStatusError("");
     const gpPractice = {
       id,
@@ -79,6 +85,12 @@ const AddResidentGpModal = ({
     setStatus(e.target.value);
     setStatusError("");
   };
+
+  const handleGpChange = (e) => {
+    setGp(e.target.value);
+    setGpError("");
+  };
+  
 
   return (
     <>
@@ -140,10 +152,10 @@ const AddResidentGpModal = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Gpractice</label>
+                          <label className="label">Gpractice</label> <span className="text-danger">*</span>
                           <select
                             value={gp}
-                            onChange={(e) => setGp(e.target.value)}
+                            onChange={handleGpChange}
                             className="form-control floating"
                           >
                             <option disabled value="">
@@ -155,6 +167,9 @@ const AddResidentGpModal = ({
                               </option>
                             ))}
                           </select>
+                          {gpError && (
+                            <p className="error-message">{gpError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">

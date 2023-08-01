@@ -28,12 +28,12 @@ const AddResidentSocialWorkerModal = ({
 
   const [start_date, setStartDate] = useState(
     selectedResidentSocialWorker[residentSocialWorkerIndexToEdit]?.start_date ||
-      ""
+      null
   );
 
   const [end_date, setEndDate] = useState(
     selectedResidentSocialWorker[residentSocialWorkerIndexToEdit]?.end_date ||
-      ""
+      null
   );
 
   const [status, setStatus] = useState(
@@ -47,11 +47,16 @@ const AddResidentSocialWorkerModal = ({
 
 
   const [socialWorkerError, setSocialWorkerError] = useState("");
+  const [statusError, setStatusError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (social_worker === "") {
       setSocialWorkerError("Social worker is required");
+      return;
+    }
+    if (statusError === "") {
+      setStatusError("Status is required");
       return;
     }
 
@@ -84,6 +89,11 @@ const AddResidentSocialWorkerModal = ({
   const handleSocialWOrkerChange = (e) => {
     setSocialWorker(e.target.value);
     setSocialWorkerError("");
+  };
+
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value);
+    setStatusError("");
   };
 
 
@@ -145,10 +155,10 @@ const AddResidentSocialWorkerModal = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">Status</label>
+                          <label className="col-form-label">Status <span className="text-danger">*</span></label>
                           <select
                             value={status}
-                            onChange={(e) => setStatus(e.target.value)}
+                            onChange={handleStatusChange}
                             className="form-control floating"
                           >
                             <option disabled value="">
@@ -158,6 +168,9 @@ const AddResidentSocialWorkerModal = ({
                             <option value="Inactive">Inactive</option>
                           </select>
                         </div>
+                        {statusError && (
+                            <p className="error-message">{statusError}</p>
+                          )}
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
