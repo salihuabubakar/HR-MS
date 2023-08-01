@@ -2330,6 +2330,7 @@ export const add_update_delete_resident_social_worker = async (state, { type, pa
           toast.success("Resident Social worker Added", {
             autoClose: 1500,
           });
+          return;
         } else {
           throw new Error("Failed to post data");
         }

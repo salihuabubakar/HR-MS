@@ -21,7 +21,7 @@ const AddResidentSolicitorModal = ({
   );
 
   const [end_date, setEnd_date] = useState(
-    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.end_date || ""
+    selectedResidentSolicitor[residentSolicitorIndexToEdit]?.end_date || null
   );
 
   const [solicitor, setSolicitor] = useState(
@@ -38,11 +38,16 @@ const AddResidentSolicitorModal = ({
 
   const [dateError, setDateError] = useState("");
   const [statusError, setStatusError] = useState();
+  const [solicitorError, setSolicitorError] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (start_date === "") {
       setDateError("Start date is required.");
+      return;
+    }
+    if (solicitor === "") {
+      setSolicitorError("Solicitor is required");
       return;
     }
     if (status === "") {
@@ -52,6 +57,7 @@ const AddResidentSolicitorModal = ({
 
     // Clear any existing error messages
     setDateError("");
+    setSolicitorError("");
     setStatusError("");
     const gpPractice = {
       id,
@@ -78,6 +84,11 @@ const AddResidentSolicitorModal = ({
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
     setStatusError("");
+  };
+
+  const handleSolicitorChange = (e) => {
+    setSolicitor(e.target.value);
+    setSolicitorError("");
   };
 
   return (
@@ -140,10 +151,10 @@ const AddResidentSolicitorModal = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Solicitor</label>
+                          <label className="label">Solicitor</label> <span className="text-danger">*</span>
                           <select
                             value={solicitor}
-                            onChange={(e) => setSolicitor(e.target.value)}
+                            onChange={handleSolicitorChange}
                             className="form-control floating"
                           >
                             <option disabled value="">
@@ -155,6 +166,9 @@ const AddResidentSolicitorModal = ({
                               </option>
                             ))}
                           </select>
+                          {solicitorError && (
+                            <p className="error-message">{solicitorError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">

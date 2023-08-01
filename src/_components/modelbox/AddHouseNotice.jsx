@@ -23,8 +23,8 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
     selectedNotice[noticeIndexToEdit]?.title || ""
   );
 
-  const [noticeDate, setNoticeDate] = useState(
-    selectedNotice[noticeIndexToEdit]?.noticeDate || ""
+  const [notice_date, setNoticeDate] = useState(
+    selectedNotice[noticeIndexToEdit]?.notice_date || ""
   );
 
   const [residents_applicable, setResidentApplicable] = useState(
@@ -70,7 +70,7 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
     const fields = {
       id,
       house,
-      noticeDate,
+      notice_date,
       title,
       residents_applicable,
       documents,
@@ -210,7 +210,7 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
                         <div className="form-group">
                           <label className="col-form-label">Notice Date</label>
                           <input
-                            value={noticeDate}
+                            value={notice_date}
                             onChange={handleDateChange}
                             className="form-control floating"
                             type="date"

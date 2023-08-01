@@ -205,9 +205,11 @@ const Review = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a className="dropdown-item" onClick={() => handleFileDownload(record.review_file)}>
-              <i className="fa fa-download m-r-5" /> Download
-            </a>
+            {record.review_file && (
+              <a className="dropdown-item" onClick={() => handleFileDownload(record.review_file)}>
+                <i className="fa fa-download m-r-5" /> Download
+              </a>
+            )}
             <a className="dropdown-item" onClick={() => handleEditReview(record.id, index)}>
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
