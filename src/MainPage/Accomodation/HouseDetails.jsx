@@ -52,6 +52,7 @@ import Header from '../../initialpage/Sidebar/header';
 import Sidebar from '../../initialpage/Sidebar/sidebar';
 import { Helmet } from 'react-helmet';
 import { handleFileDownload } from '../../utils/helperFucntions';
+import Gallery from './Components/Gallery';
 
 const HouseDetails = () => {
   const location = useLocation();
@@ -1314,7 +1315,15 @@ const toggleMobileMenu = () => {
                     <i className="fa fa-plus" />
                   </a>
                 </h3>
-                {houseImagesData?.length > 0
+                <Gallery 
+                  data={houseImagesData} 
+                  onLoading={isHouseImagesLoading} 
+                  houseId={houseId}
+                  handleFileDownload={handleFileDownload}
+                  handleEditHouseImages={handleEditHouseImages}
+                  handleDeleteHouseImages={handleDeleteHouseImages}
+                />
+                {/* {houseImagesData?.length > 0
                   ? houseImagesData?.map((images, index) => {
                       const {
                         name,
@@ -1402,7 +1411,7 @@ const toggleMobileMenu = () => {
                         );
                       }
                     })
-                  : "Ops! No Image"}
+                  : "Ops! No Image"} */}
               </>
             )}
           </div>
