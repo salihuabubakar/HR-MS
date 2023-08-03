@@ -51,7 +51,7 @@ export const add_update_delete_employee = async (state, { type, payload }) => {
         const response = await axios.delete(`${BaseUrl}/employee/create/${id}/`);
 
         // Check the response status
-        if (response.status === 200) {
+        if (response.status === 204) {
           toast("Employee Deleted", {
             autoClose: 1500,
           });
@@ -505,7 +505,7 @@ export const add_update_delete_house_image = async (state, { type, payload }) =>
         const response = await axios.delete(`${BaseUrl}/house/images/${id}/`);
 
         // Check the response status
-        if (response.status === 200) {
+        if (response.status === 204) {
           toast("House Image Deleted", {
             autoClose: 15000,
           });
@@ -571,7 +571,7 @@ export const add_update_delete_house_document = async (state, { type, payload })
         const response = await axios.delete(`${BaseUrl}/house/documents/${id}/`);
 
         // Check the response status
-        if (response.status === 200) {
+        if (rresponse.status === 204) {
           toast("House Document Deleted", {
             autoClose: 1500,
           });
@@ -1807,7 +1807,7 @@ export const add_update_delete_resident_document = async (state, { type, payload
         const response = await axios.delete(`${BaseUrl}/resident/document/${id}/`);
 
         // Check the response status
-        if (response.status === 200) {
+        if (response.status === 204) {
           toast.success("Resident Document Deleted", {
             autoClose: 1500,
           });
