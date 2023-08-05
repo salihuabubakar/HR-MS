@@ -32,6 +32,7 @@ import { ProgressDiv, ProgressSpan } from "../../utils/helperFucntions";
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from "../Employees/Employees/styles";
 import { handleFileDownload } from "../../utils/helperFucntions";
+import DisplayFileType from "../../_components/fileExtension";
 
 const TaskDetails = () => {
 
@@ -726,7 +727,7 @@ const TaskDetails = () => {
                                           ) : !document ? (
                                             <span>No File</span>
                                           ) : (
-                                            <i className="fa fa-file-o" />
+                                            <DisplayFileType file={document} />
                                         )}
                                       </div>
                                       <div className="card-body">

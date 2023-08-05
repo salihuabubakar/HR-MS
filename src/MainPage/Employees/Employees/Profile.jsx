@@ -3,6 +3,7 @@ import moment from "moment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import { Wrapper } from "../../ServiceWork/style";
+import { BillCard } from "./styles";
 import { Link, useLocation } from "react-router-dom";
 import {
   useEmployeeAddressFetching,
@@ -38,6 +39,8 @@ import { ProgressSpan, ProgressDiv } from "../../../utils/helperFucntions";
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from "./styles";
 import { handleFileDownload } from "../../../utils/helperFucntions";
+import DisplayFileType from "../../../_components/fileExtension";
+import PopUpText from "../../../_components/modelbox/PopUpText";
 
 const Profile = ({
   DefaultImage,
@@ -419,25 +422,39 @@ const Profile = ({
                                       ? "Active"
                                       : employeeStatus}
                                   </h6>
-                                  <h6 className="text-muted">
-                                    Role: {role ? role?.role_name : "--"}
-                                  </h6>
-                                  <div className="small doj text-muted">
-                                    Employee ID : {employee_number ? employee_number : "--"}
-                                  </div>
-                                  <div className="small doj text-muted">
-                                    NI Number : {ni_numbber ? ni_numbber : "--"}
-                                  </div>
-                                  <div className="small doj text-muted">
-                                    Date of Join:{" "}
-                                    {hire_date ? moment(hire_date).format("DD MMM YYYY") : "--"}
-                                  </div>
-                                  <div className="small doj text-muted">
-                                    Nationality: {nationality ? nationality : "--"}
-                                  </div>
-                                  <div className="small doj text-muted">
-                                    Department: {department?.department_name}
-                                  </div>
+                                  <Popup
+                                    inline
+                                    hoverable
+                                    position="bottom center"
+                                    delay={{
+                                      show: 300,
+                                      hide: 800,
+                                    }}
+                                    content={
+                                      <Segment.Group>
+                                            <Segment style={{ width: "250px" }}>
+                                              <div className="ui column relaxed divided grid">
+                                                <div className="column">
+                                                  <div className="ui link list">
+                                                    <a className="item">{`Date of Join: ${hire_date ? moment(hire_date).format("DD MMM YYYY") : "--"}`}</a>
+                                                    <a className="item">{`Role: ${role ? role?.role_name : "--"}`}</a>
+                                                    <a className="item">{`Employee ID: ${employee_number ? employee_number : "--"}`}</a>
+                                                    <a className="item">{`NI Number: ${ni_numbber ? ni_numbber : "--"}`}</a>
+                                                    <a className="item">{`Nationality: ${nationality ? nationality : "--"}`}</a>
+                                                    <a className="item">{`Department: ${department?.department_name}`}</a>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </Segment>
+                                      </Segment.Group>
+                                    }
+                                    trigger={
+                                        <a>
+                                          View More
+                                        </a>
+                                    }
+                                  />
+                                  <h6 style={{ width: "10px", height: "40px" }} className="text-muted"></h6>
                                 </div>
                               </div>
 
@@ -455,32 +472,36 @@ const Profile = ({
                                       <a>{email ? email : "--"}</a>
                                     </div>
                                   </li>
-                                  <li>
-                                    <div className="title">Birthday:</div>
-                                    <div className="text">
-                                      {date_of_birth
-                                        ? moment(date_of_birth).format("DD MMM YYYY")
-                                        : "--"}
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className="title">Gender:</div>
-                                    <div className="text">{gender ? gender : "--"}</div>
-                                  </li>
-                                  <li>
-                                    <div className="title">Marital Status:</div>
-                                    <div className="text">
-                                      {marital_status ? marital_status : "--"}
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className="title">Organisation:</div>
-                                    <div className="text">
-                                      {organisation?.organisation_name
-                                        ? organisation?.organisation_name
-                                        : "--"}
-                                    </div>
-                                  </li>
+                                  <Popup
+                                    inline
+                                    hoverable
+                                    position="bottom center"
+                                    delay={{
+                                      show: 300,
+                                      hide: 800,
+                                    }}
+                                    content={
+                                      <Segment.Group>
+                                            <Segment style={{ width: "250px" }}>
+                                              <div className="ui column relaxed divided grid">
+                                                <div className="column">
+                                                  <div className="ui link list">
+                                                    <a className="item">{`Birthday: ${date_of_birth ? moment(date_of_birth).format("DD MMM YYYY") : "--"}`}</a>
+                                                    <a className="item">{`Gender: ${gender ? gender : "--"}`}</a>
+                                                    <a className="item">{`Marital Status: ${marital_status ? marital_status : "--"}`}</a>
+                                                    <a className="item">{`Organisation: ${organisation?.organisation_name ? organisation?.organisation_name: "--"}`}</a>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </Segment>
+                                      </Segment.Group>
+                                    }
+                                    trigger={
+                                        <a>
+                                          View More
+                                        </a>
+                                    }
+                                  />
                                 </ul>
                               </div>
                             </>
@@ -530,214 +551,219 @@ const Profile = ({
                 ) : (
                   <>
                     <div className="row">
-                      <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Emergency Contact{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {employeeEmergencyError?.length > 0 && (
-                                  <>
-                                    Error: {employeeEmergencyError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                className="edit-icon"
-                                onClick={() => setGlobalState("showEmployeeEmergencyModal", true)}
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Name</th>
-                                    <th>Relationship</th>
-                                    <th>Phone Number</th>
-                                    <th>Address</th>
-                                    <th>Email</th>
-                                    <th>Post Code</th>
+                      <div className="col-lg-6">
+				                <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Emergency Contact {""}
+                            <span style={{ color: "red", fontSize: "0.7rem" }}>
+                              {employeeEmergencyError?.length > 0 && (
+                                <>
+                                  Error: {employeeEmergencyError}
+                                  <button
+                                    onClick={clearErrorMessage}
+                                    style={{
+                                      marginLeft: "10px",
+                                      fontSize: "0.8rem",
+                                      cursor: "pointer",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <i className="fa fa-times" />
+                                    Clear Error
+                                  </button>
+                                </>
+                              )}
+                            </span>
+                            <a
+                              className="edit-icon"
+                              onClick={() => setGlobalState("showEmployeeEmergencyModal", true)}
+                            >
+                              <i className="fa fa-plus" />
+                            </a>
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+				              			<tr>
+                              <th>Name</th>
+                              <th>Relationship</th>
+                              <th>Phone Number</th>
+                              <th>Address</th>
+                              <th>Email</th>
+                              <th>Post Code</th>
+                              <th>Action</th>
+				              			</tr>
+				              		  </thead>
+				              		  <tbody>
+                            {employeeEmergencyData?.length > 0
+                              ? employeeEmergencyData?.map((emergency, index) => {
+                                  const {
+                                    id,
+                                    employee,
+                                    name,
+                                    relationship,
+                                    phone_number,
+                                    address,
+                                    email,
+                                    post_code,
+                                  } = emergency;
+                                  if (employee === selectedEmployeeId) {
+                                    return (
+                                      <React.Fragment key={id}>
+                                      <tr style={{ height: "90px" }}>
+                                        <td>{name}</td>
+                                        <td>{relationship}</td>
+                                        <td>{phone_number}</td>
+                                        <td>{address}</td>
+                                        <td>{email}</td>
+                                        <td>{post_code}</td>
+                                        <td className="dropdown dropdown-action text-end">
+                                          <a
+                                            className="action-icon dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            <i className="material-icons">more_vert</i>
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleEditEmployeeEmergency(id, index)}
+                                            >
+                                              <i className="fa fa-pencil m-r-5" /> Edit
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleDeleteEmployeeEmergency(id)}
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" /> Delete
+                                            </a>
+                                          </div>
+                                        </td>
+				              			          </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No Emergency Contact attach to this employee</td>
                                   </tr>
-                                </thead>
-                                <tbody>
-                                  {employeeEmergencyData?.length > 0 ? (
-                                    employeeEmergencyData?.map((emergency, index) => {
-                                      const {
-                                        id,
-                                        employee,
-                                        name,
-                                        relationship,
-                                        phone_number,
-                                        address,
-                                        email,
-                                        post_code,
-                                      } = emergency;
-                                      if (employee == selectedEmployeeId) {
-                                        return (
-                                          <tr style={{ height: "90px" }} key={id}>
-                                            <td>{name}</td>
-                                            <td>{relationship}</td>
-                                            <td>{phone_number}</td>
-                                            <td>{address}</td>
-                                            <td>{email}</td>
-                                            <td>{post_code}</td>
-                                            <td className="dropdown dropdown-action text-end">
-                                              <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <i className="material-icons">more_vert</i>
-                                              </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditEmployeeEmergency(id, index)
-                                                  }
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleDeleteEmployeeEmergency(id)}
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No Emergency Contact attach to this employee</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
 
-                      <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Address{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {employeeAddressError?.length > 0 && (
-                                  <>
-                                    Error: {employeeAddressError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                className="edit-icon"
-                                onClick={() => setGlobalState("showEmployeeAddressModal", true)}
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Street</th>
-                                    <th>City</th>
-                                    <th>State</th>
-                                    <th>Country</th>
-                                    <th>Postal Code</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {employeeAddressData?.length > 0 ? (
-                                    employeeAddressData?.map((address, index) => {
-                                      const {
-                                        id,
-                                        employee,
-                                        street,
-                                        city,
-                                        state,
-                                        country,
-                                        postal_code,
-                                      } = address;
-                                      if (employee == selectedEmployeeId) {
-                                        return (
-                                          <tr style={{ height: "90px" }} key={id}>
-                                            <td>{street}</td>
-                                            <td>{city}</td>
-                                            <td>{state}</td>
-                                            <td>{country}</td>
-                                            <td>{postal_code}</td>
-                                            <td className="dropdown dropdown-action text-end">
-                                              <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <i className="material-icons">more_vert</i>
-                                              </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditEmployeeAddress(id, index)
-                                                  }
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleDeleteEmployeeAddress(id)}
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No Address attach to this employee</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <div className="col-lg-6">
+				                <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Address {""}
+                            <span style={{ color: "red", fontSize: "0.7rem" }}>
+                              {employeeAddressError?.length > 0 && (
+                                <>
+                                  Error: {employeeAddressError}
+                                  <button
+                                    onClick={clearErrorMessage}
+                                    style={{
+                                      marginLeft: "10px",
+                                      fontSize: "0.8rem",
+                                      cursor: "pointer",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <i className="fa fa-times" />
+                                    Clear Error
+                                  </button>
+                                </>
+                              )}
+                            </span>
+                            <a
+                              className="edit-icon"
+                              onClick={() => setGlobalState("showEmployeeAddressModal", true)}
+                            >
+                              <i className="fa fa-plus" />
+                            </a>
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+				              			<tr>
+                              <th>Street</th>
+                              <th>City</th>
+                              <th>State</th>
+                              <th>Country</th>
+                              <th>Postal Code</th>
+				              			</tr>
+				              		  </thead>
+				              		  <tbody>
+                            {employeeAddressData?.length > 0
+                              ? employeeAddressData?.map((emergency, index) => {
+                                  const {
+                                    id,
+                                    employee,
+                                    street,
+                                    city,
+                                    state,
+                                    country,
+                                    postal_code,
+                                  } = emergency;
+                                  if (employee === selectedEmployeeId) {
+                                    return (
+                                      <React.Fragment key={id}>
+                                      <tr style={{ height: "90px" }}>
+                                        <td>{street}</td>
+                                        <td>{city}</td>
+                                        <td>{state}</td>
+                                        <td>{country}</td>
+                                        <td>{postal_code}</td>
+                                        <td className="dropdown dropdown-action text-end">
+                                          <a
+                                            className="action-icon dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            <i className="material-icons">more_vert</i>
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleEditEmployeeAddress(id, index)}
+                                            >
+                                              <i className="fa fa-pencil m-r-5" /> Edit
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleDeleteEmployeeAddress(id)}
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" /> Delete
+                                            </a>
+                                          </div>
+                                        </td>
+				              			          </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No Address attach to this employee</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
 
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
@@ -955,7 +981,7 @@ const Profile = ({
                                                 "--"
                                               ) : (
                                                 <span className="files-icon">
-                                                  <i className="fa fa-file-pdf-o" />
+                                                  <DisplayFileType file={qualification_upload} />
                                                 </span>
                                               )}
                                             </div>
@@ -1092,7 +1118,7 @@ const Profile = ({
                                                 "--"
                                               ) : (
                                                 <span className="files-icon">
-                                                  <i className="fa fa-file-pdf-o" />
+                                                  <DisplayFileType file={experience_upload} />
                                                 </span>
                                               )}
                                             </div>
@@ -1123,8 +1149,12 @@ const Profile = ({
                     <div className="row">
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
+                          <div className="card-header">
+				              	    <h4 className="card-title mb-0">
+                              Contract
+                            </h4>
+				              	  </div>
                           <div className="card-body">
-                            <h3 className="card-title">Contract</h3>
                             <Wrapper>
                               {employee_contract?.length > 0 ? (
                                 employee_contract.map((contract, index) => {
@@ -1141,8 +1171,59 @@ const Profile = ({
                                   } = contract;
                                   if (employee_contract === selectedEmployeeId) {
                                     return (
-                                      <div key={id} className="card plain-card">
-                                        <div className="text">
+                                      <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                                        <span style={{width: "90%"}}>
+                                          <Popup
+                                            inline
+                                            hoverable
+                                            position="bottom left"
+                                            delay={{
+                                              show: 300,
+                                              hide: 800,
+                                            }}
+                                            content={
+                                              <Segment.Group>
+                                                <Segment style={{ width: "250px" }}>
+                                                  <div className="ui column relaxed divided grid">
+                                                    <div className="column">
+                                                      <div className="ui link list">
+                                                        <a className="item">{`Contract Type: ${contract_type}`}</a>
+                                                        <a className="item">{`Start Date: ${start_date}`}</a>
+                                                        <a className="item">{`End Date: ${end_date}`}</a>
+                                                        <a className="item">{`Contract Status: ${contract_status}`}</a>
+                                                        <a className="item">
+                                                        {contract_file && "Doc: "}
+                                                        {contract_file && regex.test(contract_file) ? (
+                                                          <img
+                                                            className="img-preview"
+                                                            src={contract_file}
+                                                            alt="Preview"
+                                                          />
+                                                        ) : !contract_file ? null : (
+                                                          <span className="files-icon">
+                                                            <DisplayFileType file={contract_file} />
+                                                          </span>
+                                                        )}
+                                                        </a>
+                                                        {description && (
+                                                          <a className="item">Des: <PopUpText text={description}/></a>
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </Segment>
+                                              </Segment.Group>
+                                            }
+                                            trigger={
+                                              <a style={{color: "black"}}>
+                                                {contract_owner}
+                                              </a>
+                                            }
+                                          />
+                                        </span>
+                                        <span
+                                          className="edit-icon"
+                                        >
                                           <div className="dropdown dropdown-action text-end">
                                             <a
                                               className="action-icon dropdown-toggle"
@@ -1152,50 +1233,23 @@ const Profile = ({
                                               <i className="material-icons">more_vert</i>
                                             </a>
                                             <div className="dropdown-menu dropdown-menu-right">
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() => handleFileDownload(contract_file)}
-                                              >
-                                                <i className="fa fa-download m-r-5" /> Download
-                                              </a>
+                                              {contract_file && (
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() => handleFileDownload(contract_file)}
+                                                >
+                                                  <i className="fa fa-download m-r-5" /> Download
+                                                </a>
+                                              )}
                                             </div>
                                           </div>
-                                          Contract Owner: <span>{contract_owner}</span>
-                                        </div>
-                                        <div className="text">
-                                          Contract Type: <span>{contract_type}</span>
-                                        </div>
-                                        <div className="text">
-                                          Start Date: <span>{start_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          End Date: <span>{end_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          Contract Status: <span>{contract_status}</span>
-                                        </div>
-                                        <div className="text">
-                                          Description: <span className="c">{description}</span>
-                                        </div>
-                                        <div>
-                                          {contract_file && regex.test(contract_file) ? (
-                                            <img
-                                              className="img-preview"
-                                              src={contract_file}
-                                              alt="Preview"
-                                            />
-                                          ) : !contract_file ? null : (
-                                            <span className="files-icon">
-                                              <i className="fa fa-file-pdf-o" />
-                                            </span>
-                                          )}
-                                        </div>
-                                      </div>
+                                        </span>
+                                      </BillCard>
                                     );
                                   }
                                 })
                               ) : (
-                                <></>
+                                <>Ops! No contract for this employee</>
                               )}
                             </Wrapper>
                           </div>
@@ -1204,8 +1258,12 @@ const Profile = ({
 
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
+                          <div className="card-header">
+				              	    <h4 className="card-title mb-0">
+                            Leave
+                            </h4>
+				              	  </div>
                           <div className="card-body">
-                            <h3 className="card-title">Leave</h3>
                             <Wrapper>
                               {employee_leave?.length > 0 ? (
                                 employee_leave.map((doc, index) => {
@@ -1272,7 +1330,7 @@ const Profile = ({
                                             />
                                           ) : !supporting_document ? null : (
                                             <span className="files-icon">
-                                              <i className="fa fa-file-pdf-o" />
+                                              <DisplayFileType file={supporting_document} />
                                             </span>
                                           )}
                                         </div>
@@ -1288,148 +1346,152 @@ const Profile = ({
                         </div>
                       </div>
 
-                      <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Bank Information{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {employeeBankError?.length > 0 && (
-                                  <>
-                                    Error: {employeeBankError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                className="edit-icon"
-                                onClick={() => setGlobalState("showEmployeeBankModal", true)}
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Bank name</th>
-                                    <th>Account Name</th>
-                                    <th>Account No</th>
-                                    <th>Account Type</th>
-                                    <th>Currency</th>
-                                    <th>Address</th>
-                                    <th>Sort Code</th>
-                                    <th>Swift Code</th>
-                                    <th>Iban</th>
-                                    <th>Routing No</th>
-                                    <th>Date</th>
-                                    <th>Document</th>
-                                    <th>Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {employeeBankData?.length > 0 ? (
-                                    employeeBankData?.map((bank, index) => {
-                                      const {
-                                        id,
-                                        employee,
-                                        bank_name,
-                                        account_name,
-                                        account_number,
-                                        account_type,
-                                        currency,
-                                        bank_address,
-                                        sort_code,
-                                        swift_code,
-                                        iban,
-                                        routing_number,
-                                        upload_date,
-                                        upload_document,
-                                      } = bank;
-                                      if (employee == selectedEmployeeId) {
-                                        return (
-                                          <tr style={{ height: "90px" }} key={id}>
-                                            <td>{bank_name}</td>
-                                            <td>{account_name}</td>
-                                            <td>{account_number}</td>
-                                            <td>{account_type}</td>
-                                            <td>{currency}</td>
-                                            <td>{bank_address}</td>
-                                            <td>{sort_code}</td>
-                                            <td>{swift_code}</td>
-                                            <td>{iban}</td>
-                                            <td>{routing_number}</td>
-                                            <td>{upload_date}</td>
-                                            <td>
-                                              {upload_document && regex.test(upload_document) ? (
-                                                <img
-                                                  className="img-preview"
-                                                  src={upload_document}
-                                                  alt="Preview"
-                                                />
-                                              ) : !upload_document ? null : (
-                                                <span className="files-icon">
-                                                  <i className="fa fa-file-pdf-o" />
-                                                </span>
-                                              )}
-                                            </td>
-                                            <td className="dropdown dropdown-action text-end">
-                                              <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <i className="material-icons">more_vert</i>
-                                              </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleFileDownload(upload_document)
-                                                  }
-                                                >
-                                                  <i className="fa fa-download m-r-5" /> Download
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleEditEmployeeBank(id, index)}
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleDeleteEmployeeBank(id)}
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No Bank detail attach to this employee</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <div className="col-lg-12">
+				                <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                          Bank Information {""}
+                            <span style={{ color: "red", fontSize: "0.7rem" }}>
+                              {employeeBankError?.length > 0 && (
+                                <>
+                                  Error: {employeeBankError}
+                                  <button
+                                    onClick={clearErrorMessage}
+                                    style={{
+                                      marginLeft: "10px",
+                                      fontSize: "0.8rem",
+                                      cursor: "pointer",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <i className="fa fa-times" />
+                                    Clear Error
+                                  </button>
+                                </>
+                              )}
+                            </span>
+                            <a
+                              className="edit-icon"
+                              onClick={() => setGlobalState("showEmployeeBankModal", true)}
+                            >
+                              <i className="fa fa-plus" />
+                            </a>
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+                              <tr>
+                                <th>Bank name</th>
+                                <th>Account Name</th>
+                                <th>Account No</th>
+                                <th>Account Type</th>
+                                <th>Currency</th>
+                                <th>Address</th>
+                                <th>Sort Code</th>
+                                <th>Swift Code</th>
+                                <th>Iban</th>
+                                <th>Routing No</th>
+                                <th>Date</th>
+                                <th>Document</th>
+                                <th>Action</th>
+                              </tr>
+				              		  </thead>
+				              		  <tbody>
+                            {employeeBankData?.length > 0
+                              ? employeeBankData?.map((bank, index) => {
+                                  const {
+                                    id,
+                                    employee,
+                                    bank_name,
+                                    account_name,
+                                    account_number,
+                                    account_type,
+                                    currency,
+                                    bank_address,
+                                    sort_code,
+                                    swift_code,
+                                    iban,
+                                    routing_number,
+                                    upload_date,
+                                    upload_document,
+                                  } = bank;
+                                  if (employee === selectedEmployeeId) {
+                                    return (
+                                      <React.Fragment key={id}>
+                                      <tr style={{ height: "90px" }}>
+                                        <td>{bank_name}</td>
+                                        <td>{account_name}</td>
+                                        <td>{account_number}</td>
+                                        <td>{account_type}</td>
+                                        <td>{currency}</td>
+                                        <td>{bank_address}</td>
+                                        <td>{sort_code}</td>
+                                        <td>{swift_code}</td>
+                                        <td>{iban}</td>
+                                        <td>{routing_number}</td>
+                                        <td>{upload_date}</td>
+                                        <td>
+                                          {upload_document && regex.test(upload_document) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={upload_document}
+                                              alt="Preview"
+                                            />
+                                          ) : !upload_document ? null : (
+                                            <span className="files-icon">
+                                              <DisplayFileType file={upload_document} />
+                                            </span>
+                                          )}
+                                        </td>
+                                        <td className="dropdown dropdown-action text-end">
+                                          <a
+                                            className="action-icon dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            <i className="material-icons">more_vert</i>
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleFileDownload(upload_document)
+                                              }
+                                            >
+                                              <i className="fa fa-download m-r-5" /> Download
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleEditEmployeeBank(id, index)}
+                                            >
+                                              <i className="fa fa-pencil m-r-5" /> Edit
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleDeleteEmployeeBank(id)}
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" /> Delete
+                                            </a>
+                                          </div>
+                                        </td>
+				              			          </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No Bank detail attach to this employee</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
                     </div>
                   </>
                 )}
@@ -1703,7 +1765,7 @@ const Profile = ({
                                               ) : !document_upload ? (
                                                 <span>No File</span>
                                               ) : (
-                                                <i className="fa fa-file-o" />
+                                                <DisplayFileType file={document_upload} />
                                             )}
                                           </div>
                                           <div className="card-body">

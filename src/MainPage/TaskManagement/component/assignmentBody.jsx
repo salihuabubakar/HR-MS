@@ -1,4 +1,5 @@
 import React from 'react'
+import DisplayFileType from '../../../_components/fileExtension';
 
 const AssignmentBody = ({
   index,
@@ -63,7 +64,7 @@ const AssignmentBody = ({
                       <img className="img-preview" src={docFile} alt="Preview" />
                     ) : !docFile ? null : (
                       <span className="files-icon">
-                        <i className="fa fa-file-pdf-o" />
+                        <DisplayFileType file={docFile} />
                       </span>
                     )}
                   </span>

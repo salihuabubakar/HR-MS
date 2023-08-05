@@ -1360,7 +1360,7 @@ const toggleMobileMenu = () => {
                               );
                             }
                           })
-                        : "Ops!"}
+                        : "Ops! No Data"}
 				        		  </tbody>
 				        		</table>
 				        	  </div>
@@ -1434,8 +1434,8 @@ const toggleMobileMenu = () => {
             ) : (
               <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
-                  <div className="card-body">
-                    <h3 className="card-title">
+                  <div className="card-header">
+				            <h4 className="card-title mb-0">
                       House Bills {""}
                       <span style={{ color: "red", fontSize: "0.7rem" }}>
                         {houseBillError?.length > 0 && (
@@ -1456,10 +1456,15 @@ const toggleMobileMenu = () => {
                           </>
                         )}
                       </span>
-                      <a onClick={handleAddBill} className="edit-icon">
+                      <a
+                        onClick={handleAddBill}
+                        className="edit-icon"
+                      >
                         <i className="fa fa-plus" />
                       </a>
-                    </h3>
+                    </h4>
+				          </div>
+                  <div className="card-body">
                     <Wrapper>
                       {billData?.length > 0 ? (
                         billData.map((bills, index) => {
@@ -1569,8 +1574,8 @@ const toggleMobileMenu = () => {
             ) : (
               <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
-                  <div className="card-body">
-                    <h3 className="card-title">
+                  <div className="card-header">
+				            <h4 className="card-title mb-0">
                       House Rooms {""}
                       <span style={{ color: "red", fontSize: "0.7rem" }}>
                         {roomError?.length > 0 && (
@@ -1594,7 +1599,9 @@ const toggleMobileMenu = () => {
                       <a onClick={handleAddRoom} className="edit-icon">
                         <i className="fa fa-plus" />
                       </a>
-                    </h3>
+                    </h4>
+				          </div>
+                  <div className="card-body">
                     <Wrapper>
                       {roomData?.length > 0 ? (
                         roomData.map((room, index) => {
@@ -1703,8 +1710,8 @@ const toggleMobileMenu = () => {
               <>
               <div className="col-md-12 d-flex">
                   <div className="card profile-box flex-fill">
-                    <div className="card-body">
-                      <h3 className="card-title">
+                    <div className="card-header">
+				              <h4 className="card-title mb-0">
                         House Document {""}
                         <span style={{ color: "red", fontSize: "0.7rem" }}>
                           {houseDocumentError?.length > 0 && (
@@ -1731,7 +1738,9 @@ const toggleMobileMenu = () => {
                         >
                           <i className="fa fa-plus" />
                         </a>
-                      </h3>
+                      </h4>
+				            </div>
+                    <div className="card-body">
                       <Wrapper>
                         {houseDocumentsData?.length > 0 ? (
                           houseDocumentsData.map((doc, index) => {
@@ -1867,10 +1876,10 @@ const toggleMobileMenu = () => {
             ) : (
               <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
-                  <div className="card-body">
-                    <h3 className="card-title">
-                      Notice {""}
-                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+                  <div className="card-header">
+				            <h4 className="card-title mb-0">
+                        Notice {""}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
                           {houseNoticeError?.length > 0 && (
                             <>
                               Error: {houseNoticeError}
@@ -1889,10 +1898,15 @@ const toggleMobileMenu = () => {
                             </>
                           )}
                         </span>
-                      <a onClick={handleAddNotice} className="edit-icon">
-                        <i className="fa fa-plus" />
-                      </a>
-                    </h3>
+                        <a
+                          onClick={handleAddNotice}
+                          className="edit-icon"
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+                    </h4>
+				          </div>
+                  <div className="card-body">
                     <Wrapper>
                       {houseNoticeData?.length > 0 ? (
                         houseNoticeData.map((notice, index) => {
