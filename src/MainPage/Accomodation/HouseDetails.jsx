@@ -18,7 +18,7 @@ import { BaseUrl } from '../../utils/baseUrl';
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from '../Employees/Employees/styles';
 import PopUpText from '../../_components/modelbox/PopUpText';
-import { EmployeeImgCard } from '../Employees/Employees/styles';
+import { EmployeeImgCard, BillCard } from '../Employees/Employees/styles';
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
@@ -53,6 +53,8 @@ import Sidebar from '../../initialpage/Sidebar/sidebar';
 import { Helmet } from 'react-helmet';
 import { handleFileDownload } from '../../utils/helperFucntions';
 import Gallery from './Components/Gallery';
+import './style.css'
+import DisplayFileType from '../../_components/fileExtension';
 
 const HouseDetails = () => {
   const location = useLocation();
@@ -579,7 +581,7 @@ const toggleMobileMenu = () => {
                             <Popup
                               inline
                               hoverable
-                              position="bottom left"
+                              position="bottom center"
                               delay={{
                                 show: 300,
                                 hide: 800,
@@ -617,61 +619,13 @@ const toggleMobileMenu = () => {
                           </div>
                         </div>
 
-                        <div className="col-md-7">
+                        <div className="col-md-7 profile-right-div">
                           <ul className="personal-info">
-                            {/* <li>
-                              <div className="title">Address:</div>
-                              <div className="text">
-                                <a>{`${street_address}, ${city}`}</a>
-                              </div>
-                            </li>
                             <li>
-                              <div className="title">Post Code:</div>
-                              <div className="text">
-                                <a>{`${postcode}`}</a>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">Year Built:</div>
-                              <div className="text">
-                                <a>{`${year_built}`}</a>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">Square Footage:</div>
-                              <div className="text">
-                                <a>{`${square_footage}`}</a>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">No of bedromm:</div>
-                              <div className="text">
-                                <a>{`${num_bedrooms}`}</a>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">No of bathroom:</div>
-                              <div className="text">
-                                <a>{`${num_bathrooms}`}</a>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">No of kitchens:</div>
-                              <div className="text">
-                                <a>{`${num_kitchens}`}</a>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title">No of floors:</div>
-                              <div className="text">
-                                <a>{`${num_floors}`}</a>
-                              </div>
-                            </li> */}
-                            <li>
-                              <div className="title">
+                              <div className="title right-title">
                                 Total no of employees:
                               </div>
-                              <div className="text">
+                              <div className="text right-text">
                                 <a>
                                   {filteredEmployees?.length
                                     ? filteredEmployees?.length
@@ -680,10 +634,10 @@ const toggleMobileMenu = () => {
                               </div>
                             </li>
                             <li>
-                              <div className="title">
+                              <div className="title right-title">
                                 Total no of residents:
                               </div>
-                              <div className="text">
+                              <div className="text right-text">
                                 <a>
                                   {filteredResidents?.length
                                     ? filteredResidents?.length
@@ -1143,13 +1097,15 @@ const toggleMobileMenu = () => {
               <div className="skeleton-container-profile">
                 <div className="skeleton-content-profile">
                   <div className="skeleton-line-profile"></div>
+                  <div className="skeleton-line-profile"></div>
                 </div>
               </div>
             ) : (
-              <div className="col-md-6 d-flex">
-                <div className="card profile-box flex-fill">
-                  <div className="card-body">
-                    <h3 className="card-title">
+              <>
+                <div className="col-lg-12">
+				          <div className="card">
+				        	<div className="card-header">
+				        	  <h4 className="card-title mb-0">
                       Maintenance {""}
                       <span style={{ color: "red", fontSize: "0.7rem" }}>
                         {maintenanceError?.length > 0 && (
@@ -1173,107 +1129,245 @@ const toggleMobileMenu = () => {
                       <a onClick={handleAddMaintenance} className="edit-icon">
                         <i className="fa fa-plus" />
                       </a>
-                    </h3>
-                    {houseMaintenanceData?.length > 0
-                      ? houseMaintenanceData?.map((maintenance, index) => {
-                          const {
-                            status,
-                            id,
-                            description,
-                            date,
-                            cost,
-                            house,
-                            Employee,
-                            Organization,
-                            documents,
-                            Before_Image,
-                            After_Image,
-                          } = maintenance;
-                          if (house === houseId) {
-                            return (
-                              <React.Fragment key={id}>
-                                <ul className="personal-info">
-                                  <li>
-                                    <span className="text">
-                                      Status: {status}
+                    </h4>
+				        	</div>
+				        	<div className="card-body">
+				        	  <div className="table-responsive">
+				        		<table className="table table-striped mb-0">
+				        		  <thead>
+				        			<tr>
+				        			  <th>Status</th>
+				        			  <th>Employee</th>
+				        			  <th>Organization</th>
+                        <th>Cost</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Document</th>
+                        <th>After Image</th>
+                        <th>Before Image</th>
+                        <th>Action</th>
+				        			</tr>
+				        		  </thead>
+				        		  <tbody>
+                      {houseMaintenanceData?.length > 0
+                        ? houseMaintenanceData?.map((maintenance, index) => {
+                            const {
+                              status,
+                              id,
+                              description,
+                              date,
+                              cost,
+                              house,
+                              Employee,
+                              Organization,
+                              documents,
+                              Before_Image,
+                              After_Image,
+                            } = maintenance;
+                            if (house === houseId) {
+                              return (
+                                <React.Fragment key={id}>
+                                <tr>
+				        			            <td>
+                                      <span
+                                      className={
+                                        (status === "Progress" && "badge bg-inverse-info") ||
+                                        (status === "Pending" && "badge bg-inverse-warning") ||
+                                        (status === "Completed" && "badge bg-inverse-success")
+                                      }
+                                    >
+                                      {status}
                                     </span>
-                                    <span className="text">Cost: {cost}</span>
-                                    <span className="text">Date: {date}</span>
-                                    <span className="text">
-                                      Employee: {""}
-                                      {allEmployee?.map((allE) => {
+                                  </td>
+                                  <td>
+                                    {allEmployee?.map((allE) => {
                                         if (Employee === allE.id)
                                           return (
                                             <React.Fragment key={allE.id}>
                                               {`${allE.first_name} ${allE.middle_name} ${allE.last_name}`}
                                             </React.Fragment>
                                           );
-                                      })}
-                                    </span>
-                                    <span className="text">
-                                      Organization: {""}
-                                      {organisationData?.map((org) => {
-                                        if (Organization === org.id)
-                                          return (
-                                            <React.Fragment key={org.id}>
-                                              {`${org.organisation_name}`}
-                                            </React.Fragment>
-                                          );
-                                      })}
-                                    </span>
-                                    <span className="text">
-                                      Document: {documents}
-                                    </span>
-                                    <span className="text">
-                                      Before Image: {Before_Image}
-                                    </span>
-                                    <span className="text">
-                                      After Image: {After_Image}
-                                    </span>
-                                    <span className="text">
-                                      Description: {description}
-                                    </span>
-                                    <div className="dropdown dropdown-action text-end">
+                                    })}
+                                  </td>
+				        			            <td>
+                                    {organisationData?.map((org) => {
+                                      if (Organization === org.id)
+                                        return (
+                                          <React.Fragment key={org.id}>
+                                            {`${org.organisation_name}`}
+                                          </React.Fragment>
+                                        );
+                                    })}
+                                  </td>
+                                  <td>{cost}</td>
+                                  <td>{date}</td>
+                                  {description ? (
+                                      <td><PopUpText text={description}/></td>
+                                    ) : <td></td>
+                                  }
+                                  <td>
+                                    <Popup
+                                      inline
+                                      hoverable
+                                      position="bottom left"
+                                      delay={{
+                                        show: 300,
+                                        hide: 800,
+                                      }}
+                                      content={
+                                        <Segment.Group>
+                                          <Segment style={{ width: "250px" }}>
+                                            <div className="ui column relaxed divided grid">
+                                              <div className="column">
+                                                <div className="ui link list">
+                                                  {houseDocumentsData?.map((doc) => {
+                                                      if (documents.includes(doc.id))
+                                                        return (
+                                                          <a key={doc.id} className="item">
+                                                            {`Doc: ${doc.title}`}
+                                                          </a>
+                                                        );
+                                                    })}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </Segment>
+                                        </Segment.Group>
+                                      }
+                                      trigger={
+                                        <span style={{
+                                          display: "inline-block",
+                                          padding: "0.5em 1em",
+                                          border: "1px solid #ccc",
+                                          borderRadius: "4px",
+                                        }}>
+                                          Hover/Click to show
+                                        </span>
+                                      }
+                                    />
+                                  </td>
+                                  <td>
+                                    <Popup
+                                      inline
+                                      hoverable
+                                      position="bottom left"
+                                      delay={{
+                                        show: 300,
+                                        hide: 800,
+                                      }}
+                                      content={
+                                        <Segment.Group>
+                                          <Segment style={{ width: "250px" }}>
+                                            <div className="ui column relaxed divided grid">
+                                              <div className="column">
+                                                <div className="ui link list">
+                                                {houseImagesData?.map((img) => {
+                                                    if (Before_Image.includes(img.id))
+                                                      return (
+                                                        <React.Fragment key={img.id}>
+                                                          <a key={img.id} className="item">
+                                                            {`Img: ${img.name}`}
+                                                          </a>
+                                                        </React.Fragment>
+                                                      );
+                                                })}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </Segment>
+                                        </Segment.Group>
+                                      }
+                                      trigger={
+                                        <span style={{
+                                          display: "inline-block",
+                                          padding: "0.5em 1em",
+                                          border: "1px solid #ccc",
+                                          borderRadius: "4px",
+                                        }}>
+                                          Hover/Click to show
+                                        </span>
+                                      }
+                                    />
+                                  </td>
+                                  <td>
+                                    <Popup
+                                      inline
+                                      hoverable
+                                      position="bottom left"
+                                      delay={{
+                                        show: 300,
+                                        hide: 800,
+                                      }}
+                                      content={
+                                        <Segment.Group>
+                                          <Segment style={{ width: "250px" }}>
+                                            <div className="ui column relaxed divided grid">
+                                              <div className="column">
+                                                <div className="ui link list">
+                                                {houseImagesData?.map((img) => {
+                                                    if (After_Image.includes(img.id))
+                                                      return (
+                                                        <React.Fragment key={img.id}>
+                                                          <a key={img.id} className="item">
+                                                            {`Img: ${img.name}`}
+                                                          </a>
+                                                        </React.Fragment>
+                                                      );
+                                                })}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </Segment>
+                                        </Segment.Group>
+                                      }
+                                      trigger={
+                                        <span style={{
+                                          display: "inline-block",
+                                          padding: "0.5em 1em",
+                                          border: "1px solid #ccc",
+                                          borderRadius: "4px",
+                                        }}>
+                                          Hover/Click to show
+                                        </span>
+                                      }
+                                    />
+                                  </td>
+                                  <td className="dropdown dropdown-action text-end">
+                                    <a
+                                      className="action-icon dropdown-toggle"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="material-icons">more_vert</i>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right">
                                       <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
+                                        className="dropdown-item"
+                                        onClick={() => handleEditMaintenance(id, index)}
                                       >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
+                                        <i className="fa fa-pencil m-r-5" /> Edit
                                       </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleEditMaintenance(id, index)
-                                          }
-                                        >
-                                          <i className="fa fa-pencil m-r-5" />{" "}
-                                          Edit
-                                        </a>
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleDeleteMaintenance(id)
-                                          }
-                                        >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
-                                        </a>
-                                      </div>
+                                      <a
+                                        className="dropdown-item"
+                                        onClick={() => handleDeleteMaintenance(id)}
+                                      >
+                                        <i className="fa fa-trash-o m-r-5" /> Delete
+                                      </a>
                                     </div>
-                                  </li>
-                                </ul>
-                              </React.Fragment>
-                            );
-                          }
-                        })
-                      : "Ops!"}
-                  </div>
-                </div>
-              </div>
+                                  </td>
+				        			          </tr>
+                                </React.Fragment>
+                              );
+                            }
+                          })
+                        : "Ops!"}
+				        		  </tbody>
+				        		</table>
+				        	  </div>
+				        	</div>
+				          </div>
+				        </div>
+              </>
             )}
           </div>
         </div>
@@ -1323,95 +1417,6 @@ const toggleMobileMenu = () => {
                   handleEditHouseImages={handleEditHouseImages}
                   handleDeleteHouseImages={handleDeleteHouseImages}
                 />
-                {/* {houseImagesData?.length > 0
-                  ? houseImagesData?.map((images, index) => {
-                      const {
-                        name,
-                        id,
-                        description,
-                        image,
-                        house,
-                        cover_image,
-                      } = images;
-                      if (house == houseId) {
-                        return (
-                          <>
-                            <div key={id} className="col-md-6 d-flex">
-                              <div className="card profile-box flex-fill">
-                                <div className="card-body">
-                                  <ul className="personal-info">
-                                    <li>
-                                      <span className="text">
-                                        <img
-                                          style={{
-                                            // maxWidth: "800px",
-                                            // maxHeight: "400px",
-                                            height: "100%",
-                                            width: "100%",
-                                            objectFit: "cover",
-                                            borderRadius: "5px",
-                                          }}
-                                          alt=""
-                                          src={image ? image : DefaultImage}
-                                        />
-                                      </span>
-                                      <span className="text">{name}</span>
-                                      <span className="text">
-                                        {description}
-                                      </span>
-                                      <span className="text">
-                                        {cover_image}
-                                      </span>
-                                      <div className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">
-                                            more_vert
-                                          </i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleFileDownload(image)
-                                            }
-                                          >
-                                            <i className="fa fa-download m-r-5" />{" "}
-                                            Download
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditHouseImages(id, index)
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" />{" "}
-                                            Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteHouseImages(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" />{" "}
-                                            Delete
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </>
-                        );
-                      }
-                    })
-                  : "Ops! No Image"} */}
               </>
             )}
           </div>
@@ -1427,7 +1432,7 @@ const toggleMobileMenu = () => {
                 </div>
               </div>
             ) : (
-              <div className="col-md-6 d-flex">
+              <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
                     <h3 className="card-title">
@@ -1455,8 +1460,9 @@ const toggleMobileMenu = () => {
                         <i className="fa fa-plus" />
                       </a>
                     </h3>
-                    {billData?.length > 0
-                      ? billData?.map((bills, index) => {
+                    <Wrapper>
+                      {billData?.length > 0 ? (
+                        billData.map((bills, index) => {
                           const {
                             title,
                             id,
@@ -1468,54 +1474,82 @@ const toggleMobileMenu = () => {
                           } = bills;
                           if (house == houseId) {
                             return (
-                              <React.Fragment key={id}>
-                                <ul className="personal-info">
-                                  <li>
-                                    <span className="text">Title: {title}</span>
-                                    <span className="text">
-                                      Amount: {amount}
-                                    </span>
-                                    <span className="text">Paid: {paid}</span>
-                                    <span className="text">
-                                      Document: {documents}
-                                    </span>
-                                    <span className="text">Date: {date}</span>
-                                    <div className="dropdown dropdown-action text-end">
-                                      <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
+                              <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                                <span style={{width: "90%"}}>
+                                  <Popup
+                                    inline
+                                    hoverable
+                                    position="bottom left"
+                                    delay={{
+                                      show: 300,
+                                      hide: 800,
+                                    }}
+                                    content={
+                                      <Segment.Group>
+                                            <Segment style={{ width: "250px" }}>
+                                              <div className="ui column relaxed divided grid">
+                                                <div className="column">
+                                                  <h4>{title}</h4>
+                                                  <div className="ui link list">
+                                                    <a className="item">{`Amount: ${amount ? amount : '--'}`}</a>
+                                                    <a className="item">{`Paid: ${paid ? paid : '--'}`}</a>
+                                                    <a className="item">{`Date: ${date}`}</a>
+                                                    {houseDocumentsData?.map((doc) => {
+                                                          if (documents.includes(doc.id))
+                                                            return (
+                                                              <a key={doc.id} className="item">
+                                                                {`Doc: ${doc.title}`}
+                                                              </a>
+                                                            );
+                                                      })}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </Segment>
+                                      </Segment.Group>
+                                    }
+                                    trigger={
+                                      <a style={{color: "black"}}>
+                                        {title}
                                       </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleEditBill(id, index)
-                                          }
-                                        >
-                                          <i className="fa fa-pencil m-r-5" />{" "}
-                                          Edit
-                                        </a>
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() => handleDeleteBill(id)}
-                                        >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
-                                        </a>
-                                      </div>
+                                    }
+                                  />
+                                </span>
+                                <span
+                                  className="edit-icon"
+                                >
+                                  <div className="dropdown dropdown-action text-end">
+                                    <a
+                                      className="action-icon dropdown-toggle"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="material-icons">more_vert</i>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right">
+                                      <a
+                                        className="dropdown-item"
+                                        onClick={() => handleEditBill(id, index)}
+                                      >
+                                        <i className="fa fa-pencil m-r-5" /> Edit
+                                      </a>
+                                      <a
+                                        className="dropdown-item"
+                                        onClick={() => handleDeleteBill(id)}
+                                      >
+                                        <i className="fa fa-trash-o m-r-5" /> Delete
+                                      </a>
                                     </div>
-                                  </li>
-                                </ul>
-                              </React.Fragment>
+                                  </div>
+                                </span>
+                              </BillCard>
                             );
                           }
                         })
-                      : "Ops! No Bill"}
+                      ) : (
+                        <>Ops! No Bill</>
+                      )}
+                    </Wrapper>
                   </div>
                 </div>
               </div>
@@ -1533,7 +1567,7 @@ const toggleMobileMenu = () => {
                 </div>
               </div>
             ) : (
-              <div className="col-md-6 d-flex">
+              <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
                     <h3 className="card-title">
@@ -1561,8 +1595,9 @@ const toggleMobileMenu = () => {
                         <i className="fa fa-plus" />
                       </a>
                     </h3>
-                    {roomData?.length > 0
-                      ? roomData?.map((room, index) => {
+                    <Wrapper>
+                      {roomData?.length > 0 ? (
+                        roomData.map((room, index) => {
                           const {
                             room_type,
                             id,
@@ -1574,60 +1609,80 @@ const toggleMobileMenu = () => {
                           } = room;
                           if (house == houseId) {
                             return (
-                              <React.Fragment key={id}>
-                                <ul className="personal-info">
-                                  <li>
-                                    <span className="text">
-                                      Room Name: {name}
-                                    </span>
-                                    <span className="text">
-                                      Room Type: {room_type}
-                                    </span>
-                                    <span className="text">
-                                      Room Status: {room_status}
-                                    </span>
-                                    <span className="text">
-                                      Room Photos: {room_photos}
-                                    </span>
-                                    <span className="text">
-                                      Room Description: {room_description}
-                                    </span>
-                                    <div className="dropdown dropdown-action text-end">
-                                      <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
+                              <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                                <span style={{width: "90%"}}>
+                                  <Popup
+                                    inline
+                                    hoverable
+                                    position="bottom left"
+                                    delay={{
+                                      show: 300,
+                                      hide: 800,
+                                    }}
+                                    content={
+                                      <Segment.Group>
+                                            <Segment style={{ width: "250px" }}>
+                                              <div className="ui column relaxed divided grid">
+                                                <div className="column">
+                                                  <h4>{name}</h4>
+                                                  <div className="ui link list">
+                                                    <a className="item">{`Room status: ${room_status}`}</a>
+                                                    <a className="item">{`Room Type: ${room_type}`}</a>
+                                                    <a className="item">Des: <PopUpText text={room_description}/></a>
+                                                    {houseImagesData?.map((img) => {
+                                                        if (room_photos.includes(img.id))
+                                                          return (
+                                                            <a key={img.id} className="item">{`Room Photos: ${img.name}`}</a>
+                                                          );
+                                                    })}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </Segment>
+                                      </Segment.Group>
+                                    }
+                                    trigger={
+                                      <a style={{color: "black"}}>
+                                        {name}
                                       </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleEdditRoom(id, index)
-                                          }
-                                        >
-                                          <i className="fa fa-pencil m-r-5" />{" "}
-                                          Edit
-                                        </a>
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() => handleDeleteRoom(id)}
-                                        >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
-                                        </a>
-                                      </div>
+                                    }
+                                  />
+                                </span>
+                                <span
+                                  className="edit-icon"
+                                >
+                                  <div className="dropdown dropdown-action text-end">
+                                    <a
+                                      className="action-icon dropdown-toggle"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="material-icons">more_vert</i>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right">
+                                      <a
+                                        className="dropdown-item"
+                                        onClick={() => handleEdditRoom(id, index)}
+                                      >
+                                        <i className="fa fa-pencil m-r-5" /> Edit
+                                      </a>
+                                      <a
+                                        className="dropdown-item"
+                                        onClick={() => handleDeleteRoom(id)}
+                                      >
+                                        <i className="fa fa-trash-o m-r-5" /> Delete
+                                      </a>
                                     </div>
-                                  </li>
-                                </ul>
-                              </React.Fragment>
+                                  </div>
+                                </span>
+                              </BillCard>
                             );
                           }
                         })
-                      : "Ops! No Room in the house"}
+                      ) : (
+                        <>Ops! No Room in the house</>
+                      )}
+                    </Wrapper>
                   </div>
                 </div>
               </div>
@@ -1733,7 +1788,7 @@ const toggleMobileMenu = () => {
                                       ) : !file ? (
                                         <span>No File</span>
                                       ) : (
-                                        <i className="fa fa-file-o" />
+                                        <DisplayFileType file={file} />
                                     )}
                                   </div>
                                   <div className="card-body">
@@ -1797,160 +1852,10 @@ const toggleMobileMenu = () => {
                 </div>
               </>
             )}
-            {/* <div className="col-md-6 d-flex">
-              <div className="card profile-box flex-fill">
-                <div className="card-body">
-                  <h3 className="card-title">
-                    House Documents{" "}
-                    <a onClick={handleOpeneFileUpload} className="edit-icon">
-                      <i className="fa fa-plus" />
-                    </a>
-                  </h3>
-                  <div className="experience-box">
-                    <ul className="experience-list">
-                      {filesList?.length > 0 &&
-                      selectedHouseDocumentId === houseID
-                        ? filesList?.map((file, index) => {
-                            const { id, inputFields, uniqueID } = file;
-                            if (uniqueID == houseID) {
-                              return (
-                                <React.Fragment key={id}>
-                                  {inputFields?.map((fields, fieldsIndex) => {
-                                    const {
-                                      documentName,
-                                      documentNumber,
-                                      documentType,
-                                      expiryDate,
-                                      issueDate,
-                                      fileDetails,
-                                    } = fields;
-
-                                    const handleFileDownload = () => {
-                                      const dataUrlParts =
-                                        fileDetails.data.split(",");
-                                      const base64Data = dataUrlParts[1];
-                                      const mimeType = dataUrlParts[0]
-                                        .split(":")[1]
-                                        .split(";")[0];
-
-                                      const byteCharacters = atob(base64Data);
-                                      const byteNumbers = new Array(
-                                        byteCharacters.length
-                                      );
-
-                                      for (
-                                        let i = 0;
-                                        i < byteCharacters.length;
-                                        i++
-                                      ) {
-                                        byteNumbers[i] =
-                                          byteCharacters.charCodeAt(i);
-                                      }
-
-                                      const byteArray = new Uint8Array(
-                                        byteNumbers
-                                      );
-                                      const blob = new Blob([byteArray], {
-                                        type: mimeType,
-                                      });
-
-                                      const url = URL.createObjectURL(blob);
-                                      const a = document.createElement("a");
-                                      a.href = url;
-                                      a.download = fileDetails.name;
-                                      document.body.appendChild(a);
-                                      a.click();
-                                      document.body.removeChild(a);
-                                      URL.revokeObjectURL(url);
-                                    };
-
-                                    return (
-                                      <li key={fieldsIndex}>
-                                        <div className="experience-user">
-                                          <div className="before-circle" />
-                                        </div>
-                                        <div className="experience-content">
-                                          <div className="timeline-content">
-                                            <a className="name">
-                                              {documentName}
-                                              <div className="dropdown profile-action">
-                                                <a
-                                                  className="action-icon dropdown-toggle"
-                                                  data-bs-toggle="dropdown"
-                                                  aria-expanded="false"
-                                                >
-                                                  <i className="material-icons">
-                                                    more_vert
-                                                  </i>
-                                                </a>
-                                                <div className="dropdown-menu dropdown-menu-right">
-                                                  <a
-                                                    className="dropdown-item"
-                                                    onClick={() =>
-                                                      handleFileUploadEdit(
-                                                        fieldsIndex,
-                                                        index
-                                                      )
-                                                    }
-                                                  >
-                                                    <i className="fa fa-pencil m-r-5" />{" "}
-                                                    Edit
-                                                  </a>
-                                                  <a
-                                                    className="dropdown-item"
-                                                    onClick={() =>
-                                                      handleFileDownload(index)
-                                                    }
-                                                  >
-                                                    <i className="fa fa-download m-r-5" />{" "}
-                                                    Download
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            </a>
-                                            <div>{documentNumber}</div>
-                                            <span className="time">
-                                              Type: {documentType}
-                                            </span>
-                                            {issueDate && expiryDate ? (
-                                              <span className="time">
-                                                Issue Date: {issueDate} - Expiry
-                                                Date: {expiryDate}
-                                              </span>
-                                            ) : null}
-                                            {fileDetails?.type &&
-                                            fileDetails?.type?.startsWith(
-                                              "image/"
-                                            ) ? (
-                                              <img
-                                                className="img-preview"
-                                                src={fileDetails?.data}
-                                                alt="Preview"
-                                              />
-                                            ) : (
-                                              <span className="files-icon">
-                                                <i className="fa fa-file-pdf-o" />
-                                              </span>
-                                            )}
-                                          </div>
-                                        </div>
-                                      </li>
-                                    );
-                                  })}
-                                </React.Fragment>
-                              );
-                            }
-                          })
-                        : "No uploaded file(s) yet"}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
         {/* /Document Upload Tab */}
-        {/* Maintenance Info Tab */}
+        {/* Notice Info Tab */}
         <div id="notice" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
@@ -1960,7 +1865,7 @@ const toggleMobileMenu = () => {
                 </div>
               </div>
             ) : (
-              <div className="col-md-6 d-flex">
+              <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
                   <div className="card-body">
                     <h3 className="card-title">
@@ -1988,8 +1893,9 @@ const toggleMobileMenu = () => {
                         <i className="fa fa-plus" />
                       </a>
                     </h3>
-                    {houseNoticeData?.length > 0
-                      ? houseNoticeData?.map((notice, index) => {
+                    <Wrapper>
+                      {houseNoticeData?.length > 0 ? (
+                        houseNoticeData.map((notice, index) => {
                           const {
                             title,
                             id,
@@ -1999,62 +1905,100 @@ const toggleMobileMenu = () => {
                             residents_applicable,
                             documents,
                           } = notice;
-                          if (house === houseId) {
+                          if (house == houseId) {
                             return (
-                              <React.Fragment key={id}>
-                                <ul className="personal-info">
-                                  <li>
-                                    <span className="text">Title: {title}</span>
-                                    <span className="text">
-                                      Notice Date: {notice_date}
-                                    </span>
-
-                                    <span className="text">
-                                      Resident Applicable:{" "}
-                                      {residents_applicable}
-                                    </span>
-                                    <span className="text">
-                                      Document: {documents}
-                                    </span>
-                                    <span className="text">
-                                      Description: {description}
-                                    </span>
-                                    <div className="dropdown dropdown-action text-end">
-                                      <a
-                                        className="action-icon dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
+                              <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                                <span style={{width: "90%"}}>
+                                  <Popup
+                                    inline
+                                    hoverable
+                                    position="bottom left"
+                                    delay={{
+                                      show: 300,
+                                      hide: 800,
+                                    }}
+                                    content={
+                                      <Segment.Group>
+                                            <Segment style={{ width: "250px" }}>
+                                              <div className="ui column relaxed divided grid">
+                                                <div className="column">
+                                                  <h4>{title}</h4>
+                                                  <div className="ui link list">
+                                                    <a className="item">{`Notice date: ${notice_date}`}</a>
+                                                    <a className="item">Des: <PopUpText text={description}/></a>
+                                                    {residents_applicable.length > 0 && (
+                                                      <a className="item">
+                                                        Resident Applicable: {""}
+                                                        {residentData?.map((allR) => {
+                                                          if (residents_applicable.includes(allR.id))
+                                                            return (
+                                                              <React.Fragment key={allR.id}>
+                                                                <img 
+                                                                  title={`${allR.first_name} ${allR.middle_name} ${allR.last_name}`}
+                                                                  style={{width: "20px", height: "20px", borderRadius: "50px"}} 
+                                                                  src={allR.photo}
+                                                                />
+                                                              </React.Fragment>
+                                                            );
+                                                        })}
+                                                      </a>
+                                                    )}
+                                                    {houseDocumentsData?.map((doc) => {
+                                                          if (documents.includes(doc.id))
+                                                            return (
+                                                              <a key={doc.id} className="item">
+                                                                {`Doc: ${doc.title}`}
+                                                              </a>
+                                                            );
+                                                      })}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </Segment>
+                                      </Segment.Group>
+                                    }
+                                    trigger={
+                                      <a style={{color: "black"}}>
+                                        {title}
                                       </a>
-                                      <div className="dropdown-menu dropdown-menu-right">
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleEditNotice(id, index)
-                                          }
-                                        >
-                                          <i className="fa fa-pencil m-r-5" />{" "}
-                                          Edit
-                                        </a>
-                                        <a
-                                          className="dropdown-item"
-                                          onClick={() => handleDeleteNotice(id)}
-                                        >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
-                                        </a>
-                                      </div>
+                                    }
+                                  />
+                                </span>
+                                <span
+                                  className="edit-icon"
+                                >
+                                  <div className="dropdown dropdown-action text-end">
+                                    <a
+                                      className="action-icon dropdown-toggle"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="material-icons">more_vert</i>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right">
+                                      <a
+                                        className="dropdown-item"
+                                        onClick={() => handleEditNotice(id, index)}
+                                      >
+                                        <i className="fa fa-pencil m-r-5" /> Edit
+                                      </a>
+                                      <a
+                                        className="dropdown-item"
+                                        onClick={() => handleDeleteNotice(id)}
+                                      >
+                                        <i className="fa fa-trash-o m-r-5" /> Delete
+                                      </a>
                                     </div>
-                                  </li>
-                                </ul>
-                              </React.Fragment>
+                                  </div>
+                                </span>
+                              </BillCard>
                             );
                           }
                         })
-                      : "Ops!"}
+                      ) : (
+                        <>Ops! No house notice available</>
+                      )}
+                    </Wrapper>
                   </div>
                 </div>
               </div>
@@ -2072,12 +2016,12 @@ const toggleMobileMenu = () => {
                 </div>
               </div>
             ) : (
-              <div className="col-md-6 d-flex">
-                <div className="card profile-box flex-fill">
-                  <div className="card-body">
-                    <h3 className="card-title">
-                      Items {""}
-                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+              <div className="col-lg-12">
+				          <div className="card">
+				        	  <div className="card-header">
+				        	    <h4 className="card-title mb-0">
+                        Items {""}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
                           {houseItemError?.length > 0 && (
                             <>
                               Error: {houseItemError}
@@ -2096,91 +2040,100 @@ const toggleMobileMenu = () => {
                             </>
                           )}
                         </span>
-                      <a onClick={handleAddItem} className="edit-icon">
-                        <i className="fa fa-plus" />
-                      </a>
-                    </h3>
-                    {houseItemData?.length > 0
-                      ? houseItemData?.map((items, index) => {
-                          const {
-                            name,
-                            id,
-                            description,
-                            expiry_date,
-                            category,
-                            house,
-                            documents,
-                            quantity,
-                            purchase_date,
-                            location,
-                          } = items;
-                          if (house === houseId) {
-                            return (
-                              <React.Fragment key={id}>
-                                <ul className="personal-info">
-                                  <li>
-                                    <span className="text">Name: {name}</span>
-                                    <span className="text">
-                                      Category: {category}
-                                    </span>
-                                    <span className="text">
-                                      Expiry Date: {expiry_date}
-                                    </span>
-                                    <span className="text">
-                                      Location: {location}
-                                    </span>
-
-                                    <span className="text">
-                                      Document: {documents}
-                                    </span>
-                                    <span className="text">
-                                      Quantity: {quantity}
-                                    </span>
-                                    <span className="text">
-                                      Purchase Date: {purchase_date}
-                                    </span>
-                                    <span className="text">
-                                      Description: {description}
-                                    </span>
-                                    <div className="dropdown dropdown-action text-end">
+                        <a onClick={handleAddItem} className="edit-icon">
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h4>
+				        	  </div>
+				        	  <div className="card-body">
+				        	    <div className="table-responsive">
+				        	  	<table className="table table-striped mb-0">
+				        	  	  <thead>
+				        	  		<tr>
+				        	  		  <th>Name</th>
+                          <th>Category</th>
+                          <th>Expiry Date</th>
+                          <th>Purchase Date</th>
+                          <th>Description</th>
+                          <th>Document</th>
+                          <th>Quantity</th>
+                          <th>Location</th>
+                          <th>Action</th>
+				        	  		</tr>
+				        	  	  </thead>
+				        	  	  <tbody>
+                        {houseItemData?.length > 0
+                          ? houseItemData?.map((items, index) => {
+                              const {
+                                name,
+                                id,
+                                description,
+                                expiry_date,
+                                category,
+                                house,
+                                documents,
+                                quantity,
+                                purchase_date,
+                                location,
+                              } = items;
+                              if (house === houseId) {
+                                return (
+                                  <React.Fragment key={id}>
+                                  <tr>
+                                    <td className='capitalize'>{name}</td>
+				        	  		            <td>{category}</td>
+                                    <td>{expiry_date}</td>
+                                    <td>{purchase_date}</td>
+                                    {description ? (
+                                      <td><PopUpText text={description}/></td>
+                                     ) : <td></td>}
+                                    <td>
+                                      {houseDocumentsData?.map((doc) => {
+                                          if (documents.includes(doc.id))
+                                            return (
+                                              <React.Fragment key={doc.id}>
+                                                {`${doc.title}`}
+                                              </React.Fragment>
+                                            );
+                                      })}
+                                    </td>
+                                    <td>{quantity}</td>
+                                    <td>{location}</td>
+                                    <td className="dropdown dropdown-action text-end">
                                       <a
                                         className="action-icon dropdown-toggle"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false"
                                       >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
+                                        <i className="material-icons">more_vert</i>
                                       </a>
                                       <div className="dropdown-menu dropdown-menu-right">
                                         <a
                                           className="dropdown-item"
-                                          onClick={() =>
-                                            handleEditItem(id, index)
-                                          }
+                                          onClick={() => handleEditItem(id, index)}
                                         >
-                                          <i className="fa fa-pencil m-r-5" />{" "}
-                                          Edit
+                                          <i className="fa fa-pencil m-r-5" /> Edit
                                         </a>
                                         <a
                                           className="dropdown-item"
                                           onClick={() => handleDeleteItem(id)}
                                         >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
+                                          <i className="fa fa-trash-o m-r-5" /> Delete
                                         </a>
                                       </div>
-                                    </div>
-                                  </li>
-                                </ul>
-                              </React.Fragment>
-                            );
-                          }
-                        })
-                      : "Ops!"}
-                  </div>
-                </div>
-              </div>
+                                    </td>
+				        	  		          </tr>
+                                  </React.Fragment>
+                                );
+                              }
+                            })
+                          : "Ops! No house item available"}
+				        	  	  </tbody>
+				        	  	</table>
+				        	  </div>
+				          </div>
+				        </div>
+				      </div>
             )}
           </div>
         </div>
@@ -2195,12 +2148,12 @@ const toggleMobileMenu = () => {
                 </div>
               </div>
             ) : (
-              <div className="col-md-6 d-flex">
-                <div className="card profile-box flex-fill">
-                  <div className="card-body">
-                    <h3 className="card-title">
-                      Inspection {""}
-                      <span style={{ color: "red", fontSize: "0.7rem" }}>
+              <div className="col-lg-12">
+				          <div className="card">
+				        	  <div className="card-header">
+				        	    <h4 className="card-title mb-0">
+                        Inspection {""}
+                        <span style={{ color: "red", fontSize: "0.7rem" }}>
                           {houseInspectionError?.length > 0 && (
                             <>
                               Error: {houseInspectionError}
@@ -2219,87 +2172,113 @@ const toggleMobileMenu = () => {
                             </>
                           )}
                         </span>
-                      <a onClick={handleAddInspection} className="edit-icon">
-                        <i className="fa fa-plus" />
-                      </a>
-                    </h3>
-                    {houseInspectionData?.length > 0
-                      ? houseInspectionData?.map((inspect, index) => {
-                          const {
-                            inspection_status,
-                            id,
-                            comments,
-                            inspection_date,
-                            inspected_by,
-                            house,
-                            documents,
-                            house_item,
-                          } = inspect;
-                          if (house === houseId) {
-                            return (
-                              <React.Fragment key={id}>
-                                <ul className="personal-info">
-                                  <li>
-                                    <span className="text">
-                                      Inspection Status: {inspection_status}
-                                    </span>
-                                    <span className="text">
-                                      Inspected By: {inspected_by}
-                                    </span>
-                                    <span className="text">
-                                      Inspection Date: {inspection_date}
-                                    </span>
-
-                                    <span className="text">
-                                      Document: {documents}
-                                    </span>
-                                    <span className="text">
-                                      House Item: {house_item}
-                                    </span>
-                                    <span className="text">
-                                      Comment: {comments}
-                                    </span>
-                                    <div className="dropdown dropdown-action text-end">
+                        <a onClick={handleAddInspection} className="edit-icon">
+                          <i className="fa fa-plus" />
+                        </a>
+                      </h4>
+				        	  </div>
+				        	  <div className="card-body">
+				        	    <div className="table-responsive">
+				        	  	<table className="table table-striped mb-0">
+				        	  	  <thead>
+				        	  		<tr>
+				        	  		  <th>Status</th>
+                          <th>House Item</th>
+                          <th>Date</th>
+                          <th>Comment</th>
+                          <th>Document</th>
+                          <th>Inspected By</th>
+                          <th>Action</th>
+				        	  		</tr>
+				        	  	  </thead>
+				        	  	  <tbody>
+                        {houseInspectionData?.length > 0
+                          ? houseInspectionData?.map((inspect, index) => {
+                              const {
+                                inspection_status,
+                                id,
+                                comments,
+                                inspection_date,
+                                inspected_by,
+                                house,
+                                documents,
+                                house_item,
+                              } = inspect;
+                              if (house === houseId) {
+                                return (
+                                  <React.Fragment key={id}>
+                                  <tr>
+                                    <td>
+                                        <span
+                                        className={
+                                          ((inspection_status === "Needs Repair" || inspection_status === "Needs Replacement") && "badge bg-inverse-info") ||
+                                          (inspection_status === "Bad" && "badge bg-inverse-warning") ||
+                                          (inspection_status === "Good" && "badge bg-inverse-success")
+                                        }
+                                      >
+                                        {inspection_status}
+                                      </span>
+                                    </td>
+                                    <td className='capitalize'>
+                                      {houseItemData?.map((i) => {
+                                          if (house_item === i.id)
+                                            return (
+                                              <React.Fragment key={i.id}>
+                                                {`${i.name}`}
+                                              </React.Fragment>
+                                            );
+                                      })}
+                                    </td>
+                                    <td>{inspection_date}</td>
+                                    {comments ? (
+                                      <td><PopUpText text={comments}/></td>
+                                     ) : <td></td>}
+                                    <td>
+                                      {houseDocumentsData?.map((doc) => {
+                                          if (documents.includes(doc.id))
+                                            return (
+                                              <React.Fragment key={doc.id}>
+                                                {`${doc.title}`}
+                                              </React.Fragment>
+                                            );
+                                      })}
+                                    </td>
+                                    <td className='capitalize'>{inspected_by}</td>
+                                    <td className="dropdown dropdown-action text-end">
                                       <a
                                         className="action-icon dropdown-toggle"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false"
                                       >
-                                        <i className="material-icons">
-                                          more_vert
-                                        </i>
+                                        <i className="material-icons">more_vert</i>
                                       </a>
                                       <div className="dropdown-menu dropdown-menu-right">
                                         <a
                                           className="dropdown-item"
-                                          onClick={() =>
-                                            handleEditInspection(id, index)
-                                          }
+                                          onClick={() => handleEditInspection(id, index)}
                                         >
-                                          <i className="fa fa-pencil m-r-5" />{" "}
-                                          Edit
+                                          <i className="fa fa-pencil m-r-5" /> Edit
                                         </a>
                                         <a
                                           className="dropdown-item"
-                                          onClick={() =>
-                                            handleDeleteInspection(id)
-                                          }
+                                          onClick={() => handleDeleteInspection(id)}
                                         >
-                                          <i className="fa fa-trash-o m-r-5" />{" "}
-                                          Delete
+                                          <i className="fa fa-trash-o m-r-5" /> Delete
                                         </a>
                                       </div>
-                                    </div>
-                                  </li>
-                                </ul>
-                              </React.Fragment>
-                            );
-                          }
-                        })
-                      : "Ops!"}
-                  </div>
-                </div>
-              </div>
+                                    </td>
+				        	  		          </tr>
+                                  </React.Fragment>
+                                );
+                              }
+                            })
+                          : "Ops! No house inspection available"}
+				        	  	  </tbody>
+				        	  	</table>
+				        	  </div>
+				          </div>
+				        </div>
+				      </div>
             )}
           </div>
         </div>

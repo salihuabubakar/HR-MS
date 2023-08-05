@@ -18,6 +18,9 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
   const { houseDocumentsData } = useHouseDocumentFetching();
   const { data: allEmployee } = useDataFetching();
   const { houseImagesData } = useHouseImageFetching();
+  const filteredhouseImage = houseImagesData?.filter(
+    (img) => img.house === house
+  );
   const { organisationData } = useOrganisationFetching();
   const [selectedMaintenance] = useGlobalState("selectedMaintenance");
 
@@ -159,7 +162,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
   };
 
   const image = [];
-  houseImagesData?.map((img) => {
+  filteredhouseImage?.map((img) => {
     image.push({ id: img.id, name: img.name });
   });
 
@@ -179,7 +182,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
     if (!selectedMaintenance || !photo) {
       return [];
     }
-    return houseImagesData
+    return filteredhouseImage
       .filter((image) => photo.includes(image.id))
       .map((image) => ({
         id: image.id,

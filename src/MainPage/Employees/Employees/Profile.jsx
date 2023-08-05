@@ -1335,6 +1335,7 @@ const Profile = ({
                                     <th>Routing No</th>
                                     <th>Date</th>
                                     <th>Document</th>
+                                    <th>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>

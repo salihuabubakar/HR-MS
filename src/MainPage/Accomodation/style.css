@@ -1,0 +1,62 @@
+.profile-right-div .personal-info {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.profile-right-div .personal-info li .right-title, .right-text {
+  width: 25% !important;
+}
+
+.profile-right-div .personal-info li .right-text {
+  position: absolute;
+  left: 25%;
+}
+
+@media screen and (max-width: 1582px) {
+  .profile-right-div .personal-info li .right-title, .right-text {
+    width: 35% !important;
+  }
+  
+  .profile-right-div .personal-info li .right-text {
+    position: absolute;
+    left: 35%;
+  }
+}
+
+@media screen and (max-width: 1268px) {
+  .profile-right-div .personal-info li .right-title, .right-text {
+    width: 45% !important;
+  }
+  
+  .profile-right-div .personal-info li .right-text {
+    position: absolute;
+    left: 45%;
+  }
+}
+
+@media screen and (max-width: 1102px) {
+  .profile-right-div .personal-info li .right-title, .right-text {
+    width: 60% !important;
+  }
+  
+  .profile-right-div .personal-info li .right-text {
+    position: absolute;
+    left: 60%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .profile-right-div .personal-info li .right-title, .right-text {
+    width: 50% !important;
+  }
+  
+  .profile-right-div .personal-info li .right-text {
+    position: absolute;
+    left: 50%;
+  }
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
