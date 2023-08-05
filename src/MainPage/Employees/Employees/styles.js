@@ -186,3 +186,24 @@ export const EmployeeImgCard = styled.div`
     right: 0;
   }
 `;
+
+export const BillCard = styled.div`
+  width: 20% !important;
+
+  @media (max-width: 1444px) {
+    width: 30% !important;
+  }
+
+  ${mobile} {
+    width: 100% !important;
+  }
+
+  position: relative;
+
+  .edit-icon {
+    background: none;
+    border: none;
+    position: absolute;
+    right: 0;
+  }
+`;

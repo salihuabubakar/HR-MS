@@ -158,7 +158,7 @@ const AddHouseDocuments = ({
                           <input
                             className="form-control floating"
                             type="file"
-                            accept=".pdf, .doc, .txt, .xls, .csv"
+                            accept=".pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .png, .jpeg, .webp, .PNG, .JPEG,"
                             onChange={handleFileOnChange}
                           />
                           {fileError && (
