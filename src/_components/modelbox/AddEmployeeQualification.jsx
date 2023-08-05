@@ -246,7 +246,7 @@ const AddEmployeeQualification = ({
                             onChange={handleFileUpload}
                             className="form-control floating"
                             type="file"
-                            accept=".png, .jpg, .pdf, .doc, .docx, .xls, .xlsx, .txt, .webp"
+                            accept=".pdf, .doc, .docx, .txt, .xls, .xlsx, .csv, .png, .jpeg, .webp, .PNG, .JPEG,"
                             placeholder="Qualification File Upload"
                           />
                         </div>

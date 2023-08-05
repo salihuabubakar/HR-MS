@@ -64,6 +64,7 @@ import { Helmet } from "react-helmet";
 import { ProgressSpan, ProgressDiv } from "../../utils/helperFucntions";
 import NoAvailableData from "../../_components/noAvailableData";
 import { handleFileDownload } from "../../utils/helperFucntions";
+import DisplayFileType from "../../_components/fileExtension";
 
 const Profile = ({
   DefaultImage,
@@ -1409,7 +1410,7 @@ useEffect(() => {
                                                                       "--"
                                                                     ) : (
                                                                       <span className="files-icon">
-                                                                        <i className="fa fa-file-pdf-o" />
+                                                                        <DisplayFileType file={medical_condition_document} />
                                                                       </span>
                                                                     )}
                                                                   </span>
@@ -1593,7 +1594,7 @@ useEffect(() => {
                                                                       "--"
                                                                     ) : (
                                                                       <span className="files-icon">
-                                                                        <i className="fa fa-file-pdf-o" />
+                                                                        <DisplayFileType file={medication_document} />
                                                                       </span>
                                                                     )}
                                                                   </span>
@@ -1736,7 +1737,7 @@ useEffect(() => {
                                                 "--"
                                               ) : (
                                                 <span className="files-icon">
-                                                  <i className="fa fa-file-pdf-o" />
+                                                  <DisplayFileType file={timetable} />
                                                 </span>
                                               )}
                                             </td>
@@ -1854,7 +1855,7 @@ useEffect(() => {
                                                 "--"
                                               ) : (
                                                 <span className="files-icon">
-                                                  <i className="fa fa-file-pdf-o" />
+                                                  <DisplayFileType file={report} />
                                                 </span>
                                               )}
                                             </td>
@@ -2517,7 +2518,7 @@ useEffect(() => {
                                             ) : !document ? (
                                               <span>No File</span>
                                             ) : (
-                                              <i className="fa fa-file-o" />
+                                              <DisplayFileType file={document} />
                                           )}
                                         </div>
                                         <div className="card-body">

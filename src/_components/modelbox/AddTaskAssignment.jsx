@@ -20,6 +20,9 @@ const AddTaskAssignment = ({
   const { data: allEmployee, isLoading: allEmployeeLoading } = useDataFetching();
   const { residentData, isResidentLoading } = useResidentFetching();
   const { taskDocumentData, isTaskDocumentLoading } = useTaskDocumentFetching();
+  const filteredDoc = taskDocumentData?.filter(
+    (doc) => doc.task === task
+  );
   const [selectedTaskAssignmentInfo] = useGlobalState(
     "selectedTaskAssignmentInfo"
   );
@@ -113,7 +116,7 @@ const AddTaskAssignment = ({
   };
 
   const documents = [];
-  taskDocumentData?.map((doc) => {
+  filteredDoc?.map((doc) => {
     documents.push({
       id: doc.id,
       name: doc.name
@@ -178,7 +181,7 @@ const AddTaskAssignment = ({
     if (!selectedTaskAssignmentInfo || !val) {
       return [];
     }
-    return taskDocumentData
+    return filteredDoc
       .filter((doc) => val.includes(doc.id))
       .map((doc) => ({
         id: doc.id,
