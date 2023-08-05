@@ -52,6 +52,7 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
   const [nameError, setNameError] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [documentsError, setDocumentsError] = useState("");
+  const [purchaseDateError, setPurchaseDateError] = useState("");
 
   // const formData = new FormData();
 
@@ -65,6 +66,10 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
       setCategoryError("Category is required.");
       return;
     }
+    if (purchase_date === null) {
+      setPurchaseDateError("Purchase date is required.");
+      return;
+    }
     if (documents?.length === 0) {
       setDocumentsError("Document is required.");
       return;
@@ -73,6 +78,7 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
     // Clear any existing error messages
     setNameError("");
     setCategoryError("");
+    setPurchaseDateError("");
     setDocumentsError("");
 
     const fields = {
@@ -118,6 +124,11 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
     setCategory(e.target.value);
     setCategoryError("")
   };
+
+  const handlePurchaseDate = (e) => {
+    setPurchaseDate(e.target.value);
+    setPurchaseDateError("");
+  }
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
@@ -232,14 +243,15 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">Purchase Date</label>
+                          <label className="col-form-label">Purchase Date <span className="text-danger">*</span></label>
                           <input
                             value={purchase_date}
-                            onChange={(e) => setPurchaseDate(e.target.value)}
+                            onChange={handlePurchaseDate}
                             className="form-control floating"
                             type="date"
                             placeholder="Purchase Date"
                           />
+                          {purchaseDateError && <p className="error-message">{purchaseDateError}</p>}
                         </div>
                       </div>
                       <div className="col-sm-6">

@@ -14,6 +14,10 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
   const { houseImagesData } = useHouseImageFetching();
   const [selectedRoom] = useGlobalState("selectedRoom");
 
+  const filteredhouseImage = houseImagesData?.filter(
+    (img) => img.house === house
+  );
+
   const [name, setRoomName] = useState(
     selectedRoom[roomIndexToEdit]?.name || ""
   );
@@ -102,7 +106,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
 
 
   const photos = [];
-  houseImagesData?.map((image) => {
+  filteredhouseImage?.map((image) => {
     photos.push({
       name: image.name,
       id: image.id
@@ -119,7 +123,7 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
     if (!selectedRoom || !photo) {
       return [];
     }
-    return houseImagesData
+    return filteredhouseImage
       .filter((image) => photo.includes(image.id))
       .map((image) => ({
         id: image.id,

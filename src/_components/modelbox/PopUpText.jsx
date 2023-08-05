@@ -1,5 +1,6 @@
 import React from 'react'
 import { Popup } from "semantic-ui-react";
+import CopyToClipboardButton from '../CopyToClipboard';
 
 const PopUpText = ({ text }) => {
   return (
@@ -19,6 +20,7 @@ const PopUpText = ({ text }) => {
             }}
           >
             Hover to show
+            <CopyToClipboardButton text={text} />
           </span>
         }
       />
