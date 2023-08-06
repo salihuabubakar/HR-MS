@@ -7,6 +7,7 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
 import { useDataFetching, useResidentFetching, useTaskDocumentFetching } from "../../utils/employeeCustomFetchHook";
+import TextEditor from "../TextEditor";
 
 const AddTaskAssignment = ({ 
   dispatchTaskAssignment, 
@@ -29,6 +30,10 @@ const AddTaskAssignment = ({
 
   const [description, setDescription] = useState(
     selectedTaskAssignmentInfo[indexToEdit]?.description || ""
+  );
+
+  const [report, setReport] = useState(
+    selectedTaskAssignmentInfo[indexToEdit]?.report || ""
   );
 
   const [resident, setResident] = useState(
@@ -80,6 +85,7 @@ const AddTaskAssignment = ({
     const taskAssignment = {
       id,
       description,
+      report,
       resident,
       employees,
       manager,
@@ -350,9 +356,17 @@ const AddTaskAssignment = ({
                           </div>
                         </div>
                       )}
+                      <div style={{marginBottom: "40px"}} className="col-sm-12">
+                        <div className="form-group">
+                          <label className="col-form-label">
+                            Report
+                          </label>
+                          <TextEditor report={report} setReport={setReport} />
+                        </div>
+                      </div>
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Assignment Description <span className="text-danger">*</span>
                           </label>
                           <textarea
