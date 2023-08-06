@@ -17,6 +17,7 @@ import PopUpText from "../../../_components/modelbox/PopUpText";
 import { useSearch } from "../../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../../_components/searchComponent";
 import { handleFileDownload } from "../../../utils/helperFucntions";
+import DisplayFileType from "../../../_components/fileExtension";
 
 const Review = () => {
 
@@ -184,7 +185,7 @@ const Review = () => {
                   <img className="img-preview" src={review_file} alt="Preview" />
                 ) : !review_file ? null : (
                   <span className="files-icon">
-                    <i className="fa fa-file-pdf-o" />
+                    <DisplayFileType file={review_file} />
                   </span>
                 )}
               </Link>

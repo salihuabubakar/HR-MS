@@ -32,6 +32,7 @@ import { ProgressDiv, ProgressSpan } from "../../utils/helperFucntions";
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from "../Employees/Employees/styles";
 import { handleFileDownload } from "../../utils/helperFucntions";
+import DisplayFileType from "../../_components/fileExtension";
 
 const TaskDetails = () => {
 
@@ -640,9 +641,9 @@ const TaskDetails = () => {
               </div>
               <div className="col-md-12 d-flex">
                 <div className="card profile-box flex-fill">
-                  <div className="card-body">
-                    <h3 className="card-title">
-                      Upload Files{" "}
+                  <div className="card-header">
+				            <h4 className="card-title mb-0">
+                      Upload Files{""}
                       <span style={{ color: "red", fontSize: "0.7rem" }}>
                         {taskDocumentError?.length > 0 && (
                           <>
@@ -663,12 +664,14 @@ const TaskDetails = () => {
                         )}
                       </span>
                       <a
-                        onClick={() => setGlobalState("showTaskDocumentModal", true)}
                         className="edit-icon"
+                        onClick={() => setGlobalState("showTaskDocumentModal", true)}
                       >
                         <i className="fa fa-plus" />
                       </a>
-                    </h3>
+                    </h4>
+				          </div>
+                  <div className="card-body">
                     {isTaskLoading || isTaskDocumentLoading ? (
                       <div className="skeleton-container-profile">
                         <div className="skeleton-content-profile">
@@ -726,7 +729,7 @@ const TaskDetails = () => {
                                           ) : !document ? (
                                             <span>No File</span>
                                           ) : (
-                                            <i className="fa fa-file-o" />
+                                            <DisplayFileType file={document} />
                                         )}
                                       </div>
                                       <div className="card-body">
