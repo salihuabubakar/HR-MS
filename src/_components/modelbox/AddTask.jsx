@@ -27,8 +27,8 @@ const AddTask = ({
   const { data: allEmployee, isLoading: allEmployeeLoading } =
     useDataFetching();
   const { residentData, isResidentLoading } = useResidentFetching();
-  const { residentBoroughData } = useResidentBoroughFetching();
-  const { houseData } = useHouseFetching();
+  const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
+  const { houseData, isHouseDataLoading } = useHouseFetching();
 
   
   const [selectedTaskInfo] = useGlobalState("selectedTaskInfo");
@@ -84,6 +84,14 @@ const AddTask = ({
     selectedTaskInfo[indexToEdit]?.residents || []
   );
 
+  const [house_residents, setHouseRes] = useState(
+    selectedTaskInfo[indexToEdit]?.house_residents || []
+  );
+
+  const [borough_residents, setBoroughRes] = useState(
+    selectedTaskInfo[indexToEdit]?.borough_residents || []
+  );
+
   const [taskTitleError, setTaskTitleError] = useState("");
   const [timeAllocatedError, setTimeAllocatedError] = useState("");
   const [durationError, setDurationError] = useState("");
@@ -95,6 +103,8 @@ const AddTask = ({
   const [taskPriorityError, setTaskPriorityError] = useState("");
   const [startAtError, setStartAtError] = useState("");
   const [endAtError, setEndAtError] = useState("");
+  const [houseError, setHouseError] = useState("");
+  const [boroughError, setBoroughError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -139,6 +149,14 @@ const AddTask = ({
       setResidentError("Resident is required.");
       return;
     }
+    if (house_residents.length === 0) {
+      setHouseError("House is required.");
+      return;
+    }
+    if (borough_residents.length === 0) {
+      setBoroughError("Borough is required.");
+      return;
+    }
     if (description === "") {
       setDescriptionError("Description is required.");
       return;
@@ -154,6 +172,8 @@ const AddTask = ({
     setDescriptionError("");
     setManagerError("");
     setEmployeeError("");
+    setHouseError("");
+    setBoroughError("");
     setDurationError("");
     setResidentError("");
 
@@ -169,6 +189,8 @@ const AddTask = ({
       priority,
       task_duration,
       start_at,
+      borough_residents,
+      house_residents,
       end_at,
       concluded,
       id,
@@ -214,6 +236,60 @@ const AddTask = ({
       photo: res.photo,
     });
   });
+
+  const handleHouseResChange = (event) => {
+    const mappedID = event?.map((houseID) => houseID.id);
+    setHouseRes(mappedID);
+    setHouseError("");
+  };
+
+  const house = [];
+  houseData?.map((h) => {
+    house.push({
+      id: h.id,
+      name: h.name
+    });
+  });
+
+  const getHouseDefaultValues = () => {
+    const val = selectedTaskInfo[indexToEdit]?.house_residents;
+    if (!selectedTaskInfo || !val) {
+      return [];
+    }
+    return houseData
+      ?.filter((house) => val.includes(house.id))
+      .map((house) => ({
+        id: house.id,
+        name: house.name,
+      }));
+  };
+
+  const handleBoroughResChange = (event) => {
+    const mappedID = event?.map((boroughID) => boroughID.id);
+    setBoroughRes(mappedID);
+    setBoroughError("");
+  };
+
+  const borough = [];
+  residentBoroughData?.map((b) => {
+    borough.push({
+      id: b.id,
+      borough_name: b.borough_name
+    });
+  });
+
+  const getBoroughDefaultValues = () => {
+    const val = selectedTaskInfo[indexToEdit]?.borough_residents;
+    if (!selectedTaskInfo || !val) {
+      return [];
+    }
+    return residentBoroughData
+      ?.filter((borough) => val.includes(borough.id))
+      .map((borough) => ({
+        id: borough.id,
+        borough_name: borough.borough_name,
+      }));
+  };
 
   const manager = [];
   allEmployee?.map((user) => {
@@ -615,6 +691,52 @@ const AddTask = ({
                           />
                           {residentError && (
                             <p className="error-message">{residentError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Select House{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getHouseDefaultValues()}
+                            onChange={handleHouseResChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={house}
+                            isLoading={isHouseDataLoading}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.name }
+                            placeholder="Select House"
+                          />
+                          {houseError && (
+                            <p className="error-message">{houseError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="label">
+                            Select Borough{" "}
+                            <span className="text-danger">*</span>
+                          </label>
+                          <Select
+                            defaultValue={getBoroughDefaultValues()}
+                            onChange={handleBoroughResChange}
+                            isMulti
+                            closeMenuOnSelect={false}
+                            options={borough}
+                            isLoading={isResidentBoroughLoading}
+                            styles={customSelectStyles}
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.borough_name }
+                            placeholder="Select Borough"
+                          />
+                          {boroughError && (
+                            <p className="error-message">{boroughError}</p>
                           )}
                         </div>
                       </div>
