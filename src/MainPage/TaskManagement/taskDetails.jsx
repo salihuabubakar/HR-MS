@@ -90,6 +90,8 @@ const TaskDetails = () => {
   const taskConcluded = selectedTask?.concluded;
   const taskStartAt = selectedTask?.start_at;
   const taskEndAt = selectedTask?.end_at;
+  const houseId = selectedTask?.house_residents;
+  const boroughId = selectedTask?.borough_residents;
 
   const formattedName = taskName?.charAt(0).toUpperCase() + taskName?.slice(1);
   
