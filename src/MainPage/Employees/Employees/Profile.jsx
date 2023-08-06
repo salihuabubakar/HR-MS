@@ -416,9 +416,9 @@ const Profile = ({
                                 <div className="profile-info-left">
                                   <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
 
-                                  <h6 style={{ display: "flex" }} className="text-muted">
+                                  <h6 className="text-muted active-online">
                                     <span className="status online" />
-                                    {employeeStatus == Number(employeeStatus)
+                                    {employeeStatus === employeeStatus
                                       ? "Active"
                                       : employeeStatus}
                                   </h6>
@@ -475,7 +475,7 @@ const Profile = ({
                                   <Popup
                                     inline
                                     hoverable
-                                    position="bottom center"
+                                    position="bottom left"
                                     delay={{
                                       show: 300,
                                       hide: 800,
@@ -767,11 +767,15 @@ const Profile = ({
 
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
+                          <div className="card-header">
+				              	    <h4 className="card-title mb-0">
+                            Review
+                            </h4>
+				              	  </div>
                           <div className="card-body">
-                            <h3 className="card-title">Review</h3>
                             <Wrapper>
                               {employee_review?.length > 0 ? (
-                                employee_review.map((review, index) => {
+                                employee_review.map((contract, index) => {
                                   const {
                                     id,
                                     employee,
@@ -781,11 +785,62 @@ const Profile = ({
                                     review_status,
                                     review_file,
                                     review_manager,
-                                  } = review;
+                                  } = contract;
                                   if (employee === selectedEmployeeId) {
                                     return (
-                                      <div key={id} className="card plain-card">
-                                        <div className="text">
+                                      <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                                        <span style={{width: "90%"}}>
+                                          <Popup
+                                            inline
+                                            hoverable
+                                            position="bottom left"
+                                            delay={{
+                                              show: 300,
+                                              hide: 800,
+                                            }}
+                                            content={
+                                              <Segment.Group>
+                                                <Segment style={{ width: "250px" }}>
+                                                  <div className="ui column relaxed divided grid">
+                                                    <div className="column">
+                                                      <div className="ui link list">
+                                                        <a className="item">{`Review Type: ${review_type}`}</a>
+                                                        <a className="item">{`Date: ${review_date}`}</a>
+                                                        <a className="item">{`Review Manager: ${review_manager}`}</a>
+                                                        <a className="item">{`Status: ${review_status}`}</a>
+                                                        <a className="item">
+                                                        {review_file && "Doc: "}
+                                                        {review_file && regex.test(review_file) ? (
+                                                          <img
+                                                            className="img-preview"
+                                                            src={review_file}
+                                                            alt="Preview"
+                                                          />
+                                                        ) : !review_file ? null : (
+                                                          <span className="files-icon">
+                                                            <DisplayFileType file={review_file} />
+                                                          </span>
+                                                        )}
+                                                        </a>
+                                                        {description && (
+                                                          <a className="item">Des: <PopUpText text={description}/></a>
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </Segment>
+                                              </Segment.Group>
+                                            }
+                                            trigger={
+                                              <a style={{color: "black"}}>
+                                                {review_type}
+                                              </a>
+                                            }
+                                          />
+                                        </span>
+                                        <span
+                                          className="edit-icon"
+                                        >
                                           <div className="dropdown dropdown-action text-end">
                                             <a
                                               className="action-icon dropdown-toggle"
@@ -795,50 +850,23 @@ const Profile = ({
                                               <i className="material-icons">more_vert</i>
                                             </a>
                                             <div className="dropdown-menu dropdown-menu-right">
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() => handleFileDownload(review_file)}
-                                              >
-                                                <i className="fa fa-download m-r-5" /> Download
-                                              </a>
+                                              {review_file && (
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() => handleFileDownload(review_file)}
+                                                >
+                                                  <i className="fa fa-download m-r-5" /> Download
+                                                </a>
+                                              )}
                                             </div>
                                           </div>
-                                          Review Type: <span>{review_type}</span>
-                                        </div>
-                                        <div className="text">
-                                          Review Manager:
-                                          {review_manager != Number(review_manager)
-                                            ? review_manager
-                                            : " Admin"}
-                                        </div>
-                                        <div className="text">
-                                          Review Date: <span>{review_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          Review Status: <span>{review_status}</span>
-                                        </div>
-                                        <div className="text">
-                                          Description: <span className="c">{description}</span>
-                                        </div>
-                                        <div>
-                                          {review_file && regex.test(review_file) ? (
-                                            <img
-                                              className="img-preview"
-                                              src={review_file}
-                                              alt="Preview"
-                                            />
-                                          ) : !review_file ? null : (
-                                            <span className="files-icon">
-                                              <i className="fa fa-file-pdf-o" />
-                                            </span>
-                                          )}
-                                        </div>
-                                      </div>
+                                        </span>
+                                      </BillCard>
                                     );
                                   }
                                 })
                               ) : (
-                                <></>
+                                <>Ops! No contract for this employee</>
                               )}
                             </Wrapper>
                           </div>
@@ -860,8 +888,8 @@ const Profile = ({
                     <div className="row">
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
+                          <div className="card-header">
+				              	    <h4 className="card-title mb-0">
                               Qualifications{" "}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
                                 {employeeQualificationError?.length > 0 && (
@@ -883,14 +911,14 @@ const Profile = ({
                                 )}
                               </span>
                               <a
-                                onClick={() =>
-                                  setGlobalState("showEmployeeQualificationModal", true)
-                                }
+                                onClick={() => setGlobalState("showEmployeeQualificationModal", true)}
                                 className="edit-icon"
                               >
                                 <i className="fa fa-plus" />
                               </a>
-                            </h3>
+                            </h4>
+				              	  </div>
+                          <div className="card-body">
                             <div className="experience-box">
                               <ul className="experience-list">
                                 {employeeQualificationData?.map((qualifications, index) => {
@@ -999,8 +1027,8 @@ const Profile = ({
 
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
+                          <div className="card-header">
+				              	    <h4 className="card-title mb-0">
                               Experience{" "}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
                                 {employeeExperiencError?.length > 0 && (
@@ -1027,7 +1055,9 @@ const Profile = ({
                               >
                                 <i className="fa fa-plus" />
                               </a>
-                            </h3>
+                            </h4>
+				              	  </div>
+                          <div className="card-body">
                             <div className="experience-box">
                               <ul className="experience-list">
                                 {employeeExperienceData?.map((experience, index) => {
@@ -1266,7 +1296,7 @@ const Profile = ({
                           <div className="card-body">
                             <Wrapper>
                               {employee_leave?.length > 0 ? (
-                                employee_leave.map((doc, index) => {
+                                employee_leave.map((leave, index) => {
                                   const {
                                     id,
                                     employee,
@@ -1279,11 +1309,64 @@ const Profile = ({
                                     supporting_document,
                                     leave_type,
                                     authorised_by,
-                                  } = doc;
+                                  } = leave;
                                   if (employee === selectedEmployeeId) {
                                     return (
-                                      <div key={id} className="card plain-card">
-                                        <div className="text">
+                                      <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                                        <span style={{width: "90%"}}>
+                                          <Popup
+                                            inline
+                                            hoverable
+                                            position="bottom left"
+                                            delay={{
+                                              show: 300,
+                                              hide: 800,
+                                            }}
+                                            content={
+                                              <Segment.Group>
+                                                <Segment style={{ width: "250px" }}>
+                                                  <div className="ui column relaxed divided grid">
+                                                    <div className="column">
+                                                      <div className="ui link list">
+                                                        <a className="item">{`Leave Type: ${leave_type}`}</a>
+                                                        <a className="item">{`Number of days: ${number_of_days}`}</a>
+                                                        <a className="item">{`Start Date: ${start_date}`}</a>
+                                                        <a className="item">{`End Date: ${end_date}`}</a>
+                                                        <a className="item">{`Authorising Manager: ${authorising_manager}`}</a>
+                                                        <a className="item">{`Status: ${status}`}</a>
+                                                        <a className="item">
+                                                        {supporting_document && "Doc: "}
+                                                        {supporting_document && regex.test(supporting_document) ? (
+                                                          <img
+                                                            className="img-preview"
+                                                            src={supporting_document}
+                                                            alt="Preview"
+                                                          />
+                                                        ) : !supporting_document ? null : (
+                                                          <span className="files-icon">
+                                                            <DisplayFileType file={supporting_document} />
+                                                          </span>
+                                                        )}
+                                                        </a>
+                                                        {comments && (
+                                                          <a className="item">Comment: <PopUpText text={comments}/></a>
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </Segment>
+                                              </Segment.Group>
+                                            }
+                                            trigger={
+                                              <a style={{color: "black"}}>
+                                                {authorising_manager}
+                                              </a>
+                                            }
+                                          />
+                                        </span>
+                                        <span
+                                          className="edit-icon"
+                                        >
                                           <div className="dropdown dropdown-action text-end">
                                             <a
                                               className="action-icon dropdown-toggle"
@@ -1293,53 +1376,23 @@ const Profile = ({
                                               <i className="material-icons">more_vert</i>
                                             </a>
                                             <div className="dropdown-menu dropdown-menu-right">
-                                              <a
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  handleFileDownload(supporting_document)
-                                                }
-                                              >
-                                                <i className="fa fa-download m-r-5" /> Download
-                                              </a>
+                                              {supporting_document && (
+                                                <a
+                                                  className="dropdown-item"
+                                                  onClick={() => handleFileDownload(supporting_document)}
+                                                >
+                                                  <i className="fa fa-download m-r-5" /> Download
+                                                </a>
+                                              )}
                                             </div>
                                           </div>
-                                          Authorising Manager: <span>{authorising_manager}</span>
-                                        </div>
-                                        <div className="text">
-                                          Number of days: <span>{number_of_days}</span>
-                                        </div>
-                                        <div className="text">
-                                          Start Date: <span>{start_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          End Date: <span>{end_date}</span>
-                                        </div>
-                                        <div className="text">
-                                          Leave Status: <span>{status}</span>
-                                        </div>
-                                        <div className="text">
-                                          Comment: <span className="c">{comments}</span>
-                                        </div>
-                                        <div>
-                                          {supporting_document &&
-                                          regex.test(supporting_document) ? (
-                                            <img
-                                              className="img-preview"
-                                              src={supporting_document}
-                                              alt="Preview"
-                                            />
-                                          ) : !supporting_document ? null : (
-                                            <span className="files-icon">
-                                              <DisplayFileType file={supporting_document} />
-                                            </span>
-                                          )}
-                                        </div>
-                                      </div>
+                                        </span>
+                                      </BillCard>
                                     );
                                   }
                                 })
                               ) : (
-                                <></>
+                                <>Ops! No Leave for this employee</>
                               )}
                             </Wrapper>
                           </div>
@@ -1677,9 +1730,9 @@ const Profile = ({
                     <div className="row">
                       <div className="col-md-12 d-flex">
                         <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Document{" "}
+                          <div className="card-header">
+				              	    <h4 className="card-title mb-0">
+                              Document {""}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
                                 {employeeDocumentError?.length > 0 && (
                                   <>
@@ -1700,12 +1753,14 @@ const Profile = ({
                                 )}
                               </span>
                               <a
-                                onClick={() => setGlobalState("showEmployeeDocumentModal", true)}
                                 className="edit-icon"
+                                onClick={() => setGlobalState("showEmployeeDocumentModal", true)}
                               >
                                 <i className="fa fa-plus" />
                               </a>
-                            </h3>
+                            </h4>
+				              	  </div>
+                          <div className="card-body">
                             <Wrapper>
                               {employeeDocumentData?.length > 0 ? (
                                 employeeDocumentData.map((doc, index) => {
