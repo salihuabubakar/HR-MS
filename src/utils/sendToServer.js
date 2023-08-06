@@ -1180,6 +1180,70 @@ export const add_update_delete_employee_document = async (state, { type, payload
   }
 };
 
+// Add - Update - Delete Employee Document Type state
+export const add_update_delete_employee_document_type = async (state, { type, payload }) => {
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${BaseUrl}/employee/documenttype/`, payload);
+
+        // Check the response status
+        if (response.status === 201) {
+          toast.success("Employee DocumentType Added", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        setGlobalState("employeeDocumentTypeError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while posting data");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(`${BaseUrl}/employee/documenttype/${payload.id}/`, payload);
+
+        // Check the response status
+        if (response.status === 200) {
+          toast.success("Employee DocumentType Updated", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating data:", error);
+        setGlobalState("employeeDocumentTypeError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while updating data");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(`${BaseUrl}/employee/documenttype/${payload.id}/`);
+
+        // Check the response status
+        if (response.status === 204) {
+          toast("Employee DocumentType Deleted", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting data:", error);
+        setGlobalState("employeeDocumentTypeError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while deleting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
 // Add - Update - Delete Employee Bank state
 export const add_update_delete_employee_bank = async (state, { type, payload }) => {
   const { id, formData } = payload;

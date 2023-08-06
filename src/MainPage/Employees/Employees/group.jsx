@@ -8,16 +8,18 @@ import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import Role from "./role";
 import Department from "./department";
 import Organisation from "./organisation";
+import DocType from "./docType";
 import { 
   useRoleFetching, 
   useDepartmentFetching, 
   useOrganisationFetching, 
-   
+  useEmployeeDocumentTypeFetching
 } from "../../../utils/employeeCustomFetchHook";
 import { 
   add_update_delete_role, 
   add_update_delete_department,
-  add_update_delete_organisation, 
+  add_update_delete_organisation,
+  add_update_delete_employee_document_type 
 } from "../../../utils/sendToServer";
 
 const Group = () => {
@@ -26,7 +28,7 @@ const Group = () => {
     useDepartmentFetching();
   const { organisationData, isOrganisationDataLoading, organisationError } =
     useOrganisationFetching();
-  
+  const { employeeDocType, isEmployeeDocDataLoading, employeeDocError } = useEmployeeDocumentTypeFetching();
 
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {
@@ -74,6 +76,14 @@ const Group = () => {
                 isRoleLoading={isRoleLoading}
                 add_update_delete_role={add_update_delete_role}
                 departmentData={departmentData}
+              />
+            </div>
+            <div style={{ marginBottom: "30px" }} className="col-sm-12">
+              <DocType
+                employeeDocType={employeeDocType}
+                roleError={roleError}
+                isEmployeeDocDataLoading={isEmployeeDocDataLoading}
+                add_update_delete_employee_document_type={add_update_delete_employee_document_type}
               />
             </div>
             <div className="col-sm-12">

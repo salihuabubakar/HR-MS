@@ -181,6 +181,12 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   selectedEmployeeDocument: [],
   employeeDocumentError: [],
 
+  // Employee Document Type
+  deleteEmployeeDocumentTypeModal: false,
+  showEmployeeDocumentTypeModal: false,
+  selectedEmployeeDocumentType: [],
+  employeeDocumentTypeError: [],
+
   // Employee Bank
   deleteEmployeeBankModal: false,
   showEmployeeBankModal: false,

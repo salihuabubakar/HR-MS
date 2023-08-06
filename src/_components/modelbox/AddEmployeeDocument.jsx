@@ -7,6 +7,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { RadioBtn } from "./styles";
+import { useEmployeeDocumentTypeFetching } from "../../utils/employeeCustomFetchHook";
 const AddEmployeeDocument = ({
   employeeDocumentIndexToEdit,
   id,
@@ -14,6 +15,8 @@ const AddEmployeeDocument = ({
   employee,
 }) => {
   const [selectedEmployeeDocument] = useGlobalState("selectedEmployeeDocument");
+
+  const { employeeDocType } = useEmployeeDocumentTypeFetching();
 
   const [document_name, setDocumentName] = useState(
     selectedEmployeeDocument[employeeDocumentIndexToEdit]?.document_name || ""
@@ -210,16 +213,15 @@ const AddEmployeeDocument = ({
                             <option disabled value="">
                               Select
                             </option>
-                            <option value={1}>Passpord</option>
-                            <option value={2}>NIN</option>
-                            <option value={3}>Birth Cert</option>
-                            <option value={4}>School Cert</option>
+                            {employeeDocType?.map(docType => (
+                              <option key={docType.id} value={docType.id}>{docType.document_type}</option>
+                            ))}
                           </select>
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Issue Date <span className="text-danger">*</span>
                           </label>
                           <input
@@ -234,7 +236,7 @@ const AddEmployeeDocument = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Expiry Date</label>
+                          <label className="col-form-label">Expiry Date</label>
                           <input
                             value={expiry_date}
                             onChange={handleExpiryDateChange}
@@ -249,7 +251,7 @@ const AddEmployeeDocument = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Verify</label>
+                          <label className="col-form-label">Verify</label>
                           <RadioBtn>
                             <input
                               type="checkbox"
@@ -267,7 +269,7 @@ const AddEmployeeDocument = ({
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">Document File Upload</label>{" "}
+                          <label className="col-form-label">Document File Upload</label>{" "}
                           <span className="text-danger">*</span>
                           <input
                             onChange={handleFileUpload}
