@@ -464,6 +464,33 @@ export const useEmployeeDocumentFetching = () => {
     employeeDocumentError,
   };
 };
+// Get employee document type 
+export const useEmployeeDocumentTypeFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${BaseUrl}/employee/documenttype/?format=json`
+    );
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: employeeDocType,
+    isLoading: isEmployeeDocDataLoading,
+    error: employeeDocError,
+  } = useQuery("docTypeData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on docTypeData
+      queryClient.invalidateQueries(["docTypeData"]);
+    },
+  });
+
+  return {
+    employeeDocType,
+    isEmployeeDocDataLoading,
+    employeeDocError,
+  };
+};
 
 // Get bank data
 export const useEmployeeBankFetching = () => {
