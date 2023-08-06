@@ -7,6 +7,7 @@ import axios from "axios";
 import { BaseUrl } from "../../utils/baseUrl";
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from "../Employees/Employees/styles";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 import {
   useResidentSchoolFetching,
   useResidentEducationFetching,
@@ -66,9 +67,7 @@ import NoAvailableData from "../../_components/noAvailableData";
 import { handleFileDownload } from "../../utils/helperFucntions";
 import DisplayFileType from "../../_components/fileExtension";
 
-const Profile = ({
-  DefaultImage,
-}) => {
+const Profile = () => {
   const [gpError] = useGlobalState("gpError");
   const [residentSolicitorError] = useGlobalState("residentSolicitorError");
   const [residentdocumentError] = useGlobalState("residentdocumentError");
@@ -643,7 +642,7 @@ useEffect(() => {
                         ) : (
                           <>
                             <div className="profile-img">
-                              <a>
+                              <a className="">
                                 <img alt="" src={photo ? photo : DefaultImage} />
                               </a>
                             </div>
@@ -672,32 +671,43 @@ useEffect(() => {
                                   <div className="small doj text-muted">
                                     Weight: {weight ? weight : "--"}
                                   </div>
-                                  <div className="small doj text-muted">
-                                    Eye Colour: {eye_colour ? eye_colour : "--"}
-                                  </div>
-                                  <div className="small doj text-muted">
-                                    Hair Colour: {hair_colour ? hair_colour : "--"}
-                                  </div>
-                                  <div className="small doj text-muted">
-                                    Glasses: {glasses ? glasses : "--"}
-                                  </div>
-                                  <div className="small doj text-muted">
-                                    Tattoos: {tattoos ? tattoos : "--"}
-                                  </div>
-                                  <div className="small doj text-muted">
-                                    Piercing: {piercings ? piercings : "--"}
-                                  </div>
+                                  <Popup
+                                    inline
+                                    hoverable
+                                    position="bottom left"
+                                    delay={{
+                                      show: 300,
+                                      hide: 800,
+                                    }}
+                                    content={
+                                      <Segment.Group>
+                                            <Segment style={{ width: "250px" }}>
+                                              <div className="ui column relaxed divided grid">
+                                                <div className="column">
+                                                  <div className="ui link list">
+                                                    <a className="item">{`Eye Colour: ${eye_colour ? eye_colour : "--"}`}</a>
+                                                    <a className="item">{`Hair Colour: ${hair_colour ? hair_colour : "--"}`}</a>
+                                                    <a className="item">{`Glasses: ${glasses ? glasses : "--"}`}</a>
+                                                    <a className="item">{`Tattoos: ${tattoos ? tattoos : "--"}`}</a>
+                                                    <a className="item">{`Piercing: ${piercings ? piercings : "--"}`}</a>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </Segment>
+                                      </Segment.Group>
+                                    }
+                                    trigger={
+                                        <a>
+                                          View More
+                                        </a>
+                                    }
+                                  />
+                                  <h6 style={{ width: "10px", height: "25px" }} className="text-muted"></h6>
                                 </div>
                               </div>
 
                               <div className="col-md-7">
                                 <ul className="personal-info">
-                                  <li>
-                                    <div className="title">Address:</div>
-                                    <div className="text">
-                                      <a>{address ? address : "--"}</a>
-                                    </div>
-                                  </li>
                                   <li>
                                     <div className="title">Phone:</div>
                                     <div className="text">
@@ -710,22 +720,36 @@ useEffect(() => {
                                       <a>{email ? email : "--"}</a>
                                     </div>
                                   </li>
-                                  <li>
-                                    <div className="title">Birthday:</div>
-                                    <div className="text">
-                                      {date_of_birth
-                                        ? moment(date_of_birth).format("DD MMM YYYY")
-                                        : "--"}
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className="title">Gender:</div>
-                                    <div className="text">{gender ? gender : "--"}</div>
-                                  </li>
-                                  <li>
-                                    <div className="title">Nationality:</div>
-                                    <div className="text">{nationality ? nationality : "--"}</div>
-                                  </li>
+                                  <Popup
+                                    inline
+                                    hoverable
+                                    position="bottom left"
+                                    delay={{
+                                      show: 300,
+                                      hide: 800,
+                                    }}
+                                    content={
+                                      <Segment.Group>
+                                            <Segment style={{ width: "250px" }}>
+                                              <div className="ui column relaxed divided grid">
+                                                <div className="column">
+                                                  <div className="ui link list">
+                                                    <a className="item">{`Address: ${address ? address : "--"}`}</a>
+                                                    <a className="item">{`Birthday: ${date_of_birth ? moment(date_of_birth).format("DD MMM YYYY"): "--"}`}</a>
+                                                    <a className="item">{`Gender: ${gender ? gender : "--"}`}</a>
+                                                    <a className="item">{`Nationality: ${nationality ? nationality : "--"}`}</a>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </Segment>
+                                      </Segment.Group>
+                                    }
+                                    trigger={
+                                        <a>
+                                          View More
+                                        </a>
+                                    }
+                                  />
                                 </ul>
                               </div>
                             </>
@@ -806,36 +830,38 @@ useEffect(() => {
                   <>
                     <div className="row">
                     <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
+                      <div className="card profile-box flex-fill">
+                        <div className="card-header">
+				                  <h4 className="card-title mb-0">
+                            Resident Education {""}
+                            <span style={{ color: "red", fontSize: "0.7rem" }}>
+                              {educationError?.length > 0 && (
+                                <>
+                                  Error: {educationError}
+                                  <button
+                                    onClick={clearErrorMessage}
+                                    style={{
+                                      marginLeft: "10px",
+                                      fontSize: "0.8rem",
+                                      cursor: "pointer",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <i className="fa fa-times" />
+                                    Clear Error
+                                  </button>
+                                </>
+                              )}
+                            </span>
+                            <a
+                              className="edit-icon"
+                              onClick={() => setGlobalState("showResidentEducationModal", true)}
+                            >
+                              <i className="fa fa-plus" />
+                            </a>
+                          </h4>
+				                </div>
                           <div className="card-body">
-                            <h3 className="card-title">
-                              Resident Education{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {educationError?.length > 0 && (
-                                  <>
-                                    Error: {educationError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                onClick={() => setGlobalState("showResidentEducationModal", true)}
-                                className="edit-icon"
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
                             <div className="experience-box">
                               <ul className="experience-list">
                                 {residentEducationData?.map((edu, index) => {
@@ -912,9 +938,9 @@ useEffect(() => {
                       </div>
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident School{" "}
+                          <div className="card-header">
+				                    <h4 className="card-title mb-0">
+                              Resident School {""}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
                                 {residentSchoolError?.length > 0 && (
                                   <>
@@ -935,12 +961,14 @@ useEffect(() => {
                                 )}
                               </span>
                               <a
-                                onClick={() => setGlobalState("showResidentSchoolModal", true)}
                                 className="edit-icon"
+                                onClick={() => setGlobalState("showResidentSchoolModal", true)}
                               >
                                 <i className="fa fa-plus" />
                               </a>
-                            </h3>
+                            </h4>
+				                  </div>
+                          <div className="card-body">
                             <div className="experience-box">
                               <ul className="experience-list">
                                 {residentSchoolData?.map((schl, index) => {
@@ -1023,9 +1051,9 @@ useEffect(() => {
                     <div className="row">
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident Solicitor{" "}
+                          <div className="card-header">
+				                    <h4 className="card-title mb-0">
+                              Resident Solicitor {""}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
                                 {residentSolicitorError?.length > 0 && (
                                   <>
@@ -1046,12 +1074,14 @@ useEffect(() => {
                                 )}
                               </span>
                               <a
-                                onClick={() => setGlobalState("showResidentSolicitorModal", true)}
                                 className="edit-icon"
+                                onClick={() => setGlobalState("showResidentSolicitorModal", true)}
                               >
                                 <i className="fa fa-plus" />
                               </a>
-                            </h3>
+                            </h4>
+				                  </div>
+                          <div className="card-body">
                             <Wrapper>
                               {residentSolicitorData?.length > 0 ? (
                                 residentSolicitorData.map((solicit, index) => {
@@ -1163,9 +1193,9 @@ useEffect(() => {
 
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident GP{" "}
+                          <div className="card-header">
+				                    <h4 className="card-title mb-0">
+                              Resident GP {""}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
                                 {gpError?.length > 0 && (
                                   <>
@@ -1186,12 +1216,14 @@ useEffect(() => {
                                 )}
                               </span>
                               <a
-                                onClick={() => setGlobalState("showResidentGpModal", true)}
                                 className="edit-icon"
+                                onClick={() => setGlobalState("showResidentGpModal", true)}
                               >
                                 <i className="fa fa-plus" />
                               </a>
-                            </h3>
+                            </h4>
+				                  </div>
+                          <div className="card-body">
                             <Wrapper>
                               {residentGpData?.length > 0 ? (
                                 residentGpData.map((gp, index) => {
@@ -1316,9 +1348,9 @@ useEffect(() => {
                     <div className="row">
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident Medical Condition{" "}
+                          <div className="card-header">
+				                    <h4 className="card-title mb-0">
+                              Resident Medical Condition {""}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
                                 {medicalConditionError?.length > 0 && (
                                   <>
@@ -1340,13 +1372,13 @@ useEffect(() => {
                               </span>
                               <a
                                 className="edit-icon"
-                                onClick={() =>
-                                  setGlobalState("showResidentMedicalConditionModal", true)
-                                }
+                                onClick={() => setGlobalState("showResidentMedicalConditionModal", true)}
                               >
                                 <i className="fa fa-plus" />
                               </a>
-                            </h3>
+                            </h4>
+				                  </div>
+                          <div className="card-body">
                             <Wrapper>
                               {residentMedicalConditionData?.length > 0 ? (
                                 residentMedicalConditionData.map((med, index) => {
@@ -1490,9 +1522,9 @@ useEffect(() => {
 
                       <div className="col-md-6 d-flex">
                         <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident Medication{" "}
+                          <div className="card-header">
+				                    <h4 className="card-title mb-0">
+                              Resident Medication{""}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
                                 {medicationError?.length > 0 && (
                                   <>
@@ -1518,7 +1550,9 @@ useEffect(() => {
                               >
                                 <i className="fa fa-plus" />
                               </a>
-                            </h3>
+                            </h4>
+				                  </div>
+                          <div className="card-body">
                             <Wrapper>
                               {residentMedicationData?.length > 0 ? (
                                 residentMedicationData.map((med, index) => {
@@ -1671,242 +1705,251 @@ useEffect(() => {
                         </div>
                       </div>
 
-                      <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident School Timetable{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {schoolTimetableError?.length > 0 && (
-                                  <>
-                                    Error: {schoolTimetableError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                className="edit-icon"
-                                onClick={() =>
-                                  setGlobalState("showResidentSchoolTimetableModal", true)
-                                }
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>School</th>
-                                    <th>Year</th>
-                                    <th>Timetable</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {residentSchoolTimetableData?.length > 0 ? (
-                                    residentSchoolTimetableData?.map((time, index) => {
-                                      const { id, resident, school, year, timetable } = time;
-                                      if (resident == selectedResidentId) {
-                                        return (
-                                          <tr style={{ height: "90px" }} key={id}>
-                                            <td>
-                                              {residentSchoolData?.map((schl) => {
-                                                if (schl.id === school) return schl.school_name;
-                                              })}
-                                            </td>
-                                            <td>{year}</td>
-                                            <td>
-                                              {timetable && regex.test(timetable) ? (
-                                                <img
-                                                  className="img-preview"
-                                                  src={timetable}
-                                                  alt="Preview"
-                                                />
-                                              ) : !timetable ? (
-                                                "--"
-                                              ) : (
-                                                <span className="files-icon">
-                                                  <DisplayFileType file={timetable} />
-                                                </span>
-                                              )}
-                                            </td>
-                                            <td className="dropdown dropdown-action text-end">
-                                              <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <i className="material-icons">more_vert</i>
-                                              </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleFileDownload(timetable)}
-                                                >
-                                                  <i className="fa fa-download m-r-5" /> Download
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditResidentSchoolTimetable(id, index)
-                                                  }
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleDeleteResidentSchoolTimetable(id)
-                                                  }
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No timetable attach to this resident</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident School Report{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {schoolReportError?.length > 0 && (
-                                  <>
-                                    Error: {schoolReportError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                className="edit-icon"
-                                onClick={() =>
-                                  setGlobalState("showResidentSchoolReportModal", true)
-                                }
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>School</th>
-                                    <th>Year</th>
-                                    <th>Report</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {residentSchoolReportData?.length > 0 ? (
-                                    residentSchoolReportData?.map((time, index) => {
-                                      const { id, resident, school, year, report } = time;
-                                      if (resident == selectedResidentId) {
-                                        return (
-                                          <tr style={{ height: "90px" }} key={id}>
-                                            <td>
-                                              {residentSchoolData?.map((schl) => {
-                                                if (schl.id === school) return schl.school_name;
-                                              })}
-                                            </td>
-                                            <td>{year}</td>
-                                            <td>
-                                              {report && regex.test(report) ? (
-                                                <img
-                                                  className="img-preview"
-                                                  src={report}
-                                                  alt="Preview"
-                                                />
-                                              ) : !report ? (
-                                                "--"
-                                              ) : (
-                                                <span className="files-icon">
-                                                  <DisplayFileType file={report} />
-                                                </span>
-                                              )}
-                                            </td>
-                                            <td className="dropdown dropdown-action text-end">
-                                              <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <i className="material-icons">more_vert</i>
-                                              </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() => handleFileDownload(report)}
-                                                >
-                                                  <i className="fa fa-download m-r-5" /> Download
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditResidentSchoolReport(id, index)
-                                                  }
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleDeleteResidentSchoolReport(id)
-                                                  }
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No report attach to this resident</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <div className="col-lg-6">
+				                <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Resident School Timetable{" "}
+                            <span style={{ color: "red", fontSize: "0.7rem" }}>
+                              {schoolTimetableError?.length > 0 && (
+                                <>
+                                  Error: {schoolTimetableError}
+                                  <button
+                                    onClick={clearErrorMessage}
+                                    style={{
+                                      marginLeft: "10px",
+                                      fontSize: "0.8rem",
+                                      cursor: "pointer",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <i className="fa fa-times" />
+                                    Clear Error
+                                  </button>
+                                </>
+                              )}
+                            </span>
+                            <a
+                              className="edit-icon"
+                              onClick={() => setGlobalState("showResidentSchoolTimetableModal", true)}
+                            >
+                              <i className="fa fa-plus" />
+                            </a>
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+                              <tr>
+                                <th>School</th>
+                                <th>Year</th>
+                                <th>Timetable</th>
+                              </tr>
+				              		  </thead>
+				              		  <tbody>
+                            {residentSchoolTimetableData?.length > 0
+                              ? residentSchoolTimetableData?.map((time, index) => {
+                                  const {
+                                    id, resident, school, year, timetable
+                                  } = time;
+                                  if (resident == selectedResidentId) {
+                                    return (
+                                      <React.Fragment key={id}>
+                                      <tr style={{ height: "90px" }}>
+                                        <td>
+                                          {residentSchoolData?.map((schl) => {
+                                            if (schl.id === school) return schl.school_name;
+                                          })}
+                                        </td>
+                                        <td>{year}</td>
+                                        <td>
+                                          {timetable && regex.test(timetable) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={timetable}
+                                              alt="Preview"
+                                            />
+                                          ) : !timetable ? (
+                                            "--"
+                                          ) : (
+                                            <span className="files-icon">
+                                              <DisplayFileType file={timetable} />
+                                            </span>
+                                          )}
+                                        </td>
+                                        <td className="dropdown dropdown-action text-end">
+                                          <a
+                                            className="action-icon dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            <i className="material-icons">more_vert</i>
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleFileDownload(timetable)}
+                                            >
+                                              <i className="fa fa-download m-r-5" /> Download
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleEditResidentSchoolTimetable(id, index)
+                                              }
+                                            >
+                                              <i className="fa fa-pencil m-r-5" /> Edit
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleDeleteResidentSchoolTimetable(id)
+                                              }
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" /> Delete
+                                            </a>
+                                          </div>
+                                        </td>
+				              			          </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No timetable attach to this resident</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
+
+                      <div className="col-lg-6">
+				                <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Resident School Report{" "}
+                            <span style={{ color: "red", fontSize: "0.7rem" }}>
+                              {schoolReportError?.length > 0 && (
+                                <>
+                                  Error: {schoolReportError}
+                                  <button
+                                    onClick={clearErrorMessage}
+                                    style={{
+                                      marginLeft: "10px",
+                                      fontSize: "0.8rem",
+                                      cursor: "pointer",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <i className="fa fa-times" />
+                                    Clear Error
+                                  </button>
+                                </>
+                              )}
+                            </span>
+                            <a
+                              className="edit-icon"
+                              onClick={() => setGlobalState("showResidentSchoolReportModal", true)}
+                            >
+                              <i className="fa fa-plus" />
+                            </a>
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+                              <tr>
+                                <th>School</th>
+                                <th>Year</th>
+                                <th>Report</th>
+                              </tr>
+				              		  </thead>
+				              		  <tbody>
+                            {residentSchoolReportData?.length > 0
+                              ? residentSchoolReportData?.map((time, index) => {
+                                  const {
+                                    id, resident, school, year, report
+                                  } = time;
+                                  if (resident == selectedResidentId) {
+                                    return (
+                                      <React.Fragment key={id}>
+                                      <tr style={{ height: "90px" }}>
+                                        <td>
+                                          {residentSchoolData?.map((schl) => {
+                                            if (schl.id === school) return schl.school_name;
+                                          })}
+                                        </td>
+                                        <td>{year}</td>
+                                        <td>
+                                          {report && regex.test(report) ? (
+                                            <img
+                                              className="img-preview"
+                                              src={report}
+                                              alt="Preview"
+                                            />
+                                          ) : !report ? (
+                                            "--"
+                                          ) : (
+                                            <span className="files-icon">
+                                              <DisplayFileType file={report} />
+                                            </span>
+                                          )}
+                                        </td>
+                                        <td className="dropdown dropdown-action text-end">
+                                          <a
+                                            className="action-icon dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            <i className="material-icons">more_vert</i>
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() => handleFileDownload(report)}
+                                            >
+                                              <i className="fa fa-download m-r-5" /> Download
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleEditResidentSchoolReport(id, index)
+                                              }
+                                            >
+                                              <i className="fa fa-pencil m-r-5" /> Edit
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleDeleteResidentSchoolReport(id)
+                                              }
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" /> Delete
+                                            </a>
+                                          </div>
+                                        </td>
+				              			          </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No report attach to this resident</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
                     </div>
                   </>
                 )}
@@ -2090,119 +2133,121 @@ useEffect(() => {
                 ) : (
                   <>
                     <div className="row">
-                    <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Social Worker{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {rSocialWorkerError?.length > 0 && (
-                                  <>
-                                    Error: {rSocialWorkerError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                className="edit-icon"
-                                onClick={() =>
-                                  setGlobalState("showResidentSocialWorkerModal", true)
-                                }
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Social Worker</th>
-                                    <th>Start Date</th>
-                                    <th>Description</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {rSocialWorkerData?.length > 0 ? (
-                                    rSocialWorkerData?.map((worker, index) => {
-                                      const {
-                                        id,
-                                        resident,
-                                        social_worker,
-                                        status,
-                                        start_date,
-                                        end_date,
-                                        description,
-                                      } = worker;
-                                      if (resident === selectedResidentId && status === "Active") {
-                                        return (
-                                          <tr style={{ height: "90px" }} key={id}>
+                      <div className="col-lg-12">
+				                <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Social Worker{" "}
+                            <span style={{ color: "red", fontSize: "0.7rem" }}>
+                              {rSocialWorkerError?.length > 0 && (
+                                <>
+                                  Error: {rSocialWorkerError}
+                                  <button
+                                    onClick={clearErrorMessage}
+                                    style={{
+                                      marginLeft: "10px",
+                                      fontSize: "0.8rem",
+                                      cursor: "pointer",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <i className="fa fa-times" />
+                                    Clear Error
+                                  </button>
+                                </>
+                              )}
+                            </span>
+                            <a
+                              className="edit-icon"
+                              onClick={() => setGlobalState("showResidentSocialWorkerModal", true)}
+                            >
+                              <i className="fa fa-plus" />
+                            </a>
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+                              <tr>
+                                <th>Social Worker</th>
+                                <th>Start Date</th>
+                                <th>Description</th>
+                              </tr>
+				              		  </thead>
+				              		  <tbody>
+                            {rSocialWorkerData?.length > 0
+                              ? rSocialWorkerData?.map((worker, index) => {
+                                  const {
+                                    id,
+                                    resident,
+                                    social_worker,
+                                    status,
+                                    start_date,
+                                    end_date,
+                                    description,
+                                  } = worker;
+                                  if (resident === selectedResidentId && status === "Active") {
+                                    return (
+                                      <React.Fragment key={id}>
+                                      <tr style={{ height: "90px" }}>
+                                        <td>
+                                          {socialWorkerData?.map((rSw) => {
+                                            if (rSw.id === social_worker)
+                                              return `${rSw.first_name} ${rSw.middle_name} ${rSw.last_name}`;
+                                          })}
+                                        </td>
+                                        <td>{start_date}</td>
+                                        {description && description && (
+                                          <>
                                             <td>
-                                              {socialWorkerData?.map((rSw) => {
-                                                if (rSw.id === social_worker)
-                                                  return `${rSw.first_name} ${rSw.middle_name} ${rSw.last_name}`;
-                                              })}
+                                              <PopUpText text={description}/>
                                             </td>
-                                            <td>{start_date}</td>
-                                            {description && description && (
-                                              <>
-                                                <td>
-                                                  <PopUpText text={description}/>
-                                                </td>
-                                              </>
-                                            )}
-                                            <td className="dropdown dropdown-action text-end">
-                                              <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <i className="material-icons">more_vert</i>
-                                              </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditResidentSocialWorker(id, index)
-                                                  }
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleDeleteResidentSocialWorker(id)
-                                                  }
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No Social worker attach to this resident</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                                          </>
+                                        )}
+                                        <td className="dropdown dropdown-action text-end">
+                                          <a
+                                            className="action-icon dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            <i className="material-icons">more_vert</i>
+                                          </a>
+                                          <div className="dropdown-menu dropdown-menu-right">
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleEditResidentSocialWorker(id, index)
+                                              }
+                                            >
+                                              <i className="fa fa-pencil m-r-5" /> Edit
+                                            </a>
+                                            <a
+                                              className="dropdown-item"
+                                              onClick={() =>
+                                                handleDeleteResidentSocialWorker(id)
+                                              }
+                                            >
+                                              <i className="fa fa-trash-o m-r-5" /> Delete
+                                            </a>
+                                          </div>
+                                        </td>
+				              			          </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No Social worker attach to this resident</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
                     </div>
                   </>
                 )}
@@ -2220,113 +2265,117 @@ useEffect(() => {
                 ) : (
                   <>
                     <div className="row">
-                    <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident Appointment{" "}
-                              <span style={{ color: "red", fontSize: "0.7rem" }}>
-                                {appointmentError?.length > 0 && (
-                                  <>
-                                    Error: {appointmentError}
-                                    <button
-                                      onClick={clearErrorMessage}
-                                      style={{
-                                        marginLeft: "10px",
-                                        fontSize: "0.8rem",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                    >
-                                      <i className="fa fa-times" />
-                                      Clear Error
-                                    </button>
-                                  </>
-                                )}
-                              </span>
-                              <a
-                                className="edit-icon"
-                                onClick={() => setGlobalState("showResidentAppointmentModal", true)}
-                              >
-                                <i className="fa fa-plus" />
-                              </a>
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Name</th>
-                                    <th>Time</th>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {residentAppointmentData?.length > 0 ? (
-                                    residentAppointmentData?.map((app, index) => {
-                                      const {
-                                        id,
-                                        resident,
-                                        appointment_name,
-                                        appointment_time,
-                                        appointment_date,
-                                        appointment_description,
-                                      } = app;
-                                      if (resident == selectedResidentId) {
-                                        return (
-                                          <tr style={{ height: "90px" }} key={id}>
-                                            <td>{appointment_name}</td>
-                                            <td>{appointment_time}</td>
-                                            <td>{appointment_date}</td>
-                                            {appointment_description && appointment_description && (
-                                              <>
-                                                <td>
-                                                  <PopUpText text={appointment_description}/>
-                                                </td>
-                                              </>
-                                            )}
-                                            <td className="dropdown dropdown-action text-end">
-                                              <a
-                                                className="action-icon dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <i className="material-icons">more_vert</i>
-                                              </a>
-                                              <div className="dropdown-menu dropdown-menu-right">
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleEditResidentAppointment(id, index)
-                                                  }
-                                                >
-                                                  <i className="fa fa-pencil m-r-5" /> Edit
-                                                </a>
-                                                <a
-                                                  className="dropdown-item"
-                                                  onClick={() =>
-                                                    handleDeleteResidentAppointment(id)
-                                                  }
-                                                >
-                                                  <i className="fa fa-trash-o m-r-5" /> Delete
-                                                </a>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No referrals attach to this resident</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="col-lg-12">
+				              <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Resident Appointment{" "}
+                            <span style={{ color: "red", fontSize: "0.7rem" }}>
+                              {appointmentError?.length > 0 && (
+                                <>
+                                  Error: {appointmentError}
+                                  <button
+                                    onClick={clearErrorMessage}
+                                    style={{
+                                      marginLeft: "10px",
+                                      fontSize: "0.8rem",
+                                      cursor: "pointer",
+                                      color: "black",
+                                    }}
+                                  >
+                                    <i className="fa fa-times" />
+                                    Clear Error
+                                  </button>
+                                </>
+                              )}
+                            </span>
+                            <a
+                              className="edit-icon"
+                              onClick={() => setGlobalState("showResidentAppointmentModal", true)}
+                            >
+                              <i className="fa fa-plus" />
+                            </a>
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Time</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                              </tr>
+				              		  </thead>
+				              		  <tbody>
+                            {residentAppointmentData?.length > 0
+                              ? residentAppointmentData?.map((app, index) => {
+                                  const {
+                                    id,
+                                    resident,
+                                    appointment_name,
+                                    appointment_time,
+                                    appointment_date,
+                                    appointment_description,
+                                  } = app;
+                                  if (resident == selectedResidentId) {
+                                    return (
+                                      <React.Fragment key={id}>
+                                      <tr style={{ height: "90px" }}>
+                                      <td>{appointment_name}</td>
+                                      <td>{appointment_time}</td>
+                                      <td>{appointment_date}</td>
+                                      {appointment_description && appointment_description && (
+                                        <>
+                                          <td>
+                                            <PopUpText text={appointment_description}/>
+                                          </td>
+                                        </>
+                                      )}
+                                      <td className="dropdown dropdown-action text-end">
+                                        <a
+                                          className="action-icon dropdown-toggle"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                        >
+                                          <i className="material-icons">more_vert</i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right">
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleEditResidentAppointment(id, index)
+                                            }
+                                          >
+                                            <i className="fa fa-pencil m-r-5" /> Edit
+                                          </a>
+                                          <a
+                                            className="dropdown-item"
+                                            onClick={() =>
+                                              handleDeleteResidentAppointment(id)
+                                            }
+                                          >
+                                            <i className="fa fa-trash-o m-r-5" /> Delete
+                                          </a>
+                                        </div>
+                                      </td>
+				              			          </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No appointment attach to this resident</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
                     </div>
                   </>
                 )}
@@ -2344,74 +2393,78 @@ useEffect(() => {
                 ) : (
                   <>
                     <div className="row">
-                    <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident Visitor{" "}
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Name</th>
-                                    <th>Time</th>
-                                    <th>Date</th>
-                                    <th>Time Left</th>
-                                    <th>Comment</th>
-                                    <th>Purpose</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {resident_visitor?.length > 0 ? (
-                                    resident_visitor?.map((app, index) => {
-                                      const {
-                                        id,
-                                        resident,
-                                        visitor,
-                                        visit_time,
-                                        visit_date,
-                                        comment,
-                                        purpose,
-                                        status,
-                                        left_time,
-                                      } = app;
-                                      if (resident === selectedResidentId && status == "Present") {
-                                        return (
-                                          <tr key={id}>
-                                            <td>{visitor}</td>
-                                            <td>{visit_time}</td>
-                                            <td>{visit_date}</td>
-                                            <td>{left_time}</td>
-                                            {comment && comment && (
-                                              <>
-                                                <td>
-                                                  <PopUpText text={comment}/>
-                                                </td>
-                                              </>
-                                            )}
-                                            {purpose && purpose && (
-                                              <>
-                                                <td>
-                                                  <PopUpText text={purpose}/>
-                                                </td>
-                                              </>
-                                            )}
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No Visitor attach to this resident</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="col-lg-12">
+				              <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Resident Visitor
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Time</th>
+                                <th>Date</th>
+                                <th>Time Left</th>
+                                <th>Comment</th>
+                                <th>Purpose</th>
+                              </tr>
+				              		  </thead>
+				              		  <tbody>
+                            {resident_visitor?.length > 0
+                              ? resident_visitor?.map((res, index) => {
+                                  const {
+                                    id,
+                                    resident,
+                                    visitor,
+                                    visit_time,
+                                    visit_date,
+                                    comment,
+                                    purpose,
+                                    status,
+                                    left_time,
+                                  } = res;
+                                  if (resident === selectedResidentId && status == "Present") {
+                                    return (
+                                      <React.Fragment key={id}>
+                                        <tr key={id}>
+                                          <td>{visitor}</td>
+                                          <td>{visit_time}</td>
+                                          <td>{visit_date}</td>
+                                          <td>{left_time}</td>
+                                          {comment && comment && (
+                                            <>
+                                              <td>
+                                                <PopUpText text={comment}/>
+                                              </td>
+                                            </>
+                                          )}
+                                          {purpose && purpose && (
+                                            <>
+                                              <td>
+                                                <PopUpText text={purpose}/>
+                                              </td>
+                                            </>
+                                          )}
+                                        </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No visitor attach to this resident</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
                     </div>
                   </>
                 )}
@@ -2431,9 +2484,9 @@ useEffect(() => {
                     <div className="row">
                       <div className="col-md-12 d-flex">
                         <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Document{" "}
+                          <div className="card-header">
+				                    <h4 className="card-title mb-0">
+                              Document{""}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
                                 {residentdocumentError?.length > 0 && (
                                   <>
@@ -2454,12 +2507,14 @@ useEffect(() => {
                                 )}
                               </span>
                               <a
-                                onClick={() => setGlobalState("showResidentDocumentModal", true)}
                                 className="edit-icon"
+                                onClick={() => setGlobalState("showResidentDocumentModal", true)}
                               >
                                 <i className="fa fa-plus" />
                               </a>
-                            </h3>
+                            </h4>
+				                  </div>
+                          <div className="card-body">
                             <Wrapper>
                               {residentDocumentData?.length > 0 ? (
                                 residentDocumentData.map((doc, index) => {
@@ -2588,74 +2643,65 @@ useEffect(() => {
                 ) : (
                   <>
                     <div className="row">
-                    <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident Visitor{" "}
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Name</th>
-                                    <th>Time</th>
-                                    <th>Date</th>
-                                    <th>Time Left</th>
-                                    <th>Comment</th>
-                                    <th>Purpose</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {resident_visitor?.length > 0 ? (
-                                    resident_visitor?.map((app, index) => {
-                                      const {
-                                        id,
-                                        resident,
-                                        visitor,
-                                        visit_time,
-                                        visit_date,
-                                        comment,
-                                        purpose,
-                                        status,
-                                        left_time,
-                                      } = app;
-                                      if (resident === selectedResidentId && status == "Present") {
-                                        return (
-                                          <tr key={id}>
-                                            <td>{visitor}</td>
-                                            <td>{visit_time}</td>
-                                            <td>{visit_date}</td>
-                                            <td>{left_time}</td>
-                                            {comment && comment && (
-                                              <>
-                                                <td>
-                                                  <PopUpText text={comment}/>
-                                                </td>
-                                              </>
-                                            )}
-                                            {purpose && purpose && (
-                                              <>
-                                                <td>
-                                                  <PopUpText text={purpose}/>
-                                                </td>
-                                              </>
-                                            )}
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No Visitor attach to this resident</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="col-lg-12">
+				              <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Resident Referral
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Document</th>
+                              </tr>
+				              		  </thead>
+				              		  <tbody>
+                            {resident_referral?.length > 0
+                              ? resident_referral?.map((ref, index) => {
+                                  const {
+                                    id,
+                                    resident,
+                                    referral_name,
+                                    referral_date,
+                                    referral_description,
+                                    referral_document,
+                                  } = ref;
+                                  if (resident === selectedResidentId) {
+                                    return (
+                                      <React.Fragment key={id}>
+                                        <tr key={id}>
+                                          <td>{referral_name}</td>
+                                          <td>{referral_date}</td>
+                                          {referral_description && referral_description && (
+                                            <>
+                                              <td>
+                                                <PopUpText text={referral_description}/>
+                                              </td>
+                                            </>
+                                          )}
+                                          <td>{referral_document ? referral_document : "--"}</td>
+                                        </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No referral attach to this resident</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
                     </div>
                   </>
                 )}
@@ -2673,71 +2719,75 @@ useEffect(() => {
                 ) : (
                   <>
                     <div className="row">
-                    <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Misper{" "}
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>police_CAD</th>
-                                    <th>police_CAD_closed</th>
-                                    <th>Date Last Seen</th>
-                                    <th>Time Last Seen</th>
-                                    <th>description</th>
-                                    <th>Reference</th>
-                                    <th>Reference Closed</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {resident_misper?.length > 0 ? (
-                                    resident_misper?.map((app, index) => {
-                                      const {
-                                        id,
-                                        resident,
-                                        police_CAD,
-                                        police_CAD_closed,
-                                        date_last_seen,
-                                        description,
-                                        status,
-                                        time_last_seen,
-                                        edt_reference,
-                                        edt_reference_closed,
-                                      } = app;
-                                      if (resident === selectedResidentId && status == "Open") {
-                                        return (
-                                          <tr key={id}>
-                                            <td>{police_CAD}</td>
-                                            <td>{police_CAD_closed}</td>
-                                            <td>{date_last_seen}</td>
-                                            <td>{time_last_seen}</td>
-                                            {description && description && (
-                                              <>
-                                                <td>
-                                                  <PopUpText text={description}/>
-                                                </td>
-                                              </>
-                                            )}
-                                            <td>{edt_reference}</td>
-                                            <td>{edt_reference_closed}</td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No Misper attach to this resident</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="col-lg-12">
+				              <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Misper
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+                              <tr>
+                                <th>police_CAD</th>
+                                <th>police_CAD_closed</th>
+                                <th>Date Last Seen</th>
+                                <th>Time Last Seen</th>
+                                <th>description</th>
+                                <th>Reference</th>
+                                <th>Reference Closed</th>
+                              </tr>
+				              		  </thead>
+				              		  <tbody>
+                            {resident_misper?.length > 0
+                              ? resident_misper?.map((mip, index) => {
+                                  const {
+                                    id,
+                                    resident,
+                                    police_CAD,
+                                    police_CAD_closed,
+                                    date_last_seen,
+                                    description,
+                                    status,
+                                    time_last_seen,
+                                    edt_reference,
+                                    edt_reference_closed,
+                                  } = mip;
+                                  if (resident === selectedResidentId && status == "Open") {
+                                    return (
+                                      <React.Fragment key={id}>
+                                        <tr key={id}>
+                                          <td>{police_CAD}</td>
+                                          <td>{police_CAD_closed}</td>
+                                          <td>{date_last_seen}</td>
+                                          <td>{time_last_seen}</td>
+                                          {description && description && (
+                                            <>
+                                              <td>
+                                                <PopUpText text={description}/>
+                                              </td>
+                                            </>
+                                          )}
+                                          <td>{edt_reference}</td>
+                                          <td>{edt_reference_closed}</td>
+                                        </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No Misper attach to this resident</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
                     </div>
                   </>
                 )}
@@ -2755,58 +2805,65 @@ useEffect(() => {
                 ) : (
                   <>
                     <div className="row">
-                    <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-body">
-                            <h3 className="card-title">
-                              Resident Incident{" "}
-                            </h3>
-                            <div className="table-responsive">
-                              <table className="table table-nowrap">
-                                <thead>
-                                  <tr>
-                                    <th>Date & Time</th>
-                                    <th>Description</th>
-                                    <th>Document</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {resident_incident?.length > 0 ? (
-                                    resident_incident?.map((time, index) => {
-                                      const { id, resident, date_time, description, documents } = time;
-                                      const dateObj = new Date(date_time);
-                                      const year = dateObj.getFullYear();
-                                      const month = dateObj.getMonth();
-                                      const hours = dateObj.getHours();
-                                      const minutes = dateObj.getMinutes();
-                                      const seconds = dateObj.getSeconds();
-                                      if (resident == selectedResidentId) {
-                                        return (
-                                          <tr key={id}>
-                                            <td>{`${moment(dateObj).format("DD MMM YYYY")} - ${hours}:${minutes}:${seconds}`}</td>
-                                            {description && description && (
-                                              <>
-                                                <td>
-                                                  <PopUpText text={description}/>
-                                                </td>
-                                              </>
-                                            )}
-                                            <td>{documents ? documents : "--"}</td>
-                                          </tr>
-                                        );
-                                      }
-                                    })
-                                  ) : (
-                                    <tr>
-                                      <td>No incident attach to this resident</td>
-                                    </tr>
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+
+                    <div className="col-lg-12">
+				              <div className="card">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Incident
+                          </h4>
+				              	</div>
+				              	<div className="card-body">
+				              	  <div className="table-responsive">
+				              		<table className="table table-striped mb-0">
+				              		  <thead>
+                              <tr>
+                                <th>Date & Time</th>
+                                <th>Description</th>
+                                <th>Document</th>
+                              </tr>
+				              		  </thead>
+				              		  <tbody>
+                            {resident_incident?.length > 0
+                              ? resident_incident?.map((inc, index) => {
+                                  const {
+                                    id, resident, date_time, description, documents
+                                  } = inc;
+                                    const dateObj = new Date(date_time);
+                                    const year = dateObj.getFullYear();
+                                    const month = dateObj.getMonth();
+                                    const hours = dateObj.getHours();
+                                    const minutes = dateObj.getMinutes();
+                                    const seconds = dateObj.getSeconds();
+                                  if (resident === selectedResidentId) {
+                                    return (
+                                      <React.Fragment key={id}>
+                                        <tr key={id}>
+                                          <td>{`${moment(dateObj).format("DD MMM YYYY")} - ${hours}:${minutes}:${seconds}`}</td>
+                                          {description && description && (
+                                            <>
+                                              <td>
+                                                <PopUpText text={description}/>
+                                              </td>
+                                            </>
+                                          )}
+                                          <td>{documents ? documents : "--"}</td>
+                                        </tr>
+                                      </React.Fragment>
+                                    );
+                                  }
+                                })
+                              : (
+                                <tr>
+                                  <td>No Incident attach to this resident</td>
+                                </tr>
+                              )}
+				              		  </tbody>
+				              		</table>
+				              	  </div>
+				              	</div>
+				                </div>
+				              </div>
                     </div>
                   </>
                 )}
