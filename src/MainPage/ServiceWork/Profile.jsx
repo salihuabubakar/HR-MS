@@ -1745,6 +1745,7 @@ useEffect(() => {
                                 <th>School</th>
                                 <th>Year</th>
                                 <th>Timetable</th>
+                                <th>Action</th>
                               </tr>
 				              		  </thead>
 				              		  <tbody>
@@ -1868,6 +1869,7 @@ useEffect(() => {
                                 <th>School</th>
                                 <th>Year</th>
                                 <th>Report</th>
+                                <th>Action</th>
                               </tr>
 				              		  </thead>
 				              		  <tbody>
@@ -2173,6 +2175,7 @@ useEffect(() => {
                                 <th>Social Worker</th>
                                 <th>Start Date</th>
                                 <th>Description</th>
+                                <th>Action</th>
                               </tr>
 				              		  </thead>
 				              		  <tbody>
@@ -2306,6 +2309,7 @@ useEffect(() => {
                                 <th>Time</th>
                                 <th>Date</th>
                                 <th>Description</th>
+                                <th>Action</th>
                               </tr>
 				              		  </thead>
 				              		  <tbody>
