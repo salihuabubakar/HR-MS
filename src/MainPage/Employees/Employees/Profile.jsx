@@ -702,6 +702,7 @@ const Profile = ({
                               <th>State</th>
                               <th>Country</th>
                               <th>Postal Code</th>
+                              <th>Action</th>
 				              			</tr>
 				              		  </thead>
 				              		  <tbody>
