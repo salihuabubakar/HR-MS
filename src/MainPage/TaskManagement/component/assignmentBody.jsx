@@ -1,5 +1,7 @@
 import React from 'react'
 import DisplayFileType from '../../../_components/fileExtension';
+import parse from 'html-react-parser';
+import { report } from 'process';
 
 const AssignmentBody = ({
   index,
@@ -17,7 +19,9 @@ const AssignmentBody = ({
   handleTaskAssignmentEdit,
   handleTaskAssignmentDelete,
   regex,
+  report,
 }) => {
+
   return (
     <div className="task-container">
       <span className="task-action-btn task-check">
@@ -53,6 +57,7 @@ const AssignmentBody = ({
           {resident?.length > 0 && <span className="small text-muted">Resident: </span>}
           {getAllResident(resident)}
         </p>
+        {/* {parse(r)} */}
         <div>
           {matchedDoc?.map((doc, i) => {
             const { name, document: docFile, task } = doc;

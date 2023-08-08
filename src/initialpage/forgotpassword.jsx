@@ -11,7 +11,7 @@ const ForgotPassword = () => {
       return (
         <>
           <Helmet>
-            <title>Forgot Password - HRMS Admin Template</title>
+            <title>Forgot Password - Peepal Tree HRMS</title>
             <meta name="description" content="Login page" />
           </Helmet>
           <div className="account-content">

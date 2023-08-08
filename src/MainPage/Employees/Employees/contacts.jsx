@@ -13,12 +13,16 @@ import {
   useDataFetching, 
   useResidentFetching, 
   useOrganisationFetching,
-  useResidentBoroughFetching 
+  useResidentBoroughFetching,
+  useSocialWorkerFetching,
+  useHouseFetching 
 } from "../../../utils/employeeCustomFetchHook";
 
 const Contacts = () => {
   const { data: allEmployee, isLoading } = useDataFetching();
   const { residentData, isResidentLoading } = useResidentFetching();
+  const { socialWorkerData, socialWorkerLoading } = useSocialWorkerFetching();
+  const { houseData, isHouseDataLoading } = useHouseFetching();
   const { organisationData, isOrganisationDataLoading } = useOrganisationFetching();
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
   
@@ -27,6 +31,12 @@ const Contacts = () => {
 
   const { searchQuery: resSearch, setSearchQuery: resSetSearch, handleSearch: resHandleSearch, filteredResults: resResult} = useSearch(residentData);
   let resSearchResult = !resSearch ? residentData : resResult;
+
+  const { searchQuery: socSearch, setSearchQuery: socSetSearch, handleSearch: socHandleSearch, filteredResults: socResult} = useSearch(socialWorkerData);
+  let socSearchResult = !socSearch ? socialWorkerData : socResult;
+
+  const { searchQuery: houSearch, setSearchQuery: houSetSearch, handleSearch: houHandleSearch, filteredResults: houResult} = useSearch(houseData);
+  let houSearchResult = !houSearch ? houseData : houResult;
 
   const { searchQuery: orgSearch, setSearchQuery: orgSetSearch, handleSearch: orgHandleSearch, filteredResults: orgResult} = useSearch(organisationData);
   let orgSearchResult = !orgSearch ? organisationData : orgResult;
@@ -54,7 +64,7 @@ const Contacts = () => {
     }
   };
   const [menu, setMenu] = useState(false);
-  const [tab, setTab] = useState("employee" || "resident" || "organisation" || "borough");
+  const [tab, setTab] = useState("employee" || "resident" || "social-worker" || "house" || "organisation" || "borough");
 
   const toggleMobileMenu = () => {
     setMenu(!menu);
@@ -137,6 +147,63 @@ const Contacts = () => {
     {
       title: "Phone Number",
       dataIndex: "phone_number",
+    },
+  ];
+
+  const socialWorkerColumns = [
+    {
+      title: "#",
+      render: (text, record, index) => {
+        const actualIndex = (currentPage - 1) * itemsPerPage + index + 1;
+        return <React.Fragment>{actualIndex}</React.Fragment>;
+      },
+    },
+    {
+      title: "Name",
+      render: (text, record, index) => {
+        const { first_name, middle_name, last_name } = record;
+        return (
+          <React.Fragment>
+            <h2 className="table-avatar">
+              <Link
+                to="#" onClick={(e) => e.preventDefault()}
+              >
+                {`${first_name} ${middle_name} ${last_name}`}
+              </Link>
+            </h2>
+          </React.Fragment>
+        );
+      },
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Mobile",
+      dataIndex: "mobile_number",
+    },
+  ];
+
+  const houseColumns = [
+    {
+      title: "#",
+      render: (text, record, index) => {
+        const actualIndex = (currentPage - 1) * itemsPerPage + index + 1;
+        return <React.Fragment>{actualIndex}</React.Fragment>;
+      },
+    },
+    {
+      title: "House name",
+      dataIndex: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Mobile",
+      dataIndex: "mobile",
     },
   ];
 
@@ -238,6 +305,22 @@ const Contacts = () => {
               setSearchQuery={resSetSearch}
             />
           )}
+          {tab === "social-worker" && (
+            <SearchComponent
+              searchType={"Social worker Contact"}
+              searchQuery={socSearch}
+              handleSearch={socHandleSearch}
+              setSearchQuery={socSetSearch}
+            />
+          )}
+          {tab === "house" && (
+            <SearchComponent
+              searchType={"House Contact"}
+              searchQuery={houSearch}
+              handleSearch={houHandleSearch}
+              setSearchQuery={houSetSearch}
+            />
+          )}
           {tab === "organisation" && (
             <SearchComponent
               searchType={"Organisation Contact"}
@@ -282,6 +365,30 @@ const Contacts = () => {
                     >
                       <a>
                         Residence
+                      </a>
+                    </li>
+                    <li
+                      className={
+                        `${
+                          tab == `social-worker` ? `active` : null
+                        }`
+                      }
+                      onClick={() => setTab("social-worker")}
+                    >
+                      <a>
+                        Social Worker
+                      </a>
+                    </li>
+                    <li
+                      className={
+                        `${
+                          tab == `house` ? `active` : null
+                        }`
+                      }
+                      onClick={() => setTab("house")}
+                    >
+                      <a>
+                        House
                       </a>
                     </li>
                     <li
@@ -338,6 +445,34 @@ const Contacts = () => {
                     dataSource={resSearchResult}
                     rowKey={(res) => res?.id}
                     loading={isResidentLoading}
+                  />
+                </div>
+              )}
+              {tab === "social-worker" && (
+                <div className="table-responsive">
+                  <Table
+                    className="table-striped"
+                    pagination={paginationSettings(socSearchResult)}
+                    style={{ overflowX: "auto" }}
+                    columns={socialWorkerColumns}
+                    bordered
+                    dataSource={socSearchResult}
+                    rowKey={(soc) => soc?.id}
+                    loading={socialWorkerLoading}
+                  />
+                </div>
+              )}
+              {tab === "house" && (
+                <div className="table-responsive">
+                  <Table
+                    className="table-striped"
+                    pagination={paginationSettings(houSearchResult)}
+                    style={{ overflowX: "auto" }}
+                    columns={houseColumns}
+                    bordered
+                    dataSource={houSearchResult}
+                    rowKey={(h) => h?.id}
+                    loading={isHouseDataLoading}
                   />
                 </div>
               )}
