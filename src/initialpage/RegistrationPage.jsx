@@ -57,7 +57,7 @@ const Registrationpage = () => {
   return (
     <>
       <Helmet>
-        <title>Register - HRMS Admin Template</title>
+        <title>Register - Peepal Tree HRMS</title>
         <meta name="description" content="Login page" />
       </Helmet>
       <div className="account-content">
