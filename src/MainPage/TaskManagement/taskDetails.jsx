@@ -200,7 +200,8 @@ const TaskDetails = () => {
     resident,
     employees,
     status,
-    matchedDoc
+    matchedDoc,
+    report
   ) => {
     return (
       <li
@@ -228,6 +229,7 @@ const TaskDetails = () => {
           handleTaskAssignmentEdit={handleTaskAssignmentEdit}
           handleTaskAssignmentDelete={handleTaskAssignmentDelete}
           regex={regex}
+          report={report}
         />
       </li>
     );
@@ -445,6 +447,7 @@ const TaskDetails = () => {
                                           employees,
                                           status,
                                           task,
+                                          report,
                                         } = assignment;
                                         const matchedDoc = taskDocumentData?.filter((doc) =>
                                           document.includes(doc.id)
@@ -459,7 +462,8 @@ const TaskDetails = () => {
                                             resident,
                                             employees,
                                             status,
-                                            matchedDoc
+                                            matchedDoc,
+                                            report
                                           );
                                         }
                                       })

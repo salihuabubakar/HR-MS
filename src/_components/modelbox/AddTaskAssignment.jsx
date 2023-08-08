@@ -356,15 +356,17 @@ const AddTaskAssignment = ({
                           </div>
                         </div>
                       )}
-                      <div style={{marginBottom: "40px"}} className="col-sm-12">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Report
-                          </label>
-                          <TextEditor report={report} setReport={setReport} />
+                      {selectedTaskAssignmentInfo[indexToEdit]?.id && (
+                        <div className="col-sm-12">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Report
+                            </label>
+                            <TextEditor report={report} setReport={setReport} />
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-12">
+                      )}
+                      <div style={{marginTop: "40px"}} className="col-sm-12">
                         <div className="form-group">
                           <label className="col-form-label">
                             Assignment Description <span className="text-danger">*</span>
