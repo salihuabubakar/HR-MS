@@ -39,7 +39,6 @@ const TaskDetails = () => {
   const location = useLocation();
   const selectedTaskId = location?.state?.id;
   const selectedTaskIndex = location?.state?.index;
-  console.log("🚀 ~ file: taskDetails.jsx:42 ~ TaskDetails ~ selectedTaskIndex:", selectedTaskIndex)
 
   const { taskData, isTaskLoading } = useTaskFetching();
   const { data: allEmployees, isLoading } = useDataFetching();
