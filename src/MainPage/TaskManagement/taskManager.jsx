@@ -110,29 +110,6 @@ const TaskManager = () => {
               </div>
             </div>
           </div>
-          {/* /Page Header */}
-          {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-3">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Task ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Task Title</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
-          {/* Search Filter */}
           <div className="row staff-grid-row">
             {taskList
               ? taskList?.map((user, index) => {
