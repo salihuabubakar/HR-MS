@@ -1,7 +1,6 @@
 import React from 'react'
 import DisplayFileType from '../../../_components/fileExtension';
-import parse from 'html-react-parser';
-import { report } from 'process';
+import DOMPurify from 'dompurify';
 
 const AssignmentBody = ({
   index,
@@ -57,7 +56,7 @@ const AssignmentBody = ({
           {resident?.length > 0 && <span className="small text-muted">Resident: </span>}
           {getAllResident(resident)}
         </p>
-        {/* {parse(r)} */}
+        {/* <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(report)}} /> */}
         <div>
           {matchedDoc?.map((doc, i) => {
             const { name, document: docFile, task } = doc;
