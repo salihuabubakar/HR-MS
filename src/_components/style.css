@@ -76,3 +76,13 @@
 .copy-button.copied {
   background-color: #aaf6a6;
 }
+
+/* Add your CSS or use inline styles as needed */
+
+.editor {
+  resize: vertical;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* max-height: 400px; Set a maximum height if needed */
+}
+

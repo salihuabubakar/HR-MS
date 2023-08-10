@@ -56,7 +56,7 @@ const AssignmentBody = ({
           {resident?.length > 0 && <span className="small text-muted">Resident: </span>}
           {getAllResident(resident)}
         </p>
-        {/* <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(report)}} /> */}
+        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(report)}} />
         <div>
           {matchedDoc?.map((doc, i) => {
             const { name, document: docFile, task } = doc;
