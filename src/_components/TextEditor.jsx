@@ -3,14 +3,13 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 const TextEditor = ({ report, setReport }) => {
-  const [content, setContent] = useState('');
 
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ list: 'ordered' }, { list: 'bullet' }],
-      ['link', 'image', 'video'],
+      ['link', 'image', 'video', 'emoji'],
       [{ align: [] }],
       ['clean'],
     ],
@@ -32,11 +31,9 @@ const TextEditor = ({ report, setReport }) => {
     'image',
     'video',
     'align',
+    'emoji'
   ];
 
-  const editorStyle = {
-    height: '100px', // Set the default height here
-  };
 
   const handleChange = (value) => {
     setReport(value)
@@ -48,7 +45,7 @@ const TextEditor = ({ report, setReport }) => {
       onChange={handleChange}
       modules={modules}
       formats={formats}
-      style={editorStyle}
+      className='editor'
     />
   );
 };
