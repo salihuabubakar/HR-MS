@@ -23,6 +23,8 @@ import {
   useResidentFetching,
   useTaskAssignmentFetching,
   useTaskDocumentFetching,
+  useHouseFetching,
+  useResidentBoroughFetching
 } from "../../utils/employeeCustomFetchHook";
 import moment from "moment";
 import AssignmentBody from "./component/assignmentBody";
@@ -39,13 +41,14 @@ const TaskDetails = () => {
   const location = useLocation();
   const selectedTaskId = location?.state?.id;
   const selectedTaskIndex = location?.state?.index;
-  console.log("🚀 ~ file: taskDetails.jsx:42 ~ TaskDetails ~ selectedTaskIndex:", selectedTaskIndex)
 
   const { taskData, isTaskLoading } = useTaskFetching();
   const { data: allEmployees, isLoading } = useDataFetching();
   const { residentData, isResidentLoading } = useResidentFetching();
   const { taskAssignmentData, isTaskAssignmentLoading } = useTaskAssignmentFetching();
   const { taskDocumentData, isTaskDocumentLoading } = useTaskDocumentFetching();
+  const { houseData } = useHouseFetching();
+  const { residentBoroughData } = useResidentBoroughFetching();
 
   const [showTaskModal] = useGlobalState("showTaskModal");
   const [showTaskAssignmentModal] = useGlobalState("showTaskAssignmentModal");
@@ -91,8 +94,8 @@ const TaskDetails = () => {
   const taskConcluded = selectedTask?.concluded;
   const taskStartAt = selectedTask?.start_at;
   const taskEndAt = selectedTask?.end_at;
-  const houseId = selectedTask?.house_residents;
-  const boroughId = selectedTask?.borough_residents;
+  const totalAssignedHouse = selectedTask?.house_residents;
+  const totalAssignedBorough = selectedTask?.borough_residents;
 
   const formattedName = taskName?.charAt(0).toUpperCase() + taskName?.slice(1);
   
@@ -491,6 +494,7 @@ const TaskDetails = () => {
                                           employees,
                                           status,
                                           task,
+                                          report
                                         } = assignment;
                                         const matchedDoc = taskDocumentData?.filter((doc) =>
                                           document.includes(doc.id)
@@ -505,7 +509,8 @@ const TaskDetails = () => {
                                             resident,
                                             employees,
                                             status,
-                                            matchedDoc
+                                            matchedDoc,
+                                            report
                                           );
                                         }
                                       })
@@ -532,6 +537,7 @@ const TaskDetails = () => {
                                           employees,
                                           status,
                                           task,
+                                          report
                                         } = assignment;
                                         const matchedDoc = taskDocumentData?.filter((doc) =>
                                           document.includes(doc.id)
@@ -546,7 +552,8 @@ const TaskDetails = () => {
                                             resident,
                                             employees,
                                             status,
-                                            matchedDoc
+                                            matchedDoc,
+                                            report
                                           );
                                         }
                                       })
@@ -573,6 +580,7 @@ const TaskDetails = () => {
                                           employees,
                                           status,
                                           task,
+                                          report
                                         } = assignment;
                                         const matchedDoc = taskDocumentData?.filter((doc) =>
                                           document.includes(doc.id)
@@ -587,7 +595,8 @@ const TaskDetails = () => {
                                             resident,
                                             employees,
                                             status,
-                                            matchedDoc
+                                            matchedDoc,
+                                            report
                                           );
                                         }
                                       })
@@ -614,6 +623,7 @@ const TaskDetails = () => {
                                           employees,
                                           status,
                                           task,
+                                          report
                                         } = assignment;
                                         const matchedDoc = taskDocumentData?.filter((doc) =>
                                           document.includes(doc.id)
@@ -628,7 +638,8 @@ const TaskDetails = () => {
                                             resident,
                                             employees,
                                             status,
-                                            matchedDoc
+                                            matchedDoc,
+                                            report
                                           );
                                         }
                                       })
@@ -907,6 +918,88 @@ const TaskDetails = () => {
                   </p>
 
                   <ProgressDiv progress={taskProgress} />
+                </div>
+              </div>
+              <div className="card project-user">
+                <div className="card-body">
+                  <h6 className="card-title m-b-20">House </h6>
+                  <ul className="list-box">
+                    {totalAssignedHouse?.length > 0
+                      ? houseData?.map((house, index) => {
+                          const { id: value, name, photo } = house;
+                          if (totalAssignedHouse.includes(value)) {
+                            return (
+                              <li key={value}>
+                                <Link
+                                  to=""
+                                  onClick={(event) => event.preventDefault()}
+                                  title={`${name}`}
+                                >
+                                  <div className="list-item">
+                                    <div className="list-left">
+                                      <span
+                                        style={{
+                                          borderRadius: "5px",
+                                          backgroundColor: "#00000000",
+                                          height: "100%",
+                                        }}
+                                        className="avatar"
+                                      >
+                                        <img
+                                          style={{
+                                            width: "30px",
+                                            height: "30px",
+                                          }}
+                                          alt=""
+                                          src={photo ? photo : DefaultImage}
+                                        />
+                                      </span>
+                                    </div>
+                                    <div className="list-body">
+                                      <span className="message-author">
+                                        {`${name}`}
+                                      </span>
+                                      <div className="clearfix" />
+                                    </div>
+                                  </div>
+                                </Link>
+                              </li>
+                            );
+                          }
+                        })
+                      : "No house assigned"}
+                  </ul>
+                </div>
+              </div>
+              <div className="card project-user">
+                <div className="card-body">
+                  <h6 className="card-title m-b-20">Borough </h6>
+                  <ul className="list-box">
+                    {totalAssignedBorough?.length > 0
+                      ? residentBoroughData?.map((b, index) => {
+                          const { id: value, borough_name } = b;
+                          if (totalAssignedBorough.includes(value)) {
+                            return (
+                              <li key={value}>
+                                <Link
+                                  to=""
+                                  onClick={(event) => event.preventDefault()}
+                                  title={`${borough_name}`}
+                                >
+                                  <div className="list-item">
+                                    <div className="">
+                                      <span className="message-author">
+                                        {`${borough_name}`}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </Link>
+                              </li>
+                            );
+                          }
+                        })
+                      : "No borough assigned"}
+                  </ul>
                 </div>
               </div>
               <div className="card project-user">

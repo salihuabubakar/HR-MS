@@ -110,29 +110,6 @@ const TaskManager = () => {
               </div>
             </div>
           </div>
-          {/* /Page Header */}
-          {/* Search Filter */}
-          <div className="row filter-row">
-            <div className="col-sm-6 col-md-3">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Task ID</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3">
-              <div className="form-group form-focus">
-                <input type="text" className="form-control floating" />
-                <label className="focus-label">Task Title</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3">
-              <a href="#" className="btn btn-success btn-block w-100">
-                {" "}
-                Search{" "}
-              </a>
-            </div>
-          </div>
-          {/* Search Filter */}
           <div className="row staff-grid-row">
             {taskList
               ? taskList?.map((user, index) => {
@@ -255,41 +232,6 @@ const TaskManager = () => {
           <AddTask dispatchTasks={dispatchTasks} indexToEdit={indexToEdit} />
         )}
 
-        <div
-          className="modal custom-modal fade"
-          id="delete_employee"
-          role="dialog"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-body">
-                <div className="form-header">
-                  <h3>Delete Employee</h3>
-                  <p>Are you sure want to delete?</p>
-                </div>
-                <div className="modal-btn delete-action">
-                  <div className="row">
-                    <div className="col-6">
-                      <a href="" className="btn btn-primary continue-btn">
-                        Delete
-                      </a>
-                    </div>
-                    <div className="col-6">
-                      <a
-                        href=""
-                        data-bs-dismiss="modal"
-                        className="btn btn-primary cancel-btn"
-                      >
-                        Cancel
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* /Delete Employee Modal */}
       </div>
     </div>
   );
