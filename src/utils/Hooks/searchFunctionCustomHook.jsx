@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { debounce } from "lodash";
-import { useDataFetching, useResidentFetching } from "../employeeCustomFetchHook";
+import { useDataFetching, useResidentFetching, useHouseFetching } from "../employeeCustomFetchHook";
 
 export const useSearch = (data) => {
   const { data: allEmployee } = useDataFetching();
   const { residentData } = useResidentFetching();
+  const { houseData } = useHouseFetching();
   const [searchQuery, setSearchQuery] = useState("");
   const [clearQuery, setClearQuery] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
@@ -33,42 +34,35 @@ export const useSearch = (data) => {
         gp_practice_name,
         solicitor_name,
         school_name,
-        organisation_name
+        organisation_name,
+        house
       } = item;
       const matchedEmployee = allEmployee?.find((e) => e.id === employee);
       const matchedResident = residentData?.find((r) => r.id === resident);
+      const matchedHouse = houseData?.find((h) => h.id === house);
       const fullName = first_name?.toLocaleLowerCase() + " " + middle_name?.toLocaleLowerCase() + " " + last_name?.toLocaleLowerCase();
       const title = name?.toLocaleLowerCase();
-      if(matchedEmployee) {
-        const employeefullName =
-          `${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`.toLocaleLowerCase();
-        return employeefullName.includes(query);
-
-      } else if(matchedResident) {
-        const residentfullName =
-          `${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`.toLocaleLowerCase();
-        return residentfullName.includes(query);
-
-      } else {
-        return (
-          fullName?.includes(query) ||
-          title?.includes(query) ||
-          request?.toLocaleLowerCase()?.includes(query) ||
-          visitor?.toLocaleLowerCase()?.includes(query) ||
-          titleName?.toLocaleLowerCase()?.includes(query) ||
-          document_type?.toLocaleLowerCase()?.includes(query) ||
-          legal_status_name?.toLocaleLowerCase()?.includes(query) ||
-          gp_type_name?.toLocaleLowerCase()?.includes(query) ||
-          borough_name?.toLocaleLowerCase()?.includes(query) ||
-          resident?.toLocaleLowerCase()?.includes(query) ||
-          gp_practice_name?.toLocaleLowerCase()?.includes(query) ||
-          solicitor_name?.toLocaleLowerCase()?.includes(query) ||
-          school_name?.toLocaleLowerCase()?.includes(query) ||
-          organisation_name?.toLocaleLowerCase()?.includes(query)
-        );
-      }
+      return (
+        ((matchedEmployee && `${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`.toLocaleLowerCase().includes(query))) ||
+        ((matchedResident && `${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`.toLocaleLowerCase().includes(query))) ||
+        ((matchedHouse && `${matchedHouse.name}`.toLocaleLowerCase().includes(query))) ||
+        fullName?.includes(query) ||
+        title?.includes(query) ||
+        request?.toLocaleLowerCase()?.includes(query) ||
+        visitor?.toLocaleLowerCase()?.includes(query) ||
+        titleName?.toLocaleLowerCase()?.includes(query) ||
+        document_type?.toLocaleLowerCase()?.includes(query) ||
+        legal_status_name?.toLocaleLowerCase()?.includes(query) ||
+        gp_type_name?.toLocaleLowerCase()?.includes(query) ||
+        borough_name?.toLocaleLowerCase()?.includes(query) ||
+        gp_practice_name?.toLocaleLowerCase()?.includes(query) ||
+        solicitor_name?.toLocaleLowerCase()?.includes(query) ||
+        school_name?.toLocaleLowerCase()?.includes(query) ||
+        organisation_name?.toLocaleLowerCase()?.includes(query)
+    );
+    
     });
-
+    
     setFilteredResults(filteredData);
   }, 500);
 
