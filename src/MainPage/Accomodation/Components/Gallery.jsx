@@ -140,17 +140,21 @@ const Gallery = ({
   };
 
   return (
-    <div className={`image-gallery-container ${isFullScreen ? 'fullscreen' : ''}`}>
-      <ImageGallery
-        items={imgData} 
-        onImageLoad={onLoading} 
-        lazyLoad={true} 
-        thumbnailLoading={onLoading}
-        showPlayButton={false}
-        onScreenChange={handleFullScreenChange}
-        renderItem={renderImageWithDescription}
-      />
-    </div>
+    <>
+    {imgData.length > 0 && (
+      <div className={`image-gallery-container ${isFullScreen ? 'fullscreen' : ''}`}>
+        <ImageGallery
+          items={imgData} 
+          onImageLoad={onLoading} 
+          lazyLoad={true} 
+          thumbnailLoading={onLoading}
+          showPlayButton={false}
+          onScreenChange={handleFullScreenChange}
+          renderItem={renderImageWithDescription}
+        />
+      </div>
+    )}
+    </>
   )
 }
 export default Gallery;
