@@ -19,6 +19,7 @@ import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from '../Employees/Employees/styles';
 import PopUpText from '../../_components/modelbox/PopUpText';
 import { EmployeeImgCard, BillCard } from '../Employees/Employees/styles';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
@@ -54,7 +55,9 @@ import { Helmet } from 'react-helmet';
 import { handleFileDownload } from '../../utils/helperFucntions';
 import Gallery from './Components/Gallery';
 import './style.css'
+import './Components/calendar.css'
 import DisplayFileType from '../../_components/fileExtension';
+import ResAppointment from './Components/ResAppointment';
 
 const HouseDetails = () => {
   const location = useLocation();
@@ -503,6 +506,35 @@ const toggleMobileMenu = () => {
   // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
 
+
+  const barchartdata = [
+    {
+      name: 'Employee',
+      Total: filteredEmployees?.length
+      ? filteredEmployees?.length
+      : "0",
+    },
+    {
+      name: 'Resident',
+      Total: filteredResidents?.length
+      ? filteredResidents?.length
+      : "0",
+    },
+  ];
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip">
+          <p className="label">{`${label} : ${payload[0].value}`}</p>
+          <p className="desc"></p>
+        </div>
+      );
+    }
+  
+    return null;
+  };
+
   return (
     <>
     <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -621,30 +653,6 @@ const toggleMobileMenu = () => {
 
                         <div className="col-md-7 profile-right-div">
                           <ul className="personal-info">
-                            <li>
-                              <div className="title right-title">
-                                Total no of employees:
-                              </div>
-                              <div className="text right-text">
-                                <a>
-                                  {filteredEmployees?.length
-                                    ? filteredEmployees?.length
-                                    : "0"}
-                                </a>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="title right-title">
-                                Total no of residents:
-                              </div>
-                              <div className="text right-text">
-                                <a>
-                                  {filteredResidents?.length
-                                    ? filteredResidents?.length
-                                    : "0"}
-                                </a>
-                              </div>
-                            </li>
                             <Popup
                               inline
                               hoverable
@@ -659,7 +667,6 @@ const toggleMobileMenu = () => {
                                         <div className="ui column relaxed divided grid">
                                           <div className="column">
                                             <div className="ui link list">
-                                              {/* <a className="item">{`Start Date: ${moment(join_date).format("DD MMM YYYY")}`}</a> */}
                                               <a className="item">{`Address: ${street_address}, ${city}`}</a>
                                               <a className="item">{`Post Code: ${postcode}`}</a>
                                               <a className="item">{`Year Built: ${year_built}`}</a>
@@ -697,11 +704,29 @@ const toggleMobileMenu = () => {
             <ul className="nav nav-tabs nav-tabs-bottom">
               <li className="nav-item">
                 <a
-                  href="#persons"
+                  href="#dashboard"
                   data-bs-toggle="tab"
                   className="nav-link active"
                 >
+                  Dashboard
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#persons"
+                  data-bs-toggle="tab"
+                  className="nav-link"
+                >
                   Persons
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#appointment"
+                  data-bs-toggle="tab"
+                  className="nav-link"
+                >
+                  Appointments
                 </a>
               </li>
               <li className="nav-item">
@@ -765,8 +790,103 @@ const toggleMobileMenu = () => {
         </div>
       </div>
       <div className="tab-content">
+      {/* Dashboard Info Tab */}
+      <div id="dashboard" className="pro-overview tab-pane fade show active">
+            {isSelectedLoading ? (
+              <div className="skeleton-container-profile">
+                <div className="skeleton-content-profile">
+                  <div className="skeleton-line-profile"></div>
+                  <div className="skeleton-line-profile"></div>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div class="row">
+                  {/* <div className="col-lg-12">
+                    <div className="card bg-white calendarIndex">
+                      <div className="card-header">
+				                <h4 className="card-title mb-0">
+                          Residents appointment
+                        </h4>
+				              </div>
+                      <div className="card-body">
+                        <ResAppointment 
+                          houseId={houseId}
+                          houseResidentData={houseResidentData}
+                        />
+                      </div>
+                    </div>
+                  </div> */}
+                  <div className="col-lg-12">
+                    <div className="card">
+                      <div className="card-header">
+				                <h4 className="card-title mb-0">
+                          Chart
+                        </h4>
+				              </div>
+                      <div style={{display: "flex", justifyContent: "center"}} className="card-body text-center">
+                        <div>
+                          <h3 className="card-title">Total No of Employee/Resident</h3>
+                          <BarChart
+                            width={500}
+                            height={300}
+                            data={barchartdata}
+                            margin={{
+                              top: 5,
+                              right: 30,
+                              left: 20,
+                              bottom: 5,
+                            }}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip content={<CustomTooltip />} />
+                            <Legend />
+                            <Bar dataKey="Total" barSize={20} fill="#ff9b44" />
+                          </BarChart>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+        </div>
+        {/* /Dashboard Info Tab */}
+        {/* Appointment Tab */}
+        <div className="tab-pane fade" id="appointment">
+                {isSelectedLoading ? (
+                  <div className="skeleton-container-profile">
+                    <div className="skeleton-content-profile">
+                      <div className="skeleton-line-profile"></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="row">
+                    <div className="col-lg-12">
+				              <div className="card bg-white calendarIndex">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Resident Appointments
+                          </h4>
+				              	</div>
+                        <div className="card-body">
+                          <ResAppointment 
+                            houseId={houseId}
+                            houseResidentData={houseResidentData}
+                          />
+								        </div>
+				                </div>
+				              </div>
+                    </div>
+                  </>
+                )}
+              </div>
+              {/* /Appointment Tab */}
         {/* Resident Info Tab */}
-        <div id="persons" className="pro-overview tab-pane fade show active">
+        <div id="persons" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
               <div className="skeleton-container-profile">
