@@ -12,6 +12,7 @@ const AddResidentAppointmentModal = ({
   id,
   dispatchResidentAppointment,
   resident,
+  handleDeleteResidentAppointment
 }) => {
 
 
@@ -86,6 +87,11 @@ const AddResidentAppointmentModal = ({
     setGlobalState("showResidentAppointmentModal", false);
   };
 
+  const handleDeleteEvent = () => {
+    handleDeleteResidentAppointment(id);
+    setGlobalState("showResidentAppointmentModal", false);
+  };
+
   const handleNameChange = (e) => {
     setAppointmentName(e.target.value);
     setNameError("");
@@ -119,6 +125,22 @@ const AddResidentAppointmentModal = ({
                       ? "Edit Resident Appointment"
                       : "Add Resident Appointment"}
                   </h5>
+                  {selectedResidentAppointment[residentAppointmentIndexToEdit]?.id && (
+                    <button
+                      style={{
+                        border: "none",
+                        backgroundColor: "transparent",
+                        position: "absolute",
+                        top: "5px",
+                        right: "50px",
+                      }}
+                      className="delete-icon"
+                      type="button"
+                      onClick={handleDeleteEvent}
+                    >
+                      <i className="fa fa-trash-o" />
+                    </button>
+                  )}
                   <button
                     type="button"
                     className="close"
