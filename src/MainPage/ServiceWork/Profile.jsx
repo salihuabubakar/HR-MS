@@ -8,6 +8,7 @@ import { BaseUrl } from "../../utils/baseUrl";
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from "../Employees/Employees/styles";
 import DefaultImage from "../../assets/img/placeholder.jpg";
+import "./calendar.css"
 import {
   useResidentSchoolFetching,
   useResidentEducationFetching,
@@ -66,6 +67,7 @@ import { ProgressSpan, ProgressDiv } from "../../utils/helperFucntions";
 import NoAvailableData from "../../_components/noAvailableData";
 import { handleFileDownload } from "../../utils/helperFucntions";
 import DisplayFileType from "../../_components/fileExtension";
+import Appointment from "./Appointment";
 
 const Profile = () => {
   const [gpError] = useGlobalState("gpError");
@@ -2269,7 +2271,7 @@ useEffect(() => {
                   <>
                     <div className="row">
                     <div className="col-lg-12">
-				              <div className="card">
+				              <div className="card bg-white calendarIndex">
 				              	<div className="card-header">
 				              	  <h4 className="card-title mb-0">
                             Resident Appointment{" "}
@@ -2300,84 +2302,14 @@ useEffect(() => {
                             </a>
                           </h4>
 				              	</div>
-				              	<div className="card-body">
-				              	  <div className="table-responsive">
-				              		<table className="table table-striped mb-0">
-				              		  <thead>
-                              <tr>
-                                <th>Name</th>
-                                <th>Time</th>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Action</th>
-                              </tr>
-				              		  </thead>
-				              		  <tbody>
-                            {residentAppointmentData?.length > 0
-                              ? residentAppointmentData?.map((app, index) => {
-                                  const {
-                                    id,
-                                    resident,
-                                    appointment_name,
-                                    appointment_time,
-                                    appointment_date,
-                                    appointment_description,
-                                  } = app;
-                                  if (resident == selectedResidentId) {
-                                    return (
-                                      <React.Fragment key={id}>
-                                      <tr style={{ height: "90px" }}>
-                                      <td>{appointment_name}</td>
-                                      <td>{appointment_time}</td>
-                                      <td>{appointment_date}</td>
-                                      {appointment_description && appointment_description && (
-                                        <>
-                                          <td>
-                                            <PopUpText text={appointment_description}/>
-                                          </td>
-                                        </>
-                                      )}
-                                      <td className="dropdown dropdown-action text-end">
-                                        <a
-                                          className="action-icon dropdown-toggle"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="material-icons">more_vert</i>
-                                        </a>
-                                        <div className="dropdown-menu dropdown-menu-right">
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleEditResidentAppointment(id, index)
-                                            }
-                                          >
-                                            <i className="fa fa-pencil m-r-5" /> Edit
-                                          </a>
-                                          <a
-                                            className="dropdown-item"
-                                            onClick={() =>
-                                              handleDeleteResidentAppointment(id)
-                                            }
-                                          >
-                                            <i className="fa fa-trash-o m-r-5" /> Delete
-                                          </a>
-                                        </div>
-                                      </td>
-				              			          </tr>
-                                      </React.Fragment>
-                                    );
-                                  }
-                                })
-                              : (
-                                <tr>
-                                  <td>No appointment attach to this resident</td>
-                                </tr>
-                              )}
-				              		  </tbody>
-				              		</table>
-				              	  </div>
-				              	</div>
+                        <div className="card-body">
+                          <Appointment 
+                            appData={residentAppointmentData}
+                            selectedResidentId={selectedResidentId}
+                            handleEditResidentAppointment={handleEditResidentAppointment}
+                            handleDeleteResidentAppointment={handleDeleteResidentAppointment}
+                          />
+								        </div>
 				                </div>
 				              </div>
                     </div>
@@ -3004,6 +2936,7 @@ useEffect(() => {
           dispatchResidentAppointment={dispatchResidentAppointment}
           residentAppointmentIndexToEdit={residentAppointmentIndexToEdit}
           resident={getResidentId}
+          handleDeleteResidentAppointment={handleDeleteResidentAppointment}
         />
       )}
       {deleteResidentAppointmentModal && (
