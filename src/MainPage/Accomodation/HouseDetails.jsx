@@ -20,6 +20,7 @@ import { CardWidth } from '../Employees/Employees/styles';
 import PopUpText from '../../_components/modelbox/PopUpText';
 import { EmployeeImgCard, BillCard } from '../Employees/Employees/styles';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { useMediaQuery } from "react-responsive";
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
@@ -535,6 +536,11 @@ const toggleMobileMenu = () => {
     return null;
   };
 
+  const isMobile = useMediaQuery({ maxWidth: 768 }); // Define your mobile breakpoint
+
+  const chartWidth = isMobile ? 300 : 500; // Adjust the chart width based on screen size
+  const chartHeight = isMobile ? 200 : 300; // Adjust the chart height based on screen size
+
   return (
     <>
     <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -828,7 +834,7 @@ const toggleMobileMenu = () => {
                         <div>
                           <h3 className="card-title">Total No of Employee/Resident</h3>
                           <BarChart
-                            width={500}
+                            width={chartWidth}
                             height={300}
                             data={barchartdata}
                             margin={{
