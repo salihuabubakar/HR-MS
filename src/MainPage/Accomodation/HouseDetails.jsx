@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useMemo, useReducer } from 'react'
 import { Link, useLocation } from "react-router-dom";
 import DefaultImage from "../../assets/img/placeholder.jpg";
+import NoUser from "../../assets/img/no-user.png";
 import AddRoom from '../../_components/modelbox/AddRoom';
 import AddHouseEmployee from "../../_components/modelbox/AddHouseEmployee";
 import AddHouseResident from "../../_components/modelbox/AddHouseResident";
@@ -497,7 +498,9 @@ const toggleMobileMenu = () => {
   );
 
   const filteredResidents = houseResidentData?.filter(
-    (resident) => resident.house === houseId && resident.status === "Active"
+    (resident) => resident.house === houseId && 
+    resident.status === "Active" && 
+    resident.resident !== null
   );
 
   const filteredEmployees = houseEmployeeData?.filter(
@@ -536,10 +539,9 @@ const toggleMobileMenu = () => {
     return null;
   };
 
-  const isMobile = useMediaQuery({ maxWidth: 768 }); // Define your mobile breakpoint
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
-  const chartWidth = isMobile ? 300 : 500; // Adjust the chart width based on screen size
-  const chartHeight = isMobile ? 200 : 300; // Adjust the chart height based on screen size
+  const chartWidth = isMobile ? 300 : 500;
 
   return (
     <>
@@ -937,7 +939,7 @@ const toggleMobileMenu = () => {
 				            </div>
                     <div className="card-body">
                       <Wrapper>
-                        {houseEmployeeData?.length > 0 ? (
+                        {filteredEmployees?.length > 0 ? (
                           houseEmployeeData.map((employees, index) => {
                             const {
                               id,
@@ -1047,7 +1049,10 @@ const toggleMobileMenu = () => {
                             }
                           })
                         ) : (
-                          <><p>Ops! No employee in the house.</p></>
+                          <div style={{ display: "flex", flexDirection: "column"}}>
+                            <img style={{width: "50px"}} src={NoUser} alt='no-user'/>
+                            <p>Ops! No employee in the house.</p>
+                          </div>
                         )}
                       </Wrapper>
                     </div>
@@ -1088,7 +1093,7 @@ const toggleMobileMenu = () => {
 				            </div>
                     <div className="card-body">
                       <Wrapper>
-                        {houseResidentData?.length > 0 ? (
+                        {filteredResidents?.length > 0 ? (
                           houseResidentData.map((residents, index) => {
                             const {
                               id,
@@ -1099,7 +1104,7 @@ const toggleMobileMenu = () => {
                               occupancy_start_date,
                               occupancy_end_date,
                             } = residents;
-                            if (house === houseId && status === "Active") {
+                            if (house === houseId && status === "Active" && resident !== null) {
                               return (
                                 <EmployeeImgCard key={id} className="card employee-img-card">
                                   <span style={{width: "90%"}}>
@@ -1209,7 +1214,10 @@ const toggleMobileMenu = () => {
                             }
                           })
                         ) : (
-                          <><p>Ops! No resident in the house.</p></>
+                          <div style={{ display: "flex", flexDirection: "column"}}>
+                            <img style={{width: "50px"}} src={NoUser} alt='no-user'/>
+                            <p>Ops! No resident in the house.</p>
+                          </div>
                         )}
                       </Wrapper>
                     </div>
