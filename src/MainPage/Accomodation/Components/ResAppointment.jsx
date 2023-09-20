@@ -24,8 +24,6 @@ const ResAppointment = ({
     time: ""
   })
 
-  console.log("selectedEvent", selectedEvent);
-
   const houseRes = houseResidentData?.filter(residents => {
     if(residents.house === houseId && residents.status === "Active") {
       return resID.push(residents.resident);

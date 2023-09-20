@@ -831,8 +831,8 @@ useEffect(() => {
                 ) : (
                   <>
                     <div className="row">
-                    <div className="col-md-6 d-flex">
-                      <div className="card profile-box flex-fill">
+                    <div className="col-lg-6">
+                      <div className="card">
                         <div className="card-header">
 				                  <h4 className="card-title mb-0">
                             Resident Education {""}
@@ -938,8 +938,8 @@ useEffect(() => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
+                      <div className="col-lg-6">
+                        <div className="card">
                           <div className="card-header">
 				                    <h4 className="card-title mb-0">
                               Resident School {""}
@@ -1051,8 +1051,8 @@ useEffect(() => {
                 ) : (
                   <>
                     <div className="row">
-                      <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
+                      <div className="col-lg-6">
+                        <div className="card">
                           <div className="card-header">
 				                    <h4 className="card-title mb-0">
                               Resident Solicitor {""}
@@ -1193,8 +1193,8 @@ useEffect(() => {
                         </div>
                       </div>
 
-                      <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
+                      <div className="col-lg-6">
+                        <div className="card">
                           <div className="card-header">
 				                    <h4 className="card-title mb-0">
                               Resident GP {""}

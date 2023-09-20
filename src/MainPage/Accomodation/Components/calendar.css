@@ -2,6 +2,10 @@
     margin-bottom: 0px !important;
 }
 
+.fc-day-today {
+    background: #f7e5e5 !important;
+}
+
 .fc-button {
     background: #f1f1f1 !important;
     border: none;
