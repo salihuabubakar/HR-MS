@@ -14,6 +14,7 @@ import {
 } from "../../Entryfile/imagepath";
 import Applogo from "../../assets/img/circle-logo.png"
 import AddminProfile from "../../MainPage/Pages/Profile/AddminProfile";
+import LongApplogo from "../../assets/img/LongAppLogo.png"
 
 import {HeaderContainer} from "./style"
 import { preventDefault } from "fullcalendar";
@@ -65,9 +66,7 @@ const Header = (props) => {
           PEEPAL TREE
         </h3> */}
         <img
-          src={
-            "https://peepaltree.co.uk/wp-content/uploads/2021/02/Header-logo-800px.png"
-          }
+          src={LongApplogo}
           style={{
             maxWidth: "45%",
             width: "100%",
