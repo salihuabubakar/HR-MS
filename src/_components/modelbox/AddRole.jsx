@@ -100,9 +100,9 @@ const AddRole = ({
                 <div className="modal-body">
                   <form onSubmit={handleSubmit}>
                     <div className="row">
-                      <div className="col-sm-12">
+                      <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Role <span className="text-danger">*</span>
                           </label>
                           <input
@@ -117,7 +117,7 @@ const AddRole = ({
                           )}
                         </div>
                       </div>
-                      <div className="col-sm-12">
+                      <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">Department</label>
                           <select
@@ -139,7 +139,7 @@ const AddRole = ({
 
                       <div className="col-sm-12">
                         <div className="form-group">
-                          <label className="label">Description</label>
+                          <label className="col-form-label">Description</label>
                           <textarea
                             className="form-control floating"
                             name="description"
