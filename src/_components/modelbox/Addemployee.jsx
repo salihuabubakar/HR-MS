@@ -95,19 +95,6 @@ const Addemployee = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validate first name and last name
-    if (first_name === "") {
-      setFirstNameError("First name is required.");
-      return;
-    }
-    if (last_name === "") {
-      setLastNameError("Last name is required.");
-      return;
-    }
-
-    // // Clear any existing error messages
-    setFirstNameError("");
-    setLastNameError("");
 
     const fields = {
       id: id,
@@ -174,6 +161,29 @@ const Addemployee = ({
     setMaritalStatus(data);
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleNextPage = () => {
+    // Validate first name and last name
+    if (first_name === "") {
+      setFirstNameError("First name is required.");
+      return;
+    }
+    if (last_name === "") {
+      setLastNameError("Last name is required.");
+      return;
+    }
+
+    // // Clear any existing error messages
+    setFirstNameError("");
+    setLastNameError("");
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
   return (
     <>
       {/* Add Employee Modal */}
@@ -200,359 +210,353 @@ const Addemployee = ({
                 </div>
                 <div className="modal-body">
                   <form onSubmit={handleSubmit}>
-                    <div className="row">
-                      <div className="col-sm-12">
-                        <div
-                          style={{ borderRadius: "5px" }}
-                          className="profile-img-wrap edit-img"
-                        >
-                          <img
+                    {currentPage === 1 && (
+                      <div className="row">
+                        <div className="col-sm-12">
+                          <div
                             style={{ borderRadius: "5px" }}
-                            className="inline-block"
-                            src={
-                              photo
-                                ? URL.createObjectURL(photo)
-                                : imageUrlFromServer
-                            }
-                            alt="employee_image"
-                          />
-                          <div className="fileupload btn">
-                            <span className="btn-text">
-                              {isIdExist ? "Update" : "Upload"}
-                            </span>
+                            className="profile-img-wrap edit-img"
+                          >
+                            <img
+                              style={{ borderRadius: "5px" }}
+                              className="inline-block"
+                              src={
+                                photo
+                                  ? URL.createObjectURL(photo)
+                                  : imageUrlFromServer
+                              }
+                              alt="employee_image"
+                            />
+                            <div className="fileupload btn">
+                              <span className="btn-text">
+                                {isIdExist ? "Update" : "Upload"}
+                              </span>
+                              <input
+                                className="upload"
+                                type="file"
+                                accept="image/*"
+                                onChange={imageOnChange}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              First Name <span className="text-danger">*</span>
+                            </label>
                             <input
-                              className="upload"
-                              type="file"
-                              accept="image/*"
-                              onChange={imageOnChange}
+                              value={first_name}
+                              onChange={handleFirstNameChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="First Name"
+                            />
+                            {firstNameError && (
+                              <p className="error-message">{firstNameError}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Last Name <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={last_name}
+                              onChange={handleLastNameChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Last Name"
+                            />
+                            {lastNameError && (
+                              <p className="error-message">{lastNameError}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Employee Number
+                            </label>
+                            <input
+                              value={employee_number}
+                              onChange={(event) =>
+                                setEmployeeNumber(event.target.value)
+                              }
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Employee Number"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Middle Name</label>
+                            <input
+                              value={middle_name}
+                              onChange={(event) =>
+                                setMiddleName(event.target.value)
+                              }
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Middle Name"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">NI Number</label>
+                            <input
+                              value={ni_number}
+                              onChange={(event) =>
+                                setNiNumber(event.target.value)
+                              }
+                              className="form-control floating"
+                              type="text"
+                              placeholder="NI Number"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Gender</label>
+                            <select
+                              value={gender}
+                              onChange={handleGenderChange}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select
+                              </option>
+                              <option value="Male">Male</option>
+                              <option value="Female">Female</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {currentPage === 2 && (
+                      <div className="row">
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Marital Status
+                            </label>
+                            <select
+                              value={marital_status}
+                              onChange={handleMaritalStatusChange}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">Select</option>
+                              <option value="Single">Single</option>
+                              <option value="Married">Married</option>
+                              <option value="Widowed">Widowed</option>
+                              <option value="Divorced">Divorced</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Nationality</label>
+                            <input
+                              value={nationality}
+                              onChange={(event) =>
+                                setNationality(event.target.value)
+                              }
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Nationality"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Phone Number</label>
+                            <input
+                              value={phone_number}
+                              onChange={(event) =>
+                                setPhoneNumber(event.target.value)
+                              }
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Phone Number"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Email</label>
+                            <input
+                              value={email}
+                              onChange={(event) => setEmail(event.target.value)}
+                              className="form-control floating"
+                              type="email"
+                              placeholder="Email"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Date of Birth
+                            </label>
+                            <input
+                              value={date_of_birth}
+                              onChange={(event) =>
+                                setDateOfBirth(event.target.value)
+                              }
+                              className="form-control floating"
+                              type="date"
+                              placeholder="Date of Birth"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Hire Date</label>
+                            <input
+                              value={hire_date}
+                              onChange={(event) =>
+                                setHireDate(event.target.value)
+                              }
+                              className="form-control floating"
+                              type="date"
+                              placeholder="Hire Date"
                             />
                           </div>
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            First Name <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={first_name}
-                            onChange={handleFirstNameChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="First Name"
-                          />
-                          {firstNameError && (
-                            <p className="error-message">{firstNameError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Last Name <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={last_name}
-                            onChange={handleLastNameChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Last Name"
-                          />
-                          {lastNameError && (
-                            <p className="error-message">{lastNameError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Employee Number
-                          </label>
-                          <input
-                            value={employee_number}
-                            onChange={(event) =>
-                              setEmployeeNumber(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Employee Number"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Middle Name</label>
-                          <input
-                            value={middle_name}
-                            onChange={(event) =>
-                              setMiddleName(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Middle Name"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">NI Number</label>
-                          <input
-                            value={ni_number}
-                            onChange={(event) =>
-                              setNiNumber(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="NI Number"
-                          />
-                        </div>
-                      </div>
+                    )}
 
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Gender</label>
-                          <select
-                            value={gender}
-                            onChange={handleGenderChange}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select
-                            </option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Marital Status
-                          </label>
-                          <select
-                            value={marital_status}
-                            onChange={handleMaritalStatusChange}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">Select</option>
-                            <option value="Single">Single</option>
-                            <option value="Married">Married</option>
-                            <option value="Widowed">Widowed</option>
-                            <option value="Divorced">Divorced</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Nationality</label>
-                          <input
-                            value={nationality}
-                            onChange={(event) =>
-                              setNationality(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Nationality"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Phone Number</label>
-                          <input
-                            value={phone_number}
-                            onChange={(event) =>
-                              setPhoneNumber(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Phone Number"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Email</label>
-                          <input
-                            value={email}
-                            onChange={(event) => setEmail(event.target.value)}
-                            className="form-control floating"
-                            type="email"
-                            placeholder="Email"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Date of Birth
-                          </label>
-                          <input
-                            value={date_of_birth}
-                            onChange={(event) =>
-                              setDateOfBirth(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="date"
-                            placeholder="Date of Birth"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Hire Date</label>
-                          <input
-                            value={hire_date}
-                            onChange={(event) =>
-                              setHireDate(event.target.value)
-                            }
-                            className="form-control floating"
-                            type="date"
-                            placeholder="Hire Date"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Role</label>
-                          <select
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select Role
-                            </option>
-                            {roleData?.map((role) => (
-                              <option key={role.id} value={role.id}>
-                                {`${role.role_name}`}
+                    {currentPage === 3 && (
+                      <div className="row">
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Role</label>
+                            <select
+                              value={role}
+                              onChange={(e) => setRole(e.target.value)}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select Role
                               </option>
-                            ))}
-                          </select>
+                              {roleData?.map((role) => (
+                                <option key={role.id} value={role.id}>
+                                  {`${role.role_name}`}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Department</label>
-                          <select
-                            value={department}
-                            onChange={(e) => setDepartment(e.target.value)}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select Department
-                            </option>
-                            {departmentData?.map((dept) => (
-                              <option key={dept.id} value={dept.id}>
-                                {`${dept.department_name}`}
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Department</label>
+                            <select
+                              value={department}
+                              onChange={(e) => setDepartment(e.target.value)}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select Department
                               </option>
-                            ))}
-                          </select>
+                              {departmentData?.map((dept) => (
+                                <option key={dept.id} value={dept.id}>
+                                  {`${dept.department_name}`}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Organization</label>
-                          <select
-                            value={organisation}
-                            onChange={handleOrganisationChange}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select Organization
-                            </option>
-                            {organisationData?.map((org) => (
-                              <option key={org.id} value={org.id}>
-                                {`${org.organisation_name}`}
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Organization</label>
+                            <select
+                              value={organisation}
+                              onChange={handleOrganisationChange}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select Organization
                               </option>
-                            ))}
-                          </select>
+                              {organisationData?.map((org) => (
+                                <option key={org.id} value={org.id}>
+                                  {`${org.organisation_name}`}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Salary</label>
+                            <input
+                              value={salary}
+                              onChange={(event) => setSalary(event.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Salary"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Appointment Letter
+                            </label>
+                            <select
+                              // value={appointmentLetter}
+                              // onChange={appLetterOnChange}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">Select</option>
+                              <option value="Finance">Finance</option>
+                              <option value="Sales">Sales</option>
+                              <option value="Office">Office</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Salary</label>
-                          <input
-                            value={salary}
-                            onChange={(event) => setSalary(event.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Salary"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-12">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Appointment Letter
-                          </label>
-                          <select
-                            // value={appointmentLetter}
-                            // onChange={appLetterOnChange}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">Select</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Office">Office</option>
-                          </select>
-                        </div>
-                      </div>
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Department</label>
-                          <Select
-                            onChange={handleDepartmentChange}
-                            options={departments}
-                            styles={customSelectStyles}
-                            placeholder="Select Department"
-                            defaultValue={
-                              selectedEmployeeAccount[indexToEdit]?.department
-                                ? {
-                                    value:
-                                      selectedEmployeeAccount[indexToEdit]
-                                        .department.value,
-                                    label:
-                                      selectedEmployeeAccount[indexToEdit]
-                                        .department.label,
-                                  }
-                                : "Select Department"
-                            }
-                          />
-                        </div>
-                      </div> */}
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Role</label>
-                          <Select
-                            onChange={handleRoleChange}
-                            options={roles}
-                            styles={customSelectStyles}
-                            placeholder="Select Role"
-                            defaultValue={
-                              selectedEmployeeAccount[indexToEdit]?.role
-                                ? {
-                                    value:
-                                      selectedEmployeeAccount[indexToEdit]?.role
-                                        ?.value,
-                                    label:
-                                      selectedEmployeeAccount[indexToEdit]?.role
-                                        ?.label,
-                                  }
-                                : "Select Role"
-                            }
-                          />
-                        </div>
-                      </div> */}
-                    </div>
+                    )}
+                      
                     <div className="submit-section">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit-btn"
-                      >
-                        {isIdExist ? "Update" : "Save"}
-                      </button>
+                      {/* Pagination controls */}
+                      {currentPage > 1 && (
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handlePreviousPage}
+                        >
+                          Previous
+                        </button>
+                      )}
+                      {currentPage < 3 && (
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={handleNextPage}
+                        >
+                          Next
+                        </button>
+                      )}
+                      {currentPage === 3 && (
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                        >
+                          {isIdExist ? "Update" : "Save"}
+                        </button>
+                      )}
                     </div>
                   </form>
                 </div>
