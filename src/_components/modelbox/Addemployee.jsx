@@ -8,6 +8,7 @@ import {
 } from "./Addemployee.style";
 import "./style.css";
 import { useOrganisationFetching, useRoleFetching, useDepartmentFetching } from "../../utils/employeeCustomFetchHook";
+import { isMobile } from "../../utils/mediaQuery";
 
 const Addemployee = ({
   dispatchEmployee,
@@ -189,7 +190,7 @@ const Addemployee = ({
       {/* Add Employee Modal */}
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer top={true} className="custom-modal" role="dialog">
+          <PopupContainer top={ isMobile() && true} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

@@ -21,7 +21,6 @@ import { CardWidth } from '../Employees/Employees/styles';
 import PopUpText from '../../_components/modelbox/PopUpText';
 import { EmployeeImgCard, BillCard } from '../Employees/Employees/styles';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { useMediaQuery } from "react-responsive";
 import {
   add_update_delete_room,
   add_update_delete_house_employee,
@@ -60,6 +59,7 @@ import './style.css'
 import './Components/calendar.css'
 import DisplayFileType from '../../_components/fileExtension';
 import ResAppointment from './Components/ResAppointment';
+import { isMobile } from '../../utils/mediaQuery';
 
 const HouseDetails = () => {
   const location = useLocation();
@@ -539,9 +539,7 @@ const toggleMobileMenu = () => {
     return null;
   };
 
-  const isMobile = useMediaQuery({ maxWidth: 768 });
-
-  const chartWidth = isMobile ? 300 : 500;
+  const chartWidth = isMobile() ? 300 : 500;
 
   return (
     <>

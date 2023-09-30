@@ -10,6 +10,7 @@ import {
   useHouseDocumentFetching,
 } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
+import { isMobile } from "../../utils/mediaQuery";
 
 
 const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
@@ -165,7 +166,7 @@ const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer top={true} className="custom-modal" role="dialog">
+          <PopupContainer top={ isMobile() && true} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">

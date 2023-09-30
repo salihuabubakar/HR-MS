@@ -7,6 +7,7 @@ import {
 } from "./Addemployee.style";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { isMobile } from "../../utils/mediaQuery";
 
 const AddStatus = ({
   indexToEdit,
@@ -94,7 +95,7 @@ const AddStatus = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer top={ isMobile() && true } className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
