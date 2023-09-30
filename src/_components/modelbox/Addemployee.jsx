@@ -8,15 +8,12 @@ import {
 } from "./Addemployee.style";
 import "./style.css";
 import { useOrganisationFetching, useRoleFetching, useDepartmentFetching } from "../../utils/employeeCustomFetchHook";
-import { useMediaQuery } from "react-responsive";
 
 const Addemployee = ({
   dispatchEmployee,
   indexToEdit,
   getEmployeeId,
 }) => {
-
-  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const { organisationData } = useOrganisationFetching();
   const { roleData } = useRoleFetching();
@@ -187,8 +184,6 @@ const Addemployee = ({
     setCurrentPage(currentPage - 1);
   };
 
-
-
   return (
     <>
       {/* Add Employee Modal */}
@@ -248,7 +243,7 @@ const Addemployee = ({
 
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>
+                            <label className="col-form-label">
                               First Name <span className="text-danger">*</span>
                             </label>
                             <input
@@ -266,7 +261,7 @@ const Addemployee = ({
 
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>
+                            <label className="col-form-label">
                               Last Name <span className="text-danger">*</span>
                             </label>
                             <input
@@ -284,7 +279,7 @@ const Addemployee = ({
 
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>
+                            <label className="col-form-label">
                               Employee Number
                             </label>
                             <input
@@ -301,7 +296,7 @@ const Addemployee = ({
 
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Middle Name</label>
+                            <label className="col-form-label">Middle Name</label>
                             <input
                               value={middle_name}
                               onChange={(event) =>
@@ -316,7 +311,7 @@ const Addemployee = ({
 
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>NI Number</label>
+                            <label className="col-form-label">NI Number</label>
                             <input
                               value={ni_number}
                               onChange={(event) =>
@@ -331,7 +326,7 @@ const Addemployee = ({
 
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Gender</label>
+                            <label className="col-form-label">Gender</label>
                             <select
                               value={gender}
                               onChange={handleGenderChange}
@@ -352,7 +347,7 @@ const Addemployee = ({
                       <div className="row">
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>
+                            <label className="col-form-label">
                               Marital Status
                             </label>
                             <select
@@ -371,7 +366,7 @@ const Addemployee = ({
 
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Nationality</label>
+                            <label className="col-form-label">Nationality</label>
                             <input
                               value={nationality}
                               onChange={(event) =>
@@ -386,7 +381,7 @@ const Addemployee = ({
 
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Phone Number</label>
+                            <label className="col-form-label">Phone Number</label>
                             <input
                               value={phone_number}
                               onChange={(event) =>
@@ -400,7 +395,7 @@ const Addemployee = ({
                         </div>
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Email</label>
+                            <label className="col-form-label">Email</label>
                             <input
                               value={email}
                               onChange={(event) => setEmail(event.target.value)}
@@ -412,7 +407,7 @@ const Addemployee = ({
                         </div>
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>
+                            <label className="col-form-label">
                               Date of Birth
                             </label>
                             <input
@@ -428,7 +423,7 @@ const Addemployee = ({
                         </div>
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Hire Date</label>
+                            <label className="col-form-label">Hire Date</label>
                             <input
                               value={hire_date}
                               onChange={(event) =>
@@ -447,7 +442,7 @@ const Addemployee = ({
                       <div className="row">
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Role</label>
+                            <label className="col-form-label">Role</label>
                             <select
                               value={role}
                               onChange={(e) => setRole(e.target.value)}
@@ -466,7 +461,7 @@ const Addemployee = ({
                         </div>
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Department</label>
+                            <label className="col-form-label">Department</label>
                             <select
                               value={department}
                               onChange={(e) => setDepartment(e.target.value)}
@@ -485,7 +480,7 @@ const Addemployee = ({
                         </div>
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Organization</label>
+                            <label className="col-form-label">Organization</label>
                             <select
                               value={organisation}
                               onChange={handleOrganisationChange}
@@ -504,7 +499,7 @@ const Addemployee = ({
                         </div>
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>Salary</label>
+                            <label className="col-form-label">Salary</label>
                             <input
                               value={salary}
                               onChange={(event) => setSalary(event.target.value)}
@@ -516,7 +511,7 @@ const Addemployee = ({
                         </div>
                         <div className="col-sm-12">
                           <div className="form-group">
-                            <label className={`${isMobile} ? 'col' : 'col-form-label'`}>
+                            <label className="col-form-label">
                               Appointment Letter
                             </label>
                             <select

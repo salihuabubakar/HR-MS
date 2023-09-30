@@ -51,6 +51,7 @@ export const PopupContainer = styled.div`
   margin: 10px 0;
   ${mobile} {
     top: ${(props) => (props.top ? "5px" : null)};
+    padding-bottom: 5%;
   }
   .Primary,
   .Secondary {
