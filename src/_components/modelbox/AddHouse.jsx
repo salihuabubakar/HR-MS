@@ -5,6 +5,7 @@ import Select from "react-select";
 import "./style.css";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
 import { RadioBtn } from './styles';
+import { isMobile } from '../../utils/mediaQuery';
 
 const AddDepartment = ({
   dispatchHouse,
@@ -141,32 +142,11 @@ const AddDepartment = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name === "") {
-      setHouseNameError("Name is required.");
-      return;
-    }
-    if (city === "") {
-      setCityeError("City is required.");
-      return;
-    }
-    if (street_address === "") {
-      setStreetAddError("Street Address is required.");
-      return;
-    }
-    if (postcode === "") {
-      setPostCodeError("Postcode is required.");
-      return;
-    }
     if (description === "") {
       setDescriptionError("Description is required.");
       return;
     }
-
-    // Clear any existing error messages
-    setHouseNameError("");
-    setCityeError("");
-    setStreetAddError("");
-    setPostCodeError("");
+    //clear error after check pass
     setDescriptionError("")
 
     const fields = {
@@ -253,12 +233,44 @@ const AddDepartment = ({
     setDescriptionError("");
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleNextPage = () => {
+    if (name === "") {
+      setHouseNameError("Name is required.");
+      return;
+    }
+    if (city === "") {
+      setCityeError("City is required.");
+      return;
+    }
+    if (street_address === "") {
+      setStreetAddError("Street Address is required.");
+      return;
+    }
+    if (postcode === "") {
+      setPostCodeError("Postcode is required.");
+      return;
+    }
+
+    // Clear any existing error messages
+    setHouseNameError("");
+    setCityeError("");
+    setStreetAddError("");
+    setPostCodeError("");
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
 
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer top={true} className="custom-modal" role="dialog">
+          <PopupContainer top={ isMobile() && true} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -275,427 +287,461 @@ const AddDepartment = ({
                 </div>
                 <div className="modal-body">
                   <form onSubmit={handleSubmit}>
-                    <div className="row">
-                      <div className="col-sm-12">
-                        <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
-                          <img
-                            style={{ borderRadius: "5px" }}
-                            className="inline-block"
-                            src={photo ? URL.createObjectURL(photo) : imageUrlFromServer}
-                            alt="house_image"
-                          />
-                          <div className="fileupload btn">
-                            <span className="btn-text">
-                              {selectedHouse[indexToEdit]?.id ? "Update" : "Upload"}
-                            </span>
+                    {currentPage === 1 && (
+                      <div className='row'>
+                        <div className="col-sm-12">
+                          <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
+                            <img
+                              style={{ borderRadius: "5px" }}
+                              className="inline-block"
+                              src={photo ? URL.createObjectURL(photo) : imageUrlFromServer}
+                              alt="house_image"
+                            />
+                            <div className="fileupload btn">
+                              <span className="btn-text">
+                                {selectedHouse[indexToEdit]?.id ? "Update" : "Upload"}
+                              </span>
+                              <input
+                                className="upload"
+                                type="file"
+                                accept="image/*"
+                                onChange={imageOnChange}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              House Name <span className="text-danger">*</span>
+                            </label>
                             <input
-                              className="upload"
-                              type="file"
-                              accept="image/*"
-                              onChange={imageOnChange}
+                              value={name}
+                              onChange={handleHouseNameChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="House Name"
+                            />
+                            {houseNameError && <p className="error-message">{houseNameError}</p>}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              City <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={city}
+                              onChange={handleCityChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="City"
+                            />
+                            {cityError && <p className="error-message">{cityError}</p>}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Street Address <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={street_address}
+                              onChange={handleStreetChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Street Address"
+                            />
+                            {streetAddError && <p className="error-message">{streetAddError}</p>}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Postcode <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={postcode}
+                              onChange={handlePostCodeChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Postcode"
+                            />
+                            {postcodeError && <p className="error-message">{postcodeError}</p>}
+                          </div>
+                        </div>
+                        {/* <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">Manager</label>
+                            <input
+                              value={manager}
+                              onChange={(e) => setManager(e.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Manager"
+                            />
+                          </div>
+                        </div> */}
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Manager</label>
+                            <select
+                              value={manager}
+                              onChange={(e) => setManager(e.target.value)}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select Manager
+                              </option>
+                              {allEmployee?.map((employee) => (
+                                <option key={employee.id} value={employee.id}>
+                                  {`${employee.first_name} ${employee.middle_name} ${employee.last_name}`}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Mobile</label>
+                            <input
+                              value={mobile}
+                              onChange={(e) => setMobile(e.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Mobile"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Email</label>
+                            <input
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className="form-control floating"
+                              type="email"
+                              placeholder="Email"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">House Type</label>
+                            <input
+                              value={house_type}
+                              onChange={(e) => setHouseType(e.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="House Type"
                             />
                           </div>
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            House Name <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={name}
-                            onChange={handleHouseNameChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="House Name"
-                          />
-                          {houseNameError && <p className="error-message">{houseNameError}</p>}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            City <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={city}
-                            onChange={handleCityChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="City"
-                          />
-                          {cityError && <p className="error-message">{cityError}</p>}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Street Address <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={street_address}
-                            onChange={handleStreetChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Street Address"
-                          />
-                          {streetAddError && <p className="error-message">{streetAddError}</p>}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Postcode <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={postcode}
-                            onChange={handlePostCodeChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Postcode"
-                          />
-                          {postcodeError && <p className="error-message">{postcodeError}</p>}
-                        </div>
-                      </div>
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Manager</label>
-                          <input
-                            value={manager}
-                            onChange={(e) => setManager(e.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Manager"
-                          />
-                        </div>
-                      </div> */}
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Manager</label>
-                          <select
-                            value={manager}
-                            onChange={(e) => setManager(e.target.value)}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select Manager
-                            </option>
-                            {allEmployee?.map((employee) => (
-                              <option key={employee.id} value={employee.id}>
-                                {`${employee.first_name} ${employee.middle_name} ${employee.last_name}`}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Mobile</label>
-                          <input
-                            value={mobile}
-                            onChange={(e) => setMobile(e.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Mobile"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Email</label>
-                          <input
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="form-control floating"
-                            type="email"
-                            placeholder="Email"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">House Type</label>
-                          <input
-                            value={house_type}
-                            onChange={(e) => setHouseType(e.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="House Type"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">No of Bedrooms</label>
-                          <input
-                            value={num_bedrooms}
-                            onChange={(e) => setNumBedrooms(e.target.value)}
-                            className="form-control floating"
-                            type="number"
-                            placeholder="No of Bedrooms"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">No of Bathrooms</label>
-                          <input
-                            value={num_bathrooms}
-                            onChange={(e) => setNumBathrooms(e.target.value)}
-                            className="form-control floating"
-                            type="number"
-                            placeholder="No of Bathrooms"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">No of Kitchens</label>
-                          <input
-                            value={num_kitchens}
-                            onChange={(e) => setNumKitchens(e.target.value)}
-                            className="form-control floating"
-                            type="number"
-                            placeholder="No of Kitchens"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Square Footage</label>
-                          <input
-                            value={square_footage}
-                            onChange={(e) => setSquareFootage(e.target.value)}
-                            className="form-control floating"
-                            type="number"
-                            placeholder="Square Footage"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Garage</label>
-                          <RadioBtn>
+                    )}
+                    {currentPage === 2 && (
+                      <div className='row'>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">No of Bedrooms</label>
                             <input
-                              type="checkbox"
-                              name="Garage"
-                              checked={garage}
-                              id="Garage"
-                              placeholder="Garage"
-                              onChange={(e) => setGarage(e.target.checked)}
+                              value={num_bedrooms}
+                              onChange={(e) => setNumBedrooms(e.target.value)}
+                              className="form-control floating"
+                              type="number"
+                              placeholder="No of Bedrooms"
                             />
-                            <label htmlFor="Garage">
-                              <span>Garage</span>
-                            </label>
-                          </RadioBtn>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Basement</label>
-                          <RadioBtn>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">No of Bathrooms</label>
                             <input
-                              type="checkbox"
-                              name="Garage"
-                              checked={basement}
-                              id="Basement"
-                              placeholder="Basement"
-                              onChange={(e) => setBasement(e.target.checked)}
+                              value={num_bathrooms}
+                              onChange={(e) => setNumBathrooms(e.target.value)}
+                              className="form-control floating"
+                              type="number"
+                              placeholder="No of Bathrooms"
                             />
-                            <label htmlFor="Basement">
-                              <span>Basement</span>
-                            </label>
-                          </RadioBtn>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Pool</label>
-                          <RadioBtn>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">No of Kitchens</label>
                             <input
-                              type="checkbox"
-                              name="Pool"
-                              checked={pool}
-                              id="Pool"
-                              placeholder="Pool"
-                              onChange={(e) => setPool(e.target.checked)}
+                              value={num_kitchens}
+                              onChange={(e) => setNumKitchens(e.target.value)}
+                              className="form-control floating"
+                              type="number"
+                              placeholder="No of Kitchens"
                             />
-                            <label htmlFor="Pool">
-                              <span>Pool</span>
-                            </label>
-                          </RadioBtn>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Back Yard</label>
-                          <RadioBtn>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Square Footage</label>
                             <input
-                              type="checkbox"
-                              name="Back_Yard"
-                              checked={back_yard}
-                              id="Back_Yard"
-                              placeholder="Back Yard"
-                              onChange={(e) => setBackYard(e.target.checked)}
+                              value={square_footage}
+                              onChange={(e) => setSquareFootage(e.target.value)}
+                              className="form-control floating"
+                              type="number"
+                              placeholder="Square Footage"
                             />
-                            <label htmlFor="Back_Yard">
-                              <span>Back Yard</span>
-                            </label>
-                          </RadioBtn>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Year Built</label>
-                          <input
-                            value={year_built}
-                            onChange={(e) => setYearBuilt(e.target.value)}
-                            className="form-control floating"
-                            type="number"
-                            placeholder="Year Built"
-                          />
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Garage</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="Garage"
+                                checked={garage}
+                                id="Garage"
+                                placeholder="Garage"
+                                onChange={(e) => setGarage(e.target.checked)}
+                              />
+                              <label htmlFor="Garage">
+                                <span>Garage</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Air Conditioning</label>
-                          <RadioBtn>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Basement</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="Garage"
+                                checked={basement}
+                                id="Basement"
+                                placeholder="Basement"
+                                onChange={(e) => setBasement(e.target.checked)}
+                              />
+                              <label htmlFor="Basement">
+                                <span>Basement</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Pool</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="Pool"
+                                checked={pool}
+                                id="Pool"
+                                placeholder="Pool"
+                                onChange={(e) => setPool(e.target.checked)}
+                              />
+                              <label htmlFor="Pool">
+                                <span>Pool</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Back Yard</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="Back_Yard"
+                                checked={back_yard}
+                                id="Back_Yard"
+                                placeholder="Back Yard"
+                                onChange={(e) => setBackYard(e.target.checked)}
+                              />
+                              <label htmlFor="Back_Yard">
+                                <span>Back Yard</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Year Built</label>
                             <input
-                              type="checkbox"
-                              name="air_conditioning"
-                              checked={air_conditioning}
-                              id="air_conditioning"
-                              placeholder="Air Conditioning"
-                              onChange={(e) => setAirConditioning(e.target.checked)}
+                              value={year_built}
+                              onChange={(e) => setYearBuilt(e.target.value)}
+                              className="form-control floating"
+                              type="number"
+                              placeholder="Year Built"
                             />
-                            <label htmlFor="air_conditioning">
-                              <span>Air Conditioning</span>
-                            </label>
-                          </RadioBtn>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Air Conditioning</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="air_conditioning"
+                                checked={air_conditioning}
+                                id="air_conditioning"
+                                placeholder="Air Conditioning"
+                                onChange={(e) => setAirConditioning(e.target.checked)}
+                              />
+                              <label htmlFor="air_conditioning">
+                                <span>Air Conditioning</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Heating System</label>
-                          <input
-                            value={heating_system}
-                            onChange={(e) => setHeatingSystem(e.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Heating System"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Roof Type</label>
-                          <input
-                            value={roof_type}
-                            onChange={(e) => setRoofType(e.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Roof Type"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Fire Place</label>
-                          <RadioBtn>
+                    )}
+                    {currentPage === 3 && (
+                      <div className='row'>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Heating System</label>
                             <input
-                              type="checkbox"
-                              name="fireplace"
-                              checked={fireplace}
-                              id="fireplace"
-                              placeholder="Fire Place"
-                              onChange={(e) => setFireplace(e.target.checked)}
+                              value={heating_system}
+                              onChange={(e) => setHeatingSystem(e.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Heating System"
                             />
-                            <label htmlFor="fireplace">
-                              <span>Fire Place</span>
-                            </label>
-                          </RadioBtn>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Security System</label>
-                          <RadioBtn>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Roof Type</label>
                             <input
-                              type="checkbox"
-                              name="security_system"
-                              checked={security_system}
-                              id="security_system"
-                              placeholder="Security System"
-                              onChange={(e) => setSecuritySystem(e.target.checked)}
+                              value={roof_type}
+                              onChange={(e) => setRoofType(e.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Roof Type"
                             />
-                            <label htmlFor="security_system">
-                              <span>Security System</span>
-                            </label>
-                          </RadioBtn>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Solar Panels</label>
-                          <RadioBtn>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Fire Place</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="fireplace"
+                                checked={fireplace}
+                                id="fireplace"
+                                placeholder="Fire Place"
+                                onChange={(e) => setFireplace(e.target.checked)}
+                              />
+                              <label htmlFor="fireplace">
+                                <span>Fire Place</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Security System</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="security_system"
+                                checked={security_system}
+                                id="security_system"
+                                placeholder="Security System"
+                                onChange={(e) => setSecuritySystem(e.target.checked)}
+                              />
+                              <label htmlFor="security_system">
+                                <span>Security System</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Solar Panels</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="solar_panels"
+                                checked={solar_panels}
+                                id="solar_panels"
+                                placeholder="Solar Panels"
+                                onChange={(e) => setSolarPanels(e.target.checked)}
+                              />
+                              <label htmlFor="solar_panels">
+                                <span>Solar Panels</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">No FLoors</label>
                             <input
-                              type="checkbox"
-                              name="solar_panels"
-                              checked={solar_panels}
-                              id="solar_panels"
-                              placeholder="Solar Panels"
-                              onChange={(e) => setSolarPanels(e.target.checked)}
+                              value={num_floors}
+                              onChange={(e) => setNumFloors(e.target.value)}
+                              className="form-control floating"
+                              type="number"
+                              placeholder="No FLoors"
                             />
-                            <label htmlFor="solar_panels">
-                              <span>Solar Panels</span>
-                            </label>
-                          </RadioBtn>
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <div className="form-group">
+                            <label className="col-form-label">FLoor Type</label>
+                            <input
+                              value={floor_type}
+                              onChange={(e) => setFloorType(e.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="FLoor Type"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <div className="form-group">
+                            <label className="col-form-label">Description</label>{" "}
+                            <span className="text-danger">*</span>
+                            <textarea
+                              className="form-control floating"
+                              name="description"
+                              placeholder="Description"
+                              value={description}
+                              onChange={handleDescriptionChange}
+                              style={{ height: "70px" }}
+                            />
+                            {descriptionError && <p className="error-message">{descriptionError}</p>}
+                          </div>
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">No FLoors</label>
-                          <input
-                            value={num_floors}
-                            onChange={(e) => setNumFloors(e.target.value)}
-                            className="form-control floating"
-                            type="number"
-                            placeholder="No FLoors"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-12">
-                        <div className="form-group">
-                          <label className="col-form-label">FLoor Type</label>
-                          <input
-                            value={floor_type}
-                            onChange={(e) => setFloorType(e.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="FLoor Type"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-12">
-                        <div className="form-group">
-                          <label className="col-form-label">Description</label>{" "}
-                          <span className="text-danger">*</span>
-                          <textarea
-                            className="form-control floating"
-                            name="description"
-                            placeholder="Description"
-                            value={description}
-                            onChange={handleDescriptionChange}
-                            style={{ height: "70px" }}
-                          />
-                          {descriptionError && <p className="error-message">{descriptionError}</p>}
-                        </div>
-                      </div>
-                    </div>
+                    )}
                     <div className="submit-section">
-                      <button type="submit" className="btn btn-primary submit-btn">
-                        {selectedHouse[indexToEdit]?.id ? "Update" : "Save"}
-                      </button>
+                      {/* Pagination controls */}
+                      {currentPage > 1 && (
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handlePreviousPage}
+                        >
+                          Previous
+                        </button>
+                      )}
+                      {currentPage < 3 && (
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={handleNextPage}
+                        >
+                          Next
+                        </button>
+                      )}
+                      {currentPage === 3 && (
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                        >
+                          {selectedHouse[indexToEdit]?.id ? "Update" : "Save"}
+                        </button>
+                      )}
                     </div>
                   </form>
                 </div>

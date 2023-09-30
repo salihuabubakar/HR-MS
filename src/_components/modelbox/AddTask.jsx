@@ -17,6 +17,7 @@ import {
   useHouseFetching 
 } from "../../utils/employeeCustomFetchHook";
 import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
+import { isMobile } from "../../utils/mediaQuery";
 
 
 const AddTask = ({
@@ -108,43 +109,7 @@ const AddTask = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validate first name and last name
-    if (name === "") {
-      setTaskTitleError("Task Name is required.");
-      return;
-    }
-    if (managers.length === 0) {
-      setManagerError("Manager is required.");
-      return;
-    }
-    // if (hours === "") {
-    //   setTimeAllocatedError("Allocated Hour is required.");
-    //   return;
-    // }
-    if (task_duration === "") {
-      setDurationError("Task Duration is required.");
-      return;
-    }
-    if (priority === "") {
-      setTaskPriorityError("Task Priority is required.");
-      return;
-    }
-    if (progress === "") {
-      setTaskStatusError("Task Progress is required.");
-      return;
-    }
-    if (start_at === "") {
-      setStartAtError("Start Date/Time is required.");
-      return;
-    }
-    if (end_at === "") {
-      setEndAtError("End Date/Time is required.");
-      return;
-    }
-    if (employees.length === 0) {
-      setEmployeeError("Employee is required.");
-      return;
-    }
+
     if (residents.length === 0) {
       setResidentError("Resident is required.");
       return;
@@ -162,16 +127,6 @@ const AddTask = ({
       return;
     }
 
-    // Clear any existing error messages
-    setTaskPriorityError("");
-    setTaskTitleError("");
-    setStartAtError("");
-    setEndAtError("");
-    // setTimeAllocatedError("");
-    setTaskStatusError("");
-    setDescriptionError("");
-    setManagerError("");
-    setEmployeeError("");
     setHouseError("");
     setBoroughError("");
     setDurationError("");
@@ -393,12 +348,70 @@ const AddTask = ({
       }));
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleNextPage = () => {
+    // Validate first name and last name
+    if (name === "") {
+      setTaskTitleError("Task Name is required.");
+      return;
+    }
+    if (managers.length === 0) {
+      setManagerError("Manager is required.");
+      return;
+    }
+    // if (hours === "") {
+    //   setTimeAllocatedError("Allocated Hour is required.");
+    //   return;
+    // }
+    if (task_duration === "") {
+      setDurationError("Task Duration is required.");
+      return;
+    }
+    if (priority === "") {
+      setTaskPriorityError("Task Priority is required.");
+      return;
+    }
+    if (progress === "") {
+      setTaskStatusError("Task Progress is required.");
+      return;
+    }
+    if (start_at === "") {
+      setStartAtError("Start Date/Time is required.");
+      return;
+    }
+    if (end_at === "") {
+      setEndAtError("End Date/Time is required.");
+      return;
+    }
+    if (employees.length === 0) {
+      setEmployeeError("Employee is required.");
+      return;
+    }
+
+    // Clear any existing error messages
+    setTaskPriorityError("");
+    setTaskTitleError("");
+    setStartAtError("");
+    setEndAtError("");
+    // setTimeAllocatedError("");
+    setTaskStatusError("");
+    setDescriptionError("");
+    setManagerError("");
+    setEmployeeError("");
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
 
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer top={true} className="custom-modal" role="dialog">
+          <PopupContainer top={ isMobile() && true} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -419,353 +432,381 @@ const AddTask = ({
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form>
-                    <div className="row">
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Task Title <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={name}
-                            onChange={handleTaskNameChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Task Name"
-                          />
-                          {taskTitleError && (
-                            <p className="error-message">{taskTitleError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select Manager{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={getManagerDefaultValues()}
-                            onChange={handleManagerChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={manager}
-                            isLoading={allEmployeeLoading}
-                            styles={customSelectStyles}
-                            getOptionValue={(option) => option.id}
-                            getOptionLabel={(option) =>
-                              option.first_name +
-                              " " +
-                              option.middle_name +
-                              " " +
-                              option.last_name
-                            }
-                            placeholder="Select Manager"
-                          />
-                          {managerError && (
-                            <p className="error-message">{managerError}</p>
-                          )}
-                        </div>
-                      </div>
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Task-type</label>
-                          <RadioBtn>
-                            <input
-                              type="checkbox"
-                              name="task-type"
-                              checked={is_paid}
-                              id="paid"
-                              placeholder={"Paid"}
-                              onChange={handleTaskTypeChange}
-                            />
-                            <label htmlFor="paid">
-                              <span>Paid</span>
-                            </label>
-                          </RadioBtn>
-                        </div>
-                      </div> */}
-                      {currentTaskId && (
+                  <form onSubmit={handleSubmit}>
+                    {currentPage === 1 && (
+                      <div className='row'>
                         <div className="col-sm-6">
                           <div className="form-group">
-                            <label className="label">Task-Concluded</label>
+                            <label className="label">
+                              Task Title <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={name}
+                              onChange={handleTaskNameChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Task Name"
+                            />
+                            {taskTitleError && (
+                              <p className="error-message">{taskTitleError}</p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Select Manager{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <Select
+                              defaultValue={getManagerDefaultValues()}
+                              onChange={handleManagerChange}
+                              isMulti
+                              closeMenuOnSelect={false}
+                              options={manager}
+                              isLoading={allEmployeeLoading}
+                              styles={customSelectStyles}
+                              getOptionValue={(option) => option.id}
+                              getOptionLabel={(option) =>
+                                option.first_name +
+                                " " +
+                                option.middle_name +
+                                " " +
+                                option.last_name
+                              }
+                              placeholder="Select Manager"
+                            />
+                            {managerError && (
+                              <p className="error-message">{managerError}</p>
+                            )}
+                          </div>
+                        </div>
+                        {/* <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">Task-type</label>
                             <RadioBtn>
                               <input
                                 type="checkbox"
-                                name="task-concluded"
-                                checked={concluded}
-                                id="concluded"
-                                placeholder={"Concluded"}
-                                onChange={handleTaskConcludedChange}
+                                name="task-type"
+                                checked={is_paid}
+                                id="paid"
+                                placeholder={"Paid"}
+                                onChange={handleTaskTypeChange}
                               />
-                              <label htmlFor="concluded">
-                                <span>Concluded</span>
+                              <label htmlFor="paid">
+                                <span>Paid</span>
                               </label>
                             </RadioBtn>
                           </div>
+                        </div> */}
+                        {currentTaskId && (
+                          <div className="col-sm-6">
+                            <div className="form-group">
+                              <label className="label">Task-Concluded</label>
+                              <RadioBtn>
+                                <input
+                                  type="checkbox"
+                                  name="task-concluded"
+                                  checked={concluded}
+                                  id="concluded"
+                                  placeholder={"Concluded"}
+                                  onChange={handleTaskConcludedChange}
+                                />
+                                <label htmlFor="concluded">
+                                  <span>Concluded</span>
+                                </label>
+                              </RadioBtn>
+                            </div>
+                          </div>
+                        )}
+                        {/* <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Hours Allocation{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={hours}
+                              onChange={handleHoursChange}
+                              className="form-control floating"
+                              type="number"
+                              placeholder="Hours allocation"
+                              min={0}
+                            />
+                            {timeAllocatedError && (
+                              <p className="error-message">
+                                {timeAllocatedError}
+                              </p>
+                            )}
+                          </div>
+                        </div> */}
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Task Duration <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={task_duration}
+                              onChange={handleDurationChange}
+                              className="form-control floating"
+                              type="number"
+                              placeholder="Task Duration"
+                              min={0}
+                            />
+                            {durationError && (
+                              <p className="error-message">{durationError}</p>
+                            )}
+                          </div>
                         </div>
-                      )}
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Hours Allocation{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={hours}
-                            onChange={handleHoursChange}
-                            className="form-control floating"
-                            type="number"
-                            placeholder="Hours allocation"
-                            min={0}
-                          />
-                          {timeAllocatedError && (
-                            <p className="error-message">
-                              {timeAllocatedError}
-                            </p>
-                          )}
-                        </div>
-                      </div> */}
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Task Duration <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={task_duration}
-                            onChange={handleDurationChange}
-                            className="form-control floating"
-                            type="number"
-                            placeholder="Task Duration"
-                            min={0}
-                          />
-                          {durationError && (
-                            <p className="error-message">{durationError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select Task Priority{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <select
-                            value={priority}
-                            onChange={handlePriorityChange}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select Priority
-                            </option>
-                            <option value="high">High</option>
-                            <option value="medium">Medium</option>
-                            <option value="low">Low</option>
-                          </select>
-                          {taskPriorityError && (
-                            <p className="error-message">{taskPriorityError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Task Progress <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={progress}
-                            onChange={handleProgresChange}
-                            className="form-control floating"
-                            type="number"
-                            placeholder="Progress"
-                            min={0}
-                          />
-                          {taskStatusError && (
-                            <p className="error-message">{taskStatusError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Task Start At <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={start_at}
-                            onChange={handleStartAtChange}
-                            className="form-control floating"
-                            type="datetime-local"
-                            placeholder="Start At"
-                          />
-                          {startAtError && (
-                            <p className="error-message">{startAtError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">Task End At <span className="text-danger">*</span></label>
-                          <input
-                            value={end_at}
-                            onChange={handleEndAtChange}
-                            className="form-control floating"
-                            type="datetime-local"
-                            placeholder="End At"
-                          />
-                          {endAtError && (
-                            <p className="error-message">{endAtError}</p>
-                          )}
-                        </div>
-                      </div>
-                      {/* <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">House</label>
-                          <select
-                            value={employee}
-                            onChange={handleHouseEmployeeChange}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select Employee
-                            </option>
-                            {allEmployee?.map((employee) => (
-                              <option key={employee.id} value={employee.id}>
-                                {`${employee.first_name} ${employee.middle_name} ${employee.last_name}`}
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Select Task Priority{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <select
+                              value={priority}
+                              onChange={handlePriorityChange}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select Priority
                               </option>
-                            ))}
-                          </select>
+                              <option value="high">High</option>
+                              <option value="medium">Medium</option>
+                              <option value="low">Low</option>
+                            </select>
+                            {taskPriorityError && (
+                              <p className="error-message">{taskPriorityError}</p>
+                            )}
+                          </div>
                         </div>
-                      </div> */}
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select Employees{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={getEmployeeDefaultValues()}
-                            onChange={handleEmployeeChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={users}
-                            isLoading={allEmployeeLoading}
-                            styles={customSelectStyles}
-                            getOptionValue={(option) => option.id}
-                            getOptionLabel={(option) =>
-                              option.first_name +
-                              " " +
-                              option.middle_name +
-                              " " +
-                              option.last_name
-                            }
-                            placeholder="Select Employees"
-                          />
-                          {employeeError && (
-                            <p className="error-message">{employeeError}</p>
-                          )}
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Task Progress <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={progress}
+                              onChange={handleProgresChange}
+                              className="form-control floating"
+                              type="number"
+                              placeholder="Progress"
+                              min={0}
+                            />
+                            {taskStatusError && (
+                              <p className="error-message">{taskStatusError}</p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select Resident{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={getResidentefaultValues()}
-                            onChange={handleResidentChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={resident}
-                            isLoading={isResidentLoading}
-                            styles={customSelectStyles}
-                            getOptionValue={(option) => option.id}
-                            getOptionLabel={(option) =>
-                              option.first_name +
-                              " " +
-                              option.middle_name +
-                              " " +
-                              option.last_name
-                            }
-                            placeholder="Select Resident"
-                          />
-                          {residentError && (
-                            <p className="error-message">{residentError}</p>
-                          )}
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Task Start At <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={start_at}
+                              onChange={handleStartAtChange}
+                              className="form-control floating"
+                              type="datetime-local"
+                              placeholder="Start At"
+                            />
+                            {startAtError && (
+                              <p className="error-message">{startAtError}</p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select House{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={getHouseDefaultValues()}
-                            onChange={handleHouseResChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={house}
-                            isLoading={isHouseDataLoading}
-                            styles={customSelectStyles}
-                            getOptionValue={(option) => option.id}
-                            getOptionLabel={(option) => option.name }
-                            placeholder="Select House"
-                          />
-                          {houseError && (
-                            <p className="error-message">{houseError}</p>
-                          )}
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">Task End At <span className="text-danger">*</span></label>
+                            <input
+                              value={end_at}
+                              onChange={handleEndAtChange}
+                              className="form-control floating"
+                              type="datetime-local"
+                              placeholder="End At"
+                            />
+                            {endAtError && (
+                              <p className="error-message">{endAtError}</p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="label">
-                            Select Borough{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={getBoroughDefaultValues()}
-                            onChange={handleBoroughResChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={borough}
-                            isLoading={isResidentBoroughLoading}
-                            styles={customSelectStyles}
-                            getOptionValue={(option) => option.id}
-                            getOptionLabel={(option) => option.borough_name }
-                            placeholder="Select Borough"
-                          />
-                          {boroughError && (
-                            <p className="error-message">{boroughError}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="col-sm-12">
-                        <div className="form-group">
-                          <label className="label">
-                            Description <span className="text-danger">*</span>
-                          </label>
-                          <textarea
-                            className="form-control floating"
-                            name="description"
-                            placeholder="Description"
-                            value={description}
-                            onChange={handleDescriptionChange}
-                            style={{ height: "120px" }}
-                          />
-                          {descriptionError && (
-                            <p className="error-message">{descriptionError}</p>
-                          )}
+                        {/* <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">House</label>
+                            <select
+                              value={employee}
+                              onChange={handleHouseEmployeeChange}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select Employee
+                              </option>
+                              {allEmployee?.map((employee) => (
+                                <option key={employee.id} value={employee.id}>
+                                  {`${employee.first_name} ${employee.middle_name} ${employee.last_name}`}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div> */}
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Select Employees{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <Select
+                              defaultValue={getEmployeeDefaultValues()}
+                              onChange={handleEmployeeChange}
+                              isMulti
+                              closeMenuOnSelect={false}
+                              options={users}
+                              isLoading={allEmployeeLoading}
+                              styles={customSelectStyles}
+                              getOptionValue={(option) => option.id}
+                              getOptionLabel={(option) =>
+                                option.first_name +
+                                " " +
+                                option.middle_name +
+                                " " +
+                                option.last_name
+                              }
+                              placeholder="Select Employees"
+                            />
+                            {employeeError && (
+                              <p className="error-message">{employeeError}</p>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
+                    {currentPage === 2 && (
+                      <div className='row'>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Select Resident{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <Select
+                              defaultValue={getResidentefaultValues()}
+                              onChange={handleResidentChange}
+                              isMulti
+                              closeMenuOnSelect={false}
+                              options={resident}
+                              isLoading={isResidentLoading}
+                              styles={customSelectStyles}
+                              getOptionValue={(option) => option.id}
+                              getOptionLabel={(option) =>
+                                option.first_name +
+                                " " +
+                                option.middle_name +
+                                " " +
+                                option.last_name
+                              }
+                              placeholder="Select Resident"
+                            />
+                            {residentError && (
+                              <p className="error-message">{residentError}</p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Select House{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <Select
+                              defaultValue={getHouseDefaultValues()}
+                              onChange={handleHouseResChange}
+                              isMulti
+                              closeMenuOnSelect={false}
+                              options={house}
+                              isLoading={isHouseDataLoading}
+                              styles={customSelectStyles}
+                              getOptionValue={(option) => option.id}
+                              getOptionLabel={(option) => option.name }
+                              placeholder="Select House"
+                            />
+                            {houseError && (
+                              <p className="error-message">{houseError}</p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="label">
+                              Select Borough{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <Select
+                              defaultValue={getBoroughDefaultValues()}
+                              onChange={handleBoroughResChange}
+                              isMulti
+                              closeMenuOnSelect={false}
+                              options={borough}
+                              isLoading={isResidentBoroughLoading}
+                              styles={customSelectStyles}
+                              getOptionValue={(option) => option.id}
+                              getOptionLabel={(option) => option.borough_name }
+                              placeholder="Select Borough"
+                            />
+                            {boroughError && (
+                              <p className="error-message">{boroughError}</p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <div className="form-group">
+                            <label className="label">
+                              Description <span className="text-danger">*</span>
+                            </label>
+                            <textarea
+                              className="form-control floating"
+                              name="description"
+                              placeholder="Description"
+                              value={description}
+                              onChange={handleDescriptionChange}
+                              style={{ height: "120px" }}
+                            />
+                            {descriptionError && (
+                              <p className="error-message">{descriptionError}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="submit-section">
-                      <button
-                        onClick={handleSubmit}
-                        className="btn btn-primary submit-btn"
-                      >
-                        {currentTaskId ? "Update" : "Save"}
-                      </button>
+                      {/* Pagination controls */}
+                      {currentPage > 1 && (
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handlePreviousPage}
+                        >
+                          Previous
+                        </button>
+                      )}
+                      {currentPage < 2 && (
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={handleNextPage}
+                        >
+                          Next
+                        </button>
+                      )}
+                      {currentPage === 2 && (
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                        >
+                          {currentTaskId ? "Update" : "Save"}
+                        </button>
+                      )}
                     </div>
                   </form>
                 </div>

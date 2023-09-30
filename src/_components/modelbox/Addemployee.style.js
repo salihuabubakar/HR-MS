@@ -92,6 +92,16 @@ export const PopupContainer = styled.div`
   .btn {
     margin: 0 5px;
   }
+
+  .col-sm-6, .col-sm-12 {
+    padding: 0 2px;
+    margin: 0;
+  }
+
+  form {
+    margin: 0 2px;
+    padding: 0;
+  }
 `;
 
 
