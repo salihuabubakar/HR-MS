@@ -86,3 +86,15 @@
   /* max-height: 400px; Set a maximum height if needed */
 }
 
+
+.col-sm-6 {
+  padding: 0;
+  margin: 0;
+}
+
+form {
+  margin: 0;
+  padding: 0;
+}
+
+
