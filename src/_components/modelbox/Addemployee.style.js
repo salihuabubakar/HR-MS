@@ -87,6 +87,10 @@ export const PopupContainer = styled.div`
       background-color: #559e68;
     }
   }
+
+  .btn {
+    margin: 0 5px;
+  }
 `;
 
 
