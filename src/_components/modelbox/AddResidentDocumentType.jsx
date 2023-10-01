@@ -27,8 +27,6 @@ const AddResidentDocumentType = ({
     selectedResidentDocumentType[indexToEdit]?.description || ""
   );
 
-
- 
   const [docTypeError, setDocTypeError] = useState("");
 
 

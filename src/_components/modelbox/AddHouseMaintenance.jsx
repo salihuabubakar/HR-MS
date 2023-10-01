@@ -13,7 +13,6 @@ import {
   useOrganisationFetching
 } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();

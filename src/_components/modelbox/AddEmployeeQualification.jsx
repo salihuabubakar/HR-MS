@@ -6,7 +6,6 @@ import {
   Card,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddEmployeeQualification = ({
   employeeQualificationIndexToEdit,

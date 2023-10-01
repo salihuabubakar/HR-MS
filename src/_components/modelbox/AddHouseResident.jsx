@@ -8,7 +8,6 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import { useResidentFetching } from '../../utils/employeeCustomFetchHook';
-import { isMobile } from '../../utils/mediaQuery';
 
 const AddHouseResident = ({
   house,

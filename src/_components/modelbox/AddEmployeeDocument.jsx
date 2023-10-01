@@ -8,7 +8,6 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { RadioBtn } from "./styles";
 import { useEmployeeDocumentTypeFetching } from "../../utils/employeeCustomFetchHook";
-import { isMobile } from "../../utils/mediaQuery";
 const AddEmployeeDocument = ({
   employeeDocumentIndexToEdit,
   id,

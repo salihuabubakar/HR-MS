@@ -11,7 +11,6 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddResidentIncident = ({
   indexToEdit,

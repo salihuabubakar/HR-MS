@@ -6,7 +6,6 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { useGpracticeFetching } from "../../utils/employeeCustomFetchHook";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddResidentGpModal = ({
   residentGpIndexToEdit,

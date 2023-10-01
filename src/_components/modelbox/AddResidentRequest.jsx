@@ -9,7 +9,6 @@ import {
   useHouseFetching,
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { isMobile } from "../../utils/mediaQuery";
 const AddResidentVisitor = ({
   indexToEdit,
   id,

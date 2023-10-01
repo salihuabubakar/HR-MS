@@ -8,7 +8,6 @@ import {
 } from "./Addemployee.style";
 import "./style.css";
 import { useOrganisationFetching, useRoleFetching, useDepartmentFetching } from "../../utils/employeeCustomFetchHook";
-import { isMobile } from "../../utils/mediaQuery";
 
 const Addemployee = ({
   dispatchEmployee,

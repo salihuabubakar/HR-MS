@@ -17,7 +17,6 @@ import {
   useHouseFetching 
 } from "../../utils/employeeCustomFetchHook";
 import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
-import { isMobile } from "../../utils/mediaQuery";
 
 
 const AddTask = ({
