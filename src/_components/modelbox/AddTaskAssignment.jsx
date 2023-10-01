@@ -8,7 +8,6 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
 import { useDataFetching, useResidentFetching, useTaskDocumentFetching } from "../../utils/employeeCustomFetchHook";
 import TextEditor from "../TextEditor";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddTaskAssignment = ({ 
   dispatchTaskAssignment, 

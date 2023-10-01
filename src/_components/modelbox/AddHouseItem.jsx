@@ -10,7 +10,6 @@ import {
   useHouseDocumentFetching,
 } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
-import { isMobile } from "../../utils/mediaQuery";
 
 
 const AddHouseItem = ({ dispatchItem, itemIndexToEdit, house, id }) => {

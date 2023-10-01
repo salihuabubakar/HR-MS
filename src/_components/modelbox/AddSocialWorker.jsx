@@ -6,7 +6,6 @@ import {
 } from "./Addemployee.style";
 import { useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddSocialWorker = ({
   indexToEdit,

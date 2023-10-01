@@ -7,7 +7,6 @@ import {
 } from "./Addemployee.style";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddStatus = ({
   indexToEdit,
