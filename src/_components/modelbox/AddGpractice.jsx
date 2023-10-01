@@ -6,6 +6,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { useGpTypeFetching } from "../../utils/employeeCustomFetchHook";
+import { isMobile } from "../../utils/mediaQuery";
 
 const AddGpractice = ({
   indexToEdit,
@@ -86,7 +87,7 @@ const AddGpractice = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer  className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

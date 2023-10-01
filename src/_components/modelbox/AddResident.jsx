@@ -18,6 +18,7 @@ import {
   useResidentLegalStatusTypeFetching 
 } from "../../utils/employeeCustomFetchHook";
 import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
+import { isMobile } from "../../utils/mediaQuery";
 
 const AddResident = ({
   dispatchResident,
@@ -124,18 +125,6 @@ const AddResident = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validate first name and last name
-    if (first_name === "") {
-      setFirstNameError("First name is required.");
-      return;
-    }
-    if (last_name === "") {
-      setLastNameError("Last name is required.");
-      return;
-    }
-    if (gender === "") {
-      setGenderError("Gender is required.");
-      return;
-    }
     if (nationality === "") {
       setNationalityError("Nationality is required.");
       return;
@@ -146,9 +135,6 @@ const AddResident = ({
     }
 
     // // Clear any existing error messages
-    setFirstNameError("");
-    setLastNameError("");
-    setGenderError("");
     setNationalityError("");
     setKeyWorkerError("");
 
@@ -284,12 +270,40 @@ const AddResident = ({
     setLegalStatus(data);
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleNextPage = () => {
+    // Validate first name and last name
+    if (first_name === "") {
+      setFirstNameError("First name is required.");
+      return;
+    }
+    if (last_name === "") {
+      setLastNameError("Last name is required.");
+      return;
+    }
+    if (gender === "") {
+      setGenderError("Gender is required.");
+      return;
+    }
+
+    // // Clear any existing error messages
+    setFirstNameError("");
+    setLastNameError("");
+    setGenderError("");
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
   return (
     <>
       {/* Add Employee Modal */}
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer top={true} className="custom-modal" role="dialog">
+          <PopupContainer  className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -305,341 +319,375 @@ const AddResident = ({
                 </div>
                 <div className="modal-body">
                   <form onSubmit={handleSubmit}>
-                    <div className="row">
-                      <div className="col-sm-12">
-                        <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
-                          <img
-                            style={{ borderRadius: "5px" }}
-                            className="inline-block"
-                            src={photo ? URL.createObjectURL(photo) : imageUrlFromServer}
-                            alt="resident_image"
-                          />
-                          <div className="fileupload btn">
-                            <span className="btn-text">{isIdExist ? "Update" : "Upload"}</span>
+                    {currentPage === 1 && (
+                      <div className='row'>
+                        <div className="col-sm-12">
+                          <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
+                            <img
+                              style={{ borderRadius: "5px" }}
+                              className="inline-block"
+                              src={photo ? URL.createObjectURL(photo) : imageUrlFromServer}
+                              alt="resident_image"
+                            />
+                            <div className="fileupload btn">
+                              <span className="btn-text">{isIdExist ? "Update" : "Upload"}</span>
+                              <input
+                                className="upload"
+                                type="file"
+                                accept="image/*"
+                                onChange={imageOnChange}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              First Name <span className="text-danger">*</span>
+                            </label>
                             <input
-                              className="upload"
-                              type="file"
-                              accept="image/*"
-                              onChange={imageOnChange}
+                              value={first_name}
+                              onChange={handleFirstNameChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="First Name"
+                            />
+                            {firstNameError && <p className="error-message">{firstNameError}</p>}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Last Name <span className="text-danger">*</span>
+                            </label>
+                            <input
+                              value={last_name}
+                              onChange={handleLastNameChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Last Name"
+                            />
+                            {lastNameError && <p className="error-message">{lastNameError}</p>}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Middle Name</label>
+                            <input
+                              value={middle_name}
+                              onChange={(event) => setMiddleName(event.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Middle Name"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Gender</label>{" "}
+                            <span className="text-danger">*</span>
+                            <select
+                              value={gender}
+                              onChange={handleGenderChange}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select
+                              </option>
+                              <option value="Male">Male</option>
+                              <option value="Female">Female</option>
+                              <option value="Other">Other</option>
+                            </select>
+                            {genderError && <p className="error-message">{genderError}</p>}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Address</label>
+                            <input
+                              value={address}
+                              onChange={(event) => setAddress(event.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Address"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Email</label>
+                            <input
+                              value={email}
+                              onChange={(event) => setEmail(event.target.value)}
+                              className="form-control floating"
+                              type="email"
+                              placeholder="Email"
                             />
                           </div>
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            First Name <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={first_name}
-                            onChange={handleFirstNameChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="First Name"
-                          />
-                          {firstNameError && <p className="error-message">{firstNameError}</p>}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Last Name <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={last_name}
-                            onChange={handleLastNameChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Last Name"
-                          />
-                          {lastNameError && <p className="error-message">{lastNameError}</p>}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Middle Name</label>
-                          <input
-                            value={middle_name}
-                            onChange={(event) => setMiddleName(event.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Middle Name"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Gender</label>{" "}
-                          <span className="text-danger">*</span>
-                          <select
-                            value={gender}
-                            onChange={handleGenderChange}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select
-                            </option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                          </select>
-                          {genderError && <p className="error-message">{genderError}</p>}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Address</label>
-                          <input
-                            value={address}
-                            onChange={(event) => setAddress(event.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Address"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Email</label>
-                          <input
-                            value={email}
-                            onChange={(event) => setEmail(event.target.value)}
-                            className="form-control floating"
-                            type="email"
-                            placeholder="Email"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Date of Birth</label>
-                          <input
-                            value={date_of_birth}
-                            onChange={(event) => setDateOfBirth(event.target.value)}
-                            className="form-control floating"
-                            type="date"
-                            placeholder="Date of Birth"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Eye Colour</label>
-                          <input
-                            value={eye_colour}
-                            onChange={(event) => setEyeColour(event.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Eye Colour"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Hair Colour</label>
-                          <input
-                            value={hair_colour}
-                            onChange={(event) => setHairColour(event.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Hair Colour"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Height</label>
-                          <input
-                            value={height}
-                            onChange={(event) => setHeight(event.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="e.g 170cm"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Weight</label>
-                          <input
-                            value={weight}
-                            onChange={(event) => setWeight(event.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="e.g 93 kg"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Glasses</label>
-                          <select
-                            value={glasses}
-                            onChange={(e) => setGlasses(e.target.value)}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select Yes/No
-                            </option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Tattoos</label>
-                          <select
-                            value={tattoos}
-                            onChange={(e) => setTattoos(e.target.value)}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select Yes/No
-                            </option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Piercings</label>
-                          <select
-                            value={piercings}
-                            onChange={(e) => setPiercing(e.target.value)}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">
-                              Select Yes/No
-                            </option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Legal Status</label>
-                          <select
-                            value={legal_status}
-                            onChange={handleLegalStatusChange}
-                            className="form-control floating"
-                          >
-                            <option disabled value="">Select Legal Status</option>
-                            {residentLegalStatusTypeData?.map(lgs => {
-                              return (
-                                <option key={lgs.id} value={lgs.id}>{lgs.legal_status_name}</option>
-                              )
-                            })}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Nationality</label>{" "}
-                          <span className="text-danger">*</span>
-                          <input
-                            value={nationality}
-                            onChange={handleNationalityChange}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Nationality"
-                          />
-                          {nationalityError && <p className="error-message">{nationalityError}</p>}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Phone Number</label>
-                          <input
-                            value={phone_number}
-                            onChange={(event) => setPhoneNumber(event.target.value)}
-                            className="form-control floating"
-                            type="text"
-                            placeholder="Phone Number"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Select Key Worker
-                          </label> <span className="text-danger">*</span>
-                          <Select
-                            defaultValue={getEmployeeDefaultValues()}
-                            onChange={handleKeyworkerChange}
-                            isMulti
-                            closeMenuOnSelect={false}
-                            options={employeesData}
-                            isLoading={allEmployeeLoading}
-                            styles={customSelectStyles}
-                            getOptionValue={(option) => option.id}
-                            getOptionLabel={(option) =>
-                              option.first_name +
-                              " " +
-                              option.middle_name +
-                              " " +
-                              option.last_name
-                            }
-                            placeholder="Select Key Worker"
-                          />
-                          {keyWorkerError && <p className="error-message">{keyWorkerError}</p>}
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">Subject Child Protection</label>
-                          <RadioBtn>
+                    )}
+                    {currentPage === 2 && (
+                      <div className='row'>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Date of Birth</label>
                             <input
-                              type="checkbox"
-                              name="Subject_child_protection"
-                              checked={Subject_child_protection}
-                              id="Subject_child_protection"
-                              placeholder="Subject Child Protection"
-                              onChange={(e) => setSubjectChildProtection(e.target.checked)}
+                              value={date_of_birth}
+                              onChange={(event) => setDateOfBirth(event.target.value)}
+                              className="form-control floating"
+                              type="date"
+                              placeholder="Date of Birth"
                             />
-                            <label htmlFor="Subject_child_protection">
-                              <span>Subject Child Protection</span>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Eye Colour</label>
+                            <input
+                              value={eye_colour}
+                              onChange={(event) => setEyeColour(event.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Eye Colour"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Hair Colour</label>
+                            <input
+                              value={hair_colour}
+                              onChange={(event) => setHairColour(event.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Hair Colour"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Height</label>
+                            <input
+                              value={height}
+                              onChange={(event) => setHeight(event.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="e.g 170cm"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Weight</label>
+                            <input
+                              value={weight}
+                              onChange={(event) => setWeight(event.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="e.g 93 kg"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Glasses</label>
+                            <select
+                              value={glasses}
+                              onChange={(e) => setGlasses(e.target.value)}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select Yes/No
+                              </option>
+                              <option value="Yes">Yes</option>
+                              <option value="No">No</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Tattoos</label>
+                            <select
+                              value={tattoos}
+                              onChange={(e) => setTattoos(e.target.value)}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select Yes/No
+                              </option>
+                              <option value="Yes">Yes</option>
+                              <option value="No">No</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Piercings</label>
+                            <select
+                              value={piercings}
+                              onChange={(e) => setPiercing(e.target.value)}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">
+                                Select Yes/No
+                              </option>
+                              <option value="Yes">Yes</option>
+                              <option value="No">No</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {currentPage === 3 && (
+                      <div className='row'>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Legal Status</label>
+                            <select
+                              value={legal_status}
+                              onChange={handleLegalStatusChange}
+                              className="form-control floating"
+                            >
+                              <option disabled value="">Select Legal Status</option>
+                              {residentLegalStatusTypeData?.map(lgs => {
+                                return (
+                                  <option key={lgs.id} value={lgs.id}>{lgs.legal_status_name}</option>
+                                )
+                              })}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Nationality</label>{" "}
+                            <span className="text-danger">*</span>
+                            <input
+                              value={nationality}
+                              onChange={handleNationalityChange}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Nationality"
+                            />
+                            {nationalityError && <p className="error-message">{nationalityError}</p>}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Phone Number</label>
+                            <input
+                              value={phone_number}
+                              onChange={(event) => setPhoneNumber(event.target.value)}
+                              className="form-control floating"
+                              type="text"
+                              placeholder="Phone Number"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Select Key Worker
+                            </label> <span className="text-danger">*</span>
+                            <Select
+                              defaultValue={getEmployeeDefaultValues()}
+                              onChange={handleKeyworkerChange}
+                              isMulti
+                              closeMenuOnSelect={false}
+                              options={employeesData}
+                              isLoading={allEmployeeLoading}
+                              styles={customSelectStyles}
+                              getOptionValue={(option) => option.id}
+                              getOptionLabel={(option) =>
+                                option.first_name +
+                                " " +
+                                option.middle_name +
+                                " " +
+                                option.last_name
+                              }
+                              placeholder="Select Key Worker"
+                            />
+                            {keyWorkerError && <p className="error-message">{keyWorkerError}</p>}
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">Subject Child Protection</label>
+                            <RadioBtn>
+                              <input
+                                type="checkbox"
+                                name="Subject_child_protection"
+                                checked={Subject_child_protection}
+                                id="Subject_child_protection"
+                                placeholder="Subject Child Protection"
+                                onChange={(e) => setSubjectChildProtection(e.target.checked)}
+                              />
+                              <label htmlFor="Subject_child_protection">
+                                <span>Subject Child Protection</span>
+                              </label>
+                            </RadioBtn>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="col-form-label">
+                              Select Borough
                             </label>
-                          </RadioBtn>
+                            <Select
+                              defaultValue={getBoroughDefaultValues()}
+                              onChange={handleBoroughChange}
+                              options={boroughData}
+                              isLoading={isResidentBoroughLoading}
+                              styles={customSelectStyles}
+                              getOptionValue={(option) => option.id}
+                              getOptionLabel={(option) =>option.borough_name}
+                              placeholder="Select Borough"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-12">
+                          <div className="form-group">
+                            <label className="label">Comment</label>
+                            <textarea
+                              className="form-control floating"
+                              name="comment"
+                              placeholder="Comment"
+                              value={Any_comment}
+                              onChange={(e) => setAnyComment(e.target.value)}
+                              style={{ height: "70px" }}
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Select Borough
-                          </label>
-                          <Select
-                            defaultValue={getBoroughDefaultValues()}
-                            onChange={handleBoroughChange}
-                            options={boroughData}
-                            isLoading={isResidentBoroughLoading}
-                            styles={customSelectStyles}
-                            getOptionValue={(option) => option.id}
-                            getOptionLabel={(option) =>option.borough_name}
-                            placeholder="Select Borough"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-12">
-                        <div className="form-group">
-                          <label className="label">Comment</label>
-                          <textarea
-                            className="form-control floating"
-                            name="comment"
-                            placeholder="Comment"
-                            value={Any_comment}
-                            onChange={(e) => setAnyComment(e.target.value)}
-                            style={{ height: "70px" }}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    )}
                     <div className="submit-section">
-                      <button type="submit" className="btn btn-primary submit-btn">
-                        {isIdExist ? "Update" : "Save"}
-                      </button>
+                      {/* Pagination controls */}
+                      {currentPage > 1 && (
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handlePreviousPage}
+                        >
+                          Previous
+                        </button>
+                      )}
+                      {currentPage < 3 && (
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={handleNextPage}
+                        >
+                          Next
+                        </button>
+                      )}
+                      {currentPage === 3 && (
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                        >
+                          {isIdExist ? "Update" : "Save"}
+                        </button>
+                      )}
                     </div>
                   </form>
                 </div>
