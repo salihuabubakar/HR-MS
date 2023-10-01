@@ -5,6 +5,7 @@ import {
   PopupWrapper,
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { isMobile } from "../../utils/mediaQuery";
 
 const AddBorough = ({
   indexToEdit,
@@ -104,7 +105,7 @@ const AddBorough = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer  className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

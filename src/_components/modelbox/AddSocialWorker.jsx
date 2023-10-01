@@ -6,6 +6,7 @@ import {
 } from "./Addemployee.style";
 import { useResidentBoroughFetching } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { isMobile } from "../../utils/mediaQuery";
 
 const AddSocialWorker = ({
   indexToEdit,
@@ -105,7 +106,7 @@ const AddSocialWorker = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer  className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -114,8 +115,8 @@ const AddSocialWorker = ({
                 <div className="modal-header">
                   <h5 className="modal-title">
                     {selectedSocialWorker[indexToEdit]?.id
-                      ? "Edit Borough"
-                      : "Add Borough"}
+                      ? "Edit Social Worker"
+                      : "Add Social Worker"}
                   </h5>
                   <button
                     type="button"

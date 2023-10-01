@@ -9,6 +9,7 @@ import {
   useHouseFetching,
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
+import { isMobile } from "../../utils/mediaQuery";
 const AddResidentVisitor = ({
   indexToEdit,
   id,
@@ -158,7 +159,7 @@ const AddResidentVisitor = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer  className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

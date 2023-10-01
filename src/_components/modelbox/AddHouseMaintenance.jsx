@@ -228,7 +228,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer top={ isMobile() && true} className="custom-modal" role="dialog">
+          <PopupContainer  className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
