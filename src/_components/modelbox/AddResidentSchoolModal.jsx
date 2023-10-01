@@ -7,6 +7,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { useSchoolFetching } from "../../utils/employeeCustomFetchHook";
+import { isMobile } from "../../utils/mediaQuery";
 
 const AddResidentSchoolModal = ({
   residentSchoolIndexToEdit,
@@ -69,7 +70,7 @@ const AddResidentSchoolModal = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer  className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

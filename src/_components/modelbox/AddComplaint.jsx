@@ -10,6 +10,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
+import { isMobile } from "../../utils/mediaQuery";
 
 const AddComplaint = ({
   indexToEdit,
@@ -164,7 +165,7 @@ const AddComplaint = ({
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer  className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
