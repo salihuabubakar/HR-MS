@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const TextEditor = ({ report, setReport }) => {
+const TextEditor = ({ setDescriptionError, report, setReport }) => {
 
   const modules = {
     toolbar: [
@@ -37,6 +37,7 @@ const TextEditor = ({ report, setReport }) => {
 
   const handleChange = (value) => {
     setReport(value)
+    setDescriptionError("")
   };
 
   return (

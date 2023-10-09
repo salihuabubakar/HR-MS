@@ -3632,3 +3632,66 @@ export const add_update_delete_gPractice = async (state, { type, payload }) => {
   }
 };
 
+// Add - Update - Delete Shift state
+export const add_update_delete_Career = async (state, { type, payload }) => {
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${BaseUrl}/careers/jobs/`, payload);
+
+        // Check the response status
+        if (response.status === 201) {
+          toast.success("Career Added", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting career:", error);
+        setGlobalState("careerError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while posting career");
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(`${BaseUrl}/careers/jobs/${payload.id}/`, payload);
+
+        // Check the response status
+        if (response.status === 200) {
+          toast.success("Career Updated", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to update data");
+        }
+      } catch (error) {
+        console.error("Error occurred while updating career:", error);
+        setGlobalState("careerError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while updating career");
+      }
+
+    case "delete":
+      try {
+        const response = await axios.delete(`${BaseUrl}/careers/jobs/${payload.id}/`);
+
+        // Check the response status
+        if (response.status === 204) {
+          toast("Career Deleted", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to delete data");
+        }
+      } catch (error) {
+        console.error("Error occurred while deleting career", error);
+        setGlobalState("careerError", JSON.stringify(error.response.data));
+        throw new Error("Error occurred while deleting career");
+      }
+    default:
+      throw new Error();
+  }
+};
