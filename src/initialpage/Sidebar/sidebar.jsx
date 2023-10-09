@@ -513,6 +513,21 @@ const toggleLevelThree = (value) => {
                     <i className="la la-user-plus" /> <span>Users</span>
                   </Link>
                 </li>
+                <li
+                  className={
+                    pathname.includes("administration/careers") ? "active" : ""
+                  }
+                >
+                  <Link
+                    to="/app/administration/careers"
+                    onClick={() => activeLink("administration/careers")}
+                    className={
+                      isActiveLink == "administration/careers" ? "noti-dot" : ""
+                    }
+                  >
+                    <i className="las la-person-booth"/> <span>Careers</span>
+                  </Link>
+                </li>
                 {/* <li>
                   <Link to="/settings/companysetting">
                     <i className="la la-cog" /> <span>Settings</span>

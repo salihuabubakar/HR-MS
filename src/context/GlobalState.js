@@ -358,6 +358,13 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   showShiftModal: false,
   selectedShift: [],
   shiftError: [],
+
+
+  // Career
+  deleteCareerModal: false,
+  showCareerModal: false,
+  selectedCareer: [],
+  careerError: [],
 });
 
 export {setGlobalState, useGlobalState}

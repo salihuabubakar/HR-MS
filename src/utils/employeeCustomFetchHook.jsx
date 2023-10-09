@@ -1449,3 +1449,24 @@ export const useTaskChatFetching = () => {
   return { taskChatData, isTaskChatLoading, taskChatError };
 };
 
+// Get Career data
+export const useCareerFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${BaseUrl}/careers/jobs/`);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const {
+    data: careerData,
+    isLoading: isCareerLoading,
+    error: careerError,
+  } = useQuery("careerData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on careerData
+      queryClient.invalidateQueries(["careerData"]);
+    },
+  });
+
+  return { careerData, isCareerLoading, careerError };
+};
