@@ -38,7 +38,7 @@ export const PopupOverlay = styled.div`
 
 export const PopupContainer = styled.div`
   position: absolute;
-  /* top: ${(props) => (props.top ? "30px" : null)}; */
+  top: ${(props) => (props.top ? "30px" : null)};
   left: ${(props) => (props.left ? "0" : null)};
   right: ${(props) => (props.right ? "0" : null)};
   margin-left: ${(props) => (props.marginLeft ? "auto" : null)};

@@ -18,7 +18,6 @@ import {
   useResidentLegalStatusTypeFetching 
 } from "../../utils/employeeCustomFetchHook";
 import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddResident = ({
   dispatchResident,

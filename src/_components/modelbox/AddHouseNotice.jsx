@@ -12,7 +12,6 @@ import {
   useResidentFetching
 } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();

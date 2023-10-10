@@ -5,7 +5,6 @@ import Select from "react-select";
 import "./style.css";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
 import { RadioBtn } from './styles';
-import { isMobile } from '../../utils/mediaQuery';
 
 const AddDepartment = ({
   dispatchHouse,

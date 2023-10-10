@@ -8,7 +8,6 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddHouseEmployee = ({
   house,

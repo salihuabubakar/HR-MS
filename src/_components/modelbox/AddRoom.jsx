@@ -9,7 +9,6 @@ import "./style.css";
 import Dropzone from "react-dropzone";
 import { useHouseImageFetching } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
   const { houseImagesData } = useHouseImageFetching();

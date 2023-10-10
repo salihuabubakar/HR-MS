@@ -11,7 +11,6 @@ import {
   useHouseItemsFetching
 } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddHouseInspection = ({ dispatchInspection, inspectionIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();

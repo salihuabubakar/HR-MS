@@ -9,7 +9,6 @@ import "./style.css";
 import { useHouseDocumentFetching } from "../../utils/employeeCustomFetchHook";
 import { RadioBtn } from "./styles";
 import Select from "react-select";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
   const { houseDocumentsData } = useHouseDocumentFetching();

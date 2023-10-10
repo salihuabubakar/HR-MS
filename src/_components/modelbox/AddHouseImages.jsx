@@ -7,7 +7,6 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import { RadioBtn } from "./styles";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddHouseImages = ({
   house,

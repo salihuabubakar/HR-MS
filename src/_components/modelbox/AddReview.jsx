@@ -8,7 +8,6 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import { useDataFetching } from "../../utils/employeeCustomFetchHook";
-import { isMobile } from "../../utils/mediaQuery";
 const AddReview = ({ dispatchReviewDetails, indexToEdit, id }) => {
 
   const [selectedReviewInfo] = useGlobalState("selectedReviewInfo");

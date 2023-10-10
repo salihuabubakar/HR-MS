@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { isMobile } from '../../utils/mediaQuery';
 
 const AddEmployeeEmergency = ({
   employeeEmergencyIndexToEdit,

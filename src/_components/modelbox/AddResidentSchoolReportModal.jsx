@@ -7,7 +7,6 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import { useSchoolFetching } from "../../utils/employeeCustomFetchHook";
-import { isMobile } from "../../utils/mediaQuery";
 
 const AddResidentSchoolReportModal = ({
   residentSchoolReportIndexToEdit,
