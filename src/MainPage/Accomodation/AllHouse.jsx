@@ -23,7 +23,7 @@ const AllHouse = ({
           </div>
         </div>
       ) : houseError ? (
-        <p>{houseError}</p>
+        <p>Error Loading Data</p>
       ) : (
         <>
           {houseData?.length != 0 || !houseData ? (

@@ -77,7 +77,7 @@ const house = () => {
                 </div>
               </div>
             ) : houseError ? (
-              <p>{houseError}</p>
+              <p>Error Loading Data</p>
             ) : (
               <>
                 {searchResult?.length != 0 || !searchResult ? (
