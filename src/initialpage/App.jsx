@@ -21,28 +21,11 @@ import "Assets/css/font-awesome.min.css";
 import "semantic-ui-css/semantic.min.css";
 
 const App = ({ match, location }) => {
-  console.log("url:", match.url);
   const isLoggedIn = localStorage.getItem("isLoggedIn");
-
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
-
-  useEffect(() => {
-    // Check if user is not logged in and on the main URL
-    if (!isLoggedIn && location.pathname === "/") {
-      setRedirectToLogin(true);
-    }
-  }, [isLoggedIn, location.pathname]);
-
-  if (redirectToLogin) {
-    return <Redirect to="/login" />;
-  }
-
   return (
     <>
       <Switch>
-        <Redirect exact from={`${match.url}/`} to={`${match.url}/login`} />
         <Route path="/login" component={LoginPage} />
-        {/* <Route exact path="/" render={() => <Redirect to="/login" />} /> */}
         <Route path="/forgotpassword" component={ForgotPassword} />
         <Route path="/register" component={RegistrationPage} />
         {isLoggedIn ? (
@@ -51,9 +34,7 @@ const App = ({ match, location }) => {
             <Route path="/settings" component={Settinglayout} />
           </>
         ) : (
-          <>
-            <Redirect to="/login" />
-          </>
+          <Redirect from="/" to="/login" />
         )}
         <Route path="/error-404" component={Error404} />
         <Route path="/error-500" component={Error500} />
