@@ -21,6 +21,7 @@ import "Assets/css/font-awesome.min.css";
 import "semantic-ui-css/semantic.min.css";
 
 const App = ({ match, location }) => {
+  console.log("url:", match.url);
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   const [redirectToLogin, setRedirectToLogin] = useState(false);
@@ -39,8 +40,9 @@ const App = ({ match, location }) => {
   return (
     <>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/login" />} />
+        <Redirect exact from={`${match.url}/`} to={`${match.url}/login`} />
         <Route path="/login" component={LoginPage} />
+        {/* <Route exact path="/" render={() => <Redirect to="/login" />} /> */}
         <Route path="/forgotpassword" component={ForgotPassword} />
         <Route path="/register" component={RegistrationPage} />
         {isLoggedIn ? (
