@@ -33,7 +33,7 @@ const AllEmployee = ({
           </div>
         </div>
       ) : error ? (
-        <p>{error}</p>
+        <p>Error Loading Data</p>
       ) : (
         <>
           {data?.length != 0 || !data ? (
