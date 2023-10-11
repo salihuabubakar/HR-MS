@@ -17,7 +17,7 @@ import "../assets/css/bootstrap.min.css";
 import '../assets/js/bootstrap.bundle.js';
 import '../assets/css/select2.min.css';
 
- import '../assets/js/popper.min.js';
+import '../assets/js/popper.min.js';
 import '../assets/js/app.js';
 import '../assets/js/select2.min.js';
 
