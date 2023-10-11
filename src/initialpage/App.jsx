@@ -22,7 +22,6 @@ import "semantic-ui-css/semantic.min.css";
 
 const App = ({ match, location }) => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
-
   return (
     <>
       <Switch>
