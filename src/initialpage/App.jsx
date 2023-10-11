@@ -39,8 +39,9 @@ const App = ({ match, location }) => {
   return (
     <>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/login" />} />
-        <Route path="/" component={LoginPage} />
+        <Redirect exact from={`${match.url}/`} to={`${match.url}/login`} />
+        <Route path="/login" component={LoginPage} />
+        {/* <Route exact path="/" render={() => <Redirect to="/login" />} /> */}
         <Route path="/forgotpassword" component={ForgotPassword} />
         <Route path="/register" component={RegistrationPage} />
         {isLoggedIn ? (
