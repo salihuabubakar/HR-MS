@@ -21,16 +21,17 @@ import "Assets/css/font-awesome.min.css";
 import "semantic-ui-css/semantic.min.css";
 
 const App = ({ match, location }) => {
+  console.log("url:", match.url);
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   useEffect(() => {
     // Check if user is not logged in and on the main URL
-    if (!isLoggedIn && location.pathname === "/") {
+    if (!isLoggedIn && match.url === "/") {
       setRedirectToLogin(true);
     }
-  }, [isLoggedIn, location.pathname]);
+  }, [isLoggedIn, match.url]);
 
   if (redirectToLogin) {
     return <Redirect to="/login" />;
