@@ -28,10 +28,10 @@ const App = ({ match, location }) => {
 
   useEffect(() => {
     // Check if user is not logged in and on the main URL
-    if (!isLoggedIn && match.url === "/") {
+    if (!isLoggedIn && location.pathname === "/") {
       setRedirectToLogin(true);
     }
-  }, [isLoggedIn, match.url]);
+  }, [isLoggedIn, location.pathname]);
 
   if (redirectToLogin) {
     return <Redirect to="/login" />;
