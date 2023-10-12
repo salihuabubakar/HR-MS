@@ -42,6 +42,7 @@ const Loginpage = () => {
       localStorage.setItem("isLoggedIn", true);
       localStorage.setItem("username", username);
       history.push("/app/main/dashboard");
+      window.history.pushState(null, null, window.location.href);
     } else {
       setError("password", {
         message: "username or password is mismatch",
