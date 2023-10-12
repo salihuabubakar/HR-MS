@@ -22,20 +22,26 @@ import "semantic-ui-css/semantic.min.css";
 
 const App = ({ match, location }) => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const ProtectedRoute = ({ isAuthenticated }) => {
+    if(isAuthenticated) {
+      return (
+        <>
+          <Route path="/app" component={DefaultLayout} />
+          <Route path="/settings" component={Settinglayout} />
+        </>
+      )
+    }
+    return <Redirect from="/" to="/login" />;
+  }
   return (
     <>
       <Switch>
         <Route path="/login" component={LoginPage} />
         <Route path="/forgotpassword" component={ForgotPassword} />
         <Route path="/register" component={RegistrationPage} />
-        {isLoggedIn ? (
-          <>
-            <Route path="/app" component={DefaultLayout} />
-            <Route path="/settings" component={Settinglayout} />
-          </>
-        ) : (
-          <Redirect from="/" to="/login" />
-        )}
+        <ProtectedRoute 
+          isAuthenticated={isLoggedIn}
+        />
         <Route path="/error-404" component={Error404} />
         <Route path="/error-500" component={Error500} />
       </Switch>

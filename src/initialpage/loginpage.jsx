@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { alphaNumericPattern, emailrgx } from "../constant";
 import { useHistory } from "react-router-dom";
+import HeaderLogo from "../assets/img/Header-logo.png"
 
 const schema = yup.object({
   username: yup
@@ -62,10 +63,10 @@ const Loginpage = () => {
         <div className="container">
           {/* Account Logo */}
           <div className="account-logo">
-            <Link to="/app/main/dashboard">
+            <Link to="">
               <img
                 src={
-                  "https://peepaltree.co.uk/wp-content/uploads/2021/02/Header-logo-800px.png"
+                  HeaderLogo
                 }
                 style={{ width: "25%" }}
                 alt=""
