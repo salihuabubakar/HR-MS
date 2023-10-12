@@ -3650,6 +3650,7 @@ export const add_update_delete_Career = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while posting career:", error);
+        toast.error("Network error occured while posting career");
         setGlobalState("careerError", JSON.stringify(error.response.data));
         throw new Error("Error occurred while posting career");
       }
@@ -3669,6 +3670,7 @@ export const add_update_delete_Career = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while updating career:", error);
+        toast.error("Network error occured while updating career");
         setGlobalState("careerError", JSON.stringify(error.response.data));
         throw new Error("Error occurred while updating career");
       }
@@ -3688,7 +3690,8 @@ export const add_update_delete_Career = async (state, { type, payload }) => {
         }
       } catch (error) {
         console.error("Error occurred while deleting career", error);
-        setGlobalState("careerError", JSON.stringify(error.response.data));
+        toast.error("Network error occured while deleting career");
+        setGlobalState("careerError", JSON.stringify(error?.response?.data));
         throw new Error("Error occurred while deleting career");
       }
     default:
