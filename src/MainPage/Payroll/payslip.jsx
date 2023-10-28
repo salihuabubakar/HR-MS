@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
-import {Applogo} from "../../Entryfile/imagepath"
 import { useLocation } from "react-router-dom";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
@@ -110,7 +109,7 @@ const Payslip = () => {
             tds={tds}
             pf={pf}
             esi={esi}
-            Applogo={Applogo}
+            // Applogo={Applogo}
             ref={componentRef}
           />
           {/* /Page Content */}

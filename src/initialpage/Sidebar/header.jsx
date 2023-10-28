@@ -1,23 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { withRouter, useHistory, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import {
-  headerlogo,
-  lnEnglish,
-  lnFrench,
-  lnSpanish,
-  lnGerman,
-  Avatar_02,
-  Avatar_03,
-  Avatar_13,
-  Avatar_21,
-} from "../../Entryfile/imagepath";
 import Applogo from "../../assets/img/circle-logo.png"
-import AddminProfile from "../../MainPage/Pages/Profile/AddminProfile";
+import userImg from "../../assets/img/user.jpg"
 import LongApplogo from "../../assets/img/LongAppLogo.png"
 
 import {HeaderContainer} from "./style"
-import { preventDefault } from "fullcalendar";
 
 const Header = (props) => {
   const history = useHistory();
@@ -115,11 +103,11 @@ const Header = (props) => {
                 <li className="notification-message">
                   <Link
                     to="/app/main/dashboard"
-                    onClick={(e) => preventDefault()}
+                    onClick={(e) => e.preventDefault()}
                   >
                     <div className="media">
                       <span className="avatar">
-                        <img alt="" src={Avatar_02} />
+                        {/* <img alt="" src={Avatar_02} /> */}
                       </span>
                       <div className="media-body">
                         <p className="noti-details">
@@ -144,7 +132,7 @@ const Header = (props) => {
                   >
                     <div className="media">
                       <span className="avatar">
-                        <img alt="" src={Avatar_13} />
+                        {/* <img alt="" src={Avatar_13} /> */}
                       </span>
                       <div className="media-body">
                         <p className="noti-details">
@@ -267,7 +255,7 @@ const Header = (props) => {
             data-bs-toggle="dropdown"
           >
             <span className="user-img me-1">
-              <img src={Avatar_21} alt="" />
+              <img src={userImg} alt="" />
               <span className="status online" />
             </span>
             <span>{user ? user : "sachin"}</span>

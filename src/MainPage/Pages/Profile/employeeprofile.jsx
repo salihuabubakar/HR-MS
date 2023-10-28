@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
-import {Avatar_02,Avatar_05,Avatar_09,Avatar_10,Avatar_16 } from '../../../Entryfile/imagepath'
 import { useLocation } from "react-router-dom";
 import AddFileUploadModal from '../../../_components/modelbox/AddFileUploadModal';
 import { useGlobalState, setGlobalState } from '../../../context/GlobalState';
@@ -442,9 +441,9 @@ const EmployeeProfile = () => {
                               <div className="title">Reports to:</div>
                               <div className="text">
                                 <div className="avatar-box">
-                                  <div className="avatar avatar-xs">
+                                  {/* <div className="avatar avatar-xs">
                                     <img src={Avatar_16} alt="" />
-                                  </div>
+                                  </div> */}
                                 </div>
                                 <a>Abdul</a>
                               </div>
