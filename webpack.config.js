@@ -31,14 +31,16 @@ let cleanOptions = {
 }
 
 module.exports = {
- mode: "development",
+ mode: "production",
 //  externals: {
 //   // require("jquery") is external and available
 //   //  on the global var jQuery
 //   "jquery": "jQuery"
 // },
  entry: {
-   app: ["regenerator-runtime/runtime.js", "./src/index.js"]
+  app: ["regenerator-runtime/runtime.js", "./src/index.js"],
+  main: './src/index.js',
+  vendor: './src/vendor.js'
  },
  output: {
      // The build folder.
@@ -46,7 +48,8 @@ module.exports = {
      // Generated JS file names (with nested folders).
      // There will be one main bundle, and one file per asynchronous chunk.
      // We don't currently advertise code splitting but Webpack supports it.
-     filename: 'static/js/[name].[hash:8].js',
+    //  filename: 'static/js/[name].[hash:8].js',
+     filename: 'bundle.js',
      chunkFilename: 'static/js/[name].[hash:8].chunk.js',
      // We inferred the "public path" (such as / or /my-project) from homepage.
      publicPath: publicPath,
@@ -135,6 +138,16 @@ module.exports = {
  },
  optimization: {
   minimizer: [new UglifyJsPlugin()],
+  splitChunks: {
+    cacheGroups: {
+      common: {
+        test: /[\\/]node_modules[\\/]/,
+        name: 'static/js/vendor',
+        chunks: 'all',
+      },
+    },
+    chunks: 'all',
+  },
 },
 performance: {
   hints: process.env.NODE_ENV === 'production' ? "warning" : false

@@ -4,7 +4,6 @@
 
  import React, {useEffect,useState } from 'react';
 import { Helmet } from "react-helmet";
-import {Avatar_02,Avatar_04,Avatar_05,Avatar_07,Avatar_08,Avatar_09} from '../../../Entryfile/imagepath.jsx'
 import Header from '../../../initialpage/Sidebar/header'
 import Sidebar from '../../../initialpage/Sidebar/sidebar'
 import { withRouter } from "react-router-dom";
@@ -32,7 +31,7 @@ const EmployeeDashboard = () => {
                 <div className="col-md-12">
                   <div className="welcome-box">
                     <div className="welcome-img">
-                      <img alt="" src={Avatar_02} />
+                      {/* <img alt="" src={Avatar_02} /> */}
                     </div>
                     <div className="welcome-det">
                       <h3>Welcome, John Doe</h3>
@@ -57,7 +56,7 @@ const EmployeeDashboard = () => {
                             </div>
                             <div className="dash-card-avatars">
                               <div className="e-avatar">
-                                <img src={Avatar_09} alt="" />
+                                {/* <img src={Avatar_09} alt="" /> */}
                               </div>
                             </div>
                           </div>
@@ -74,7 +73,7 @@ const EmployeeDashboard = () => {
                             </div>
                             <div className="dash-card-avatars">
                               <div className="e-avatar">
-                                <img src={Avatar_02} alt="" />
+                                {/* <img src={Avatar_02} alt="" /> */}
                               </div>
                             </div>
                           </div>
@@ -91,7 +90,7 @@ const EmployeeDashboard = () => {
                             </div>
                             <div className="dash-card-avatars">
                               <div className="e-avatar">
-                                <img src={Avatar_02} alt="" />
+                                {/* <img src={Avatar_02} alt="" /> */}
                               </div>
                             </div>
                           </div>
@@ -113,10 +112,10 @@ const EmployeeDashboard = () => {
                             </div>
                             <div className="dash-card-avatars">
                               <a href="#" className="e-avatar">
-                                <img src={Avatar_04} alt="" />
+                                {/* <img src={Avatar_04} alt="" /> */}
                               </a>
                               <a href="#" className="e-avatar">
-                                <img src={Avatar_08} alt="" />
+                                {/* <img src={Avatar_08} alt="" /> */}
                               </a>
                             </div>
                           </div>
@@ -138,10 +137,10 @@ const EmployeeDashboard = () => {
                             </div>
                             <div className="dash-card-avatars">
                               <a href="#" className="e-avatar">
-                                <img src={Avatar_05} alt="" />
+                                {/* <img src={Avatar_05} alt="" /> */}
                               </a>
                               <a href="#" className="e-avatar">
-                                <img src={Avatar_07} alt="" />
+                                {/* <img src={Avatar_07} alt="" /> */}
                               </a>
                             </div>
                           </div>
@@ -158,7 +157,7 @@ const EmployeeDashboard = () => {
                             </div>
                             <div className="dash-card-avatars">
                               <div className="e-avatar">
-                                <img src={Avatar_02} alt="" />
+                                {/* <img src={Avatar_02} alt="" /> */}
                               </div>
                             </div>
                           </div>

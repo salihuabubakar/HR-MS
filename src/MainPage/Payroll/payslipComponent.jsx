@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 class PayslipComponent extends React.Component {
   render() {
     const {
-      Applogo,
+      // Applogo,
       designation,
       StaffName,
       joinDate,
@@ -27,7 +27,7 @@ class PayslipComponent extends React.Component {
               </h4>
               <div className="row">
                 <div className="col-sm-6 m-b-20">
-                  <img src={Applogo} className="inv-logo" alt="" />
+                  {/* <img src={Applogo} className="inv-logo" alt="" /> */}
                   <ul className="list-unstyled mb-0">
                     <li>Dreamguy's Technologies</li>
                     <li>3864 Quiet Valley Lane,</li>
