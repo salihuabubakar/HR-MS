@@ -85,23 +85,22 @@ const Profile = ({
 		setMenu(!menu)
 	}
 
-    const [employeeBankError] = useGlobalState("employeeBankError");
-    const [employeeEmergencyError] = useGlobalState("employeeEmergencyError");
-    const [employeeAddressError] = useGlobalState("employeeAddressError");
-    const [employeeQualificationError] = useGlobalState(
-      "employeeQualificationError"
-    );
-    const [employeeExperiencError] = useGlobalState("employeeExperiencError");
-    const [employeeDocumentError] = useGlobalState("employeeDocumentError");
-
-    const clearErrorMessage = () => {
-      setGlobalState("employeeBankError", "");
-      setGlobalState("employeeEmergencyError", "");
-      setGlobalState("employeeAddressError", "");
-      setGlobalState("employeeQualificationError", "");
-      setGlobalState("employeeExperiencError", "");
-      setGlobalState("employeeDocumentError", "");
-    };
+  const [employeeBankError] = useGlobalState("employeeBankError");
+  const [employeeEmergencyError] = useGlobalState("employeeEmergencyError");
+  const [employeeAddressError] = useGlobalState("employeeAddressError");
+  const [employeeQualificationError] = useGlobalState(
+    "employeeQualificationError"
+  );
+  const [employeeExperiencError] = useGlobalState("employeeExperiencError");
+  const [employeeDocumentError] = useGlobalState("employeeDocumentError");
+  const clearErrorMessage = () => {
+    setGlobalState("employeeBankError", "");
+    setGlobalState("employeeEmergencyError", "");
+    setGlobalState("employeeAddressError", "");
+    setGlobalState("employeeQualificationError", "");
+    setGlobalState("employeeExperiencError", "");
+    setGlobalState("employeeDocumentError", "");
+  };
 
   // Address
   const [employeeAddressState, dispatchEmployeeAddress] = useReducer(
