@@ -59,7 +59,7 @@ const AllEmployee = ({
                           >
                             <img
                               style={{
-                                borderRadius: "50px",
+                                borderRadius: "5px",
                                 width: "80px",
                                 height: "80px",
                               }}

@@ -728,6 +728,15 @@ const toggleMobileMenu = () => {
               </li>
               <li className="nav-item">
                 <a
+                  href="#appointment"
+                  data-bs-toggle="tab"
+                  className="nav-link"
+                >
+                  Appointments
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
                   href="#maintenance"
                   data-bs-toggle="tab"
                   className="nav-link"
@@ -847,27 +856,41 @@ const toggleMobileMenu = () => {
                     </div>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-lg-12">
-				            <div className="card bg-white calendarIndex">
-				          	  <div className="card-header">
-				          	    <h4 className="card-title mb-0">
-                          Resident Appointments
-                        </h4>
-				          	  </div>
-                      <div className="card-body">
-                        <ResAppointment 
-                          houseId={houseId}
-                          houseResidentData={houseResidentData}
-                        />
-								      </div>
-				            </div>
-				          </div>
-                </div>
               </>
             )}
         </div>
         {/* /Dashboard Info Tab */}
+        {/* Appointment Tab */}
+        <div className="tab-pane fade" id="appointment">
+                {isSelectedLoading ? (
+                  <div className="skeleton-container-profile">
+                    <div className="skeleton-content-profile">
+                      <div className="skeleton-line-profile"></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="row">
+                    <div className="col-lg-12">
+				              <div className="card bg-white calendarIndex">
+				              	<div className="card-header">
+				              	  <h4 className="card-title mb-0">
+                            Resident Appointments
+                          </h4>
+				              	</div>
+                        <div className="card-body">
+                          <ResAppointment 
+                            houseId={houseId}
+                            houseResidentData={houseResidentData}
+                          />
+								        </div>
+				                </div>
+				              </div>
+                    </div>
+                  </>
+                )}
+              </div>
+              {/* /Appointment Tab */}
         {/* Resident Info Tab */}
         <div id="persons" className="tab-pane fade">
           <div className="row">
