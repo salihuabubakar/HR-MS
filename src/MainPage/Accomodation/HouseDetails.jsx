@@ -728,6 +728,15 @@ const toggleMobileMenu = () => {
               </li>
               <li className="nav-item">
                 <a
+                  href="#appointment"
+                  data-bs-toggle="tab"
+                  className="nav-link"
+                >
+                  Appointment
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
                   href="#maintenance"
                   data-bs-toggle="tab"
                   className="nav-link"
