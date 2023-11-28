@@ -47,7 +47,7 @@ const AllHouse = ({
                         >
                           <img
                             style={{
-                              borderRadius: "5px",
+                              borderRadius: "50px",
                               width: "80px",
                               height: "80px",
                             }}
