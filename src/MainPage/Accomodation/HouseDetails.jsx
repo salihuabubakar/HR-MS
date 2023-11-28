@@ -732,7 +732,7 @@ const toggleMobileMenu = () => {
                   data-bs-toggle="tab"
                   className="nav-link"
                 >
-                  Appointments
+                  Appointment
                 </a>
               </li>
               <li className="nav-item">
