@@ -3,13 +3,6 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
-import {
-  Avatar_02,
-  Avatar_05,
-  Avatar_09,
-  Avatar_10,
-  Avatar_16,
-} from "../../../Entryfile/imagepath";
 import { useParams, useLocation } from "react-router-dom";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import {
@@ -765,44 +758,6 @@ const EmployeeProfile = () => {
                         <div className="sub-title">Deadline:</div>
                         <div className="text-muted">17 Apr 2019</div>
                       </div>
-                      <div className="project-members m-b-15">
-                        <div>Project Leader :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Jeffery Lalor">
-                              <img alt="" src={Avatar_16} />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="project-members m-b-15">
-                        <div>Team :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Doe">
-                              <img alt="" src={Avatar_02} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Richard Miles">
-                              <img alt="" src={Avatar_09} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Smith">
-                              <img alt="" src={Avatar_10} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Mike Litorus">
-                              <img alt="" src={Avatar_05} />
-                            </a>
-                          </li>
-                          <li>
-                            <a className="all-users">+15</a>
-                          </li>
-                        </ul>
-                      </div>
                       <p className="m-b-5">
                         Progress{" "}
                         <span className="text-success float-end">40%</span>
@@ -867,44 +822,7 @@ const EmployeeProfile = () => {
                         <div className="sub-title">Deadline:</div>
                         <div className="text-muted">17 Apr 2019</div>
                       </div>
-                      <div className="project-members m-b-15">
-                        <div>Project Leader :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Jeffery Lalor">
-                              <img alt="" src={Avatar_16} />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="project-members m-b-15">
-                        <div>Team :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Doe">
-                              <img alt="" src={Avatar_02} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Richard Miles">
-                              <img alt="" src={Avatar_09} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Smith">
-                              <img alt="" src={Avatar_10} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Mike Litorus">
-                              <img alt="" src={Avatar_05} />
-                            </a>
-                          </li>
-                          <li>
-                            <a className="all-users">+15</a>
-                          </li>
-                        </ul>
-                      </div>
+                      
                       <p className="m-b-5">
                         Progress{" "}
                         <span className="text-success float-end">40%</span>
@@ -969,44 +887,6 @@ const EmployeeProfile = () => {
                         <div className="sub-title">Deadline:</div>
                         <div className="text-muted">17 Apr 2019</div>
                       </div>
-                      <div className="project-members m-b-15">
-                        <div>Project Leader :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Jeffery Lalor">
-                              <img alt="" src={Avatar_16} />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="project-members m-b-15">
-                        <div>Team :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Doe">
-                              <img alt="" src={Avatar_02} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Richard Miles">
-                              <img alt="" src={Avatar_09} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Smith">
-                              <img alt="" src={Avatar_10} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Mike Litorus">
-                              <img alt="" src={Avatar_05} />
-                            </a>
-                          </li>
-                          <li>
-                            <a className="all-users">+15</a>
-                          </li>
-                        </ul>
-                      </div>
                       <p className="m-b-5">
                         Progress{" "}
                         <span className="text-success float-end">40%</span>
@@ -1070,44 +950,6 @@ const EmployeeProfile = () => {
                       <div className="pro-deadline m-b-15">
                         <div className="sub-title">Deadline:</div>
                         <div className="text-muted">17 Apr 2019</div>
-                      </div>
-                      <div className="project-members m-b-15">
-                        <div>Project Leader :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Jeffery Lalor">
-                              <img alt="" src={Avatar_16} />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="project-members m-b-15">
-                        <div>Team :</div>
-                        <ul className="team-members">
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Doe">
-                              <img alt="" src={Avatar_02} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Richard Miles">
-                              <img alt="" src={Avatar_09} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="John Smith">
-                              <img alt="" src={Avatar_10} />
-                            </a>
-                          </li>
-                          <li>
-                            <a data-bs-toggle="tooltip" title="Mike Litorus">
-                              <img alt="" src={Avatar_05} />
-                            </a>
-                          </li>
-                          <li>
-                            <a className="all-users">+15</a>
-                          </li>
-                        </ul>
                       </div>
                       <p className="m-b-5">
                         Progress{" "}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { Applogo } from "../Entryfile/imagepath.jsx";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -42,6 +41,7 @@ const Loginpage = () => {
       localStorage.setItem("isLoggedIn", true);
       localStorage.setItem("username", username);
       history.push("/app/main/dashboard");
+      window.history.pushState(null, null, window.location.href);
     } else {
       setError("password", {
         message: "username or password is mismatch",
