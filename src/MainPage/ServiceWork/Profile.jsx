@@ -28,7 +28,9 @@ import {
   useGpracticeFetching,
   useSolicitorFetching,
   useSchoolFetching,
-  useDataFetching
+  useDataFetching,
+  useResidentFetching,
+  useResidentBoroughFetching
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_resident_gp,
@@ -68,7 +70,8 @@ import NoAvailableData from "../../_components/noAvailableData";
 import { handleFileDownload } from "../../utils/helperFucntions";
 import DisplayFileType from "../../_components/fileExtension";
 import Appointment from "./Appointment";
-
+import DynamicProfilePdf from "./component/DynamicProfilePdf";
+import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 const Profile = () => {
   const [gpError] = useGlobalState("gpError");
   const [residentSolicitorError] = useGlobalState("residentSolicitorError");
@@ -574,7 +577,7 @@ useEffect(() => {
   const glasses = getSelectedData?.glasses;
   const tattoos = getSelectedData?.tattoos;
   const piercings = getSelectedData?.piercings;
-  const Subject_child_protection = getSelectedData?.subject_protection;
+  const Subject_child_protection = getSelectedData?.Subject_child_protection;
   const legal_status = getSelectedData?.legal_status;
   const Any_comment = getSelectedData?.Any_comment;
   const key_worker = getSelectedData?.key_worker;
@@ -595,6 +598,7 @@ useEffect(() => {
   const resident_task = getSelectedData?.resident_task;
   const resident_misper = getSelectedData?.resident_misper;
   const resident_incident = getSelectedData?.resident_incident;
+  const borough = getSelectedData?.borough;
 
   const { gpTypeData } = useGpTypeFetching();
   const { gPracticeData } = useGpracticeFetching();
@@ -603,9 +607,19 @@ useEffect(() => {
   const { residentDocumentTypeData } = useResidentDocumentTypeFetching();
   const { schoolData } = useSchoolFetching();
   const { data: allEmployee } = useDataFetching();
+  const { residentData } = useResidentFetching();
+  const { residentBoroughData } = useResidentBoroughFetching();
 
   // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
+
+  const styles = {
+    container : {  width:'220px',  borderRadius : '5px',  padding:'15px 12px',  display:'flex',  flexDirection:'column',  gap:'15px',  boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)"},
+    flex : { width:'100%', display:'flex', gap:'5px', alignItems:'center' },
+    bold : { fontSize:'13px', fontWeight: 600},
+    thin : {  fontSize:'11px',  color:'#6f6f6f',  fontWeight: 500 },
+    btn:{ borderRadius : '3px', border:'1px solid gray', display : 'flex', alignItems :'center', gap:'2px', padding : '3px', fontSize:'11px', color:'#4f4f4f', fontWeight: 600, cursor:'pointer', userSelect:'none'}
+}
 
   return (
     <>
@@ -620,13 +634,65 @@ useEffect(() => {
           <div className="content container-fluid">
             <div className="page-header">
               <div className="row">
-                <div className="col-sm-12">
+                <div className="col-sm-10">
                   <h3 className="page-title">Profile</h3>
                   <ul className="breadcrumb breadcrumb-nav">
                     <li className="breadcrumb-item">
                       <Link to="/app/servicework/service-worker">All Resident</Link>
                     </li>
                     <li className="breadcrumb-item active">Profile</li>
+                  </ul>
+                </div>
+                <div className="col-lg-2">
+                  <ul className="breadcrumb breadcrumb-nav">
+                    <li className="breadcrumb-item">
+                      <PDFDownloadLink 
+                        document={
+                          <DynamicProfilePdf 
+                            getSelectedData={getSelectedData}
+                            rSocialWorkerData={rSocialWorkerData}
+                            selectedResidentId={selectedResidentId}
+                            socialWorkerData={socialWorkerData}
+                            allEmployee={allEmployee}
+                            residentBoroughData={residentBoroughData}
+                            residentEducationData={residentEducationData}
+                          />
+                        } fileName={`${last_name}'s profile.pdf`}>
+                        {
+                          ({ blob, url, loading, error }) => (
+                            <div style={styles.btn}>
+                              {loading ? 'Loading document' : (
+                                <span><i className="fa fa-download m-r-5" /> Download profile</span>
+                              )}
+                            </div>
+                          )
+                        }
+                      </PDFDownloadLink>
+                    </li>
+                    <li className="breadcrumb-item">
+                      <BlobProvider 
+                        document={
+                          <DynamicProfilePdf 
+                            getSelectedData={getSelectedData}
+                            rSocialWorkerData={rSocialWorkerData}
+                            selectedResidentId={selectedResidentId}
+                            socialWorkerData={socialWorkerData}
+                            allEmployee={allEmployee}
+                            residentBoroughData={residentBoroughData}
+                            residentEducationData={residentEducationData}
+                          />
+                        }>
+                        {
+                          ({ blob, url, loading, error }) => (
+                            <a href={url} target="_blank" style={styles.btn}>
+                              {loading ? 'Loading document' : (
+                                <span><i className="fa fa-print m-r-5" /> Print profile</span>
+                              )}
+                            </a>
+                          )
+                        }
+                      </BlobProvider>
+                    </li>
                   </ul>
                 </div>
               </div>
