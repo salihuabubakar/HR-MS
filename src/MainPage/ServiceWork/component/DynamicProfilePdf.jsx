@@ -91,18 +91,6 @@ const styles = StyleSheet.create({
   
 });
 
-const ProfilePicture = ({
-  getSelectedData
-}) => (
-  <View style={styles.titleContainer}>
-      <Text style={styles.title}>YOUNG PERSON DETAILS</Text>
-      <View style={styles.center}>
-        <Image style={styles.logo} src={getSelectedData?.photo} />
-      </View>
-  </View>
-);
-
-
 const Table = ({
   getSelectedData,
   rSocialWorkerData,
@@ -113,6 +101,12 @@ const Table = ({
   residentEducationData
   }) => (
     <>
+      <View style={styles.titleContainer}>
+          <Text style={styles.title}>YOUNG PERSON DETAILS</Text>
+          <View style={styles.center}>
+            <Image style={styles.logo} src={getSelectedData?.photo} />
+          </View>
+      </View>
       <View style={styles.table}>
           <View style={styles.headerRow}>
               <Text style={[styles.headerCell, styles.label]}>Name: </Text>
@@ -231,7 +225,6 @@ const DynamicProfilePdf = ({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <ProfilePicture getSelectedData={getSelectedData}  />
         <Table 
           getSelectedData={getSelectedData}
           rSocialWorkerData={rSocialWorkerData}
