@@ -9,5 +9,3 @@ export const BaseUrl =
     : nodeEnv === "production" || vercelEnv === "production"
     ? productionUrl
     : developmentUrl;
-
-console.log("baseUrl: ", BaseUrl, "nodeEnv: ", nodeEnv, "vercelEnv: ", vercelEnv);
