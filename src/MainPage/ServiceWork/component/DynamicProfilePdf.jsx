@@ -1,6 +1,5 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
-import DefaultImage from "../../../assets/img/placeholder.jpg"
 // Download and import font file
 import Montserrat from './Fonts/Montserrat.ttf';
 import MontserratSubBold from './Fonts/MontserratSubrayada-Bold.ttf';
@@ -101,7 +100,7 @@ const Table = ({
   residentBoroughData,
   residentEducationData
   }) => {
-    const photo = DefaultImage;
+    const photo = getSelectedData?.photo;
     return (
       <>
       <View style={styles.titleContainer}>
