@@ -1,5 +1,6 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
+import DefaultImage from "../../../assets/img/placeholder.jpg"
 // Download and import font file
 import Montserrat from './Fonts/Montserrat.ttf';
 import MontserratSubBold from './Fonts/MontserratSubrayada-Bold.ttf';
@@ -99,12 +100,14 @@ const Table = ({
   allEmployee,
   residentBoroughData,
   residentEducationData
-  }) => (
-    <>
+  }) => {
+    const photo = DefaultImage;
+    return (
+      <>
       <View style={styles.titleContainer}>
           <Text style={styles.title}>YOUNG PERSON DETAILS</Text>
           <View style={styles.center}>
-            <Image style={styles.logo} src={getSelectedData?.photo} />
+            <Image style={styles.logo} src={`${photo}`} />
           </View>
       </View>
       <View style={styles.table}>
@@ -179,7 +182,7 @@ const Table = ({
                 {` Legal Status:
                     e.g. Section 20, Section 31
                 `}
-               </Text>
+              </Text>
               <Text style={styles.headerCell}>{getSelectedData?.legal_status}</Text>
           </View>
           <View style={styles.headerRow}>
@@ -210,7 +213,8 @@ const Table = ({
           </View>
       </View>
     </>
-  );
+    )
+  };
 
 
 const DynamicProfilePdf = ({
