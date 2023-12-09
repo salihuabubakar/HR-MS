@@ -99,12 +99,14 @@ const Table = ({
   allEmployee,
   residentBoroughData,
   residentEducationData
-  }) => (
-    <>
+  }) => {
+    const convertPhotoPathToSecureLayer = getSelectedData?.photo?.replace('http://', 'https://');
+    return (
+      <>
       <View style={styles.titleContainer}>
           <Text style={styles.title}>YOUNG PERSON DETAILS</Text>
           <View style={styles.center}>
-            <Image style={styles.logo} src={getSelectedData?.photo} />
+            <Image style={styles.logo} src={convertPhotoPathToSecureLayer} />
           </View>
       </View>
       <View style={styles.table}>
@@ -210,7 +212,8 @@ const Table = ({
           </View>
       </View>
     </>
-  );
+    )
+  };
 
 
 const DynamicProfilePdf = ({
