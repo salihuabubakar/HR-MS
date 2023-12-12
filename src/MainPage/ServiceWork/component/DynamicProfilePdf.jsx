@@ -5,11 +5,14 @@ import Montserrat from './Fonts/Montserrat.ttf';
 import MontserratSubBold from './Fonts/MontserratSubrayada-Bold.ttf';
 import RobotoBold from './Fonts/Roboto-Bold.ttf';
 import RobotoLight from './Fonts/Roboto-Light.ttf';
+import Afacad from './Fonts/Afacad-Regular.ttf';
 
 // Register font
 Font.register({ family: 'Roboto', fonts: [
   { src: RobotoBold },
-  { src: RobotoLight},
+]});
+Font.register({ family: 'RobotoLight', fonts: [
+  { src: RobotoLight },
 ]});
 Font.register({ family: 'Montserrat', fonts: [
   { src: Montserrat },
@@ -17,76 +20,103 @@ Font.register({ family: 'Montserrat', fonts: [
 Font.register({ family: 'MontserratUnderline', fonts: [
   { src: MontserratSubBold },
 ]});
+Font.register({ family: 'Afacad', fonts: [
+  { src: Afacad },
+]});
 
 // Create styles
 const styles = StyleSheet.create({
-  page: {fontSize: 11,paddingTop: 20,paddingLeft: 40,paddingRight: 40,lineHeight: 1.5,flexDirection: 'column' },
 
-  center : {border: '2px solid grey' },
+  page: {
+    fontSize: 11, 
+    paddingTop: 20, 
+    paddingLeft: 20, 
+    paddingRight: 20, 
+    lineHeight: 1.5, 
+    flexDirection: 'column' 
+  },
 
-  titleContainer: {display: 'flex', marginTop: 24, justifyContent:'center', alignItems: 'center', width: '100%'},
+  labelTitle: {
+    display: 'flex',
+    justifyContent:'center', 
+    alignItems: 'center', 
+    width: '100%',
+    marginBottom: 15
+  },
+
+  lTitle: {
+    fontFamily: 'Roboto',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#38393C'
+  },
+
+  pictureContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+
+  imageContainer: {
+    // borderRadius: 50 
+  },
+
+  logo: { 
+    width: 100, 
+    height: 100, 
+    borderRadius: 50 
+  },
+
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: 15
+  },
 
   title: {
-    fontFamily: 'MontserratUnderline',
+    fontFamily: 'Montserrat',
     fontSize: 40,
     fontWeight: 700,
   },
-  
-  logo: { width: 100, height: 100 },
 
-  reportTitle: {  fontSize: 16,  textAlign: 'center' },
-
-  addressTitle : {fontSize: 11,fontStyle: 'bold'}, 
-  
-  invoice : {fontWeight: 'bold',fontSize: 20},
-  
-  invoiceNumber : {fontSize: 11,fontWeight: 'bold'}, 
-  
-  address : { fontWeight: 400, fontSize: 10},
-  
-  theader : {marginTop : 5,fontSize : 10,fontStyle: 'bold', paddingLeft: 7 ,height:20, borderBottom: '1pt solid grey' },
-
-  theader2 : { borderRight: '1pt solid black'},
-  
-  group: { flexDirection: 'row', marginTop : 5,fontSize : 10,fontStyle: 'bold', paddingLeft: 7 ,height:20, borderBottom: '1pt solid grey', justifyContent: 'space-around'},
-
-  separator: { borderLeft: '1pt solid grey'},
-
-  tbody:{ fontSize : 9, paddingTop: 4 , paddingLeft: 7 , flex:1, borderColor : 'whitesmoke', borderRightWidth:1, borderBottomWidth:1},
-
-  total:{ fontSize : 9, paddingTop: 4 , paddingLeft: 7 , flex:1.5, borderColor : 'whitesmoke', borderBottomWidth:1},
-
-  tbody2:{ flex:2, borderRightWidth:1, },
-
-  table: {
-    display: 'table',
-    width: '100%',
-    border: '2pt solid grey',
-    marginTop:10
+  smallText: {
+    fontFamily: 'Afacad',
+    fontSize: 12,
   },
-  row: {
-    display: 'table-row',
+
+  hr: {
+    width: '550pt',
+    borderBottom: '1pt solid #ccc',
+    margin: '15pt 0'
   },
-  headerRow: {
+
+  body: {
     display: 'flex',
-    flexDirection: 'row', // Add background color for header
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 5
   },
-  headerCell: {
-    display: 'table-cell',
+
+  card: {
+    borderRadius: 5,
+    backgroundColor: '#F5F7F8',
     padding: 5,
-    fontFamily: 'Roboto',
-    border: '1pt solid grey',
     flex: 1,
+    minWidth: 200
   },
-  label: {
-    fontWeight:700,
-    fontFamily: 'Roboto'
+
+  cardlTitle: {
+    fontFamily: 'Roboto',
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#38393C'
   },
-  cell: {
-    display: 'table-cell',
-    padding: 5,
-    borderStyle: 'solid',
-    borderWidth: 1,
+
+  cardTitleValue: {
+    fontFamily: 'Roboto',
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#38393C'
   },
   
 });
@@ -103,113 +133,108 @@ const Table = ({
     const convertPhotoPathToSecureLayer = getSelectedData?.photo?.replace('http://', 'https://');
     return (
       <>
-      <View style={styles.titleContainer}>
-          <Text style={styles.title}>YOUNG PERSON DETAILS</Text>
-          <View style={styles.center}>
-            <Image style={styles.logo} src={convertPhotoPathToSecureLayer} />
-          </View>
+      <View style={styles.labelTitle}>
+          <Text style={styles.lTitle}>YOUNG PERSON DETAILS</Text>
       </View>
-      <View style={styles.table}>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Name: </Text>
-              <Text style={styles.headerCell}>{`${getSelectedData?.first_name} ${getSelectedData?.middle_name} ${getSelectedData?.last_name}`}</Text>
-              <Text style={[styles.headerCell, styles.label]}>Date of birth: </Text>
-              <Text style={styles.headerCell}>{getSelectedData?.date_of_birth}</Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Gender: </Text>
-              <Text style={styles.headerCell}>{getSelectedData?.gender}</Text>
-              <Text style={[styles.headerCell, styles.label]}>Height & build: </Text>
-              <Text style={styles.headerCell}>{getSelectedData?.height}</Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Eye colour, hair colour, glasses, tattoos, piercings: </Text>
-              <Text style={styles.headerCell}>
-                {`${getSelectedData?.eye_colour},${getSelectedData?.hair_colour},${getSelectedData?.glasses},${getSelectedData?.tattoos},${getSelectedData?.piercings}`}
-              </Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Mobile No: </Text>
-              <Text style={styles.headerCell}>{getSelectedData?.phone_number}</Text>
-              <Text style={[styles.headerCell, styles.label]}>Ethnic Origin/Ethnic Appearance: </Text>
-              <Text style={styles.headerCell}>{getSelectedData?.nationality}</Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Email Address: </Text>
-              <Text style={styles.headerCell}>{getSelectedData?.email}</Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Placement Address: </Text>
-              <Text style={styles.headerCell}>{getSelectedData?.address}</Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Social worker: </Text>
-              <Text style={styles.headerCell}>
-                {rSocialWorkerData && rSocialWorkerData?.map((s, i) => {
-                  if(s.resident === selectedResidentId && s.status === "Active") {
-                    return (
-                      <>
-                        {socialWorkerData?.map((rSw) => {
-                          if (rSw.id === s.social_worker)
-                            return `${rSw.first_name} ${rSw.middle_name} ${rSw.last_name}, `;
-                        })}
-                      </>
-                    )
-                  }
-                })}
-              </Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Key worker: </Text>
-              <Text style={styles.headerCell}>
-                {getSelectedData?.key_worker?.map(s => {
-                    return (
-                      <>
-                        {allEmployee?.map((emp) => {
-                          if (emp.id === s)
-                            return `${emp.first_name} ${emp.middle_name} ${emp.last_name}, `;
-                        })}
-                      </>
-                    )
-                })}
-              </Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Subject to Child Protection Plan: </Text>
-              <Text style={styles.headerCell}>{getSelectedData?.Subject_child_protection ? 'Yes' : 'No'}</Text>
-              <Text style={[styles.headerCell, styles.label]}>
-                {` Legal Status:
-                    e.g. Section 20, Section 31
-                `}
-              </Text>
-              <Text style={styles.headerCell}>{getSelectedData?.legal_status}</Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Home Borough: </Text>
-              <Text style={styles.headerCell}>
-                {residentBoroughData?.map(b => {
-                  if (b.id === getSelectedData?.borough)
-                    return (
-                      `${b.borough_name}
-                        Out of Hours Emergency Duty: ${b.Out_of_hours_number}
-                      `
-                    );
-                })}
-              </Text>
-          </View>
-          <View style={styles.headerRow}>
-              <Text style={[styles.headerCell, styles.label]}>Education or school attended: </Text>
-              <Text style={styles.headerCell}>
-                {residentEducationData?.map(edu => {
-                  if (edu.resident === selectedResidentId)
-                    return (
-                      `${edu.institute_name}
-                        Qualification: ${edu.qualification_name}
-                      `
-                    );
-                })}
-              </Text>
-          </View>
+
+      <View style={styles.pictureContainer}>
+        <View style={styles.imageContainer}>
+            <Image style={styles.logo} src={convertPhotoPathToSecureLayer} />
+        </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.lTitle}>{`${getSelectedData?.first_name} ${getSelectedData?.middle_name} ${getSelectedData?.last_name}`}</Text>
+          <Text style={styles.smallText}>{`Email: ${getSelectedData?.email}`}</Text>
+        </View>
+      </View>
+
+      <View style={styles.hr}></View>
+
+      <View style={styles.body}>
+        <View style={styles.card}>
+          <Text style={styles.cardlTitle}>Personal Info</Text>
+          <Text style={styles.smallText}>Ethnic Origin/Ethnic Appearance: <Text style={styles.cardTitleValue}>{getSelectedData?.nationality}</Text></Text>
+          <Text style={styles.smallText}>Date of birth: <Text style={styles.cardTitleValue}>{getSelectedData?.date_of_birth}</Text></Text>
+          <Text style={styles.smallText}>Gender: <Text style={styles.cardTitleValue}>{getSelectedData?.gender}</Text></Text>
+          <Text style={styles.smallText}>Height & build: <Text style={styles.cardTitleValue}>{getSelectedData?.height}</Text></Text>
+          <Text style={styles.smallText}>Eye colour, hair colour, glasses, tattoos, piercings: <Text style={styles.cardTitleValue}>{`${getSelectedData?.eye_colour}, ${getSelectedData?.hair_colour}, ${getSelectedData?.glasses}, ${getSelectedData?.tattoos}, ${getSelectedData?.piercings}`}</Text></Text>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.cardlTitle}>Contacts</Text>
+          <Text style={styles.smallText}>Mobile No: <Text style={styles.cardTitleValue}>{getSelectedData?.phone_number}</Text></Text>
+          <Text style={styles.smallText}>Placement Address: <Text style={styles.cardTitleValue}>{getSelectedData?.address}</Text></Text>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.cardlTitle}>Education</Text>
+            {residentEducationData?.map(edu => {
+              if (edu.resident === selectedResidentId)
+                return (
+                  <View> 
+                    <Text style={styles.smallText}> 
+                      School: <Text style={styles.cardTitleValue}> {edu.institute_name}, </Text>  
+                      Qualification: <Text style={styles.cardTitleValue}> {edu.qualification_name}</Text>
+                    </Text>
+                  </View>
+                );
+            })}
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.cardlTitle}>Home Borough</Text>
+            {residentBoroughData?.map(b => {
+              if (b.id === getSelectedData?.borough)
+                return (
+                  <View> 
+                    <Text style={styles.smallText}> 
+                      Name: <Text style={styles.cardTitleValue}> {b.borough_name}</Text>
+                    </Text>
+                    <Text style={styles.smallText}>
+                      Out of Hours Emergency Duty: <Text style={styles.cardTitleValue}> {b.Out_of_hours_number}</Text>
+                    </Text>
+                  </View>
+                );
+            })}
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.cardlTitle}>Additional Info</Text>
+          <Text style={styles.smallText}>Subject to Child Protection Plan: <Text style={styles.cardTitleValue}>{getSelectedData?.Subject_child_protection ? 'Yes' : 'No'}</Text></Text>
+          <Text style={styles.smallText}>
+            Legal Status (e.g. Section 20, Section 31): <Text style={styles.cardTitleValue}>{getSelectedData?.legal_status}</Text>
+          </Text>
+          <Text style={styles.smallText}> 
+            Social worker:
+            {rSocialWorkerData?.map(s => {
+              if (s.resident === selectedResidentId && s.status === "Active")
+                return (
+                  <>
+                    {socialWorkerData?.map((rSw) => {
+                      if (rSw.id === s.social_worker)
+                        return (
+                          <Text style={styles.cardTitleValue}> {`${rSw.first_name} ${rSw.middle_name} ${rSw.last_name}, `}</Text>
+                        )
+                    })}
+                  </>
+                );
+            })}
+          </Text>
+          <Text style={styles.smallText}> 
+          Key worker:
+            {getSelectedData?.key_worker?.map(s => {
+              return (
+                <>
+                  {allEmployee?.map((emp) => {
+                    if (emp.id === s)
+                      return (
+                        <Text style={styles.cardTitleValue}> {`${emp.first_name} ${emp.middle_name} ${emp.last_name}, `}</Text>
+                      )
+                  })}
+                </>
+              );
+            })}
+          </Text>
+        </View>
       </View>
     </>
     )
