@@ -1,11 +1,11 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
 // Download and import font file
-import Montserrat from './Fonts/Montserrat.ttf';
-import MontserratSubBold from './Fonts/MontserratSubrayada-Bold.ttf';
-import RobotoBold from './Fonts/Roboto-Bold.ttf';
-import RobotoLight from './Fonts/Roboto-Light.ttf';
-import Afacad from './Fonts/Afacad-Regular.ttf';
+import Montserrat from '../../../_components/Fonts/Montserrat.ttf';
+import MontserratSubBold from '../../../_components/Fonts/MontserratSubrayada-Bold.ttf';
+import RobotoLight from '../../../_components/Fonts/Roboto-Light.ttf';
+import RobotoBold from '../../../_components/Fonts/Roboto-Bold.ttf';
+import Afacad from '../../../_components/Fonts/Afacad-Regular.ttf';
 
 // Register font
 Font.register({ family: 'Roboto', fonts: [
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 
   card: {
     borderRadius: 5,
-    backgroundColor: '#F5F7F8',
+    backgroundColor: '#F8F8F8',
     padding: 5,
     flex: 1,
     minWidth: 200

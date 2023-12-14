@@ -359,7 +359,7 @@ const { shiftData, isShiftLoading } = useShiftFetching();
             </div>
             {/* Search Filter */}
             <NavContainer>
-              <div className="print-btn-div">
+              {/* <div className="print-btn-div">
                 <NavButton
                   onClick={
                     views === "weeklyView"
@@ -372,7 +372,7 @@ const { shiftData, isShiftLoading } = useShiftFetching();
                 >
                   <i className="fa fa-print fa-lg" /> Print
                 </NavButton>
-              </div>
+              </div> */}
               <div className="nav-btn-div">
                 <NavButton
                   onClick={() =>
@@ -452,54 +452,81 @@ const { shiftData, isShiftLoading } = useShiftFetching();
               )}
             </span>
             {views === "weeklyView" && (
-              <WeeklyComponent
-                activeCurrentDate={activeCurrentDate}
-                recentDates={recentDates}
-                ref={componentRef}
-                checkPrint={isPrint}
-                selectedHouse={selectedHouse}
-                houseId={houseId}
-                handleMondayShift={handleMondayShift}
-                handleMondayShiftIndex={handleMondayShiftIndex}
-                handleTuesDayShift={handleTuesDayShift}
-                handleTuesdayShiftIndex={handleTuesdayShiftIndex}
-                handleWednesdayShift={handleWednesdayShift}
-                handleWednesdayShiftIndex={handleWednesdayShiftIndex}
-                handleThursdayShift={handleThursdayShift}
-                handleThursdayShiftIndex={handleThursdayShiftIndex}
-                handleFridayShift={handleFridayShift}
-                handleFridayShiftIndex={handleFridayShiftIndex}
-                handlSaturdayShift={handlSaturdayShift}
-                handleSaturdayShiftIndex={handleSaturdayShiftIndex}
-                handleSundayShift={handleSundayShift}
-                handleSundayShiftIndex={handleSundayShiftIndex}
-                employeeshiftData={employeeshiftData}
-                DefaultImage={DefaultImage}
-                allEmployee={allEmployee}
-                houseEmployeeData={houseEmployeeData}
-                shiftData={shiftData}
-                dayMonthYear={dayMonthYear}
-                isHouseEmployeeLoading={isHouseEmployeeLoading}
-                isHouseDataLoading={isHouseDataLoading}
-                isLoading={isLoading}
-                isShiftLoading={isShiftLoading}
-                roleData={roleData}
-              />
+              <>
+                {
+                  isHouseEmployeeLoading ||
+                  isHouseDataLoading || 
+                  isLoading || 
+                  isShiftLoading ? (
+                    <div class="spinner">
+                      <div class="loader"></div>
+                    </div>
+                  ) : (
+                    <WeeklyComponent
+                      activeCurrentDate={activeCurrentDate}
+                      recentDates={recentDates}
+                      ref={componentRef}
+                      checkPrint={isPrint}
+                      selectedHouse={selectedHouse}
+                      houseId={houseId}
+                      handleMondayShift={handleMondayShift}
+                      handleMondayShiftIndex={handleMondayShiftIndex}
+                      handleTuesDayShift={handleTuesDayShift}
+                      handleTuesdayShiftIndex={handleTuesdayShiftIndex}
+                      handleWednesdayShift={handleWednesdayShift}
+                      handleWednesdayShiftIndex={handleWednesdayShiftIndex}
+                      handleThursdayShift={handleThursdayShift}
+                      handleThursdayShiftIndex={handleThursdayShiftIndex}
+                      handleFridayShift={handleFridayShift}
+                      handleFridayShiftIndex={handleFridayShiftIndex}
+                      handlSaturdayShift={handlSaturdayShift}
+                      handleSaturdayShiftIndex={handleSaturdayShiftIndex}
+                      handleSundayShift={handleSundayShift}
+                      handleSundayShiftIndex={handleSundayShiftIndex}
+                      employeeshiftData={employeeshiftData}
+                      DefaultImage={DefaultImage}
+                      allEmployee={allEmployee}
+                      houseEmployeeData={houseEmployeeData}
+                      shiftData={shiftData}
+                      dayMonthYear={dayMonthYear}
+                      isHouseEmployeeLoading={isHouseEmployeeLoading}
+                      isHouseDataLoading={isHouseDataLoading}
+                      isLoading={isLoading}
+                      isShiftLoading={isShiftLoading}
+                      roleData={roleData}
+                    />
+                  )
+                }
+              </>
+              
             )}
             {views === "monthlyView" && (
-              <MonthlyComponent
-                dayNames={dayNames}
-                currentMonthName={currentMonthName}
-                currentYear={currentYear}
-                DefaultImage={DefaultImage}
-                tableData={tableData}
-                houseEmployeeData={houseEmployeeData}
-                houseId={houseId}
-                employeeshiftData={employeeshiftData}
-                ref={monthlyCalendarComponentRef}
-                shiftData={shiftData}
-                allEmployee={allEmployee}
-              />
+              <>
+                {
+                  isHouseEmployeeLoading ||
+                  isHouseDataLoading || 
+                  isLoading || 
+                  isShiftLoading  ? (
+                    <div class="spinner">
+                      <div class="loader"></div>
+                    </div>
+                  ) : (
+                    <MonthlyComponent
+                      dayNames={dayNames}
+                      currentMonthName={currentMonthName}
+                      currentYear={currentYear}
+                      DefaultImage={DefaultImage}
+                      tableData={tableData}
+                      houseEmployeeData={houseEmployeeData}
+                      houseId={houseId}
+                      employeeshiftData={employeeshiftData}
+                      ref={monthlyCalendarComponentRef}
+                      shiftData={shiftData}
+                      allEmployee={allEmployee}
+                    />
+                  )
+                }
+              </>
             )}
             {/* /Content End */}
           </div>
