@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    // borderRadius: 50 
+    borderRadius: 50, 
+    border: '1pt solid #ccc',
   },
 
   logo: { 
