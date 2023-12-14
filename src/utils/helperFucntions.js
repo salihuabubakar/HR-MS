@@ -195,3 +195,19 @@ export const handleFileDownload = (file) => {
   a.click();
   document.body.removeChild(a);
 };
+
+export const styles = {
+  btn:{ 
+    borderRadius: '3px', 
+    border: '1px solid gray', 
+    display: 'flex', 
+    alignItems:'center', 
+    gap: '2px', 
+    padding: '3px', 
+    fontSize: '11px', 
+    color: '#4f4f4f', 
+    fontWeight: 600, 
+    cursor: 'pointer', 
+    userSelect: 'none'
+  }
+}
