@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import moment from "moment";
 import { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
 // Download and import font file
-import Montserrat from '../../../_components/Fonts/Montserrat.ttf';
-import MontserratSubBold from '../../../_components/Fonts/MontserratSubrayada-Bold.ttf';
 import RobotoBold from '../../../_components/Fonts/Roboto-Bold.ttf';
 import RobotoLight from '../../../_components/Fonts/Roboto-Light.ttf';
 import Afacad from '../../../_components/Fonts/Afacad-Regular.ttf';
@@ -13,12 +12,6 @@ Font.register({ family: 'Roboto', fonts: [
 ]});
 Font.register({ family: 'RobotoLight', fonts: [
   { src: RobotoLight },
-]});
-Font.register({ family: 'Montserrat', fonts: [
-  { src: Montserrat },
-]});
-Font.register({ family: 'MontserratUnderline', fonts: [
-  { src: MontserratSubBold },
 ]});
 Font.register({ family: 'Afacad', fonts: [
   { src: Afacad },
@@ -38,6 +31,7 @@ const styles = StyleSheet.create({
 
   labelTitle: {
     display: 'flex',
+    flexDirection: 'column',
     justifyContent:'center', 
     alignItems: 'center', 
     width: '100%',
@@ -51,220 +45,182 @@ const styles = StyleSheet.create({
     color: '#38393C'
   },
 
-  pictureContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-
-  imageContainer: {
-    borderRadius: 50, 
-    border: '1pt solid #ccc',
-  },
-
-  logo: { 
-    width: 100, 
-    height: 100, 
-    borderRadius: 50 
-  },
-
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: 15
-  },
-
-  title: {
-    fontFamily: 'Montserrat',
-    fontSize: 40,
-    fontWeight: 700,
-  },
-
   smallText: {
     fontFamily: 'Afacad',
     fontSize: 12,
   },
 
-  hr: {
-    width: '550pt',
-    borderBottom: '1pt solid #ccc',
-    margin: '15pt 0'
-  },
-
-  body: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 5
-  },
-
-  card: {
-    borderRadius: 5,
-    backgroundColor: '#F5F7F8',
-    padding: 5,
-    flex: 1,
-    minWidth: 200
-  },
-
-  cardlTitle: {
+  theader: { 
+    marginTop: 20,
     fontFamily: 'Roboto',
-    fontSize: 15,
     fontWeight: 'bold',
-    color: '#38393C'
-  },
-
-  cardTitleValue: {
-    fontFamily: 'Roboto',
+    color: '#38393C',
     fontSize: 10,
-    fontWeight: 'bold',
-    color: '#38393C'
+    paddingTop: 4 ,
+    paddingLeft: 7 ,
+    flex: 1,
+    height: 20,
+    backgroundColor: '#DEDEDE',
+    borderColor: 'whitesmoke',
+    borderBottomWidth: 1,
   },
-  
+
+  tbody:{ 
+    fontSize: 9, 
+    paddingTop: 4 , 
+    paddingLeft: 7 , 
+    flex: 1, 
+    borderColor: 'whitesmoke', 
+    borderRightWidth: 1,
+    borderLeftWidth: 0.8, 
+    borderBottomWidth:1 
+  },
 });
 
+
 const Table = ({
-  getSelectedData,
-  rSocialWorkerData,
-  selectedResidentId,
-  socialWorkerData,
+  houseEmployeeData,
+  accomodationId,
   allEmployee,
-  residentBoroughData,
-  residentEducationData
+  employeeshiftData,
+  shiftData,
+  currentMonthAndYear,
+  dayNames,
+  tableData
   }) => {
-    const convertPhotoPathToSecureLayer = getSelectedData?.photo?.replace('http://', 'https://');
+    
     return (
       <>
       <View style={styles.labelTitle}>
-          <Text style={styles.lTitle}>YOUNG PERSON DETAILS</Text>
+          <Text style={styles.lTitle}>MONTHLY SCHEDULE</Text>
+          <Text style={styles.smallText}>{`(${currentMonthAndYear})`}</Text>
       </View>
 
-      <View style={styles.pictureContainer}>
-        <View style={styles.imageContainer}>
-            <Image style={styles.logo} src={convertPhotoPathToSecureLayer} />
-        </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.lTitle}>{`${getSelectedData?.first_name} ${getSelectedData?.middle_name} ${getSelectedData?.last_name}`}</Text>
-          <Text style={styles.smallText}>{`Email: ${getSelectedData?.email}`}</Text>
-        </View>
+      {/* Head */}
+      <View style={{ width:'100%', flexDirection :'row', marginTop:10}}>
+        {dayNames?.map(data => {
+            return (
+              <View style={styles.theader}>
+                <Text>{data}</Text> 
+              </View>
+            );
+          })
+        }
       </View>
 
-      <View style={styles.hr}></View>
-
-      <View style={styles.body}>
-        <View style={styles.card}>
-          <Text style={styles.cardlTitle}>Personal Info</Text>
-          <Text style={styles.smallText}>Ethnic Origin/Ethnic Appearance: <Text style={styles.cardTitleValue}>{getSelectedData?.nationality}</Text></Text>
-          <Text style={styles.smallText}>Date of birth: <Text style={styles.cardTitleValue}>{getSelectedData?.date_of_birth}</Text></Text>
-          <Text style={styles.smallText}>Gender: <Text style={styles.cardTitleValue}>{getSelectedData?.gender}</Text></Text>
-          <Text style={styles.smallText}>Height & build: <Text style={styles.cardTitleValue}>{getSelectedData?.height}</Text></Text>
-          <Text style={styles.smallText}>Eye colour, hair colour, glasses, tattoos, piercings: <Text style={styles.cardTitleValue}>{`${getSelectedData?.eye_colour}, ${getSelectedData?.hair_colour}, ${getSelectedData?.glasses}, ${getSelectedData?.tattoos}, ${getSelectedData?.piercings}`}</Text></Text>
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.cardlTitle}>Contacts</Text>
-          <Text style={styles.smallText}>Mobile No: <Text style={styles.cardTitleValue}>{getSelectedData?.phone_number}</Text></Text>
-          <Text style={styles.smallText}>Placement Address: <Text style={styles.cardTitleValue}>{getSelectedData?.address}</Text></Text>
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.cardlTitle}>Education</Text>
-            {residentEducationData?.map(edu => {
-              if (edu.resident === selectedResidentId)
-                return (
-                  <View> 
-                    <Text style={styles.smallText}> 
-                      School: <Text style={styles.cardTitleValue}> {edu.institute_name}, </Text>  
-                      Qualification: <Text style={styles.cardTitleValue}> {edu.qualification_name}</Text>
-                    </Text>
-                  </View>
-                );
-            })}
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.cardlTitle}>Home Borough</Text>
-            {residentBoroughData?.map(b => {
-              if (b.id === getSelectedData?.borough)
-                return (
-                  <View> 
-                    <Text style={styles.smallText}> 
-                      Name: <Text style={styles.cardTitleValue}> {b.borough_name}</Text>
-                    </Text>
-                    <Text style={styles.smallText}>
-                      Out of Hours Emergency Duty: <Text style={styles.cardTitleValue}> {b.Out_of_hours_number}</Text>
-                    </Text>
-                  </View>
-                );
-            })}
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.cardlTitle}>Additional Info</Text>
-          <Text style={styles.smallText}>Subject to Child Protection Plan: <Text style={styles.cardTitleValue}>{getSelectedData?.Subject_child_protection ? 'Yes' : 'No'}</Text></Text>
-          <Text style={styles.smallText}>
-            Legal Status (e.g. Section 20, Section 31): <Text style={styles.cardTitleValue}>{getSelectedData?.legal_status}</Text>
-          </Text>
-          <Text style={styles.smallText}> 
-            Social worker:
-            {rSocialWorkerData?.map(s => {
-              if (s.resident === selectedResidentId && s.status === "Active")
-                return (
-                  <>
-                    {socialWorkerData?.map((rSw) => {
-                      if (rSw.id === s.social_worker)
-                        return (
-                          <Text style={styles.cardTitleValue}> {`${rSw.first_name} ${rSw.middle_name} ${rSw.last_name}, `}</Text>
-                        )
-                    })}
-                  </>
-                );
-            })}
-          </Text>
-          <Text style={styles.smallText}> 
-          Key worker:
-            {getSelectedData?.key_worker?.map(s => {
+      {/* Body */}
+      {tableData.map((week, weekIndex) => {
+        return (
+          <View style={{ width:'100%', flexDirection: 'row', flex: '1' }} key={weekIndex}>
+            {week.map((day, dayIndex) => {
+              const {
+                isCurrentMonth,
+                dayName,
+                dayFigure,
+                month,
+                year,
+                isCurrentDateTrue,
+              } = day;
               return (
-                <>
-                  {allEmployee?.map((emp) => {
-                    if (emp.id === s)
+                <View style={styles.tbody} key={dayIndex}>
+                  <Text>{dayFigure}</Text>
+                  {houseEmployeeData?.map((staff, index) => {
+                    const { id: value, employee, house } = staff;
+                    if (house === accomodationId) {
                       return (
-                        <Text style={styles.cardTitleValue}> {`${emp.first_name} ${emp.middle_name} ${emp.last_name}, `}</Text>
-                      )
+                        <Fragment key={index}>
+                          {allEmployee?.map((emp, empIndex) => {
+                            const { id: empId,  photo,  first_name,  middle_name,  last_name } = emp;
+                            if (empId === employee) {
+                              const convertPhotoPathToSecureLayer = photo?.replace('http://', 'https://');
+                              return (
+                                <Fragment key={empIndex}>
+                                  {employeeshiftData?.map(
+                                    (event, shiftIndex) => {
+                                      const {  id, employee,  house,  date,  shift } = event;
+                                      if (
+                                        date ===
+                                          `${dayName} ${dayFigure} ${month} ${year}` &&
+                                        value === employee &&
+                                        house === accomodationId
+                                      ) {
+                                        return (
+                                          <Fragment
+                                            key={shiftIndex}
+                                          >
+                                            {shiftData?.map(
+                                              (shifts, i) => {
+                                                if (shifts.id ===  shift) {
+                                                  return (
+                                                    <View style={{ flexDirection: 'column'}} key={i}>
+                                                      <Text>
+                                                      {`${shifts.name} ${moment(shifts.start_time, "HH:mm").format("hh:mm A")} - ${moment(shifts.end_time, "HH:mm").format("hh:mm A")}`}
+                                                      </Text>
+                                                      <View style={{ flexDirection: 'column', marginTop: 3}}>
+                                                        <Image
+                                                          style={{ width: "20pt", height: "20pt", borderRadius: "50pt", backgroundColor: "#00000000" }}
+                                                          src={convertPhotoPathToSecureLayer && convertPhotoPathToSecureLayer}
+                                                        />
+                                                        <Text>
+                                                          {`${first_name} ${middle_name} ${last_name}`}
+                                                        </Text>
+                                                      </View>
+                                                    </View>
+                                                  );
+                                                }
+                                              }
+                                            )}
+                                          </Fragment>
+                                        );
+                                      }
+                                    }
+                                  )}
+                                </Fragment>
+                              );
+                            }
+                          })}
+                        </Fragment>
+                      );
+                    }
                   })}
-                </>
+                </View>
               );
             })}
-          </Text>
-        </View>
-      </View>
+          </View>
+        );
+      })}
     </>
     )
   };
 
 
-const DynamicProfilePdf = ({
-  getSelectedData,
-  rSocialWorkerData,
-  selectedResidentId,
-  socialWorkerData,
+const DynamicMonthSchedulePdf = ({
+  houseEmployeeData,
+  accomodationId,
   allEmployee,
-  residentBoroughData,
-  residentEducationData,
+  employeeshiftData,
+  dayMonthYear,
+  shiftData,
+  currentMonthAndYear,
+  dayNames,
+  tableData
 }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <Table 
-          getSelectedData={getSelectedData}
-          rSocialWorkerData={rSocialWorkerData}
-          selectedResidentId={selectedResidentId}
-          socialWorkerData={socialWorkerData}
+          houseEmployeeData={houseEmployeeData}
+          accomodationId={accomodationId}
           allEmployee={allEmployee}
-          residentBoroughData={residentBoroughData}
-          residentEducationData={residentEducationData}
+          employeeshiftData={employeeshiftData}
+          dayMonthYear={dayMonthYear}
+          shiftData={shiftData}
+          currentMonthAndYear={currentMonthAndYear}
+          dayNames={dayNames}
+          tableData={tableData}
         />
       </Page>
     </Document>
   )
 }
-export default DynamicProfilePdf;
+export default DynamicMonthSchedulePdf;
