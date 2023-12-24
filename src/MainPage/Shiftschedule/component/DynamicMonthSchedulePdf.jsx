@@ -88,7 +88,7 @@ const Table = ({
   dayNames,
   tableData
   }) => {
-    
+
     return (
       <>
       <View style={styles.labelTitle}>
@@ -122,7 +122,20 @@ const Table = ({
                 isCurrentDateTrue,
               } = day;
               return (
-                <View style={styles.tbody} key={dayIndex}>
+                <View
+                  key={dayIndex}
+                  style={{
+                    fontSize: 9, 
+                    paddingTop: 4 , 
+                    paddingLeft: 7 , 
+                    flex: 1, 
+                    borderColor: 'whitesmoke', 
+                    borderRightWidth: 1,
+                    borderLeftWidth: 0.8, 
+                    borderBottomWidth:1,
+                    opacity: isCurrentMonth ? 1 : 0.5, 
+                  }}
+                >
                   <Text>{dayFigure}</Text>
                   {houseEmployeeData?.map((staff, index) => {
                     const { id: value, employee, house } = staff;

@@ -57,8 +57,8 @@ const AddSchedule = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const currentDate = new Date().toLocaleDateString();
-    const selected = new Date(selectedDay).toLocaleDateString();
+    const currentDate = new Date();
+    const selected = new Date(selectedDay);
 
     if (selected >= currentDate) {
       if (noShiftRemain) {
