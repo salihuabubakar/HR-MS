@@ -404,7 +404,7 @@ const Table = ({
   };
 
 
-const DynamicProfilePdf = ({
+const DynamicWeekSchedulePdf = ({
   houseEmployeeData,
   accomodationId,
   roleData,
@@ -433,4 +433,4 @@ const DynamicProfilePdf = ({
     </Document>
   )
 }
-export default DynamicProfilePdf;
+export default DynamicWeekSchedulePdf;
