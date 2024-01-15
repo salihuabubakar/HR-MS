@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useReducer, Fragment, useRef } from "react";
 import { Helmet } from "react-helmet";
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, useParams, useLocation } from 'react-router-dom';
 import  AddShift from "../../_components/modelbox/AddShift"
 import AddSchedule from "../../_components/modelbox/Addschedule";
-import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import DefaultImage from "../../assets/img/placeholder.jpg";
@@ -33,15 +32,13 @@ import { useDateWeeklyCalendarCounter, useDateMonthlyCalendarCounter } from "../
 import { Popup, Segment  } from "semantic-ui-react";
 import moment from "moment";
 
-
 const ShiftScheduling = () => {
-  const location = useLocation();
-  const houseId = location?.state?.id;
+  const { id } = useParams();
+  const houseId = parseInt(id, 10)
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
-
   const {
     dateCounter,
     recentDates,
@@ -63,6 +60,7 @@ const ShiftScheduling = () => {
 
   const [showShiftModal] = useGlobalState("showShiftModal");
   const [showAddSchedul] = useGlobalState("showAddSchedul");
+  const [repeatModal] = useGlobalState("repeatModal");
   const [selectedShiftList] = useGlobalState("selectedShiftList");
   useEffect(() => {
     if (!showAddSchedul) {
@@ -84,15 +82,6 @@ const { shiftData, isShiftLoading } = useShiftFetching();
 
   const selectedHouse = houseData?.find((house) => house.id === houseId);
   const houseName = selectedHouse?.name;
-
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
 
   const [employeeId, setEmployeeId] = useState();
   const [selectedDay, setSelectedDay] = useState();

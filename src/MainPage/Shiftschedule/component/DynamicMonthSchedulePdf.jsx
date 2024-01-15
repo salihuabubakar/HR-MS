@@ -111,7 +111,7 @@ const Table = ({
       {/* Body */}
       {tableData.map((week, weekIndex) => {
         return (
-          <View style={{ width:'100%', flexDirection: 'row', flex: '1' }} key={weekIndex}>
+          <View style={{ width:'100%', flexDirection: 'row'}} key={weekIndex}>
             {week.map((day, dayIndex) => {
               const {
                 isCurrentMonth,
@@ -127,13 +127,13 @@ const Table = ({
                   style={{
                     fontSize: 9, 
                     paddingTop: 4 , 
-                    paddingLeft: 7 , 
+                    paddingLeft: 7 ,
                     flex: 1, 
                     borderColor: 'whitesmoke', 
                     borderRightWidth: 1,
                     borderLeftWidth: 0.8, 
                     borderBottomWidth:1,
-                    opacity: isCurrentMonth ? 1 : 0.5, 
+                    opacity: isCurrentMonth ? 1 : 0.5,
                   }}
                 >
                   <Text>{dayFigure}</Text>
@@ -165,7 +165,7 @@ const Table = ({
                                               (shifts, i) => {
                                                 if (shifts.id ===  shift) {
                                                   return (
-                                                    <View style={{ flexDirection: 'column'}} key={i}>
+                                                    <View style={{ flexDirection: 'column', padding: '5pt 0'}} key={i}>
                                                       <Text>
                                                       {`${shifts.name} ${moment(shifts.start_time, "HH:mm").format("hh:mm A")} - ${moment(shifts.end_time, "HH:mm").format("hh:mm A")}`}
                                                       </Text>

@@ -6,7 +6,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
-import { RadioBtn } from "./styles";
+import { CheckBox } from "./styles";
 
 const AddHouseImages = ({
   house,
@@ -177,7 +177,7 @@ const AddHouseImages = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">Cover Image</label>
-                          <RadioBtn>
+                          <CheckBox>
                             <input
                               type="checkbox"
                               name="cover_image"
@@ -189,7 +189,7 @@ const AddHouseImages = ({
                             <label htmlFor="cover_image">
                               <span>Cover Image</span>
                             </label>
-                          </RadioBtn>
+                          </CheckBox>
                         </div>
                       </div>
                       <div className="col-sm-12">

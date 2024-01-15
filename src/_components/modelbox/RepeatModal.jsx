@@ -1,20 +1,46 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { setGlobalState } from "../../context/GlobalState";
 import {
   PopupWrapper,
   PopupOverlay,
   PopupContainer,
 } from "./Addemployee.style";
-import { Checkbox } from "antd";
-import { useDateWeeklyCalendarCounter } from "../../utils/calendarCustomeHook";
+import { useDateMonthlyCalendarCounter } from "../../utils/calendarCustomeHook";
 import { RepeatModalContainer } from "../../MainPage/Employees/Employees/styles";
-import { toast } from "react-toastify";
+import moment from "moment";
+import { CheckBox } from "./styles";
+import { isMobile } from "../../utils/mediaQuery";
+import { useEmployeeShiftFetching } from "../../utils/employeeCustomFetchHook";
 
-const RepeatModal = ({ event, dispatchSchedule, date: selectedDate }) => {
-  const { dateCounter, dayMonthYear, activeCurrentDate, handleNavigation } =
-    useDateWeeklyCalendarCounter();
+const RepeatModal = ({ 
+  event, 
+  dispatchSchedule, 
+  date: selectedDate,
+  employeeId,
+  houseId
+}) => {
+
+  const { employeeshiftData } = useEmployeeShiftFetching();
+
+  const {
+    handleNavigation,
+    dateCounter,
+    dayNames,
+    currentMonthName,
+    currentYear,
+    tableData,
+  } = useDateMonthlyCalendarCounter();
+
+
+  const shiftDateAssociatedWithEmployee = employeeshiftData?.filter(data => {
+    return data.employee === employeeId && data.house === houseId
+  });
+
+  const getEmployeeAlreadyExistingShift = shiftDateAssociatedWithEmployee?.map(data => data.date);
 
   const [date, setDate] = useState([]);
+
+  const customFontWidth = isMobile() && 10 
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
@@ -39,13 +65,10 @@ const RepeatModal = ({ event, dispatchSchedule, date: selectedDate }) => {
     const newShiftEvent = newShifts.map((shift) => ({
       shift: shift.shift,
       employee: shift.employee,
-      date: shift.date,
+      date: moment(shift.date, "ddd DD MMM YYYY").format("YYYY-MM-DD"),
       house: shift.house,
     }));
     dispatchSchedule({ type: "add", payload: newShiftEvent });
-    toast.success("Shift Repeated", {
-      autoClose: 1500,
-    });
     setGlobalState("repeatModal", false);
     setGlobalState("showAddSchedul", false);
   };
@@ -69,79 +92,122 @@ const RepeatModal = ({ event, dispatchSchedule, date: selectedDate }) => {
                   </div>
                   <div className="modal-body">
                     <div className="form-header">
-                      <h3>Repeat Shift</h3>
+                      <h3>Copy Shift</h3>
                       <p style={{ fontSize: "0.7rem" }}>
-                        current Date: {selectedDate}
+                        current Date: <span style={{ color: '#000' }}>{selectedDate}</span>
                       </p>
                       <p style={{ fontSize: "0.8rem" }}>
-                        Select day(s) to repeat shift:{" "}
-                        {date.length > 0 && <span>{date.join(", ")}</span>}
+                        Select day(s) to copy shift to:{" "}
+                        {date.length > 0 && <span style={{ color: '#000' }}>{date.join(", ")}</span>}
                       </p>
                     </div>
                     <div className="row">
-                      <div className="col-sm-12 nav-btn">
-                        <button
-                          onClick={() => handleNavigation("prev")}
-                          style={{ border: "none", marginRight: "10px" }}
-                          className="btn btn-success btn-block w-10"
-                        >
-                          {"<"}
-                        </button>
-                        <button
-                          onClick={() => handleNavigation("current")}
-                          className="btn btn-success btn-block w-10"
-                          style={{
-                            border: "none",
-                            opacity: dateCounter === 0 ? "0.3" : "1",
-                            cursor:
-                              dateCounter === 0 ? "not-allowed" : "pointer",
-                            color: dateCounter === 0 ? "black" : "white",
-                          }}
-                        >
-                          {"#"}
-                        </button>
-                        <button
-                          onClick={() => handleNavigation("next")}
-                          style={{ border: "none", marginLeft: "10px" }}
-                          className="btn btn-success btn-block w-10"
-                        >
-                          {">"}
-                        </button>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <div>
+                          {currentMonthName} {currentYear}
+                        </div>
+                        <div className=" nav-btn">
+                          <button
+                            onClick={() => handleNavigation("prev")}
+                            style={{ border: "none", marginRight: "10px" }}
+                            className="btn btn-success btn-block w-10"
+                          >
+                            {"<"}
+                          </button>
+                          <button
+                            onClick={() => handleNavigation("current")}
+                            className="btn btn-success btn-block w-10"
+                            style={{
+                              border: "none",
+                              opacity: dateCounter === 0 ? "0.3" : "1",
+                              cursor:
+                                dateCounter === 0 ? "not-allowed" : "pointer",
+                              color: dateCounter === 0 ? "black" : "white",
+                            }}
+                          >
+                            {"#"}
+                          </button>
+                          <button
+                            onClick={() => handleNavigation("next")}
+                            style={{ border: "none", marginLeft: "10px" }}
+                            className="btn btn-success btn-block w-10"
+                          >
+                            {">"}
+                          </button>
                       </div>
-                      <div className="col-sm-12 check-box-div">
-                        {dayMonthYear?.map((data, index) => {
-                          const truncatedData = data.slice(0, -5);
-
-                          const currentDate = new Date(data);
-                          const selected = new Date(selectedDate);
-
-                          if (currentDate <= selected) {
-                            return null; // Skip rendering this Checkbox
-                          }
-
-                          return (
-                            <Checkbox
-                              style={{
-                                width: "50%",
-                                marginLeft: index === 0 && "8px",
-                              }}
-                              key={index}
-                              value={data}
-                              onChange={handleCheckboxChange}
-                              checked={date.includes(data)}
-                            >
-                              {truncatedData}
-                            </Checkbox>
-                          );
-                        })}
                       </div>
+                      <table className="table table-striped custom-table">
+                        <thead>
+                          <tr>
+                            {dayNames?.map((data, index) => {
+                              return (
+                                <th style={{ borderRight: `${index !== 6 ? '1px solid grey' : ''}`, fontSize: `${customFontWidth}px` }} key={index}>
+                                  {data}
+                                </th>
+                              );
+                            })}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {tableData.map((week, weekIndex) => {
+                            return (
+                              <tr style={{cursor: "default"}} key={weekIndex}>
+                                {week.map((day, dayIndex) => {
+                                  const {
+                                    isCurrentMonth,
+                                    dayName,
+                                    dayFigure,
+                                    month,
+                                    year,
+                                    isCurrentDateTrue,
+                                  } = day;
+                                  const checkboxId = `day-${weekIndex}-${dayIndex}`;
+                                  const currentDate = new Date(`${dayName} ${dayFigure} ${month} ${year}`);
+                                  const selected = new Date(selectedDate);
+                                  return (
+                                    <td key={dayIndex}>
+                                      <div className="form-group">
+                                        <CheckBox
+                                          style={{
+                                          display: 
+                                            (
+                                              currentDate <= selected || 
+                                              !isCurrentMonth || 
+                                              getEmployeeAlreadyExistingShift.includes(`${dayName} ${dayFigure} ${month} ${year}`) 
+                                          ) && "none",
+                                          fontSize: `${customFontWidth}px`,
+                                          backgroundColor:
+                                            isCurrentDateTrue && "#9BA4B5",
+                                          borderRadius: '2px'
+                                        }}
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            id={checkboxId}
+                                            value={`${dayName} ${dayFigure} ${month} ${year}`}
+                                            onChange={handleCheckboxChange}
+                                            checked={date.includes(`${dayName} ${dayFigure} ${month} ${year}`)}
+                                          />
+                                          <label htmlFor={checkboxId}>
+                                            <span>{dayFigure}</span>
+                                          </label>
+                                        </CheckBox>
+                                      </div>
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
                     </div>
                     <div className="submit-section">
                       <button
                         onClick={handleRepeat}
                         className="btn btn-primary repeat-btn"
                       >
-                        Add Repeat
+                        Copy Shift
                       </button>
                     </div>
                   </div>

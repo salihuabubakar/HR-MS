@@ -12,7 +12,7 @@ const ShiftScheduleRoute = ({ match }) => (
   <Switch>
     <Redirect exact from={`${match.url}/`} to={`${match.url}/shift`} />
     <Route path={`${match.url}/shift`} component={Shift} />
-    <Route path={`${match.url}/shift-scheduling`} component={ShiftScheduling} />
+    <Route path={`${match.url}/shift-scheduling/:id`} component={ShiftScheduling} />
     <Route path={`${match.url}/house`} component={House} />
   </Switch>
 );
