@@ -87,10 +87,7 @@ const house = () => {
                       <div key={id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                         <div className="profile-widget">
                           <Link
-                            to={{
-                              pathname: "/app/shiftschedule/shift-scheduling",
-                              state: { id: id },
-                            }}
+                            to={`/app/shiftschedule/shift-scheduling/${id}`}
                             className="avatar"
                             style={{
                               borderRadius: "5px",
@@ -111,10 +108,7 @@ const house = () => {
                           </Link>
                           <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                             <Link
-                              to={{
-                                pathname: "/app/shiftschedule/shift-scheduling",
-                                state: { id: id },
-                              }}
+                              to={`/app/shiftschedule/shift-scheduling/${id}`}
                             >
                               {name}
                             </Link>

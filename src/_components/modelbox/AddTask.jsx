@@ -7,7 +7,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
-import { RadioBtn } from "./styles";
+import { CheckBox } from "./styles";
 import moment from "moment";
 import "./style.css";
 import { 
@@ -502,7 +502,7 @@ const AddTask = ({
                           <div className="col-sm-6">
                             <div className="form-group">
                               <label className="label">Task-Concluded</label>
-                              <RadioBtn>
+                              <CheckBox>
                                 <input
                                   type="checkbox"
                                   name="task-concluded"
@@ -514,7 +514,7 @@ const AddTask = ({
                                 <label htmlFor="concluded">
                                   <span>Concluded</span>
                                 </label>
-                              </RadioBtn>
+                              </CheckBox>
                             </div>
                           </div>
                         )}
