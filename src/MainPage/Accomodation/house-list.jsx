@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import "antd/dist/antd.css";
@@ -38,10 +38,7 @@ const HouseList = ({
                   backgroundColor: "#00000000",
                   height: "100%",
                 }}
-                to={{
-                  pathname: "/app/accomodation/HouseDetails",
-                  state: { id: id, index: index },
-                }}
+                to={`/app/accomodation/housedetails/${id}`}
               >
                 <img
                   style={{ width: "40px", height: "40px" }}
@@ -50,10 +47,7 @@ const HouseList = ({
                 />
               </Link>
               <Link
-                to={{
-                  pathname: "/app/accomodation/HouseDetails",
-                  state: { id: id, index: index },
-                }}
+                to={`/app/accomodation/housedetails/${id}`}
               >
                 {name}
               </Link>

@@ -51,10 +51,7 @@ const AllResident = ({
                               backgroundColor: "#00000000",
                               height: "100%",
                             }}
-                            to={{
-                              pathname: "/app/servicework/Profile",
-                              state: { id: id, index: index },
-                            }}
+                            to={`/app/servicework/profile/${id}`}
                           >
                             <img
                               style={{
@@ -89,10 +86,7 @@ const AllResident = ({
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link
-                            to={{
-                              pathname: "/app/servicework/Profile",
-                              state: { id: id, index: index },
-                            }}
+                            to={`/app/servicework/profile/${id}`}
                           >{`${first_name} ${middle_name} ${last_name}`}</Link>
                         </h4>
                         <div className="small text-muted">

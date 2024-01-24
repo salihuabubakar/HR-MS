@@ -8,7 +8,7 @@ import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import Role from "./role";
 import Department from "./department";
 import Organisation from "./organisation";
-import DocType from "./docType";
+import DocType from "./doc-type";
 import { 
   useRoleFetching, 
   useDepartmentFetching, 

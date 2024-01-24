@@ -52,10 +52,7 @@ const AllEmployee = ({
                               backgroundColor: "#00000000",
                               height: "100%",
                             }}
-                            to={{
-                              pathname: "/app/employee/Profile",
-                              state: { id: id, index: index },
-                            }}
+                            to={`/app/employee/profile/${id}`}
                           >
                             <img
                               style={{

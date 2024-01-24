@@ -2,18 +2,20 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import "antd/dist/antd.css";
-import { itemRender, onShowSizeChange } from "../paginationfunction";
-import "../antdstyle.css";
-import { useRoleFetching } from "../../utils/employeeCustomFetchHook";
-const AllResidentList = ({
+import { itemRender, onShowSizeChange } from "../../paginationfunction";
+import "../../antdstyle.css";
+import {
+  useRoleFetching,
+} from "../../../utils/employeeCustomFetchHook";
+const AllEmployeeList = ({
   DefaultImage,
-  handleEditResident,
+  handleEditEmployee,
   handleDeleteAcct,
+  isLoading,
   data,
   itemsPerPage,
   currentPage,
   setCurrentPage,
-  isResidentLoading,
 }) => {
   const { roleData } = useRoleFetching();
 
@@ -42,21 +44,19 @@ const AllResidentList = ({
     {
       title: "Name",
       render: (text, record, index) => {
-        const { id, photo, first_name, middle_name, last_name, role_name } =
+        const { id, photo, first_name, middle_name, last_name, role } =
           record;
+        const matchedRole = roleData?.find((r) => r.id === role);
         return (
           <React.Fragment>
             <h2 className="table-avatar">
               <Link
+                to={`/app/employee/profile/${id}`}
                 className="avatar"
                 style={{
                   borderRadius: "5px",
                   backgroundColor: "#00000000",
                   height: "100%",
-                }}
-                to={{
-                  pathname: "/app/servicework/Profile",
-                  state: { id: id, index: index },
                 }}
               >
                 <img
@@ -66,17 +66,14 @@ const AllResidentList = ({
                 />
               </Link>
               <Link
-                to={{
-                  pathname: "/app/servicework/Profile",
-                  state: { id: id, index: index },
-                }}
+                to={`/app/employee/profile/${id}`}
               >
                 {`${first_name} ${middle_name} ${last_name}`}{" "}
-                <span>{role_name ? role_name : "--"}</span>
+                <span>{matchedRole ? matchedRole.role_name : "--"}</span>
               </Link>
             </h2>
           </React.Fragment>
-        );
+        )
       },
       // sorter: (a, b) => a.name.length - b.name.length,
     },
@@ -111,16 +108,16 @@ const AllResidentList = ({
           <div className="dropdown-menu dropdown-menu-right">
             <a
               className="dropdown-item"
-              onClick={() => handleEditResident(record.id, index)}
+              onClick={() => handleEditEmployee(record.id, index)}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            <a
+            {/* <a
               className="dropdown-item"
               onClick={() => handleDeleteAcct(record.id)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
-            </a>
+            </a> */}
           </div>
         </div>
       ),
@@ -139,11 +136,11 @@ const AllResidentList = ({
             bordered
             dataSource={data}
             rowKey={(data) => data?.id}
-            loading={isResidentLoading}
+            loading={isLoading}
           />
         </div>
       </div>
     </div>
   );
 };
-export default AllResidentList;
+export default AllEmployeeList;

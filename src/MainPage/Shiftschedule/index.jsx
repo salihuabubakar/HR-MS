@@ -3,9 +3,9 @@
  */
 /* eslint-disable */
 import React from "react";
-import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Shift from "./shift";
-import ShiftScheduling from "./shiftscheduling";
+import ShiftScheduling from "./shift-scheduling";
 import House from "./house"
 
 const ShiftScheduleRoute = ({ match }) => (

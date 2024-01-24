@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import moment from "moment";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import PopUpText from "../../_components/modelbox/PopUpText";
-import axios from "axios";
-import { BaseUrl } from "../../utils/baseUrl";
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from "../Employees/Employees/styles";
 import DefaultImage from "../../assets/img/placeholder.jpg";
@@ -60,7 +58,7 @@ import AddResidentSocialWorkerModal from "../../_components/modelbox/AddResident
 import AddResidentReferralModal from "../../_components/modelbox/AddResidentReferralModal";
 import { Wrapper } from "./style";
 import "../Employees/Employees/style.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { DivContainer } from "../TaskManagement/style";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
@@ -73,6 +71,8 @@ import Appointment from "./Appointment";
 import DynamicProfilePdf from "./component/DynamicProfilePdf";
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import { styles } from "../../utils/helperFucntions";
+import useResidentData from "../../utils/Hooks/residentDetails";
+
 const Profile = () => {
   const [gpError] = useGlobalState("gpError");
   const [residentSolicitorError] = useGlobalState("residentSolicitorError");
@@ -101,34 +101,10 @@ const Profile = () => {
     setGlobalState("referralError", "");
   };
 
-  const location = useLocation();
-  let getResidentId = location?.state?.id;
-  const [getSelectedData, setGetSelectedData] = useState();
-  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
-    const fetchResidentSelectedData = async () => {
-      try {
-        setIsSelectedLoading(true);
-        const response = await axios.get(
-          `${BaseUrl}/resident/detail/${getResidentId}?format=json`
-        );
-        if (isMounted) {
-          setGetSelectedData(response.data);
-          setIsSelectedLoading(false);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setIsSelectedLoading(false);
-      }
-    };
-    getResidentId != null ? fetchResidentSelectedData() : null;
-
-    return () => {
-      isMounted = false;
-    };
-  }, [getResidentId]);
+  const { id } = useParams();
+  let getResidentId = parseInt(id, 10);
+  const { getSelectedData, isSelectedLoading } = useResidentData(getResidentId);
 
 
   const [menu, setMenu] = useState(false)

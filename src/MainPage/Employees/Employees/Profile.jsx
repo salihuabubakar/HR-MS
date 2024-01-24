@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import moment from "moment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../../context/GlobalState";
 import { Wrapper } from "../../ServiceWork/style";
 import { BillCard } from "./styles";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   useEmployeeAddressFetching,
   useEmployeeEmergencyFetching,
@@ -32,8 +32,6 @@ import { DivContainer } from "../../TaskManagement/style";
 import Header from "../../../initialpage/Sidebar/header";
 import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { Helmet } from "react-helmet";
-import axios from "axios";
-import { BaseUrl } from "../../../utils/baseUrl";
 import NoAvailableData from "../../../_components/noAvailableData";
 import { ProgressSpan, ProgressDiv } from "../../../utils/helperFucntions";
 import { Popup, Segment  } from "semantic-ui-react";
@@ -41,44 +39,19 @@ import { CardWidth } from "./styles";
 import { handleFileDownload } from "../../../utils/helperFucntions";
 import DisplayFileType from "../../../_components/fileExtension";
 import PopUpText from "../../../_components/modelbox/PopUpText";
+import useEmployeeData from "../../../utils/Hooks/employeeDetails";
 
 const Profile = ({
   DefaultImage,
 }) => {
+  const { id } = useParams();
+  let getEmployeeId = parseInt(id, 10);
 
-  const location = useLocation();
-  let getEmployeeId = location?.state?.id;
-
-  const [getSelectedData, setGetSelectedData] = useState();
-  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
-  const [skeletonLoading, setSkeletonLoading] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchEmployeeSelectedData = async () => {
-      try {
-        setIsSelectedLoading(true);
-        setSkeletonLoading(true);
-        const response = await axios.get(
-          `${BaseUrl}/employee/detail/${getEmployeeId}?format=json`
-        );
-        if(isMounted) {
-          setGetSelectedData(response.data);
-          setIsSelectedLoading(false);
-          setSkeletonLoading(false);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setIsSelectedLoading(false);
-        setSkeletonLoading(false);
-      }
-    };
-    getEmployeeId != null ? fetchEmployeeSelectedData() : null;
-    
-    return () => {
-      isMounted = false;
-    };
-  }, [getEmployeeId]);
+  const {
+    getSelectedData,
+    isSelectedLoading,
+    skeletonLoading,
+  } = useEmployeeData(getEmployeeId);
 
   const [menu, setMenu] = useState(false)
   const toggleMobileMenu = () => {

@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useReducer, Fragment, useRef } from "react";
+import React, { useEffect, useState, useReducer, useRef } from "react";
 import { Helmet } from "react-helmet";
-import { Link, withRouter, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import  AddShift from "../../_components/modelbox/AddShift"
 import AddSchedule from "../../_components/modelbox/Addschedule";
-import Select from "react-select";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import Header from "../../initialpage/Sidebar/header";
@@ -34,7 +33,7 @@ import moment from "moment";
 
 const ShiftScheduling = () => {
   const { id } = useParams();
-  const houseId = parseInt(id, 10)
+  const houseId = parseInt(id, 10);
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {
     setMenu(!menu);
