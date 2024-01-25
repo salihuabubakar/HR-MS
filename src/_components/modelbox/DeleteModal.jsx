@@ -10,7 +10,6 @@ const DeleteModal = ({
   iDToDelete,
   modalTitle,
 }) => {
-  console.log("iDToDelete", iDToDelete);
   const handleSubmit = async () => {
     deleteAction({
       type: "delete",

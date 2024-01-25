@@ -12,9 +12,8 @@ import {
   useResidentFetching
 } from "../../utils/employeeCustomFetchHook";
 import "../Employees/Employees/style.css";
-import AllResident from "./AllResident";
-import AllResidentList from "./AllResidentList";
-import Profile from "./Profile";
+import AllResident from "./allresident";
+import AllResidentList from "./allresident-list";
 import { DivContainer } from "../TaskManagement/style";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";

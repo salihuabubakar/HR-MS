@@ -7,7 +7,7 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import { useHouseDocumentFetching } from "../../utils/employeeCustomFetchHook";
-import { RadioBtn } from "./styles";
+import { CheckBox } from "./styles";
 import Select from "react-select";
 
 const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
@@ -228,7 +228,7 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">Paid</label>
-                          <RadioBtn>
+                          <CheckBox>
                             <input
                               type="checkbox"
                               name="paid"
@@ -240,7 +240,7 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
                             <label htmlFor="paid">
                               <span>Paid</span>
                             </label>
-                          </RadioBtn>
+                          </CheckBox>
                         </div>
                       </div>
                     </div>

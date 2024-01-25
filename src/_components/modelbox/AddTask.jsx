@@ -7,7 +7,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
-import { RadioBtn } from "./styles";
+import { CheckBox, RadioBtn } from "./styles";
 import moment from "moment";
 import "./style.css";
 import { 
@@ -270,6 +270,7 @@ const AddTask = ({
     setIsPaid(e.target.checked);
   };
   const handleTaskConcludedChange = (e) => {
+    if(progress !== 100) return;
     setConcluded(e.target.checked);
   };
   // const handleHoursChange = (e) => {

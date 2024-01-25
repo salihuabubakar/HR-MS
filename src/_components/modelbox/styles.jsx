@@ -47,3 +47,21 @@ export const RadioBtn = styled.div`
     color: #ffffff;
   }
 `;
+
+export const CheckBox = styled.div`
+  display: flex;
+  width: 20px;
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+  }
+  label {
+    border-radius: 4px;
+    position: relative;
+    transition: 0.1s;
+    cursor: pointer;
+  }
+  input[type="checkbox"]:checked + label {
+    background-color: #55CE63;
+    color: #ffffff;
+  }
+`;

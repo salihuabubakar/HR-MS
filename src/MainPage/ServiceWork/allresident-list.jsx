@@ -2,20 +2,18 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import "antd/dist/antd.css";
-import { itemRender, onShowSizeChange } from "../../paginationfunction";
-import "../../antdstyle.css";
-import {
-  useRoleFetching,
-} from "../../../utils/employeeCustomFetchHook";
-const AllEmployeeList = ({
+import { itemRender, onShowSizeChange } from "../paginationfunction";
+import "../antdstyle.css";
+import { useRoleFetching } from "../../utils/employeeCustomFetchHook";
+const AllResidentList = ({
   DefaultImage,
-  handleEditEmployee,
+  handleEditResident,
   handleDeleteAcct,
-  isLoading,
   data,
   itemsPerPage,
   currentPage,
   setCurrentPage,
+  isResidentLoading,
 }) => {
   const { roleData } = useRoleFetching();
 
@@ -44,23 +42,19 @@ const AllEmployeeList = ({
     {
       title: "Name",
       render: (text, record, index) => {
-        const { id, photo, first_name, middle_name, last_name, role } =
+        const { id, photo, first_name, middle_name, last_name, role_name } =
           record;
-        const matchedRole = roleData?.find((r) => r.id === role);
         return (
           <React.Fragment>
             <h2 className="table-avatar">
               <Link
-                to={{
-                  pathname: "/app/employee/Profile",
-                  state: { id: id, index: index },
-                }}
                 className="avatar"
                 style={{
                   borderRadius: "5px",
                   backgroundColor: "#00000000",
                   height: "100%",
                 }}
+                to={`/app/servicework/profile/${id}`}
               >
                 <img
                   style={{ width: "40px", height: "40px" }}
@@ -69,17 +63,14 @@ const AllEmployeeList = ({
                 />
               </Link>
               <Link
-                to={{
-                  pathname: "/app/employee/Profile",
-                  state: { id: id, index: index },
-                }}
+                to={`/app/servicework/profile/${id}`}
               >
                 {`${first_name} ${middle_name} ${last_name}`}{" "}
-                <span>{matchedRole ? matchedRole.role_name : "--"}</span>
+                <span>{role_name ? role_name : "--"}</span>
               </Link>
             </h2>
           </React.Fragment>
-        )
+        );
       },
       // sorter: (a, b) => a.name.length - b.name.length,
     },
@@ -114,16 +105,16 @@ const AllEmployeeList = ({
           <div className="dropdown-menu dropdown-menu-right">
             <a
               className="dropdown-item"
-              onClick={() => handleEditEmployee(record.id, index)}
+              onClick={() => handleEditResident(record.id, index)}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
-            {/* <a
+            <a
               className="dropdown-item"
               onClick={() => handleDeleteAcct(record.id)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
-            </a> */}
+            </a>
           </div>
         </div>
       ),
@@ -142,11 +133,11 @@ const AllEmployeeList = ({
             bordered
             dataSource={data}
             rowKey={(data) => data?.id}
-            loading={isLoading}
+            loading={isResidentLoading}
           />
         </div>
       </div>
     </div>
   );
 };
-export default AllEmployeeList;
+export default AllResidentList;

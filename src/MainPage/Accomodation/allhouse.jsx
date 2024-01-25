@@ -40,10 +40,7 @@ const AllHouse = ({
                             borderRadius: "5px",
                             backgroundColor: "#00000000",
                           }}
-                          to={{
-                            pathname: "/app/accomodation/HouseDetails",
-                            state: { id: id, index: index },
-                          }}
+                          to={`/app/accomodation/house-details/${id}`}
                         >
                           <img
                             style={{
@@ -75,10 +72,7 @@ const AllHouse = ({
                       </div>
                       <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                         <Link
-                          to={{
-                            pathname: "/app/accomodation/HouseDetails",
-                            state: { id: id, index: index },
-                          }}
+                          to={`/app/accomodation/house-details/${id}`}
                         >
                           {name}
                         </Link>
@@ -99,4 +93,5 @@ const AllHouse = ({
     </div>
   );
 };
+
 export default AllHouse;

@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { useRoleFetching } from "../../utils/employeeCustomFetchHook";
-import NoAvailableData from "../../_components/noAvailableData";
+import { useRoleFetching } from "../../../utils/employeeCustomFetchHook";
+import NoAvailableData from "../../../_components/noAvailableData";
 
-const AllResident = ({
+const AllEmployee = ({
   DefaultImage,
-  handleEditResident,
+  handleEditEmployee,
   handleDeleteAcct,
   data,
   isLoading,
+  showSkeleton,
   error,
 }) => {
 
@@ -22,7 +23,7 @@ const AllResident = ({
 
   return (
     <div className="row staff-grid-row">
-      {isLoading ? (
+      {isLoading || showSkeleton ? (
         <div className="skeleton-container">
           <div className="skeleton-content">
             <div className="skeleton-line"></div>
@@ -51,10 +52,7 @@ const AllResident = ({
                               backgroundColor: "#00000000",
                               height: "100%",
                             }}
-                            to={{
-                              pathname: "/app/servicework/Profile",
-                              state: { id: id, index: index },
-                            }}
+                            to={`/app/employee/profile/${id}`}
                           >
                             <img
                               style={{
@@ -78,22 +76,16 @@ const AllResident = ({
                           <div className="dropdown-menu dropdown-menu-right">
                             <a
                               className="dropdown-item"
-                              onClick={() => handleEditResident(id, index)}
+                              onClick={() => handleEditEmployee(id, index)}
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
-                            </a>
-                            <a className="dropdown-item" onClick={() => handleDeleteAcct(id)}>
-                              <i className="fa fa-trash-o m-r-5" /> Delete
                             </a>
                           </div>
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <Link
-                            to={{
-                              pathname: "/app/servicework/Profile",
-                              state: { id: id, index: index },
-                            }}
-                          >{`${first_name} ${middle_name} ${last_name}`}</Link>
+                          <a onClick={() => handleEmployeeProfilePage(id, index)}>
+                            {`${first_name} ${middle_name} ${last_name}`}
+                          </a>
                         </h4>
                         <div className="small text-muted">
                           {roleData?.map((r) => {
@@ -122,4 +114,4 @@ const AllResident = ({
     </div>
   );
 };
-export default AllResident;
+export default AllEmployee;

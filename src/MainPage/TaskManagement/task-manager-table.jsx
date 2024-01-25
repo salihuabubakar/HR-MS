@@ -101,7 +101,7 @@ const TaskManagerTable = () => {
             <h2 className="table-avatar">
               <Link
                 to={{
-                  pathname: "/app/taskmanagement/task-manager-detail",
+                  pathname: `/app/taskmanagement/task-manager-detail/${id}`,
                   state: { id: id, index: currentIndex(index) },
                 }}
               >
@@ -132,7 +132,7 @@ const TaskManagerTable = () => {
                   <h2 key={value} className="table-avatar">
                     <Link
                       to={{
-                        pathname: "/app/taskmanagement/task-manager-detail",
+                        pathname: `/app/taskmanagement/task-manager-detail/${id}`,
                         state: { id: id, index: currentIndex(index) },
                       }}
                       className="avatar"
@@ -157,7 +157,7 @@ const TaskManagerTable = () => {
                     </Link>
                     <Link
                       to={{
-                        pathname: "/app/taskmanagement/task-manager-detail",
+                        pathname: `/app/taskmanagement/task-manager-detail/${id}`,
                         state: { id: id, index: currentIndex(index) },
                       }}
                     ></Link>
@@ -189,7 +189,7 @@ const TaskManagerTable = () => {
                   <h2 key={value} className="table-avatar">
                     <Link
                       to={{
-                        pathname: "/app/taskmanagement/task-manager-detail",
+                        pathname: `/app/taskmanagement/task-manager-detail/${id}`,
                         state: { id: id, index: currentIndex(index) },
                       }}
                       className="avatar"
@@ -214,7 +214,7 @@ const TaskManagerTable = () => {
                     </Link>
                     <Link
                       to={{
-                        pathname: "/app/taskmanagement/task-manager-detail",
+                        pathname: `/app/taskmanagement/task-manager-detail/${id}`,
                         state: { id: id, index: currentIndex(index) },
                       }}
                     ></Link>
@@ -282,7 +282,7 @@ const TaskManagerTable = () => {
                 color: "#fff",
               }}
               to={{
-                pathname: "/app/taskmanagement/task-manager-detail",
+                pathname: `/app/taskmanagement/task-manager-detail/${id}`,
                 state: { id: id, index: currentIndex(index) },
               }}
             >
@@ -316,7 +316,7 @@ const TaskManagerTable = () => {
                 color: "#fff",
               }}
               to={{
-                pathname: "/app/taskmanagement/task-manager-detail",
+                pathname: `/app/taskmanagement/task-manager-detail/${id}`,
                 state: { id: id, index: currentIndex(index) },
               }}
             >
@@ -371,7 +371,7 @@ const TaskManagerTable = () => {
                 color: "#fff",
               }}
               to={{
-                pathname: "/app/taskmanagement/task-manager-detail",
+                pathname: `/app/taskmanagement/task-manager-detail/${id}`,
                 state: { id: id, index: currentIndex(index) },
               }}
             >

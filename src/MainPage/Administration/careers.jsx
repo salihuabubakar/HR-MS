@@ -73,15 +73,6 @@ const Careers = () => {
     setMenu(!menu);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const columns = [
     {
       title: "#",
@@ -98,10 +89,7 @@ const Careers = () => {
           <React.Fragment>
             <h2 className="table-avatar">
               <Link
-                to={{
-                  pathname: "/app/administration/careerDetails",
-                  state: { id: id, index: index },
-                }}
+                to={`/app/administration/career-details/${id}`}
               >
                 { title }
               </Link>

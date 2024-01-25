@@ -1,47 +1,16 @@
 import React, {useEffect, useState } from 'react'
-import { Link, useLocation } from "react-router-dom";
-import axios from "axios"
-import { BaseUrl } from '../../utils/baseUrl';
+import { Link, useParams } from "react-router-dom";
 import moment from "moment";
 import Header from '../../initialpage/Sidebar/header';
 import Sidebar from '../../initialpage/Sidebar/sidebar';
 import { Helmet } from 'react-helmet';
 import DOMPurify from "dompurify";
+import useJobData from '../../utils/Hooks/jobList';
 
 const CareerDetails = () => {
-  const location = useLocation();
-  let jobdetailId = location?.state?.id;
-  const [getSelectedJobData, setGetSelectedJobData] = useState();
-  const [isSelectedJobLoading, setIsSelectedJobLoading] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchSelectedJobData = async () => {
-      setIsSelectedJobLoading(true);
-
-      try {
-        const response = await axios.get(`${BaseUrl}/careers/jobs/${jobdetailId}/`);
-        if (isMounted) {
-          setGetSelectedJobData(response.data);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
-        if (isMounted) {
-          setIsSelectedJobLoading(false);
-        }
-      }
-    };
-
-    if (jobdetailId !== null) {
-      fetchSelectedJobData();
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [jobdetailId]);
+  const { id: pageId } = useParams();
+  let jobdetailId = parseInt(pageId, 10);
+  const { getSelectedJobData, isSelectedJobLoading } = useJobData(jobdetailId);
 
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {

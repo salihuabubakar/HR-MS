@@ -571,7 +571,7 @@ export const add_update_delete_house_document = async (state, { type, payload })
         const response = await axios.delete(`${BaseUrl}/house/documents/${id}/`);
 
         // Check the response status
-        if (rresponse.status === 204) {
+        if (response.status === 204) {
           toast("House Document Deleted", {
             autoClose: 1500,
           });

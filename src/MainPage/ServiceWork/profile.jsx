@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import moment from "moment";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import PopUpText from "../../_components/modelbox/PopUpText";
-import axios from "axios";
-import { BaseUrl } from "../../utils/baseUrl";
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from "../Employees/Employees/styles";
 import DefaultImage from "../../assets/img/placeholder.jpg";
@@ -28,7 +26,9 @@ import {
   useGpracticeFetching,
   useSolicitorFetching,
   useSchoolFetching,
-  useDataFetching
+  useDataFetching,
+  useResidentFetching,
+  useResidentBoroughFetching
 } from "../../utils/employeeCustomFetchHook";
 import {
   add_update_delete_resident_gp,
@@ -58,7 +58,7 @@ import AddResidentSocialWorkerModal from "../../_components/modelbox/AddResident
 import AddResidentReferralModal from "../../_components/modelbox/AddResidentReferralModal";
 import { Wrapper } from "./style";
 import "../Employees/Employees/style.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { DivContainer } from "../TaskManagement/style";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
@@ -67,7 +67,11 @@ import { ProgressSpan, ProgressDiv } from "../../utils/helperFucntions";
 import NoAvailableData from "../../_components/noAvailableData";
 import { handleFileDownload } from "../../utils/helperFucntions";
 import DisplayFileType from "../../_components/fileExtension";
-import Appointment from "./Appointment";
+import Appointment from "./appointment";
+import DynamicProfilePdf from "./component/DynamicProfilePdf";
+import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
+import { styles } from "../../utils/helperFucntions";
+import useResidentData from "../../utils/Hooks/residentDetails";
 
 const Profile = () => {
   const [gpError] = useGlobalState("gpError");
@@ -97,34 +101,10 @@ const Profile = () => {
     setGlobalState("referralError", "");
   };
 
-  const location = useLocation();
-  let getResidentId = location?.state?.id;
-  const [getSelectedData, setGetSelectedData] = useState();
-  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
-    const fetchResidentSelectedData = async () => {
-      try {
-        setIsSelectedLoading(true);
-        const response = await axios.get(
-          `${BaseUrl}/resident/detail/${getResidentId}?format=json`
-        );
-        if (isMounted) {
-          setGetSelectedData(response.data);
-          setIsSelectedLoading(false);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setIsSelectedLoading(false);
-      }
-    };
-    getResidentId != null ? fetchResidentSelectedData() : null;
-
-    return () => {
-      isMounted = false;
-    };
-  }, [getResidentId]);
+  const { id } = useParams();
+  let getResidentId = parseInt(id, 10);
+  const { getSelectedData, isSelectedLoading } = useResidentData(getResidentId);
 
 
   const [menu, setMenu] = useState(false)
@@ -574,7 +554,7 @@ useEffect(() => {
   const glasses = getSelectedData?.glasses;
   const tattoos = getSelectedData?.tattoos;
   const piercings = getSelectedData?.piercings;
-  const Subject_child_protection = getSelectedData?.subject_protection;
+  const Subject_child_protection = getSelectedData?.Subject_child_protection;
   const legal_status = getSelectedData?.legal_status;
   const Any_comment = getSelectedData?.Any_comment;
   const key_worker = getSelectedData?.key_worker;
@@ -595,6 +575,7 @@ useEffect(() => {
   const resident_task = getSelectedData?.resident_task;
   const resident_misper = getSelectedData?.resident_misper;
   const resident_incident = getSelectedData?.resident_incident;
+  const borough = getSelectedData?.borough;
 
   const { gpTypeData } = useGpTypeFetching();
   const { gPracticeData } = useGpracticeFetching();
@@ -603,6 +584,8 @@ useEffect(() => {
   const { residentDocumentTypeData } = useResidentDocumentTypeFetching();
   const { schoolData } = useSchoolFetching();
   const { data: allEmployee } = useDataFetching();
+  const { residentData } = useResidentFetching();
+  const { residentBoroughData } = useResidentBoroughFetching();
 
   // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
@@ -620,13 +603,65 @@ useEffect(() => {
           <div className="content container-fluid">
             <div className="page-header">
               <div className="row">
-                <div className="col-sm-12">
+                <div className="col-sm-10">
                   <h3 className="page-title">Profile</h3>
                   <ul className="breadcrumb breadcrumb-nav">
                     <li className="breadcrumb-item">
                       <Link to="/app/servicework/service-worker">All Resident</Link>
                     </li>
                     <li className="breadcrumb-item active">Profile</li>
+                  </ul>
+                </div>
+                <div className="col-lg-2">
+                  <ul className="breadcrumb breadcrumb-nav">
+                    <li className="breadcrumb-item">
+                      <PDFDownloadLink 
+                        document={
+                          <DynamicProfilePdf 
+                            getSelectedData={getSelectedData}
+                            rSocialWorkerData={rSocialWorkerData}
+                            selectedResidentId={selectedResidentId}
+                            socialWorkerData={socialWorkerData}
+                            allEmployee={allEmployee}
+                            residentBoroughData={residentBoroughData}
+                            residentEducationData={residentEducationData}
+                          />
+                        } fileName={`${last_name}'s profile.pdf`}>
+                        {
+                          ({ blob, url, loading, error }) => (
+                            <div style={styles.btn}>
+                              {loading ? 'Loading document' : (
+                                <span><i className="fa fa-download m-r-5" /> Download profile</span>
+                              )}
+                            </div>
+                          )
+                        }
+                      </PDFDownloadLink>
+                    </li>
+                    <li className="breadcrumb-item">
+                      <BlobProvider 
+                        document={
+                          <DynamicProfilePdf 
+                            getSelectedData={getSelectedData}
+                            rSocialWorkerData={rSocialWorkerData}
+                            selectedResidentId={selectedResidentId}
+                            socialWorkerData={socialWorkerData}
+                            allEmployee={allEmployee}
+                            residentBoroughData={residentBoroughData}
+                            residentEducationData={residentEducationData}
+                          />
+                        }>
+                        {
+                          ({ blob, url, loading, error }) => (
+                            <a href={url} target="_blank" style={styles.btn}>
+                              {loading ? 'Loading document' : (
+                                <span><i className="fa fa-print m-r-5" /> Print profile</span>
+                              )}
+                            </a>
+                          )
+                        }
+                      </BlobProvider>
+                    </li>
                   </ul>
                 </div>
               </div>

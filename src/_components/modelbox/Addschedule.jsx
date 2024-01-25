@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   PopupContainer,
   PopupOverlay,
@@ -28,6 +28,7 @@ const AddSchedule = ({
   const [selectedScheduleEvent] = useGlobalState("selectedScheduleEvent");
   const [deleteModal] = useGlobalState("deleteModal");
   const [repeatModal] = useGlobalState("repeatModal");
+  const [showAddSchedul] = useGlobalState("showAddSchedul");
   
   let filteredShift;
   const filterEmployeeShift = employeeshiftData?.filter((s) => {
@@ -56,14 +57,13 @@ const AddSchedule = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (noShiftRemain) return;
 
-    const currentDate = new Date().toLocaleDateString();
-    const selected = new Date(selectedDay).toLocaleDateString();
+    const currentDate = new Date();
+    const selected = new Date(selectedDay);
+    currentDate.setHours(0, 0, 0, 0);// This is to set the currentTime to match the selected time as the time difference do alter the expected operattion.
 
     if (selected >= currentDate) {
-      if (noShiftRemain) {
-        return null; // Skip further execution
-      }
       const scheduleE = {
         id,
         shift,
@@ -84,7 +84,7 @@ const AddSchedule = ({
         autoClose: 2000,
       });
       setGlobalState("showAddSchedul", false);
-      return null; // Skip further execution
+      return null;
     }
 
 
@@ -101,13 +101,6 @@ const AddSchedule = ({
   const handleShiftChange = (event) => {
     setShift(parseInt(event.target.value));
   };
-
-  const notify = (e) => {
-    e.preventDefault();
-    toast.warn("Can't submit an empty form", {
-      autoClose: 1500,
-    });
-  }
 
   return (
     <>
@@ -150,7 +143,7 @@ const AddSchedule = ({
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form onSubmit={shift === "" ? notify : handleSubmit}>
+                  <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-sm-12">
                         <div className="form-group">
@@ -226,7 +219,7 @@ const AddSchedule = ({
                           className="btn btn-primary repeat-btn"
                           type="button"
                         >
-                          Repeat
+                          Copy shift
                         </button>
                       )}
                       <button
@@ -268,6 +261,8 @@ const AddSchedule = ({
           dispatchSchedule={dispatchSchedule}
           event={event}
           date={selectedDay}
+          employeeId={employee}
+          houseId={house}
         />
       )}
     </>

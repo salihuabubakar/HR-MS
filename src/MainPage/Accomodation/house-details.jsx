@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useMemo, useReducer } from 'react'
-import { Link, useLocation } from "react-router-dom";
+import React, {useEffect, useState, useReducer } from 'react'
+import { Link, useParams } from "react-router-dom";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import NoUser from "../../assets/img/no-user.png";
 import AddRoom from '../../_components/modelbox/AddRoom';
@@ -14,8 +14,6 @@ import AddHouseItem from '../../_components/modelbox/AddHouseItem';
 import AddHouseInspection from "../../_components/modelbox/AddHouseInspection";
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import { Wrapper } from "../ServiceWork/style";
-import axios from "axios"
-import { BaseUrl } from '../../utils/baseUrl';
 import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from '../Employees/Employees/styles';
 import PopUpText from '../../_components/modelbox/PopUpText';
@@ -60,45 +58,17 @@ import './Components/calendar.css'
 import DisplayFileType from '../../_components/fileExtension';
 import ResAppointment from './Components/ResAppointment';
 import { isMobile } from '../../utils/mediaQuery';
+import useHouseData from '../../utils/Hooks/houseDetails';
 
 const HouseDetails = () => {
-  const location = useLocation();
-  let getHouseId = location?.state?.id;
-  const [isSelectedLoading, setIsSelectedLoading] = useState(false);
-  const [getSelectedData, setGetSelectedData] = useState();
-
-// This is staging branch
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchHouseSelectedData = async () => {
-      try {
-        setIsSelectedLoading(true);
-        const response = await axios.get(
-          `${BaseUrl}/house/details/${getHouseId}/?format=json`
-        );
-        if (isMounted) {
-          setGetSelectedData(response.data);
-          setIsSelectedLoading(false);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setIsSelectedLoading(false);
-      }
-    };
-    getHouseId != null ? fetchHouseSelectedData() : null;
-
-    return () => {
-      isMounted = false;
-    };
-  }, [getHouseId]);
+  const { id } = useParams();
+  let getHouseId = parseInt(id, 10);
+  const { getSelectedData, isSelectedLoading } = useHouseData(getHouseId);
 
   const [menu, setMenu] = useState(false);
 const toggleMobileMenu = () => {
     setMenu(!menu);
   };
-
-
 
   const [houseEmployeeError] = useGlobalState("houseEmployeeError");
   const [houseResidentError] = useGlobalState("houseResidentError");

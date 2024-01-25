@@ -120,9 +120,9 @@ export const NavButton = styled.button`
 `;
 
 export const RepeatModalContainer = styled.div`
-  .form-header {
+  /* .form-header {
     width: 282px;
-  }
+  } */
 
   .nav-btn {
     display: flex;

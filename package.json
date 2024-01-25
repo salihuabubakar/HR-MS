@@ -9,15 +9,6 @@
     "dev": "webpack-dev-server",
     "production": "webpack --mode production"
   },
-  "keywords": [
-    "reactjs",
-    "filter",
-    "sort",
-    "DataTables",
-    "jQuery",
-    "table",
-    "DataTables"
-  ],
   "files": [
     "js/**/*.js"
   ],
@@ -40,6 +31,7 @@
     "@mui/material": "^5.10.9",
     "@mui/x-date-pickers": "^5.0.5",
     "@popperjs/core": "^2.11.3",
+    "@react-pdf/renderer": "^3.1.14",
     "@types/summernote": "^0.8.7",
     "antd": "^4.24.1",
     "axios": "^1.4.0",
@@ -128,7 +120,7 @@
     "style-loader": "^1.2.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.0",
-    "webpack": "^4.46.0",
+    "webpack": "^4.47.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "xml-loader": "^1.2.1"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useReducer } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import AddTask from "../../_components/modelbox/AddTask";
@@ -53,15 +53,6 @@ const TaskManager = () => {
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
-
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
 
   return (
     <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>

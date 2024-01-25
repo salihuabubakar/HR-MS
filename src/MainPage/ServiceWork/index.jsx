@@ -4,7 +4,7 @@
 /* eslint-disable */
 import React from "react";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
-import ServiceWorker from "./serviceWorker";
+import AllServiceWorkers from "./serviceworker";
 import Borough from "./borough";
 import SocialWorker from "./social-worker";
 import Visitor from "./visitor";
@@ -15,7 +15,7 @@ import Misper from "./misper";
 import DocumentType from "./document-type";
 import LegalStatus from "./legal-status";
 import GpType from "./gp-type";
-import Profile from "./Profile";
+import Profile from "./profile";
 import Gp from "./general-practice";
 import Solicitor from "./solicitor";
 import School from "./school";
@@ -23,8 +23,8 @@ import School from "./school";
 const ServiceRoute = ({ match }) => (
   <Switch>
     <Redirect exact from={`${match.url}/`} to={`${match.url}/service-worker`} />
-    <Route path={`${match.url}/service-worker`} component={ServiceWorker} />
-    <Route path={`${match.url}/Profile`} component={Profile} />
+    <Route path={`${match.url}/service-worker`} component={AllServiceWorkers} />
+    <Route path={`${match.url}/profile/:id`} component={Profile} />
     <Route path={`${match.url}/borough`} component={Borough} />
     <Route path={`${match.url}/social-worker`} component={SocialWorker} />
     <Route path={`${match.url}/visitor`} component={Visitor} />

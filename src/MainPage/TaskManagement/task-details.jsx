@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useMemo, useReducer } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import DefaultImage from "../../assets/img/placeholder.jpg";
-import { useLocation } from "react-router-dom";
 import { DivContainer } from "./style";
 import AddTaskAssignment from "../../_components/modelbox/AddTaskAssignment";
 import AddTaskDocument from "../../_components/modelbox/AddTaskDocument";
@@ -137,16 +136,6 @@ const TaskDetails = () => {
 
   const selectedTaskDocument = taskDocumentData?.find((doc) => doc?.task === selectedTaskId);
   const selectedTaskDocumentId = selectedTaskDocument?.task;
-
-
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
 
   const [taskAssignmentError] = useGlobalState("taskAssignmentError");
   const [taskDocumentError] = useGlobalState("taskDocumentError");
