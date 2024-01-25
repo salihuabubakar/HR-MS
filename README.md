@@ -67,6 +67,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
-### Host Testing
+### Site Address
 
-open https://hr-ms.vercel.app to view the web app.
+Production https://hr-ms.vercel.app
+
+Staging https://staging-hr-ms.vercel.app
