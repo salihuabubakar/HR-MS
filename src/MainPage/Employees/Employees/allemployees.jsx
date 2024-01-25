@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo, useReducer } from 'react';
+import React, {useEffect, useState, useReducer } from 'react';
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import  Addemployee from "../../../_components/modelbox/Addemployee"
@@ -8,7 +8,7 @@ import { setGlobalState, useGlobalState } from '../../../context/GlobalState';
 import { add_update_delete_employee } from '../../../utils/sendToServer';
 import DefaultImage from "../../../assets/img/placeholder.jpg";
 import DeleteModal from '../../../_components/modelbox/DeleteModal';
-import { useDataFetching, useDataEdit } from '../../../utils/employeeCustomFetchHook';
+import { useDataFetching } from '../../../utils/employeeCustomFetchHook';
 import "./style.css";
 import AllEmployee from './allemployee';
 import AllEmployeeList from './allemployee-list';
