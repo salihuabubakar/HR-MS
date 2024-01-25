@@ -67,7 +67,7 @@ import { ProgressSpan, ProgressDiv } from "../../utils/helperFucntions";
 import NoAvailableData from "../../_components/noAvailableData";
 import { handleFileDownload } from "../../utils/helperFucntions";
 import DisplayFileType from "../../_components/fileExtension";
-import Appointment from "./Appointment";
+import Appointment from "./appointment";
 import DynamicProfilePdf from "./component/DynamicProfilePdf";
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import { styles } from "../../utils/helperFucntions";

@@ -12,7 +12,7 @@ import { add_update_delete_house } from '../../utils/sendToServer';
 import "../Employees/Employees/style.css"
 import { useSearch } from '../../utils/Hooks/searchFunctionCustomHook';
 import SearchComponent from "../../_components/searchComponent";
-import AllHouse from './AllHouse';
+import AllHouse from "./allhouse";
 
 const Accomodations = () => {
   const [tab, setTab] = useState("allHouse" || "houseList");
