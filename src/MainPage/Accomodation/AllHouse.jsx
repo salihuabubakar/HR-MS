@@ -93,4 +93,5 @@ const AllHouse = ({
     </div>
   );
 };
+
 export default AllHouse;

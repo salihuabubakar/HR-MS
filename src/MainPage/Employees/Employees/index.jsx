@@ -6,7 +6,7 @@ import Group from "./group";
 import Contacts from './contacts';
 import Review from './review';
 import Status from "./status";
-import Profile from './profile';
+import Profile from './Profile'
 
 const EmployeesRoute = ({ match }) => (
   <Switch>

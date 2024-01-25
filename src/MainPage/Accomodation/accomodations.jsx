@@ -6,14 +6,13 @@ import Sidebar from '../../initialpage/Sidebar/sidebar'
 import { setGlobalState, useGlobalState } from '../../context/GlobalState';
 import AddHouse from "../../_components/modelbox/AddHouse";
 import DeleteModal from '../../_components/modelbox/DeleteModal';
-import HouseDetails from './house-details';
-import AllHouse from './allhouse';
 import HouseList from './house-list';
 import { useHouseFetching } from '../../utils/employeeCustomFetchHook';
 import { add_update_delete_house } from '../../utils/sendToServer';
 import "../Employees/Employees/style.css"
 import { useSearch } from '../../utils/Hooks/searchFunctionCustomHook';
 import SearchComponent from "../../_components/searchComponent";
+import AllHouse from './AllHouse';
 
 const Accomodations = () => {
   const [tab, setTab] = useState("allHouse" || "houseList");
