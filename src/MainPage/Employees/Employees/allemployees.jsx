@@ -10,11 +10,11 @@ import DefaultImage from "../../../assets/img/placeholder.jpg";
 import DeleteModal from '../../../_components/modelbox/DeleteModal';
 import { useDataFetching } from '../../../utils/employeeCustomFetchHook';
 import "./style.css";
-import AllEmployee from './AllEmployee';
 import AllEmployeeList from './allemployee-list';
 import { DivContainer } from '../../TaskManagement/style';
 import { useSearch } from '../../../utils/Hooks/searchFunctionCustomHook';
 import SearchComponent from '../../../_components/searchComponent';
+import AllEmployee from './allemployee';
 
 const AllEmployees = () => {
   const [showModal] = useGlobalState("showModal");
