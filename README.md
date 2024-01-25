@@ -69,5 +69,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### Site Address
 
-Production https://hr-ms.vercel.app to view the web app.
-Staging https://staging-hr-ms.vercel.app to view the web app.
+Production https://hr-ms.vercel.app
+
+Staging https://staging-hr-ms.vercel.app
