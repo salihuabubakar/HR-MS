@@ -94,7 +94,23 @@ const CommentSection = ({ task, selecetedTaskId }) => {
           <div>
             <div>
               <div className="chat-box">
-                {taskChatData
+                {
+                    /**
+                    * Render Task Chat Comments
+                    *
+                    * Renders task chat comments based on the 'taskChatData', sorting them by the creation date in descending order.
+                    * It maps through the comments, filtering those related to the selected task ('selecetedTaskId').
+                    * For each relevant comment, it formats and displays the sender's information, message content, and timestamp.
+                    * The timestamp is calculated as a time ago format for recent messages and a date format for older messages.
+                    *
+                    * Dependencies:
+                    * - taskChatData: Array of task chat comments.
+                    * - allEmployee: Array of all employees.
+                    * - selecetedTaskId: ID of the selected task.
+                    *
+                    * @returns {JSX.Element} - Returns JSX elements rendering task chat comments.
+                    */
+                  taskChatData
                   ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                   .map((comment, index) => {
                     const { id, message, task, sender, created_at } = comment;

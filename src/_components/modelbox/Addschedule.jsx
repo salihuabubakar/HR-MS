@@ -31,10 +31,17 @@ const AddSchedule = ({
   const [showAddSchedul] = useGlobalState("showAddSchedul");
   
   let filteredShift;
+  /* The code is filtering the `employeeshiftData` array to only include the shifts that have a `house`
+  value equal to the `house` variable. It uses the `filter` method to iterate over each element in
+  the `employeeshiftData` array and checks if the `house` value of the element matches the `house`
+  variable. If it does, the element is included in the filtered array. */
   const filterEmployeeShift = employeeshiftData?.filter((s) => {
     if (s.house === house) return s;
   });
 
+  /* The code is checking if the `filterEmployeeShift` variable is truthy (i.e., not null or
+  undefined). If it is truthy, it means that there are shifts available for the selected employee
+  and house on the selected day. */
   if (filterEmployeeShift) {
     filteredShift = filterEmployeeShift?.map((sh) => {
       return sh;
@@ -45,6 +52,10 @@ const AddSchedule = ({
   
   const findCurrentShift = shiftData?.find(shift => shift.id === currentShift);
 
+  /* The code is checking if there are any shifts remaining for the selected day. It does this by
+  checking if there is any shift in the `shiftData` array that is not assigned to the employee on
+  the selected day. If there are no shifts remaining, `noShiftRemain` will be `true`, otherwise it
+  will be `false`. */
   const noShiftRemain = !shiftData?.some(
     (shft) =>
       !filteredShift?.some((fs) => fs.date === selectedDay && fs.shift === shft.id)
@@ -55,6 +66,12 @@ const AddSchedule = ({
     selectedScheduleEvent[selectedDayIndex]?.shift || ""
   );
 
+  /**
+   * The handleSubmit function is used to handle form submission and add or update a schedule event
+   * based on the selected date.
+   * @returns If the condition `if (noShiftRemain)` is true, then nothing is being returned. Otherwise,
+   * if the condition `if (selected >= currentDate)` is true, then code get executed.
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     if (noShiftRemain) return;
@@ -86,10 +103,8 @@ const AddSchedule = ({
       setGlobalState("showAddSchedul", false);
       return null;
     }
-
-
-
   };
+
   const handleDeleteEvent = () => {
     setGlobalState("deleteModal", true);
   };
@@ -188,6 +203,8 @@ const AddSchedule = ({
                             )}
 
                             {shiftData?.map((shft) => {
+                              /* The code is checking if a shift is already assigned to an employee on
+                              the selected day. */
                               const isShiftAssigned = filteredShift?.some(
                                 (fs) => fs.date === selectedDay && fs.shift === shft.id
                               );

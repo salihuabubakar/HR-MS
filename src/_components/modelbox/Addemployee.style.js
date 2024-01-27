@@ -238,18 +238,17 @@ export const Card = styled.div`
 `;
 
 export const LoadSpinner = styled.div`
-  .spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .loader {
     border: 4px solid #f3f3f3;
     border-top: 4px solid #ff9b44;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     animation: spin 1s linear infinite;
   }
 

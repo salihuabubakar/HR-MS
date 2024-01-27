@@ -32,6 +32,8 @@ const RepeatModal = ({
   } = useDateMonthlyCalendarCounter();
 
 
+  /* The code is filtering the `employeeshiftData` array to find the shifts associated with a specific
+  employee and house. It uses the `employeeId` and `houseId` variables to filter the data. */
   const shiftDateAssociatedWithEmployee = employeeshiftData?.filter(data => {
     return data.employee === employeeId && data.house === houseId
   });
@@ -42,6 +44,10 @@ const RepeatModal = ({
 
   const customFontWidth = isMobile() && 10 
 
+  /**
+   * The function `handleCheckboxChange` updates an array of selected days based on the checkbox value
+   * and checked status.
+   */
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
@@ -54,6 +60,10 @@ const RepeatModal = ({
     }
   };
 
+  /**
+   * The handleRepeat function takes an event object, creates new shifts for each selected date,
+   * formats the dates, adds the new shifts to the schedule, and updates the global state.
+   */
   const handleRepeat = (e) => {
     e.preventDefault();
     const newShifts = [];
