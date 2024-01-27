@@ -2,6 +2,20 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BaseUrl } from '../baseUrl';
 
+/**
+ * Custom Hook - useEmployeeData
+ *
+ * Custom hook for fetching employee data based on the provided employee ID.
+ * Manages the state for selected employee data, loading status, and skeleton loading status.
+ *
+ * @function useEmployeeData
+ * @param {string} employeeId - ID of the employee for whom data is to be fetched.
+ * @returns {Object} - Object containing selected employee data, loading status, and skeleton loading status.
+ * @property {Object} getSelectedData - Selected employee data fetched from the API.
+ * @property {boolean} isSelectedLoading - Loading status for fetching selected employee data.
+ * @property {boolean} skeletonLoading - Skeleton loading status for UI placeholders.
+ */
+
 const useEmployeeData = (employeeId) => {
   const [getSelectedData, setGetSelectedData] = useState();
   const [isSelectedLoading, setIsSelectedLoading] = useState(false);

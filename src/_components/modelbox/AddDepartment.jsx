@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddDepartment = ({
   dispatchDept,
@@ -37,14 +36,8 @@ const AddDepartment = ({
     };
     if (selectedDept[indexToEdit]?.id) {
       dispatchDept({ type: "update", payload: department });
-      toast.success("Department Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchDept({ type: "add", payload: department });
-      toast.success("Department Updated", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showDeptModal", false);
   };

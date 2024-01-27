@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../initialpage/Sidebar/header";
@@ -13,6 +13,8 @@ const house = () => {
   const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
   const { data } = useDataFetching();
   const [menu, setMenu] = useState(false);
+  /* The code is using the `useSearch` custom hook to implement search functionality in the `house`
+  component. */
   const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(houseData);
   let searchResult = !searchQuery ? houseData : filteredResults;
   // const filteredEmployees = houseEmployeeData?.filter(
@@ -22,15 +24,6 @@ const house = () => {
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
-
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  }, []);
 
   return (
     <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>

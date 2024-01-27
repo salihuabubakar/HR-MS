@@ -117,6 +117,9 @@ const Addemployee = ({
       department: department
     };
 
+    /* The below code is iterating over the entries of an object called "fields" using the
+    Object.entries() method. For each entry, it is appending the field name and field value to a
+    FormData object called "formData". */
     Object.entries(fields).forEach(([fieldName, fieldValue]) => {
       formData.append(fieldName, fieldValue);
     });

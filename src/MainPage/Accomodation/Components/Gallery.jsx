@@ -24,10 +24,24 @@ const Gallery = ({
     setIsZoomed(!isZoomed);
   };
 
-  const filteredImage = data
+/**
+ * Filter and Transform Image Data
+ *
+ * Takes an array of image data and filters it based on a condition (house === houseId).
+ * Then, transforms the filtered data into a new format for further use (e.g., displaying images).
+ *
+ * @param {Array} data - The array of image data.
+ * @param {string} houseId - The house ID used for filtering images.
+ * @returns {Array} - Returns an array of transformed image data.
+ */
+const filteredImage = data
   ?.map((img, index) => {
+    // Destructure properties from the image object
     const { name, id, description, image, house } = img;
+
+    // Check if the image belongs to the specified house
     if (house === houseId) {
+      // Return a new object with selected properties
       return {
         id,
         index, // Add the index to the returned object
@@ -36,23 +50,32 @@ const Gallery = ({
         name,
       };
     }
-    return null; // Return null for non-matching items
+
+    // Return null for non-matching items
+    return null;
   })
   .filter((item) => item !== null); // Filter out the null items (non-matching ones)
 
-  const imgData = [];
-  filteredImage?.forEach((img) => {
-    const { name, id, description, image, index } = img;
-    imgData.push({
-      id: id,
-      index: index,
-      original: image,
-      thumbnail: image,
-      description: description,
-      originalAlt: name,
-      originalTitle: name, 
-    });
+// Initialize an empty array to store the transformed image data
+const imgData = [];
+
+// Iterate over the filteredImage array to transform the data
+filteredImage?.forEach((img) => {
+  // Destructure properties from the filtered image object
+  const { name, id, description, image, index } = img;
+
+  // Push a new object with transformed properties to imgData array
+  imgData.push({
+    id: id,
+    index: index,
+    original: image,
+    thumbnail: image,
+    description: description,
+    originalAlt: name,
+    originalTitle: name,
   });
+});
+
 
   const renderImageWithDescription = (item) => {
     return (

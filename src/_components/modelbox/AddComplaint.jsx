@@ -132,6 +132,10 @@ const AddComplaint = ({
     setStatusError("");
   }
 
+  /* The code is creating an array called `document` and populating it with objects that have two
+  properties: `document_name` and `id`. It is using the `map` function to iterate over the
+  `residentDocumentData` array and for each element, it is pushing a new object with the
+  `document_name` and `id` properties into the `document` array. */
   const document = [];
   residentDocumentData?.map((doc) => {
     document.push({
@@ -146,11 +150,23 @@ const AddComplaint = ({
     setDocumentError("");
   };
 
+  /**
+   * The function `getDocumentDefaultValues` returns an array of document objects based on the selected
+   * complaint and its associated documents.
+   * @returns The function `getDocumentDefaultValues` returns an array of objects with properties `id`
+   * and `document_name`.
+   */
   const getDocumentDefaultValues = () => {
+    /* The below code is checking if the `selectedComplaint` object exists and if the `documents`
+    property at the specified `indexToEdit` exists within the `selectedComplaint` object. If either
+    of these conditions is not met, it returns an empty array. */
     const val = selectedComplaint[indexToEdit]?.documents;
     if (!selectedComplaint || !val) {
       return [];
     }
+    /* The below code is filtering an array of `residentDocumentData` objects based on whether their
+    `id` property is included in the `val` array. It then maps the filtered objects to a new array
+    of objects with only the `id` and `document_name` properties. */
     return residentDocumentData
       .filter((document) => val.includes(document.id))
       .map((document) => ({

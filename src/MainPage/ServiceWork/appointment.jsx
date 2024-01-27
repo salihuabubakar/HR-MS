@@ -7,7 +7,6 @@ import multiMonthPlugin from '@fullcalendar/multimonth'
 import "./calendar.css"
 import moment from "moment";
 import { Popup, Segment  } from "semantic-ui-react";
-import { Link, useLocation } from "react-router-dom";
 
 const Appointment = ({ 
   appData, 
@@ -16,10 +15,38 @@ const Appointment = ({
 }) => {
   const [eventData, setEventData] = useState([]);
 
-  useEffect(() => {
-    const filteredEvents = appData
+  /**
+ * useEffect for Filtering and Formatting Resident-Specific Events
+ *
+ * This useEffect hook is responsible for filtering and formatting events based on the selected resident's ID.
+ * It filters the events from 'appData' that match the 'selectedResidentId' and formats the relevant details
+ * such as appointment date, name, time, and description. The formatted events are then set in the 'eventData' state
+ * to be utilized by the calendar.
+ *
+ * Dependencies:
+ * - appData: Array of all events.
+ * - selectedResidentId: ID of the selected resident.
+ *
+ * Actions:
+ * 1. Filter events based on the selected resident's ID from 'appData'.
+ * 2. Map and format the filtered events to create a new array with relevant details.
+ * 3. Set the formatted events in the 'eventData' state.
+ *
+ * @function useEffect
+ * @param {Array} appData - Array of all events.
+ * @param {string} selectedResidentId - ID of the selected resident.
+ */
+useEffect(() => {
+  const filteredEvents = appData
     ?.map((evt, index) => {
-      const { resident, id, appointment_name, appointment_date, appointment_time, appointment_description } = evt;
+      const {
+        resident,
+        id,
+        appointment_name,
+        appointment_date,
+        appointment_time,
+        appointment_description,
+      } = evt;
       if (resident === selectedResidentId) {
         return {
           id,
@@ -27,24 +54,25 @@ const Appointment = ({
           appointment_date,
           appointment_name,
           appointment_time,
-          appointment_description
+          appointment_description,
         };
       }
       return null;
     })
     .filter((item) => item !== null);
 
-    const formattedEvents = filteredEvents?.map((evt) => ({
-      id: evt.id,
-      index: evt.index,
-      title: evt.appointment_name,
-      start: `${evt.appointment_date}T${evt.appointment_time}`,
-      description: evt.appointment_description,
-      className: 'bg-primary',
-    }));
+  const formattedEvents = filteredEvents?.map((evt) => ({
+    id: evt.id,
+    index: evt.index,
+    title: evt.appointment_name,
+    start: `${evt.appointment_date}T${evt.appointment_time}`,
+    description: evt.appointment_description,
+    className: 'bg-primary',
+  }));
 
-    setEventData(formattedEvents);
-  }, [appData, selectedResidentId]);
+  setEventData(formattedEvents);
+}, [appData, selectedResidentId]);
+
 
   const handleEventClick = clickInfo => {
     const clickedEventId = clickInfo.event.id;

@@ -61,11 +61,15 @@ import { isMobile } from '../../utils/mediaQuery';
 import useHouseData from '../../utils/Hooks/houseDetails';
 
 const HouseDetails = () => {
-  const { id } = useParams();
-  let getHouseId = parseInt(id, 10);
-  const { getSelectedData, isSelectedLoading } = useHouseData(getHouseId);
 
-  const [menu, setMenu] = useState(false);
+const { id } = useParams();
+
+let getHouseId = parseInt(id, 10);
+
+const { getSelectedData, isSelectedLoading } = useHouseData(getHouseId);
+
+const [menu, setMenu] = useState(false);
+
 const toggleMobileMenu = () => {
     setMenu(!menu);
   };
@@ -105,11 +109,16 @@ const toggleMobileMenu = () => {
   );
   const [houseEmployeeIndexToEdit, setHouseEmployeeIndexToEdit] =
     useState(null);
+
   const [showHouseEmployeeModal] = useGlobalState("showHouseEmployeeModal");
+
   const { houseEmployeeData } =
     useHouseEmployeeFetching();
+
   const [getHouseEmployeeId, setGetHouseEmployeeId] = useState();
+
   const [deleteHouseEmployeeModal] = useGlobalState("deleteHouseEmployeeModal");
+
   useEffect(() => {
     if (!showHouseEmployeeModal) {
       setGlobalState("selectedHouseEmployee", "");
@@ -139,11 +148,16 @@ const toggleMobileMenu = () => {
   );
   const [houseResidentIndexToEdit, setHouseResidentIndexToEdit] =
     useState(null);
+
   const [showHouseResidentModal] = useGlobalState("showHouseResidentModal");
+
   const { houseResidentData } =
     useHouseResidentFetching();
+
   const [getHouseResidentId, setGetHouseResidentId] = useState();
+
   const [deleteHouseResidentModal] = useGlobalState("deleteHouseResidentModal");
+
   useEffect(() => {
     if (!showHouseResidentModal) {
       setGlobalState("selectedHouseResident", "");
@@ -172,11 +186,16 @@ const toggleMobileMenu = () => {
     []
   );
   const [houseImagesIndexToEdit, setHouseImagesIndexToEdit] = useState(null);
+
   const [showHouseImagesModal] = useGlobalState("showHouseImagesModal");
+
   const { houseImagesData, isHouseImagesLoading, houseImagesError } =
     useHouseImageFetching();
+
   const [getHouseImagesId, setGetHouseImagesId] = useState();
+
   const [deleteHouseImagesModal] = useGlobalState("deleteHouseImagesModal");
+
   useEffect(() => {
     if (!showHouseImagesModal) {
       setGlobalState("selectedHouseImages", "");
@@ -201,11 +220,17 @@ const toggleMobileMenu = () => {
 
   // Room
   const [roomState, dispatchRoom] = useReducer(add_update_delete_room, []);
+
   const [roomIndexToEdit, setRoomIndexToEdit] = useState(null);
+
   const [showRoomModal] = useGlobalState("showRoomModal");
+
   const { roomData } = useRoomFetching();
+
   const [getRoomId, setGetRoomId] = useState();
+
   const [deleteRoomModal] = useGlobalState("deleteRoomModal");
+
   useEffect(() => {
     if (!showRoomModal) {
       setGlobalState("selectedRoom", "");
@@ -215,6 +240,7 @@ const toggleMobileMenu = () => {
   const handleAddRoom = () => {
     setGlobalState("showRoomModal", true);
   };
+
   const handleEdditRoom = (id, index) => {
     setGetRoomId(id);
     setRoomIndexToEdit(index);
@@ -509,7 +535,7 @@ const toggleMobileMenu = () => {
     return null;
   };
 
-  const chartWidth = isMobile() ? 300 : 500;
+  const chartWidth = isMobile() ? 300 : 500; //Dynamically change chat width base on screen size
 
   return (
     <>

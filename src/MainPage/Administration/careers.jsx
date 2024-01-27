@@ -22,20 +22,40 @@ const Careers = () => {
   const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(careerData);
   let CareerResult = !searchQuery ? careerData : filteredResults;
 
-  // Table pagination
-  const itemsPerPage = 10; // Number of items per page
-  const [currentPage, setCurrentPage] = useState(1);
-  const startCount = (currentPage - 1) * itemsPerPage + 1;
-  const endCount = startCount + itemsPerPage - 1;
-  const paginationSettings = {
-    total: CareerResult?.length,
-    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-    showSizeChanger: true,
-    onShowSizeChange: onShowSizeChange,
-    itemRender: itemRender,
-    current: currentPage,
-    onChange: setCurrentPage,
-  };
+  /**
+ * Table Pagination Settings
+ *
+ * Defines settings for paginating a table, including the number of items per page,
+ * the current page, start and end counts, and various display options.
+ *
+ * @constant {number} itemsPerPage - Number of items to display per page.
+ * @constant {number} currentPage - The current page number.
+ * @constant {number} startCount - The starting count of items on the current page.
+ * @constant {number} endCount - The ending count of items on the current page.
+ * @constant {Object} paginationSettings - Configuration object for table pagination.
+ * @property {number} total - The total number of items in the table.
+ * @property {function} showTotal - Function to display the total number of items.
+ * @property {boolean} showSizeChanger - Flag to show the size changer for items per page.
+ * @property {function} onShowSizeChange - Callback function when changing items per page.
+ * @property {function} itemRender - Custom function for rendering pagination items.
+ * @property {number} current - The current page number.
+ * @property {function} onChange - Callback function when changing the current page.
+ */
+const itemsPerPage = 10; // Number of items per page
+const [currentPage, setCurrentPage] = useState(1);
+const startCount = (currentPage - 1) * itemsPerPage + 1;
+const endCount = startCount + itemsPerPage - 1;
+
+const paginationSettings = {
+  total: CareerResult?.length,
+  showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+  showSizeChanger: true,
+  onShowSizeChange: onShowSizeChange, // Callback for changing items per page
+  itemRender: itemRender, // Custom function for rendering pagination items
+  current: currentPage, // The current page number
+  onChange: setCurrentPage, // Callback for changing the current page
+};
+
 
   const [showCareerModal] = useGlobalState("showCareerModal");
   const [deleteCareerModal] = useGlobalState("deleteCareerModal");
@@ -59,7 +79,19 @@ const Careers = () => {
 
   const handleEditCareer = (id, index) => {
     setCareerId(id);
+    /**
+    * Set Index to Edit based on Pagination
+    *
+    * Sets the index to edit, taking into account the current page, items per page,
+    * and the index within the current page. Useful for editing items in a paginated table.
+    *
+    * @function setIndexToEdit
+    * @param {number} currentPage - The current page number.
+    * @param {number} itemsPerPage - Number of items to display per page.
+    * @param {number} index - The index within the current page.
+    */
     setIndexToEdit((currentPage - 1) * itemsPerPage + index);
+
     setGlobalState("showCareerModal", true);
     setGlobalState("selectedCareer", careerData);
   };

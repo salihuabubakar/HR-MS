@@ -19,19 +19,37 @@ const AllEmployeeList = ({
 }) => {
   const { roleData } = useRoleFetching();
 
-  // Table pagination
-  const startCount = (currentPage - 1) * itemsPerPage + 1;
-  const endCount = startCount + itemsPerPage - 1;
-  const paginationSettings = {
-    total: data?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-    showSizeChanger: true,
-    onShowSizeChange: onShowSizeChange,
-    itemRender: itemRender,
-    current: currentPage,
-    onChange: setCurrentPage,
-  };
+  /**
+ * Table Pagination Settings
+ *
+ * Defines settings for paginating a table, including the current page, start and end counts,
+ * and various display options such as total entries, size changer, and custom item rendering.
+ *
+ * @constant {number} startCount - The starting count of items on the current page.
+ * @constant {number} endCount - The ending count of items on the current page.
+ * @constant {Object} paginationSettings - Configuration object for table pagination.
+ * @property {number} total - The total number of items in the table.
+ * @property {function} showTotal - Function to display the total number of items.
+ * @property {boolean} showSizeChanger - Flag to show the size changer for items per page.
+ * @property {function} onShowSizeChange - Callback function when changing items per page.
+ * @property {function} itemRender - Custom function for rendering pagination items.
+ * @property {number} current - The current page number.
+ * @property {function} onChange - Callback function when changing the current page.
+ */
+const startCount = (currentPage - 1) * itemsPerPage + 1;
+const endCount = startCount + itemsPerPage - 1;
+
+const paginationSettings = {
+  total: data?.length,
+  showTotal: (total, range) =>
+    `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+  showSizeChanger: true,
+  onShowSizeChange: onShowSizeChange, // Callback for changing items per page
+  itemRender: itemRender, // Custom function for rendering pagination items
+  current: currentPage, // The current page number
+  onChange: setCurrentPage, // Callback for changing the current page
+};
+
 
   const columns = [
     {

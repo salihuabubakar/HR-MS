@@ -33,7 +33,13 @@ const App = () => {
   }
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={
+        <LoadSpinner>
+          <div className="loader">
+            Loading....
+          </div>
+        </LoadSpinner>
+      }>
         <Switch>
           <Route path="/login" component={LoginPage} />
           <Route path="/forgotpassword" component={ForgotPassword} />

@@ -28,6 +28,9 @@ export const HtmlSelectInput = styled.input`
 
 export const RadioBtn = styled.div`
   display: flex;
+  /* The CSS code input[type="checkbox"] { -webkit-appearance: none; } is removing the default
+  styling of the checkbox input element provided by the browser. By setting -webkit-appearance to
+  none, it allows the developer to apply custom styles to the checkbox element using CSS. */
   input[type="checkbox"] {
     -webkit-appearance: none;
   }
@@ -42,6 +45,8 @@ export const RadioBtn = styled.div`
     cursor: pointer;
     padding: 10px;
   }
+  /* The CSS code input[type="checkbox"]:checked + label is selecting the label element that
+  immediately follows a checked checkbox input element. */
   input[type="checkbox"]:checked + label {
     background-color: #ff9b44;
     color: #ffffff;

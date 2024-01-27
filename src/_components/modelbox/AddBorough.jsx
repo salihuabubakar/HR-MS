@@ -81,14 +81,8 @@ const AddBorough = ({
         type: "update",
         payload: boroughObject,
       });
-      toast.success("Borough Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchBorough({ type: "add", payload: boroughObject });
-      toast.success("Borough Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showBoroughModal", false);
   };

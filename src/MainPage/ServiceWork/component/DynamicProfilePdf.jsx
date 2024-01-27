@@ -7,22 +7,34 @@ import RobotoLight from '../../../_components/Fonts/Roboto-Light.ttf';
 import RobotoBold from '../../../_components/Fonts/Roboto-Bold.ttf';
 import Afacad from '../../../_components/Fonts/Afacad-Regular.ttf';
 
-// Register font
-Font.register({ family: 'Roboto', fonts: [
-  { src: RobotoBold },
-]});
-Font.register({ family: 'RobotoLight', fonts: [
-  { src: RobotoLight },
-]});
-Font.register({ family: 'Montserrat', fonts: [
-  { src: Montserrat },
-]});
-Font.register({ family: 'MontserratUnderline', fonts: [
-  { src: MontserratSubBold },
-]});
-Font.register({ family: 'Afacad', fonts: [
-  { src: Afacad },
-]});
+
+/**
+ * Font Registration
+ *
+ * Registers custom fonts for use in the application using the 'Font' object from a font library
+ * (e.g., PDFKit). Each font family is associated with its corresponding font file.
+ *
+ * @import {Font} - Imported from a font library (e.g., PDFKit).
+ * @constant {string} Montserrat - Path to the Montserrat font file.
+ * @constant {string} MontserratSubBold - Path to the Montserrat Subrayada Bold font file.
+ * @constant {string} RobotoLight - Path to the Roboto Light font file.
+ * @constant {string} RobotoBold - Path to the Roboto Bold font file.
+ * @constant {string} Afacad - Path to the Afacad Regular font file.
+ *
+ * Font Registration:
+ * - 'Roboto' font family with 'RobotoBold' font file.
+ * - 'RobotoLight' font family with 'RobotoLight' font file.
+ * - 'Montserrat' font family with 'Montserrat' font file.
+ * - 'MontserratUnderline' font family with 'MontserratSubBold' font file.
+ * - 'Afacad' font family with 'Afacad' font file.
+ */
+
+// Register font families with their respective font files
+Font.register({ family: 'Roboto', fonts: [{ src: RobotoBold }] });
+Font.register({ family: 'RobotoLight', fonts: [{ src: RobotoLight }] });
+Font.register({ family: 'Montserrat', fonts: [{ src: Montserrat }] });
+Font.register({ family: 'MontserratUnderline', fonts: [{ src: MontserratSubBold }] });
+Font.register({ family: 'Afacad', fonts: [{ src: Afacad }] });
 
 // Create styles
 const styles = StyleSheet.create({

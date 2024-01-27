@@ -112,6 +112,10 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
     setDateError("");
   };
 
+  /* The code is creating an array called `document` and populating it with objects that have `title`
+  and `id` properties. It is iterating over the `houseDocumentsData` array using the `map` function
+  and for each element, it pushes an object with the `title` and `id` properties into the `document`
+  array. */
   const document = [];
   houseDocumentsData?.map((doc) => {
     document.push({
@@ -127,10 +131,12 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
   };
 
   const getHouseDocumentDefaultValues = () => {
+    // Returns a list of documents that should be analyzed for the given bill. This is a helper function to make it easier to check if there is at least one bill selected
     const val = selectedBill[billIndexToEdit]?.documents;
     if (!selectedBill || !val) {
       return [];
     }
+    // Returns the data for house documents that should be included in the response. House documents are identified by their ID
     return houseDocumentsData
       .filter((document) => val.includes(document.id))
       .map((document) => ({

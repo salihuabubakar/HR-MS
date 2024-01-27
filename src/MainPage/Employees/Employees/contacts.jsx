@@ -26,8 +26,28 @@ const Contacts = () => {
   const { organisationData, isOrganisationDataLoading } = useOrganisationFetching();
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
   
-  const { searchQuery: empSearch, setSearchQuery: empSetSearch, handleSearch: empHandleSearch, filteredResults: empResult} = useSearch(allEmployee);
+  /**
+ * Employee Search and Result Handling
+ *
+ * Manages the search functionality for employees using the custom hook 'useSearch'
+ * and handles the resulting filtered employee data.
+ *
+ * @constant {string} empSearch - The current search query for employees.
+ * @constant {function} empSetSearch - Function to set the search query for employees.
+ * @constant {function} empHandleSearch - Function to handle the search process for employees.
+ * @constant {Array} empResult - Array of employees filtered based on the search query.
+ * @constant {Array} empSearchResult - The final result of employee data based on search query.
+ */
+  const {
+    searchQuery: empSearch,
+    setSearchQuery: empSetSearch,
+    handleSearch: empHandleSearch,
+    filteredResults: empResult
+  } = useSearch(allEmployee);
+
+  // Determine the final result of employee data based on the search query
   let empSearchResult = !empSearch ? allEmployee : empResult;
+
 
   const { searchQuery: resSearch, setSearchQuery: resSetSearch, handleSearch: resHandleSearch, filteredResults: resResult} = useSearch(residentData);
   let resSearchResult = !resSearch ? residentData : resResult;
@@ -46,38 +66,47 @@ const Contacts = () => {
 
 
 
-  // Table pagination
-  const itemsPerPage = 10; // Number of items per page
-  const [currentPage, setCurrentPage] = useState(1);
-  const startCount = (currentPage - 1) * itemsPerPage + 1;
-  const endCount = startCount + itemsPerPage - 1;
-  const paginationSettings = (dataLength) => {
-    return {
-      total: dataLength?.length,
-      showTotal: (total, range) =>
-        `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-      showSizeChanger: true,
-      onShowSizeChange: onShowSizeChange,
-      itemRender: itemRender,
-      current: currentPage,
-      onChange: setCurrentPage,
-    }
+  /**
+ * Table Pagination Settings Generator
+ *
+ * Generates pagination settings for a table based on the provided data length,
+ * including the number of items per page, the current page, and various display options.
+ *
+ * @function paginationSettings
+ * @param {number} dataLength - The total number of items in the data.
+ * @returns {Object} - Configuration object for table pagination.
+ * @property {number} total - The total number of items in the table.
+ * @property {function} showTotal - Function to display the total number of items.
+ * @property {boolean} showSizeChanger - Flag to show the size changer for items per page.
+ * @property {function} onShowSizeChange - Callback function when changing items per page.
+ * @property {function} itemRender - Custom function for rendering pagination items.
+ * @property {number} current - The current page number.
+ * @property {function} onChange - Callback function when changing the current page.
+ */
+const itemsPerPage = 10; // Number of items per page
+const [currentPage, setCurrentPage] = useState(1);
+const startCount = (currentPage - 1) * itemsPerPage + 1;
+const endCount = startCount + itemsPerPage - 1;
+
+const paginationSettings = (dataLength) => {
+  return {
+    total: dataLength?.length,
+    showTotal: (total, range) =>
+      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange, // Callback for changing items per page
+    itemRender: itemRender, // Custom function for rendering pagination items
+    current: currentPage, // The current page number
+    onChange: setCurrentPage, // Callback for changing the current page
   };
+};
+
   const [menu, setMenu] = useState(false);
   const [tab, setTab] = useState("employee" || "resident" || "social-worker" || "house" || "organisation" || "borough");
 
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
-
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
 
   let actualIndex;
   const employeeColumns = [

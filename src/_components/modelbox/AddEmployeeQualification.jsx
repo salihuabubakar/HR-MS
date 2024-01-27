@@ -90,6 +90,8 @@ const AddEmployeeQualification = ({
       description: description,
     };
 
+    /* The above code is iterating over the entries of the "qualifications" object and for each entry,
+    it is appending the field name and field value to a FormData object called "formData". */
     Object.entries(qualifications).forEach(([fieldName, fieldValue]) => {
       formData.append(fieldName, fieldValue);
     });

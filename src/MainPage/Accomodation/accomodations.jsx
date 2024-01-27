@@ -18,8 +18,29 @@ const Accomodations = () => {
   const [tab, setTab] = useState("allHouse" || "houseList");
   const { houseData, houseError, isHouseDataLoading } =
     useHouseFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(houseData);
+  /**
+ * House Search and Management
+ *
+ * Manages the search functionality for houses using the custom hook 'useSearch'
+ * and utilizes the 'useReducer' hook for state management.
+ *
+ * @constant {string} searchQuery - The current search query for houses.
+ * @constant {function} setSearchQuery - Function to set the search query.
+ * @constant {function} handleSearch - Function to handle the search process.
+ * @constant {Array} filteredResults - Array of houses filtered based on the search query.
+ * @constant {Object} state - The current state of house data managed by 'useReducer'.
+ * @constant {function} dispatchHouse - The dispatch function for updating house data using 'useReducer'.
+ */
+  const {
+    searchQuery,
+    setSearchQuery,
+    handleSearch,
+    filteredResults,
+  } = useSearch(houseData);
+  
+  // State management for house data using 'useReducer'
   const [state, dispatchHouse] = useReducer(add_update_delete_house, []);
+
   const [showModal] = useGlobalState("showModal");
   const [deleteModal] = useGlobalState("deleteModal");
   const [menu, setMenu] = useState(false);

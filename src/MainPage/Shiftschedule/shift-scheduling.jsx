@@ -59,14 +59,18 @@ const ShiftScheduling = () => {
 
   const [showShiftModal] = useGlobalState("showShiftModal");
   const [showAddSchedul] = useGlobalState("showAddSchedul");
-  const [repeatModal] = useGlobalState("repeatModal");
-  const [selectedShiftList] = useGlobalState("selectedShiftList");
+
   useEffect(() => {
     if (!showAddSchedul) {
       setGlobalState("selectedScheduleEvent", "");
     }
   }, [showAddSchedul]);
 
+/* The below code is using the `useReducer` hook in React to manage the state of a shift schedule for
+employees. It is initializing the state with an empty array `[]` and creating a dispatch function
+`dispatchSchedule` to update the state based on actions performed on the shift schedule. The
+`add_update_delete_employee_shift` function is the reducer function that will handle the state
+updates based on the actions dispatched. */
 const [shiftSchedule, dispatchSchedule] = useReducer(
   add_update_delete_employee_shift,
   []
@@ -79,6 +83,10 @@ const { shiftData, isShiftLoading } = useShiftFetching();
   const { data: allEmployee, isLoading } = useDataFetching();
   const { houseEmployeeData, isHouseEmployeeLoading } = useHouseEmployeeFetching();
 
+  /* The below code is using optional chaining (`?.`) to find a specific house object in an array
+  called `houseData`. It is checking if the `houseData` array exists and if it does, it will find
+  the house object that has an `id` property matching the `houseId` variable. The result of this
+  operation is stored in the `selectedHouse` variable. */
   const selectedHouse = houseData?.find((house) => house.id === houseId);
   const houseName = selectedHouse?.name;
 
@@ -89,20 +97,21 @@ const { shiftData, isShiftLoading } = useShiftFetching();
   const [shiftScheduleId, setShiftScheduleId] = useState(null)
   const [isPrint, setIsPrint] = useState(false);
 
-  // const handleMonthShiftEdit = (shift, employee, house, shiftIndex, id) => {
-  //   setShiftScheduleId(id);
-  //   setSelectedDayIndex(shiftIndex);
-  //   setEvent({ shift, employee, house });
-  //   setGlobalState("selectedScheduleEvent", employeeshiftData);
-  //   setGlobalState("showAddSchedul", true);
-  // };
 
+  /**
+   * The function `handleMondayShift` sets the employee ID, selected day, and global state to show the
+   * add schedule component.
+   */
   const handleMondayShift = (value) => {
     setEmployeeId(value);
     setSelectedDay(dayMonthYear[0]);
     setGlobalState("showAddSchedul", true);
   };
 
+  /**
+   * The function handles the selection of a shift on a specific day and updates the state with the
+   * selected shift, employee, and house.
+   */
   const handleMondayShiftIndex = (shift, employee, house, indexID, id) => {
     setShiftScheduleId(id);
     setSelectedDayIndex(indexID);
@@ -188,6 +197,8 @@ const { shiftData, isShiftLoading } = useShiftFetching();
     setGlobalState("selectedScheduleEvent", employeeshiftData);
   };
 
+
+  //The below code is a snipet of reactToPrintToPDF code, that allows the printing of a page into pdf
   const componentRef = useRef();
   const handleWeeklyCalendarPrint = useReactToPrint({
     content: () => componentRef.current,

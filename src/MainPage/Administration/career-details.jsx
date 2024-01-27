@@ -8,8 +8,11 @@ import DOMPurify from "dompurify";
 import useJobData from '../../utils/Hooks/jobList';
 
 const CareerDetails = () => {
+
   const { id: pageId } = useParams();
+
   let jobdetailId = parseInt(pageId, 10);
+
   const { getSelectedJobData, isSelectedJobLoading } = useJobData(jobdetailId);
 
   const [menu, setMenu] = useState(false);
@@ -75,8 +78,17 @@ const CareerDetails = () => {
                   <div className="job-content job-widget">
                     <div className="job-desc-title"><h4>Job Description</h4></div>
                     <div className="job-description">
-                      {/* <p>{description}</p> */}
-                      <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description)}} />
+                      {
+                      /**
+                       * Render HTML Content Safely
+                       *
+                       * Renders HTML content in a React component using the 'dangerouslySetInnerHTML' prop
+                       * and ensures the content is sanitized with DOMPurify to prevent potential security risks.
+                       *
+                       * @param {string} description - The HTML content to be rendered.
+                       * @returns {JSX.Element} - Returns a React element rendering the sanitized HTML content.
+                       */}
+                      <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} />
                     </div>
                   </div>
                 </>

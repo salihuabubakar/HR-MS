@@ -3,6 +3,13 @@ import { BaseUrl } from "./baseUrl";
 import { toast } from "react-toastify";
 import { setGlobalState } from "../context/GlobalState";
 
+/**
+ * This JavaScript function handles adding, updating, and deleting employee data using axios and toast
+ * notifications.
+ * @param state - The current state of the application. It contains information about the employees,
+ * such as their names, IDs, and other details.
+ * @returns The function does not return anything explicitly.
+ */
 // Add - Update - Delete Employee state
 export const add_update_delete_employee = async (state, { type, payload }) => {
   const { id, formData } = payload;
