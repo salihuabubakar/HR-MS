@@ -21,12 +21,13 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const Misper = () => {
   const { residentMisperData, residentMisperLoading } = useResidentMisperFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentMisperData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(residentMisperData);
   let searchResult = !searchQuery ? residentMisperData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -80,15 +81,6 @@ const Misper = () => {
     setGlobalState("deleteResidentMisperModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const columns = [
     {
       title: "#",
@@ -104,9 +96,7 @@ const Misper = () => {
         const { resident } = record;
         const matchedResident = residentData?.find((r) => r.id === resident);
         if (matchedResident) {
-          return (
-            <React.Fragment>{`${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`}</React.Fragment>
-          );
+          return <React.Fragment>{highlightSearchQuery(`${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`,searchQuery)}</React.Fragment>
         } else {
           return null; // or return a default value if no match is found
         }
@@ -250,7 +240,6 @@ const Misper = () => {
           <SearchComponent
             searchType={"Resident"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

@@ -8,7 +8,6 @@
  * @returns {Object} - An object containing search-related states and functions.
  * @property {string} searchQuery - The current search query.
  * @property {Function} setSearchQuery - Function to set the search query.
- * @property {Function} handleSearch - Event handler function to update the search query based on user input.
  * @property {Array} filteredResults - The filtered results based on the search query.
  */
 import { useState, useEffect } from "react";
@@ -24,15 +23,6 @@ export const useSearch = (data) => {
   // State variables for search functionality
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
-
-  // State variable for clearing the search query (if needed in the future)
-  const [clearQuery, setClearQuery] = useState("");
-
-  // Event handler function for updating the search query based on user input
-  const handleSearch = (event) => {
-    const query = event.target.value.toLowerCase();
-    setSearchQuery(query);
-  };
 
   // Debounced search function for better performance
   const performSearch = debounce((query) => {
@@ -99,5 +89,5 @@ export const useSearch = (data) => {
   }, [searchQuery]);
 
   // Return the search-related states and functions
-  return { searchQuery, setSearchQuery, handleSearch, filteredResults };
+  return { searchQuery, setSearchQuery, filteredResults };
 };

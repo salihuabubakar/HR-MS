@@ -22,7 +22,7 @@ const AllEmployees = () => {
   const [tab, setTab] = useState("employeeAll" || "employeeList");
   const [getEmployeeId, setGetEmployeeId] = useState(null)
   const { data, isLoading, error, showSkeleton } = useDataFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(data);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(data);
 
   const initialUserData = [];
 
@@ -131,7 +131,6 @@ const AllEmployees = () => {
             <SearchComponent
               searchType={"Employee Name"}
               searchQuery={searchQuery}
-              handleSearch={handleSearch}
               setSearchQuery={setSearchQuery}
             />
             <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -164,6 +163,7 @@ const AllEmployees = () => {
               handleEditEmployee={handleEditEmployee}
               handleDeleteAcct={handleDeleteAcct}
               DefaultImage={DefaultImage}
+              searchQuery={searchQuery}
             />
           )}
           {tab == "employeeList" && (
@@ -176,6 +176,7 @@ const AllEmployees = () => {
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              searchQuery={searchQuery}
             />
           )}
         </div>

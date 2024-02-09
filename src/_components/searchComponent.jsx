@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css"
+import './style.css'
 
 /**
  * SearchComponent
@@ -9,12 +9,11 @@ import "./style.css"
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.searchQuery - The current search query string.
  * @param {function} props.setSearchQuery - A function to update the search query state.
- * @param {function} props.handleSearch - A function to handle the search query changes.
  * @param {string} props.searchType - The type of content being searched (used for placeholder text).
  *
  * @returns {JSX.Element} - Returns the JSX for the search input field and clear button.
  */
-const SearchComponent = ({ searchQuery, setSearchQuery, handleSearch, searchType }) => {
+const SearchComponent = ({ searchQuery, setSearchQuery, searchType }) => {
   /**
    * Clears the search input field by setting the search query to an empty string.
    */
@@ -24,6 +23,11 @@ const SearchComponent = ({ searchQuery, setSearchQuery, handleSearch, searchType
     }
   };
 
+  const handleChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+  };
+
   return (
     <div className="row filter-row">
       <div className="col-sm-6 col-md-4">
@@ -31,14 +35,14 @@ const SearchComponent = ({ searchQuery, setSearchQuery, handleSearch, searchType
           {/* Search input field */}
           <input
             value={searchQuery}
-            onChange={handleSearch}
+            onChange={handleChange}
             type="text"
             className="form-control"
             placeholder={`Search for ${searchType}`}
           />
           {/* Clear button, visible when there is a search query */}
           {searchQuery && (
-            <span className="clear-icon" onClick={clearInput}>
+            <span data-testid="clear-button" className="clear-icon" onClick={clearInput}>
               <i className="fa fa-times m-r-5" />
             </span>
           )}

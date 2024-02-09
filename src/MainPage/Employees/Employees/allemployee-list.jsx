@@ -7,6 +7,7 @@ import "../../antdstyle.css";
 import {
   useRoleFetching,
 } from "../../../utils/employeeCustomFetchHook";
+import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
 const AllEmployeeList = ({
   DefaultImage,
   handleEditEmployee,
@@ -16,6 +17,7 @@ const AllEmployeeList = ({
   itemsPerPage,
   currentPage,
   setCurrentPage,
+  searchQuery,
 }) => {
   const { roleData } = useRoleFetching();
 
@@ -67,7 +69,7 @@ const paginationSettings = {
         const matchedRole = roleData?.find((r) => r.id === role);
         return (
           <React.Fragment>
-            <h2 className="table-avatar">
+            <h5 className="table-avatar" style={{ display: 'flex', alignItems: 'center'}}>
               <Link
                 to={`/app/employee/profile/${id}`}
                 className="avatar"
@@ -83,13 +85,15 @@ const paginationSettings = {
                   src={photo ? photo : DefaultImage}
                 />
               </Link>
-              <Link
-                to={`/app/employee/profile/${id}`}
-              >
-                {`${first_name} ${middle_name} ${last_name}`}{" "}
-                <span>{matchedRole ? matchedRole.role_name : "--"}</span>
-              </Link>
-            </h2>
+              <div style={{ display: 'flex', flexDirection: 'column'}}>
+                <Link
+                  to={`/app/employee/profile/${id}`}
+                >
+                  {highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery)}
+                </Link>
+                <span style={{ color:  '#8E8E8E'}}>{matchedRole ? matchedRole.role_name : "--"}</span>
+              </div>
+            </h5>
           </React.Fragment>
         )
       },

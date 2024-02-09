@@ -5,6 +5,7 @@ import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import DefaultImage from "../../assets/img/placeholder.jpg";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const HouseList = ({ 
   houseData,
@@ -12,6 +13,7 @@ const HouseList = ({
   isHouseDataLoading,
   handleHouseEdit,
   handleHouseDelete,
+  searchQuery
  }) => {
   
 
@@ -30,28 +32,26 @@ const HouseList = ({
         const { id, name, photo } = record;
         return (
           <React.Fragment>
-            <h2 className="table-avatar">
-              <Link
-                className="avatar"
-                style={{
-                  borderRadius: "5px",
-                  backgroundColor: "#00000000",
-                  height: "100%",
-                }}
-                to={`/app/accomodation/housedetails/${id}`}
-              >
-                <img
-                  style={{ width: "40px", height: "40px" }}
-                  alt=""
-                  src={photo ? photo : DefaultImage}
-                />
-              </Link>
-              <Link
-                to={`/app/accomodation/housedetails/${id}`}
-              >
-                {name}
-              </Link>
-            </h2>
+            <Link
+              className="avatar"
+              style={{
+                borderRadius: "5px",
+                backgroundColor: "#00000000",
+                height: "100%",
+              }}
+              to={`/app/accomodation/housedetails/${id}`}
+            >
+              <img
+                style={{ width: "40px", height: "40px" }}
+                alt=""
+                src={photo ? photo : DefaultImage}
+              />
+            </Link>
+            <Link
+              to={`/app/accomodation/housedetails/${id}`}
+            >
+              {highlightSearchQuery(name, searchQuery)}
+            </Link>
           </React.Fragment>
         );
       },

@@ -5,6 +5,7 @@ import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import { useRoleFetching } from "../../utils/employeeCustomFetchHook";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 const AllResidentList = ({
   DefaultImage,
   handleEditResident,
@@ -14,6 +15,7 @@ const AllResidentList = ({
   currentPage,
   setCurrentPage,
   isResidentLoading,
+  searchQuery
 }) => {
   const { roleData } = useRoleFetching();
 
@@ -46,7 +48,7 @@ const AllResidentList = ({
           record;
         return (
           <React.Fragment>
-            <h2 className="table-avatar">
+            <h5 className="table-avatar" style={{ display: 'flex', alignItems: 'center'}}>
               <Link
                 className="avatar"
                 style={{
@@ -62,13 +64,15 @@ const AllResidentList = ({
                   src={photo ? photo : DefaultImage}
                 />
               </Link>
-              <Link
-                to={`/app/servicework/profile/${id}`}
-              >
-                {`${first_name} ${middle_name} ${last_name}`}{" "}
-                <span>{role_name ? role_name : "--"}</span>
-              </Link>
-            </h2>
+              <div style={{ display: 'flex', flexDirection: 'column'}}>
+                <Link
+                  to={`/app/servicework/profile/${id}`}
+                >
+                  {highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery)}
+                </Link>
+                <span style={{ color:  '#8E8E8E'}}>{role_name ? role_name : "--"}</span>
+              </div>
+            </h5>
           </React.Fragment>
         );
       },

@@ -16,10 +16,11 @@ import "../ServiceWork/style.css";
 import moment from "moment";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const Careers = () => {
   const { careerData, isCareerLoading } = useCareerFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(careerData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(careerData);
   let CareerResult = !searchQuery ? careerData : filteredResults;
 
   /**
@@ -119,13 +120,11 @@ const paginationSettings = {
         const { id, title } = record;
         return (
           <React.Fragment>
-            <h2 className="table-avatar">
-              <Link
-                to={`/app/administration/career-details/${id}`}
-              >
-                { title }
-              </Link>
-            </h2>
+            <Link
+              to={`/app/administration/career-details/${id}`}
+            >
+              { highlightSearchQuery(title, searchQuery) }
+            </Link>
           </React.Fragment>
         );
       },
@@ -239,7 +238,6 @@ const paginationSettings = {
             <SearchComponent
               searchType={"Career"}
               searchQuery={searchQuery}
-              handleSearch={handleSearch}
               setSearchQuery={setSearchQuery}
             />
             <span style={{ color: "red", fontSize: "0.7rem" }}>
