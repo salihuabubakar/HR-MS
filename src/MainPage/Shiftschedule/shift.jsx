@@ -16,10 +16,11 @@ import "../ServiceWork/style.css";
 import moment from "moment";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const shift = () => {
   const { shiftData, isShiftLoading } = useShiftFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(shiftData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(shiftData);
   let shiftResult = !searchQuery ? shiftData : filteredResults;
 
   // Table pagination
@@ -91,7 +92,10 @@ const shift = () => {
     },
     {
       title: "Name",
-      dataIndex: "name",
+      render: (text, record, index) => {
+        const { name } = record;
+        return <React.Fragment>{highlightSearchQuery(name, searchQuery)}</React.Fragment>
+      },
     },
 
     {
@@ -184,7 +188,6 @@ const shift = () => {
             <SearchComponent
               searchType={"Shift"}
               searchQuery={searchQuery}
-              handleSearch={handleSearch}
               setSearchQuery={setSearchQuery}
             />
             <span style={{ color: "red", fontSize: "0.7rem" }}>

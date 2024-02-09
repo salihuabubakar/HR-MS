@@ -19,10 +19,11 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const documenttype = () => {
   const { residentDocumentTypeData, residentDocumentTypeLoading } = useResidentDocumentTypeFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentDocumentTypeData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(residentDocumentTypeData);
   let searchResult = !searchQuery ? residentDocumentTypeData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -80,17 +81,6 @@ const documenttype = () => {
     setGlobalState("deleteResidentDocumentTypeModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
-
-
   const columns = [
     {
       title: "#",
@@ -103,7 +93,7 @@ const documenttype = () => {
       title: "Document Type",
       dataIndex: "document_type",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery)}</React.Fragment>;
       },
     },
     {
@@ -192,7 +182,6 @@ const documenttype = () => {
           <SearchComponent
             searchType={"Document Type"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

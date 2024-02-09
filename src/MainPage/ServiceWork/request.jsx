@@ -20,11 +20,12 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const request = () => {
   const { residentRequestData, residentRequestLoading } = useResidentRequestFetching();
   const { residentData } = useResidentFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentRequestData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(residentRequestData);
   let searchResult = !searchQuery ? residentRequestData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -78,15 +79,6 @@ const request = () => {
     setGlobalState("deleteResidentRequestModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const columns = [
     {
       title: "#",
@@ -99,7 +91,7 @@ const request = () => {
       title: "Request",
       dataIndex: "request",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery)}</React.Fragment>;
       },
     },
     {
@@ -225,7 +217,6 @@ const request = () => {
           <SearchComponent
             searchType={"Request"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

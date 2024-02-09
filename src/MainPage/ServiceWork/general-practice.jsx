@@ -17,11 +17,12 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const Gp = () => {
   const { gPracticeData, isGPracticeDataLoading } = useGpracticeFetching();
   const { residentGpTypeData } = useResidentGpTypeFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(gPracticeData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(gPracticeData);
   let searchResult = !searchQuery ? gPracticeData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -75,15 +76,6 @@ const Gp = () => {
     setGlobalState("deleteGpracticeModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const columns = [
     {
       title: "#",
@@ -96,7 +88,7 @@ const Gp = () => {
       title: "Name",
       dataIndex: "gp_practice_name",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery)}</React.Fragment>;
       },
     },
     {
@@ -229,7 +221,6 @@ const Gp = () => {
           <SearchComponent
             searchType={"GP"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

@@ -2,13 +2,15 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import NoAvailableData from '../../_components/noAvailableData';
+import { highlightSearchQuery } from '../../utils/highlightSearchQuery';
 
 const AllHouse = ({
   houseData,
   houseError,
   isHouseDataLoading,
   handleHouseEdit,
-  handleHouseDelete
+  handleHouseDelete,
+  searchQuery
 }) => {
 
   return (
@@ -74,7 +76,7 @@ const AllHouse = ({
                         <Link
                           to={`/app/accomodation/house-details/${id}`}
                         >
-                          {name}
+                          {highlightSearchQuery(name, searchQuery)}
                         </Link>
                       </h4>
                       {/* <div className="small text-muted">Manager: {manager}</div>*/}

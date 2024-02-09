@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useRoleFetching } from "../../../utils/employeeCustomFetchHook";
 import NoAvailableData from "../../../_components/noAvailableData";
+import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
 
 const AllEmployee = ({
   DefaultImage,
@@ -11,6 +12,7 @@ const AllEmployee = ({
   isLoading,
   showSkeleton,
   error,
+  searchQuery,
 }) => {
 
   const {roleData} = useRoleFetching();
@@ -83,9 +85,11 @@ const AllEmployee = ({
                           </div>
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <a onClick={() => handleEmployeeProfilePage(id, index)}>
-                            {`${first_name} ${middle_name} ${last_name}`}
-                          </a>
+                          <Link
+                          to={`/app/employee/profile/${id}`}
+                        >
+                          {highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery)}
+                        </Link>
                         </h4>
                         <div className="small text-muted">
                           {roleData?.map((r) => {

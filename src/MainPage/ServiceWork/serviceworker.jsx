@@ -25,7 +25,7 @@ const AllServiceWorkers = () => {
 const [getResidentId, setGetResidentId] = useState(null);
 const { residentData, isResidentLoading, residentError } =
   useResidentFetching();
-const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentData);
+const { searchQuery, setSearchQuery, filteredResults } = useSearch(residentData);
 
 const initialUserData = [];
 
@@ -139,7 +139,6 @@ const handleDeleteAcct = (id) => {
             <SearchComponent
               searchType={"Resident Name"}
               searchQuery={searchQuery}
-              handleSearch={handleSearch}
               setSearchQuery={setSearchQuery}
             />
             <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -170,6 +169,7 @@ const handleDeleteAcct = (id) => {
               handleEditResident={handleEditResident}
               handleDeleteAcct={handleDeleteAcct}
               DefaultImage={DefaultImage}
+              searchQuery={searchQuery}
             />
           )}
           {tab == "residentList" && (
@@ -182,6 +182,7 @@ const handleDeleteAcct = (id) => {
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              searchQuery={searchQuery}
             />
           )}
         </div>

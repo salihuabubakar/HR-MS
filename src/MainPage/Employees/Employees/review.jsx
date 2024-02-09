@@ -18,12 +18,13 @@ import { useSearch } from "../../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../../_components/searchComponent";
 import { handleFileDownload } from "../../../utils/helperFucntions";
 import DisplayFileType from "../../../_components/fileExtension";
+import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
 
 const Review = () => {
 
   const { employeeReviewData, isEmployeeReviewDataLoading } = useEmployeeReviewFetching();
   const { data } = useDataFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults} = useSearch(employeeReviewData);
+  const { searchQuery, setSearchQuery, filteredResults} = useSearch(employeeReviewData);
   let reviewData = !searchQuery ? employeeReviewData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -78,15 +79,6 @@ const Review = () => {
     setMenu(!menu);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const [employeeReviewError] = useGlobalState("employeeReviewError");
 
   const clearErrorMessage = () => {
@@ -110,9 +102,7 @@ const Review = () => {
         const { employee } = record;
         const matchedEmployee = data?.find((e) => e.id === employee);
         if (matchedEmployee) {
-          return (
-            <React.Fragment>{`${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`}</React.Fragment>
-          );
+          return <React.Fragment>{highlightSearchQuery(`${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`, searchQuery)}</React.Fragment>
         } else {
           return null; // or return a default value if no match is found
         }
@@ -260,7 +250,6 @@ const Review = () => {
           <SearchComponent
             searchType={"Employee Name"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

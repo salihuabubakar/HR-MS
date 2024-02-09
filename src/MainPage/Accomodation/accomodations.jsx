@@ -26,7 +26,6 @@ const Accomodations = () => {
  *
  * @constant {string} searchQuery - The current search query for houses.
  * @constant {function} setSearchQuery - Function to set the search query.
- * @constant {function} handleSearch - Function to handle the search process.
  * @constant {Array} filteredResults - Array of houses filtered based on the search query.
  * @constant {Object} state - The current state of house data managed by 'useReducer'.
  * @constant {function} dispatchHouse - The dispatch function for updating house data using 'useReducer'.
@@ -34,7 +33,6 @@ const Accomodations = () => {
   const {
     searchQuery,
     setSearchQuery,
-    handleSearch,
     filteredResults,
   } = useSearch(houseData);
   
@@ -134,7 +132,6 @@ const Accomodations = () => {
                 <SearchComponent
                   searchType={"House Name"}
                   searchQuery={searchQuery}
-                  handleSearch={handleSearch}
                   setSearchQuery={setSearchQuery}
                 />
                 <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -168,6 +165,7 @@ const Accomodations = () => {
                   setGetHouseId={setGetHouseId}
                   handleHouseEdit={handleHouseEdit}
                   handleHouseDelete={handleHouseDelete}
+                  searchQuery={searchQuery}
                 />
               )}
               {tab == "houseList" && (
@@ -176,6 +174,7 @@ const Accomodations = () => {
                   isHouseDataLoading={isHouseDataLoading}
                   handleHouseEdit={handleHouseEdit}
                   handleHouseDelete={handleHouseDelete}
+                  searchQuery={searchQuery}
                 />
               )}
             </div>

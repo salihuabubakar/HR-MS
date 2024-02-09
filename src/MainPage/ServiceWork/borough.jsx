@@ -16,10 +16,11 @@ import "./style.css";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const borough = () => {
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentBoroughData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(residentBoroughData);
   let searchResult = !searchQuery ? residentBoroughData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -71,15 +72,6 @@ const handleDeleteBorough = (id) => {
   setGlobalState("deleteBoroughModal", true);
 };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const columns = [
     {
       title: "#",
@@ -92,7 +84,7 @@ const handleDeleteBorough = (id) => {
       title: "Name",
       dataIndex: "borough_name",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery)}</React.Fragment>;
       },
     },
     {
@@ -205,7 +197,6 @@ const handleDeleteBorough = (id) => {
           <SearchComponent
             searchType={"Borough"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

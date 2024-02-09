@@ -15,11 +15,12 @@ import { useSocialWorkerFetching, useResidentBoroughFetching } from "../../utils
 import "./style.css";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const socialworker = () => {
   const { socialWorkerData, socialWorkerLoading } = useSocialWorkerFetching();
   const { residentBoroughData } = useResidentBoroughFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(socialWorkerData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(socialWorkerData);
   let searchResult = !searchQuery ? socialWorkerData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -84,7 +85,7 @@ const socialworker = () => {
       dataIndex: "first_name",
       render: (text, record, index) => {
         const { first_name, middle_name, last_name } = record;
-        return <React.Fragment>{`${first_name} ${middle_name} ${last_name}`}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery)}</React.Fragment>;
       },
     },
     {
@@ -186,7 +187,6 @@ const socialworker = () => {
           <SearchComponent
             searchType={"Social Worker"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

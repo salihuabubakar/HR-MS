@@ -15,11 +15,12 @@ import { add_update_delete_task } from "../../utils/sendToServer";
 import { useTaskFetching, useDataFetching } from "../../utils/employeeCustomFetchHook";
 import SearchComponent from "../../_components/searchComponent";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const TaskManagerTable = () => {
   const { taskData, isTaskLoading } = useTaskFetching();
   const { data: allEmployees } = useDataFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(taskData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(taskData);
   let searchResult = !searchQuery ? taskData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -98,16 +99,14 @@ const TaskManagerTable = () => {
         const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
         return (
           <React.Fragment>
-            <h2 className="table-avatar">
-              <Link
-                to={{
-                  pathname: `/app/taskmanagement/task-manager-detail/${id}`,
-                  state: { id: id, index: currentIndex(index) },
-                }}
-              >
-                {name === formattedName ? name : formattedName}
-              </Link>
-            </h2>
+            <Link
+              to={{
+                pathname: `/app/taskmanagement/task-manager-detail/${id}`,
+                state: { id: id, index: currentIndex(index) },
+              }}
+            >
+              {highlightSearchQuery(name === formattedName ? name : formattedName, searchQuery)}
+            </Link>
           </React.Fragment>
         );
       },
@@ -443,7 +442,6 @@ const TaskManagerTable = () => {
           <SearchComponent
             searchType={"Task"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

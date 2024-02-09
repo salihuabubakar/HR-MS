@@ -17,11 +17,12 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const legalStatus = () => {
   const { residentLegalStatusTypeData, residentLegalStatusTypeLoading } =
     useResidentLegalStatusTypeFetching();
-    const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentLegalStatusTypeData);
+    const { searchQuery, setSearchQuery,filteredResults } = useSearch(residentLegalStatusTypeData);
     let searchResult = !searchQuery ? residentLegalStatusTypeData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -79,15 +80,6 @@ const legalStatus = () => {
     setGlobalState("deleteResidentLegalStatusTypeModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const columns = [
     {
       title: "#",
@@ -100,7 +92,7 @@ const legalStatus = () => {
       title: "Legal Status Type",
       dataIndex: "legal_status_name",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery)}</React.Fragment>;
       },
     },
     {
@@ -182,7 +174,6 @@ const legalStatus = () => {
           <SearchComponent
             searchType={"Legal Status"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

@@ -21,12 +21,13 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const visitor = () => {
   const { residentVisitorData, residentVisitorLoading } = useResidentVisitorFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentVisitorData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(residentVisitorData);
   let searchResult = !searchQuery ? residentVisitorData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -80,15 +81,6 @@ const visitor = () => {
     setGlobalState("deleteResidentVisitorModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const columns = [
     {
       title: "#",
@@ -101,7 +93,7 @@ const visitor = () => {
       title: "Visitor",
       dataIndex: "visitor",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery)}</React.Fragment>;
       },
     },
     {
@@ -242,7 +234,6 @@ const visitor = () => {
           <SearchComponent
             searchType={"Visitor"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

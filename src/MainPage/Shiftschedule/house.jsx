@@ -8,6 +8,7 @@ import { useHouseFetching, useDataFetching, } from "../../utils/employeeCustomFe
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
 import NoAvailableData from "../../_components/noAvailableData";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 
 const house = () => {
   const { houseData, isHouseDataLoading, houseError } = useHouseFetching();
@@ -15,7 +16,7 @@ const house = () => {
   const [menu, setMenu] = useState(false);
   /* The code is using the `useSearch` custom hook to implement search functionality in the `house`
   component. */
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(houseData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(houseData);
   let searchResult = !searchQuery ? houseData : filteredResults;
   // const filteredEmployees = houseEmployeeData?.filter(
   //   (employee) => employee.house === houseId
@@ -55,7 +56,6 @@ const house = () => {
           <SearchComponent
             searchType={"House Name"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           {/* Search Filter */}
@@ -103,7 +103,7 @@ const house = () => {
                             <Link
                               to={`/app/shiftschedule/shift-scheduling/${id}`}
                             >
-                              {name}
+                              {highlightSearchQuery(name, searchQuery)}
                             </Link>
                           </h4>
                           {data?.map((manage) => {
