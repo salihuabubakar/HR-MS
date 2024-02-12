@@ -97,11 +97,10 @@ const onSubmit = (data) => {
     localStorage.setItem('isLoggedIn', true);
     localStorage.setItem('username', username);
 
-    // Navigate to the dashboard
-    history.push('/app/main/dashboard');
-
-    // Clear browser history to prevent going back to the login page
-    window.history.pushState(null, null, window.location.href);
+    // Navigate to the dashboard, by opening a new tab
+    window.open('/app/main/dashboard', '_blank');
+    // Close the previous tab on successful login
+    window.close();
   } else {
     // If username or password is incorrect, set a custom error message
     setError('password', {
