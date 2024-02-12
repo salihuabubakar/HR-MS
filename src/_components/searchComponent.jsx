@@ -42,7 +42,7 @@ const SearchComponent = ({ searchQuery, setSearchQuery, searchType }) => {
           />
           {/* Clear button, visible when there is a search query */}
           {searchQuery && (
-            <span data-testid="clear-button" className="clear-icon" onClick={clearInput}>
+            <span className="clear-icon" onClick={clearInput}>
               <i className="fa fa-times m-r-5" />
             </span>
           )}
