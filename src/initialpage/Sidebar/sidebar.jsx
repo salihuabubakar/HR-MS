@@ -502,7 +502,7 @@ const Sidebar = (props) => {
                   ""
                 )}
               </li>
-              <li className="menu-title">
+              {/* <li className="menu-title">
                 <span>HR</span>
               </li>
               <li className="submenu">
@@ -546,7 +546,7 @@ const Sidebar = (props) => {
                 ) : (
                   ""
                 )}
-              </li>
+              </li> */}
               <li className="menu-title">
                 <span>Administration</span>
               </li>
