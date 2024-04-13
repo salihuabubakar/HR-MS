@@ -18,6 +18,7 @@ import routerService from '../../router_service';
 // Import Header and SidebarContent components
 import Header from './header.jsx';
 import SidebarContent from './sidebar';
+import { useGlobalState } from '../../context/GlobalState.js';
 
 /**
  * DefaultLayout Component
@@ -38,6 +39,14 @@ const DefaultLayout = (props) => {
 
   // Destructure the match object from props
   const { match } = props;
+
+  // Retrieve the value of isDarkMode from global state using the useGlobalState hook, which returns either true or false
+const [isDarkMode] = useGlobalState("isDarkMode");
+
+// Set the class of the <body> element based on the value of isDarkMode
+// If isDarkMode is true, set the class to 'dark-mode', otherwise set it to 'light-mode'
+document.body.className = isDarkMode ? 'dark-mode' : 'light-mode';
+
 
   return (
     <>

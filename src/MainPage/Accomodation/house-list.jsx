@@ -6,6 +6,8 @@ import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
+import { useGlobalState } from "../../context/GlobalState";
 
 const HouseList = ({ 
   houseData,
@@ -16,7 +18,7 @@ const HouseList = ({
   searchQuery
  }) => {
   
-
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   const columns = [
     {
@@ -39,7 +41,7 @@ const HouseList = ({
                 backgroundColor: "#00000000",
                 height: "100%",
               }}
-              to={`/app/accomodation/housedetails/${id}`}
+              to={`/app/accomodation/house-details/${id}`}
             >
               <img
                 style={{ width: "40px", height: "40px" }}
@@ -48,9 +50,9 @@ const HouseList = ({
               />
             </Link>
             <Link
-              to={`/app/accomodation/housedetails/${id}`}
+              to={`/app/accomodation/house-details/${id}`}
             >
-              {highlightSearchQuery(name, searchQuery)}
+              {highlightSearchQuery(name, searchQuery, isDarkMode)}
             </Link>
           </React.Fragment>
         );

@@ -11,6 +11,7 @@ import AddRole from '../../../_components/modelbox/AddRole';
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 import PopUpText from '../../../_components/modelbox/PopUpText';
+import { TableDiv } from '../../../_components/modelbox/styles';
 
 const Role = ({
   roleData,
@@ -39,6 +40,7 @@ const Role = ({
   const [deleteRoleModal] = useGlobalState("deleteRoleModal");
   const [indexToEdit, setIndexToEdit] = useState();
   const [getRoleId, setGetRoleId] = useState();
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   useEffect(() => {
     if (!showRoleModal) {
@@ -81,7 +83,7 @@ const Role = ({
         const { department } = record;
         const matchedDepartment = departmentData?.find((d) => d.id === department);
         if (matchedDepartment) {
-          return <React.Fragment>{`${matchedDepartment.department_name}`}</React.Fragment>;
+          return <TableDiv isDarkMode={isDarkMode}>{`${matchedDepartment.department_name}`}</TableDiv>;
         } else {
           return null; // or return a default value if no match is found
         }
@@ -90,13 +92,17 @@ const Role = ({
     {
       title: "Role",
       dataIndex: "role_name",
+      render: (text, record, index) => {
+        const { role_name } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{role_name}</TableDiv>;
+      },
     },
     {
       title: "Description",
       dataIndex: "description",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -134,7 +140,7 @@ const Role = ({
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Role</h3>
+              <h3 className="text-2xl text-orange-500">Role</h3>
               <span style={{ color: "red", fontSize: "0.7rem" }}>
                 {roleError?.length > 0 && (
                   <>

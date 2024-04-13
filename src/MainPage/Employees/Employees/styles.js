@@ -65,7 +65,7 @@ export const DesignationDiv = styled.div`
 
 export const NavContainer = styled.div`
   display: flex;
-  margin-bottom: 15px;
+  margin-bottom: -25px;
   .nav-btn-div,
   .print-btn-div {
     width: 100%;
@@ -76,6 +76,7 @@ export const NavContainer = styled.div`
   }
 
   ${bigTablet} {
+    margin-bottom: 15px;
     .nav-btn-div,
     .print-btn-div {
       margin: 5px;

@@ -14,6 +14,11 @@ export const Button = styled.button`
 `;
 
 export const HeaderContainer = styled.div`
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
   ${mobile} {
     z-index: 10;
   }

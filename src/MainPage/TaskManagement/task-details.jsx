@@ -34,6 +34,7 @@ import { Popup, Segment  } from "semantic-ui-react";
 import { CardWidth } from "../Employees/Employees/styles";
 import { handleFileDownload } from "../../utils/helperFucntions";
 import DisplayFileType from "../../_components/fileExtension";
+import { DualLineLoader, Loader } from "../../_components/Loader";
 
 const TaskDetails = () => {
 
@@ -150,13 +151,7 @@ const TaskDetails = () => {
       const { id: empId, first_name, middle_name, last_name, photo } = emp;
       if (Array.isArray(primaryKey) ? primaryKey.includes(empId) : primaryKey === empId) {
         return (
-          <span
-            key={empId}
-            data-bs-toggle="tooltip"
-            title={`${first_name} ${middle_name} ${last_name}`}
-          >
-            <img src={photo ? photo : DefaultImage} alt="user Image" className="resident-image" />
-          </span>
+          <img style={{ width: "25px", height: "25px"}} key={empId} title={`${first_name} ${middle_name} ${last_name}`} className='people-avatar' alt={'people'} src={photo ? photo : DefaultImage} />
         );
       }
       return null;
@@ -168,13 +163,7 @@ const TaskDetails = () => {
       const { id: resId, first_name, middle_name, last_name, photo } = emp;
       if (Array.isArray(primaryKey) ? primaryKey.includes(resId) : primaryKey === resId) {
         return (
-          <span
-            key={resId}
-            data-bs-toggle="tooltip"
-            title={`${first_name} ${middle_name} ${last_name}`}
-          >
-            <img src={photo ? photo : DefaultImage} alt="user Image" className="resident-image" />
-          </span>
+          <img style={{ width: "25px", height: "25px"}} key={resId} title={`${first_name} ${middle_name} ${last_name}`} className='people-avatar' alt={'people'} src={photo ? photo : DefaultImage} />
         );
       }
       return null;
@@ -188,7 +177,7 @@ const TaskDetails = () => {
     index,
     id,
     description,
-    Managers_comment,
+    managers_comment,
     manager,
     resident,
     employees,
@@ -210,7 +199,7 @@ const TaskDetails = () => {
           index={index}
           id={id}
           description={description}
-          Managers_comment={Managers_comment}
+          managers_comment={managers_comment}
           manager={manager}
           resident={resident}
           employees={employees}
@@ -228,6 +217,8 @@ const TaskDetails = () => {
     );
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
       <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -243,12 +234,10 @@ const TaskDetails = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Task Details</h3>
+                <h3 className="text-4xl text-orange-500">Task Details</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/taskmanagement/task-manager-table">All Tasks</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Task Manager</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/taskmanagement/task-manager-table">All Tasks</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Task Manager</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
@@ -264,15 +253,10 @@ const TaskDetails = () => {
           {/* /Page Header */}
           <div className="row">
             <div className="col-lg-8 col-xl-9">
-              <div className="card">
+              <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
                 <div className="card-body">
                   {isTaskLoading ? (
-                    <div className="skeleton-container1">
-                      <div className="skeleton-content1">
-                        <div className="skeleton-line5"></div>
-                        <div className="skeleton-line1"></div>
-                      </div>
-                    </div>
+                    <DualLineLoader />
                   ) : (
                     <>
                       <div className="project-title">
@@ -280,12 +264,12 @@ const TaskDetails = () => {
                           {taskName === formattedName ? taskName : formattedName}
                         </h5>
                       </div>
-                      <p>{taskDescription}</p>
+                      <p style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>{taskDescription}</p>
                     </>
                   )}
                 </div>
               </div>
-              <div className="project-task card">
+              <div className="project-task card border border-gray-300 rounded-md shadow-md bg-transparent">
                 <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
                   <li className="nav-item">
                     <a
@@ -308,7 +292,7 @@ const TaskDetails = () => {
                     </a>
                   </li>
                 </ul>
-                <div className="tab-content">
+                <div className="tab-content p-0">
                   <div className="tab-pane" id="assignment_tab">
                     <span style={{ color: "red", fontSize: "0.7rem" }}>
                       {taskAssignmentError?.length > 0 && (
@@ -329,8 +313,8 @@ const TaskDetails = () => {
                         </>
                       )}
                     </span>
-                    <div style={{ marginBottom: "20px" }} className="project-task card">
-                      <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
+                    <div style={{ marginBottom: "20px", border: "none" }} className="project-task card bg-transparent">
+                      <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0 bg-transparent">
                         <li className="nav-item">
                           <a
                             className="nav-link active"
@@ -351,78 +335,72 @@ const TaskDetails = () => {
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className="nav-link flex"
                             href="#pending_assignments"
                             data-bs-toggle="tab"
                             aria-expanded="false"
                           >
                             Pending Assignments{" "}
-                            <span
-                              style={{ backgroundColor: "grey" }}
-                              className="action-circle large complete-btn"
-                            >
-                              <i style={{ color: "white" }} className="material-icons">
-                                help_outline
-                              </i>
+                            <span className="ml-1">
+                              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#808080" stroke-width="1.5"/>
+                                <path d="M10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9C14 9.39815 13.8837 9.76913 13.6831 10.0808C13.0854 11.0097 12 11.8954 12 13V13.5" stroke="#808080" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M11.992 17H12.001" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
                             </span>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className="nav-link flex"
                             href="#completed_assignments"
                             data-bs-toggle="tab"
                             aria-expanded="false"
                           >
                             Completed Assignments{" "}
-                            <span
-                              style={{ backgroundColor: "#35BA67" }}
-                              className="action-circle large complete-btn"
-                            >
-                              <i style={{ color: "white" }} className="material-icons">
-                                check
-                              </i>
+                            <span className="ml-1">
+                              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="#35BA67" stroke-width="1.5"/>
+                                <path d="M8 12.75C8 12.75 9.6 13.6625 10.4 15C10.4 15 12.8 9.75 16 8" stroke="#35BA67" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
                             </span>
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className="nav-link flex"
                             href="#approved_assignments"
                             data-bs-toggle="tab"
                             aria-expanded="false"
                           >
                             Approved Assignments{" "}
-                            <span
-                              style={{ backgroundColor: "#FF9B44" }}
-                              className="action-circle large complete-btn"
-                            >
-                              <i style={{ color: "white" }} className="material-icons">
-                                check
-                              </i>
+                            <span className="ml-1">
+                              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="#EE6A0B" stroke-width="1.5"/>
+                                <path d="M8 12.75C8 12.75 9.6 13.6625 10.4 15C10.4 15 12.8 9.75 16 8" stroke="#EE6A0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
                             </span>
+
                           </a>
                         </li>
                         <li className="nav-item">
                           <a
-                            className="nav-link"
+                            className="nav-link flex"
                             href="#rejected_assignments"
                             data-bs-toggle="tab"
                             aria-expanded="false"
                           >
                             Rejected Assignments{" "}
-                            <span
-                              style={{ backgroundColor: "red" }}
-                              className="action-circle large complete-btn"
-                            >
-                              <i style={{ color: "white" }} className="material-icons">
-                                cancel
-                              </i>
+                            <span className="ml-1">
+                              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.1194 14.4L9.36 8.64M9.36061 14.4L15.12 8.64" stroke="#FF0000" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21.84 11.52C21.84 6.21806 17.5419 1.92 12.24 1.92C6.93806 1.92 2.64 6.21806 2.64 11.52C2.64 16.8219 6.93806 21.12 12.24 21.12C17.5419 21.12 21.84 16.8219 21.84 11.52Z" stroke="#FF0000" stroke-width="1.44"/>
+                              </svg>
                             </span>
                           </a>
                         </li>
                       </ul>
-                      <div className="tab-content">
+                      <div className="tab-content p-2">
                         <div className="tab-pane show active" id="all_assignments">
                           <div className="task-wrapper">
                             <div className="task-list-container">
@@ -433,7 +411,7 @@ const TaskDetails = () => {
                                         const {
                                           id,
                                           description,
-                                          Managers_comment,
+                                          managers_comment,
                                           manager,
                                           document,
                                           resident,
@@ -450,7 +428,7 @@ const TaskDetails = () => {
                                             index,
                                             id,
                                             description,
-                                            Managers_comment,
+                                            managers_comment,
                                             manager,
                                             resident,
                                             employees,
@@ -476,7 +454,7 @@ const TaskDetails = () => {
                                         const {
                                           id,
                                           description,
-                                          Managers_comment,
+                                          managers_comment,
                                           manager,
                                           document,
                                           resident,
@@ -493,7 +471,7 @@ const TaskDetails = () => {
                                             index,
                                             id,
                                             description,
-                                            Managers_comment,
+                                            managers_comment,
                                             manager,
                                             resident,
                                             employees,
@@ -519,7 +497,7 @@ const TaskDetails = () => {
                                         const {
                                           id,
                                           description,
-                                          Managers_comment,
+                                          managers_comment,
                                           manager,
                                           document,
                                           resident,
@@ -536,7 +514,7 @@ const TaskDetails = () => {
                                             index,
                                             id,
                                             description,
-                                            Managers_comment,
+                                            managers_comment,
                                             manager,
                                             resident,
                                             employees,
@@ -562,7 +540,7 @@ const TaskDetails = () => {
                                         const {
                                           id,
                                           description,
-                                          Managers_comment,
+                                          managers_comment,
                                           manager,
                                           document,
                                           resident,
@@ -579,7 +557,7 @@ const TaskDetails = () => {
                                             index,
                                             id,
                                             description,
-                                            Managers_comment,
+                                            managers_comment,
                                             manager,
                                             resident,
                                             employees,
@@ -605,7 +583,7 @@ const TaskDetails = () => {
                                         const {
                                           id,
                                           description,
-                                          Managers_comment,
+                                          managers_comment,
                                           manager,
                                           document,
                                           resident,
@@ -622,7 +600,7 @@ const TaskDetails = () => {
                                             index,
                                             id,
                                             description,
-                                            Managers_comment,
+                                            managers_comment,
                                             manager,
                                             resident,
                                             employees,
@@ -641,14 +619,14 @@ const TaskDetails = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="tab-pane show active" id="comment_tab">
+                  <div className="tab-pane show active p-1  h-[435px]" id="comment_tab">
                     <CommentSection selecetedTaskId={selectedTaskId} task={taskId} />
                   </div>
                 </div>
               </div>
               <div className="col-md-12 d-flex">
-                <div className="card profile-box flex-fill">
-                  <div className="card-header">
+                <div className="card profile-box flex-fill border-gray-300 rounded-md shadow-md bg-transparent">
+                  <div className="card-header  shadow-md">
 				            <h4 className="card-title mb-0">
                       Upload Files{""}
                       <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -680,12 +658,7 @@ const TaskDetails = () => {
 				          </div>
                   <div className="card-body">
                     {isTaskLoading || isTaskDocumentLoading ? (
-                      <div className="skeleton-container-profile">
-                        <div className="skeleton-content-profile">
-                          <div className="skeleton-line-profile"></div>
-                          <div className="skeleton-line-profile"></div>
-                        </div>
-                      </div>
+                      <Loader />
                     ) : (
                       <>
                         <Wrapper>
@@ -695,7 +668,7 @@ const TaskDetails = () => {
                               const { id, task, name, document } = doc;
                               if (task == selectedTaskId) {
                                 return (
-                                  <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3">
+                                  <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3 border border-gray-300 rounded-md shadow-md bg-transparent">
                                       <div className="dropdown-file">
                                         <a href="" className="dropdown-link" data-bs-toggle="dropdown"><i className="fa fa-ellipsis-v" /></a>
                                         <div className="dropdown-menu dropdown-menu-right">
@@ -743,6 +716,7 @@ const TaskDetails = () => {
                                         <h6>
                                           <a href="">
                                             <Popup
+                                              style={{ backgroundColor: 'transparent' }}
                                               inline
                                               hoverable
                                               position="top left"
@@ -752,17 +726,17 @@ const TaskDetails = () => {
                                               }}
                                               content={
                                                 <Segment.Group>
-                                                      <Segment style={{ width: "250px" }}>
+                                                      <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                         <div className="ui column relaxed divided grid">
                                                           <div className="column">
-                                                            <h4>{`Doc Name: ${name}`}</h4>
+                                                            <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{`Doc Name: ${name}`}</h4>
                                                           </div>
                                                         </div>
                                                       </Segment>
                                                 </Segment.Group>
                                               }
                                               trigger={
-                                                  <a style={{color: "black"}}>
+                                                  <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                     {name}
                                                   </a>
                                               }
@@ -785,7 +759,7 @@ const TaskDetails = () => {
               </div>
             </div>
             <div className="col-lg-4 col-xl-3">
-              <div className="card">
+              <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
                 <div className="card-body">
                   <h6 className="card-title m-b-15">Project details</h6>
                   <table className="table table-striped table-border">
@@ -809,33 +783,33 @@ const TaskDetails = () => {
                         )}
                       </tr> */}
                       <tr>
-                        <td>Start At:</td>
+                        <td style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>Start At:</td>
                         {isTaskLoading ? (
                           <div class="spinner">
                             <div class="loader"></div>
                           </div>
                         ) : (
                           <>
-                            <td className="text-end">
+                            <td style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="text-end">
                               {moment(taskStartAt).format("DD MMM YYYY")}
                             </td>
                           </>
                         )}
                       </tr>
                       <tr>
-                        <td>End At:</td>
+                        <td style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>End At:</td>
                         {isTaskLoading ? (
                           <div class="spinner">
                             <div class="loader"></div>
                           </div>
                         ) : (
                           <>
-                            <td className="text-end">{moment(taskEndAt).format("DD MMM YYYY")}</td>
+                            <td style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="text-end">{moment(taskEndAt).format("DD MMM YYYY")}</td>
                           </>
                         )}
                       </tr>
                       <tr>
-                        <td>Priority:</td>
+                        <td style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>Priority:</td>
                         {isTaskLoading ? (
                           <div class="spinner">
                             <div class="loader"></div>
@@ -860,19 +834,19 @@ const TaskDetails = () => {
                         )}
                       </tr>
                       <tr>
-                        <td>Task Duration:</td>
+                        <td style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>Task Duration:</td>
                         {isTaskLoading ? (
                           <div class="spinner">
                             <div class="loader"></div>
                           </div>
                         ) : (
                           <>
-                            <td className="text-end">{taskDuration}hr</td>
+                            <td style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="text-end">{taskDuration}hr</td>
                           </>
                         )}
                       </tr>
                       <tr>
-                        <td>Task Conclusion:</td>
+                        <td style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>Task Conclusion:</td>
                         {isTaskLoading ? (
                           <div class="spinner">
                             <div class="loader"></div>
@@ -893,7 +867,7 @@ const TaskDetails = () => {
                       </tr>
                     </tbody>
                   </table>
-                  <p className="m-b-5">
+                  <p style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="m-b-5">
                     Task Progress
                     {isTaskLoading ? (
                       <span style={{display: "inline"}} class="spinner">
@@ -905,11 +879,10 @@ const TaskDetails = () => {
                       </>
                     )}
                   </p>
-
                   <ProgressDiv progress={taskProgress} />
                 </div>
               </div>
-              <div className="card project-user">
+              <div className="card project-user border border-gray-300 rounded-md shadow-md bg-transparent">
                 <div className="card-body">
                   <h6 className="card-title m-b-20">House </h6>
                   <ul className="list-box">
@@ -945,7 +918,7 @@ const TaskDetails = () => {
                                       </span>
                                     </div>
                                     <div className="list-body">
-                                      <span className="message-author">
+                                      <span style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="message-author">
                                         {`${name}`}
                                       </span>
                                       <div className="clearfix" />
@@ -956,11 +929,11 @@ const TaskDetails = () => {
                             );
                           }
                         })
-                      : "No house assigned"}
+                      : <p style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>No house assigned</p>}
                   </ul>
                 </div>
               </div>
-              <div className="card project-user">
+              <div className="card project-user border border-gray-300 rounded-md shadow-md bg-transparent">
                 <div className="card-body">
                   <h6 className="card-title m-b-20">Borough </h6>
                   <ul className="list-box">
@@ -977,7 +950,7 @@ const TaskDetails = () => {
                                 >
                                   <div className="list-item">
                                     <div className="">
-                                      <span className="message-author">
+                                      <span style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="message-author">
                                         {`${borough_name}`}
                                       </span>
                                     </div>
@@ -987,11 +960,11 @@ const TaskDetails = () => {
                             );
                           }
                         })
-                      : "No borough assigned"}
+                      : <p style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>No borough assigned</p>}
                   </ul>
                 </div>
               </div>
-              <div className="card project-user">
+              <div className="card project-user border border-gray-300 rounded-md shadow-md bg-transparent">
                 <div className="card-body">
                   <h6 className="card-title m-b-20">Assigned Leader </h6>
                   <ul className="list-box">
@@ -1027,11 +1000,11 @@ const TaskDetails = () => {
                                       </span>
                                     </div>
                                     <div className="list-body">
-                                      <span className="message-author">
+                                      <span style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="message-author">
                                         {`${first_name} ${middle_name} ${last_name}`}
                                       </span>
                                       <div className="clearfix" />
-                                      <span className="message-content">Team Lead</span>
+                                      <span style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="message-content">Team Lead</span>
                                     </div>
                                   </div>
                                 </Link>
@@ -1039,114 +1012,44 @@ const TaskDetails = () => {
                             );
                           }
                         })
-                      : "No Team assigned"}
+                      : <p style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>No Team Lead assigned</p>}
                   </ul>
                 </div>
               </div>
-              <div className="card project-user">
+              <div className="card project-user border border-gray-300 rounded-md shadow-md bg-transparent">
                 <div className="card-body">
                   <h6 className="card-title m-b-20">
                     Assigned Team
                   </h6>
-                  <ul className="list-box">
+                  <div className='flex gap-1'>
                     {totalAssignedEmployees?.length > 0
                       ? allEmployees?.map((user, index) => {
                           const { id: value, first_name, middle_name, last_name, photo } = user;
                           if (totalAssignedEmployees.includes(value)) {
                             return (
-                              <li key={value}>
-                                <Link
-                                  to=""
-                                  onClick={(event) => event.preventDefault()}
-                                  title={`${first_name} ${middle_name} ${last_name}`}
-                                >
-                                  <div className="list-item">
-                                    <div className="list-left">
-                                      <span
-                                        style={{
-                                          borderRadius: "5px",
-                                          backgroundColor: "#00000000",
-                                          height: "100%",
-                                        }}
-                                        className="avatar"
-                                      >
-                                        <img
-                                          style={{
-                                            width: "30px",
-                                            height: "30px",
-                                          }}
-                                          alt=""
-                                          src={photo ? photo : DefaultImage}
-                                        />
-                                      </span>
-                                    </div>
-                                    <div className="list-body">
-                                      <span className="message-author">
-                                        {`${first_name} ${middle_name} ${last_name}`}
-                                      </span>
-                                      <div className="clearfix" />
-                                      <span className="message-content"></span>
-                                    </div>
-                                  </div>
-                                </Link>
-                              </li>
+                              <img key={value} title={`${first_name} ${middle_name} ${last_name}`} className='people-avatar' alt={'people'} src={photo ? photo : DefaultImage} />
                             );
                           }
                         })
-                      : "No Team assigned"}
-                  </ul>
+                      : <p style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>No Team assigned</p>}
+                  </div>
                 </div>
               </div>
-              <div className="card project-user">
+              <div className="card project-user border border-gray-300 rounded-md shadow-md bg-transparent">
                 <div className="card-body">
                   <h6 className="card-title m-b-20">Residents</h6>
-                  <ul className="list-box">
+                  <div className='flex gap-1'>
                     {totalAssignedResident?.length > 0
                       ? residentData?.map((user, index) => {
                           const { id: value, first_name, middle_name, last_name, photo } = user;
                           if (totalAssignedResident.includes(value)) {
                             return (
-                              <li key={value}>
-                                <Link
-                                  to=""
-                                  onClick={(event) => event.preventDefault()}
-                                  title={`${first_name} ${middle_name} ${last_name}`}
-                                >
-                                  <div className="list-item">
-                                    <div className="list-left">
-                                      <span
-                                        style={{
-                                          borderRadius: "5px",
-                                          backgroundColor: "#00000000",
-                                          height: "100%",
-                                        }}
-                                        className="avatar"
-                                      >
-                                        <img
-                                          style={{
-                                            width: "30px",
-                                            height: "30px",
-                                          }}
-                                          alt=""
-                                          src={photo ? photo : DefaultImage}
-                                        />
-                                      </span>
-                                    </div>
-                                    <div className="list-body">
-                                      <span className="message-author">
-                                        {`${first_name} ${middle_name} ${last_name}`}
-                                      </span>
-                                      <div className="clearfix" />
-                                      <span className="message-content"></span>
-                                    </div>
-                                  </div>
-                                </Link>
-                              </li>
+                              <img key={value} title={`${first_name} ${middle_name} ${last_name}`} className='people-avatar' alt={'people'} src={photo ? photo : DefaultImage} />
                             );
                           }
                         })
-                      : "No Resident assigned"}
-                  </ul>
+                      : <p style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>No Resident assigned</p>}
+                  </div>
                 </div>
               </div>
             </div>

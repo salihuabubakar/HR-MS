@@ -6,6 +6,7 @@ import "../../antdstyle.css";
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import AddOrganisation from "../../../_components/modelbox/AddOrganisation";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
+import { TableDiv } from "../../../_components/modelbox/styles";
 
 const Organisation = ({
   organisationData,
@@ -36,6 +37,7 @@ const Organisation = ({
   const [deleteOrganisationModal] = useGlobalState("deleteOrganisationModal");
   const [indexToEdit, setIndexToEdit] = useState();
   const [getOrganisationId, setGetOrganisationId] = useState();
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   useEffect(() => {
     if (!showOrganisationModal) {
@@ -73,39 +75,67 @@ const Organisation = ({
     },
     {
       title: "Organisation",
-      dataIndex: "organisation_name",
+      render: (text, record, index) => {
+        const { organisation_name } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{organisation_name}</TableDiv>;
+      },
     },
     {
       title: "Manager",
-      dataIndex: "manager_name",
+      render: (text, record, index) => {
+        const { manager_name } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{manager_name}</TableDiv>;
+      },
     },
     {
       title: "Mobile",
       dataIndex: "mobile",
+      render: (text, record, index) => {
+        const { mobile } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{mobile}</TableDiv>;
+      },
     },
     {
       title: "Office Phone",
-      dataIndex: "office_phone",
+      render: (text, record, index) => {
+        const { office_phone } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{office_phone}</TableDiv>;
+      },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "City",
-      dataIndex: "city",
+      render: (text, record, index) => {
+        const { city } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{city}</TableDiv>;
+      },
     },
     {
       title: "Street",
-      dataIndex: "street",
+      render: (text, record, index) => {
+        const { street } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{street}</TableDiv>;
+      },
     },
     {
       title: "Post Code",
-      dataIndex: "post_code",
+      render: (text, record, index) => {
+        const { post_code } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{post_code}</TableDiv>;
+      },
     },
     {
       title: "Country",
-      dataIndex: "country",
+      render: (text, record, index) => {
+        const { country } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{country}</TableDiv>;
+      },
     },
     {
       title: "Action",
@@ -144,7 +174,7 @@ const Organisation = ({
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Organisation</h3>
+              <h3 className="text-2xl text-orange-500">Organisation</h3>
               <span style={{ color: "red", fontSize: "0.7rem" }}>
                 {organisationError?.length > 0 && (
                   <>

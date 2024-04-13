@@ -19,6 +19,7 @@ class MonthlyComponent extends React.Component {
       shiftData,
       employeeshiftData,
       handleMonthShiftEdit,
+      isDarkMode
     } = this.props;
 
     // const handleDayShiftIndex = (
@@ -73,7 +74,11 @@ class MonthlyComponent extends React.Component {
                   ({ blob, url, loading, error }) => (
                     <div style={styles.btn}>
                       {loading ? 'Loading document' : (
-                        <span><i className="fa fa-download m-r-5" /> Download Schedule</span>
+                        <span
+                          style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}
+                        >
+                          <i className="fa fa-download m-r-5" /> Download Schedule
+                        </span>
                       )}
                     </div>
                   )
@@ -98,7 +103,11 @@ class MonthlyComponent extends React.Component {
                   ({ blob, url, loading, error }) => (
                     <a href={url} target="_blank" style={styles.btn}>
                       {loading ? 'Loading document' : (
-                        <span><i className="fa fa-print m-r-5" /> Print Schedule</span>
+                        <span 
+                          style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}
+                        >
+                          <i className="fa fa-print m-r-5" /> Print Schedule
+                        </span>
                       )}
                     </a>
                   )
@@ -111,7 +120,7 @@ class MonthlyComponent extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <div className="table-responsive">
-              <div>
+              <div className="border shadow-md" style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>
                 <p>
                   Scheduled Shift for{" "}
                   <span style={{ fontWeight: "bolder" }}>
@@ -125,7 +134,14 @@ class MonthlyComponent extends React.Component {
                   <tr>
                     {dayNames?.map((data, index) => {
                       return (
-                        <th style={{ borderRight: "1px solid grey" }} key={index}>
+                        <th 
+                          className="border"
+                          style={{
+                            backgroundColor: isDarkMode ? '#110C08' : 'white',
+                            color: isDarkMode ? '#898888' : '#333'
+                          }}
+                          key={index}
+                        >
                           {data}
                         </th>
                       );
@@ -135,97 +151,98 @@ class MonthlyComponent extends React.Component {
                 <tbody>
                   {tableData.map((week, weekIndex) => {
                     return (
-                        <tr style={{cursor: "default"}} key={weekIndex}>
-                          {week.map((day, dayIndex) => {
-                            const {
-                              isCurrentMonth,
-                              dayName,
-                              dayFigure,
-                              month,
-                              year,
-                              isCurrentDateTrue,
-                            } = day;
-                            return (
-                              <td style={{ cursor: "default" }} key={dayIndex}>
-                                <span
-                                  style={{
-                                    backgroundColor:
-                                      isCurrentDateTrue && "#9BA4B5",
-                                    borderRadius: isCurrentDateTrue && "50px",
-                                    padding: isCurrentDateTrue && "3px",
-                                    opacity: !isCurrentMonth && "0.7",
-                                  }}
-                                >
-                                  {dayFigure}
-                                </span>
-                                {houseEmployeeData?.map((staff, index) => {
-                                  const { id: value, employee, house } = staff;
-                                  if (house === accomodationId) {
-                                    return (
-                                      <Fragment key={index}>
-                                        {allEmployee?.map((emp, empIndex) => {
-                                          const { id: empId,  photo,  first_name,  middle_name,  last_name } = emp;
-                                          if (empId === employee) {
-                                            return (
-                                              <Fragment key={empIndex}>
-                                                {employeeshiftData?.map(
-                                                  (event, shiftIndex) => {
-                                                    const {  id, employee,  house,  date,  shift } = event;
-                                                    if (
-                                                      date ===
-                                                        `${dayName} ${dayFigure} ${month} ${year}` &&
-                                                      value === employee &&
-                                                      house === accomodationId
-                                                    ) {
-                                                      return (
-                                                        <Fragment
-                                                          key={shiftIndex}
-                                                        >
-                                                          {shiftData?.map(
-                                                            (shifts, i) => {
-                                                              if ( shifts.id ===  shift) {
-                                                                return (
-                                                                  <div style={{ margin: "3px 0" }} key={i} className="user-add-shedule-list">
-                                                                    <h2>
-                                                                      <a
-                                                                        style={{ border: "2px dashed #1eb53a",  cursor: "default" }}
-                                                                      >
-                                                                        <span>{`${shifts.name} ${moment(shifts.start_time, "HH:mm").format("hh:mm A")} - ${moment(shifts.end_time, "HH:mm").format("hh:mm A")}`}</span>
-                                                                        <span className="userrole-info">
-                                                                          <img
-                                                                            style={{ width: "20px",  height: "20px",  borderRadius: "50px", backgroundColor: "#00000000" }}
-                                                                            src={
-                                                                              photo
-                                                                                ? photo
-                                                                                : DefaultImage
-                                                                            }
-                                                                          />{" "}
-                                                                          {`${first_name} ${middle_name} ${last_name}`}
-                                                                        </span>
-                                                                      </a>
-                                                                    </h2>
-                                                                  </div>
-                                                                );
-                                                              }
+                      <tr className="border border-gray-300  shadow-md" style={{cursor: "default", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} key={weekIndex}>
+                        {week.map((day, dayIndex) => {
+                          const {
+                            isCurrentMonth,
+                            dayName,
+                            dayFigure,
+                            month,
+                            year,
+                            isCurrentDateTrue,
+                          } = day;
+                          return (
+                            <td style={{ cursor: "default" }} key={dayIndex}>
+                              <span
+                                style={{
+                                  backgroundColor:
+                                    isCurrentDateTrue && "#9BA4B5",
+                                  borderRadius: isCurrentDateTrue && "50px",
+                                  padding: isCurrentDateTrue && "3px",
+                                  opacity: !isCurrentMonth && "0.7",
+                                  color: (isCurrentDateTrue) ? '#000' : (isDarkMode ? '#898888' : '#333')
+                                }}
+                              >
+                                {dayFigure}
+                              </span>
+                              {houseEmployeeData?.map((staff, index) => {
+                                const { id: value, employee, house } = staff;
+                                if (house === accomodationId) {
+                                  return (
+                                    <Fragment key={index}>
+                                      {allEmployee?.map((emp, empIndex) => {
+                                        const { id: empId,  photo,  first_name,  middle_name,  last_name } = emp;
+                                        if (empId === employee) {
+                                          return (
+                                            <Fragment key={empIndex}>
+                                              {employeeshiftData?.map(
+                                                (event, shiftIndex) => {
+                                                  const {  id, employee,  house,  date,  shift } = event;
+                                                  if (
+                                                    date ===
+                                                      `${dayName} ${dayFigure} ${month} ${year}` &&
+                                                    value === employee &&
+                                                    house === accomodationId
+                                                  ) {
+                                                    return (
+                                                      <Fragment
+                                                        key={shiftIndex}
+                                                      >
+                                                        {shiftData?.map(
+                                                          (shifts, i) => {
+                                                            if ( shifts.id ===  shift) {
+                                                              return (
+                                                                <div style={{ margin: "3px 0" }} key={i} className="user-add-shedule-list">
+                                                                  <h2>
+                                                                    <a
+                                                                      style={{ border: "2px dashed #EE6A0B",  cursor: "default" }}
+                                                                    >
+                                                                      <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}} className="userrole-info">
+                                                                        <img
+                                                                          style={{ width: "20px",  height: "20px",  borderRadius: "50px", backgroundColor: "#00000000" }}
+                                                                          src={
+                                                                            photo
+                                                                            ? photo
+                                                                            : DefaultImage
+                                                                          }
+                                                                          title={`${first_name} ${middle_name} ${last_name}`}
+                                                                        />
+                                                                      </span>
+                                                                      <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>{`${shifts.name} ${moment(shifts.start_time, "HH:mm").format("hh:mm A")} - ${moment(shifts.end_time, "HH:mm").format("hh:mm A")}`}</span>
+                                                                    </a>
+                                                                  </h2>
+                                                                </div>
+                                                              );
                                                             }
-                                                          )}
-                                                        </Fragment>
-                                                      );
-                                                    }
+                                                          }
+                                                        )}
+                                                      </Fragment>
+                                                    );
                                                   }
-                                                )}
-                                              </Fragment>
-                                            );
-                                          }
-                                        })}
-                                      </Fragment>
-                                    );
-                                  }
-                                })}
-                              </td>
-                            );
-                          })}
-                        </tr>
+                                                }
+                                              )}
+                                            </Fragment>
+                                          );
+                                        }
+                                      })}
+                                    </Fragment>
+                                  );
+                                }
+                              })}
+                            </td>
+                          );
+                        })}
+                      </tr>
                     );
                   })}
                 </tbody>

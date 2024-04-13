@@ -4,8 +4,13 @@ import { Link } from "react-router-dom";
 import Applogo from "../../assets/img/circle-logo.png"
 import userImg from "../../assets/img/user.jpg"
 import LongApplogo from "../../assets/img/LongAppLogo.png"
+import { Popup, Segment  } from "semantic-ui-react";
 
 import {HeaderContainer} from "./style"
+import { Avatar } from "antd";
+import { UserAddOutlined } from "@ant-design/icons";
+import { useGlobalState } from "../../context/GlobalState";
+
 
 const Header = (props) => {
   const history = useHistory();
@@ -25,286 +30,91 @@ const Header = (props) => {
 
   const user = localStorage.getItem("username");
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
+
   return (
-    <HeaderContainer className="header" style={{ right: "0px" }}>
-      {/* Logo */}
-      <div className="header-left">
+    <HeaderContainer className="header">
+      <div className="handburger flex items-center">
+        <button id="toggle_btn" onClick={handlesidebar}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#f97316" fill="none">
+            <path d="M4 5L16 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M4 12L20 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M4 19L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        {/* Mobile */}
+        <button style={{ top: '20px' }} id="mobile_btn" className="mobile_btn" onClick={onMenuClik}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#f97316" fill="none">
+            <path d="M4 5L16 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M4 12L20 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M4 19L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        {/* /Mobile */}
+      </div>
+      <div className="local-logo">
         <Link to="/app/main/dashboard" className="logo">
-          <img src={Applogo} width={40} height={40} alt="" />
+          <img src={"https://peepaltree.co.uk/wp-content/uploads/sites/4/2023/12/Header-logo-800px.png"} width={200} height={200} alt="" />
         </Link>
       </div>
-      {/* /Logo */}
-      <a id="toggle_btn" href="#" onClick={handlesidebar}>
-        <span className="bar-icon">
-          <span />
-          <span />
-          <span />
-        </span>
-      </a>
-      {/* Header Title */}
-      <div
-        style={{
-          width: "28%",
-          position: "relative",
-          bottom: "5px",
-        }}
-        className="page-title-box"
-      >
-        {/* <h3>
-          PEEPAL TREE
-        </h3> */}
-        <img
-          src={LongApplogo}
-          style={{
-            maxWidth: "45%",
-            width: "100%",
-            position: "relative",
-            left: "20%",
+      <div className="profile-handle flex justify-center items-center">
+        <div className="mr-8">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.52992 14.7696C2.31727 16.1636 3.268 17.1312 4.43205 17.6134C8.89481 19.4622 15.1052 19.4622 19.5679 17.6134C20.732 17.1312 21.6827 16.1636 21.4701 14.7696C21.3394 13.9129 20.6932 13.1995 20.2144 12.5029C19.5873 11.5793 19.525 10.5718 19.5249 9.5C19.5249 5.35786 16.1559 2 12 2C7.84413 2 4.47513 5.35786 4.47513 9.5C4.47503 10.5718 4.41272 11.5793 3.78561 12.5029C3.30684 13.1995 2.66061 13.9129 2.52992 14.7696Z" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 19C8.45849 20.7252 10.0755 22 12 22C13.9245 22 15.5415 20.7252 16 19" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <Popup
+          style={{ backgroundColor: 'transparent' }}
+          inline
+          hoverable
+          position="bottom left"
+          delay={{
+            show: 300,
+            hide: 800,
           }}
-          alt=""
+          content={
+            <Segment.Group>
+                  <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
+                    <div className="ui column relaxed divided grid">
+                      <div className="column">
+                        <h4 className="text-orange-500">
+                          {user && 'Sachin'}
+                        </h4>
+                        <span className="text-sm text-[#898888]">sachin@gmail.com</span>
+                        <hr style={{ border: "2px solid #ccc"}} />
+                        <div className="ui link list">
+                          {/* <Link className="dropdown-item" to="/app/profile/AddminProfile">
+                            My Profile
+                          </Link>
+                          <Link className="dropdown-item" to="/settings/companysetting">
+                            Settings
+                          </Link> */}
+                          <Link onClick={handleLogOut} style={{ display: 'flex', alignItems: 'center', padding: '5px', backgroundColor: '#FCF0E5', color: '#f97316'}} className="dropdown-item rounded-md"><span>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.02331 5.5C4.59826 7.11238 3 9.86954 3 13C3 17.9706 7.02944 22 12 22C16.9706 22 21 17.9706 21 13C21 9.86954 19.4017 7.11238 16.9767 5.5" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 2V10" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+
+                          </span> <span>Logout</span></Link>
+                        </div>
+                      </div>
+                    </div>
+                  </Segment>
+            </Segment.Group>
+          }
+          trigger={
+              <a className="text-[#f97316]">
+                <Avatar icon={<img src="http://peepaltree-4a1c3cfe9b46.herokuapp.com/media/employees/02fe99ea-d5ca-4e9b-bbf8-453ddd62f64b.jpg" alt="user" width={40} height={40} />} />
+                <i className="dropdown icon"></i>
+              </a>
+          }
         />
       </div>
-      {/* /Header Title */}
-      <a
-        id="mobile_btn"
-        className="mobile_btn"
-        // href="#"
-        onClick={onMenuClik}
-      >
-        <i className="fa fa-bars" />
-      </a>
-      {/* Header Menu */}
-      <ul className="nav user-menu">
-        {/* Notifications */}
-        <li className="nav-item dropdown">
-          <a
-            href="#"
-            className="dropdown-toggle nav-link"
-            data-bs-toggle="dropdown"
-          >
-            <i className="fa fa-bell-o" />{" "}
-            <span className="badge badge-pill">3</span>
-          </a>
-          <div
-            className="dropdown-menu notifications"
-            style={{
-              width: "355px",
-            }}
-          >
-            <div className="topnav-dropdown-header">
-              <span className="notification-title">Notifications</span>
-              <a href="" className="clear-noti">
-                {" "}
-                Clear All{" "}
-              </a>
-            </div>
-            <div className="noti-content">
-              <ul className="notification-list">
-                <li className="notification-message">
-                  <Link
-                    to="/app/main/dashboard"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <div className="media">
-                      <span className="avatar">
-                        {/* <img alt="" src={Avatar_02} /> */}
-                      </span>
-                      <div className="media-body">
-                        <p className="noti-details">
-                          <span className="noti-title">John Doe</span> added new
-                          task{" "}
-                          <span className="noti-title">
-                            Patient appointment booking
-                          </span>
-                        </p>
-                        <p className="noti-time">
-                          <span className="notification-time">4 mins ago</span>
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-                <li className="notification-message">
-                  <Link
-                    // onClick={() => localStorage.setItem("minheight", "true")}
-                    onClick={(e) => e.preventDefault()}
-                    to="/app/main/dashboard"
-                  >
-                    <div className="media">
-                      <span className="avatar">
-                        {/* <img alt="" src={Avatar_13} /> */}
-                      </span>
-                      <div className="media-body">
-                        <p className="noti-details">
-                          <span className="noti-title">Bernardo Galaviz</span>{" "}
-                          added new task{" "}
-                          <span className="noti-title">
-                            Private chat module
-                          </span>
-                        </p>
-                        <p className="noti-time">
-                          <span className="notification-time">2 days ago</span>
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="topnav-dropdown-footer">
-              <Link
-                // onClick={() => localStorage.setItem("minheight", "true")}
-                onClick={(e) => e.preventDefault()}
-                to="/app/main/dashboard"
-              >
-                View all Notifications
-              </Link>
-            </div>
-          </div>
-        </li>
-        {/* /Notifications */}
-        {/* Message Notifications */}
-        {/* <li className="nav-item dropdown">
-          <a
-            href="#"
-            className="dropdown-toggle nav-link"
-            data-bs-toggle="dropdown"
-          >
-            <i className="fa fa-comment-o" />{" "}
-            <span className="badge badge-pill">8</span>
-          </a>
-          <div
-            style={{
-              width: "355px",
-            }}
-            className="dropdown-menu notifications"
-          >
-            <div className="topnav-dropdown-header">
-              <span className="notification-title">Messages</span>
-              <a href="" className="clear-noti">
-                {" "}
-                Clear All{" "}
-              </a>
-            </div>
-            <div className="noti-content">
-              <ul className="notification-list">
-                <li className="notification-message">
-                  <Link
-                    onClick={(e) => e.preventDefault()}
-                    to="/app/main/dashboard"
-                  >
-                    <div className="list-item">
-                      <div className="list-left">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_02} />
-                        </span>
-                      </div>
-                      <div className="list-body">
-                        <span className="message-author">John Doe</span>
-                        <span className="message-time">6 Mar</span>
-                        <div className="clearfix" />
-                        <span className="message-content">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-                <li className="notification-message">
-                  <Link
-                    to="/app/main/dashboard"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <div className="list-item">
-                      <div className="list-left">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_03} />
-                        </span>
-                      </div>
-                      <div className="list-body">
-                        <span className="message-author">
-                          {" "}
-                          Tarah Shropshire{" "}
-                        </span>
-                        <span className="message-time">5 Mar</span>
-                        <div className="clearfix" />
-                        <span className="message-content">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="topnav-dropdown-footer">
-              <Link
-                to="/app/main/dashboard"
-                onClick={(e) => e.preventDefault()}
-              >
-                View all Messages
-              </Link>
-            </div>
-          </div>
-        </li> */}
-        {/* /Message Notifications */}
-        <li className="nav-item dropdown has-arrow main-drop">
-          <a
-            href="#"
-            className="dropdown-toggle nav-link"
-            data-bs-toggle="dropdown"
-          >
-            <span className="user-img me-1">
-              <img src={userImg} alt="" />
-              <span className="status online" />
-            </span>
-            <span>{user ? user : "sachin"}</span>
-          </a>
-          <div className="dropdown-menu">
-            {/* <Link
-              className="dropdown-item"
-              to={{
-                pathname: "/app/profile/AddminProfile",
-                state: { id: "occupation" },
-              }}
-            >
-              My Profile
-            </Link>
-            <Link className="dropdown-item" to="/settings/companysetting">
-              Settings
-            </Link> */}
-            <button onClick={handleLogOut} className="dropdown-item">
-              Logout
-            </button>
-          </div>
-        </li>
-      </ul>
-      {/* /Header Menu */}
-      {/* Mobile Menu */}
-      <div className="dropdown mobile-user-menu">
-        <a
-          href="#"
-          className="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i className="fa fa-ellipsis-v" />
-        </a>
-        <div className="dropdown-menu dropdown-menu-right">
-          <Link className="dropdown-item" to="/app/profile/AddminProfile">
-            My Profile
-          </Link>
-          <Link className="dropdown-item" to="/settings/companysetting">
-            Settings
-          </Link>
-          <button onClick={handleLogOut} className="dropdown-item">
-            Logout
-          </button>
-        </div>
-      </div>
-      {/* /Mobile Menu */}
+      
     </HeaderContainer>
   );
-};;
+};
 
 export default withRouter(Header);

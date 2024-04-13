@@ -4,6 +4,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import './custom.css'
 import { Popup, Segment  } from "semantic-ui-react";
 import PopUpText from '../../../_components/modelbox/PopUpText';
+import { useGlobalState } from '../../../context/GlobalState';
 
 const Gallery = ({ 
     data, houseId, 
@@ -76,6 +77,8 @@ filteredImage?.forEach((img) => {
   });
 });
 
+const [isDarkMode] = useGlobalState("isDarkMode");
+
 
   const renderImageWithDescription = (item) => {
     return (
@@ -84,6 +87,7 @@ filteredImage?.forEach((img) => {
         {item.originalTitle && (
           <div className="image-gallery-description">
             <Popup
+              style={{ backgroundColor: 'transparent' }}
               inline
               hoverable
               position="top center"
@@ -93,11 +97,11 @@ filteredImage?.forEach((img) => {
               }}
               content={
                 <Segment.Group>
-                      <Segment style={{ width: "250px" }}>
+                      <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                         <div className="ui column relaxed divided grid">
                           <div className="column">
                             <h4>
-                              <span>{item.originalTitle}</span>
+                              <span style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{item.originalTitle}</span>
                               <span 
                                 style={{
                                     background: "none",
@@ -143,7 +147,7 @@ filteredImage?.forEach((img) => {
                               </span>
                             </h4>
                             <div className="ui link list">
-                              <a className="item">{item.description}</a>
+                              <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{item.description}</a>
                             </div>
                           </div>
                         </div>

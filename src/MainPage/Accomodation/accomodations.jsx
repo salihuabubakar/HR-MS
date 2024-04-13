@@ -76,6 +76,8 @@ const Accomodations = () => {
       setGlobalState("isHouseError", "");
     };
 
+    const [isDarkMode] = useGlobalState("isDarkMode");
+
       return (
         <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
           <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -92,12 +94,10 @@ const Accomodations = () => {
                 <>
                   <div className="row align-items-center">
                     <div className="col">
-                      <h3 className="page-title">Houses</h3>
+                      <h3 className="text-4xl text-orange-500">Houses</h3>
                       <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                          <Link to="/app/main/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active">House</li>
+                        <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                        <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">House</li>
                       </ul>
                     </div>
                     <div className="col-auto float-end ml-auto">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useGlobalState } from '../context/GlobalState';
 /**
  * Function to highlight the search query within a given text.
  *
@@ -6,10 +7,10 @@ import React from 'react';
  * @param {string} searchQuery - The search query to be highlighted within the text.
  * @returns {JSX.Element} - JSX element with the search query highlighted.
  */
-export const highlightSearchQuery = (text, searchQuery) => {
+export const highlightSearchQuery = (text, searchQuery, isDarkMode) => {
   // If search query is empty, return the original text wrapped in a span element
   if (!searchQuery) {
-    return <span style={{ color: '#393333' }}>{text}</span>;
+    return <span style={{color: `${isDarkMode ? '#898888' : '#333333'}`}}>{text}</span>;
   }
 
   // Create a regular expression with the search query for global case-insensitive matching
@@ -21,12 +22,12 @@ export const highlightSearchQuery = (text, searchQuery) => {
   return parts.map((part, index) => (
     // If the part matches the search query, wrap it in a span with the highlight color
     part.toLowerCase() === searchQuery.toLowerCase() ? (
-      <span key={index} style={{ color: '#FE8458' }}>
+      <span key={index} style={{ color: '#F97316' }}>
         {part}
       </span>
     ) : (
       // If the part doesn't match the search query, render it as is
-      <span style={{ color: '#393333' }} key={index}>
+      <span style={{color: `${isDarkMode ? '#898888' : '#333333'}`}} key={index}>
         {part}
       </span>
     )

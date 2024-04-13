@@ -5,7 +5,7 @@ export const Card = styled.div`
     max-height: 350px;
     height: 100%;
     overflow-y: auto;
-    background-color: #f7f7f7;
+    background-color: transparent;
   }
 
   .reply-btn {

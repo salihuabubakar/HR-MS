@@ -30,6 +30,8 @@ import MonthlyComponent from "./monthlyComponent";
 import { useDateWeeklyCalendarCounter, useDateMonthlyCalendarCounter } from "../../utils/calendarCustomeHook";
 import { Popup, Segment  } from "semantic-ui-react";
 import moment from "moment";
+import { SmallSingleLineLoader } from "../../_components/Loader";
+import SearchComponent from "../../_components/searchComponent";
 
 const ShiftScheduling = () => {
   const { id } = useParams();
@@ -59,6 +61,8 @@ const ShiftScheduling = () => {
 
   const [showShiftModal] = useGlobalState("showShiftModal");
   const [showAddSchedul] = useGlobalState("showAddSchedul");
+
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   useEffect(() => {
     if (!showAddSchedul) {
@@ -233,62 +237,62 @@ const { shiftData, isShiftLoading } = useShiftFetching();
             <div className="page-header">
               <div className="row">
                 <div className="col">
-                  <h3 className="page-title">Daily Scheduling</h3>
+                  <h3 className="text-4xl text-orange-500">Daily Scheduling</h3>
                   <ul className="breadcrumb breadcrumb-nav">
                     <li className="breadcrumb-item">
-                      <Link to="/app/shiftschedule/house">
-                        House: {""}
-                        <span>
-                          {isHouseDataLoading ? (
-                            <span className="skeleton-container1">
-                              <span className="skeleton-content1">
-                                <div
-                                  style={{ width: "70px" }}
-                                  className="skeleton-line3"
-                                ></div>
-                              </span>
-                            </span>
-                          ) : (
-                            houseName
-                          )}
-                        </span>
+                      <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} to="/app/shiftschedule/house">
+                        Houses
                       </Link>
                     </li>
-                    <li className="breadcrumb-item active">Shift Scheduling</li>
+                    <li className="breadcrumb-item">
+                      <span className="text-orange-400">
+                        {isHouseDataLoading ? (
+                          <SmallSingleLineLoader />
+                        ) : (
+                          houseName
+                        )}
+                      </span>
+                    </li>
+                    <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item active">Shift Scheduling</li>
                   </ul>
                 </div>
-                <div className="col-auto float-end ml-auto">
-                    <Popup
-                      inline
-                      hoverable
-                      position="bottom left"
-                      delay={{
-                        show: 300,
-                        hide: 800,
-                      }}
-                      content={
-                        <Segment.Group>
-                          {shiftData?.map(shft => {
-                            const { id, name, start_time, end_time, hours, status } = shft;
-                            return (
-                              <Segment style={{ width: "250px" }}>
-                                <div className="ui column relaxed divided grid">
-                                  <div key={id} className="column">
-                                    <h4>{name}</h4>
-                                    <div className="ui link list">
-                                      <a className="item">{`TIME: ${moment(start_time, "HH:mm").format("hh:mm A")} - ${moment(end_time, "HH:mm").format("hh:mm A")}`}</a>
-                                      <a className="item">{`HOURS: ${hours}`}</a>
-                                      <a className="item">{`STATUS: ${status}`}</a>
-                                    </div>
+                <div className="col-auto col-sm-12 float-end ml-auto">
+                  <Popup
+                    style={{ backgroundColor: 'transparent' }}
+                    inline
+                    hoverable
+                    position="bottom left"
+                    delay={{
+                      show: 300,
+                      hide: 800,
+                    }}
+                    content={
+                      <Segment.Group>
+                        {shiftData?.map(shft => {
+                          const { id, name, start_time, end_time, hours, status } = shft;
+                          return (
+                            <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
+                              <div className="ui column relaxed divided grid">
+                                <div key={id} className="column">
+                                  <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{name}</h4>
+                                  <div className="ui link list">
+                                    <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`TIME: ${moment(start_time, "HH:mm").format("hh:mm A")} - ${moment(end_time, "HH:mm").format("hh:mm A")}`}</a>
+                                    <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`HOURS: ${hours}`}</a>
+                                    <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`STATUS: ${status}`}</a>
                                   </div>
                                 </div>
-                              </Segment>
-                            )
-                          })}
-                        </Segment.Group>
-                      }
-                      trigger={<a className="browse item btn add-btn m-r-5">Shifts<i className="dropdown icon"></i></a>}
-                    />
+                              </div>
+                            </Segment>
+                          )
+                        })}
+                      </Segment.Group>
+                    }
+                    trigger={
+                      <a style={{color: 'white'}} className="browse item btn add-btn m-r-5">
+                        Shifts<i className="dropdown icon"></i>
+                      </a>
+                    }
+                  />
                   <a
                     className="btn add-btn m-r-5"
                     onClick={() => setGlobalState("showShiftModal", true)}
@@ -320,118 +324,87 @@ const { shiftData, isShiftLoading } = useShiftFetching();
             {/* /Page Header */}
             {/* Content Starts */}
             {/* Search Filter */}
-            <div className="row filter-row">
-              <div className="col-sm-6 col-md-3">
-                <div className="form-group form-focus">
-                  <input type="text" className="form-control floating" />
-                  <label className="focus-label">Employee</label>
-                </div>
-              </div>
-              <div className="col-sm-6 col-md-3">
-                <div className="form-group form-focus focused">
-                  <div>
-                    <input
-                      className="form-control floating datetimepicker"
-                      type="date"
-                    />
-                  </div>
-                  <label className="focus-label">From</label>
-                </div>
-              </div>
-              <div className="col-sm-6 col-md-3">
-                <div className="form-group form-focus focused">
-                  <div>
-                    <input
-                      className="form-control floating datetimepicker"
-                      type="date"
-                    />
-                  </div>
-                  <label className="focus-label">To</label>
-                </div>
-              </div>
-              <div className="col-sm-6 col-md-3">
-                <a href="#" className="btn btn-success btn-block w-100">
-                  {" "}
-                  Search{" "}
-                </a>
-              </div>
-            </div>
-            {/* Search Filter */}
-            <NavContainer>
-              {/* <div className="print-btn-div">
-                <NavButton
-                  onClick={
-                    views === "weeklyView"
-                      ? handleWeeklyCalendarPrint
-                      : handleMonthlyCalendarPrint
-                  }
-                  onMouseEnter={() => setIsPrint(true)}
-                  onMouseLeave={() => setIsPrint(false)}
-                  className="btn btn-white print-btn"
-                >
-                  <i className="fa fa-print fa-lg" /> Print
-                </NavButton>
-              </div> */}
-              <div className="nav-btn-div">
-                <NavButton
-                  onClick={() =>
-                    views === "weeklyView"
-                      ? handleNavigation("prev")
-                      : monthlyNavigation("prev")
-                  }
-                  className="btn btn-success"
-                >
-                  Prev {views === "weeklyView" ? "Week" : "Month"}
-                </NavButton>
-                <NavButton
-                  onClick={() =>
-                    views === "weeklyView"
-                      ? handleNavigation("current")
-                      : monthlyNavigation("current")
-                  }
-                  className="btn btn-success"
-                  style={{
-                    opacity:
+              <SearchComponent 
+                searchType="Employee"
+                searchQuery=""
+                setSearchQuery={""}
+              />
+              <NavContainer>
+                {/* <div className="print-btn-div">
+                  <NavButton
+                    onClick={
                       views === "weeklyView"
-                        ? dateCounter === 0
+                        ? handleWeeklyCalendarPrint
+                        : handleMonthlyCalendarPrint
+                    }
+                    onMouseEnter={() => setIsPrint(true)}
+                    onMouseLeave={() => setIsPrint(false)}
+                    className="btn btn-white print-btn"
+                  >
+                    <i className="fa fa-print fa-lg" /> Print
+                  </NavButton>
+                </div> */}
+                <div className="nav-btn-div">
+                  <NavButton
+                    onClick={() =>
+                      views === "weeklyView"
+                        ? handleNavigation("prev")
+                        : monthlyNavigation("prev")
+                    }
+                    className="btn add-btn m-r-5"
+                  >
+                    Prev {views === "weeklyView" ? "Week" : "Month"}
+                  </NavButton>
+                  <NavButton
+                    onClick={() =>
+                      views === "weeklyView"
+                        ? handleNavigation("current")
+                        : monthlyNavigation("current")
+                    }
+                    className="btn add-btn m-r-5"
+                    style={{
+                      opacity:
+                        views === "weeklyView"
+                          ? dateCounter === 0
+                            ? "0.3"
+                            : "1"
+                          : monthCounter === 0
                           ? "0.3"
-                          : "1"
-                        : monthCounter === 0
-                        ? "0.3"
-                        : "1",
-                    cursor:
-                      views === "weeklyView"
-                        ? dateCounter === 0
+                          : "1",
+                      cursor:
+                        views === "weeklyView"
+                          ? dateCounter === 0
+                            ? "not-allowed"
+                            : "pointer"
+                          : monthCounter === 0
                           ? "not-allowed"
-                          : "pointer"
-                        : monthCounter === 0
-                        ? "not-allowed"
-                        : "pointer",
-                    color:
-                      views === "weeklyView"
-                        ? dateCounter === 0
+                          : "pointer",
+                      color:
+                        views === "weeklyView"
+                          ? dateCounter === 0
+                            ? "black"
+                            : "white"
+                          : monthCounter === 0
                           ? "black"
-                          : "white"
-                        : monthCounter === 0
-                        ? "black"
-                        : "white",
-                  }}
-                >
-                  Current {views === "weeklyView" ? "Week" : "Month"}
-                </NavButton>
-                <NavButton
-                  onClick={() =>
-                    views === "weeklyView"
-                      ? handleNavigation("next")
-                      : monthlyNavigation("next")
-                  }
-                  className="btn btn-success"
-                >
-                  Next {views === "weeklyView" ? "Week" : "Month"}
-                </NavButton>
-              </div>
-            </NavContainer>
-            <span style={{ color: "red", fontSize: "0.7rem" }}>
+                          : "white",
+                    }}
+                  >
+                    Current {views === "weeklyView" ? "Week" : "Month"}
+                  </NavButton>
+                  <NavButton
+                    onClick={() =>
+                      views === "weeklyView"
+                        ? handleNavigation("next")
+                        : monthlyNavigation("next")
+                    }
+                    className="btn add-btn m-r-5"
+                  >
+                    Next {views === "weeklyView" ? "Week" : "Month"}
+                  </NavButton>
+                </div>
+              </NavContainer>
+            {/* Search Filter */}
+            <span style={{ color: `${isDarkMode ? '#EE6A0B' : 'red'}`, fontSize: `${isDarkMode ? '0.9rem' : '0.7rem'}` }}>
               {employeeShiftError?.length > 0 && (
                 <>
                   Error: {employeeShiftError}
@@ -444,8 +417,9 @@ const { shiftData, isShiftLoading } = useShiftFetching();
                       color: "black",
                     }}
                   >
-                    <i className="fa fa-times" />
-                    Clear Error
+                    <svg width="13" height="15" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14.1667 0.999756L14.7646 2.11753C15.1689 2.87322 15.371 3.25107 15.2374 3.41289C15.1037 3.57471 14.6635 3.44402 13.7831 3.18264C12.9029 2.92131 11.9684 2.78071 11 2.78071C5.75329 2.78071 1.5 6.90822 1.5 11.9998C1.5 13.6789 1.96262 15.2533 2.77093 16.6093M7.83333 22.9998L7.23536 21.882C6.83108 21.1263 6.62894 20.7484 6.7626 20.5866C6.89627 20.4248 7.33649 20.5555 8.21689 20.8169C9.0971 21.0782 10.0316 21.2188 11 21.2188C16.2467 21.2188 20.5 17.0913 20.5 11.9998C20.5 10.3206 20.0374 8.74623 19.2291 7.39023" stroke={`${isDarkMode ? '#EE6A0B' : 'red' }`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                   </button>
                 </>
               )}
@@ -493,6 +467,7 @@ const { shiftData, isShiftLoading } = useShiftFetching();
                       isLoading={isLoading}
                       isShiftLoading={isShiftLoading}
                       roleData={roleData}
+                      isDarkMode={isDarkMode}
                     />
                   )
                 }
@@ -522,6 +497,7 @@ const { shiftData, isShiftLoading } = useShiftFetching();
                       ref={monthlyCalendarComponentRef}
                       shiftData={shiftData}
                       allEmployee={allEmployee}
+                      isDarkMode={isDarkMode}
                     />
                   )
                 }

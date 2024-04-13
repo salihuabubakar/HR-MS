@@ -35,6 +35,7 @@ class WeeklyComponent extends React.Component {
       isLoading,
       isShiftLoading,
       roleData,
+      isDarkMode
     } = this.props;
 
     return (
@@ -60,7 +61,11 @@ class WeeklyComponent extends React.Component {
                   ({ blob, url, loading, error }) => (
                     <div style={styles.btn}>
                       {loading ? 'Loading document' : (
-                        <span><i className="fa fa-download m-r-5" /> Download Schedule</span>
+                        <span
+                          style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}
+                        >
+                          <i className="fa fa-download m-r-5" /> Download Schedule
+                        </span>
                       )}
                     </div>
                   )
@@ -86,7 +91,11 @@ class WeeklyComponent extends React.Component {
                   ({ blob, url, loading, error }) => (
                     <a href={url} target="_blank" style={styles.btn}>
                       {loading ? 'Loading document' : (
-                        <span><i className="fa fa-print m-r-5" /> Print Schedule</span>
+                        <span 
+                          style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}
+                        >
+                          <i className="fa fa-print m-r-5" /> Print Schedule
+                        </span>
                       )}
                     </a>
                   )
@@ -101,20 +110,22 @@ class WeeklyComponent extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <div className="table-responsive">
-              <table className="table table-striped custom-table">
+              <table  className="table table-striped custom-table">
                 <thead>
                   <tr>
-                    <th style={{ borderRight: "1px solid grey" }}>
+                    <th className="border" style={{backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`, color: `${isDarkMode ? '#898888' : '#333'}`}}>
                       Scheduled Shift
                     </th>
                     {recentDates?.map((data, index) => {
                       return (
                         <th
                           key={index}
+                          className="border"
                           style={{
-                            borderRight: "1px solid grey",
-                            backgroundColor:
-                              data === recentDates[activeCurrentDate] && "#ddd",
+                            backgroundColor: 
+                              (data === recentDates[activeCurrentDate]) ? '#ddd' : (isDarkMode ? '#110C08' : 'white'),
+                            color:
+                              (data === recentDates[activeCurrentDate]) ? '#000' : (isDarkMode ? '#898888' : '#333')
                           }}
                         >
                           {data}
@@ -140,7 +151,7 @@ class WeeklyComponent extends React.Component {
                             } = emp;
                             if (empId === employee) {
                               return (
-                                <tr key={empIndex}>
+                                <tr className="border border-gray-300  shadow-md" style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} key={empIndex}>
                                   <td>
                                     <h2 className="table-avatar">
                                       <a className="avatar">
@@ -215,10 +226,10 @@ class WeeklyComponent extends React.Component {
                                                         <a
                                                           style={{
                                                             border:
-                                                              "2px dashed #1eb53a",
+                                                              "2px dashed #EE6A0B",
                                                           }}
                                                         >
-                                                          <span>
+                                                          <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                                             {`${shifts.name} 
                                                               ${moment(
                                                                 shifts.start_time,
@@ -233,8 +244,11 @@ class WeeklyComponent extends React.Component {
                                                                 "hh:mm A"
                                                               )}`}
                                                           </span>
-                                                          <span className="userrole-info">
-                                                            Web Designer -{" "}
+                                                          <span className="userrole-info" style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
+                                                            {roleData?.map((r) => {
+                                                              if (r.id === role)
+                                                                return r.role_name;
+                                                            })} -{" "}
                                                             {`${first_name} ${middle_name} ${last_name}`}
                                                           </span>
                                                         </a>
@@ -298,10 +312,10 @@ class WeeklyComponent extends React.Component {
                                                         <a
                                                           style={{
                                                             border:
-                                                              "2px dashed #1eb53a",
+                                                              "2px dashed #EE6A0B",
                                                           }}
                                                         >
-                                                          <span>
+                                                          <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                                             {`${shifts.name} 
                                                               ${moment(
                                                                 shifts.start_time,
@@ -316,8 +330,11 @@ class WeeklyComponent extends React.Component {
                                                                 "hh:mm A"
                                                               )}`}
                                                           </span>
-                                                          <span className="userrole-info">
-                                                            Web Designer -{" "}
+                                                          <span className="userrole-info" style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
+                                                            {roleData?.map((r) => {
+                                                              if (r.id === role)
+                                                                return r.role_name;
+                                                            })} -{" "}
                                                             {`${first_name} ${middle_name} ${last_name}`}
                                                           </span>
                                                         </a>
@@ -383,10 +400,10 @@ class WeeklyComponent extends React.Component {
                                                         <a
                                                           style={{
                                                             border:
-                                                              "2px dashed #1eb53a",
+                                                              "2px dashed #EE6A0B",
                                                           }}
                                                         >
-                                                          <span>
+                                                          <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                                             {`${shifts.name} 
                                                               ${moment(
                                                                 shifts.start_time,
@@ -401,8 +418,11 @@ class WeeklyComponent extends React.Component {
                                                                 "hh:mm A"
                                                               )}`}
                                                           </span>
-                                                          <span className="userrole-info">
-                                                            Web Designer -{" "}
+                                                          <span className="userrole-info" style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
+                                                            {roleData?.map((r) => {
+                                                              if (r.id === role)
+                                                                return r.role_name;
+                                                            })} -{" "}
                                                             {`${first_name} ${middle_name} ${last_name}`}
                                                           </span>
                                                         </a>
@@ -466,10 +486,10 @@ class WeeklyComponent extends React.Component {
                                                         <a
                                                           style={{
                                                             border:
-                                                              "2px dashed #1eb53a",
+                                                              "2px dashed #EE6A0B",
                                                           }}
                                                         >
-                                                          <span>
+                                                          <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                                             {`${shifts.name} 
                                                               ${moment(
                                                                 shifts.start_time,
@@ -484,8 +504,11 @@ class WeeklyComponent extends React.Component {
                                                                 "hh:mm A"
                                                               )}`}
                                                           </span>
-                                                          <span className="userrole-info">
-                                                            Web Designer -{" "}
+                                                          <span className="userrole-info" style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
+                                                            {roleData?.map((r) => {
+                                                              if (r.id === role)
+                                                                return r.role_name;
+                                                            })} -{" "}
                                                             {`${first_name} ${middle_name} ${last_name}`}
                                                           </span>
                                                         </a>
@@ -549,10 +572,10 @@ class WeeklyComponent extends React.Component {
                                                         <a
                                                           style={{
                                                             border:
-                                                              "2px dashed #1eb53a",
+                                                              "2px dashed #EE6A0B",
                                                           }}
                                                         >
-                                                          <span>
+                                                          <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                                             {`${shifts.name} 
                                                               ${moment(
                                                                 shifts.start_time,
@@ -567,8 +590,11 @@ class WeeklyComponent extends React.Component {
                                                                 "hh:mm A"
                                                               )}`}
                                                           </span>
-                                                          <span className="userrole-info">
-                                                            Web Designer -{" "}
+                                                          <span className="userrole-info" style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
+                                                            {roleData?.map((r) => {
+                                                              if (r.id === role)
+                                                                return r.role_name;
+                                                            })} -{" "}
                                                             {`${first_name} ${middle_name} ${last_name}`}
                                                           </span>
                                                         </a>
@@ -632,10 +658,10 @@ class WeeklyComponent extends React.Component {
                                                         <a
                                                           style={{
                                                             border:
-                                                              "2px dashed #1eb53a",
+                                                              "2px dashed #EE6A0B",
                                                           }}
                                                         >
-                                                          <span>
+                                                          <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                                             {`${shifts.name} 
                                                               ${moment(
                                                                 shifts.start_time,
@@ -650,8 +676,11 @@ class WeeklyComponent extends React.Component {
                                                                 "hh:mm A"
                                                               )}`}
                                                           </span>
-                                                          <span className="userrole-info">
-                                                            Web Designer -{" "}
+                                                          <span className="userrole-info" style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
+                                                            {roleData?.map((r) => {
+                                                              if (r.id === role)
+                                                                return r.role_name;
+                                                            })} -{" "}
                                                             {`${first_name} ${middle_name} ${last_name}`}
                                                           </span>
                                                         </a>
@@ -715,10 +744,10 @@ class WeeklyComponent extends React.Component {
                                                         <a
                                                           style={{
                                                             border:
-                                                              "2px dashed #1eb53a",
+                                                              "2px dashed #EE6A0B",
                                                           }}
                                                         >
-                                                          <span>
+                                                          <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                                             {`${shifts.name} 
                                                               ${moment(
                                                                 shifts.start_time,
@@ -733,8 +762,11 @@ class WeeklyComponent extends React.Component {
                                                                 "hh:mm A"
                                                               )}`}
                                                           </span>
-                                                          <span className="userrole-info">
-                                                            Web Designer -{" "}
+                                                          <span className="userrole-info" style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
+                                                            {roleData?.map((r) => {
+                                                              if (r.id === role)
+                                                                return r.role_name;
+                                                            })} -{" "}
                                                             {`${first_name} ${middle_name} ${last_name}`}
                                                           </span>
                                                         </a>

@@ -18,6 +18,7 @@ import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const Gp = () => {
   const { gPracticeData, isGPracticeDataLoading } = useGpracticeFetching();
@@ -76,6 +77,8 @@ const Gp = () => {
     setGlobalState("deleteGpracticeModal", true);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   const columns = [
     {
       title: "#",
@@ -88,21 +91,21 @@ const Gp = () => {
       title: "Name",
       dataIndex: "gp_practice_name",
       render: (text, record, index) => {
-        return <React.Fragment>{highlightSearchQuery(text, searchQuery)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Phone",
       dataIndex: "gp_practice_phone_number",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
       title: "Email",
       dataIndex: "gp_practice_email",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
@@ -113,9 +116,9 @@ const Gp = () => {
         if(gp_practice_website.includes("https://") || 
             gp_practice_website.includes("http://")
         ) {
-          return <a href={gp_practice_website} target="_blank">{gp_practice_website}</a>;
+          return <TableDiv isDarkMode={isDarkMode}><a href={gp_practice_website} target="_blank">{gp_practice_website}</a></TableDiv>;
         } else {
-          return <a href={"https://" + gp_practice_website} target="_blank">{"https://" + gp_practice_website}</a>;
+          return <TableDiv isDarkMode={isDarkMode}><a href={"https://" + gp_practice_website} target="_blank">{"https://" + gp_practice_website}</a></TableDiv>;
         }
       },
     },
@@ -123,14 +126,14 @@ const Gp = () => {
       title: "Address",
       dataIndex: "gp_practice_address",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
       title: "Post Code",
       dataIndex: "gp_practice_postcode",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
@@ -141,7 +144,7 @@ const Gp = () => {
         const matchedGp = residentGpTypeData?.find((r) => r.id === gp_practice_type);
         if (matchedGp) {
           return (
-            <React.Fragment>{`${matchedGp.gp_type_name}`}</React.Fragment>
+            <TableDiv isDarkMode={isDarkMode}>{`${matchedGp.gp_type_name}`}</TableDiv>
           );
         } else {
           return null; // or return a default value if no match is found
@@ -153,7 +156,7 @@ const Gp = () => {
       dataIndex: "gp_practice_description",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -190,7 +193,7 @@ const Gp = () => {
       <div className="page-wrapper">
         <Helmet>
           <title>Resident Gp - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Gp page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -198,12 +201,10 @@ const Gp = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Gpractice</h3>
+                <h3 className="text-4xl text-orange-500">Gpractice</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Gpractice</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Gpractice</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">

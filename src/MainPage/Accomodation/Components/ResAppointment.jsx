@@ -9,6 +9,8 @@ import { useResidentAppointmentFetching, useResidentFetching } from '../../../ut
 import moment from "moment";
 import { Popup, Segment  } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { useGlobalState } from '../../../context/GlobalState';
+
 
 const ResAppointment = ({ 
   houseId,
@@ -16,6 +18,8 @@ const ResAppointment = ({
 }) => {
   const { residentAppointmentData } = useResidentAppointmentFetching();
   const { residentData } = useResidentFetching();
+
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   /**
  * Resident Selection and State Management
@@ -130,6 +134,7 @@ useEffect(() => {
     const time = moment(event.start, "HH:mm").format("hh:mm A")
     return (
       <Popup
+        style={{ backgroundColor: 'transparent' }}
         inline
         hoverable
         position="bottom left"
@@ -139,12 +144,12 @@ useEffect(() => {
         }}
         content={
           <Segment.Group>
-                <Segment style={{ width: "250px" }}>
+                <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                   <div className="ui column relaxed divided grid">
                     <div className="column">
-                      <h4>{event.title}</h4>
+                      <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{event.title}</h4>
                       <div className="ui link list">
-                        <a className="item">
+                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                           <h2 className="table-avatar">
                             <Link
                               to="#"
@@ -165,8 +170,8 @@ useEffect(() => {
                             </Link>
                           </h2>
                         </a>
-                        <a className="item">{`Time: ${time}`}</a>
-                        <a className="item">{`Des: ${description}`}</a>
+                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Time: ${time}`}</a>
+                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Des: ${description}`}</a>
                       </div>
                     </div>
                   </div>
@@ -174,10 +179,8 @@ useEffect(() => {
           </Segment.Group>
         }
         trigger={
-            <div>
-              <span className='event-time'>{time}</span>
+            <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
               <img className='event-img' src={photo} alt='resident_photo' title={name} />
-              <span className='event-title'>{event.title}</span>
             </div>
         }
       />

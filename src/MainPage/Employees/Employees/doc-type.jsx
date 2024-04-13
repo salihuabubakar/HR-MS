@@ -11,6 +11,7 @@ import AddEmpDocTypeModal from '../../../_components/modelbox/AddEmpDocTypeModal
 import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 import PopUpText from '../../../_components/modelbox/PopUpText';
+import { TableDiv } from '../../../_components/modelbox/styles';
 
 const DocType = ({
   employeeDocType,
@@ -38,6 +39,7 @@ const DocType = ({
   const [deleteEmployeeDocumentTypeModal] = useGlobalState("deleteEmployeeDocumentTypeModal");
   const [indexToEdit, setIndexToEdit] = useState();
   const [getEmpDocTypeId, setGetEmpDocTypeId] = useState();
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   useEffect(() => {
     if (!showEmployeeDocumentTypeModal) {
@@ -75,13 +77,16 @@ const DocType = ({
     },
     {
       title: "Type",
-      dataIndex: "document_type",
+      render: (text, record, index) => {
+        const { document_type } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{document_type}</TableDiv>;
+      },
     },
     {
       title: "Required",
       dataIndex: "required",
       render: (text, record, index) => {
-        return <React.Fragment>{text === true ? "True" : "False"}</React.Fragment>
+        return <TableDiv isDarkMode={isDarkMode}>{text === true ? "True" : "False"}</TableDiv>
       },
     },
     {
@@ -89,7 +94,7 @@ const DocType = ({
       dataIndex: "description",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -127,7 +132,7 @@ const DocType = ({
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Document Type</h3>
+              <h3 className="text-2xl text-orange-500">Document Type</h3>
               <span style={{ color: "red", fontSize: "0.7rem" }}>
                 {employeeDocumentTypeError?.length > 0 && (
                   <>

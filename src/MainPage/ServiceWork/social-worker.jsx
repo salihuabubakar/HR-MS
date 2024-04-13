@@ -16,6 +16,7 @@ import "./style.css";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const socialworker = () => {
   const { socialWorkerData, socialWorkerLoading } = useSocialWorkerFetching();
@@ -72,6 +73,8 @@ const socialworker = () => {
     setGlobalState("deleteSocialWorkerModal", true);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   const columns = [
     {
       title: "#",
@@ -85,24 +88,36 @@ const socialworker = () => {
       dataIndex: "first_name",
       render: (text, record, index) => {
         const { first_name, middle_name, last_name } = record;
-        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Email",
       dataIndex: "email",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Mobile",
       dataIndex: "mobile_number",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Type",
       dataIndex: "social_worker_type",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Role",
       dataIndex: "social_worker_role",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Borough",
@@ -113,7 +128,7 @@ const socialworker = () => {
           (b) => b.id === borough
         );
         if (matchedBorough) {
-          return <React.Fragment>{matchedBorough.borough_name}</React.Fragment>;
+          return <TableDiv isDarkMode={isDarkMode}>{matchedBorough.borough_name}</TableDiv>;
         } else {
           return null; // or return a default value if no match is found
         }
@@ -156,7 +171,7 @@ const socialworker = () => {
       <div className="page-wrapper">
         <Helmet>
           <title>Social Worker - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Resident Social worker page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -164,12 +179,10 @@ const socialworker = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Social Worker</h3>
+                <h3 className="text-4xl text-orange-500">Social Worker</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Social Worker</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Social Worker</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">

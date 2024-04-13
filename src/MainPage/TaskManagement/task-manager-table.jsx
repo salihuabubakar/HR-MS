@@ -16,6 +16,7 @@ import { useTaskFetching, useDataFetching } from "../../utils/employeeCustomFetc
 import SearchComponent from "../../_components/searchComponent";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const TaskManagerTable = () => {
   const { taskData, isTaskLoading } = useTaskFetching();
@@ -62,6 +63,8 @@ const TaskManagerTable = () => {
   const [indexToEdit, setIndexToEdit] = useState();
   const [taskId, setTaskId] = useState("");
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   const handleTaskEdit = (id, index) => {
     setTaskId(id);
     setIndexToEdit((currentPage - 1) * itemsPerPage + index);
@@ -105,7 +108,7 @@ const TaskManagerTable = () => {
                 state: { id: id, index: currentIndex(index) },
               }}
             >
-              {highlightSearchQuery(name === formattedName ? name : formattedName, searchQuery)}
+              {highlightSearchQuery(name === formattedName ? name : formattedName, searchQuery, isDarkMode)}
             </Link>
           </React.Fragment>
         );
@@ -228,6 +231,9 @@ const TaskManagerTable = () => {
     {
       title: "Task Duration",
       dataIndex: "task_duration",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     // {
     //   title: "Task Type",
@@ -424,12 +430,10 @@ const TaskManagerTable = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Task Management</h3>
+                <h3 className="text-4xl text-orange-500">Task Management</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Task Manager</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Task Manager</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
