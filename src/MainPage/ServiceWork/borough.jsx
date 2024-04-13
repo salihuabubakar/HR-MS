@@ -17,6 +17,7 @@ import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const borough = () => {
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
@@ -72,6 +73,8 @@ const handleDeleteBorough = (id) => {
   setGlobalState("deleteBoroughModal", true);
 };
 
+const [isDarkMode] = useGlobalState("isDarkMode"); 
+
   const columns = [
     {
       title: "#",
@@ -84,55 +87,79 @@ const handleDeleteBorough = (id) => {
       title: "Name",
       dataIndex: "borough_name",
       render: (text, record, index) => {
-        return <React.Fragment>{highlightSearchQuery(text, searchQuery)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Team",
       dataIndex: "borough_team",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
       title: "Street",
       dataIndex: "borough_street",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "City",
       dataIndex: "borough_city",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
 
     {
       title: "Post Code",
       dataIndex: "borough_postcode",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Contact Name",
       dataIndex: "contact_name",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Contact Email",
       dataIndex: "contact_email",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Contact Position",
       dataIndex: "contact_position",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Contact Mobile",
       dataIndex: "borough_phone_number",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Out Of Hours No",
       dataIndex: "Out_of_hours_number",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Description",
       dataIndex: "borough_description",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -169,7 +196,7 @@ const handleDeleteBorough = (id) => {
       <div className="page-wrapper">
         <Helmet>
           <title>Borough - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Borough page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -177,12 +204,10 @@ const handleDeleteBorough = (id) => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Borough</h3>
+                <h3 className="text-4xl text-orange-500">Borough</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Borough</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Borough</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">

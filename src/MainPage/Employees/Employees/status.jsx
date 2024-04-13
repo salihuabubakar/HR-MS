@@ -22,6 +22,7 @@ import PopUpText from "../../../_components/modelbox/PopUpText";
 import { useSearch } from "../../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../../_components/searchComponent";
 import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
+import { TableDiv } from "../../../_components/modelbox/styles";
 
 const Status = () => {
   const { statusData, isStatusDataLoading } = useStatusFetching();
@@ -79,6 +80,8 @@ const handleDeleteStatus = (id) => {
     setGlobalState("statusError", "");
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   const columns = [
     {
       title: "#",
@@ -94,7 +97,7 @@ const handleDeleteStatus = (id) => {
         const { employee } = record;
         const matchedEmployee = data?.find((e) => e.id === employee);
         if (matchedEmployee) {
-          return <React.Fragment>{highlightSearchQuery(`${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`, searchQuery)}</React.Fragment>;
+          return <TableDiv isDarkMode={isDarkMode}>{highlightSearchQuery(`${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`, searchQuery, isDarkMode)}</TableDiv>
         } else {
           return null; // or return a default value if no match is found
         }
@@ -102,30 +105,26 @@ const handleDeleteStatus = (id) => {
     },
     {
       title: "Status",
-      dataIndex: "statu",
+      dataIndex: "status",
       render: (text, record, index) => {
         const { status } = record;
-        return (
-          <React.Fragment>
-            <h2 className="table-avatar">
-              <Link to="#" onClick={(e) => e.preventDefault()}>
-                {status}
-              </Link>
-            </h2>
-          </React.Fragment>
-        );
+        return <TableDiv isDarkMode={isDarkMode}>{status}</TableDiv>;
       },
     },
     {
       title: "Authorising Mananger",
       dataIndex: "authorising_manager",
+      render: (text, record, index) => {
+        const { authorising_manager } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{authorising_manager}</TableDiv>;
+      },
     },
     {
       title: "Comment",
       dataIndex: "comments",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -136,7 +135,7 @@ const handleDeleteStatus = (id) => {
       title: "Start Date",
       dataIndex: "start_date",
       render: (text, record, index) => {
-        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(text).format("DD MMM YYYY")}</TableDiv>;
       },
     },
 
@@ -144,7 +143,7 @@ const handleDeleteStatus = (id) => {
       title: "End Date",
       dataIndex: "end_date",
       render: (text, record, index) => {
-        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(text).format("DD MMM YYYY")}</TableDiv>;
       },
     },
     {
@@ -185,12 +184,10 @@ const handleDeleteStatus = (id) => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Status</h3>
+                <h3 className="text-4xl text-orange-500">Status</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Status</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Status</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">

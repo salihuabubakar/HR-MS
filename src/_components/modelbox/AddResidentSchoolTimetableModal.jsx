@@ -18,7 +18,7 @@ const AddResidentSchoolReportModal = ({
   const { schoolData } = useSchoolFetching();
 
   const [selectedResidentSchoolTimetable] = useGlobalState(
-    "selectedResidentSchoolReport"
+    "selectedResidentSchoolTimetable"
   );
 
 

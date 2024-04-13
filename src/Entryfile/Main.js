@@ -27,6 +27,8 @@ import '../assets/js/multiselect.min.js';
 import '../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css';
 import '../assets/css/bootstrap-datetimepicker.min.css';
 import '../assets/css/style.css';
+import './index.css';
+
 
 // Ensure Popper is available globally for Bootstrap
 window.Popper = require('popper.js').default;

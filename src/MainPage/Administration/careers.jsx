@@ -17,6 +17,7 @@ import moment from "moment";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const Careers = () => {
   const { careerData, isCareerLoading } = useCareerFetching();
@@ -106,6 +107,8 @@ const paginationSettings = {
     setMenu(!menu);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   const columns = [
     {
       title: "#",
@@ -123,7 +126,7 @@ const paginationSettings = {
             <Link
               to={`/app/administration/career-details/${id}`}
             >
-              { highlightSearchQuery(title, searchQuery) }
+              { highlightSearchQuery(title, searchQuery, isDarkMode) }
             </Link>
           </React.Fragment>
         );
@@ -133,13 +136,16 @@ const paginationSettings = {
     {
       title: "Job Type",
       dataIndex: "job_type",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Date Posted",
       dataIndex: "date_posted",
       render: (text, record, index) => {
         const { date_posted } = record;
-        return <React.Fragment>{moment(date_posted).format("DD MMM YYYY")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(date_posted).format("DD MMM YYYY")}</TableDiv>;
       },
     },
     {
@@ -147,24 +153,36 @@ const paginationSettings = {
       dataIndex: "application_deadline",
       render: (text, record, index) => {
         const { application_deadline } = record;
-        return <React.Fragment>{moment(application_deadline).format("DD MMM YYYY")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(application_deadline).format("DD MMM YYYY")}</TableDiv>;
       },
     },
     {
       title: "Salary Range",
       dataIndex: "salary_range",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Years of experience",
       dataIndex: "experience_years",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Hours",
       dataIndex: "hours",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Vacancy",
       dataIndex: "vacancy",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Status",
@@ -207,7 +225,7 @@ const paginationSettings = {
         <div className="page-wrapper">
           <Helmet>
             <title>Careers - Peepal Tree HRMS</title>
-            <meta name="description" content="Login page" />
+            <meta name="description" content="Careers page" />
           </Helmet>
           {/* Page Content */}
           <div className="content container-fluid">
@@ -215,13 +233,11 @@ const paginationSettings = {
             <div className="page-header">
               <div className="row">
                 <div className="col">
-                  <h3 className="page-title">Careers</h3>
+                  <h3 className="text-4xl text-orange-500">Careers</h3>
                   <ul className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <Link to="/app/main/dashboard">Dashboard</Link>
-                    </li>
-                    <li className="breadcrumb-item active">Careers</li>
-                  </ul>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Careers</li>
+                </ul>
                 </div>
                 <div className="col-auto float-end ml-auto">
                   <a

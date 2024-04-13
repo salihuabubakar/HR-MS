@@ -11,6 +11,7 @@ import { setGlobalState, useGlobalState } from "../../../context/GlobalState";
 import AddDepartment from "../../../_components/modelbox/AddDepartment";
 import DeleteModal from "../../../_components/modelbox/DeleteModal";
 import PopUpText from "../../../_components/modelbox/PopUpText";
+import { TableDiv } from "../../../_components/modelbox/styles";
 
 const Department = ({
   departmentData,
@@ -38,6 +39,7 @@ const Department = ({
   const [deleteDeptModal] = useGlobalState("deleteDeptModal");
   const [indexToEdit, setIndexToEdit] = useState();
   const [deptIdToEdit, setDeptIdToEdit] = useState("");
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   useEffect(() => {
     if (!showDeptModal) {
@@ -77,14 +79,17 @@ const Department = ({
     },
     {
       title: "Department",
-      dataIndex: "department_name",
+      render: (text, record, index) => {
+        const { department_name } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{department_name}</TableDiv>;
+      },
     },
     {
       title: "Description",
       dataIndex: "description",
       render: (text, record, index) => {
         if(text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -121,7 +126,7 @@ const Department = ({
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Department</h3>
+              <h3 className="text-2xl text-orange-500">Department</h3>
               <span style={{ color: "red", fontSize: "0.7rem" }}>
                 {departmentError?.length > 0 && (
                   <>

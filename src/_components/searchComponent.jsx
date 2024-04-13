@@ -31,13 +31,13 @@ const SearchComponent = ({ searchQuery, setSearchQuery, searchType }) => {
   return (
     <div className="row filter-row">
       <div className="col-sm-6 col-md-4">
-        <div className="form-group">
+        <div className="form-group shadow-md rounded-md">
           {/* Search input field */}
           <input
             value={searchQuery}
             onChange={handleChange}
             type="text"
-            className="form-control"
+            className="form-control searInput"
             placeholder={`Search for ${searchType}`}
           />
           {/* Clear button, visible when there is a search query */}

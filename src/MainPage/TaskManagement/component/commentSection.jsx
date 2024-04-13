@@ -34,15 +34,15 @@ const CommentSection = ({ task, selecetedTaskId }) => {
     setGlobalState("taskChatError", "");
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
-    <Card className="card">
-      <div className="fixed-header">
+    <Card className="card shadow-md bg-transparent">
+      {/* <div className="fixed-header bg-transparent">
         <div className="navbar">
           <div className="user-details me-auto">
             <div className="user-info float-start">
-              <Link onClick={(e) => e.preventDefault()}>
-                <span>Comment Section</span>{" "}
-              </Link>
+              <span style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Comment Section</span>
               <span style={{ color: "red", fontSize: "0.7rem" }}>
                 {taskChatError?.length > 0 && (
                   <>
@@ -65,14 +65,14 @@ const CommentSection = ({ task, selecetedTaskId }) => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="chat-footer">
+      </div> */}
+      <div className="chat-footer bg-transparent">
         <div className="message-bar">
           <div className="message-inner">
             <div className="message-area">
               <form onSubmit={handleCommentSubmit} className="input-group">
                 <textarea
-                  className="form-control"
+                  className="form-control bg-transparent border shadow-md"
                   placeholder="Type message..."
                   id="comment"
                   value={message}
@@ -80,8 +80,11 @@ const CommentSection = ({ task, selecetedTaskId }) => {
                   name="comment"
                 />
                 <span className="input-group-append">
-                  <button className="btn btn-custom" type="submit">
-                    <i className="fa fa-send" />
+                  <button className="btn" type="submit">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M21.0477 3.05293C18.8697 0.707363 2.48648 6.4532 2.50001 8.551C2.51535 10.9299 8.89809 11.6617 10.6672 12.1581C11.7311 12.4565 12.016 12.7625 12.2613 13.8781C13.3723 18.9305 13.9301 21.4435 15.2014 21.4996C17.2278 21.5892 23.1733 5.342 21.0477 3.05293Z" stroke={`${isDarkMode ? '#898888' : '#EE6A0B'}`} stroke-width="1.5"/>
+                      <path d="M11.5 12.5L15 9" stroke={`${isDarkMode ? '#898888' : '#EE6A0B'}`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                   </button>
                 </span>
               </form>
@@ -144,17 +147,17 @@ const CommentSection = ({ task, selecetedTaskId }) => {
                             </div>
                             <div className="chat-body">
                               <div className="chat-bubble">
-                                <div className="chat-content">
-                                  <span className="chat-time">
+                                <div className="chat-content bg-transparent">
+                                  <span style={{color: "#625F5C"}} className="chat-time">
                                     {sender &&
                                       ` ${currentSender?.first_name}
                                         ${currentSender?.middle_name}
                                         ${currentSender?.last_name}
                                     `}
                                   </span>
-                                  <p>{message}</p>
+                                  <p style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>{message}</p>
                                   <div style={{ display: "flex" }}>
-                                    <span className="chat-time">{timeAgo}</span>
+                                    <span style={{color: "#625F5C"}} className="chat-time">{timeAgo}</span>
                                   </div>
                                 </div>
                               </div>

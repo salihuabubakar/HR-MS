@@ -70,3 +70,24 @@ export const CheckBox = styled.div`
     color: #ffffff;
   }
 `;
+
+export const TableDiv = styled.div`
+  color: ${props => (props.isDarkMode ? '#898888' : '#333333')};
+`;
+
+export const ResAppointmentDiv = styled.div`
+  tbody, td, tfoot, th, thead, tr {
+    background-color: transparent;
+  }
+  .fc-col-header-cell, .fc-multimonth-daygrid-table  {
+    background-color: ${props => (props.isDarkMode ? '#110C08' : 'white')} !important;
+  }
+
+  .fc-toolbar-title, .fc-col-header-cell-cushion {
+    color: ${props => (props.isDarkMode ? '#898888' : '#333333')} !important;
+  }
+
+  .fc .fc-timegrid-axis-cushion, .fc-daygrid-day-number, .fc-multimonth-title {
+    color: ${props => (props.isDarkMode ? '#898888' : '#333333')} !important;
+  }
+`;

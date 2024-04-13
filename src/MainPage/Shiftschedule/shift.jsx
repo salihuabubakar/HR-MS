@@ -17,6 +17,7 @@ import moment from "moment";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const shift = () => {
   const { shiftData, isShiftLoading } = useShiftFetching();
@@ -74,14 +75,7 @@ const shift = () => {
     setMenu(!menu);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   const columns = [
     {
@@ -94,7 +88,7 @@ const shift = () => {
       title: "Name",
       render: (text, record, index) => {
         const { name } = record;
-        return <React.Fragment>{highlightSearchQuery(name, searchQuery)}</React.Fragment>
+        return <React.Fragment>{highlightSearchQuery(name, searchQuery, isDarkMode)}</React.Fragment>
       },
     },
 
@@ -103,7 +97,7 @@ const shift = () => {
       dataIndex: "start_time",
       render: (text, record, index) => {
         const { start_time } = record;
-        return <React.Fragment>{moment(start_time, "HH:mm").format("hh:mm A")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(start_time, "HH:mm").format("hh:mm A")}</TableDiv>;
       },
     },
     {
@@ -111,21 +105,21 @@ const shift = () => {
       dataIndex: "end_time",
       render: (text, record, index) => {
         const { end_time } = record;
-        return <React.Fragment>{moment(end_time, "HH:mm").format("hh:mm A")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(end_time, "HH:mm").format("hh:mm A")}</TableDiv>;
       },
     },
     {
       title: "Hours",
       dataIndex: "hours",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
       title: "Status",
       dataIndex: "status",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
@@ -165,13 +159,11 @@ const shift = () => {
             <div className="page-header">
               <div className="row">
                 <div className="col">
-                  <h3 className="page-title">Shifts</h3>
+                  <h3 className="text-4xl text-orange-500">Shifts</h3>
                   <ul className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <Link to="/app/main/dashboard">Dashboard</Link>
-                    </li>
-                    <li className="breadcrumb-item active">Shifts</li>
-                  </ul>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Shifts</li>
+                </ul>
                 </div>
                 <div className="col-auto float-end ml-auto">
                   <a

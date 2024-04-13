@@ -98,7 +98,7 @@ const onSubmit = (data) => {
     localStorage.setItem('username', username);
 
     // Navigate to the dashboard, by opening a new tab
-    window.open('/app/main/dashboard', '_blank');
+    window.open('/app/main/dashboard');
     // Close the previous tab on successful login
     window.close();
   } else {
@@ -123,16 +123,14 @@ const onSubmit = (data) => {
       <div className="account-content">
         <div className="container">
           {/* Account Logo */}
-          <div className="account-logo">
-            <Link to="">
-              <img
-                src={
-                  HeaderLogo
-                }
-                style={{ width: "25%" }}
-                alt=""
-              />
-            </Link>
+          <div className="flex items-center justify-center">
+            <img
+              src={
+                HeaderLogo
+              }
+              style={{ width: "25%" }}
+              alt=""
+            />
           </div>
           {/* /Account Logo */}
           <div className="account-box">

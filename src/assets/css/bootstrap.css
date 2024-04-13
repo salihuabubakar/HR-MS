@@ -1975,6 +1975,9 @@ progress {
 .table > tbody {
   vertical-align: inherit;
 }
+.table tbody  tr{
+  background-color: transparent !important;
+}
 .table > thead {
   vertical-align: bottom;
 }
@@ -2005,7 +2008,7 @@ progress {
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-  --bs-table-accent-bg: var(--bs-table-striped-bg);
+  background-color: var(--bs-table-accent-bg);
   color: var(--bs-table-striped-color);
 }
 

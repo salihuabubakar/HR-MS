@@ -18,6 +18,8 @@ import {
   useHouseFetching 
 } from "../../../utils/employeeCustomFetchHook";
 import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
+import { TableDiv } from "../../../_components/modelbox/styles";
+import { useGlobalState } from "../../../context/GlobalState";
 
 const Contacts = () => {
   const { data: allEmployee, isLoading } = useDataFetching();
@@ -107,6 +109,8 @@ const paginationSettings = (dataLength) => {
     setMenu(!menu);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   let actualIndex;
   const employeeColumns = [
     {
@@ -120,16 +124,22 @@ const paginationSettings = (dataLength) => {
       title: "Name",
       render: (text, record, index) => {
         const { first_name, middle_name, last_name } = record;
-        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, empSearch)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, empSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Phone Number",
-      dataIndex: "phone_number",
+      render: (text, record, index) => {
+        const { phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{phone_number}</TableDiv>;
+      },
     },
   ];
 
@@ -145,16 +155,22 @@ const paginationSettings = (dataLength) => {
       title: "Name",
       render: (text, record, index) => {
         const { first_name, middle_name, last_name } = record;
-        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, resSearch)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, resSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Phone Number",
-      dataIndex: "phone_number",
+      render: (text, record, index) => {
+        const { phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{phone_number}</TableDiv>;
+      },
     },
   ];
 
@@ -170,16 +186,22 @@ const paginationSettings = (dataLength) => {
       title: "Name",
       render: (text, record, index) => {
         const { first_name, middle_name, last_name } = record;
-        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, socSearch)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, socSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Mobile",
-      dataIndex: "mobile_number",
+      render: (text, record, index) => {
+        const { phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{phone_number}</TableDiv>;
+      },
     },
   ];
 
@@ -195,16 +217,22 @@ const paginationSettings = (dataLength) => {
       title: "House name",
       render: (text, record, index) => {
         const { name} = record;
-        return <React.Fragment>{highlightSearchQuery(name, houSearch)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(name, houSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Mobile",
-      dataIndex: "mobile",
+      render: (text, record, index) => {
+        const { mobile } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{mobile}</TableDiv>;
+      },
     },
   ];
 
@@ -220,20 +248,29 @@ const paginationSettings = (dataLength) => {
       title: "Organisation",
       render: (text, record, index) => {
         const { organisation_name} = record;
-        return <React.Fragment>{highlightSearchQuery(organisation_name, orgSearch)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(organisation_name, orgSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Mobile",
-      dataIndex: "mobile",
+      render: (text, record, index) => {
+        const { mobile } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{mobile}</TableDiv>;
+      },
     },
     {
       title: "Office Phone",
-      dataIndex: "office_phone",
+      render: (text, record, index) => {
+        const { office_phone } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{office_phone}</TableDiv>;
+      },
     }
   ];
 
@@ -249,20 +286,29 @@ const paginationSettings = (dataLength) => {
       title: "Name",
       dataIndex: "borough_name",
       render: (text, record, index) => {
-        return <React.Fragment>{highlightSearchQuery(text, borSearch)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, borSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Contact Name",
-      dataIndex: "contact_name",
+      render: (text, record, index) => {
+        const { contact_name } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{contact_name}</TableDiv>;
+      },
     },
     {
       title: "Contact Email",
-      dataIndex: "contact_email",
+      render: (text, record, index) => {
+        const { contact_email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{contact_email}</TableDiv>;
+      },
     },
     {
       title: "Contact Mobile",
-      dataIndex: "borough_phone_number",
+      render: (text, record, index) => {
+        const { borough_phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{borough_phone_number}</TableDiv>;
+      },
     },
   ];
 
@@ -273,7 +319,7 @@ const paginationSettings = (dataLength) => {
       <div className="page-wrapper">
         <Helmet>
           <title>Contact - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Contact page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -281,13 +327,11 @@ const paginationSettings = (dataLength) => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Contact</h3>
+                <h3 className="text-4xl text-orange-500">Contact</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Contact</li>
-                </ul>
+                      <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                      <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Contact</li>
+                    </ul>
               </div>
             </div>
           </div>
@@ -339,7 +383,7 @@ const paginationSettings = (dataLength) => {
           <div className="row">
             <div className="col-md-4">
               <div className="contact-cat">             
-                <div className="roles-menu">
+                <div style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="roles-menu border rounded-md shadow-md">
                   <ul>
                     <li
                       className={`${tab == `employee` ? `active` : null}`}

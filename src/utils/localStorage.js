@@ -375,3 +375,33 @@ export const savedPersonalInfoReducer = (state, { type, payload }) => {
       throw new Error();
   }
 };
+
+
+export const allEmployeesSample = [
+  {
+    "id": 1,
+    "uuid": "d4da9e2c-a484-4730-8ec2-bd1eaeafa434",
+    "employee_number": "61080",
+    "first_name": "Amanda",
+    "middle_name": "Jessica",
+    "last_name": "Santana",
+    "date_of_birth": "1951-12-14",
+    "ni_number": "924397867",
+    "gender": "Male",
+    "marital_status": "Widowed",
+    "nationality": "Tajikistan",
+    "phone_number": "443-848-8924",
+    "email": "maria17@example.org",
+    "hire_date": "2020-11-24",
+    "salary": "84594.40",
+    "photo": "http://peepaltree-4a1c3cfe9b46.herokuapp.com/media/employees/ 02fe99ea-d5ca-4e9b-bbf8-453ddd62f64b.jpg",
+    "created_at": "2023-07-17T21:25:45.785224Z",
+    "updated_at": null,
+    "contract_letter": null,
+    "role": 2,
+    "department": 3,
+    "organisation": 1,
+    "created_by": 2,
+    "last_updated_by": 2
+  },
+]

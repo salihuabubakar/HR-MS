@@ -34,7 +34,16 @@
 .removeBtn:hover {
   background-color: #c0392b;
 }
+div > .searInput {
+  background-color: transparent;
+  caret-color: #F97316;
+  color: #F97316;
+}
 
+div > .searInput:focus {
+  background-color: transparent;
+  color: #F97316;
+}
 /* Style the clear input button */
 .form-group {
   position: relative;

@@ -1,17 +1,28 @@
 .ant-table {
     font-size: .9375rem !important;
     color: rgb(51, 51, 51) !important;
+    background-color: transparent !important;
 }
 .ant-table-body{
-  overflow-x: auto !important; 
+  overflow-x: auto !important;
+}
+.ant-table-container {
+    border-right: 1px solid #f0f0f0 !important; 
 }
 .ant-table-thead > tr > th {
-  background-color: rgba(255, 255, 255, 0.85) !important;
+  background-color: transparent !important;
   border-bottom: 2px solid #dee2e6 !important;
+  color: #F97316 !important;
 }
 .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > thead > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table > thead > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-body > table > thead > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > tbody > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table > tbody > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-body > table > tbody > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > tfoot > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table > tfoot > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-body > table > tfoot > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > tfoot > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table > tfoot > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-body > table > tfoot > tr > td {
     border-right: 0px solid #f0f0f0 !important;
     border-top: 1px solid #dee2e6 !important;
+}
+
+.ant-table-tbody > tr.ant-table-row:hover > td,
+.ant-table-tbody > tr > td.ant-table-cell-row-hover {
+  background: transparent;
+  box-shadow: 0 0 8px #eae3e3;
 }
 /* .ant-pagination-options-size-changer.ant-select {
     display: none !important;
@@ -51,6 +62,10 @@ td.ant-table-column-sort {
 }
 .ant-table.ant-table tr  {
     box-shadow: 0 0 3px #e5e5e5;
+}
+
+.ant-table >  td:hover {
+    color: red;
 }
 .ant-pagination {
     margin-top: 20px !important;

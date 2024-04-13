@@ -73,6 +73,8 @@ const AllEmployees = () => {
     setGlobalState("employeeError", "");
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode", isDarkMode);
+
   return (
     <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
       <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -90,12 +92,10 @@ const AllEmployees = () => {
               <>
                 <div className="row align-items-center">
                   <div className="col">
-                    <h3 className="page-title">Employee</h3>
+                    <h3 className="text-4xl text-orange-500">Employee</h3>
                     <ul className="breadcrumb">
-                      <li className="breadcrumb-item">
-                        <Link to="/app/main/dashboard">Dashboard</Link>
-                      </li>
-                      <li className="breadcrumb-item active">Employee</li>
+                      <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                      <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Employee</li>
                     </ul>
                   </div>
                   <div className="col-auto float-end ml-auto">

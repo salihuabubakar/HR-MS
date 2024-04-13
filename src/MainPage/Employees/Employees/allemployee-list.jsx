@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import "antd/dist/antd.css";
@@ -8,6 +8,8 @@ import {
   useRoleFetching,
 } from "../../../utils/employeeCustomFetchHook";
 import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
+import { useGlobalState } from "../../../context/GlobalState";
+import { TableDiv } from "../../../_components/modelbox/styles";
 const AllEmployeeList = ({
   DefaultImage,
   handleEditEmployee,
@@ -20,6 +22,7 @@ const AllEmployeeList = ({
   searchQuery,
 }) => {
   const { roleData } = useRoleFetching();
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   /**
  * Table Pagination Settings
@@ -89,9 +92,9 @@ const paginationSettings = {
                 <Link
                   to={`/app/employee/profile/${id}`}
                 >
-                  {highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery)}
+                  {highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery, isDarkMode)}
                 </Link>
-                <span style={{ color:  '#8E8E8E'}}>{matchedRole ? matchedRole.role_name : "--"}</span>
+                <span className="text-sm text-[#625F5C]">{matchedRole ? matchedRole.role_name : "--"}</span>
               </div>
             </h5>
           </React.Fragment>
@@ -101,20 +104,26 @@ const paginationSettings = {
     },
     {
       title: "Employee ID",
-      dataIndex: "employee_number",
-      // sorter: (a, b) => a.employee_id.length - b.employee_id.length,
+      render: (text, record, index) => {
+        const { employee_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{employee_number}</TableDiv>;
+      },
     },
 
     {
       title: "Email",
-      dataIndex: "email",
-      // sorter: (a, b) => a.email.length - b.email.length,
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
-
+    
     {
       title: "Mobile",
-      dataIndex: "phone_number",
-      // sorter: (a, b) => a.phone_number?.length - b.phone_number?.length,
+      render: (text, record, index) => {
+        const { phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{phone_number}</TableDiv>;
+      },
     },
     {
       title: "Action",
@@ -151,7 +160,7 @@ const paginationSettings = {
       <div className="col-md-12">
         <div className="table-responsive">
           <Table
-            className="table-striped"
+            className="ant-table"
             pagination={paginationSettings}
             style={{ overflowX: "auto" }}
             columns={columns}

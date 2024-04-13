@@ -44,8 +44,8 @@ const AddTaskAssignment = ({
     selectedTaskAssignmentInfo[indexToEdit]?.manager || ""
   );
 
-  const [Managers_comment, setManagersComment] = useState(
-    selectedTaskAssignmentInfo[indexToEdit]?.Managers_comment || ""
+  const [managers_comment, setManagersComment] = useState(
+    selectedTaskAssignmentInfo[indexToEdit]?.managers_comment || ""
   );
 
   const [employees, setEmployee] = useState(
@@ -89,7 +89,7 @@ const AddTaskAssignment = ({
       resident,
       employees,
       manager,
-      Managers_comment,
+      managers_comment,
       document,
       status,
       task
@@ -389,7 +389,7 @@ const AddTaskAssignment = ({
                             className="form-control floating"
                             name="description"
                             placeholder="Manager's Comment"
-                            value={Managers_comment}
+                            value={managers_comment}
                             onChange={(e) => setManagersComment(e.target.value)}
                             style={{ height: "90px" }}
                           />

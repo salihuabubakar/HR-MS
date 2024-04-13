@@ -20,6 +20,7 @@ import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const documenttype = () => {
   const { residentDocumentTypeData, residentDocumentTypeLoading } = useResidentDocumentTypeFetching();
@@ -81,6 +82,8 @@ const documenttype = () => {
     setGlobalState("deleteResidentDocumentTypeModal", true);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   const columns = [
     {
       title: "#",
@@ -93,14 +96,14 @@ const documenttype = () => {
       title: "Document Type",
       dataIndex: "document_type",
       render: (text, record, index) => {
-        return <React.Fragment>{highlightSearchQuery(text, searchQuery)}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Required",
       dataIndex: "required",
       render: (text, record, index) => {
-        return <React.Fragment>{text ? "True" : "False"}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text ? "True" : "False"}</TableDiv>;
       },
     },
     {
@@ -108,7 +111,7 @@ const documenttype = () => {
       dataIndex: "description",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -151,7 +154,7 @@ const documenttype = () => {
       <div className="page-wrapper">
         <Helmet>
           <title>Resident Document Type - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Resident document-type page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -159,12 +162,10 @@ const documenttype = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Resident Document Type</h3>
+                <h3 className="text-4xl text-orange-500">Resident Document Type</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Resident Document Type</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Resident Document Type</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">

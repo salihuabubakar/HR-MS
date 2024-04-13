@@ -1,6 +1,10 @@
 import { createGlobalState } from "react-hooks-global-state";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
+  //Mode
+  isDarkMode: JSON.parse(localStorage.getItem('darkMode')),
+
+
   //Employee Account
   selectedEmployeeAccount: [],
   employeeError: [],
