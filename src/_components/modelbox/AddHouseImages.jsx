@@ -6,7 +6,7 @@ import {
 } from "./Addemployee.style";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
-import { CheckBox } from "./styles";
+import { RadioBtn } from "./styles";
 
 const AddHouseImages = ({
   house,
@@ -95,11 +95,13 @@ const AddHouseImages = ({
     setImageError("");
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -177,7 +179,7 @@ const AddHouseImages = ({
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">Cover Image</label>
-                          <CheckBox>
+                          <RadioBtn>
                             <input
                               type="checkbox"
                               name="cover_image"
@@ -189,7 +191,7 @@ const AddHouseImages = ({
                             <label htmlFor="cover_image">
                               <span>Cover Image</span>
                             </label>
-                          </CheckBox>
+                          </RadioBtn>
                         </div>
                       </div>
                       <div className="col-sm-12">

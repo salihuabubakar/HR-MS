@@ -53,6 +53,19 @@ export const PopupContainer = styled.div`
     top: 5px;
     padding-bottom: 5%;
   }
+  .custom-modal, .modal-dialog, .modal-content {
+	  background-color: ${props => (props.isDarkMode ? '#110C08' : '#FFFF')};
+    border-radius: 10px;
+  }
+
+  .modal-content {
+    border: 1px solid #fff;
+  }
+
+  .modal-content, .modal-body, .row, div, .form-group > .col-form-label {
+    color: ${props => (props.isDarkMode && "#625F5C" )};
+  }
+  
   .Primary,
   .Secondary {
     border: 1px solid grey;

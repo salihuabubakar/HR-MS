@@ -11,9 +11,10 @@ import {
   useHouseItemsFetching
 } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const AddHouseInspection = ({ dispatchInspection, inspectionIndexToEdit, house, id }) => {
-  const { houseDocumentsData } = useHouseDocumentFetching();
+  const { houseDocumentsData, isHouseDocumentsLoading } = useHouseDocumentFetching();
   const { houseItemData } = useHouseItemsFetching()
   const [selectedInspection] = useGlobalState("selectedInspection");
 
@@ -84,19 +85,6 @@ const [inspected_by, setInspectedBy] = useState(
     setGlobalState("showInspectionModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-  };
-
   const handleStatusChange = (e) => {
     setInspectionStatus(e.target.value);
     setInspectionStatusError("");
@@ -133,11 +121,13 @@ const [inspected_by, setInspectedBy] = useState(
       }));
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -232,6 +222,7 @@ const [inspected_by, setInspectedBy] = useState(
                             defaultValue={getHouseDocumentDefaultValues()}
                             onChange={handleHouseDocuments}
                             isMulti
+                            isLoading={isHouseDocumentsLoading}
                             closeMenuOnSelect={false}
                             options={document}
                             styles={customSelectStyles}

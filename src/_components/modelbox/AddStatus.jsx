@@ -90,18 +90,20 @@ const AddStatus = ({
     setEndDateError("");
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
             >
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">
+                  <h5 className="card-title">
                     {selectedStatus[indexToEdit]?.id
                       ? "Edit Status"
                       : "Add Status"}

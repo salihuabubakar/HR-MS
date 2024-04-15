@@ -9,6 +9,7 @@ import "./style.css";
 import Dropzone from "react-dropzone";
 import { useHouseImageFetching } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
   const { houseImagesData } = useHouseImageFetching();
@@ -82,19 +83,6 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
     setGlobalState("showRoomModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-  };
-
   const handleRoomType = (e) => {
     setRoomType(e.target.value);
     setRoomTypeError("");
@@ -131,11 +119,13 @@ const AddRoom = ({ dispatchRoom, roomIndexToEdit, house, id }) => {
       }));
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">

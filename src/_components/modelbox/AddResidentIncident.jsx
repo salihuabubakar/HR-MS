@@ -11,6 +11,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const AddResidentIncident = ({
   indexToEdit,
@@ -20,7 +21,7 @@ const AddResidentIncident = ({
   const [selectedResidentIncident] = useGlobalState("selectedResidentIncident");
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
-  const { residentDocumentData } = useResidentDocumentFetching();
+  const { residentDocumentData, isResidentDocumentLoading } = useResidentDocumentFetching();
 
 
   const [date_time, setDateTime] = useState(
@@ -83,19 +84,6 @@ const AddResidentIncident = ({
     setGlobalState("showResidentIncidentModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-  };
-
   const handleDateTimeChange = (e) => {
     setDateTime(e.target.value);
     setDateTimeError("");
@@ -133,16 +121,17 @@ const AddResidentIncident = ({
       }));
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">
+                  <h5 className="card-title">
                     {selectedResidentIncident[indexToEdit]?.id ? "Edit Incident" : "Add Incident"}
                   </h5>
                   <button
@@ -217,6 +206,7 @@ const AddResidentIncident = ({
                             defaultValue={getDocumentDefaultValues()}
                             onChange={handleDocumentChange}
                             isMulti
+                            isLoading={isResidentDocumentLoading}
                             closeMenuOnSelect={false}
                             options={document}
                             styles={customSelectStyles}

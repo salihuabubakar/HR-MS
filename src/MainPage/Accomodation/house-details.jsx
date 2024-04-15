@@ -1463,7 +1463,7 @@ const toggleMobileMenu = () => {
                               );
                             }
                           })
-                        : "Ops! No Data"}
+                        : <p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p>}
 				        		  </tbody>
 				        		</table>
 				        	  </div>
@@ -1647,7 +1647,7 @@ const toggleMobileMenu = () => {
                           }
                         })
                       ) : (
-                        <>Ops! No Bill</>
+                        <><p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p></>
                       )}
                     </Wrapper>
                   </div>
@@ -1779,7 +1779,7 @@ const toggleMobileMenu = () => {
                           }
                         })
                       ) : (
-                        <>Ops! No Room in the house</>
+                        <><p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p></>
                       )}
                     </Wrapper>
                   </div>
@@ -1942,7 +1942,7 @@ const toggleMobileMenu = () => {
                             }
                           })
                         ) : (
-                          <></>
+                          <><p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p></>
                         )}
                       </Wrapper>
                     </div>
@@ -2096,7 +2096,7 @@ const toggleMobileMenu = () => {
                           }
                         })
                       ) : (
-                        <>Ops! No house notice available</>
+                        <><p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p></>
                       )}
                     </Wrapper>
                   </div>
@@ -2223,7 +2223,7 @@ const toggleMobileMenu = () => {
                                 );
                               }
                             })
-                          : "Ops! No house item available"}
+                          : <p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p>}
 				        	  	  </tbody>
 				        	  	</table>
 				        	  </div>
@@ -2364,7 +2364,7 @@ const toggleMobileMenu = () => {
                                 );
                               }
                             })
-                          : "Ops! No house inspection available"}
+                          : <p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p>}
 				        	  	  </tbody>
 				        	  	</table>
 				        	  </div>
