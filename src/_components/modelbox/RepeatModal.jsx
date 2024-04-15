@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setGlobalState } from "../../context/GlobalState";
+import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import {
   PopupWrapper,
   PopupOverlay,
@@ -83,11 +83,13 @@ const RepeatModal = ({
     setGlobalState("showAddSchedul", false);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <RepeatModalContainer className="custom-modal" role="dialog">
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">

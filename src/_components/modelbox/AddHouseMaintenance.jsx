@@ -13,9 +13,10 @@ import {
   useOrganisationFetching
 } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, house, id }) => {
-  const { houseDocumentsData } = useHouseDocumentFetching();
+  const { houseDocumentsData, isHouseDocumentsLoading } = useHouseDocumentFetching();
   const { data: allEmployee } = useDataFetching();
   const { houseImagesData } = useHouseImageFetching();
   const filteredhouseImage = houseImagesData?.filter(
@@ -132,19 +133,6 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
     setGlobalState("showMaintenanceModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-  };
-
   const handleCostChange = (e) => {
     setCost(e.target.value);
     setCostError("");
@@ -223,11 +211,13 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
       }));
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -249,7 +239,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="label">
+                          <label className="col-form-label">
                             Cost <span className="text-danger">*</span>
                           </label>
                           <input
@@ -388,6 +378,7 @@ const AddHouseMaintenance = ({ dispatchMaintenance, maintenanceIndexToEdit, hous
                             isMulti
                             closeMenuOnSelect={false}
                             options={document}
+                            isLoading={isHouseDocumentsLoading}
                             styles={customSelectStyles}
                             getOptionValue={(option) => option.id}
                             getOptionLabel={(option) => option.title}

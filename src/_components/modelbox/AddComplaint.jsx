@@ -10,6 +10,7 @@ import {
 } from "../../utils/employeeCustomFetchHook";
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const AddComplaint = ({
   indexToEdit,
@@ -17,7 +18,7 @@ const AddComplaint = ({
   dispatchComplaint,
 }) => {
   const [selectedComplaint] = useGlobalState("selectedComplaint");
-  const { residentDocumentData } = useResidentDocumentFetching();
+  const { residentDocumentData, isResidentDocumentLoading } = useResidentDocumentFetching();
   const { houseData } = useHouseFetching();
 
   const [title, setTitle] = useState(
@@ -109,19 +110,6 @@ const AddComplaint = ({
     setGlobalState("showComplaintModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-  };
-
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
     setTitleError("");
@@ -175,16 +163,17 @@ const AddComplaint = ({
       }));
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">
+                  <h5 className="card-title">
                     {selectedComplaint[indexToEdit]?.id ? "Edit Complaint" : "Add Complaint"}
                   </h5>
                   <button
@@ -288,6 +277,7 @@ const AddComplaint = ({
                             defaultValue={getDocumentDefaultValues()}
                             onChange={handleDocumentChange}
                             isMulti
+                            isLoading={isResidentDocumentLoading}
                             closeMenuOnSelect={false}
                             options={document}
                             styles={customSelectStyles}

@@ -127,13 +127,13 @@ const AddShift = ({
     setHours(0);
   };
 
-
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

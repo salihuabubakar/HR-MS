@@ -7,11 +7,12 @@ import {
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import "./style.css";
 import { useHouseDocumentFetching } from "../../utils/employeeCustomFetchHook";
-import { CheckBox } from "./styles";
+import { RadioBtn } from "./styles";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 import Select from "react-select";
 
 const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
-  const { houseDocumentsData } = useHouseDocumentFetching();
+  const { houseDocumentsData, isHouseDocumentsLoading } = useHouseDocumentFetching();
   const [selectedBill] = useGlobalState("selectedBill");
 
   const [title, setTitle] = useState(
@@ -84,19 +85,6 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
     setGlobalState("showBillModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-  };
-
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
     setTitleError("");
@@ -145,11 +133,13 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
       }));
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -221,6 +211,7 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
                             defaultValue={getHouseDocumentDefaultValues()}
                             onChange={handleHouseDocuments}
                             isMulti
+                            isLoading={isHouseDocumentsLoading}
                             closeMenuOnSelect={false}
                             options={document}
                             styles={customSelectStyles}
@@ -234,7 +225,7 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label className="col-form-label">Paid</label>
-                          <CheckBox>
+                          <RadioBtn>
                             <input
                               type="checkbox"
                               name="paid"
@@ -246,7 +237,7 @@ const AddHouseBills = ({ dispatchBill, billIndexToEdit, house, id }) => {
                             <label htmlFor="paid">
                               <span>Paid</span>
                             </label>
-                          </CheckBox>
+                          </RadioBtn>
                         </div>
                       </div>
                     </div>

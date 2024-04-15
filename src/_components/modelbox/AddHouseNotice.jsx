@@ -12,11 +12,12 @@ import {
   useResidentFetching
 } from "../../utils/employeeCustomFetchHook";
 import Select from "react-select";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
-  const { houseDocumentsData } = useHouseDocumentFetching();
+  const { houseDocumentsData, isHouseDocumentsLoading } = useHouseDocumentFetching();
   const { houseResidentData } = useHouseResidentFetching();
-  const { residentData } = useResidentFetching()
+  const { residentData, isResidentLoading } = useResidentFetching()
   const [selectedNotice] = useGlobalState("selectedNotice");
 
   const [title, setTitle] = useState(
@@ -83,19 +84,6 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
       dispatchNotice({ type: "add", payload: fields });
     }
     setGlobalState("showNoticeModal", false);
-  };
-
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
   };
 
   const handleTitleChange = (e) => {
@@ -169,11 +157,13 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
       }));
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -227,6 +217,7 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
                             defaultValue={getHouseResidentDefaultValues()}
                             onChange={handleResidentChange}
                             isMulti
+                            isLoading={isResidentLoading}
                             closeMenuOnSelect={false}
                             options={resident}
                             styles={customSelectStyles}
@@ -250,6 +241,7 @@ const AddHouseNotice = ({ dispatchNotice, noticeIndexToEdit, house, id }) => {
                             defaultValue={getHouseDocumentDefaultValues()}
                             onChange={handleHouseDocuments}
                             isMulti
+                            isLoading={isHouseDocumentsLoading}
                             closeMenuOnSelect={false}
                             options={document}
                             styles={customSelectStyles}

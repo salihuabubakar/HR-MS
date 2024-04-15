@@ -8,6 +8,7 @@ import { useGlobalState, setGlobalState } from "../../context/GlobalState";
 import Select from "react-select";
 import { useDataFetching, useResidentFetching, useTaskDocumentFetching } from "../../utils/employeeCustomFetchHook";
 import TextEditor from "../TextEditor";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const AddTaskAssignment = ({ 
   dispatchTaskAssignment, 
@@ -100,19 +101,6 @@ const AddTaskAssignment = ({
       dispatchTaskAssignment({ type: "add", payload: taskAssignment });
     }
     setGlobalState("showTaskAssignmentModal", false);
-  };
-
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
   };
 
 
@@ -225,11 +213,13 @@ const AddTaskAssignment = ({
       }));
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer top={true} className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} top={true} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
