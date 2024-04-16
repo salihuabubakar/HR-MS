@@ -22,7 +22,7 @@ const Sidebar = (props) => {
   };
 
   const handleDashboard = () => {
-    toggleSidebar(isSideMenu == "dashboard" ? "" : "dashboard");
+    toggleSidebar(isSideMenu === "dashboard" ? "" : "dashboard");
     setIsDashboardOpen(!isDashboardOpen);
   }
 
@@ -91,31 +91,17 @@ const Sidebar = (props) => {
                   </span>{" "}
                   <span className="menu-arrow" />
                 </a>
-                {isSideMenu == "dashboard" ? (
+                {isSideMenu === "dashboard" && (
                   <ul>
                     <li>
                       <Link
-                        className={
-                          pathname.includes("main/dashboard") ? "active" : ""
-                        }
+                        className={location.pathname.includes("/main/dashboard") ? "active" : ""}
                         to="/app/main/dashboard"
                       >
                         Admin Dashboard
                       </Link>
                     </li>
-                    {/* <li>
-                      <Link
-                        className={
-                          pathname.includes("main/employee-") ? "active" : ""
-                        }
-                        to="/app/main/employee-dashboard"
-                      >
-                        Employee Dashboard
-                      </Link>
-                    </li> */}
                   </ul>
-                ) : (
-                  ""
                 )}
               </li>
               <li className="submenu">

@@ -4,6 +4,9 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   //Mode
   isDarkMode: JSON.parse(localStorage.getItem('darkMode')),
 
+  // Mini Sidebar
+  isMiniSidebar: false,
+
 
   //Employee Account
   selectedEmployeeAccount: [],

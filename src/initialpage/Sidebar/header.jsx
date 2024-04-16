@@ -1,23 +1,19 @@
 import React from "react";
 import { withRouter, useHistory, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Applogo from "../../assets/img/circle-logo.png"
-import userImg from "../../assets/img/user.jpg"
-import LongApplogo from "../../assets/img/LongAppLogo.png"
 import { Popup, Segment  } from "semantic-ui-react";
-
 import {HeaderContainer} from "./style"
 import { Avatar } from "antd";
-import { UserAddOutlined } from "@ant-design/icons";
-import { useGlobalState } from "../../context/GlobalState";
+import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 
 
 const Header = (props) => {
   const history = useHistory();
 
   const handlesidebar = () => {
-    document.body.classList.toggle("mini-sidebar");
+    setGlobalState("isMiniSidebar", prevState => !prevState);
   };
+
   const onMenuClik = () => {
     props.onMenuClick();
   };
