@@ -76,9 +76,9 @@ const Header = (props) => {
                     <div className="ui column relaxed divided grid">
                       <div className="column">
                         <h4 className="text-orange-500">
-                          {user && 'Sachin'}
+                          {user && user}
                         </h4>
-                        <span className="text-sm text-[#898888]">sachin@gmail.com</span>
+                        <span className="text-sm text-[#898888]">{user}@gmail.com</span>
                         <hr style={{ border: "2px solid #ccc"}} />
                         <div className="ui link list">
                           {/* <Link className="dropdown-item" to="/app/profile/AddminProfile">

@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { alphaNumericPattern, emailrgx } from "../constant";
 import { useHistory } from "react-router-dom";
 import HeaderLogo from "../assets/img/Header-logo.png"
+import { useGlobalState } from "../context/GlobalState";
 
 /**
  * Yup Validation Schema for Login Form
@@ -65,6 +66,7 @@ const {
   setError,
   clearErrors,
   formState: { errors },
+  reset,
 } = useForm({
   resolver: yupResolver(schema), // Use Yup resolver for form validation
 });
@@ -91,14 +93,20 @@ const onSubmit = (data) => {
   const username = data.username;
   const password = data.password;
 
+  // const username = "sachin";
+  // const password = "Sachin2023";
+
   // Check if the provided username and password are valid
-  if (username === 'sachin' && password === 'Sachin2023') {
+  if (username === 'Salihu' && password === '12345678') {
     // Set user information in local storage
     localStorage.setItem('isLoggedIn', true);
     localStorage.setItem('username', username);
 
     // Navigate to the dashboard, by opening a new tab
     window.open('/app/main/dashboard');
+
+    // clear inpputs
+    reset();
     // Close the previous tab on successful login
     window.close();
   } else {
@@ -114,13 +122,15 @@ const onSubmit = (data) => {
     seteye(!eye);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <Helmet>
         <title>Login - Peepal Tree HRMS</title>
         <meta name="description" content="Login page" />
       </Helmet>
-      <div className="account-content">
+      <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} className="account-content h-screen items-center justify-center flex">
         <div className="container">
           {/* Account Logo */}
           <div className="flex items-center justify-center">
@@ -133,15 +143,15 @@ const onSubmit = (data) => {
             />
           </div>
           {/* /Account Logo */}
-          <div className="account-box">
+          <div className="account-box boader shadow-md">
             <div className="account-wrapper">
-              <h3 className="account-title">Login</h3>
+              <h3 className="account-title text-orange-500">Login</h3>
               <p className="account-subtitle">Access to our dashboard</p>
               {/* Account Form */}
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-group">
-                    <label>Username</label>
+                    <label>Username: Salihu</label>
                     <Controller
                       name="username"
                       control={control}
@@ -163,13 +173,13 @@ const onSubmit = (data) => {
                   <div className="form-group">
                     <div className="row">
                       <div className="col">
-                        <label>Password</label>
+                        <label>Password: 12345678</label>
                       </div>
-                      <div className="col-auto">
+                      {/* <div className="col-auto">
                         <Link className="text-muted" to="/forgotpassword">
                           Forgot password?
                         </Link>
-                      </div>
+                      </div> */}
                     </div>
                     <Controller
                       name="password"
