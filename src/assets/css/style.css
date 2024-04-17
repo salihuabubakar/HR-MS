@@ -7978,6 +7978,11 @@ ul.comment-list li ul.children {
 		left: 0;
 		top: 0;
 	}
+	.mini-sidebar .sidebar .sidebar-inner .sidebar-menu ul .submenu ul li a {
+		font-size: 10px;
+		text-align: center;
+		text-align: justify;
+	}
 	.mini-sidebar .sidebar-menu ul ul li {
 		position: relative;
 		right: 50px;

@@ -42,6 +42,7 @@ const DefaultLayout = (props) => {
 
   // Retrieve the value of isDarkMode from global state using the useGlobalState hook, which returns either true or false
 const [isDarkMode] = useGlobalState("isDarkMode");
+const [isMiniSidebar] = useGlobalState("isMiniSidebar");
 
 // Set the class of the <body> element based on the value of isDarkMode
 // If isDarkMode is true, set the class to 'dark-mode', otherwise set it to 'light-mode'
@@ -50,7 +51,7 @@ document.body.className = isDarkMode ? 'dark-mode' : 'light-mode';
 
   return (
     <>
-      <div className={`main-wrapper ${menu ? 'slide-nav' : ''}`}>
+      <div className={`main-wrapper ${menu ? 'slide-nav' : ''} ${isMiniSidebar && 'mini-sidebar'}`}>
         {/* Header component with mobile menu toggle */}
         <Header onMenuClick={(value) => toggleMobileMenu()} />
 
