@@ -65,6 +65,10 @@ export const PopupContainer = styled.div`
   .modal-content, .modal-body, .row, div, .form-group > .col-form-label {
     color: ${props => (props.isDarkMode && "#625F5C" )};
   }
+
+  .modal-content, .modal-body, .submit-section > .btn-primary, .btn-secondary {
+    color: ${props => (props.isDarkMode ? "#fff" : "#333" )};
+  }
   
   .Primary,
   .Secondary {

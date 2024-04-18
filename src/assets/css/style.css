@@ -372,10 +372,13 @@ form small {
 }
 
 .table-striped > tbody > tr {
-	background-color: transparent m !important;
+	background-color: transparent !important;
 }
 .table-striped > thead > tr > th {
 	color: #F97316;
+}
+.table-striped > thead > tr {
+	background-color: transparent !important;
 }
 /* Table description if no data */
 .ant-empty-description {
@@ -623,7 +626,7 @@ table.dataTable thead > tr > td.sorting {
 	border: 1px solid #482fe9;
 }
 .btn-primary {
-	background-color: #ff9b44;
+	background-color: transparent;
 	border: 1px solid #ff9b44;
 }
 .btn-primary:hover,

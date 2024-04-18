@@ -66,7 +66,7 @@ export const CheckBox = styled.div`
     cursor: pointer;
   }
   input[type="checkbox"]:checked + label {
-    background-color: #55CE63;
+    background-color: #FF9B44;
     color: #ffffff;
   }
 `;
@@ -84,7 +84,7 @@ export const ResAppointmentDiv = styled.div`
   }
 
   .fc-toolbar-title, .fc-col-header-cell-cushion {
-    color: ${props => (props.isDarkMode ? '#898888' : '#333333')} !important;
+    color: #F97316 !important;
   }
 
   .fc .fc-timegrid-axis-cushion, .fc-daygrid-day-number, .fc-multimonth-title {

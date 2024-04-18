@@ -144,6 +144,7 @@ const AddSchedule = ({
                         top: "5px",
                         right: "50px",
                       }}
+                      title="Delete schedule"
                       className="delete-icon"
                       type="button"
                       onClick={handleDeleteEvent}
@@ -234,8 +235,9 @@ const AddSchedule = ({
                     <div className="submit-section">
                       {selectedScheduleEvent[selectedDayIndex]?.id && (
                         <button
+                          style={{backgroundColor: "#FF9B44"}}
                           onClick={handleRepeatShift}
-                          className="btn btn-primary repeat-btn"
+                          className="btn btn-primary"
                           type="button"
                         >
                           Copy shift
