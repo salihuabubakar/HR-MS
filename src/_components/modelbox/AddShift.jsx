@@ -33,7 +33,7 @@ const AddShift = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validate first name and last name
+    // Validate inputs
     if (name === "") {
       setNameError("Shift name is required.");
       return;
