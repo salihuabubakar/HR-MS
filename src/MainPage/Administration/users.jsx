@@ -5,6 +5,7 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import {itemRender,onShowSizeChange} from "../paginationfunction"
 import "../antdstyle.css"
+import "../ServiceWork/style.css";
 import  Adduser from "../../_components/modelbox/Adduser"
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import { initUsers, savedUsersReducer } from "../../utils/localStorage";
@@ -12,6 +13,8 @@ import DefaultImage from "../../assets/img/placeholder.jpg";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
 import DeleteModal from "../../_components/modelbox/DeleteModal";
+import { useSearch } from '../../utils/Hooks/searchFunctionCustomHook';
+import SearchComponent from '../../_components/searchComponent';
 
 const Users = () => {
 
@@ -23,6 +26,12 @@ const Users = () => {
       [],
       initUsers
     );
+
+    const {
+      searchQuery,
+      setSearchQuery,
+      filteredResults,
+    } = useSearch(users);
 
     useEffect(() => {
       localStorage.setItem("users", JSON.stringify(users));
@@ -55,15 +64,6 @@ const Users = () => {
     const toggleMobileMenu = () => {
       setMenu(!menu);
     };
-
-  useEffect( ()=>{
-    if($('.select').length > 0) {
-      $('.select').select2({
-        minimumResultsForSearch: -1,
-        width: '100%'
-      });
-    }
-  });  
 
     const columns = [
       {
@@ -106,13 +106,11 @@ const Users = () => {
               <span>{record.role?.label}</span>
             </Link>
           </h2>
-        ),
-        sorter: (a, b) => a.name.length - b.name.length,
+        )
       },
       {
         title: "Email",
-        dataIndex: "email",
-        sorter: (a, b) => a.email.length - b.email.length,
+        dataIndex: "email"
       },
 
       {
@@ -125,8 +123,7 @@ const Users = () => {
               <h2>{company?.label}</h2>
             </React.Fragment>
           );
-        },
-        sorter: (a, b) => a.company.length - b.company.length,
+        }
       },
       {
         title: "Role",
@@ -146,13 +143,12 @@ const Users = () => {
               </span>
             </React.Fragment>
           );
-        },
-        sorter: (a, b) => a.role.length - b.role.length,
+        }
       },
       {
         title: "Action",
         render: (text, record, index) => (
-          <div className="dropdown dropdown-action text-end">
+          <div className="dropdown dropdown-action">
             <a
               href="#"
               className="action-icon dropdown-toggle"
@@ -179,6 +175,7 @@ const Users = () => {
         ),
       },
     ];
+    const [isDarkMode] = useGlobalState("isDarkMode");
     return (
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
         <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -186,20 +183,18 @@ const Users = () => {
         <div className="page-wrapper">
           <Helmet>
             <title>Users - Peepal Tree HRMS</title>
-            <meta name="description" content="Login page" />
+            <meta name="description" content="User page" />
           </Helmet>
           {/* Page Content */}
           <div className="content container-fluid">
             {/* Page Header */}
             <div className="page-header">
-              <div className="row align-items-center">
+              <div className="row">
                 <div className="col">
-                  <h3 className="page-title">Users</h3>
+                  <h3 className="text-4xl text-orange-500">Users</h3>
                   <ul className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <Link to="/app/main/dashboard">Dashboard</Link>
-                    </li>
-                    <li className="breadcrumb-item active">Users</li>
+                    <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                    <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Users</li>
                   </ul>
                 </div>
                 <div className="col-auto float-end ml-auto">
@@ -214,14 +209,11 @@ const Users = () => {
             </div>
             {/* /Page Header */}
             {/* Search Filter */}
-            <div className="row filter-row">
-              <div className="col-4">
-                <div className="form-group form-focus">
-                  <input type="text" className="form-control floating" />
-                  <label className="focus-label">Name</label>
-                </div>
-              </div>
-            </div>
+            <SearchComponent
+              searchType={"Users"}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
             {/* /Search Filter */}
             <div className="row">
               <div className="col-md-12">
@@ -238,7 +230,7 @@ const Users = () => {
                     }}
                     style={{ overflowX: "auto" }}
                     columns={columns}
-                    // bordered
+                    bordered
                     dataSource={usersList}
                     rowKey={(record) => record.id}
                     // onChange={this.handleTableChange}

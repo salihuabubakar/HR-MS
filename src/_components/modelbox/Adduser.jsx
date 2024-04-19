@@ -7,6 +7,7 @@ import {
   PopupContainer,
   Card,
 } from "./Addemployee.style";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const Adduser = ({ dispatchUsers, indexToEdit }) => {
   const [selectedUsers] = useGlobalState("selectedUsers");
@@ -90,8 +91,40 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
     { value: 2, label: "Niger Fintech" },
   ];
 
+  const [firstNameError, setFirstNameError] = useState("");
+  const [userNameError, setUsernameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passWordError, setPassWordError] = useState("");
+  const [confrimPassWordError, setConfirmPassWordError] = useState("");
+  const [employeeIdError, setEmployeeIdError] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    //Validate inputs
+    if (firstName === "") {
+      setFirstNameError("First name is required.");
+      return;
+    }
+    if (userName === "") {
+      setUsernameError("Username is required.");
+      return;
+    }
+    if (email === "") {
+      setEmailError("Email is required.");
+      return;
+    }
+    if (password === "") {
+      setPassWordError("Password is required.");
+      return;
+    }
+    if (confirmPassword === "") {
+      setConfirmPassWordError("Confirm password is required.");
+      return;
+    }
+    if (employeeId === "") {
+      setEmployeeIdError("Employee ID is required.");
+      return;
+    }
     const user = {
       id,
       firstName,
@@ -113,23 +146,34 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
     setGlobalState("showUsersModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-    control: (provided, state) => ({
-      ...provided,
-      background: "#fff",
-      borderColor: "#ddd",
-      height: "50px",
-    }),
+  const handleNameChange = (event) => {
+    setFirstName(event.target.value);
+    setFirstNameError("");
+  };
+
+  const handleUsernameChange = (event) => {
+    setUserName(event.target.value);
+    setUsernameError("");
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+    setEmailError("");
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+    setPassWordError("");
+  };
+
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
+    setConfirmPassWordError("");
+  };
+
+  const handleEmployeeIdChange = (event) => {
+    setEmployeeId(event.target.value);
+    setEmployeeIdError("");
   };
 
   const [isDarkMode] = useGlobalState("isDarkMode");
@@ -168,10 +212,13 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                           </label>
                           <input
                             value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            onChange={handleNameChange}
                             className="form-control"
                             type="text"
                           />
+                          {firstNameError && (
+                            <p className="error-message">{firstNameError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -192,10 +239,13 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                           </label>
                           <input
                             value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
+                            onChange={handleUsernameChange}
                             className="form-control"
                             type="text"
                           />
+                          {userNameError && (
+                            <p className="error-message">{userNameError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -205,32 +255,41 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                           </label>
                           <input
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={handleEmailChange}
                             className="form-control"
                             type="email"
                           />
+                          {emailError && (
+                            <p className="error-message">{emailError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label>Password</label>
+                          <label>Password <span className="text-danger">*</span></label>
                           <input
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handlePasswordChange}
                             className="form-control"
                             type="password"
                           />
+                          {passWordError && (
+                            <p className="error-message">{passWordError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label>Confirm Password</label>
+                          <label>Confirm Password <span className="text-danger">*</span></label>
                           <input
                             value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            onChange={handleConfirmPasswordChange}
                             className="form-control"
                             type="password"
                           />
+                          {confrimPassWordError && (
+                            <p className="error-message">{confrimPassWordError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -251,10 +310,13 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                           </label>
                           <input
                             value={employeeId}
-                            onChange={(e) => setEmployeeId(e.target.value)}
+                            onChange={handleEmployeeIdChange}
                             type="text"
                             className="form-control floating"
                           />
+                          {employeeIdError && (
+                            <p className="error-message">{employeeIdError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -300,7 +362,7 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Employee</td>
+                            <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Employee</td>
                             <td className="text-center">
                               <input defaultChecked type="checkbox" />
                             </td>
@@ -315,7 +377,7 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             </td>
                           </tr>
                           <tr>
-                            <td>Holidays</td>
+                            <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Holidays</td>
                             <td className="text-center">
                               <input defaultChecked type="checkbox" />
                             </td>
@@ -330,7 +392,7 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             </td>
                           </tr>
                           <tr>
-                            <td>Leaves</td>
+                            <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Leaves</td>
                             <td className="text-center">
                               <input defaultChecked type="checkbox" />
                             </td>
@@ -345,7 +407,7 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             </td>
                           </tr>
                           <tr>
-                            <td>Events</td>
+                            <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Events</td>
                             <td className="text-center">
                               <input defaultChecked type="checkbox" />
                             </td>
