@@ -5,10 +5,12 @@ import { Popup, Segment  } from "semantic-ui-react";
 import {HeaderContainer} from "./style"
 import { Avatar } from "antd";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
+import { useProfileFetching } from "../../utils/employeeCustomFetchHook";
 
 
 const Header = (props) => {
   const history = useHistory();
+  const { profileInfo, isProfileInfoLoading, isProfileInfoError } = useProfileFetching();
 
   const handlesidebar = () => {
     setGlobalState("isMiniSidebar", prevState => !prevState);
@@ -19,12 +21,9 @@ const Header = (props) => {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
+    localStorage.removeItem("user");
     history.push("/login");
   };
-
-  const user = localStorage.getItem("username");
 
   const [isDarkMode] = useGlobalState("isDarkMode");
 
@@ -76,15 +75,15 @@ const Header = (props) => {
                     <div className="ui column relaxed divided grid">
                       <div className="column">
                         <h4 className="text-orange-500">
-                          {user && user}
+                          {profileInfo?.first_name + " " + profileInfo?.other_name} 
                         </h4>
-                        <span className="text-sm text-[#898888]">{user}@gmail.com</span>
+                        <span className="text-sm text-[#898888]">{profileInfo?.username}</span>
                         <hr style={{ border: "2px solid #ccc"}} />
                         <div className="ui link list">
-                          {/* <Link className="dropdown-item" to="/app/profile/AddminProfile">
+                          <Link className="dropdown-item rounded-md text-[#898888] mb-2"  to="/app/profile/profile">
                             My Profile
                           </Link>
-                          <Link className="dropdown-item" to="/settings/companysetting">
+                          {/* <Link className="dropdown-item rounded-md mb-2 text-[#898888]" to="/profile/settings">
                             Settings
                           </Link> */}
                           <Link onClick={handleLogOut} style={{ display: 'flex', alignItems: 'center', padding: '5px', backgroundColor: '#FCF0E5', color: '#f97316'}} className="dropdown-item rounded-md"><span>

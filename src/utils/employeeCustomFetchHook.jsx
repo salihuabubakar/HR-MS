@@ -5,6 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from 'react-query'
+import { axiosConfig } from "./getUserToken";
 
 // Get employee data
 export const useDataFetching = () => {
@@ -16,7 +17,7 @@ export const useDataFetching = () => {
 
   const { data, isLoading, error } = useQuery("employeeData", fetchData, {
     onSuccess: () => {
-      // Invalidate queries that depend on roleData
+      // Invalidate queries that depend on employeeData
       queryClient.invalidateQueries(["employeeData"]);
     },
   });
@@ -1470,3 +1471,40 @@ export const useCareerFetching = () => {
 
   return { careerData, isCareerLoading, careerError };
 };
+
+// Get user data
+export const useAllUserFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`http://localhost:8000/users/allusers/`, axiosConfig);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const { data: usersData, isLoading: isUsersDataLoading, error: isUsersDataError } = useQuery("usersData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on userData
+      queryClient.invalidateQueries(["usersData"]);
+    },
+  });
+
+  return { usersData, isUsersDataLoading, isUsersDataError };
+};
+
+// Get profile data
+export const useProfileFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`http://localhost:8000/users/profile/`, axiosConfig);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const { data: profileInfo, isLoading: isProfileInfoLoading, error: isProfileInfoError } = useQuery("profileData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on profileData
+      queryClient.invalidateQueries(["profileData"]);
+    },
+  });
+
+  return { profileInfo, isProfileInfoLoading, isProfileInfoError };
+};
+

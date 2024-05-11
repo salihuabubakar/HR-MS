@@ -12,26 +12,20 @@ import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 const Adduser = ({ dispatchUsers, indexToEdit }) => {
   const [selectedUsers] = useGlobalState("selectedUsers");
 
-  const [id] = useState(
-    selectedUsers[indexToEdit]?.id
-      ? selectedUsers[indexToEdit]?.id
-      : Date.now()
-  );
-
   const [firstName, setFirstName] = useState(
-    selectedUsers[indexToEdit]?.firstName
-      ? selectedUsers[indexToEdit]?.firstName
+    selectedUsers[indexToEdit]?.firts_name
+      ? selectedUsers[indexToEdit]?.firts_name
       : ""
   );
 
-  const [lastName, setLastName] = useState(
-    selectedUsers[indexToEdit]?.lastName
-      ? selectedUsers[indexToEdit]?.lastName
+  const [otherName, setOtherName] = useState(
+    selectedUsers[indexToEdit]?.other_name
+      ? selectedUsers[indexToEdit]?.other_name
       : ""
   );
 
-  const [email, setEmail] = useState(
-    selectedUsers[indexToEdit]?.email ? selectedUsers[indexToEdit]?.email : ""
+  const [username, setUsername] = useState(
+    selectedUsers[indexToEdit]?.username ? selectedUsers[indexToEdit]?.username : ""
   );
 
   const [password, setPassword] = useState(
@@ -40,63 +34,44 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
       : ""
   );
 
-  const [confirmPassword, setConfirmPassword] = useState(
-    selectedUsers[indexToEdit]?.confirmPassword
-      ? selectedUsers[indexToEdit]?.confirmPassword
-      : ""
-  );
-
-  const [employeeId, setEmployeeId] = useState(
-    selectedUsers[indexToEdit]?.employeeId
-      ? selectedUsers[indexToEdit]?.employeeId
-      : ""
-  );
-
-  const [role, setRole] = useState(
-    selectedUsers[indexToEdit]?.role ? selectedUsers[indexToEdit]?.role : ""
-  );
-
-  const [company, setCompany] = useState(
-    selectedUsers[indexToEdit]?.company
-      ? selectedUsers[indexToEdit]?.company
-      : ""
-  );
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [phone, setPhone] = useState(
     selectedUsers[indexToEdit]?.phone ? selectedUsers[indexToEdit]?.phone : ""
   );
 
-  const [userName, setUserName] = useState(
-    selectedUsers[indexToEdit]?.userName
-      ? selectedUsers[indexToEdit]?.userName
+  const [employeeId, setEmployeeId] = useState(
+    selectedUsers[indexToEdit]?.employee_id
+      ? selectedUsers[indexToEdit]?.employee_id
       : ""
   );
 
-  const handleRoleChange = (event) => {
-    setRole(event);
-  };
-  const handleCompanyChange = (event) => {
-    setCompany(event);
-  };
+  const [role, setRole] = useState(
+    selectedUsers[indexToEdit]?.role ? selectedUsers[indexToEdit]?.role : []
+  );
+
 
   const roleOptions = [
-    { value: 0, label: "Admin" },
-    { value: 1, label: "Employee" },
-    { value: 2, label: "Client" },
-  ];
-
-  const companyOptions = [
-    { value: 0, label: "Global Technologies" },
-    { value: 1, label: "Delta Infotech" },
-    { value: 2, label: "Niger Fintech" },
+    { value: 0, label: "admin" },
+    { value: 1, label: "manager" },
+    { value: 2, label: "employee" },
   ];
 
   const [firstNameError, setFirstNameError] = useState("");
-  const [userNameError, setUsernameError] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [otherNameError, setOtherNameError] = useState("");
+  const [usernamelError, setUsernameError] = useState("");
   const [passWordError, setPassWordError] = useState("");
   const [confrimPassWordError, setConfirmPassWordError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [employeeIdError, setEmployeeIdError] = useState("");
+  const [roleError, setRoleError] = useState("");
+
+  useEffect(() => {
+    if(password !== confirmPassword) {
+      setConfirmPassWordError("Confirm password mismatched");
+    }
+  }, [password, confirmPassword, setConfirmPassWordError])
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -105,12 +80,12 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
       setFirstNameError("First name is required.");
       return;
     }
-    if (userName === "") {
-      setUsernameError("Username is required.");
+    if(otherName === "") {
+      setOtherNameError("Other name is required");
       return;
     }
-    if (email === "") {
-      setEmailError("Email is required.");
+    if (username === "") {
+      setUsernameError("Email is required.");
       return;
     }
     if (password === "") {
@@ -121,27 +96,33 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
       setConfirmPassWordError("Confirm password is required.");
       return;
     }
+    if (phone === "") {
+      setPhoneError("Phone number is required.");
+      return;
+    }
     if (employeeId === "") {
       setEmployeeIdError("Employee ID is required.");
       return;
     }
+
+    if (role?.length === 0) {
+      setRoleError("Role is required.");
+      return;
+    }
+
     const user = {
-      id,
-      firstName,
-      lastName,
-      userName,
+      first_name: firstName.trim(),
+      other_name: otherName.trim(),
       password,
-      confirmPassword,
-      email,
-      phone,
-      employeeId,
+      username,
+      phone: phone.trim(),
+      employee_id: employeeId.trim(),
       role,
-      company,
     };
     if (selectedUsers[indexToEdit]?.id) {
       dispatchUsers({ type: "update", payload: user });
     } else {
-      dispatchUsers({ type: "push", payload: user });
+      dispatchUsers({ type: "add", payload: user });
     }
     setGlobalState("showUsersModal", false);
   };
@@ -151,14 +132,14 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
     setFirstNameError("");
   };
 
-  const handleUsernameChange = (event) => {
-    setUserName(event.target.value);
-    setUsernameError("");
+  const handleOtherNameChange = (event) => {
+    setOtherName(event.target.value);
+    setOtherNameError("");
   };
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-    setEmailError("");
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+    setUsernameError("");
   };
 
   const handlePasswordChange = (event) => {
@@ -171,9 +152,19 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
     setConfirmPassWordError("");
   };
 
+  const handlePhoneChange = (event) => {
+    setPhone(event.target.value);
+    setPhoneError("");
+  };
+
   const handleEmployeeIdChange = (event) => {
     setEmployeeId(event.target.value);
     setEmployeeIdError("");
+  };
+
+  const handleRoleChange = (event) => {
+    setRole(event.label);
+    setRoleError("");
   };
 
   const [isDarkMode] = useGlobalState("isDarkMode");
@@ -203,7 +194,7 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
@@ -223,28 +214,15 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label>Last Name</label>
+                          <label>Other Name <span className="text-danger">*</span></label>
                           <input
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            value={otherName}
+                            onChange={handleOtherNameChange}
                             className="form-control"
                             type="text"
                           />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label>
-                            Username <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={userName}
-                            onChange={handleUsernameChange}
-                            className="form-control"
-                            type="text"
-                          />
-                          {userNameError && (
-                            <p className="error-message">{userNameError}</p>
+                          {otherNameError && (
+                            <p className="error-message">{otherNameError}</p>
                           )}
                         </div>
                       </div>
@@ -254,13 +232,13 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             Email <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={email}
-                            onChange={handleEmailChange}
+                            value={username}
+                            onChange={handleUsernameChange}
                             className="form-control"
                             type="email"
                           />
-                          {emailError && (
-                            <p className="error-message">{emailError}</p>
+                          {usernamelError && (
+                            <p className="error-message">{usernamelError}</p>
                           )}
                         </div>
                       </div>
@@ -294,13 +272,16 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label>Phone </label>
+                          <label>Phone <span className="text-danger">*</span></label>
                           <input
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            onChange={handlePhoneChange}
                             className="form-control"
                             type="text"
                           />
+                          {phoneError && (
+                            <p className="error-message">{phoneError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -321,7 +302,7 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
+                          <label>
                             Select Role <span className="text-danger">*</span>
                           </label>
                           <Select
@@ -331,102 +312,12 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             styles={customSelectStyles}
                             placeholder="Select Role"
                           />
+                          {roleError && <p className="error-message">{roleError}</p>}
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Select Company{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={selectedUsers[indexToEdit]?.company}
-                            onChange={handleCompanyChange}
-                            options={companyOptions}
-                            styles={customSelectStyles}
-                            placeholder="Select Company"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="table-responsive m-t-15">
-                      <table className="table table-striped custom-table">
-                        <thead>
-                          <tr>
-                            <th>Module Permission</th>
-                            <th className="text-center">Read</th>
-                            <th className="text-center">Write</th>
-                            <th className="text-center">Create</th>
-                            <th className="text-center">Delete</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Employee</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Holidays</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Leaves</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Events</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                     <div className="submit-section">
                       <button
-                        onClick={handleSubmit}
                         className="btn btn-primary submit-btn"
                       >
                         {selectedUsers[indexToEdit]?.id ? "Update" : "Save"}
