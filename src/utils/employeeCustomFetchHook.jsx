@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BaseUrl } from "./baseUrl";
+import { BaseUrl, Base2Url } from "./baseUrl";
 import {
   useQuery,
   useQueryClient,
@@ -1475,7 +1475,7 @@ export const useCareerFetching = () => {
 // Get user data
 export const useAllUserFetching = () => {
   const fetchData = async () => {
-    const response = await axios.get(`http://localhost:8000/users/allusers/`, axiosConfig);
+    const response = await axios.get(`${Base2Url}/users/allusers/`, axiosConfig);
     return response.data;
   };
   const queryClient = useQueryClient();
@@ -1493,7 +1493,7 @@ export const useAllUserFetching = () => {
 // Get profile data
 export const useProfileFetching = () => {
   const fetchData = async () => {
-    const response = await axios.get(`http://localhost:8000/users/profile/`, axiosConfig);
+    const response = await axios.get(`${Base2Url}/users/profile/`, axiosConfig);
     return response.data;
   };
   const queryClient = useQueryClient();
