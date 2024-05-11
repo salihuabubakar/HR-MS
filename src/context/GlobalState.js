@@ -1,8 +1,14 @@
 import { createGlobalState } from "react-hooks-global-state";
 
+const user = JSON.parse(localStorage.getItem('user'));
+
 const { setGlobalState, useGlobalState } = createGlobalState({
   //Mode
   isDarkMode: JSON.parse(localStorage.getItem('darkMode')),
+
+
+  //Login User
+  user: user ? user : null,
 
   // Mini Sidebar
   isMiniSidebar: false,

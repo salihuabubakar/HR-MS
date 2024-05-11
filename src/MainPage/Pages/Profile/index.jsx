@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import EmployeeProfile from "./employeeprofile"
-import AddminProfile from './AddminProfile';
+import Profile from "./profile"
+// import ProfileSetting from "./profile-settings"
 
 
 const subscriptionroute = ({ match }) => (
@@ -10,10 +10,10 @@ const subscriptionroute = ({ match }) => (
     <Redirect
       exact
       from={`${match.url}/`}
-      to={`${match.url}/employee-profile`}
+      to={`${match.url}/profile`}
     />
-    <Route path={`${match.url}/employee-profile`} component={EmployeeProfile} />
-    <Route path={`${match.url}/AddminProfile`} component={AddminProfile} />
+    <Route path={`${match.url}/profile`} component={Profile} />
+    {/* <Route path={`${match.url}/profile-settings`} component={ProfileSetting} /> */}
   </Switch>
 );
 

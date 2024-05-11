@@ -8,57 +8,32 @@ import "../antdstyle.css"
 import "../ServiceWork/style.css";
 import  Adduser from "../../_components/modelbox/Adduser"
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
-import { initUsers, savedUsersReducer } from "../../utils/localStorage";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
-import DeleteModal from "../../_components/modelbox/DeleteModal";
 import { useSearch } from '../../utils/Hooks/searchFunctionCustomHook';
 import SearchComponent from '../../_components/searchComponent';
+import { add_update_delete_user } from '../../utils/sendToServer';
+import { useAllUserFetching } from '../../utils/employeeCustomFetchHook';
 
 const Users = () => {
 
-    const [showUsersModal] = useGlobalState("showUsersModal");
-    const [deleteModal] = useGlobalState("deleteModal");
+  const { usersData, isUsersDataLoading, isUsersDataError } = useAllUserFetching();
 
-    const [users, dispatchUsers] = useReducer(
-      savedUsersReducer,
-      [],
-      initUsers
-    );
+    const [showUsersModal] = useGlobalState("showUsersModal");
+
+    const [careerState, dispatchUser] = useReducer(add_update_delete_user, []);
+
+    useEffect(() => {
+      console.log(usersData)
+    }, [usersData]);
 
     const {
       searchQuery,
       setSearchQuery,
       filteredResults,
-    } = useSearch(users);
+    } = useSearch("user");
 
-    useEffect(() => {
-      localStorage.setItem("users", JSON.stringify(users));
-    }, [users]);
-    useEffect(() => {
-      if (!showUsersModal) {
-        setGlobalState("selectedUsers", "");
-      }
-    }, [showUsersModal]);
-
-    const [usersList, setUsersList] = useState();
-    useEffect(() => {
-      setUsersList(users);
-    }, [users]);
-
-    const [indexToEdit, setIndexToEdit] = useState(0);
-
-    const handleUsersEdit = (id, index) => {
-      setIndexToEdit(index);
-      setGlobalState("showUsersModal", true);
-      setGlobalState("selectedUsers", users);
-    };
-
-    const handleUsersDelete = (index) => {
-      setIndexToEdit(index);
-      setGlobalState("deleteModal", true);
-    };
 
     const [menu, setMenu] = useState(false);
     const toggleMobileMenu = () => {
@@ -78,7 +53,7 @@ const Users = () => {
         render: (text, record) => (
           <h2 className="table-avatar">
             <Link
-              to="/app/profile/employee-profile"
+              to="/app/profile/profile"
               onClick={(e) => e.preventDefault()}
               className="avatar"
               style={{
@@ -99,7 +74,7 @@ const Users = () => {
               />
             </Link>
             <Link
-              to="/app/profile/employee-profile"
+              to="/app/profile/profile"
               onClick={(e) => e.preventDefault()}
             >
               {record.firstName + " " + record.lastName}{" "}
@@ -160,13 +135,11 @@ const Users = () => {
             <div className="dropdown-menu dropdown-menu-right">
               <a
                 className="dropdown-item"
-                onClick={() => handleUsersEdit(record.id, index)}
               >
                 <i className="fa fa-pencil m-r-5" /> Edit
               </a>
               <a
                 className="dropdown-item"
-                onClick={() => handleUsersDelete(index)}
               >
                 <i className="fa fa-trash-o m-r-5" /> Delete
               </a>
@@ -221,7 +194,7 @@ const Users = () => {
                   <Table
                     className="table-striped"
                     pagination={{
-                      total: usersList?.length,
+                      total: usersData?.length,
                       showTotal: (total, range) =>
                         `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                       showSizeChanger: true,
@@ -231,8 +204,8 @@ const Users = () => {
                     style={{ overflowX: "auto" }}
                     columns={columns}
                     bordered
-                    dataSource={usersList}
-                    rowKey={(record) => record.id}
+                    dataSource={usersData}
+                    rowKey={(record) => record._id}
                     // onChange={this.handleTableChange}
                   />
                 </div>
@@ -241,15 +214,7 @@ const Users = () => {
           </div>
           {/* /Page Content */}
           {showUsersModal && (
-            <Adduser dispatchUsers={dispatchUsers} indexToEdit={indexToEdit} />
-          )}
-          {deleteModal && (
-            <DeleteModal
-              deleteAction={dispatchUsers}
-              indexToDelete={indexToEdit}
-              dispatch={users}
-              modalTitle={"User"}
-            />
+            <Adduser dispatchUsers={dispatchUser} indexToEdit={0} />
           )}
         </div>
       </div>

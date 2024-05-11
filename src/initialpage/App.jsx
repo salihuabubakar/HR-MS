@@ -8,10 +8,12 @@ import "react-toastify/dist/ReactToastify.css";
 import "Assets/css/font-awesome.min.css";
 import "semantic-ui-css/semantic.min.css";
 import { LoadSpinner } from "../_components/modelbox/Addemployee.style";
+import { useGlobalState } from "../context/GlobalState";
 //Authendication
+import { checkTokenExpiration } from "../utils/auth/checkJwtExpiration";
 const LoginPage = lazy(() => import('./loginpage'));
-const RegistrationPage = lazy(() => import('./RegistrationPage'));
 const ForgotPassword = lazy(() => import('./forgotpassword'));
+const ResetPassword = lazy(() => import('./resetpassword'));
 
 //Error Page
 const Error404 = lazy(() => import("../MainPage/Pages/ErrorPage/error404"));
@@ -19,9 +21,8 @@ const Error500 = lazy(() => import("../MainPage/Pages/ErrorPage/error500"));
 
 
 const App = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const ProtectedRoute = ({ isAuthenticated }) => {
-    if(isAuthenticated) {
+  const ProtectedRoute = ({ isTokenNotExpired }) => {
+    if(!isTokenNotExpired) {
       return (
         <>
           <Route path="/app" component={DefaultLayout} />
@@ -42,28 +43,16 @@ const App = () => {
       }>
         <Switch>
           <Route path="/login" component={LoginPage} />
-          <Route path="/forgotpassword" component={ForgotPassword} />
-          <Route path="/register" component={RegistrationPage} />
+          <Route path="/forgot-password" component={ForgotPassword} />
+          <Route path="/reset-password/:id/:token" component={ResetPassword} />
           <ProtectedRoute 
-            isAuthenticated={isLoggedIn}
+            isTokenNotExpired={checkTokenExpiration()}
           />
           <Route path="/error-404" component={Error404} />
           <Route path="/error-500" component={Error500} />
         </Switch>
       </Suspense>
-      <ToastContainer
-          position="top-right"
-          autoClose={1500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        <ToastContainer />
+      <ToastContainer />
     </>
   );
 };

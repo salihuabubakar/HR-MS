@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { alphaNumericPattern, emailrgx } from "../constant";
-import { useHistory } from "react-router-dom";
 import HeaderLogo from "../assets/img/Header-logo.png"
 import { useGlobalState } from "../context/GlobalState";
+import { login_user } from "../utils/sendToServer";
+import { Link } from "react-router-dom"
 
 /**
  * Yup Validation Schema for Login Form
@@ -44,7 +44,6 @@ const schema = yup.object({
 });
 
 const Loginpage = () => {
-  const history = useHistory();
   const [eye, seteye] = useState(true);
 
   /**
@@ -88,33 +87,17 @@ const {
  *
  * @param {Object} data - Form data containing username and password.
  */
+
+  const [loginState, dispatchUserLogin] = useReducer(login_user, []);
+
 const onSubmit = (data) => {
-  // Destructure username and password from the form data
-  const username = data.username;
-  const password = data.password;
-
-  // const username = "sachin";
-  // const password = "Sachin2023";
-
-  // Check if the provided username and password are valid
-  if (username === 'Salihu' && password === '12345678') {
-    // Set user information in local storage
-    localStorage.setItem('isLoggedIn', true);
-    localStorage.setItem('username', username);
-
-    // Navigate to the dashboard, by opening a new tab
-    window.open('/app/main/dashboard');
-
-    // clear inpputs
-    reset();
-    // Close the previous tab on successful login
-    window.close();
-  } else {
-    // If username or password is incorrect, set a custom error message
-    setError('password', {
-      message: 'Username or password is mismatched',
-    });
+  const userData = {
+    username: data.username,
+    password: data.password
   }
+  dispatchUserLogin({ type: "add", payload: userData });
+  // clear inpputs
+  reset();
 };
 
 
@@ -130,7 +113,7 @@ const onSubmit = (data) => {
         <title>Login - Peepal Tree HRMS</title>
         <meta name="description" content="Login page" />
       </Helmet>
-      <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} className="account-content h-screen items-center justify-center flex">
+      <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} className="account-content h-screen justify-center flex">
         <div className="container">
           {/* Account Logo */}
           <div className="flex items-center justify-center">
@@ -151,7 +134,7 @@ const onSubmit = (data) => {
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-group">
-                    <label>Username: Salihu</label>
+                    <label>Email</label>
                     <Controller
                       name="username"
                       control={control}
@@ -160,7 +143,7 @@ const onSubmit = (data) => {
                           className={`form-control  ${
                             errors?.username ? "error-input" : ""
                           }`}
-                          type="text"
+                          type="email"
                           value={value}
                           onChange={onChange}
                           autoComplete="false"
@@ -173,13 +156,13 @@ const onSubmit = (data) => {
                   <div className="form-group">
                     <div className="row">
                       <div className="col">
-                        <label>Password: 12345678</label>
+                        <label>Password</label>
                       </div>
-                      {/* <div className="col-auto">
-                        <Link className="text-muted" to="/forgotpassword">
+                      <div className="col-auto account-footer">
+                        <Link to="/forgot-password">
                           Forgot password?
                         </Link>
-                      </div> */}
+                      </div>
                     </div>
                     <Controller
                       name="password"
@@ -216,12 +199,6 @@ const onSubmit = (data) => {
                     </button>
                   </div>
                 </form>
-                {/* <div className="account-footer">
-                  <p>
-                    Don't have an account yet?{" "}
-                    <Link to="/register">Register</Link>
-                  </p>
-                </div> */}
               </div>
               {/* /Account Form */}
             </div>
