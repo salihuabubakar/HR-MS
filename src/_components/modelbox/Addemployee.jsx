@@ -117,6 +117,9 @@ const Addemployee = ({
       department: department
     };
 
+    /* The below code is iterating over the entries of an object called "fields" using the
+    Object.entries() method. For each entry, it is appending the field name and field value to a
+    FormData object called "formData". */
     Object.entries(fields).forEach(([fieldName, fieldValue]) => {
       formData.append(fieldName, fieldValue);
     });
@@ -184,12 +187,14 @@ const Addemployee = ({
     setCurrentPage(currentPage - 1);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       {/* Add Employee Modal */}
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode}  className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

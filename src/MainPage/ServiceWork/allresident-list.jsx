@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import "antd/dist/antd.css";
 import { itemRender, onShowSizeChange } from "../paginationfunction";
 import "../antdstyle.css";
 import { useRoleFetching } from "../../utils/employeeCustomFetchHook";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { useGlobalState } from "../../context/GlobalState";
+import { TableDiv } from "../../_components/modelbox/styles";
 const AllResidentList = ({
   DefaultImage,
   handleEditResident,
@@ -14,8 +17,10 @@ const AllResidentList = ({
   currentPage,
   setCurrentPage,
   isResidentLoading,
+  searchQuery
 }) => {
   const { roleData } = useRoleFetching();
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   // Table pagination
   const startCount = (currentPage - 1) * itemsPerPage + 1;
@@ -46,7 +51,7 @@ const AllResidentList = ({
           record;
         return (
           <React.Fragment>
-            <h2 className="table-avatar">
+            <h5 className="table-avatar" style={{ display: 'flex', alignItems: 'center'}}>
               <Link
                 className="avatar"
                 style={{
@@ -62,13 +67,15 @@ const AllResidentList = ({
                   src={photo ? photo : DefaultImage}
                 />
               </Link>
-              <Link
-                to={`/app/servicework/profile/${id}`}
-              >
-                {`${first_name} ${middle_name} ${last_name}`}{" "}
-                <span>{role_name ? role_name : "--"}</span>
-              </Link>
-            </h2>
+              <div style={{ display: 'flex', flexDirection: 'column'}}>
+                <Link
+                  to={`/app/servicework/profile/${id}`}
+                >
+                  {highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery, isDarkMode)}
+                </Link>
+                <span className="text-sm text-[#625F5C]">{role_name ? role_name : "--"}</span>
+              </div>
+            </h5>
           </React.Fragment>
         );
       },
@@ -76,20 +83,26 @@ const AllResidentList = ({
     },
     {
       title: "Employee ID",
-      dataIndex: "employee_number",
-      // sorter: (a, b) => a.employee_id.length - b.employee_id.length,
+      render: (text, record, index) => {
+        const { employee_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{employee_number}</TableDiv>;
+      },
     },
 
     {
       title: "Email",
-      dataIndex: "email",
-      // sorter: (a, b) => a.email.length - b.email.length,
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
 
     {
       title: "Mobile",
-      dataIndex: "phone_number",
-      // sorter: (a, b) => a.phone_number?.length - b.phone_number?.length,
+      render: (text, record, index) => {
+        const { phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{phone_number}</TableDiv>;
+      },
     },
     {
       title: "Action",

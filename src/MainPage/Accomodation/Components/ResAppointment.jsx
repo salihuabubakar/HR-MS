@@ -8,7 +8,9 @@ import "./calendar.css"
 import { useResidentAppointmentFetching, useResidentFetching } from '../../../utils/employeeCustomFetchHook';
 import moment from "moment";
 import { Popup, Segment  } from "semantic-ui-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useGlobalState } from '../../../context/GlobalState';
+
 
 const ResAppointment = ({ 
   houseId,
@@ -16,56 +18,101 @@ const ResAppointment = ({
 }) => {
   const { residentAppointmentData } = useResidentAppointmentFetching();
   const { residentData } = useResidentFetching();
-  let resID = [];
-  const [selectedEvent, setSelectedEvent] = useState({
-    name: "",
-    photo: "",
-    description: "",
-    time: ""
-  })
 
-  const houseRes = houseResidentData?.filter(residents => {
-    if(residents.house === houseId && residents.status === "Active") {
-      return resID.push(residents.resident);
-    }
-  })
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
+  /**
+ * Resident Selection and State Management
+ *
+ * Manages the selection of residents based on the house ID and status.
+ * Populates the 'resID' array with resident IDs who are both in the specified house
+ * and have an "Active" status. Additionally, maintains state for the selected event
+ * with properties such as name, photo, description, and time.
+ *
+ * @constant {Array} resID - Array to store the IDs of selected residents.
+ * @constant {Object} selectedEvent - State to store details of the selected event.
+ * @property {string} selectedEvent.name - Name of the selected event.
+ * @property {string} selectedEvent.photo - Photo URL of the selected event.
+ * @property {string} selectedEvent.description - Description of the selected event.
+ * @property {string} selectedEvent.time - Time details of the selected event.
+ */
+let resID = [];
+
+// State to manage the details of the selected event
+const [selectedEvent, setSelectedEvent] = useState({
+  name: "",
+  photo: "",
+  description: "",
+  time: ""
+});
+
+// Filter house residents based on house ID and "Active" status
+const houseRes = houseResidentData?.filter(residents => {
+  if (residents.house === houseId && residents.status === "Active") {
+    // Populate resID array with resident IDs
+    return resID.push(residents.resident);
+  }
+});
+
+// Note: The 'resID' array now contains the IDs of residents in the specified house
+// and with an "Active" status. The 'selectedEvent' state can be updated with event details.
+
 
   const [eventData, setEventData] = useState([]);
 
-  useEffect(() => {
-    const houseResApp = residentAppointmentData?.filter(h => resID.includes(h.resident))
+  /**
+ * useEffect for Populating Event Data based on Resident Appointments
+ *
+ * This useEffect hook is responsible for populating the event data for a calendar component
+ * based on the residents' appointments. It filters resident appointments based on the 'resID' array,
+ * formats the events with relevant details such as resident name, photo, appointment title, start time,
+ * and description. The formatted events are then set in the 'eventData' state to be utilized by the calendar.
+ *
+ * Dependencies:
+ * - houseId: ID of the selected house.
+ * - houseResidentData: Array of residents in the specified house.
+ * - residentAppointmentData: Array of resident appointments.
+ * - residentData: Array of resident details.
+ * - setEventData: State setter function to update the event data.
+ */
+useEffect(() => {
+  // Filter resident appointments based on the 'resID' array
+  const houseResApp = residentAppointmentData?.filter(h => resID.includes(h.resident));
 
-    const formattedEvents = houseResApp?.map((evt) => {
-      const { 
-        id, 
-        resident, 
-        appointment_name, 
-        appointment_date, 
-        appointment_time,
-        appointment_description
-      } = evt;
+  // Map and format the filtered resident appointments to create events
+  const formattedEvents = houseResApp?.map((evt) => {
+    const {
+      id,
+      resident,
+      appointment_name,
+      appointment_date,
+      appointment_time,
+      appointment_description
+    } = evt;
 
-      const matchedResident = residentData?.find(res => res.id === resident);
-      const residentFullName = `${matchedResident?.first_name} ${matchedResident?.middle_name} ${matchedResident?.last_name}`
-      const residentPhoto = `${matchedResident?.photo}`
+    // Find the matched resident based on resident ID
+    const matchedResident = residentData?.find(res => res.id === resident);
+    const residentFullName = `${matchedResident?.first_name} ${matchedResident?.middle_name} ${matchedResident?.last_name}`;
+    const residentPhoto = `${matchedResident?.photo}`;
 
-      return (
-        {
-          id: id,
-          resident: {
-            name : residentFullName,
-            photo: residentPhoto,
-          },
-          title: appointment_name,
-          start: `${appointment_date}T${appointment_time}`,
-          description: appointment_description,
-          className: 'bg-primary',
-        }
-      )
-    });
+    // Return a formatted event object
+    return {
+      id: id,
+      resident: {
+        name: residentFullName,
+        photo: residentPhoto,
+      },
+      title: appointment_name,
+      start: `${appointment_date}T${appointment_time}`,
+      description: appointment_description,
+      className: 'bg-primary',
+    };
+  });
 
-    setEventData(formattedEvents);
-  }, [houseId, houseResidentData]);
+  // Set the formatted events in the 'eventData' state
+  setEventData(formattedEvents);
+}, [houseId, houseResidentData, residentAppointmentData, residentData]);
+
 
   const handleEventClick = clickInfo => {
     const name = clickInfo.event.extendedProps.resident.name;
@@ -87,6 +134,7 @@ const ResAppointment = ({
     const time = moment(event.start, "HH:mm").format("hh:mm A")
     return (
       <Popup
+        style={{ backgroundColor: 'transparent' }}
         inline
         hoverable
         position="bottom left"
@@ -96,12 +144,12 @@ const ResAppointment = ({
         }}
         content={
           <Segment.Group>
-                <Segment style={{ width: "250px" }}>
+                <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                   <div className="ui column relaxed divided grid">
                     <div className="column">
-                      <h4>{event.title}</h4>
+                      <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{event.title}</h4>
                       <div className="ui link list">
-                        <a className="item">
+                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                           <h2 className="table-avatar">
                             <Link
                               to="#"
@@ -122,8 +170,8 @@ const ResAppointment = ({
                             </Link>
                           </h2>
                         </a>
-                        <a className="item">{`Time: ${time}`}</a>
-                        <a className="item">{`Des: ${description}`}</a>
+                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Time: ${time}`}</a>
+                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Des: ${description}`}</a>
                       </div>
                     </div>
                   </div>
@@ -131,10 +179,8 @@ const ResAppointment = ({
           </Segment.Group>
         }
         trigger={
-            <div>
-              <span className='event-time'>{time}</span>
+            <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
               <img className='event-img' src={photo} alt='resident_photo' title={name} />
-              <span className='event-title'>{event.title}</span>
             </div>
         }
       />

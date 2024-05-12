@@ -1,22 +1,33 @@
+/**
+ * useSearch Custom Hook
+ *
+ * This custom hook is designed to handle search functionality for a given dataset. It utilizes the 'useEffect' and 'useState' hooks to manage search-related states and debounce user input for better performance.
+ *
+ * @function useSearch
+ * @param {Array} data - The dataset to be searched.
+ * @returns {Object} - An object containing search-related states and functions.
+ * @property {string} searchQuery - The current search query.
+ * @property {Function} setSearchQuery - Function to set the search query.
+ * @property {Array} filteredResults - The filtered results based on the search query.
+ */
 import { useState, useEffect } from "react";
 import { debounce } from "lodash";
 import { useDataFetching, useResidentFetching, useHouseFetching } from "../employeeCustomFetchHook";
 
 export const useSearch = (data) => {
+  // Custom hooks for fetching employee, resident, and house data
   const { data: allEmployee } = useDataFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
+
+  // State variables for search functionality
   const [searchQuery, setSearchQuery] = useState("");
-  const [clearQuery, setClearQuery] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
 
-  const handleSearch = (event) => {
-    const query = event.target.value.toLowerCase();
-    setSearchQuery(query);
-  };
-
+  // Debounced search function for better performance
   const performSearch = debounce((query) => {
     const filteredData = data?.filter((item) => {
+      // Extracting relevant fields from the dataset
       const {
         first_name,
         middle_name,
@@ -37,11 +48,17 @@ export const useSearch = (data) => {
         organisation_name,
         house
       } = item;
+
+      // Matching employee, resident, and house data based on IDs
       const matchedEmployee = allEmployee?.find((e) => e.id === employee);
       const matchedResident = residentData?.find((r) => r.id === resident);
       const matchedHouse = houseData?.find((h) => h.id === house);
+
+      // Constructing full name and title strings for comparison
       const fullName = first_name?.toLocaleLowerCase() + " " + middle_name?.toLocaleLowerCase() + " " + last_name?.toLocaleLowerCase();
       const title = name?.toLocaleLowerCase();
+
+      // Checking if any field includes the search query
       return (
         ((matchedEmployee && `${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`.toLocaleLowerCase().includes(query))) ||
         ((matchedResident && `${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`.toLocaleLowerCase().includes(query))) ||
@@ -59,16 +76,18 @@ export const useSearch = (data) => {
         solicitor_name?.toLocaleLowerCase()?.includes(query) ||
         school_name?.toLocaleLowerCase()?.includes(query) ||
         organisation_name?.toLocaleLowerCase()?.includes(query)
-    );
-    
+      );
     });
-    
-    setFilteredResults(filteredData);
-  }, 500);
 
+    // Updating the state with the filtered results
+    setFilteredResults(filteredData);
+  }, 500); // Debounce time set to 500 milliseconds
+
+  // Effect to trigger search when the searchQuery changes
   useEffect(() => {
     performSearch(searchQuery);
   }, [searchQuery]);
 
-  return { searchQuery, setSearchQuery, handleSearch, filteredResults };
+  // Return the search-related states and functions
+  return { searchQuery, setSearchQuery, filteredResults };
 };

@@ -2,6 +2,9 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useRoleFetching } from "../../../utils/employeeCustomFetchHook";
 import NoAvailableData from "../../../_components/noAvailableData";
+import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
+import { useGlobalState } from "../../../context/GlobalState";
+import { Loader } from "../../../_components/Loader";
 
 const AllEmployee = ({
   DefaultImage,
@@ -11,6 +14,7 @@ const AllEmployee = ({
   isLoading,
   showSkeleton,
   error,
+  searchQuery,
 }) => {
 
   const {roleData} = useRoleFetching();
@@ -21,17 +25,12 @@ const AllEmployee = ({
     setItemsToShow(itemsToShow + 16);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <div className="row staff-grid-row">
       {isLoading || showSkeleton ? (
-        <div className="skeleton-container">
-          <div className="skeleton-content">
-            <div className="skeleton-line"></div>
-            <div className="skeleton-line"></div>
-            <div className="skeleton-line"></div>
-            <div className="skeleton-line"></div>
-          </div>
-        </div>
+        <Loader />
       ) : error ? (
         <p>Error Loading Data</p>
       ) : (
@@ -43,7 +42,10 @@ const AllEmployee = ({
                 return (
                   <React.Fragment key={id}>
                     <div key={id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                      <div className="profile-widget">
+                      <div
+                        style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}}
+                        className="profile-widget border border-gray-300 rounded-md shadow-md"
+                      >
                         <div className="profile-img">
                           <Link
                             className="avatar"
@@ -73,21 +75,25 @@ const AllEmployee = ({
                           >
                             <i className="material-icons">more_vert</i>
                           </a>
-                          <div className="dropdown-menu dropdown-menu-right">
+                          <div 
+                            className="dropdown-menu dropdown-menu-right border"
+                            style={{ backgroundColor: `${isDarkMode ? 'transparent' : 'white'}`}}
+                          >
                             <a
                               className="dropdown-item"
                               onClick={() => handleEditEmployee(id, index)}
+                              style={{ color: 'orange'}}
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
                             </a>
                           </div>
                         </div>
-                        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <a onClick={() => handleEmployeeProfilePage(id, index)}>
-                            {`${first_name} ${middle_name} ${last_name}`}
-                          </a>
-                        </h4>
-                        <div className="small text-muted">
+                        <Link
+                          to={`/app/employee/profile/${id}`}
+                        >
+                          {highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery, isDarkMode)}
+                        </Link>
+                        <div className="text-sm text-[#625F5C]">
                           {roleData?.map((r) => {
                             if (r.id === role) return r.role_name;
                           })}
@@ -107,7 +113,7 @@ const AllEmployee = ({
         </>
       )}
       {itemsToShow < data?.length && (
-        <button className="btn btn-primary col-md-2 mt-3" onClick={handleViewMore}>
+        <button className="col-md-2 mt-3 bg-transparent text-orange-500 rounded-md p-2" onClick={handleViewMore}>
           Load More
         </button>
       )}

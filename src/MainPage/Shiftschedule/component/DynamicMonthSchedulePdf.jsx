@@ -7,15 +7,9 @@ import RobotoLight from '../../../_components/Fonts/Roboto-Light.ttf';
 import Afacad from '../../../_components/Fonts/Afacad-Regular.ttf';
 
 // Register font
-Font.register({ family: 'Roboto', fonts: [
-  { src: RobotoBold },
-]});
-Font.register({ family: 'RobotoLight', fonts: [
-  { src: RobotoLight },
-]});
-Font.register({ family: 'Afacad', fonts: [
-  { src: Afacad },
-]});
+Font.register({ family: 'Roboto', fonts: [{ src: RobotoBold }]});
+Font.register({ family: 'RobotoLight', fonts: [{ src: RobotoLight }]});
+Font.register({ family: 'Afacad', fonts: [{ src: Afacad }]});
 
 // Create styles
 const styles = StyleSheet.create({

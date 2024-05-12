@@ -1,7 +1,16 @@
+import React from "react";
 import axios from "axios";
-import { BaseUrl } from "./baseUrl";
+import { BaseUrl, Base2Url } from "./baseUrl";
 import { toast } from "react-toastify";
 import { setGlobalState } from "../context/GlobalState";
+
+/**
+ * This JavaScript function handles adding, updating, and deleting employee data using axios and toast
+ * notifications.
+ * @param state - The current state of the application. It contains information about the employees,
+ * such as their names, IDs, and other details.
+ * @returns The function does not return anything explicitly.
+ */
 
 // Add - Update - Delete Employee state
 export const add_update_delete_employee = async (state, { type, payload }) => {
@@ -3693,6 +3702,82 @@ export const add_update_delete_Career = async (state, { type, payload }) => {
         toast.error("Network error occured while deleting career");
         setGlobalState("careerError", JSON.stringify(error?.response?.data));
         throw new Error("Error occurred while deleting career");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Delete User state
+export const add_update_delete_user = async (state, { type, payload }) => {
+  console.log(payload)
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${Base2Url}/users/`, payload);
+        // Check the response status
+        if (response.status === 201) {
+          toast.success("User Added", {
+            autoClose: 1500,
+          });
+          return;
+        } else {
+          throw new Error("Failed to post data");
+        }
+      } catch (error) {
+        console.error("Error occurred while posting data:", error);
+        toast.error(error.response.data.message);
+        throw new Error("Error occurred while posting data");
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Login user state
+export const login_user = async (state, { type, payload }) => {
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${Base2Url}/users/login`, payload);
+        // Check the response status
+        if (response.data) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          toast.success("Loading......");
+          window.open('/app/main/dashboard');
+
+          // Close the previous tab on successful login
+          window.close();
+          return;
+        } else {
+          throw new Error("Failed to log in");
+        }
+      } catch (error) {
+        console.error("Error occurred while login user:", error);
+        toast.error(error.response.data.message);
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Forgot Password state
+export const forgot_password = async (state, { type, payload }) => {
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${Base2Url}/users/forgot-password`, payload);
+        // Check the response status
+        if (response.status == 201) {
+          window.alert("Password reset link has been sent to your email!");
+          window.location.replace("/login");
+          return;
+        } else {
+          throw new Error("Failed to send link");
+        }
+      } catch (error) {
+        console.error("Error occurred while sending link:", error);
+        toast.error(error.response.data.message);
       }
     default:
       throw new Error();

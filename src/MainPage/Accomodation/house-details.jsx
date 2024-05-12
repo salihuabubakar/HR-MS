@@ -59,13 +59,19 @@ import DisplayFileType from '../../_components/fileExtension';
 import ResAppointment from './Components/ResAppointment';
 import { isMobile } from '../../utils/mediaQuery';
 import useHouseData from '../../utils/Hooks/houseDetails';
+import { AvatarLoader, LineLoader, Loader2, Loader3 } from '../../_components/Loader';
+import { ResAppointmentDiv } from '../../_components/modelbox/styles';
 
 const HouseDetails = () => {
-  const { id } = useParams();
-  let getHouseId = parseInt(id, 10);
-  const { getSelectedData, isSelectedLoading } = useHouseData(getHouseId);
 
-  const [menu, setMenu] = useState(false);
+const { id } = useParams();
+
+let getHouseId = parseInt(id, 10);
+
+const { getSelectedData, isSelectedLoading } = useHouseData(getHouseId);
+
+const [menu, setMenu] = useState(false);
+
 const toggleMobileMenu = () => {
     setMenu(!menu);
   };
@@ -105,11 +111,16 @@ const toggleMobileMenu = () => {
   );
   const [houseEmployeeIndexToEdit, setHouseEmployeeIndexToEdit] =
     useState(null);
+
   const [showHouseEmployeeModal] = useGlobalState("showHouseEmployeeModal");
+
   const { houseEmployeeData } =
     useHouseEmployeeFetching();
+
   const [getHouseEmployeeId, setGetHouseEmployeeId] = useState();
+
   const [deleteHouseEmployeeModal] = useGlobalState("deleteHouseEmployeeModal");
+
   useEffect(() => {
     if (!showHouseEmployeeModal) {
       setGlobalState("selectedHouseEmployee", "");
@@ -139,11 +150,16 @@ const toggleMobileMenu = () => {
   );
   const [houseResidentIndexToEdit, setHouseResidentIndexToEdit] =
     useState(null);
+
   const [showHouseResidentModal] = useGlobalState("showHouseResidentModal");
+
   const { houseResidentData } =
     useHouseResidentFetching();
+
   const [getHouseResidentId, setGetHouseResidentId] = useState();
+
   const [deleteHouseResidentModal] = useGlobalState("deleteHouseResidentModal");
+
   useEffect(() => {
     if (!showHouseResidentModal) {
       setGlobalState("selectedHouseResident", "");
@@ -172,11 +188,16 @@ const toggleMobileMenu = () => {
     []
   );
   const [houseImagesIndexToEdit, setHouseImagesIndexToEdit] = useState(null);
+
   const [showHouseImagesModal] = useGlobalState("showHouseImagesModal");
+
   const { houseImagesData, isHouseImagesLoading, houseImagesError } =
     useHouseImageFetching();
+
   const [getHouseImagesId, setGetHouseImagesId] = useState();
+
   const [deleteHouseImagesModal] = useGlobalState("deleteHouseImagesModal");
+
   useEffect(() => {
     if (!showHouseImagesModal) {
       setGlobalState("selectedHouseImages", "");
@@ -201,11 +222,17 @@ const toggleMobileMenu = () => {
 
   // Room
   const [roomState, dispatchRoom] = useReducer(add_update_delete_room, []);
+
   const [roomIndexToEdit, setRoomIndexToEdit] = useState(null);
+
   const [showRoomModal] = useGlobalState("showRoomModal");
+
   const { roomData } = useRoomFetching();
+
   const [getRoomId, setGetRoomId] = useState();
+
   const [deleteRoomModal] = useGlobalState("deleteRoomModal");
+
   useEffect(() => {
     if (!showRoomModal) {
       setGlobalState("selectedRoom", "");
@@ -215,6 +242,7 @@ const toggleMobileMenu = () => {
   const handleAddRoom = () => {
     setGlobalState("showRoomModal", true);
   };
+
   const handleEdditRoom = (id, index) => {
     setGetRoomId(id);
     setRoomIndexToEdit(index);
@@ -500,7 +528,7 @@ const toggleMobileMenu = () => {
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">
-          <p className="label">{`${label} : ${payload[0].value}`}</p>
+          <p style={{ color: "#F97316"}} className="label">{`${label}:${payload[0].value}`}</p>
           <p className="desc"></p>
         </div>
       );
@@ -509,7 +537,9 @@ const toggleMobileMenu = () => {
     return null;
   };
 
-  const chartWidth = isMobile() ? 300 : 500;
+  const chartWidth = isMobile() ? 300 : 500; //Dynamically change chat width base on screen size
+
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   return (
     <>
@@ -525,55 +555,38 @@ const toggleMobileMenu = () => {
           <div className='page-header'>
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Profile</h3>
-                <ul className="breadcrumb breadcrumb-nav">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/accomodation/accomodations">All House</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Profile</li>
+                <h3 className="text-4xl text-orange-500">Profile</h3>
+                <ul className="breadcrumb">
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/accomodation/accomodations">All House</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Profile</li>
                 </ul>
               </div>
             </div>
           </div>
-          <div className="card mb-0">
+          <div className="card mb-0 border border-gray-300 rounded-md shadow-md p-2 bg-transparent">
         <div className="card-body">
           <div className="row">
             <div className="col-md-12">
               <div className="profile-view">
-                <div className="profile-img-wrap">
+                <div className="profile-img-wrap bg-transparent">
                   {isSelectedLoading ? (
-                    <div className="skeleton-container1">
-                      <div className="skeleton-avatar1"></div>
-                    </div>
+                    <AvatarLoader />
                   ) : (
                     <>
-                      <div className="profile-img">
-                        <a>
-                          <img alt="" src={photo ? photo : DefaultImage} />
-                        </a>
-                      </div>
+                      <img style={{ width: '100px', height: '100px'}} alt="" src={photo ? photo : DefaultImage} />
                     </>
                   )}
                 </div>
                 <div className="profile-basic">
                   <div className="row">
                     {isSelectedLoading ? (
-                      <div className="skeleton-container1">
-                        <div className="skeleton-content1">
-                          <div className="skeleton-line1"></div>
-                          <div className="skeleton-line2"></div>
-                          <div className="skeleton-line3"></div>
-                          <div className="skeleton-line4"></div>
-                          <div className="skeleton-line5"></div>
-                          <div className="skeleton-line6"></div>
-                        </div>
-                      </div>
+                      <LineLoader />
                     ) : (
                       <>
                         <div className="col-md-5">
                           <div className="profile-info-left">
-                            <h3 className="user-name m-t-0 mb-0">{`${name}`}</h3>
-                            <h6 className="text-muted">
+                            <h3 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="m-t-0 mb-2">{`${name}`}</h3>
+                            <h6 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text-muted mb-2">
                               Manager:{" "}
                               {allEmployee?.map((allE) => {
                                 if (manager === allE.id)
@@ -584,9 +597,10 @@ const toggleMobileMenu = () => {
                                   );
                               })}
                             </h6>
-                            <h6 className="text-muted">Mobile: {mobile}</h6>
-                            <h6 className="text-muted">Email: {email}</h6>
+                            <h6 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="text-muted mb-2">Mobile: {mobile}</h6>
+                            <h6 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text-muted mb-2">Email: {email}</h6>
                             <Popup
+                              style={{ backgroundColor: 'transparent' }}
                               inline
                               hoverable
                               position="bottom center"
@@ -596,21 +610,21 @@ const toggleMobileMenu = () => {
                               }}
                               content={
                                 <Segment.Group>
-                                      <Segment style={{ width: "250px" }}>
+                                      <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                         <div className="ui column relaxed divided grid">
                                           <div className="column">
                                             <div className="ui link list">
-                                              <a className="item">{`House Type: ${house_type}`}</a>
-                                              <a className="item">{`Roof Type: ${roof_type}`}</a>
-                                              <a className="item">{`Floor Type: ${floor_type}`}</a>
-                                              <a className="item">{`Garage: ${garage ? "True" : "False"}`}</a>
-                                              <a className="item">{`Basement: ${basement ? "True" : "False"}`}</a>
-                                              <a className="item">{`Pool: ${pool ? "True" : "False"}`}</a>
-                                              <a className="item">{`Back Yard: ${back_yard ? "True" : "False"}`}</a>
-                                              <a className="item">{`Air Condition: ${air_conditioning ? "True" : "False"}`}</a>
-                                              <a className="item">{`Heating System: ${heating_system ? "True" : "False"}`}</a>
-                                              <a className="item">{`Security System: ${security_system ? "True" : "False"}`}</a>
-                                              <a className="item">{`Solar Panel: ${solar_panels ? "True" : "False"}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`House Type: ${house_type}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Roof Type: ${roof_type}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Floor Type: ${floor_type}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Garage: ${garage ? "True" : "False"}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Basement: ${basement ? "True" : "False"}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Pool: ${pool ? "True" : "False"}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Back Yard: ${back_yard ? "True" : "False"}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Air Condition: ${air_conditioning ? "True" : "False"}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Heating System: ${heating_system ? "True" : "False"}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Security System: ${security_system ? "True" : "False"}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Solar Panel: ${solar_panels ? "True" : "False"}`}</a>
                                             </div>
                                           </div>
                                         </div>
@@ -618,7 +632,7 @@ const toggleMobileMenu = () => {
                                 </Segment.Group>
                               }
                               trigger={
-                                  <a>
+                                  <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                     View More
                                   </a>
                               }
@@ -629,7 +643,26 @@ const toggleMobileMenu = () => {
 
                         <div className="col-md-7 profile-right-div">
                           <ul className="personal-info">
+                            <li>
+                              <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="title">Address:</div>
+                              <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
+                                <a>{`${street_address}, ${city}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="title">Post Code:</div>
+                              <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
+                                <a>{`${postcode}`}</a>
+                              </div>
+                            </li>
+                            <li>
+                              <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="title">Year Built:</div>
+                              <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
+                                <a>{`${year_built}`}</a>
+                              </div>
+                            </li>
                             <Popup
+                              style={{ backgroundColor: 'transparent' }}
                               inline
                               hoverable
                               position="bottom left"
@@ -639,18 +672,15 @@ const toggleMobileMenu = () => {
                               }}
                               content={
                                 <Segment.Group>
-                                      <Segment style={{ width: "250px" }}>
+                                      <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                         <div className="ui column relaxed divided grid">
                                           <div className="column">
                                             <div className="ui link list">
-                                              <a className="item">{`Address: ${street_address}, ${city}`}</a>
-                                              <a className="item">{`Post Code: ${postcode}`}</a>
-                                              <a className="item">{`Year Built: ${year_built}`}</a>
-                                              <a className="item">{`Square Footage: ${square_footage}`}</a>
-                                              <a className="item">{`No of bedromm: ${num_bedrooms}`}</a>
-                                              <a className="item">{`No of bathroom: ${num_bathrooms}`}</a>
-                                              <a className="item">{`No of kitchens: ${num_kitchens}`}</a>
-                                              <a className="item">{`No of floors: ${num_floors}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`Square Footage: ${square_footage}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`No of bedromm: ${num_bedrooms}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`No of bathroom: ${num_bathrooms}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`No of kitchens: ${num_kitchens}`}</a>
+                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}  className="item">{`No of floors: ${num_floors}`}</a>
                                             </div>
                                           </div>
                                         </div>
@@ -658,7 +688,7 @@ const toggleMobileMenu = () => {
                                 </Segment.Group>
                               }
                               trigger={
-                                  <a>
+                                  <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                     View More
                                   </a>
                               }
@@ -674,7 +704,7 @@ const toggleMobileMenu = () => {
           </div>
         </div>
       </div>
-      <div className="card tab-box">
+      <div className="card tab-box border border-gray-300 rounded-md shadow-md bg-transparent">
         <div className="row user-tabs">
           <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
             <ul className="nav nav-tabs nav-tabs-bottom">
@@ -760,12 +790,7 @@ const toggleMobileMenu = () => {
       {/* Dashboard Info Tab */}
       <div id="dashboard" className="pro-overview tab-pane fade show active">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader2 />
             ) : (
               <>
                 <div class="row">
@@ -785,8 +810,8 @@ const toggleMobileMenu = () => {
                     </div>
                   </div> */}
                   <div className="col-lg-12">
-                    <div className="card">
-                      <div className="card-header">
+                    <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+                      <div className="card-header shadow-md">
 				                <h4 className="card-title mb-0">
                           Chart
                         </h4>
@@ -810,7 +835,7 @@ const toggleMobileMenu = () => {
                             <YAxis />
                             <Tooltip content={<CustomTooltip />} />
                             <Legend />
-                            <Bar dataKey="Total" barSize={20} fill="#ff9b44" />
+                            <Bar dataKey="Total" barSize={50} fill="#F97316" />
                           </BarChart>
                         </div>
                       </div>
@@ -819,18 +844,18 @@ const toggleMobileMenu = () => {
                 </div>
                 <div className="row">
                   <div className="col-lg-12">
-				            <div className="card bg-white calendarIndex">
-				          	  <div className="card-header">
+				            <div className="card calendarIndex border border-gray-300 rounded-md shadow-md bg-transparent">
+				          	  <div className="card-header shadow-md">
 				          	    <h4 className="card-title mb-0">
                           Resident Appointments
                         </h4>
 				          	  </div>
-                      <div className="card-body">
+                      <ResAppointmentDiv isDarkMode={isDarkMode} className="card-body">
                         <ResAppointment 
                           houseId={houseId}
                           houseResidentData={houseResidentData}
                         />
-								      </div>
+								      </ResAppointmentDiv>
 				            </div>
 				          </div>
                 </div>
@@ -842,17 +867,12 @@ const toggleMobileMenu = () => {
         <div id="persons" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader2 />
             ) : (
               <>
                 <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-header">
+                  <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                    <div className="card-header shadow-md">
 				              <h4 className="card-title mb-0">
                         Employee {""}
                         <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -896,9 +916,10 @@ const toggleMobileMenu = () => {
                             } = employees;
                             if (house === houseId && status === "Active") {
                               return (
-                                <EmployeeImgCard key={id} className="card employee-img-card">
+                                <EmployeeImgCard key={id} className="card employee-img-card border border-gray-300 rounded-md shadow-md" style={{ backgroundColor: 'transparent' }}>
                                   <span style={{width: "90%"}}>
                                     <Popup
+                                      style={{ backgroundColor: 'transparent' }}
                                       inline
                                       hoverable
                                       position="bottom left"
@@ -908,10 +929,10 @@ const toggleMobileMenu = () => {
                                       }}
                                       content={
                                         <Segment.Group>
-                                              <Segment style={{ width: "250px" }}>
+                                              <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                 <div className="ui column relaxed divided grid">
                                                   <div className="column">
-                                                    <h4>
+                                                    <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                                     {allEmployee?.map((allE) => {
                                                       if (employee === allE.id)
                                                         return (
@@ -923,7 +944,7 @@ const toggleMobileMenu = () => {
                                                     </h4>
                                                     <div className="ui link list">
                                                       {join_date && (
-                                                        <a className="item">{`Start Date: ${moment(join_date).format("DD MMM YYYY")}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Start Date: ${moment(join_date).format("DD MMM YYYY")}`}</a>
                                                       )}
                                                     </div>
                                                   </div>
@@ -996,7 +1017,7 @@ const toggleMobileMenu = () => {
                         ) : (
                           <div style={{ display: "flex", flexDirection: "column"}}>
                             <img style={{width: "50px"}} src={NoUser} alt='no-user'/>
-                            <p>Ops! No employee in the house.</p>
+                            <p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No employee in the house.</p>
                           </div>
                         )}
                       </Wrapper>
@@ -1005,8 +1026,8 @@ const toggleMobileMenu = () => {
                 </div>
 
                 <div className="col-md-6 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-header">
+                  <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                    <div className="card-header shadow-md">
 				              <h4 className="card-title mb-0">
                         Residents {""}
                         <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -1051,9 +1072,10 @@ const toggleMobileMenu = () => {
                             } = residents;
                             if (house === houseId && status === "Active" && resident !== null) {
                               return (
-                                <EmployeeImgCard key={id} className="card employee-img-card">
+                                <EmployeeImgCard key={id} className="card  employee-img-card border border-gray-300 rounded-md shadow-md" style={{ backgroundColor: 'transparent' }}>
                                   <span style={{width: "90%"}}>
                                     <Popup
+                                      style={{ backgroundColor: 'transparent' }}
                                       inline
                                       hoverable
                                       position="bottom left"
@@ -1063,10 +1085,10 @@ const toggleMobileMenu = () => {
                                       }}
                                       content={
                                         <Segment.Group>
-                                              <Segment style={{ width: "250px" }}>
+                                              <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                 <div className="ui column relaxed divided grid">
                                                   <div className="column">
-                                                    <h4>
+                                                    <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                                     {residentData?.map((allR) => {
                                                       if (resident === allR.id)
                                                         return (
@@ -1077,7 +1099,7 @@ const toggleMobileMenu = () => {
                                                     })}
                                                     </h4>
                                                     <div className="ui link list">
-                                                      <a className="item">
+                                                      <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                       {roomData?.map((allR) => {
                                                         if (room === allR.id)
                                                           return (
@@ -1088,7 +1110,7 @@ const toggleMobileMenu = () => {
                                                       })}
                                                       </a>
                                                       {occupancy_start_date && (
-                                                        <a className="item">{`Start Date: ${moment(occupancy_start_date).format("DD MMM YYYY")}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Start Date: ${moment(occupancy_start_date).format("DD MMM YYYY")}`}</a>
                                                       )}
                                                     </div>
                                                   </div>
@@ -1161,7 +1183,7 @@ const toggleMobileMenu = () => {
                         ) : (
                           <div style={{ display: "flex", flexDirection: "column"}}>
                             <img style={{width: "50px"}} src={NoUser} alt='no-user'/>
-                            <p>Ops! No resident in the house.</p>
+                            <p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No resident in the house.</p>
                           </div>
                         )}
                       </Wrapper>
@@ -1177,17 +1199,12 @@ const toggleMobileMenu = () => {
         <div id="maintenance" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader2 />
             ) : (
               <>
                 <div className="col-lg-12">
-				          <div className="card">
-				        	<div className="card-header">
+				          <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				        	<div className="card-header shadow-md">
 				        	  <h4 className="card-title mb-0">
                       Maintenance {""}
                       <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -1251,7 +1268,7 @@ const toggleMobileMenu = () => {
                               return (
                                 <React.Fragment key={id}>
                                 <tr>
-				        			            <td>
+				        			            <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                       <span
                                       className={
                                         (status === "Progress" && "badge bg-inverse-info") ||
@@ -1262,7 +1279,7 @@ const toggleMobileMenu = () => {
                                       {status}
                                     </span>
                                   </td>
-                                  <td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                     {allEmployee?.map((allE) => {
                                         if (Employee === allE.id)
                                           return (
@@ -1272,7 +1289,7 @@ const toggleMobileMenu = () => {
                                           );
                                     })}
                                   </td>
-				        			            <td>
+				        			            <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                     {organisationData?.map((org) => {
                                       if (Organization === org.id)
                                         return (
@@ -1282,10 +1299,10 @@ const toggleMobileMenu = () => {
                                         );
                                     })}
                                   </td>
-                                  <td>{cost}</td>
-                                  <td>{date}</td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{cost}</td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{date}</td>
                                   {description ? (
-                                      <td><PopUpText text={description}/></td>
+                                      <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}><PopUpText text={description}/></td>
                                     ) : <td></td>
                                   }
                                   <td>
@@ -1306,7 +1323,7 @@ const toggleMobileMenu = () => {
                                                   {houseDocumentsData?.map((doc) => {
                                                       if (documents.includes(doc.id))
                                                         return (
-                                                          <a key={doc.id} className="item">
+                                                          <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}} key={doc.id} className="item">
                                                             {`Doc: ${doc.title}`}
                                                           </a>
                                                         );
@@ -1323,6 +1340,7 @@ const toggleMobileMenu = () => {
                                           padding: "0.5em 1em",
                                           border: "1px solid #ccc",
                                           borderRadius: "4px",
+                                          color: `${isDarkMode ? '#898888' : '#000'}`
                                         }}>
                                           Hover/Click to show
                                         </span>
@@ -1366,6 +1384,7 @@ const toggleMobileMenu = () => {
                                           padding: "0.5em 1em",
                                           border: "1px solid #ccc",
                                           borderRadius: "4px",
+                                          color: `${isDarkMode ? '#898888' : '#000'}`
                                         }}>
                                           Hover/Click to show
                                         </span>
@@ -1409,6 +1428,7 @@ const toggleMobileMenu = () => {
                                           padding: "0.5em 1em",
                                           border: "1px solid #ccc",
                                           borderRadius: "4px",
+                                          color: `${isDarkMode ? '#898888' : '#000'}`
                                         }}>
                                           Hover/Click to show
                                         </span>
@@ -1443,7 +1463,7 @@ const toggleMobileMenu = () => {
                               );
                             }
                           })
-                        : "Ops! No Data"}
+                        : <p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p>}
 				        		  </tbody>
 				        		</table>
 				        	  </div>
@@ -1459,12 +1479,7 @@ const toggleMobileMenu = () => {
         <div id="house_image" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader2 />
             ) : (
               <>
                 <h3 className="card-title">
@@ -1509,15 +1524,11 @@ const toggleMobileMenu = () => {
         <div id="house_bill" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader3 />
             ) : (
               <div className="col-md-12 d-flex">
-                <div className="card profile-box flex-fill">
-                  <div className="card-header">
+                <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                  <div className="card-header shadow-md">
 				            <h4 className="card-title mb-0">
                       House Bills {""}
                       <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -1562,9 +1573,10 @@ const toggleMobileMenu = () => {
                           } = bills;
                           if (house == houseId) {
                             return (
-                              <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                              <BillCard style={{position: "relative"}} key={id} className="card bill-card border border-gray-300 rounded-md shadow-md bg-transparent">
                                 <span style={{width: "90%"}}>
                                   <Popup
+                                    style={{ backgroundColor: 'transparent' }}
                                     inline
                                     hoverable
                                     position="bottom left"
@@ -1574,18 +1586,18 @@ const toggleMobileMenu = () => {
                                     }}
                                     content={
                                       <Segment.Group>
-                                            <Segment style={{ width: "250px" }}>
+                                            <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                               <div className="ui column relaxed divided grid">
                                                 <div className="column">
-                                                  <h4>{title}</h4>
+                                                  <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{title}</h4>
                                                   <div className="ui link list">
-                                                    <a className="item">{`Amount: ${amount ? amount : '--'}`}</a>
-                                                    <a className="item">{`Paid: ${paid ? paid : '--'}`}</a>
-                                                    <a className="item">{`Date: ${date}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Amount: ${amount ? amount : '--'}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Paid: ${paid ? paid : '--'}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Date: ${date}`}</a>
                                                     {houseDocumentsData?.map((doc) => {
                                                           if (documents.includes(doc.id))
                                                             return (
-                                                              <a key={doc.id} className="item">
+                                                              <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} key={doc.id} className="item">
                                                                 {`Doc: ${doc.title}`}
                                                               </a>
                                                             );
@@ -1597,7 +1609,7 @@ const toggleMobileMenu = () => {
                                       </Segment.Group>
                                     }
                                     trigger={
-                                      <a style={{color: "black"}}>
+                                      <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                         {title}
                                       </a>
                                     }
@@ -1635,7 +1647,7 @@ const toggleMobileMenu = () => {
                           }
                         })
                       ) : (
-                        <>Ops! No Bill</>
+                        <><p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p></>
                       )}
                     </Wrapper>
                   </div>
@@ -1649,15 +1661,11 @@ const toggleMobileMenu = () => {
         <div id="house_rooms" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader3 />
             ) : (
               <div className="col-md-12 d-flex">
-                <div className="card profile-box flex-fill">
-                  <div className="card-header">
+                <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                  <div className="card-header shadow-md">
 				            <h4 className="card-title mb-0">
                       House Rooms {""}
                       <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -1699,9 +1707,10 @@ const toggleMobileMenu = () => {
                           } = room;
                           if (house == houseId) {
                             return (
-                              <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                              <BillCard style={{position: "relative"}} key={id} className="card bill-card border border-gray-300 rounded-md shadow-md bg-transparent">
                                 <span style={{width: "90%"}}>
                                   <Popup
+                                    style={{ backgroundColor: 'transparent' }}
                                     inline
                                     hoverable
                                     position="bottom left"
@@ -1711,18 +1720,18 @@ const toggleMobileMenu = () => {
                                     }}
                                     content={
                                       <Segment.Group>
-                                            <Segment style={{ width: "250px" }}>
+                                            <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                               <div className="ui column relaxed divided grid">
                                                 <div className="column">
-                                                  <h4>{name}</h4>
+                                                  <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{name}</h4>
                                                   <div className="ui link list">
-                                                    <a className="item">{`Room status: ${room_status}`}</a>
-                                                    <a className="item">{`Room Type: ${room_type}`}</a>
-                                                    <a className="item">Des: <PopUpText text={room_description}/></a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Room status: ${room_status}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Room Type: ${room_type}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">Des: <PopUpText text={room_description}/></a>
                                                     {houseImagesData?.map((img) => {
                                                         if (room_photos.includes(img.id))
                                                           return (
-                                                            <a key={img.id} className="item">{`Room Photos: ${img.name}`}</a>
+                                                            <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} key={img.id} className="item">{`Room Photos: ${img.name}`}</a>
                                                           );
                                                     })}
                                                   </div>
@@ -1732,7 +1741,7 @@ const toggleMobileMenu = () => {
                                       </Segment.Group>
                                     }
                                     trigger={
-                                      <a style={{color: "black"}}>
+                                      <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                         {name}
                                       </a>
                                     }
@@ -1770,7 +1779,7 @@ const toggleMobileMenu = () => {
                           }
                         })
                       ) : (
-                        <>Ops! No Room in the house</>
+                        <><p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p></>
                       )}
                     </Wrapper>
                   </div>
@@ -1784,16 +1793,12 @@ const toggleMobileMenu = () => {
         <div className="tab-pane fade" id="document_upload">
           <div className="row">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader3 />
             ) : (
               <>
               <div className="col-md-12 d-flex">
-                  <div className="card profile-box flex-fill">
-                    <div className="card-header">
+                  <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                    <div className="card-header shadow-md">
 				              <h4 className="card-title mb-0">
                         House Document {""}
                         <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -1839,7 +1844,7 @@ const toggleMobileMenu = () => {
                             } = doc;
                             if (house == houseId) {
                               return (
-                                <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3">
+                                <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3 border border-gray-300 rounded-md shadow-md bg-transparent">
                                   <div className="dropdown-file">
                                     <a href="" className="dropdown-link" data-bs-toggle="dropdown"><i className="fa fa-ellipsis-v" /></a>
                                     <div className="dropdown-menu dropdown-menu-right">
@@ -1887,6 +1892,7 @@ const toggleMobileMenu = () => {
                                     <h6>
                                       <a href="">
                                         <Popup
+                                          style={{ backgroundColor: 'transparent' }}
                                           inline
                                           hoverable={true}
                                           position="top left"
@@ -1896,17 +1902,17 @@ const toggleMobileMenu = () => {
                                           }}
                                           content={
                                             <Segment.Group>
-                                                  <Segment style={{ width: "250px" }}>
+                                                  <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                     <div className="ui column relaxed divided grid">
                                                       <div className="column">
-                                                        <h4>{`Doc Name: ${title}`}</h4>
+                                                        <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{`Doc Name: ${title}`}</h4>
                                                         <div className="ui link list">
-                                                          <a className="item">{`Valid From: ${valid_from}`}</a>
-                                                          <a className="item">{`Expiry Date: ${expiry_date}`}</a>
-                                                          <a className="item">
+                                                          <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Valid From: ${valid_from}`}</a>
+                                                          <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Expiry Date: ${expiry_date}`}</a>
+                                                          <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                               {description && description && (
                                                                   <>
-                                                                    <div className="text">
+                                                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
                                                                       Description:{" "}
                                                                       <span>
                                                                         <PopUpText text={description}/>
@@ -1915,7 +1921,7 @@ const toggleMobileMenu = () => {
                                                                   </>
                                                                 )}
                                                             </a>
-                                                          <a className="item">{`Status: ${status}`}</a>
+                                                          <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Status: ${status}`}</a>
                                                         </div>
                                                       </div>
                                                     </div>
@@ -1923,7 +1929,7 @@ const toggleMobileMenu = () => {
                                             </Segment.Group>
                                           }
                                           trigger={
-                                              <a style={{color: "black"}}>
+                                              <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                 {title}
                                               </a>
                                           }
@@ -1936,7 +1942,7 @@ const toggleMobileMenu = () => {
                             }
                           })
                         ) : (
-                          <></>
+                          <><p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p></>
                         )}
                       </Wrapper>
                     </div>
@@ -1951,15 +1957,11 @@ const toggleMobileMenu = () => {
         <div id="notice" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader3 />
             ) : (
               <div className="col-md-12 d-flex">
-                <div className="card profile-box flex-fill">
-                  <div className="card-header">
+                <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                  <div className="card-header shadow-md">
 				            <h4 className="card-title mb-0">
                         Notice {""}
                         <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -2004,9 +2006,10 @@ const toggleMobileMenu = () => {
                           } = notice;
                           if (house == houseId) {
                             return (
-                              <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                              <BillCard style={{position: "relative"}} key={id} className="card bill-card border border-gray-300 rounded-md shadow-md bg-transparent">
                                 <span style={{width: "90%"}}>
                                   <Popup
+                                    style={{ backgroundColor: 'transparent' }}
                                     inline
                                     hoverable
                                     position="bottom left"
@@ -2016,15 +2019,15 @@ const toggleMobileMenu = () => {
                                     }}
                                     content={
                                       <Segment.Group>
-                                            <Segment style={{ width: "250px" }}>
+                                            <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                               <div className="ui column relaxed divided grid">
                                                 <div className="column">
-                                                  <h4>{title}</h4>
+                                                  <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{title}</h4>
                                                   <div className="ui link list">
-                                                    <a className="item">{`Notice date: ${notice_date}`}</a>
-                                                    <a className="item">Des: <PopUpText text={description}/></a>
+                                                    <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Notice date: ${notice_date}`}</a>
+                                                    <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">Des: <PopUpText text={description}/></a>
                                                     {residents_applicable.length > 0 && (
-                                                      <a className="item">
+                                                      <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                         Resident Applicable: {""}
                                                         {residentData?.map((allR) => {
                                                           if (residents_applicable.includes(allR.id))
@@ -2043,7 +2046,7 @@ const toggleMobileMenu = () => {
                                                     {houseDocumentsData?.map((doc) => {
                                                           if (documents.includes(doc.id))
                                                             return (
-                                                              <a key={doc.id} className="item">
+                                                              <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} key={doc.id} className="item">
                                                                 {`Doc: ${doc.title}`}
                                                               </a>
                                                             );
@@ -2055,7 +2058,7 @@ const toggleMobileMenu = () => {
                                       </Segment.Group>
                                     }
                                     trigger={
-                                      <a style={{color: "black"}}>
+                                      <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                         {title}
                                       </a>
                                     }
@@ -2093,7 +2096,7 @@ const toggleMobileMenu = () => {
                           }
                         })
                       ) : (
-                        <>Ops! No house notice available</>
+                        <><p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p></>
                       )}
                     </Wrapper>
                   </div>
@@ -2107,15 +2110,11 @@ const toggleMobileMenu = () => {
         <div id="item" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader3 />
             ) : (
               <div className="col-lg-12">
-				          <div className="card">
-				        	  <div className="card-header">
+				          <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				        	  <div className="card-header shadow-md">
 				        	    <h4 className="card-title mb-0">
                         Items {""}
                         <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -2177,14 +2176,14 @@ const toggleMobileMenu = () => {
                                 return (
                                   <React.Fragment key={id}>
                                   <tr>
-                                    <td className='capitalize'>{name}</td>
-				        	  		            <td>{category}</td>
-                                    <td>{expiry_date}</td>
-                                    <td>{purchase_date}</td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className='capitalize'>{name}</td>
+				        	  		            <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{category}</td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{expiry_date}</td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{purchase_date}</td>
                                     {description ? (
-                                      <td><PopUpText text={description}/></td>
+                                      <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}><PopUpText text={description}/></td>
                                      ) : <td></td>}
-                                    <td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                       {houseDocumentsData?.map((doc) => {
                                           if (documents.includes(doc.id))
                                             return (
@@ -2194,8 +2193,8 @@ const toggleMobileMenu = () => {
                                             );
                                       })}
                                     </td>
-                                    <td>{quantity}</td>
-                                    <td>{location}</td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{quantity}</td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{location}</td>
                                     <td className="dropdown dropdown-action text-end">
                                       <a
                                         className="action-icon dropdown-toggle"
@@ -2224,7 +2223,7 @@ const toggleMobileMenu = () => {
                                 );
                               }
                             })
-                          : "Ops! No house item available"}
+                          : <p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p>}
 				        	  	  </tbody>
 				        	  	</table>
 				        	  </div>
@@ -2239,15 +2238,11 @@ const toggleMobileMenu = () => {
         <div id="inspection" className="tab-pane fade">
           <div className="row">
             {isSelectedLoading ? (
-              <div className="skeleton-container-profile">
-                <div className="skeleton-content-profile">
-                  <div className="skeleton-line-profile"></div>
-                </div>
-              </div>
+              <Loader3 />
             ) : (
               <div className="col-lg-12">
-				          <div className="card">
-				        	  <div className="card-header">
+				          <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				        	  <div className="card-header shadow-md">
 				        	    <h4 className="card-title mb-0">
                         Inspection {""}
                         <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -2305,7 +2300,7 @@ const toggleMobileMenu = () => {
                                 return (
                                   <React.Fragment key={id}>
                                   <tr>
-                                    <td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                         <span
                                         className={
                                           ((inspection_status === "Needs Repair" || inspection_status === "Needs Replacement") && "badge bg-inverse-info") ||
@@ -2316,7 +2311,7 @@ const toggleMobileMenu = () => {
                                         {inspection_status}
                                       </span>
                                     </td>
-                                    <td className='capitalize'>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className='capitalize'>
                                       {houseItemData?.map((i) => {
                                           if (house_item === i.id)
                                             return (
@@ -2326,11 +2321,11 @@ const toggleMobileMenu = () => {
                                             );
                                       })}
                                     </td>
-                                    <td>{inspection_date}</td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{inspection_date}</td>
                                     {comments ? (
-                                      <td><PopUpText text={comments}/></td>
+                                      <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}><PopUpText text={comments}/></td>
                                      ) : <td></td>}
-                                    <td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                       {houseDocumentsData?.map((doc) => {
                                           if (documents.includes(doc.id))
                                             return (
@@ -2340,7 +2335,7 @@ const toggleMobileMenu = () => {
                                             );
                                       })}
                                     </td>
-                                    <td className='capitalize'>{inspected_by}</td>
+                                    <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className='capitalize'>{inspected_by}</td>
                                     <td className="dropdown dropdown-action text-end">
                                       <a
                                         className="action-icon dropdown-toggle"
@@ -2369,7 +2364,7 @@ const toggleMobileMenu = () => {
                                 );
                               }
                             })
-                          : "Ops! No house inspection available"}
+                          : <p style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>Ops! No Data.</p>}
 				        	  	  </tbody>
 				        	  	</table>
 				        	  </div>

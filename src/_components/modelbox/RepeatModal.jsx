@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setGlobalState } from "../../context/GlobalState";
+import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import {
   PopupWrapper,
   PopupOverlay,
@@ -32,6 +32,8 @@ const RepeatModal = ({
   } = useDateMonthlyCalendarCounter();
 
 
+  /* The code is filtering the `employeeshiftData` array to find the shifts associated with a specific
+  employee and house. It uses the `employeeId` and `houseId` variables to filter the data. */
   const shiftDateAssociatedWithEmployee = employeeshiftData?.filter(data => {
     return data.employee === employeeId && data.house === houseId
   });
@@ -42,6 +44,10 @@ const RepeatModal = ({
 
   const customFontWidth = isMobile() && 10 
 
+  /**
+   * The function `handleCheckboxChange` updates an array of selected days based on the checkbox value
+   * and checked status.
+   */
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
@@ -54,6 +60,10 @@ const RepeatModal = ({
     }
   };
 
+  /**
+   * The handleRepeat function takes an event object, creates new shifts for each selected date,
+   * formats the dates, adds the new shifts to the schedule, and updates the global state.
+   */
   const handleRepeat = (e) => {
     e.preventDefault();
     const newShifts = [];
@@ -73,11 +83,13 @@ const RepeatModal = ({
     setGlobalState("showAddSchedul", false);
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <RepeatModalContainer className="custom-modal" role="dialog">
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
@@ -92,13 +104,13 @@ const RepeatModal = ({
                   </div>
                   <div className="modal-body">
                     <div className="form-header">
-                      <h3>Copy Shift</h3>
+                      <h3 style={{ color: "#FF9B44" }} className="text-orange-500">Copy Shift</h3>
                       <p style={{ fontSize: "0.7rem" }}>
-                        current Date: <span style={{ color: '#000' }}>{selectedDate}</span>
+                        current Date: <span style={{ color: `${isDarkMode ? '#4c4c4c' : '#000'}` }}>{selectedDate}</span>
                       </p>
                       <p style={{ fontSize: "0.8rem" }}>
                         Select day(s) to copy shift to:{" "}
-                        {date.length > 0 && <span style={{ color: '#000' }}>{date.join(", ")}</span>}
+                        {date.length > 0 && <span style={{ color: `${isDarkMode ? '#4c4c4c' : '#000'}` }}>{date.join(", ")}</span>}
                       </p>
                     </div>
                     <div className="row">
@@ -106,18 +118,19 @@ const RepeatModal = ({
                         <div>
                           {currentMonthName} {currentYear}
                         </div>
-                        <div className=" nav-btn">
+                        <div className=" nav-btn mb-2">
                           <button
                             onClick={() => handleNavigation("prev")}
-                            style={{ border: "none", marginRight: "10px" }}
-                            className="btn btn-success btn-block w-10"
+                            style={{ border: "none", marginRight: "10px", backgroundColor: "#FF9B44" }}
+                            className="btn  btn-block w-10"
                           >
                             {"<"}
                           </button>
                           <button
                             onClick={() => handleNavigation("current")}
-                            className="btn btn-success btn-block w-10"
+                            className="btn  btn-block w-10"
                             style={{
+                              backgroundColor: "#FF9B44",
                               border: "none",
                               opacity: dateCounter === 0 ? "0.3" : "1",
                               cursor:
@@ -129,14 +142,14 @@ const RepeatModal = ({
                           </button>
                           <button
                             onClick={() => handleNavigation("next")}
-                            style={{ border: "none", marginLeft: "10px" }}
-                            className="btn btn-success btn-block w-10"
+                            style={{ border: "none", marginLeft: "10px", backgroundColor: "#FF9B44" }}
+                            className="btn btn-block w-10"
                           >
                             {">"}
                           </button>
                       </div>
                       </div>
-                      <table className="table table-striped custom-table">
+                      <table className="table table-striped custom-table bg-transparent">
                         <thead>
                           <tr>
                             {dayNames?.map((data, index) => {
@@ -205,7 +218,8 @@ const RepeatModal = ({
                     <div className="submit-section">
                       <button
                         onClick={handleRepeat}
-                        className="btn btn-primary repeat-btn"
+                        className="btn btn-primary"
+                        style={{ backgroundColor: "#FF9B44" }}
                       >
                         Copy Shift
                       </button>

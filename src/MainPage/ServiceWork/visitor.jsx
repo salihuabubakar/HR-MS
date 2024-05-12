@@ -21,12 +21,14 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const visitor = () => {
   const { residentVisitorData, residentVisitorLoading } = useResidentVisitorFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentVisitorData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(residentVisitorData);
   let searchResult = !searchQuery ? residentVisitorData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -80,14 +82,7 @@ const visitor = () => {
     setGlobalState("deleteResidentVisitorModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   const columns = [
     {
@@ -101,28 +96,29 @@ const visitor = () => {
       title: "Visitor",
       dataIndex: "visitor",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Visitor Date",
       dataIndex: "visit_date",
       render: (text, record, index) => {
-        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(text).format("DD MMM YYYY")}</TableDiv>;
       },
     },
     {
       title: "Visitor Time",
-      dataIndex: "visit_time",
+      render: (text, record, index) => {
+        const { visit_time } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{visit_time}</TableDiv>;
+      },
     },
     {
       title: "Purpose",
       dataIndex: "purpose",
       render: (text, record, index) => {
         if (text && text) {
-          return (
-            <PopUpText text={text}/>
-          );
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -130,11 +126,17 @@ const visitor = () => {
     },
     {
       title: "Status",
-      dataIndex: "status",
+      render: (text, record, index) => {
+        const { status } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{status}</TableDiv>;
+      },
     },
     {
       title: "Time Left",
-      dataIndex: "left_time",
+      render: (text, record, index) => {
+        const { left_time } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{left_time}</TableDiv>;
+      },
     },
     {
       title: "House",
@@ -143,7 +145,7 @@ const visitor = () => {
         const { house } = record;
         const matchedHouse = houseData?.find((h) => h.id === house);
         if (matchedHouse) {
-          return <React.Fragment>{matchedHouse.name}</React.Fragment>;
+          return <TableDiv isDarkMode={isDarkMode}>{matchedHouse.name}</TableDiv>;
         } else {
           return null; // or return a default value if no match is found
         }
@@ -157,7 +159,7 @@ const visitor = () => {
         const matchedResident = residentData?.find((r) => r.id === resident);
         if (matchedResident) {
           return (
-            <React.Fragment>{`${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`}</React.Fragment>
+            <TableDiv isDarkMode={isDarkMode}>{`${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`}</TableDiv>
           );
         } else {
           return null; // or return a default value if no match is found
@@ -169,9 +171,7 @@ const visitor = () => {
       dataIndex: "comment",
       render: (text, record, index) => {
         if (text && text) {
-          return (
-            <PopUpText text={text}/>
-          );
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -211,7 +211,7 @@ const visitor = () => {
       <div className="page-wrapper">
         <Helmet>
           <title>Resident Visitor - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Resident Visitor page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -219,12 +219,10 @@ const visitor = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Resident Visitor</h3>
+                <h3 className="text-4xl text-orange-500">Resident Visitor</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Resident Visitor</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Resident Visitor</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
@@ -242,7 +240,6 @@ const visitor = () => {
           <SearchComponent
             searchType={"Visitor"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

@@ -17,10 +17,12 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const Solicitor = () => {
   const { solicitorData, solicitorDataLoading } = useSolicitorFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(solicitorData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(solicitorData);
   let searchResult = !searchQuery ? solicitorData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -74,14 +76,7 @@ const Solicitor = () => {
     setGlobalState("deleteSolicitorModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   const columns = [
     {
@@ -95,21 +90,21 @@ const Solicitor = () => {
       title: "Name",
       dataIndex: "solicitor_name",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Phone",
       dataIndex: "solicitor_phone_number",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
       title: "Email",
       dataIndex: "solicitor_email",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
@@ -120,9 +115,9 @@ const Solicitor = () => {
         if(solicitor_website.includes("https://") || 
             solicitor_website.includes("http://")
         ) {
-          return <a href={solicitor_website} target="_blank">{solicitor_website}</a>;
+          return <TableDiv isDarkMode={isDarkMode}><a href={solicitor_website} target="_blank">{solicitor_website}</a></TableDiv>;
         } else {
-          return <a href={"https://" + solicitor_website} target="_blank">{"https://" + solicitor_website}</a>;
+          return <TableDiv isDarkMode={isDarkMode}><a href={solicitor_website} target="_blank">{solicitor_website}</a></TableDiv>;
         }
       },
     },
@@ -130,14 +125,14 @@ const Solicitor = () => {
       title: "Address",
       dataIndex: "solicitor_address",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
       title: "Post Code",
       dataIndex: "solicitor_postcode",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
@@ -145,7 +140,7 @@ const Solicitor = () => {
       dataIndex: "solicitor_description",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -182,7 +177,7 @@ const Solicitor = () => {
       <div className="page-wrapper">
         <Helmet>
           <title>Solicitor - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Resident Solicitor page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -190,12 +185,10 @@ const Solicitor = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Solicitor</h3>
+                <h3 className="text-4xl text-orange-500">Solicitor</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Solicitor</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Solicitor</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
@@ -213,7 +206,6 @@ const Solicitor = () => {
           <SearchComponent
             searchType={"Solicitor"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

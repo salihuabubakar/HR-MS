@@ -90,6 +90,8 @@ const AddEmployeeQualification = ({
       description: description,
     };
 
+    /* The above code is iterating over the entries of the "qualifications" object and for each entry,
+    it is appending the field name and field value to a FormData object called "formData". */
     Object.entries(qualifications).forEach(([fieldName, fieldValue]) => {
       formData.append(fieldName, fieldValue);
     });
@@ -151,11 +153,13 @@ const AddEmployeeQualification = ({
     }
    }
 
+   const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">

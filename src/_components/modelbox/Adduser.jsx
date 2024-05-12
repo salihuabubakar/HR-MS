@@ -7,30 +7,25 @@ import {
   PopupContainer,
   Card,
 } from "./Addemployee.style";
+import { customSelectStyles } from "../../utils/reactSelectCustomeStyle";
 
 const Adduser = ({ dispatchUsers, indexToEdit }) => {
   const [selectedUsers] = useGlobalState("selectedUsers");
 
-  const [id] = useState(
-    selectedUsers[indexToEdit]?.id
-      ? selectedUsers[indexToEdit]?.id
-      : Date.now()
-  );
-
   const [firstName, setFirstName] = useState(
-    selectedUsers[indexToEdit]?.firstName
-      ? selectedUsers[indexToEdit]?.firstName
+    selectedUsers[indexToEdit]?.firts_name
+      ? selectedUsers[indexToEdit]?.firts_name
       : ""
   );
 
-  const [lastName, setLastName] = useState(
-    selectedUsers[indexToEdit]?.lastName
-      ? selectedUsers[indexToEdit]?.lastName
+  const [otherName, setOtherName] = useState(
+    selectedUsers[indexToEdit]?.other_name
+      ? selectedUsers[indexToEdit]?.other_name
       : ""
   );
 
-  const [email, setEmail] = useState(
-    selectedUsers[indexToEdit]?.email ? selectedUsers[indexToEdit]?.email : ""
+  const [username, setUsername] = useState(
+    selectedUsers[indexToEdit]?.username ? selectedUsers[indexToEdit]?.username : ""
   );
 
   const [password, setPassword] = useState(
@@ -39,105 +34,146 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
       : ""
   );
 
-  const [confirmPassword, setConfirmPassword] = useState(
-    selectedUsers[indexToEdit]?.confirmPassword
-      ? selectedUsers[indexToEdit]?.confirmPassword
-      : ""
-  );
-
-  const [employeeId, setEmployeeId] = useState(
-    selectedUsers[indexToEdit]?.employeeId
-      ? selectedUsers[indexToEdit]?.employeeId
-      : ""
-  );
-
-  const [role, setRole] = useState(
-    selectedUsers[indexToEdit]?.role ? selectedUsers[indexToEdit]?.role : ""
-  );
-
-  const [company, setCompany] = useState(
-    selectedUsers[indexToEdit]?.company
-      ? selectedUsers[indexToEdit]?.company
-      : ""
-  );
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [phone, setPhone] = useState(
     selectedUsers[indexToEdit]?.phone ? selectedUsers[indexToEdit]?.phone : ""
   );
 
-  const [userName, setUserName] = useState(
-    selectedUsers[indexToEdit]?.userName
-      ? selectedUsers[indexToEdit]?.userName
+  const [employeeId, setEmployeeId] = useState(
+    selectedUsers[indexToEdit]?.employee_id
+      ? selectedUsers[indexToEdit]?.employee_id
       : ""
   );
 
-  const handleRoleChange = (event) => {
-    setRole(event);
-  };
-  const handleCompanyChange = (event) => {
-    setCompany(event);
-  };
+  const [role, setRole] = useState(
+    selectedUsers[indexToEdit]?.role ? selectedUsers[indexToEdit]?.role : []
+  );
+
 
   const roleOptions = [
-    { value: 0, label: "Admin" },
-    { value: 1, label: "Employee" },
-    { value: 2, label: "Client" },
+    { value: 0, label: "admin" },
+    { value: 1, label: "manager" },
+    { value: 2, label: "employee" },
   ];
 
-  const companyOptions = [
-    { value: 0, label: "Global Technologies" },
-    { value: 1, label: "Delta Infotech" },
-    { value: 2, label: "Niger Fintech" },
-  ];
+  const [firstNameError, setFirstNameError] = useState("");
+  const [otherNameError, setOtherNameError] = useState("");
+  const [usernamelError, setUsernameError] = useState("");
+  const [passWordError, setPassWordError] = useState("");
+  const [confrimPassWordError, setConfirmPassWordError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [employeeIdError, setEmployeeIdError] = useState("");
+  const [roleError, setRoleError] = useState("");
+
+  useEffect(() => {
+    if(password !== confirmPassword) {
+      setConfirmPassWordError("Confirm password mismatched");
+    }
+  }, [password, confirmPassword, setConfirmPassWordError])
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //Validate inputs
+    if (firstName === "") {
+      setFirstNameError("First name is required.");
+      return;
+    }
+    if(otherName === "") {
+      setOtherNameError("Other name is required");
+      return;
+    }
+    if (username === "") {
+      setUsernameError("Email is required.");
+      return;
+    }
+    if (password === "") {
+      setPassWordError("Password is required.");
+      return;
+    }
+    if (confirmPassword === "") {
+      setConfirmPassWordError("Confirm password is required.");
+      return;
+    }
+    if (phone === "") {
+      setPhoneError("Phone number is required.");
+      return;
+    }
+    if (employeeId === "") {
+      setEmployeeIdError("Employee ID is required.");
+      return;
+    }
+
+    if (role?.length === 0) {
+      setRoleError("Role is required.");
+      return;
+    }
+
     const user = {
-      id,
-      firstName,
-      lastName,
-      userName,
+      first_name: firstName.trim(),
+      other_name: otherName.trim(),
       password,
-      confirmPassword,
-      email,
-      phone,
-      employeeId,
+      username,
+      phone: phone.trim(),
+      employee_id: employeeId.trim(),
       role,
-      company,
     };
     if (selectedUsers[indexToEdit]?.id) {
       dispatchUsers({ type: "update", payload: user });
     } else {
-      dispatchUsers({ type: "push", payload: user });
+      dispatchUsers({ type: "add", payload: user });
     }
     setGlobalState("showUsersModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-    control: (provided, state) => ({
-      ...provided,
-      background: "#fff",
-      borderColor: "#ddd",
-      height: "50px",
-    }),
+  const handleNameChange = (event) => {
+    setFirstName(event.target.value);
+    setFirstNameError("");
   };
 
+  const handleOtherNameChange = (event) => {
+    setOtherName(event.target.value);
+    setOtherNameError("");
+  };
+
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+    setUsernameError("");
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+    setPassWordError("");
+  };
+
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
+    setConfirmPassWordError("");
+  };
+
+  const handlePhoneChange = (event) => {
+    setPhone(event.target.value);
+    setPhoneError("");
+  };
+
+  const handleEmployeeIdChange = (event) => {
+    setEmployeeId(event.target.value);
+    setEmployeeIdError("");
+  };
+
+  const handleRoleChange = (event) => {
+    setRole(event.label);
+    setRoleError("");
+  };
+
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer top={true} className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} top={true} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
@@ -158,7 +194,7 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-group">
@@ -167,34 +203,27 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                           </label>
                           <input
                             value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            onChange={handleNameChange}
                             className="form-control"
                             type="text"
                           />
+                          {firstNameError && (
+                            <p className="error-message">{firstNameError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label>Last Name</label>
+                          <label>Other Name <span className="text-danger">*</span></label>
                           <input
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            value={otherName}
+                            onChange={handleOtherNameChange}
                             className="form-control"
                             type="text"
                           />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label>
-                            Username <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                            className="form-control"
-                            type="text"
-                          />
+                          {otherNameError && (
+                            <p className="error-message">{otherNameError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -203,44 +232,56 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             Email <span className="text-danger">*</span>
                           </label>
                           <input
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={handleUsernameChange}
                             className="form-control"
                             type="email"
                           />
+                          {usernamelError && (
+                            <p className="error-message">{usernamelError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label>Password</label>
+                          <label>Password <span className="text-danger">*</span></label>
                           <input
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handlePasswordChange}
                             className="form-control"
                             type="password"
                           />
+                          {passWordError && (
+                            <p className="error-message">{passWordError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label>Confirm Password</label>
+                          <label>Confirm Password <span className="text-danger">*</span></label>
                           <input
                             value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            onChange={handleConfirmPasswordChange}
                             className="form-control"
                             type="password"
                           />
+                          {confrimPassWordError && (
+                            <p className="error-message">{confrimPassWordError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label>Phone </label>
+                          <label>Phone <span className="text-danger">*</span></label>
                           <input
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            onChange={handlePhoneChange}
                             className="form-control"
                             type="text"
                           />
+                          {phoneError && (
+                            <p className="error-message">{phoneError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -250,15 +291,18 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                           </label>
                           <input
                             value={employeeId}
-                            onChange={(e) => setEmployeeId(e.target.value)}
+                            onChange={handleEmployeeIdChange}
                             type="text"
                             className="form-control floating"
                           />
+                          {employeeIdError && (
+                            <p className="error-message">{employeeIdError}</p>
+                          )}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
-                          <label className="col-form-label">
+                          <label>
                             Select Role <span className="text-danger">*</span>
                           </label>
                           <Select
@@ -268,102 +312,12 @@ const Adduser = ({ dispatchUsers, indexToEdit }) => {
                             styles={customSelectStyles}
                             placeholder="Select Role"
                           />
+                          {roleError && <p className="error-message">{roleError}</p>}
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="col-form-label">
-                            Select Company{" "}
-                            <span className="text-danger">*</span>
-                          </label>
-                          <Select
-                            defaultValue={selectedUsers[indexToEdit]?.company}
-                            onChange={handleCompanyChange}
-                            options={companyOptions}
-                            styles={customSelectStyles}
-                            placeholder="Select Company"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="table-responsive m-t-15">
-                      <table className="table table-striped custom-table">
-                        <thead>
-                          <tr>
-                            <th>Module Permission</th>
-                            <th className="text-center">Read</th>
-                            <th className="text-center">Write</th>
-                            <th className="text-center">Create</th>
-                            <th className="text-center">Delete</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Employee</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Holidays</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Leaves</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Events</td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                            <td className="text-center">
-                              <input defaultChecked type="checkbox" />
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                     <div className="submit-section">
                       <button
-                        onClick={handleSubmit}
                         className="btn btn-primary submit-btn"
                       >
                         {selectedUsers[indexToEdit]?.id ? "Update" : "Save"}

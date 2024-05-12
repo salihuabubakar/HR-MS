@@ -17,6 +17,9 @@ import {
   useSocialWorkerFetching,
   useHouseFetching 
 } from "../../../utils/employeeCustomFetchHook";
+import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
+import { TableDiv } from "../../../_components/modelbox/styles";
+import { useGlobalState } from "../../../context/GlobalState";
 
 const Contacts = () => {
   const { data: allEmployee, isLoading } = useDataFetching();
@@ -26,43 +29,79 @@ const Contacts = () => {
   const { organisationData, isOrganisationDataLoading } = useOrganisationFetching();
   const { residentBoroughData, isResidentBoroughLoading } = useResidentBoroughFetching();
   
-  const { searchQuery: empSearch, setSearchQuery: empSetSearch, handleSearch: empHandleSearch, filteredResults: empResult} = useSearch(allEmployee);
+  /**
+ * Employee Search and Result Handling
+ *
+ * Manages the search functionality for employees using the custom hook 'useSearch'
+ * and handles the resulting filtered employee data.
+ *
+ * @constant {string} empSearch - The current search query for employees.
+ * @constant {function} empSetSearch - Function to set the search query for employees.
+ * @constant {Array} empResult - Array of employees filtered based on the search query.
+ * @constant {Array} empSearchResult - The final result of employee data based on search query.
+ */
+  const {
+    searchQuery: empSearch,
+    setSearchQuery: empSetSearch,
+    filteredResults: empResult
+  } = useSearch(allEmployee);
+
+  // Determine the final result of employee data based on the search query
   let empSearchResult = !empSearch ? allEmployee : empResult;
 
-  const { searchQuery: resSearch, setSearchQuery: resSetSearch, handleSearch: resHandleSearch, filteredResults: resResult} = useSearch(residentData);
+
+  const { searchQuery: resSearch, setSearchQuery: resSetSearch, filteredResults: resResult} = useSearch(residentData);
   let resSearchResult = !resSearch ? residentData : resResult;
 
-  const { searchQuery: socSearch, setSearchQuery: socSetSearch, handleSearch: socHandleSearch, filteredResults: socResult} = useSearch(socialWorkerData);
+  const { searchQuery: socSearch, setSearchQuery: socSetSearch, filteredResults: socResult} = useSearch(socialWorkerData);
   let socSearchResult = !socSearch ? socialWorkerData : socResult;
 
-  const { searchQuery: houSearch, setSearchQuery: houSetSearch, handleSearch: houHandleSearch, filteredResults: houResult} = useSearch(houseData);
+  const { searchQuery: houSearch, setSearchQuery: houSetSearch, filteredResults: houResult} = useSearch(houseData);
   let houSearchResult = !houSearch ? houseData : houResult;
 
-  const { searchQuery: orgSearch, setSearchQuery: orgSetSearch, handleSearch: orgHandleSearch, filteredResults: orgResult} = useSearch(organisationData);
+  const { searchQuery: orgSearch, setSearchQuery: orgSetSearch, filteredResults: orgResult} = useSearch(organisationData);
   let orgSearchResult = !orgSearch ? organisationData : orgResult;
 
-  const { searchQuery: borSearch, setSearchQuery: borSetSearch, handleSearch: borHandleSearch, filteredResults: borResult} = useSearch(residentBoroughData);
+  const { searchQuery: borSearch, setSearchQuery: borSetSearch, filteredResults: borResult} = useSearch(residentBoroughData);
   let borSearchResult = !borSearch ? residentBoroughData : borResult;
 
 
 
-  // Table pagination
-  const itemsPerPage = 10; // Number of items per page
-  const [currentPage, setCurrentPage] = useState(1);
-  const startCount = (currentPage - 1) * itemsPerPage + 1;
-  const endCount = startCount + itemsPerPage - 1;
-  const paginationSettings = (dataLength) => {
-    return {
-      total: dataLength?.length,
-      showTotal: (total, range) =>
-        `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-      showSizeChanger: true,
-      onShowSizeChange: onShowSizeChange,
-      itemRender: itemRender,
-      current: currentPage,
-      onChange: setCurrentPage,
-    }
+  /**
+ * Table Pagination Settings Generator
+ *
+ * Generates pagination settings for a table based on the provided data length,
+ * including the number of items per page, the current page, and various display options.
+ *
+ * @function paginationSettings
+ * @param {number} dataLength - The total number of items in the data.
+ * @returns {Object} - Configuration object for table pagination.
+ * @property {number} total - The total number of items in the table.
+ * @property {function} showTotal - Function to display the total number of items.
+ * @property {boolean} showSizeChanger - Flag to show the size changer for items per page.
+ * @property {function} onShowSizeChange - Callback function when changing items per page.
+ * @property {function} itemRender - Custom function for rendering pagination items.
+ * @property {number} current - The current page number.
+ * @property {function} onChange - Callback function when changing the current page.
+ */
+const itemsPerPage = 10; // Number of items per page
+const [currentPage, setCurrentPage] = useState(1);
+const startCount = (currentPage - 1) * itemsPerPage + 1;
+const endCount = startCount + itemsPerPage - 1;
+
+const paginationSettings = (dataLength) => {
+  return {
+    total: dataLength?.length,
+    showTotal: (total, range) =>
+      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange, // Callback for changing items per page
+    itemRender: itemRender, // Custom function for rendering pagination items
+    current: currentPage, // The current page number
+    onChange: setCurrentPage, // Callback for changing the current page
   };
+};
+
   const [menu, setMenu] = useState(false);
   const [tab, setTab] = useState("employee" || "resident" || "social-worker" || "house" || "organisation" || "borough");
 
@@ -70,14 +109,7 @@ const Contacts = () => {
     setMenu(!menu);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   let actualIndex;
   const employeeColumns = [
@@ -92,26 +124,22 @@ const Contacts = () => {
       title: "Name",
       render: (text, record, index) => {
         const { first_name, middle_name, last_name } = record;
-        return (
-          <React.Fragment>
-            <h2 className="table-avatar">
-              <Link
-                to="#" onClick={(e) => e.preventDefault()}
-              >
-                {`${first_name} ${middle_name} ${last_name}`}
-              </Link>
-            </h2>
-          </React.Fragment>
-        );
+        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, empSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Phone Number",
-      dataIndex: "phone_number",
+      render: (text, record, index) => {
+        const { phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{phone_number}</TableDiv>;
+      },
     },
   ];
 
@@ -127,26 +155,22 @@ const Contacts = () => {
       title: "Name",
       render: (text, record, index) => {
         const { first_name, middle_name, last_name } = record;
-        return (
-          <React.Fragment>
-            <h2 className="table-avatar">
-              <Link
-                to="#" onClick={(e) => e.preventDefault()}
-              >
-                {`${first_name} ${middle_name} ${last_name}`}
-              </Link>
-            </h2>
-          </React.Fragment>
-        );
+        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, resSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Phone Number",
-      dataIndex: "phone_number",
+      render: (text, record, index) => {
+        const { phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{phone_number}</TableDiv>;
+      },
     },
   ];
 
@@ -162,26 +186,22 @@ const Contacts = () => {
       title: "Name",
       render: (text, record, index) => {
         const { first_name, middle_name, last_name } = record;
-        return (
-          <React.Fragment>
-            <h2 className="table-avatar">
-              <Link
-                to="#" onClick={(e) => e.preventDefault()}
-              >
-                {`${first_name} ${middle_name} ${last_name}`}
-              </Link>
-            </h2>
-          </React.Fragment>
-        );
+        return <React.Fragment>{highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, socSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Mobile",
-      dataIndex: "mobile_number",
+      render: (text, record, index) => {
+        const { phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{phone_number}</TableDiv>;
+      },
     },
   ];
 
@@ -195,15 +215,24 @@ const Contacts = () => {
     },
     {
       title: "House name",
-      dataIndex: "name",
+      render: (text, record, index) => {
+        const { name} = record;
+        return <React.Fragment>{highlightSearchQuery(name, houSearch, isDarkMode)}</React.Fragment>;
+      },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Mobile",
-      dataIndex: "mobile",
+      render: (text, record, index) => {
+        const { mobile } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{mobile}</TableDiv>;
+      },
     },
   ];
 
@@ -217,19 +246,31 @@ const Contacts = () => {
     },
     {
       title: "Organisation",
-      dataIndex: "organisation_name",
+      render: (text, record, index) => {
+        const { organisation_name} = record;
+        return <React.Fragment>{highlightSearchQuery(organisation_name, orgSearch, isDarkMode)}</React.Fragment>;
+      },
     },
     {
       title: "Email",
-      dataIndex: "email",
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
     {
       title: "Mobile",
-      dataIndex: "mobile",
+      render: (text, record, index) => {
+        const { mobile } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{mobile}</TableDiv>;
+      },
     },
     {
       title: "Office Phone",
-      dataIndex: "office_phone",
+      render: (text, record, index) => {
+        const { office_phone } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{office_phone}</TableDiv>;
+      },
     }
   ];
 
@@ -245,20 +286,29 @@ const Contacts = () => {
       title: "Name",
       dataIndex: "borough_name",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, borSearch, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Contact Name",
-      dataIndex: "contact_name",
+      render: (text, record, index) => {
+        const { contact_name } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{contact_name}</TableDiv>;
+      },
     },
     {
       title: "Contact Email",
-      dataIndex: "contact_email",
+      render: (text, record, index) => {
+        const { contact_email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{contact_email}</TableDiv>;
+      },
     },
     {
       title: "Contact Mobile",
-      dataIndex: "borough_phone_number",
+      render: (text, record, index) => {
+        const { borough_phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{borough_phone_number}</TableDiv>;
+      },
     },
   ];
 
@@ -269,7 +319,7 @@ const Contacts = () => {
       <div className="page-wrapper">
         <Helmet>
           <title>Contact - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Contact page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -277,13 +327,11 @@ const Contacts = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Contact</h3>
+                <h3 className="text-4xl text-orange-500">Contact</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Contact</li>
-                </ul>
+                      <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                      <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Contact</li>
+                    </ul>
               </div>
             </div>
           </div>
@@ -293,7 +341,6 @@ const Contacts = () => {
             <SearchComponent
               searchType={"Employee Contact"}
               searchQuery={empSearch}
-              handleSearch={empHandleSearch}
               setSearchQuery={empSetSearch}
             />
           )}
@@ -301,7 +348,6 @@ const Contacts = () => {
             <SearchComponent
               searchType={"Resident Contact"}
               searchQuery={resSearch}
-              handleSearch={resHandleSearch}
               setSearchQuery={resSetSearch}
             />
           )}
@@ -309,7 +355,6 @@ const Contacts = () => {
             <SearchComponent
               searchType={"Social worker Contact"}
               searchQuery={socSearch}
-              handleSearch={socHandleSearch}
               setSearchQuery={socSetSearch}
             />
           )}
@@ -317,7 +362,6 @@ const Contacts = () => {
             <SearchComponent
               searchType={"House Contact"}
               searchQuery={houSearch}
-              handleSearch={houHandleSearch}
               setSearchQuery={houSetSearch}
             />
           )}
@@ -325,7 +369,6 @@ const Contacts = () => {
             <SearchComponent
               searchType={"Organisation Contact"}
               searchQuery={orgSearch}
-              handleSearch={orgHandleSearch}
               setSearchQuery={orgSetSearch}
             />
           )}
@@ -333,7 +376,6 @@ const Contacts = () => {
             <SearchComponent
               searchType={"Borough Contact"}
               searchQuery={borSearch}
-              handleSearch={borHandleSearch}
               setSearchQuery={borSetSearch}
             />
           )}
@@ -341,79 +383,43 @@ const Contacts = () => {
           <div className="row">
             <div className="col-md-4">
               <div className="contact-cat">             
-                <div className="roles-menu">
+                <div style={{color: `${isDarkMode ? '#898888' : '#333'}`}} className="roles-menu border rounded-md shadow-md">
                   <ul>
                     <li
-                      className={
-                        `${
-                          tab == `employee` ? `active` : null
-                        }`
-                      }
+                      className={`${tab == `employee` ? `active` : null}`}
                       onClick={() => setTab("employee")}
                     >
-                      <a>
-                        Employee
-                      </a>
+                      <a> Employee </a>
                     </li>
                     <li
-                      className={
-                        `${
-                          tab == `resident` ? `active` : null
-                        }`
-                      }
+                      className={`${tab == `resident` ? `active` : null}`}
                       onClick={() => setTab("resident")}
                     >
-                      <a>
-                        Residence
-                      </a>
+                      <a> Residence </a>
                     </li>
                     <li
-                      className={
-                        `${
-                          tab == `social-worker` ? `active` : null
-                        }`
-                      }
+                      className={`${tab == `social-worker` ? `active` : null}`}
                       onClick={() => setTab("social-worker")}
                     >
-                      <a>
-                        Social Worker
-                      </a>
+                      <a> Social Worker </a>
                     </li>
                     <li
-                      className={
-                        `${
-                          tab == `house` ? `active` : null
-                        }`
-                      }
+                      className={`${tab == `house` ? `active` : null}`}
                       onClick={() => setTab("house")}
                     >
-                      <a>
-                        House
-                      </a>
+                      <a> House </a>
                     </li>
                     <li
-                      className={
-                        `${
-                          tab == `organisation` ? `active` : null
-                        }`
-                      }
+                      className={`${tab == `organisation` ? `active` : null}`}
                       onClick={() => setTab("organisation")}
                     >
-                      <a>
-                        Organisation
-                      </a>
+                      <a> Organisation </a>
                     </li>
                     <li
-                      className={
-                        `${
-                          tab == `borough` ? `active` : null
-                        }`
-                      }
+                      className={`${tab == `borough` ? `active` : null}`}
                       onClick={() => setTab("borough")}
                     >
-                      <a>
-                        Borough
-                      </a>
+                      <a> Borough </a>
                     </li>
                   </ul>
                 </div>

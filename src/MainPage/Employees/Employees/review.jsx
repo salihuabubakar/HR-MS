@@ -18,12 +18,14 @@ import { useSearch } from "../../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../../_components/searchComponent";
 import { handleFileDownload } from "../../../utils/helperFucntions";
 import DisplayFileType from "../../../_components/fileExtension";
+import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
+import { TableDiv } from "../../../_components/modelbox/styles";
 
 const Review = () => {
 
   const { employeeReviewData, isEmployeeReviewDataLoading } = useEmployeeReviewFetching();
   const { data } = useDataFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults} = useSearch(employeeReviewData);
+  const { searchQuery, setSearchQuery, filteredResults} = useSearch(employeeReviewData);
   let reviewData = !searchQuery ? employeeReviewData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -78,15 +80,6 @@ const Review = () => {
     setMenu(!menu);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const [employeeReviewError] = useGlobalState("employeeReviewError");
 
   const clearErrorMessage = () => {
@@ -94,6 +87,8 @@ const Review = () => {
   };
 
   let actualIndex;
+
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   const columns = [
     {
@@ -110,9 +105,7 @@ const Review = () => {
         const { employee } = record;
         const matchedEmployee = data?.find((e) => e.id === employee);
         if (matchedEmployee) {
-          return (
-            <React.Fragment>{`${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`}</React.Fragment>
-          );
+          return <TableDiv isDarkMode={isDarkMode}>{highlightSearchQuery(`${matchedEmployee.first_name} ${matchedEmployee.middle_name} ${matchedEmployee.last_name}`, searchQuery, isDarkMode)}</TableDiv>
         } else {
           return null; // or return a default value if no match is found
         }
@@ -122,23 +115,14 @@ const Review = () => {
       title: "Review Type",
       dataIndex: "review_type",
       render: (text, record, index) => {
-        const { review_type } = record;
-        return (
-          <React.Fragment>
-            <h2 className="table-avatar">
-              <Link to="#" onClick={(e) => e.preventDefault()}>
-                {review_type}
-              </Link>
-            </h2>
-          </React.Fragment>
-        );
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
       },
     },
     {
       title: "Review Date",
       dataIndex: "review_date",
       render: (text, record, index) => {
-        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(text).format("DD MMM YYYY")}</TableDiv>;
       },
     },
     {
@@ -146,15 +130,7 @@ const Review = () => {
       dataIndex: "reviewStatus",
       render: (text, record, index) => {
         const { review_status } = record;
-        return (
-          <React.Fragment>
-            <h2 className="table-avatar">
-              <Link to="#" onClick={(e) => e.preventDefault()}>
-                {review_status}
-              </Link>
-            </h2>
-          </React.Fragment>
-        );
+        return <TableDiv isDarkMode={isDarkMode}>{review_status}</TableDiv>;
       },
     },
     {
@@ -162,7 +138,7 @@ const Review = () => {
       dataIndex: "description",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -171,6 +147,10 @@ const Review = () => {
     {
       title: "Review Manager",
       dataIndex: "review_manager",
+      render: (text, record, index) => {
+        const { review_manager } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{review_manager}</TableDiv>;
+      },
     },
     {
       title: "Review File",
@@ -229,7 +209,7 @@ const Review = () => {
       <div className="page-wrapper">
         <Helmet>
           <title>Review - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Review page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -237,12 +217,10 @@ const Review = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Review</h3>
+                <h3 className="text-4xl text-orange-500">Review</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Review</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Review</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
@@ -260,7 +238,6 @@ const Review = () => {
           <SearchComponent
             searchType={"Employee Name"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

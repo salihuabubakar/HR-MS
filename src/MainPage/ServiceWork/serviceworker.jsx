@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useMemo, useReducer } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { Helmet } from "react-helmet";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AddResident from "../../_components/modelbox/AddResident";
 import Header from "../../initialpage/Sidebar/header";
 import Sidebar from "../../initialpage/Sidebar/sidebar";
@@ -25,7 +25,7 @@ const AllServiceWorkers = () => {
 const [getResidentId, setGetResidentId] = useState(null);
 const { residentData, isResidentLoading, residentError } =
   useResidentFetching();
-const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentData);
+const { searchQuery, setSearchQuery, filteredResults } = useSearch(residentData);
 
 const initialUserData = [];
 
@@ -71,20 +71,13 @@ const handleDeleteAcct = (id) => {
     setMenu(!menu);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
-
   const [isResidentError] = useGlobalState("isResidentError");
 
   const clearErrorMessage = () => {
     setGlobalState("isResidentError", "");
   };
+
+  const [isDarkMode] = useGlobalState("isDarkMode", isDarkMode);
 
   return (
     <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -102,12 +95,10 @@ const handleDeleteAcct = (id) => {
             <>
               <div className="row align-items-center">
                 <div className="col">
-                  <h3 className="page-title">Resident</h3>
+                  <h3 className="text-4xl text-orange-500">Resident</h3>
                   <ul className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <Link to="/app/main/dashboard">Dashboard</Link>
-                    </li>
-                    <li className="breadcrumb-item active">Resident</li>
+                    <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                    <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Resident</li>
                   </ul>
                 </div>
                 <div className="col-auto float-end ml-auto">
@@ -139,7 +130,6 @@ const handleDeleteAcct = (id) => {
             <SearchComponent
               searchType={"Resident Name"}
               searchQuery={searchQuery}
-              handleSearch={handleSearch}
               setSearchQuery={setSearchQuery}
             />
             <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -170,6 +160,7 @@ const handleDeleteAcct = (id) => {
               handleEditResident={handleEditResident}
               handleDeleteAcct={handleDeleteAcct}
               DefaultImage={DefaultImage}
+              searchQuery={searchQuery}
             />
           )}
           {tab == "residentList" && (
@@ -182,6 +173,7 @@ const handleDeleteAcct = (id) => {
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              searchQuery={searchQuery}
             />
           )}
         </div>

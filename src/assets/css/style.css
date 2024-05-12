@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /*
 Author       : Dreamguys
 Template Name: SmartHR - Bootstrap Admin Template
@@ -134,6 +137,40 @@ Version      : 3.6
 	src: local('Circular Std Black Italic'), url('../fonts/CircularStd-BlackItalic.woff') format('woff');
 }
 
+/* -------------
+	0. Theme
+-------------------- */
+
+/* Dark mode styles */
+.dark-mode {
+	background-color: #110C08;
+}
+
+/* Light mode styles */
+.light-mode {
+	background-color: white;
+}
+
+.people-avatar {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: 2px solid white;
+	object-fit: cover;
+	cursor: pointer;
+	position: relative;
+	top: 0;
+	transition: top 300ms;
+}
+
+.people-avatar:not(:first-child) {
+	margin-left: -10px;
+}
+
+.people-avatar:hover {
+	z-index: 1;
+}
+
 /*-----------------
 	1. General
 -----------------------*/
@@ -145,7 +182,7 @@ body {
 	font-family: 'CircularStd', sans-serif;
 	font-size: .9375rem;
 	color: #1f1f1f;
-	background-color: #f7f7f7;
+	/* background-color: #f7f7f7; */
 	min-height: 100%;
 	overflow-x: hidden;
 }
@@ -187,13 +224,17 @@ a {
 	text-decoration: none;
 }
 .form-control {
+	background-color: transparent;
+	color: #6C757D;
 	border-color: #e3e3e3;
     box-shadow: none;
     font-size: 15px;
     height: 44px;
 }
 .form-control:focus {
+	background-color: transparent;
 	border-color: #ccc;
+	color: #6C757D;
 	box-shadow: none;
 	outline: 0 none;
 }
@@ -329,8 +370,19 @@ form small {
 	font-weight: 500;
     letter-spacing: 0.05em;
 }
-.table-striped > tbody > tr:nth-of-type(2n+1) {
-	background-color: #f6f6f6;
+
+.table-striped > tbody > tr {
+	background-color: transparent !important;
+}
+.table-striped > thead > tr > th {
+	color: #F97316;
+}
+.table-striped > thead > tr {
+	background-color: transparent !important;
+}
+/* Table description if no data */
+.ant-empty-description {
+	color: #625F5C;
 }
 table.table td h2 {
 	display: inline-block;
@@ -574,7 +626,7 @@ table.dataTable thead > tr > td.sorting {
 	border: 1px solid #482fe9;
 }
 .btn-primary {
-	background-color: #ff9b44;
+	background-color: transparent;
 	border: 1px solid #ff9b44;
 }
 .btn-primary:hover,
@@ -1339,7 +1391,7 @@ table.dataTable thead > tr > td.sorting {
     padding: 30px;
 }
 .custom-modal .close {
-    background-color: #a0a0a0;
+    background-color: #F97316;
     border-radius: 50%;
     color: #fff;
     font-size: 13px;
@@ -1371,19 +1423,25 @@ table.dataTable thead > tr > td.sorting {
 -----------------------*/
 
 .header {
-	background: #ff9b44;
+	/* background: #ff9b44;
 	background: -moz-linear-gradient(left, #ff9b44 0%, #fc6075 100%);
 	background: -webkit-linear-gradient(left, #ff9b44 0%, #fc6075 100%);
 	background: -ms-linear-gradient(left, #ff9b44 0%, #fc6075 100%);
-	background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);
-	border-bottom: 1px solid transparent;
-	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+	background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%); */
+	border-bottom: 1px solid #ccc;
+	/* box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2); */
 	height: 60px;
 	left: 0;
 	position: fixed;
 	right: 0;
 	top: 0;
 	z-index: 1002;
+	/* margin: 0 150px; */
+	margin-left: 100px;
+	margin-right: 180px;
+	-webkit-backdrop-filter: blur(0.8px);
+  backdrop-filter: blur(0.8px);
+	background-color: transparent;
 }
 .header .header-left {
 	float: left;
@@ -1540,17 +1598,26 @@ table.dataTable thead > tr > td.sorting {
 	9. Sidebar
 -----------------------*/
 
+.general-text-color {
+	color: #625F5C;
+}
+
 .sidebar {
-    background-color: #34444c;
-    border-right: 1px solid transparent;
-    bottom: 0;
-    left: 0;
-    margin-top: 0;
-    position: fixed;
-    top: 60px;
-    transition: all 0.2s ease-in-out 0s;
-    width: 230px;
-    z-index: 1001;
+  background-color: white;
+  bottom: 0;
+  left: 100px;
+  margin-top: 0;
+  position: fixed;
+  top: 60px;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	justify-content: start;
+  transition: all 0.2s ease-in-out 0s;
+  width: 250px;
+  z-index: 1001;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
 }
 .sidebar.opened {
 	-webkit-transition: all 0.4s ease;
@@ -1572,21 +1639,22 @@ table.dataTable thead > tr > td.sorting {
 	position: relative;
 }
 .sidebar-menu li a {
-	color: #b7c0cd;
+	color: #625F5C;
 	display: block;
 	font-size: 15px;
 	height: auto;
 	padding: 0 20px;
 }
 .sidebar-menu li a:hover {
-	color: #fff;
+	color: #ff9b44;
 }
 .sidebar-menu li.active a {
-	color: #fff;
-	background-color: rgba(0, 0, 0, 0.2);
+	color: #de6a04;
+	background-color: #FCF0E5;
+	border-radius: 8px;
 }
 .menu-title {
-    color: #ebecf1;
+    color: #ed6300;
     display: flex;
     font-size: 14px;
     opacity: 1;
@@ -1781,7 +1849,11 @@ table.dataTable thead > tr > td.sorting {
 	width: auto;
 }
 .sidebar-menu li a > .badge {
-    color: #fff;
+  color: #fff;
+}
+.switch {
+	margin-top: 330px;
+	margin-bottom: 30px;
 }
 
 /*-----------------
@@ -1790,7 +1862,8 @@ table.dataTable thead > tr > td.sorting {
 
 .page-wrapper {
 	left: 0;
-	margin-left: 230px;
+	margin-left: 350px;
+	margin-right: 150px;
 	padding-top: 60px;
 	position: relative;
 	transition: all 0.2s ease-in-out;
@@ -1826,13 +1899,14 @@ table.dataTable thead > tr > td.sorting {
     z-index: 1 !important;
 }
 .card-title {
-    color: #1f1f1f;
+	color: #F97316;
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 20px;
 }
 .card-header {
-    background-color: #fff;
+  background-color: transparent;
+	border-bottom: 1px solid rgb(176, 162, 162);
 }
 .card-footer {
     background-color: #fff;
@@ -1917,7 +1991,7 @@ table.dataTable thead > tr > td.sorting {
     text-align: center;
 }
 .account-box {
-	background-color: #fff;
+	background-color: transparent;
     border: 1px solid #ededed;
     border-radius: 4px;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
@@ -1954,13 +2028,13 @@ table.dataTable thead > tr > td.sorting {
 	opacity: 0.8;
 }
 .account-box .form-control {
-    background-color: #fbfbfb;
+    background-color: transparent;
     border: 1px solid #e3e3e3;
     border-radius: 4px;
     height: 46px;
 }
 .account-box label {
-	color: #1f1f1f;
+	color: #4c4c4c;
 	font-size: 16px;
 	font-weight: normal;
     margin-bottom: 5px;
@@ -2001,7 +2075,7 @@ table.dataTable thead > tr > td.sorting {
 	color: #333;
 }
 .card-title > a.btn {
-	color: #fff;
+	color: red;
 }
 .custom-table tr {
 	background-color: #fff;
@@ -3589,10 +3663,10 @@ span#close-task-panel {
     top: 0;
 }
 .edit-icon {
-    background-color: #eee;
-    border: 1px solid #e3e3e3;
+    background-color: #ff9b44;
+    border: 1px solid #ff9b44;
     border-radius: 24px;
-    color: #bbb;
+    color: #fff;
     float: right;
     font-size: 12px;
     line-height: 24px;
@@ -3601,8 +3675,8 @@ span#close-task-panel {
     width: 26px;
 }
 .edit-icon:hover {
-	background-color: #ff9b44;
-	border-color: #ff9b44;
+	background-color: #F97316;
+	border-color: #F97316;
     color: #fff;
 }
 .delete-icon {
@@ -3647,7 +3721,8 @@ span#close-task-panel {
 	width: 32px;
 }
 .experience-list > li .experience-user {
-	background: #fff;
+	background: #F97316;
+	border-radius: 50px;
 	height: 10px;
 	left: 4px;
 	margin: 0;
@@ -3657,7 +3732,7 @@ span#close-task-panel {
 	width: 10px;
 }
 .experience-list > li .experience-content {
-	background-color: #fff;
+	background-color: transparent;
 	margin: 0 0 20px 40px;
 	padding: 0;
 	position: relative;
@@ -3676,7 +3751,7 @@ span#close-task-panel {
 	line-height: 1.35;
 }
 .before-circle {
-	background-color: #ddd;
+	background-color: #F97316;
 	border-radius: 50%;
 	height: 10px;
 	width: 10px;
@@ -3853,7 +3928,7 @@ span#close-task-panel {
 	margin-top: 20px;
 }
 .roles-menu > ul {
-    background-color: #fff;
+    background-color: transparent;
     border: 1px solid #e3e3e3;
     list-style: none;
     margin: 0;
@@ -3865,7 +3940,6 @@ span#close-task-panel {
 }
 .roles-menu > ul > li a {
 	border-left: 3px solid transparent;
-    color: #333;
     display: block;
     padding: 10px 15px;
     position: relative;
@@ -3877,6 +3951,7 @@ span#close-task-panel {
 .roles-menu > ul > li a:hover {
     background-color: #eee;
 	border-color: #ff9b44;
+	color: #ff9b44;
 }
 .role-action {
 	float: right;
@@ -4345,7 +4420,6 @@ span#close-task-panel {
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	border-bottom: 1px solid #eaeaea;
 }
 .task-wrapper #task-list li {
 	margin: 0;
@@ -4356,8 +4430,6 @@ span#close-task-panel {
 	background: #fff;
 	padding: 8px 15px;
 	width: 100%;
-	border: 1px solid #eaeaea;
-	border-bottom: none;
 	box-sizing: border-box;
 	position: relative;
 	-webkit-transition: background 200ms ease;
@@ -7868,6 +7940,25 @@ ul.comment-list li ul.children {
 	64. Responsive
 -----------------------*/
 
+@media only screen and (max-width: 1214px) {
+	.header {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.sidebar {
+		left: 0;
+		width: 230px;
+		border-left: 0;
+	}
+
+	.page-wrapper {
+		left: 0;
+		margin-right: 0;
+		margin-left: 230px;
+	}
+}
+
 @media only screen and (min-width: 991px) {
 	#toggle_btn {
 		color: #999;
@@ -7886,7 +7977,18 @@ ul.comment-list li ul.children {
 		width: 60px;
 	}
 	.mini-sidebar .sidebar {
-		width: 50px;
+		width: 70px;
+		left: 0;
+		top: 0;
+	}
+	.mini-sidebar .sidebar .sidebar-inner .sidebar-menu ul .submenu ul li a {
+		font-size: 10px;
+		text-align: center;
+		text-align: justify;
+	}
+	.mini-sidebar .sidebar-menu ul ul li {
+		position: relative;
+		right: 50px;
 	}
 	.mini-sidebar.expand-menu .sidebar {
 		width: 230px;
@@ -7948,6 +8050,31 @@ ul.comment-list li ul.children {
 		margin-left: 60px;
 	}
 }
+
+@media only screen and (max-width: 991px) {
+	.header {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.sidebar {
+		left: 0;
+		width: 230px;
+		border-left: 0;
+	}
+
+	.switch {
+		margin-top: 50px;
+		margin-bottom: 30px;
+	}
+
+	.page-wrapper {
+		left: 0;
+		margin-right: 0;
+		margin-left: 230px;
+	}
+}
+
 @media only screen and (min-width: 768px) {
 	.modal-md {
 		width: 600px;
@@ -7996,6 +8123,7 @@ ul.comment-list li ul.children {
 		-o-transition: none 0s ease 0s; 
 		-ms-transition: none 0s ease 0s; 
 		-webkit-transition: none 0s ease 0s;
+		color: #F97316 !important;
 	}
 	.nav-tabs.nav-tabs-solid {
 		background-color: #fafafa;
@@ -8314,7 +8442,7 @@ ul.comment-list li ul.children {
 	.nav-tabs {
 		border-bottom: 0;
 		position: relative;
-		background-color: #fff;
+		background-color: transparent;
 		padding: 5px 0;
 		border: 1px solid #ddd;
 		border-radius: 3px;
@@ -8331,16 +8459,17 @@ ul.comment-list li ul.children {
 	}
 	.nav-tabs> li > a:hover,
 	.nav-tabs> li > a:focus {
-		background-color: #fafafa;
+		background-color: transparent;
 	}
 	.nav-tabs .nav-item.show .nav-link,
 	.nav-tabs .nav-link.active,
 	.nav-tabs> li > a.active,
 	.nav-tabs> li > a.active:hover,
 	.nav-tabs> li > a.active:focus {
-		background-color: #f5f5f5;
+		background-color: transparent;
 		border-color: transparent transparent transparent #ff9b44;
 		border-left-width: 2px;
+		color: #F97316 !important;
 	}
 	.nav-tabs > li.open:not(.active) > a,
 	.nav-tabs > li.open:not(.active) > a:hover,

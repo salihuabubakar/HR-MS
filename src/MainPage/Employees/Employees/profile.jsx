@@ -40,6 +40,7 @@ import { handleFileDownload } from "../../../utils/helperFucntions";
 import DisplayFileType from "../../../_components/fileExtension";
 import PopUpText from "../../../_components/modelbox/PopUpText";
 import useEmployeeData from "../../../utils/Hooks/employeeDetails";
+import { AvatarLoader, LineLoader, Loader2 } from "../../../_components/Loader";
 
 const Profile = ({
   DefaultImage,
@@ -326,6 +327,8 @@ const Profile = ({
 // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -340,61 +343,45 @@ const Profile = ({
             <div className="page-header">
               <div className="row">
                 <div className="col-sm-12">
-                  <h3 className="page-title">Profile</h3>
-                  <ul className="breadcrumb breadcrumb-nav">
-                    <li className="breadcrumb-item">
-                      <Link to="/app/employee/allemployees">All Employees</Link>
-                    </li>
-                    <li className="breadcrumb-item active">Profile</li>
+                  <h3 className="text-4xl text-orange-500">Profile</h3>
+                  <ul className="breadcrumb">
+                    <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/employee/allemployees">All Employees</Link>
+                    <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Profile</li>
                   </ul>
                 </div>
               </div>
             </div>
-            <div className="card mb-0">
+            <div className="card mb-0 border border-gray-300 rounded-md shadow-md p-2 bg-transparent">
               <div className="card-body">
                 <div className="row">
                   <div className="col-md-12">
                     <div className="profile-view">
-                      <div className="profile-img-wrap">
+                      <div className="profile-img-wrap bg-transparent">
                         {isSelectedLoading || skeletonLoading ? (
-                          <div className="skeleton-container1">
-                            <div className="skeleton-avatar1"></div>
-                          </div>
+                          <AvatarLoader />
                         ) : (
                           <>
-                            <div className="profile-img">
-                              <a className="avatar">
-                                <img alt="" src={photo ? photo : DefaultImage} />
-                                <span className="status online" />
-                              </a>
-                            </div>
+                            <img style={{ width: '100px', height: '100px'}} alt="" src={photo ? photo : DefaultImage} />
                           </>
                         )}
                       </div>
                       <div className="profile-basic">
                         <div className="row">
                           {isSelectedLoading || skeletonLoading ? (
-                            <div className="skeleton-container1">
-                              <div className="skeleton-content1">
-                                <div className="skeleton-line1"></div>
-                                <div className="skeleton-line2"></div>
-                                <div className="skeleton-line3"></div>
-                                <div className="skeleton-line4"></div>
-                              </div>
-                            </div>
+                            <LineLoader />
                           ) : (
                             <>
                               <div className="col-md-5">
                                 <div className="profile-info-left">
-                                  <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
-
-                                  <h6 className="text-muted active-online">
-                                    <span className="status online" />
+                                  <h3 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className=" m-t-0 mb-2">{`${first_name} ${middle_name} ${last_name}`}</h3>
+                                  <h6 className="text-muted active-online mb-2">
+                                    <span style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="status online" />
                                     {employeeStatus === employeeStatus
-                                      ? "Active"
+                                      ? " Online"
                                       : employeeStatus}
                                   </h6>
                                   <Popup
+                                    style={{ backgroundColor: 'transparent' }}
                                     inline
                                     hoverable
                                     position="bottom center"
@@ -404,16 +391,16 @@ const Profile = ({
                                     }}
                                     content={
                                       <Segment.Group>
-                                            <Segment style={{ width: "250px" }}>
+                                            <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                               <div className="ui column relaxed divided grid">
                                                 <div className="column">
                                                   <div className="ui link list">
-                                                    <a className="item">{`Date of Join: ${hire_date ? moment(hire_date).format("DD MMM YYYY") : "--"}`}</a>
-                                                    <a className="item">{`Role: ${role ? role?.role_name : "--"}`}</a>
-                                                    <a className="item">{`Employee ID: ${employee_number ? employee_number : "--"}`}</a>
-                                                    <a className="item">{`NI Number: ${ni_numbber ? ni_numbber : "--"}`}</a>
-                                                    <a className="item">{`Nationality: ${nationality ? nationality : "--"}`}</a>
-                                                    <a className="item">{`Department: ${department?.department_name}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Date of Join: ${hire_date ? moment(hire_date).format("DD MMM YYYY") : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Role: ${role ? role?.role_name : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Employee ID: ${employee_number ? employee_number : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`NI Number: ${ni_numbber ? ni_numbber : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Nationality: ${nationality ? nationality : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Department: ${department?.department_name}`}</a>
                                                   </div>
                                                 </div>
                                               </div>
@@ -421,7 +408,7 @@ const Profile = ({
                                       </Segment.Group>
                                     }
                                     trigger={
-                                        <a>
+                                        <a style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                           View More
                                         </a>
                                     }
@@ -433,18 +420,19 @@ const Profile = ({
                               <div className="col-md-7">
                                 <ul className="personal-info">
                                   <li>
-                                    <div className="title">Phone:</div>
-                                    <div className="text">
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="title">Phone:</div>
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
                                       <a>{phone_number ? phone_number : "--"}</a>
                                     </div>
                                   </li>
                                   <li>
-                                    <div className="title">Email:</div>
-                                    <div className="text">
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="title">Email:</div>
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
                                       <a>{email ? email : "--"}</a>
                                     </div>
                                   </li>
                                   <Popup
+                                    style={{ backgroundColor: 'transparent' }}
                                     inline
                                     hoverable
                                     position="bottom left"
@@ -454,14 +442,14 @@ const Profile = ({
                                     }}
                                     content={
                                       <Segment.Group>
-                                            <Segment style={{ width: "250px" }}>
+                                            <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                               <div className="ui column relaxed divided grid">
                                                 <div className="column">
                                                   <div className="ui link list">
-                                                    <a className="item">{`Birthday: ${date_of_birth ? moment(date_of_birth).format("DD MMM YYYY") : "--"}`}</a>
-                                                    <a className="item">{`Gender: ${gender ? gender : "--"}`}</a>
-                                                    <a className="item">{`Marital Status: ${marital_status ? marital_status : "--"}`}</a>
-                                                    <a className="item">{`Organisation: ${organisation?.organisation_name ? organisation?.organisation_name: "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Birthday: ${date_of_birth ? moment(date_of_birth).format("DD MMM YYYY") : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Gender: ${gender ? gender : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Marital Status: ${marital_status ? marital_status : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Organisation: ${organisation?.organisation_name ? organisation?.organisation_name: "--"}`}</a>
                                                   </div>
                                                 </div>
                                               </div>
@@ -469,7 +457,7 @@ const Profile = ({
                                       </Segment.Group>
                                     }
                                     trigger={
-                                        <a>
+                                        <a style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                           View More
                                         </a>
                                     }
@@ -486,7 +474,7 @@ const Profile = ({
               </div>
             </div>
 
-            <div className="card tab-box">
+            <div className="card tab-box border border-gray-300 rounded-md shadow-md bg-transparent">
               <div className="row user-tabs">
                 <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
                   <ul className="nav nav-tabs nav-tabs-bottom">
@@ -514,18 +502,13 @@ const Profile = ({
               {/* Profile Info Tab */}
               <div id="emp_profile" className="pro-overview tab-pane fade show active">
                 {isSelectedLoading || skeletonLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                       <div className="col-lg-6">
-				                <div className="card">
-				              	<div className="card-header">
+				                <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				              	<div className="card-header shadow-md">
 				              	  <h4 className="card-title mb-0">
                             Emergency Contact {""}
                             <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -586,12 +569,12 @@ const Profile = ({
                                     return (
                                       <React.Fragment key={id}>
                                       <tr style={{ height: "90px" }}>
-                                        <td>{name}</td>
-                                        <td>{relationship}</td>
-                                        <td>{phone_number}</td>
-                                        <td>{address}</td>
-                                        <td>{email}</td>
-                                        <td>{post_code}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{name}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{relationship}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{phone_number}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{address}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{email}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{post_code}</td>
                                         <td className="dropdown dropdown-action text-end">
                                           <a
                                             className="action-icon dropdown-toggle"
@@ -633,8 +616,8 @@ const Profile = ({
 				              </div>
 
                       <div className="col-lg-6">
-				                <div className="card">
-				              	<div className="card-header">
+				                <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				              	<div className="card-header shadow-md">
 				              	  <h4 className="card-title mb-0">
                             Address {""}
                             <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -693,11 +676,11 @@ const Profile = ({
                                     return (
                                       <React.Fragment key={id}>
                                       <tr style={{ height: "90px" }}>
-                                        <td>{street}</td>
-                                        <td>{city}</td>
-                                        <td>{state}</td>
-                                        <td>{country}</td>
-                                        <td>{postal_code}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{street}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{city}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{state}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{country}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{postal_code}</td>
                                         <td className="dropdown dropdown-action text-end">
                                           <a
                                             className="action-icon dropdown-toggle"
@@ -739,8 +722,8 @@ const Profile = ({
 				              </div>
 
                       <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-header">
+                        <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                          <div className="card-header shadow-md">
 				              	    <h4 className="card-title mb-0">
                             Review
                             </h4>
@@ -761,9 +744,10 @@ const Profile = ({
                                   } = contract;
                                   if (employee === selectedEmployeeId) {
                                     return (
-                                      <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                                      <BillCard style={{position: "relative"}} key={id} className="card bill-card border border-gray-300 rounded-md shadow-md bg-transparent">
                                         <span style={{width: "90%"}}>
                                           <Popup
+                                            style={{ backgroundColor: 'transparent' }}
                                             inline
                                             hoverable
                                             position="bottom left"
@@ -773,15 +757,15 @@ const Profile = ({
                                             }}
                                             content={
                                               <Segment.Group>
-                                                <Segment style={{ width: "250px" }}>
+                                                <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                   <div className="ui column relaxed divided grid">
                                                     <div className="column">
                                                       <div className="ui link list">
-                                                        <a className="item">{`Review Type: ${review_type}`}</a>
-                                                        <a className="item">{`Date: ${review_date}`}</a>
-                                                        <a className="item">{`Review Manager: ${review_manager}`}</a>
-                                                        <a className="item">{`Status: ${review_status}`}</a>
-                                                        <a className="item">
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Review Type: ${review_type}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Date: ${review_date}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Review Manager: ${review_manager}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Status: ${review_status}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                         {review_file && "Doc: "}
                                                         {review_file && regex.test(review_file) ? (
                                                           <img
@@ -796,7 +780,7 @@ const Profile = ({
                                                         )}
                                                         </a>
                                                         {description && (
-                                                          <a className="item">Des: <PopUpText text={description}/></a>
+                                                          <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">Des: <PopUpText text={description}/></a>
                                                         )}
                                                       </div>
                                                     </div>
@@ -805,7 +789,7 @@ const Profile = ({
                                               </Segment.Group>
                                             }
                                             trigger={
-                                              <a style={{color: "black"}}>
+                                              <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                 {review_type}
                                               </a>
                                             }
@@ -850,18 +834,13 @@ const Profile = ({
                 )}
 
                 {isSelectedLoading || skeletonLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                       <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-header">
+                        <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                          <div className="card-header shadow-md">
 				              	    <h4 className="card-title mb-0">
                               Qualifications{" "}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -999,8 +978,8 @@ const Profile = ({
                       </div>
 
                       <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-header">
+                        <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                          <div className="card-header shadow-md">
 				              	    <h4 className="card-title mb-0">
                               Experience{" "}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -1141,18 +1120,13 @@ const Profile = ({
                 )}
 
                 {isSelectedLoading || skeletonLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                       <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-header">
+                        <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                          <div className="card-header shadow-md">
 				              	    <h4 className="card-title mb-0">
                               Contract
                             </h4>
@@ -1174,9 +1148,10 @@ const Profile = ({
                                   } = contract;
                                   if (employee_contract === selectedEmployeeId) {
                                     return (
-                                      <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                                      <BillCard style={{position: "relative"}} key={id} className="card bill-card border border-gray-300 rounded-md shadow-md bg-transparent">
                                         <span style={{width: "90%"}}>
                                           <Popup
+                                            style={{ backgroundColor: 'transparent' }}
                                             inline
                                             hoverable
                                             position="bottom left"
@@ -1186,15 +1161,15 @@ const Profile = ({
                                             }}
                                             content={
                                               <Segment.Group>
-                                                <Segment style={{ width: "250px" }}>
+                                                <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                   <div className="ui column relaxed divided grid">
                                                     <div className="column">
                                                       <div className="ui link list">
-                                                        <a className="item">{`Contract Type: ${contract_type}`}</a>
-                                                        <a className="item">{`Start Date: ${start_date}`}</a>
-                                                        <a className="item">{`End Date: ${end_date}`}</a>
-                                                        <a className="item">{`Contract Status: ${contract_status}`}</a>
-                                                        <a className="item">
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Contract Type: ${contract_type}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Start Date: ${start_date}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`End Date: ${end_date}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Contract Status: ${contract_status}`}</a>
+                                                        <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                         {contract_file && "Doc: "}
                                                         {contract_file && regex.test(contract_file) ? (
                                                           <img
@@ -1209,7 +1184,7 @@ const Profile = ({
                                                         )}
                                                         </a>
                                                         {description && (
-                                                          <a className="item">Des: <PopUpText text={description}/></a>
+                                                          <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">Des: <PopUpText text={description}/></a>
                                                         )}
                                                       </div>
                                                     </div>
@@ -1218,7 +1193,7 @@ const Profile = ({
                                               </Segment.Group>
                                             }
                                             trigger={
-                                              <a style={{color: "black"}}>
+                                              <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                 {contract_owner}
                                               </a>
                                             }
@@ -1260,8 +1235,8 @@ const Profile = ({
                       </div>
 
                       <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-header">
+                        <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
+                          <div className="card-header shadow-md">
 				              	    <h4 className="card-title mb-0">
                             Leave
                             </h4>
@@ -1285,9 +1260,10 @@ const Profile = ({
                                   } = leave;
                                   if (employee === selectedEmployeeId) {
                                     return (
-                                      <BillCard style={{position: "relative"}} key={id} className="card bill-card">
+                                      <BillCard style={{position: "relative"}} key={id} className="card bill-card border border-gray-300 rounded-md shadow-md bg-transparent">
                                         <span style={{width: "90%"}}>
                                           <Popup
+                                            style={{ backgroundColor: 'transparent' }}
                                             inline
                                             hoverable
                                             position="bottom left"
@@ -1297,17 +1273,17 @@ const Profile = ({
                                             }}
                                             content={
                                               <Segment.Group>
-                                                <Segment style={{ width: "250px" }}>
+                                                <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                   <div className="ui column relaxed divided grid">
                                                     <div className="column">
                                                       <div className="ui link list">
-                                                        <a className="item">{`Leave Type: ${leave_type}`}</a>
-                                                        <a className="item">{`Number of days: ${number_of_days}`}</a>
-                                                        <a className="item">{`Start Date: ${start_date}`}</a>
-                                                        <a className="item">{`End Date: ${end_date}`}</a>
-                                                        <a className="item">{`Authorising Manager: ${authorising_manager}`}</a>
-                                                        <a className="item">{`Status: ${status}`}</a>
-                                                        <a className="item">
+                                                        <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Leave Type: ${leave_type}`}</a>
+                                                        <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Number of days: ${number_of_days}`}</a>
+                                                        <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Start Date: ${start_date}`}</a>
+                                                        <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`End Date: ${end_date}`}</a>
+                                                        <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Authorising Manager: ${authorising_manager}`}</a>
+                                                        <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Status: ${status}`}</a>
+                                                        <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                         {supporting_document && "Doc: "}
                                                         {supporting_document && regex.test(supporting_document) ? (
                                                           <img
@@ -1322,7 +1298,7 @@ const Profile = ({
                                                         )}
                                                         </a>
                                                         {comments && (
-                                                          <a className="item">Comment: <PopUpText text={comments}/></a>
+                                                          <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">Comment: <PopUpText text={comments}/></a>
                                                         )}
                                                       </div>
                                                     </div>
@@ -1331,7 +1307,7 @@ const Profile = ({
                                               </Segment.Group>
                                             }
                                             trigger={
-                                              <a style={{color: "black"}}>
+                                              <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                 {authorising_manager}
                                               </a>
                                             }
@@ -1373,8 +1349,8 @@ const Profile = ({
                       </div>
 
                       <div className="col-lg-12">
-				                <div className="card">
-				              	<div className="card-header">
+				                <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				              	<div className="card-header shadow-md">
 				              	  <h4 className="card-title mb-0">
                           Bank Information {""}
                             <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -1447,17 +1423,17 @@ const Profile = ({
                                     return (
                                       <React.Fragment key={id}>
                                       <tr style={{ height: "90px" }}>
-                                        <td>{bank_name}</td>
-                                        <td>{account_name}</td>
-                                        <td>{account_number}</td>
-                                        <td>{account_type}</td>
-                                        <td>{currency}</td>
-                                        <td>{bank_address}</td>
-                                        <td>{sort_code}</td>
-                                        <td>{swift_code}</td>
-                                        <td>{iban}</td>
-                                        <td>{routing_number}</td>
-                                        <td>{upload_date}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{bank_name}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{account_name}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{account_number}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{account_type}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{currency}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{bank_address}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{sort_code}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{swift_code}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{iban}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{routing_number}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{upload_date}</td>
                                         <td>
                                           {upload_document && regex.test(upload_document) ? (
                                             <img
@@ -1551,129 +1527,125 @@ const Profile = ({
                               key={id}
                               className="col-lg-6 col-sm-12 col-md-6 col-xl-4"
                             >
-                              <div className="card">
+                              <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
                                 <div className="card-body">
-                                  <h4 className="project-title">
+                                  <h4 className="project-title text-2xl">
                                     <Link
                                       onClick={(e) => e.preventDefault()}
                                       to="#"
+                                      style={{color: `${isDarkMode ? '#898888' : '#000'}`}}
                                     >
                                       {name}
                                     </Link>
                                   </h4>
                                   <p className="text-muted">{description}</p>
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">Task Type: </span>
-                                    <span
-                                      style={{
-                                        backgroundColor: is_paid === true ? "#55CE63" : "#ff9b44",
-                                        color: "#fff",
-                                        padding: "5px",
-                                        borderRadius: "5px",
-                                      }}
+                                  <div className="small-div flex justify-between">
+                                    <div 
+                                      className="border shadow-md p-2 rounded-md size-full m-2"
+                                      style={{backgroundColor: `${isDarkMode ? '' : '#FCF5EB'}`}}
                                     >
-                                      {is_paid === true ? "Paid" : "Non Paid"}
-                                    </span>{" "}
-                                  </small>
-                                    
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      Task Priority:{" "}
-                                    </span>
-                                    <span
-                                      style={{
-                                        backgroundColor:
-                                          (priority === "low" && "red") ||
-                                          (priority === "medium" && "#ff9b44") ||
-                                          (priority === "high" && "#55CE63"),
-                                        color: "#fff",
-                                        padding: "5px",
-                                        borderRadius: "5px",
-                                      }}
-                                    >
-                                      {priority}
-                                    </span>{" "}
-                                  </small>
-                                    
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">Task Status: </span>
-                                    <span
-                                      style={{
-                                        backgroundColor: concluded === true ? "#55CE63" : "#ff9b44",
-                                        color: "#fff",
-                                        padding: "5px",
-                                        borderRadius: "5px",
-                                      }}
-                                    >
-                                      {concluded === true ? "Concluded" : "In Progress"}
-                                    </span>{" "}
-                                  </small>
-                                      
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      Start At:{" "}
-                                    </span>
-                                    <span className="text-muted">
-                                      {start_at ? moment(start_at).format("DD MMM YYYY") : "--"}
-                                    </span>{" "}
-                                  </small>
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">Task Type: </span>
+                                        <span
+                                          style={{
+                                            backgroundColor: is_paid === true ? "#55CE63" : "#ff9b44",
+                                            color: "#fff",
+                                            padding: "5px",
+                                            borderRadius: "5px",
+                                          }}
+                                        >
+                                          {is_paid === true ? "Paid" : "Non Paid"}
+                                        </span>{" "}
+                                      </small>
+                                        
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">
+                                          Task Priority:{" "}
+                                        </span>
+                                        <span
+                                          style={{
+                                            backgroundColor:
+                                              (priority === "low" && "red") ||
+                                              (priority === "medium" && "#ff9b44") ||
+                                              (priority === "high" && "#55CE63"),
+                                            color: "#fff",
+                                            padding: "5px",
+                                            borderRadius: "5px",
+                                          }}
+                                        >
+                                          {priority}
+                                        </span>{" "}
+                                      </small>
 
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      End At:{" "}
-                                    </span>
-                                    <span className="text-muted">
-                                      {end_at ? moment(end_at).format("DD MMM YYYY") : "--"}
-                                    </span>{" "}
-                                  </small>
-                                      
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      Task Manager:{" "}
-                                    </span>
-                                    {employee?.map(e => {
-                                        return (
-                                          
-                                            <img
-                                              style={{
-                                                width: "25px",
-                                                borderRadius: "50px",
-                                                backgroundColor: "#00000000",
-                                                height: "25px",
-                                              }}
-                                              key={e.id}
-                                              title={`${e.first_name} ${e.middle_name} ${e.last_name}`}
-                                              alt=""
-                                              src={e.photo}
-                                            />
-                                        )})
-                                    }
-                                  </small>
-                                      
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      Time Allocated:{" "}
-                                    </span>
-                                    <span className="text-muted">
-                                      {hours
-                                        ? hours + "hr"
-                                        : "--"}
-                                    </span>{" "}
-                                  </small>
-                                  <div className="project-members m-b-15">
-                                    <div>Team:</div>
-                                    <ul className="team-members">
-                                      <li>
-                                        <a data-bs-toggle="tooltip" title={`${first_name} ${middle_name} ${last_name}`}>
-                                          <img
-                                            alt=""
-                                            src={photo ? photo : DefaultImage}
-                                          />
-                                        </a>
-                                      </li>
-                                    </ul>
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">Task Status: </span>
+                                        <span
+                                          style={{
+                                            backgroundColor: concluded === true ? "#55CE63" : "#ff9b44",
+                                            color: "#fff",
+                                            padding: "5px",
+                                            borderRadius: "5px",
+                                          }}
+                                        >
+                                          {concluded === true ? "Concluded" : "In Progress"}
+                                        </span>{" "}
+                                      </small>
+                                        
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">
+                                          Start At:{" "}
+                                        </span>
+                                        <span className="text-muted">
+                                          {start_at ? moment(start_at).format("DD MMM YYYY") : "--"}
+                                        </span>{" "}
+                                      </small>
+
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">
+                                          End At:{" "}
+                                        </span>
+                                        <span className="text-muted">
+                                          {end_at ? moment(end_at).format("DD MMM YYYY") : "--"}
+                                        </span>{" "}
+                                      </small>
+
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">
+                                          Time Allocated:{" "}
+                                        </span>
+                                        <span className="text-muted">
+                                          {hours
+                                            ? hours + "hr"
+                                            : "--"}
+                                        </span>{" "}
+                                      </small>
+                                    </div>
+
+                                    <div 
+                                      className="border shadow-md rounded-md p-2 size-full m-2"
+                                      style={{backgroundColor: `${isDarkMode ? '' : '#FCF5EB'}`}}
+                                    >
+                                        <span style={{ color: `${isDarkMode ? '#898888' : '#000'}` }} className="text-xs">
+                                          Task Manager:{" "}
+                                        </span>
+                                        <div key={index} className='flex gap-1'>  
+                                          {employee?.map((e, index) => (
+                                            <img key={index} title={`${e.first_name} ${e.middle_name} ${e.last_name}`} className='people-avatar' alt={'people'} src={e.photo} />
+                                          ))}
+                                        </div>
+                                    </div>
                                   </div>
-                                  <p className="m-b-5">
+                                      
+                                  <div 
+                                    className="project-members m-b-15 border shadow-md rounded-md p-2 m-2"
+                                    style={{backgroundColor: `${isDarkMode ? '' : '#FCF5EB'}`}}
+                                  >
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>Team:</div>
+                                    <div key={index} className='flex gap-1'>
+                                      <img title={`${first_name} ${middle_name} ${last_name}`} className='people-avatar' alt={'avatar'} src={photo ? photo : DefaultImage} />
+                                    </div>
+                                  </div>
+                                  <p style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="m-b-5">
                                     Progress
                                     <ProgressSpan progress={progress} />
                                   </p>
@@ -1693,17 +1665,13 @@ const Profile = ({
               {/* Document Upload Tab */}
               <div className="tab-pane fade" id="document_upload">
                 {isSelectedLoading || skeletonLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                       <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-header">
+                        <div className="card profile-box flex-fill border-gray-300 rounded-md shadow-md bg-transparent">
+                          <div className="card-header shadow-md">
 				              	    <h4 className="card-title mb-0">
                               Document {""}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -1752,7 +1720,7 @@ const Profile = ({
                                   if (employee === selectedEmployeeId) {
                                     return (
                                       <>
-                                        <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3">
+                                        <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3 border border-gray-300 rounded-md shadow-md bg-transparent">
                                           <div className="dropdown-file">
                                             <a href="" className="dropdown-link" data-bs-toggle="dropdown"><i className="fa fa-ellipsis-v" /></a>
                                             <div className="dropdown-menu dropdown-menu-right">
@@ -1800,6 +1768,7 @@ const Profile = ({
                                             <h6>
                                               <a href="">
                                                 <Popup
+                                                  style={{ backgroundColor: 'transparent' }}
                                                   inline
                                                   hoverable
                                                   position="top left"
@@ -1809,27 +1778,27 @@ const Profile = ({
                                                   }}
                                                   content={
                                                     <Segment.Group>
-                                                          <Segment style={{ width: "250px" }}>
-                                                            <div className="ui column relaxed divided grid">
-                                                              <div className="column">
-                                                                <h4>{`Doc Name: ${document_name}`}</h4>
-                                                                <div className="ui link list">
-                                                                  <a className="item">{`Doc Number: ${document_number}`}</a>
-                                                                  <a className="item">{`Issue Date: ${issue_date}`}</a>
-                                                                  <a className="item">{`Expiry Date: ${expiry_date}`}</a>
-                                                                  <a className="item">{`Doc Type: ${document_type}`}</a>
-                                                                  <a className="item">{`Verification: ${verified}`}</a>
-                                                                  <a className="item">{`Status: ${status}`}</a>
-                                                                </div>
+                                                        <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
+                                                          <div className="ui column relaxed divided grid">
+                                                            <div className="column">
+                                                              <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{`Doc Name: ${document_name}`}</h4>
+                                                              <div className="ui link list">
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Doc Number: ${document_number}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Issue Date: ${issue_date}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Expiry Date: ${expiry_date}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Doc Type: ${document_type}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Verification: ${verified}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Status: ${status}`}</a>
                                                               </div>
                                                             </div>
-                                                          </Segment>
+                                                          </div>
+                                                        </Segment>
                                                     </Segment.Group>
                                                   }
                                                   trigger={
-                                                      <a style={{color: "black"}}>
-                                                        {document_name}
-                                                      </a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
+                                                      {document_name}
+                                                    </a>
                                                   }
                                                 />
                                               </a>

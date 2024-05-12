@@ -53,19 +53,6 @@ const AddRole = ({
     setGlobalState("showRoleModal", false);
   };
 
-  const customSelectStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      cursor: "pointer",
-      backgroundColor: state.isSelected && "#FF9B44",
-      color: state.isSelected && "#262626",
-      "&:hover": {
-        backgroundColor: "#FF9B44",
-        color: "#262626",
-      },
-    }),
-  };
-
   const handleDepartmentChange = (event) => {
     setDepartment(event.target.value);
   };
@@ -75,11 +62,13 @@ const AddRole = ({
     setRoleError("");
   };
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

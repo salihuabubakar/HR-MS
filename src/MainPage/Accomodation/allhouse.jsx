@@ -2,26 +2,25 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import DefaultImage from "../../assets/img/placeholder.jpg";
 import NoAvailableData from '../../_components/noAvailableData';
+import { highlightSearchQuery } from '../../utils/highlightSearchQuery';
+import { Loader } from '../../_components/Loader';
+import { useGlobalState } from '../../context/GlobalState';
 
 const AllHouse = ({
   houseData,
   houseError,
   isHouseDataLoading,
   handleHouseEdit,
-  handleHouseDelete
+  handleHouseDelete,
+  searchQuery
 }) => {
+
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   return (
     <div className="row staff-grid-row">
       {isHouseDataLoading ? (
-        <div className="skeleton-container">
-          <div className="skeleton-content">
-            <div className="skeleton-line"></div>
-            <div className="skeleton-line"></div>
-            <div className="skeleton-line"></div>
-            <div className="skeleton-line"></div>
-          </div>
-        </div>
+        <Loader />
       ) : houseError ? (
         <p>Error Loading Data</p>
       ) : (
@@ -32,13 +31,17 @@ const AllHouse = ({
                 const { id, photo, name, manager } = house;
                 return (
                   <div key={id} className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div className="profile-widget">
+                    <div 
+                      style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}}
+                      className="profile-widget border border-gray-300 rounded-md shadow-md">
                       <div className="profile-img">
                         <Link
                           className="avatar"
                           style={{
                             borderRadius: "5px",
                             backgroundColor: "#00000000",
+                            height: "100%",
+                            marginRight: "40px",
                           }}
                           to={`/app/accomodation/house-details/${id}`}
                         >
@@ -61,7 +64,7 @@ const AllHouse = ({
                         >
                           <i className="material-icons">more_vert</i>
                         </a>
-                        <div className="dropdown-menu dropdown-menu-right">
+                        <div className="dropdown-menu dropdown-menu-right border">
                           <a className="dropdown-item" onClick={() => handleHouseEdit(id, index)}>
                             <i className="fa fa-pencil m-r-5" /> Edit
                           </a>
@@ -74,7 +77,7 @@ const AllHouse = ({
                         <Link
                           to={`/app/accomodation/house-details/${id}`}
                         >
-                          {name}
+                          {highlightSearchQuery(name, searchQuery, isDarkMode)}
                         </Link>
                       </h4>
                       {/* <div className="small text-muted">Manager: {manager}</div>*/}

@@ -21,12 +21,14 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const Incident = () => {
   const { residentIncidentData, residentIncidentLoading } = useResidentIncidentFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(residentIncidentData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(residentIncidentData);
   let searchResult = !searchQuery ? residentIncidentData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -82,14 +84,7 @@ const Incident = () => {
     setGlobalState("deleteResidentIncidentModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   const columns = [
     {
@@ -106,9 +101,7 @@ const Incident = () => {
         const { resident } = record;
         const matchedResident = residentData?.find((r) => r.id === resident);
         if (matchedResident) {
-          return (
-            <React.Fragment>{`${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`}</React.Fragment>
-          );
+          return <React.Fragment>{highlightSearchQuery(`${matchedResident.first_name} ${matchedResident.middle_name} ${matchedResident.last_name}`, searchQuery, isDarkMode)}</React.Fragment>;
         } else {
           return null; // or return a default value if no match is found
         }
@@ -126,9 +119,9 @@ const Incident = () => {
         const minutes = dateObj.getMinutes();
         const seconds = dateObj.getSeconds();
         return (
-          <React.Fragment>
+          <TableDiv isDarkMode={isDarkMode}>
             {`${moment(dateObj).format("DD MMM YYYY")} - ${hours}:${minutes}:${seconds}`}
-          </React.Fragment>
+          </TableDiv>
         );
       },
     },
@@ -143,7 +136,7 @@ const Incident = () => {
         const { house } = record;
         const matchedHouse = houseData?.find((h) => h.id === house);
         if (matchedHouse) {
-          return <React.Fragment>{matchedHouse.name}</React.Fragment>;
+          return <TableDiv isDarkMode={isDarkMode}>{matchedHouse.name}</TableDiv>;
         } else {
           return null; // or return a default value if no match is found
         }
@@ -154,7 +147,7 @@ const Incident = () => {
       dataIndex: "description",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -194,7 +187,7 @@ const Incident = () => {
       <div className="page-wrapper">
         <Helmet>
           <title>Incident Visitor - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Resident incident page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -202,12 +195,10 @@ const Incident = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Resident Incident</h3>
+                <h3 className="text-4xl text-orange-500">Resident Incident</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Resident Incident</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Resident Incident</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
@@ -225,7 +216,6 @@ const Incident = () => {
           <SearchComponent
             searchType={"Resident"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

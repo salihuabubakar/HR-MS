@@ -22,7 +22,7 @@ const AllEmployees = () => {
   const [tab, setTab] = useState("employeeAll" || "employeeList");
   const [getEmployeeId, setGetEmployeeId] = useState(null)
   const { data, isLoading, error, showSkeleton } = useDataFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(data);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(data);
 
   const initialUserData = [];
 
@@ -67,20 +67,13 @@ const AllEmployees = () => {
 		setMenu(!menu)
 	}
 
-  useEffect( ()=>{
-    if($('.select').length > 0) {
-      $('.select').select2({
-        minimumResultsForSearch: -1,
-        width: '100%'
-      });
-    }
-  });
-
   const [employeeError] = useGlobalState("employeeError");
 
   const clearErrorMessage = () => {
     setGlobalState("employeeError", "");
   };
+
+  const [isDarkMode] = useGlobalState("isDarkMode", isDarkMode);
 
   return (
     <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -99,12 +92,10 @@ const AllEmployees = () => {
               <>
                 <div className="row align-items-center">
                   <div className="col">
-                    <h3 className="page-title">Employee</h3>
+                    <h3 className="text-4xl text-orange-500">Employee</h3>
                     <ul className="breadcrumb">
-                      <li className="breadcrumb-item">
-                        <Link to="/app/main/dashboard">Dashboard</Link>
-                      </li>
-                      <li className="breadcrumb-item active">Employee</li>
+                      <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                      <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Employee</li>
                     </ul>
                   </div>
                   <div className="col-auto float-end ml-auto">
@@ -140,7 +131,6 @@ const AllEmployees = () => {
             <SearchComponent
               searchType={"Employee Name"}
               searchQuery={searchQuery}
-              handleSearch={handleSearch}
               setSearchQuery={setSearchQuery}
             />
             <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -173,6 +163,7 @@ const AllEmployees = () => {
               handleEditEmployee={handleEditEmployee}
               handleDeleteAcct={handleDeleteAcct}
               DefaultImage={DefaultImage}
+              searchQuery={searchQuery}
             />
           )}
           {tab == "employeeList" && (
@@ -185,6 +176,7 @@ const AllEmployees = () => {
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              searchQuery={searchQuery}
             />
           )}
         </div>

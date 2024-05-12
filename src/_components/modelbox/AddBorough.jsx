@@ -81,14 +81,8 @@ const AddBorough = ({
         type: "update",
         payload: boroughObject,
       });
-      toast.success("Borough Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchBorough({ type: "add", payload: boroughObject });
-      toast.success("Borough Added", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showBoroughModal", false);
   };
@@ -100,18 +94,20 @@ const AddBorough = ({
     });
   }
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer  className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode}  className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"
             >
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">
+                  <h5 className="card-title">
                     {selectedBorough[indexToEdit]?.id
                       ? "Edit Borough"
                       : "Add Borough"}

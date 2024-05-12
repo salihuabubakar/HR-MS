@@ -4,6 +4,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import './custom.css'
 import { Popup, Segment  } from "semantic-ui-react";
 import PopUpText from '../../../_components/modelbox/PopUpText';
+import { useGlobalState } from '../../../context/GlobalState';
 
 const Gallery = ({ 
     data, houseId, 
@@ -24,10 +25,24 @@ const Gallery = ({
     setIsZoomed(!isZoomed);
   };
 
-  const filteredImage = data
+/**
+ * Filter and Transform Image Data
+ *
+ * Takes an array of image data and filters it based on a condition (house === houseId).
+ * Then, transforms the filtered data into a new format for further use (e.g., displaying images).
+ *
+ * @param {Array} data - The array of image data.
+ * @param {string} houseId - The house ID used for filtering images.
+ * @returns {Array} - Returns an array of transformed image data.
+ */
+const filteredImage = data
   ?.map((img, index) => {
+    // Destructure properties from the image object
     const { name, id, description, image, house } = img;
+
+    // Check if the image belongs to the specified house
     if (house === houseId) {
+      // Return a new object with selected properties
       return {
         id,
         index, // Add the index to the returned object
@@ -36,23 +51,34 @@ const Gallery = ({
         name,
       };
     }
-    return null; // Return null for non-matching items
+
+    // Return null for non-matching items
+    return null;
   })
   .filter((item) => item !== null); // Filter out the null items (non-matching ones)
 
-  const imgData = [];
-  filteredImage?.forEach((img) => {
-    const { name, id, description, image, index } = img;
-    imgData.push({
-      id: id,
-      index: index,
-      original: image,
-      thumbnail: image,
-      description: description,
-      originalAlt: name,
-      originalTitle: name, 
-    });
+// Initialize an empty array to store the transformed image data
+const imgData = [];
+
+// Iterate over the filteredImage array to transform the data
+filteredImage?.forEach((img) => {
+  // Destructure properties from the filtered image object
+  const { name, id, description, image, index } = img;
+
+  // Push a new object with transformed properties to imgData array
+  imgData.push({
+    id: id,
+    index: index,
+    original: image,
+    thumbnail: image,
+    description: description,
+    originalAlt: name,
+    originalTitle: name,
   });
+});
+
+const [isDarkMode] = useGlobalState("isDarkMode");
+
 
   const renderImageWithDescription = (item) => {
     return (
@@ -61,6 +87,7 @@ const Gallery = ({
         {item.originalTitle && (
           <div className="image-gallery-description">
             <Popup
+              style={{ backgroundColor: 'transparent' }}
               inline
               hoverable
               position="top center"
@@ -70,11 +97,11 @@ const Gallery = ({
               }}
               content={
                 <Segment.Group>
-                      <Segment style={{ width: "250px" }}>
+                      <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                         <div className="ui column relaxed divided grid">
                           <div className="column">
                             <h4>
-                              <span>{item.originalTitle}</span>
+                              <span style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{item.originalTitle}</span>
                               <span 
                                 style={{
                                     background: "none",
@@ -120,7 +147,7 @@ const Gallery = ({
                               </span>
                             </h4>
                             <div className="ui link list">
-                              <a className="item">{item.description}</a>
+                              <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{item.description}</a>
                             </div>
                           </div>
                         </div>

@@ -21,12 +21,14 @@ import moment from "moment";
 import PopUpText from "../../_components/modelbox/PopUpText";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
+import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
+import { TableDiv } from "../../_components/modelbox/styles";
 
 const Complaint = () => {
   const { complaintData, complaintLoading } = useComplaintFetching();
   const { residentData } = useResidentFetching();
   const { houseData } = useHouseFetching();
-  const { searchQuery, setSearchQuery, handleSearch, filteredResults } = useSearch(complaintData);
+  const { searchQuery, setSearchQuery, filteredResults } = useSearch(complaintData);
   let searchResult = !searchQuery ? complaintData : filteredResults;
   // Table pagination
   const itemsPerPage = 10; // Number of items per page
@@ -78,14 +80,7 @@ const Complaint = () => {
     setGlobalState("deleteComplaintModal", true);
   };
 
-  useEffect(() => {
-    if ($(".select").length > 0) {
-      $(".select").select2({
-        minimumResultsForSearch: -1,
-        width: "100%",
-      });
-    }
-  });
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   const columns = [
     {
@@ -99,30 +94,36 @@ const Complaint = () => {
       title: "Title",
       dataIndex: "title",
       render: (text, record, index) => {
-        return <React.Fragment>{text}</React.Fragment>;
+        return <React.Fragment>{highlightSearchQuery(text, searchQuery, isDarkMode)}</React.Fragment>;
       },
     },
     {
       title: "Complaint Date",
       dataIndex: "complaint_date",
       render: (text, record, index) => {
-        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(text).format("DD MMM YYYY")}</TableDiv>;
       },
     },
     {
       title: "Resolved Date",
       dataIndex: "resolved_date",
       render: (text, record, index) => {
-        return <React.Fragment>{moment(text).format("DD MMM YYYY")}</React.Fragment>;
+        return <TableDiv isDarkMode={isDarkMode}>{moment(text).format("DD MMM YYYY")}</TableDiv>;
       },
     },
     {
       title: "Status",
       dataIndex: "status",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "Resolved By",
       dataIndex: "resolved_by",
+      render: (text, record, index) => {
+        return <TableDiv isDarkMode={isDarkMode}>{text}</TableDiv>;
+      },
     },
     {
       title: "House",
@@ -131,7 +132,7 @@ const Complaint = () => {
         const { house } = record;
         const matchedHouse = houseData?.find((h) => h.id === house);
         if (matchedHouse) {
-          return <React.Fragment>{matchedHouse.name}</React.Fragment>;
+          return <TableDiv isDarkMode={isDarkMode}>{matchedHouse.name}</TableDiv>;
         } else {
           return null; // or return a default value if no match is found
         }
@@ -158,7 +159,7 @@ const Complaint = () => {
       dataIndex: "description",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -169,7 +170,7 @@ const Complaint = () => {
       dataIndex: "resolved_comment",
       render: (text, record, index) => {
         if (text && text) {
-          return <PopUpText text={text} />;
+          return <TableDiv isDarkMode={isDarkMode}><PopUpText text={text} /></TableDiv>;
         } else {
           return;
         }
@@ -206,7 +207,7 @@ const Complaint = () => {
       <div className="page-wrapper">
         <Helmet>
           <title>Resident Complaint - Peepal Tree HRMS</title>
-          <meta name="description" content="Login page" />
+          <meta name="description" content="Resident complaint page" />
         </Helmet>
         {/* Page Content */}
         <div className="content container-fluid">
@@ -214,12 +215,10 @@ const Complaint = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Resident Complaint</h3>
+                <h3 className="text-4xl text-orange-500">Resident Complaint</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Resident Complaint</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Resident Complaint</li>
                 </ul>
               </div>
               <div className="col-auto float-end ml-auto">
@@ -237,7 +236,6 @@ const Complaint = () => {
           <SearchComponent
             searchType={"Complain"}
             searchQuery={searchQuery}
-            handleSearch={handleSearch}
             setSearchQuery={setSearchQuery}
           />
           <span style={{ color: "red", fontSize: "0.7rem" }}>

@@ -72,6 +72,8 @@ import DynamicProfilePdf from "./component/DynamicProfilePdf";
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import { styles } from "../../utils/helperFucntions";
 import useResidentData from "../../utils/Hooks/residentDetails";
+import { AvatarLoader, LineLoader, Loader2 } from "../../_components/Loader";
+import { ResAppointmentDiv } from "../../_components/modelbox/styles";
 
 const Profile = () => {
   const [gpError] = useGlobalState("gpError");
@@ -590,6 +592,8 @@ useEffect(() => {
   // Checks if the uploaded document contain any of this extentions.
   const regex = /(png|jpg|webp|JPG|PNG)/;
 
+  const [isDarkMode] = useGlobalState("isDarkMode");
+
   return (
     <>
       <DivContainer className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -604,12 +608,10 @@ useEffect(() => {
             <div className="page-header">
               <div className="row">
                 <div className="col-sm-10">
-                  <h3 className="page-title">Profile</h3>
-                  <ul className="breadcrumb breadcrumb-nav">
-                    <li className="breadcrumb-item">
-                      <Link to="/app/servicework/service-worker">All Resident</Link>
-                    </li>
-                    <li className="breadcrumb-item active">Profile</li>
+                  <h3 className="text-4xl text-orange-500">Profile</h3>
+                  <ul className="breadcrumb">
+                    <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/servicework/service-worker">All Resident</Link>
+                    <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Profile</li>
                   </ul>
                 </div>
                 <div className="col-lg-2">
@@ -631,7 +633,9 @@ useEffect(() => {
                           ({ blob, url, loading, error }) => (
                             <div style={styles.btn}>
                               {loading ? 'Loading document' : (
-                                <span><i className="fa fa-download m-r-5" /> Download profile</span>
+                                <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
+                                  <i className="fa fa-download m-r-5" /> Download profile
+                                </span>
                               )}
                             </div>
                           )
@@ -655,7 +659,9 @@ useEffect(() => {
                           ({ blob, url, loading, error }) => (
                             <a href={url} target="_blank" style={styles.btn}>
                               {loading ? 'Loading document' : (
-                                <span><i className="fa fa-print m-r-5" /> Print profile</span>
+                                <span style={{ color: `${isDarkMode ? '#898888' : '#333'}`}}>
+                                  <i className="fa fa-print m-r-5" /> Print profile
+                                </span>
                               )}
                             </a>
                           )
@@ -666,49 +672,37 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-            <div className="card mb-0">
+            <div className="card mb-0 border border-gray-300 rounded-md shadow-md p-2 bg-transparent">
               <div className="card-body">
                 <div className="row">
                   <div className="col-md-12">
                     <div className="profile-view">
-                      <div className="profile-img-wrap">
+                      <div className="profile-img-wrap bg-transparent">
                         {isSelectedLoading ? (
-                          <div className="skeleton-container1">
-                            <div className="skeleton-avatar1"></div>
-                          </div>
+                          <AvatarLoader />
                         ) : (
                           <>
-                            <div className="profile-img">
-                              <a className="">
-                                <img alt="" src={photo ? photo : DefaultImage} />
-                              </a>
-                            </div>
+                            <img style={{ width: '100px', height: '100px'}} alt="" src={photo ? photo : DefaultImage} />
                           </>
                         )}
                       </div>
                       <div className="profile-basic">
                         <div className="row">
                           {isSelectedLoading ? (
-                            <div className="skeleton-container1">
-                              <div className="skeleton-content1">
-                                <div className="skeleton-line1"></div>
-                                <div className="skeleton-line2"></div>
-                                <div className="skeleton-line3"></div>
-                                <div className="skeleton-line4"></div>
-                              </div>
-                            </div>
+                            <LineLoader />
                           ) : (
                             <>
                               <div className="col-md-5">
                                 <div className="profile-info-left">
-                                  <h3 className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
-                                  <div className="small doj text-muted">
+                                  <h3 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="user-name m-t-0 mb-0">{`${first_name} ${middle_name} ${last_name}`}</h3>
+                                  <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="small doj text-muted mb-2 mt-2">
                                     Height: {height ? height : "--"}
                                   </div>
-                                  <div className="small doj text-muted">
+                                  <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="small doj text-muted mb-2">
                                     Weight: {weight ? weight : "--"}
                                   </div>
                                   <Popup
+                                    style={{ backgroundColor: 'transparent' }}
                                     inline
                                     hoverable
                                     position="bottom left"
@@ -718,15 +712,15 @@ useEffect(() => {
                                     }}
                                     content={
                                       <Segment.Group>
-                                            <Segment style={{ width: "250px" }}>
+                                            <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                               <div className="ui column relaxed divided grid">
                                                 <div className="column">
                                                   <div className="ui link list">
-                                                    <a className="item">{`Eye Colour: ${eye_colour ? eye_colour : "--"}`}</a>
-                                                    <a className="item">{`Hair Colour: ${hair_colour ? hair_colour : "--"}`}</a>
-                                                    <a className="item">{`Glasses: ${glasses ? glasses : "--"}`}</a>
-                                                    <a className="item">{`Tattoos: ${tattoos ? tattoos : "--"}`}</a>
-                                                    <a className="item">{`Piercing: ${piercings ? piercings : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Eye Colour: ${eye_colour ? eye_colour : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Hair Colour: ${hair_colour ? hair_colour : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Glasses: ${glasses ? glasses : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Tattoos: ${tattoos ? tattoos : "--"}`}</a>
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Piercing: ${piercings ? piercings : "--"}`}</a>
                                                   </div>
                                                 </div>
                                               </div>
@@ -734,7 +728,7 @@ useEffect(() => {
                                       </Segment.Group>
                                     }
                                     trigger={
-                                        <a>
+                                        <a style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                           View More
                                         </a>
                                     }
@@ -746,18 +740,19 @@ useEffect(() => {
                               <div className="col-md-7">
                                 <ul className="personal-info">
                                   <li>
-                                    <div className="title">Phone:</div>
-                                    <div className="text">
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="title">Phone:</div>
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
                                       <a>{phone_number ? phone_number : "--"}</a>
                                     </div>
                                   </li>
                                   <li>
-                                    <div className="title">Email:</div>
-                                    <div className="text">
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="title">Email:</div>
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
                                       <a>{email ? email : "--"}</a>
                                     </div>
                                   </li>
                                   <Popup
+                                    style={{ backgroundColor: 'transparent' }}
                                     inline
                                     hoverable
                                     position="bottom left"
@@ -767,14 +762,14 @@ useEffect(() => {
                                     }}
                                     content={
                                       <Segment.Group>
-                                            <Segment style={{ width: "250px" }}>
+                                            <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                               <div className="ui column relaxed divided grid">
                                                 <div className="column">
                                                   <div className="ui link list">
-                                                    <a className="item">{`Address: ${address ? address : "--"}`}</a>
-                                                    <a className="item">{`Birthday: ${date_of_birth ? moment(date_of_birth).format("DD MMM YYYY"): "--"}`}</a>
-                                                    <a className="item">{`Gender: ${gender ? gender : "--"}`}</a>
-                                                    <a className="item">{`Nationality: ${nationality ? nationality : "--"}`}</a>
+                                                    <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Address: ${address ? address : "--"}`}</a>
+                                                    <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Birthday: ${date_of_birth ? moment(date_of_birth).format("DD MMM YYYY"): "--"}`}</a>
+                                                    <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Gender: ${gender ? gender : "--"}`}</a>
+                                                    <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Nationality: ${nationality ? nationality : "--"}`}</a>
                                                   </div>
                                                 </div>
                                               </div>
@@ -782,7 +777,7 @@ useEffect(() => {
                                       </Segment.Group>
                                     }
                                     trigger={
-                                        <a>
+                                        <a style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                           View More
                                         </a>
                                     }
@@ -799,7 +794,7 @@ useEffect(() => {
               </div>
             </div>
 
-            <div className="card tab-box">
+            <div className="card tab-box border border-gray-300 rounded-md shadow-md bg-transparent">
               <div className="row user-tabs">
                 <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
                   <ul className="nav nav-tabs nav-tabs-bottom">
@@ -857,17 +852,12 @@ useEffect(() => {
               {/* Profile Info Tab */}
               <div id="emp_profile" className="pro-overview tab-pane fade show active">
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                     <div className="col-lg-6">
-                      <div className="card">
+                      <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
                         <div className="card-header">
 				                  <h4 className="card-title mb-0">
                             Resident Education {""}
@@ -974,7 +964,7 @@ useEffect(() => {
                         </div>
                       </div>
                       <div className="col-lg-6">
-                        <div className="card">
+                        <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
                           <div className="card-header">
 				                    <h4 className="card-title mb-0">
                               Resident School {""}
@@ -1077,17 +1067,12 @@ useEffect(() => {
                 )}
 
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                       <div className="col-lg-6">
-                        <div className="card">
+                        <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
                           <div className="card-header">
 				                    <h4 className="card-title mb-0">
                               Resident Solicitor {""}
@@ -1133,9 +1118,10 @@ useEffect(() => {
                                   } = solicit;
                                   if (resident === selectedResidentId && status === "Active") {
                                     return (
-                                      <div style={{position: "relative"}} key={id} className="card">
-                                        <span style={{width: "90%"}}>
+                                      <div style={{position: "relative"}} key={id} className="card bg-transparent">
+                                        <span  style={{width: "90%"}}>
                                           <Popup
+                                            style={{ backgroundColor: 'transparent' }}
                                             inline
                                             hoverable
                                             position="bottom left"
@@ -1145,20 +1131,20 @@ useEffect(() => {
                                             }}
                                             content={
                                               <Segment.Group>
-                                                    <Segment style={{ width: "250px" }}>
+                                                    <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                       <div className="ui column relaxed divided grid">
                                                         <div className="column">
-                                                          <h4>
+                                                          <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                                             {solicitorData?.map((s) => {
                                                               if (s.id === solicitor) return s.solicitor_name;
                                                             })}
                                                           </h4>
                                                           <div className="ui link list">
-                                                            <a className="item">{`Start Date: ${start_date}`}</a>
-                                                            <a className="item">
+                                                            <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Start Date: ${start_date}`}</a>
+                                                            <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                               {description && description && (
                                                                   <>
-                                                                    <div className="text">
+                                                                    <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
                                                                       Description:{" "}
                                                                       <span>
                                                                         <PopUpText text={description}/>
@@ -1174,7 +1160,7 @@ useEffect(() => {
                                               </Segment.Group>
                                             }
                                             trigger={
-                                                <a style={{color: "black"}}>
+                                                <a style={{color: `${isDarkMode ? '#898888' : '#333'}`}}>
                                                   {solicitorData?.map((s) => {
                                                     if (s.id === solicitor) return s.solicitor_name;
                                                   })}
@@ -1229,7 +1215,7 @@ useEffect(() => {
                       </div>
 
                       <div className="col-lg-6">
-                        <div className="card">
+                        <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
                           <div className="card-header">
 				                    <h4 className="card-title mb-0">
                               Resident GP {""}
@@ -1275,9 +1261,10 @@ useEffect(() => {
                                   } = gp;
                                   if (resident === selectedResidentId && status === "Active") {
                                     return (
-                                        <div style={{position: "relative"}} key={id} className="card">
+                                        <div style={{position: "relative"}} key={id} className="card bg-transparent">
                                           <span style={{width: "90%"}}>
                                             <Popup
+                                              style={{ backgroundColor: 'transparent' }}
                                               inline
                                               hoverable
                                               position="bottom left"
@@ -1287,36 +1274,36 @@ useEffect(() => {
                                               }}
                                               content={
                                                 <Segment.Group>
-                                                      <Segment style={{ width: "250px" }}>
-                                                        <div className="ui column relaxed divided grid">
-                                                          <div className="column">
-                                                            <h4>
-                                                            {gPracticeData?.map((Gp) => {
-                                                              if (Gp.id === generalPractice) return Gp.gp_practice_name;
-                                                            })}
-                                                            </h4>
-                                                            <div className="ui link list">
-                                                              <a className="item">{`Start Date: ${start_date}`}</a>
-                                                              <a className="item">
-                                                                {description && description && (
-                                                                    <>
-                                                                      <div className="text">
-                                                                        Description:{" "}
-                                                                        <span>
-                                                                          <PopUpText text={description}/>
-                                                                        </span>
-                                                                      </div>
-                                                                    </>
-                                                                  )}
-                                                              </a>
-                                                            </div>
-                                                          </div>
+                                                  <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
+                                                    <div className="ui column relaxed divided grid">
+                                                      <div className="column">
+                                                        <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
+                                                        {gPracticeData?.map((Gp) => {
+                                                          if (Gp.id === generalPractice) return Gp.gp_practice_name;
+                                                        })}
+                                                        </h4>
+                                                        <div className="ui link list">
+                                                          <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Start Date: ${start_date}`}</a>
+                                                          <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
+                                                            {description && description && (
+                                                                <>
+                                                                  <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
+                                                                    Description:{" "}
+                                                                    <span>
+                                                                      <PopUpText text={description}/>
+                                                                    </span>
+                                                                  </div>
+                                                                </>
+                                                              )}
+                                                          </a>
                                                         </div>
-                                                      </Segment>
+                                                      </div>
+                                                    </div>
+                                                  </Segment>
                                                 </Segment.Group>
                                               }
                                               trigger={
-                                                  <a style={{color: "black"}}>
+                                                  <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                                     {gPracticeData?.map((Gp) => {
                                                       if (Gp.id === generalPractice) return Gp.gp_practice_name;
                                                     })}
@@ -1374,17 +1361,12 @@ useEffect(() => {
                 )}
 
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                       <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
+                        <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
                           <div className="card-header">
 				                    <h4 className="card-title mb-0">
                               Resident Medical Condition {""}
@@ -1432,9 +1414,10 @@ useEffect(() => {
                                   if (resident === selectedResidentId) {
                                     return (
                                       <>
-                                      <div style={{position: "relative"}} key={id} className="card">
+                                      <div style={{position: "relative"}} key={id} className="card bg-transparent">
                                           <span style={{width: "90%"}}>
                                             <Popup
+                                              style={{ backgroundColor: 'transparent' }}
                                               inline
                                               hoverable
                                               position="bottom left"
@@ -1444,55 +1427,55 @@ useEffect(() => {
                                               }}
                                               content={
                                                 <Segment.Group>
-                                                      <Segment style={{ width: "250px" }}>
-                                                        <div className="ui column relaxed divided grid">
-                                                          <div className="column">
-                                                            <h4>{medical_condition_name}</h4>
-                                                            <div className="ui link list">
-                                                              <a className="item">{`Start Date: ${medical_condition_start_date}`}</a>
-                                                              <a className="item">{`End Date: ${medical_condition_end_date}`}</a>
-                                                              <a className="item">{`Status: ${medical_condition_state}`}</a>
-                                                              <a className="item">
-                                                                {medical_condition_description && medical_condition_description && (
-                                                                    <>
-                                                                      <div className="text">
-                                                                        Description:{" "}
-                                                                        <span>
-                                                                          <PopUpText text={medical_condition_description}/>
-                                                                        </span>
-                                                                      </div>
-                                                                    </>
-                                                                  )}
-                                                              </a>
-                                                              <a className="item">
-                                                                <div className="text">
-                                                                  Document:{" "}
-                                                                  <span>
-                                                                    {medical_condition_document &&
-                                                                    regex.test(medical_condition_document) ? (
-                                                                      <img
-                                                                        className="img-preview"
-                                                                        src={medical_condition_document}
-                                                                        alt="Preview"
-                                                                      />
-                                                                    ) : !medical_condition_document ? (
-                                                                      "--"
-                                                                    ) : (
-                                                                      <span className="files-icon">
-                                                                        <DisplayFileType file={medical_condition_document} />
-                                                                      </span>
-                                                                    )}
+                                                  <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
+                                                    <div className="ui column relaxed divided grid">
+                                                      <div className="column">
+                                                        <h4>{medical_condition_name}</h4>
+                                                        <div className="ui link list">
+                                                          <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Start Date: ${medical_condition_start_date}`}</a>
+                                                          <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`End Date: ${medical_condition_end_date}`}</a>
+                                                          <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Status: ${medical_condition_state}`}</a>
+                                                          <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
+                                                            {medical_condition_description && medical_condition_description && (
+                                                                <>
+                                                                  <div style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="text">
+                                                                    Description:{" "}
+                                                                    <span>
+                                                                      <PopUpText text={medical_condition_description}/>
+                                                                    </span>
+                                                                  </div>
+                                                                </>
+                                                              )}
+                                                          </a>
+                                                          <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
+                                                            <div className="text">
+                                                              Document:{" "}
+                                                              <span>
+                                                                {medical_condition_document &&
+                                                                regex.test(medical_condition_document) ? (
+                                                                  <img
+                                                                    className="img-preview"
+                                                                    src={medical_condition_document}
+                                                                    alt="Preview"
+                                                                  />
+                                                                ) : !medical_condition_document ? (
+                                                                  "--"
+                                                                ) : (
+                                                                  <span className="files-icon">
+                                                                    <DisplayFileType file={medical_condition_document} />
                                                                   </span>
-                                                                </div>
-                                                              </a>
+                                                                )}
+                                                              </span>
                                                             </div>
-                                                          </div>
+                                                          </a>
                                                         </div>
-                                                      </Segment>
+                                                      </div>
+                                                    </div>
+                                                  </Segment>
                                                 </Segment.Group>
                                               }
                                               trigger={
-                                                  <a style={{color: "black"}}>
+                                                  <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                                     {medical_condition_name}
                                                     <i className="dropdown icon"></i>
                                                   </a>
@@ -1558,7 +1541,7 @@ useEffect(() => {
                       </div>
 
                       <div className="col-md-6 d-flex">
-                        <div className="card profile-box flex-fill">
+                        <div className="card profile-box flex-fill border border-gray-300 rounded-md shadow-md bg-transparent">
                           <div className="card-header">
 				                    <h4 className="card-title mb-0">
                               Resident Medication{""}
@@ -1609,9 +1592,10 @@ useEffect(() => {
                                   } = med;
                                   if (resident === selectedResidentId) {
                                     return (
-                                      <div style={{position: "relative"}} key={id} className="card">
+                                      <div style={{position: "relative"}} key={id} className="card bg-transparent">
                                           <span style={{width: "90%"}}>
                                             <Popup
+                                              style={{ backgroundColor: 'transparent' }}
                                               inline
                                               hoverable
                                               position="bottom left"
@@ -1621,24 +1605,24 @@ useEffect(() => {
                                               }}
                                               content={
                                                 <Segment.Group>
-                                                      <Segment style={{ width: "250px" }}>
+                                                      <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                         <div className="ui column relaxed divided grid">
                                                           <div className="column">
                                                             <h4>{medication_name}</h4>
                                                             <div className="ui link list">
-                                                              <a className="item">{`Start Date: ${medication_start_date}`}</a>
-                                                              <a className="item">{`End Date: ${medication_end_date}`}</a>
-                                                              <a className="item">{`Dosage: ${medication_dosage}`}</a>
-                                                              <a className="item">{`Prescription Date: ${medication_prescription_date}`}</a>
-                                                              <a className="item">{`Frequency: ${medication_frequency}`}</a>
-                                                              <a className="item">{`Status: ${medication_state}`}</a>
-                                                              <a className="item">
+                                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Start Date: ${medication_start_date}`}</a>
+                                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`End Date: ${medication_end_date}`}</a>
+                                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Dosage: ${medication_dosage}`}</a>
+                                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Prescription Date: ${medication_prescription_date}`}</a>
+                                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Frequency: ${medication_frequency}`}</a>
+                                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Status: ${medication_state}`}</a>
+                                                              <a  style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                                 {gPracticeData?.map((Gp) => {
                                                                     if (Gp.id === gp) return Gp.gp_practice_name;
                                                                   }
                                                                 )}
                                                               </a>
-                                                              <a className="item">
+                                                              <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                                 {medication_description && medication_description && (
                                                                     <>
                                                                       <div className="text">
@@ -1650,7 +1634,7 @@ useEffect(() => {
                                                                     </>
                                                                   )}
                                                               </a>
-                                                              <a className="item">
+                                                              <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">
                                                                 <div className="text">
                                                                   Document:{" "}
                                                                   <span>
@@ -1678,7 +1662,7 @@ useEffect(() => {
                                                 </Segment.Group>
                                               }
                                               trigger={
-                                                  <a style={{color: "black"}}>
+                                                  <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                                     {medication_name}
                                                     <i className="dropdown icon"></i>
                                                   </a>
@@ -1743,7 +1727,7 @@ useEffect(() => {
                       </div>
 
                       <div className="col-lg-6">
-				                <div className="card">
+				                <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
 				              	<div className="card-header">
 				              	  <h4 className="card-title mb-0">
                             Resident School Timetable{" "}
@@ -1795,13 +1779,21 @@ useEffect(() => {
                                     return (
                                       <React.Fragment key={id}>
                                       <tr style={{ height: "90px" }}>
-                                        <td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                           {residentSchoolData?.map((schl) => {
-                                            if (schl.id === school) return schl.school_name;
+                                            if (schl.id === school) {
+                                              return (
+                                                <>
+                                                  {schoolData?.map((s) => {
+                                                    if (s.id === school) return s.school_name;
+                                                  })}
+                                                </>
+                                              )
+                                            }
                                           })}
                                         </td>
-                                        <td>{year}</td>
-                                        <td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{year}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                           {timetable && regex.test(timetable) ? (
                                             <img
                                               className="img-preview"
@@ -1856,7 +1848,7 @@ useEffect(() => {
                                 })
                               : (
                                 <tr>
-                                  <td>No timetable attach to this resident</td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>No timetable attach to this resident</td>
                                 </tr>
                               )}
 				              		  </tbody>
@@ -1867,7 +1859,7 @@ useEffect(() => {
 				              </div>
 
                       <div className="col-lg-6">
-				                <div className="card">
+				                <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
 				              	<div className="card-header">
 				              	  <h4 className="card-title mb-0">
                             Resident School Report{" "}
@@ -1919,13 +1911,21 @@ useEffect(() => {
                                     return (
                                       <React.Fragment key={id}>
                                       <tr style={{ height: "90px" }}>
-                                        <td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                           {residentSchoolData?.map((schl) => {
-                                            if (schl.id === school) return schl.school_name;
+                                            if (schl.id === school) {
+                                              return (
+                                                <>
+                                                  {schoolData?.map((s) => {
+                                                    if (s.id === school) return s.school_name;
+                                                  })}
+                                                </>
+                                              )
+                                            }
                                           })}
                                         </td>
-                                        <td>{year}</td>
-                                        <td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{year}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>
                                           {report && regex.test(report) ? (
                                             <img
                                               className="img-preview"
@@ -1980,7 +1980,7 @@ useEffect(() => {
                                 })
                               : (
                                 <tr>
-                                  <td>No report attach to this resident</td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>No report attach to this resident</td>
                                 </tr>
                               )}
 				              		  </tbody>
@@ -2004,7 +2004,7 @@ useEffect(() => {
                       start_at,
                       end_at,
                       description,
-                      residents,
+                      employees,
                       managers,
                       priority,
                       concluded,
@@ -2014,7 +2014,7 @@ useEffect(() => {
                       progress
                     } = task;
                     const employee = allEmployee?.filter(emp => managers.includes(emp.id))
-                    if(residents.includes(selectedResidentId)) {
+                    if(employees.includes(selectedResidentId)) {
                       return (
                         <React.Fragment key={id}>
                           <>
@@ -2022,129 +2022,125 @@ useEffect(() => {
                               key={id}
                               className="col-lg-6 col-sm-12 col-md-6 col-xl-4"
                             >
-                              <div className="card">
+                              <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
                                 <div className="card-body">
-                                  <h4 className="project-title">
+                                  <h4 className="project-title text-2xl">
                                     <Link
                                       onClick={(e) => e.preventDefault()}
                                       to="#"
+                                      style={{color: `${isDarkMode ? '#898888' : '#000'}`}}
                                     >
                                       {name}
                                     </Link>
                                   </h4>
                                   <p className="text-muted">{description}</p>
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">Task Type: </span>
-                                    <span
-                                      style={{
-                                        backgroundColor: is_paid === true ? "#55CE63" : "#ff9b44",
-                                        color: "#fff",
-                                        padding: "5px",
-                                        borderRadius: "5px",
-                                      }}
+                                  <div className="small-div flex justify-between">
+                                    <div 
+                                      className="border shadow-md p-2 rounded-md size-full m-2"
+                                      style={{backgroundColor: `${isDarkMode ? '' : '#FCF5EB'}`}}
                                     >
-                                      {is_paid === true ? "Paid" : "Non Paid"}
-                                    </span>{" "}
-                                  </small>
-                                    
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      Task Priority:{" "}
-                                    </span>
-                                    <span
-                                      style={{
-                                        backgroundColor:
-                                          (priority === "low" && "red") ||
-                                          (priority === "medium" && "#ff9b44") ||
-                                          (priority === "high" && "#55CE63"),
-                                        color: "#fff",
-                                        padding: "5px",
-                                        borderRadius: "5px",
-                                      }}
-                                    >
-                                      {priority}
-                                    </span>{" "}
-                                  </small>
-                                    
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">Task Status: </span>
-                                    <span
-                                      style={{
-                                        backgroundColor: concluded === true ? "#55CE63" : "#ff9b44",
-                                        color: "#fff",
-                                        padding: "5px",
-                                        borderRadius: "5px",
-                                      }}
-                                    >
-                                      {concluded === true ? "Concluded" : "In Progress"}
-                                    </span>{" "}
-                                  </small>
-                                      
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      Start At:{" "}
-                                    </span>
-                                    <span className="text-muted">
-                                      {start_at ? moment(start_at).format("DD MMM YYYY") : "--"}
-                                    </span>{" "}
-                                  </small>
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">Task Type: </span>
+                                        <span
+                                          style={{
+                                            backgroundColor: is_paid === true ? "#55CE63" : "#ff9b44",
+                                            color: "#fff",
+                                            padding: "5px",
+                                            borderRadius: "5px",
+                                          }}
+                                        >
+                                          {is_paid === true ? "Paid" : "Non Paid"}
+                                        </span>{" "}
+                                      </small>
+                                        
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">
+                                          Task Priority:{" "}
+                                        </span>
+                                        <span
+                                          style={{
+                                            backgroundColor:
+                                              (priority === "low" && "red") ||
+                                              (priority === "medium" && "#ff9b44") ||
+                                              (priority === "high" && "#55CE63"),
+                                            color: "#fff",
+                                            padding: "5px",
+                                            borderRadius: "5px",
+                                          }}
+                                        >
+                                          {priority}
+                                        </span>{" "}
+                                      </small>
 
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      End At:{" "}
-                                    </span>
-                                    <span className="text-muted">
-                                      {end_at ? moment(end_at).format("DD MMM YYYY") : "--"}
-                                    </span>{" "}
-                                  </small>
-                                      
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      Task Manager:{" "}
-                                    </span>
-                                    {employee?.map(e => {
-                                        return (
-                                          
-                                            <img
-                                              style={{
-                                                width: "25px",
-                                                borderRadius: "50px",
-                                                backgroundColor: "#00000000",
-                                                height: "25px",
-                                              }}
-                                              key={e.id}
-                                              title={`${e.first_name} ${e.middle_name} ${e.last_name}`}
-                                              alt=""
-                                              src={e.photo}
-                                            />
-                                        )})
-                                    }
-                                  </small>
-                                      
-                                  <small className="block text-ellipsis m-b-15">
-                                    <span className="text-xs">
-                                      Time Allocated:{" "}
-                                    </span>
-                                    <span className="text-muted">
-                                      {hours
-                                        ? hours + "hr"
-                                        : "--"}
-                                    </span>{" "}
-                                  </small>
-                                  <div className="project-members m-b-15">
-                                    <div>Team:</div>
-                                    <ul className="team-members">
-                                      <li>
-                                        <a data-bs-toggle="tooltip" title={`${first_name} ${middle_name} ${last_name}`}>
-                                          <img
-                                            alt=""
-                                            src={photo ? photo : DefaultImage}
-                                          />
-                                        </a>
-                                      </li>
-                                    </ul>
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">Task Status: </span>
+                                        <span
+                                          style={{
+                                            backgroundColor: concluded === true ? "#55CE63" : "#ff9b44",
+                                            color: "#fff",
+                                            padding: "5px",
+                                            borderRadius: "5px",
+                                          }}
+                                        >
+                                          {concluded === true ? "Concluded" : "In Progress"}
+                                        </span>{" "}
+                                      </small>
+                                        
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">
+                                          Start At:{" "}
+                                        </span>
+                                        <span className="text-muted">
+                                          {start_at ? moment(start_at).format("DD MMM YYYY") : "--"}
+                                        </span>{" "}
+                                      </small>
+
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">
+                                          End At:{" "}
+                                        </span>
+                                        <span className="text-muted">
+                                          {end_at ? moment(end_at).format("DD MMM YYYY") : "--"}
+                                        </span>{" "}
+                                      </small>
+
+                                      <small className="block text-ellipsis m-b-15">
+                                        <span style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="text-xs">
+                                          Time Allocated:{" "}
+                                        </span>
+                                        <span className="text-muted">
+                                          {hours
+                                            ? hours + "hr"
+                                            : "--"}
+                                        </span>{" "}
+                                      </small>
+                                    </div>
+
+                                    <div 
+                                      className="border shadow-md rounded-md p-2 size-full m-2"
+                                      style={{backgroundColor: `${isDarkMode ? '' : '#FCF5EB'}`}}
+                                    >
+                                        <span style={{ color: `${isDarkMode ? '#898888' : '#000'}` }} className="text-xs">
+                                          Task Manager:{" "}
+                                        </span>
+                                        <div key={index} className='flex gap-1'>  
+                                          {employee?.map((e, index) => (
+                                            <img key={index} title={`${e.first_name} ${e.middle_name} ${e.last_name}`} className='people-avatar' alt={'people'} src={e.photo} />
+                                          ))}
+                                        </div>
+                                    </div>
                                   </div>
-                                  <p className="m-b-5">
+                                      
+                                  <div 
+                                    className="project-members m-b-15 border shadow-md rounded-md p-2 m-2"
+                                    style={{backgroundColor: `${isDarkMode ? '' : '#FCF5EB'}`}}
+                                  >
+                                    <div style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>Team:</div>
+                                    <div key={index} className='flex gap-1'>
+                                      <img title={`${first_name} ${middle_name} ${last_name}`} className='people-avatar' alt={'avatar'} src={photo ? photo : DefaultImage} />
+                                    </div>
+                                  </div>
+                                  <p style={{color: `${isDarkMode ? '#898888' : '#000'}`}} className="m-b-5">
                                     Progress
                                     <ProgressSpan progress={progress} />
                                   </p>
@@ -2164,17 +2160,13 @@ useEffect(() => {
               {/* Social Worker Tab */}
               <div className="tab-pane fade" id="social_worker">
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                       <div className="col-lg-12">
-				                <div className="card">
-				              	<div className="card-header">
+				                <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				              	<div className="card-header shadow-md">
 				              	  <h4 className="card-title mb-0">
                             Social Worker{" "}
                             <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -2231,16 +2223,16 @@ useEffect(() => {
                                     return (
                                       <React.Fragment key={id}>
                                       <tr style={{ height: "90px" }}>
-                                        <td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                           {socialWorkerData?.map((rSw) => {
                                             if (rSw.id === social_worker)
                                               return `${rSw.first_name} ${rSw.middle_name} ${rSw.last_name}`;
                                           })}
                                         </td>
-                                        <td>{start_date}</td>
+                                        <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{start_date}</td>
                                         {description && description && (
                                           <>
-                                            <td>
+                                            <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                               <PopUpText text={description}/>
                                             </td>
                                           </>
@@ -2279,7 +2271,7 @@ useEffect(() => {
                                 })
                               : (
                                 <tr>
-                                  <td>No Social worker attach to this resident</td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>No Social worker attach to this resident</td>
                                 </tr>
                               )}
 				              		  </tbody>
@@ -2297,17 +2289,13 @@ useEffect(() => {
               {/* Appointment Tab */}
               <div className="tab-pane fade" id="appointment">
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                     <div className="col-lg-12">
-				              <div className="card bg-white calendarIndex">
-				              	<div className="card-header">
+				              <div className="card bg-white calendarIndex border border-gray-300 rounded-md shadow-md bg-transparent">
+				              	<div className="card-header shadow-md">
 				              	  <h4 className="card-title mb-0">
                             Resident Appointment{" "}
                             <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -2337,14 +2325,14 @@ useEffect(() => {
                             </a>
                           </h4>
 				              	</div>
-                        <div className="card-body">
+                        <ResAppointmentDiv isDarkMode={isDarkMode} className="card-body">
                           <Appointment 
                             appData={residentAppointmentData}
                             selectedResidentId={selectedResidentId}
                             handleEditResidentAppointment={handleEditResidentAppointment}
                             handleDeleteResidentAppointment={handleDeleteResidentAppointment}
                           />
-								        </div>
+								        </ResAppointmentDiv>
 				                </div>
 				              </div>
                     </div>
@@ -2356,17 +2344,13 @@ useEffect(() => {
               {/* Visitor Tab */}
               <div className="tab-pane fade" id="visitor">
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                     <div className="col-lg-12">
-				              <div className="card">
-				              	<div className="card-header">
+				              <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				              	<div className="card-header shadow-md">
 				              	  <h4 className="card-title mb-0">
                             Resident Visitor
                           </h4>
@@ -2402,20 +2386,20 @@ useEffect(() => {
                                     return (
                                       <React.Fragment key={id}>
                                         <tr key={id}>
-                                          <td>{visitor}</td>
-                                          <td>{visit_time}</td>
-                                          <td>{visit_date}</td>
-                                          <td>{left_time}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{visitor}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{visit_time}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{visit_date}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{left_time}</td>
                                           {comment && comment && (
                                             <>
-                                              <td>
+                                              <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                 <PopUpText text={comment}/>
                                               </td>
                                             </>
                                           )}
                                           {purpose && purpose && (
                                             <>
-                                              <td>
+                                              <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                 <PopUpText text={purpose}/>
                                               </td>
                                             </>
@@ -2427,7 +2411,7 @@ useEffect(() => {
                                 })
                               : (
                                 <tr>
-                                  <td>No visitor attach to this resident</td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>No visitor attach to this resident</td>
                                 </tr>
                               )}
 				              		  </tbody>
@@ -2445,17 +2429,13 @@ useEffect(() => {
               {/* Document Upload Tab */}
               <div className="tab-pane fade" id="document_upload">
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                       <div className="col-md-12 d-flex">
-                        <div className="card profile-box flex-fill">
-                          <div className="card-header">
+                        <div className="card profile-box flex-fill order-gray-300 rounded-md shadow-md bg-transparent">
+                          <div className="card-header shadow-md">
 				                    <h4 className="card-title mb-0">
                               Document{""}
                               <span style={{ color: "red", fontSize: "0.7rem" }}>
@@ -2503,7 +2483,7 @@ useEffect(() => {
                                   } = doc;
                                   if (resident === selectedResidentId) {
                                     return (
-                                      <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3">
+                                      <CardWidth key={id} className="card card-width card-file col-6 col-sm-4 col-md-3 col-lg-6 col-xl-3 border border-gray-300 rounded-md shadow-md bg-transparent">
                                         <div className="dropdown-file">
                                           <a href="" className="dropdown-link" data-bs-toggle="dropdown"><i className="fa fa-ellipsis-v" /></a>
                                           <div className="dropdown-menu dropdown-menu-right">
@@ -2551,6 +2531,7 @@ useEffect(() => {
                                           <h6>
                                             <a href="">
                                               <Popup
+                                                style={{ backgroundColor: 'transparent' }}
                                                 inline
                                                 hoverable
                                                 position="top left"
@@ -2559,29 +2540,29 @@ useEffect(() => {
                                                   hide: 800,
                                                 }}
                                                 content={
-                                                  <Segment.Group>
-                                                        <Segment style={{ width: "250px" }}>
+                                                    <Segment.Group>
+                                                        <Segment className="border" style={{ width: "250px", backgroundColor: `${isDarkMode ? '#110C08' : 'white'}` }}>
                                                           <div className="ui column relaxed divided grid">
                                                             <div className="column">
-                                                              <h4>{`Doc Name: ${document_name}`}</h4>
+                                                              <h4 style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}}>{`Doc Name: ${document_name}`}</h4>
                                                               <div className="ui link list">
-                                                                <a className="item">{`Doc Number: ${document_number}`}</a>
-                                                                <a className="item">{`Issue Date: ${issue_date}`}</a>
-                                                                <a className="item">{`Expiry Date: ${expiry_date}`}</a>
-                                                                <a className="item">{`Doc Type: ${document_type}`}</a>
-                                                                <a className="item">{`Verification: ${verified}`}</a>
-                                                                <a className="item">{`Status: ${status}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Doc Number: ${document_number}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Issue Date: ${issue_date}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Expiry Date: ${expiry_date}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Doc Type: ${document_type}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Verification: ${verified}`}</a>
+                                                                <a style={{color: `${isDarkMode ? '#898888' : '#625F5C'}`}} className="item">{`Status: ${status}`}</a>
                                                               </div>
                                                             </div>
                                                           </div>
                                                         </Segment>
-                                                  </Segment.Group>
-                                                }
-                                                trigger={
-                                                    <a style={{color: "black"}}>
+                                                    </Segment.Group>
+                                                  }
+                                                  trigger={
+                                                    <a style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                       {document_name}
                                                     </a>
-                                                }
+                                                  }
                                               />
                                             </a>
                                           </h6>
@@ -2606,17 +2587,13 @@ useEffect(() => {
               {/* Resident Referral Tab */}
               <div className="tab-pane fade" id="resident_referral">
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                     <div className="col-lg-12">
-				              <div className="card">
-				              	<div className="card-header">
+				              <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				              	<div className="card-header shadow-md">
 				              	  <h4 className="card-title mb-0">
                             Resident Referral
                           </h4>
@@ -2647,16 +2624,16 @@ useEffect(() => {
                                     return (
                                       <React.Fragment key={id}>
                                         <tr key={id}>
-                                          <td>{referral_name}</td>
-                                          <td>{referral_date}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{referral_name}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{referral_date}</td>
                                           {referral_description && referral_description && (
                                             <>
-                                              <td>
+                                              <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                 <PopUpText text={referral_description}/>
                                               </td>
                                             </>
                                           )}
-                                          <td>{referral_document ? referral_document : "--"}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{referral_document ? referral_document : "--"}</td>
                                         </tr>
                                       </React.Fragment>
                                     );
@@ -2664,7 +2641,7 @@ useEffect(() => {
                                 })
                               : (
                                 <tr>
-                                  <td>No referral attach to this resident</td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>No referral attach to this resident</td>
                                 </tr>
                               )}
 				              		  </tbody>
@@ -2682,17 +2659,13 @@ useEffect(() => {
               {/* Misper Tab */}
               <div className="tab-pane fade" id="misper">
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
                     <div className="col-lg-12">
-				              <div className="card">
-				              	<div className="card-header">
+				              <div className="card border border-gray-300 rounded-md shadow-md bg-transparent">
+				              	<div className="card-header shadow-md">
 				              	  <h4 className="card-title mb-0">
                             Misper
                           </h4>
@@ -2730,19 +2703,19 @@ useEffect(() => {
                                     return (
                                       <React.Fragment key={id}>
                                         <tr key={id}>
-                                          <td>{police_CAD}</td>
-                                          <td>{police_CAD_closed}</td>
-                                          <td>{date_last_seen}</td>
-                                          <td>{time_last_seen}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{police_CAD}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{police_CAD_closed}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{date_last_seen}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{time_last_seen}</td>
                                           {description && description && (
                                             <>
-                                              <td>
+                                              <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                 <PopUpText text={description}/>
                                               </td>
                                             </>
                                           )}
-                                          <td>{edt_reference}</td>
-                                          <td>{edt_reference_closed}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{edt_reference}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{edt_reference_closed}</td>
                                         </tr>
                                       </React.Fragment>
                                     );
@@ -2750,7 +2723,7 @@ useEffect(() => {
                                 })
                               : (
                                 <tr>
-                                  <td>No Misper attach to this resident</td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>No Misper attach to this resident</td>
                                 </tr>
                               )}
 				              		  </tbody>
@@ -2768,18 +2741,14 @@ useEffect(() => {
               {/* Resident Incident Tab */}
               <div className="tab-pane fade" id="incident">
                 {isSelectedLoading ? (
-                  <div className="skeleton-container-profile">
-                    <div className="skeleton-content-profile">
-                      <div className="skeleton-line-profile"></div>
-                    </div>
-                  </div>
+                  <Loader2 />
                 ) : (
                   <>
                     <div className="row">
 
                     <div className="col-lg-12">
-				              <div className="card">
-				              	<div className="card-header">
+				              <div className="card border border border-gray-300 rounded-md shadow-md bg-transparent">
+				              	<div className="card-header shadow-md">
 				              	  <h4 className="card-title mb-0">
                             Incident
                           </h4>
@@ -2810,10 +2779,10 @@ useEffect(() => {
                                     return (
                                       <React.Fragment key={id}>
                                         <tr key={id}>
-                                          <td>{`${moment(dateObj).format("DD MMM YYYY")} - ${hours}:${minutes}:${seconds}`}</td>
+                                          <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>{`${moment(dateObj).format("DD MMM YYYY")} - ${hours}:${minutes}:${seconds}`}</td>
                                           {description && description && (
                                             <>
-                                              <td>
+                                              <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>
                                                 <PopUpText text={description}/>
                                               </td>
                                             </>
@@ -2826,7 +2795,7 @@ useEffect(() => {
                                 })
                               : (
                                 <tr>
-                                  <td>No Incident attach to this resident</td>
+                                  <td style={{color: `${isDarkMode ? '#898888' : '#000'}`}}>No Incident attach to this resident</td>
                                 </tr>
                               )}
 				              		  </tbody>

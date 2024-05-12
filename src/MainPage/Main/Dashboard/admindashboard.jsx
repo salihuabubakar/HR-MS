@@ -1,7 +1,3 @@
-/**
- * Signin Firebase
- */
-
 import React, {useEffect,useState } from 'react';
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
@@ -10,1372 +6,200 @@ import Header from '../../../initialpage/Sidebar/header'
 import Sidebar from '../../../initialpage/Sidebar/sidebar'
 import "../../index.css"
 import { useDataFetching, useHouseFetching, useResidentFetching, useTaskFetching } from '../../../utils/employeeCustomFetchHook.jsx';
+import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, Line, Tooltip, Legend, LineChart } from 'recharts';
+import { useGlobalState } from '../../../context/GlobalState.js';
+import { SmallSingleLineLoader } from '../../../_components/Loader.jsx';
 
-const barchartdata = [
-      { y: '2006', "Total Income" : 100, 'Total Outcome' : 90 },
-			{ y: '2007', "Total Income" : 75,  'Total Outcome' : 65 },
-			{ y: '2008', "Total Income" : 50,  'Total Outcome' : 40 },
-			{ y: '2009', "Total Income" : 75,  'Total Outcome' : 65 },
-			{ y: '2010', "Total Income" : 50,  'Total Outcome' : 40 },
-			{ y: '2011', "Total Income" : 75,  'Total Outcome' : 65 },
-			{ y: '2012', "Total Income" : 100, 'Total Outcome' : 90 }
-];
-const linechartdata = [
-      { y: '2006', "Total Sales": 50, 'Total Revenue': 90 },
-			{ y: '2007', "Total Sales": 75,  'Total Revenue': 65 },
-			{ y: '2008', "Total Sales": 50,  'Total Revenue': 40 },
-			{ y: '2009', "Total Sales": 75,  'Total Revenue': 65 },
-			{ y: '2010', "Total Sales": 50,  'Total Revenue': 40 },
-			{ y: '2011', "Total Sales": 75,  'Total Revenue': 65 },
-			{ y: '2012', "Total Sales": 100, 'Total Revenue': 50 }
-];
 const AdminDashboard = () => {
   
-const [menu, setMenu] = useState(false)
+  const [menu, setMenu] = useState(false)
 
-const toggleMobileMenu = () => {
-	setMenu(!menu)
+  const toggleMobileMenu = () => {
+	  setMenu(!menu)
   }
 
   useEffect( () => {
     let firstload = localStorage.getItem("firstload")
     if(firstload === "true"){
-        setTimeout( () => {
-          window.location.reload(1)
-          localStorage.removeItem("firstload")
-        },1000)
+      setTimeout( () => {
+        window.location.reload(1)
+        localStorage.removeItem("firstload")
+      },1000)
     }
- });
+  });
 
- const user = localStorage.getItem("username");
+  const [isDarkMode] = useGlobalState("isDarkMode", isDarkMode);
 
- const {data: allEmployee} = useDataFetching(); 
- const {houseData} = useHouseFetching();
- const {residentData} = useResidentFetching();
- const { taskData } = useTaskFetching()
+  const user = localStorage.getItem("username");
 
-      return (
-        <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-          <Header onMenuClick={(value) => toggleMobileMenu()} />
-          <Sidebar />
-          <div className="page-wrapper">
-            <Helmet>
-              <title>Dashboard - Peepal Tree HRMS</title>
-              <meta name="description" content="Dashboard" />
-            </Helmet>
-            {/* Page Content */}
-            <div className="content container-fluid">
-              {/* Page Header */}
-              <div className="page-header">
-                <div className="row">
-                  <div className="col-sm-12">
-                    <h3 className="page-title">Welcome {user ? user : "sachin"}</h3>
-                    <ul className="breadcrumb">
-                      <li className="breadcrumb-item active">Dashboard</li>
-                    </ul>
-                  </div>
-                </div>
+  const {data: allEmployee, isLoading: isEmployeeLoading} = useDataFetching(); 
+  const {houseData, isHouseDataLoading} = useHouseFetching();
+  const {residentData, isResidentLoading} = useResidentFetching();
+  const { taskData, isTaskLoading } = useTaskFetching();
+
+  const barchartdata = [
+    {
+      name: 'Total Task',
+      Total: taskData?.length
+      ? taskData?.length
+      : "0",
+    },
+    {
+      name: 'Total Resident',
+      Total: residentData?.length
+      ? residentData?.length
+      : "0",
+    },
+    {
+      name: 'Total Employees',
+      Total: allEmployee?.length
+      ? allEmployee?.length
+      : "0",
+    },
+    {
+      name: 'Total House',
+      Total: houseData?.length
+      ? houseData?.length
+      : "0",
+    },
+  ];
+
+  return (
+    <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+      <Header onMenuClick={(value) => toggleMobileMenu()} />
+      <Sidebar />
+      <div className="page-wrapper">
+        <Helmet>
+          <title>Dashboard - Peepal Tree HRMS</title>
+          <meta name="description" content="Dashboard" />
+        </Helmet>
+        {/* Page Content */}
+        <div className="content container-fluid">
+          {/* Page Header */}
+          <div className="page-header">
+            <div className="row">
+              <div className="col-sm-12">
+                <h3 className="text-4xl text-orange-500">Dashboard</h3>
               </div>
-              {/* /Page Header */}
-              <div className="row">
-                {/* <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                  <div className="card dash-widget">
-                    <div className="card-body">
-                      <span className="dash-widget-icon">
-                        <i className="fa fa-cubes" />
-                      </span>
-                      <div className="dash-widget-info">
-                        <h3>112</h3>
-                        <span>Projects</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                  <div className="card dash-widget">
-                    <div className="card-body">
-                      <span className="dash-widget-icon">
-                        <i className="fa fa-diamond" />
-                      </span>
-                      <div className="dash-widget-info">
-                        <h3>{taskData?.length}</h3>
-                        <span>Tasks</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                  <div className="card dash-widget">
-                    <div className="card-body">
-                      <span className="dash-widget-icon">
-                        <i className="fa fa-user" />
-                      </span>
-                      <div className="dash-widget-info">
-                        <h3>{residentData?.length}</h3>
-                        <span>Residents</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                  <div className="card dash-widget">
-                    <div className="card-body">
-                      <span className="dash-widget-icon">
-                        <i className="fa fa-user" />
-                      </span>
-                      <div className="dash-widget-info">
-                        <h3>{allEmployee?.length}</h3>
-                        <span>Employees</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                  <div className="card dash-widget">
-                    <div className="card-body">
-                      <span className="dash-widget-icon">
-                        <i className="fa fa-home" />
-                      </span>
-                      <div className="dash-widget-info">
-                        <h3>{houseData?.length}</h3>
-                        <span>House</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* <div className="row">
-                <div className="col-md-12">
-                  <div className="row">
-                    <div className="col-md-6 text-center">
-                      <div className="card">
-                        <div className="card-body">
-                          <h3 className="card-title">Total Revenue</h3>
-                          <div id="bar-charts" />
-                          <ResponsiveContainer width="100%" height={300}>
-                            <BarChart
-                              data={barchartdata}
-                              margin={{
-                                top: 5,
-                                right: 5,
-                                left: 5,
-                                bottom: 5,
-                              }}
-                            >
-                              <CartesianGrid />
-                              <XAxis dataKey="y" />
-                              <YAxis />
-                              <Tooltip />
-                              <Legend />
-                              <Bar dataKey="Total Income" fill="#ff9b44" />
-                              <Bar dataKey="Total Outcome" fill="#fc6075" />
-                            </BarChart>
-                          </ResponsiveContainer>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6 text-center">
-                      <div className="card">
-                        <div className="card-body">
-                          <h3 className="card-title">Sales Overview</h3>
-                          <ResponsiveContainer width="100%" height={300}>
-                            <LineChart
-                              data={linechartdata}
-                              margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
-                            >
-                              <CartesianGrid />
-                              <XAxis dataKey="y" />
-                              <YAxis />
-                              <Tooltip />
-                              <Legend />
-                              <Line
-                                type="monotone"
-                                dataKey="Total Sales"
-                                stroke="#ff9b44"
-                                fill="#ff9b44"
-                                strokeWidth={3}
-                                dot={{ r: 3 }}
-                                activeDot={{ r: 7 }}
-                              />
-                              <Line
-                                type="monotone"
-                                dataKey="Total Revenue"
-                                stroke="#fc6075"
-                                fill="#fc6075"
-                                strokeWidth={3}
-                                dot={{ r: 3 }}
-                                activeDot={{ r: 7 }}
-                              />
-                            </LineChart>
-                          </ResponsiveContainer>
-
-                          <div id="line-charts" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-              {/* <div className="row">
-                <div className="col-md-12">
-                  <div className="card-group m-b-30">
-                    <div className="card">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between mb-3">
-                          <div>
-                            <span className="d-block">New Employees</span>
-                          </div>
-                          <div>
-                            <span className="text-success">+10%</span>
-                          </div>
-                        </div>
-                        <h3 className="mb-3">10</h3>
-                        <div
-                          className="progress mb-2"
-                          style={{ height: "5px" }}
-                        >
-                          <div
-                            className="progress-bar bg-primary"
-                            role="progressbar"
-                            style={{ width: "70%" }}
-                            aria-valuenow={40}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          />
-                        </div>
-                        <p className="mb-0">Overall Employees 218</p>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between mb-3">
-                          <div>
-                            <span className="d-block">Earnings</span>
-                          </div>
-                          <div>
-                            <span className="text-success">+12.5%</span>
-                          </div>
-                        </div>
-                        <h3 className="mb-3">$1,42,300</h3>
-                        <div
-                          className="progress mb-2"
-                          style={{ height: "5px" }}
-                        >
-                          <div
-                            className="progress-bar bg-primary"
-                            role="progressbar"
-                            style={{ width: "70%" }}
-                            aria-valuenow={40}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          />
-                        </div>
-                        <p className="mb-0">
-                          Previous Month{" "}
-                          <span className="text-muted">$1,15,852</span>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between mb-3">
-                          <div>
-                            <span className="d-block">Expenses</span>
-                          </div>
-                          <div>
-                            <span className="text-danger">-2.8%</span>
-                          </div>
-                        </div>
-                        <h3 className="mb-3">$8,500</h3>
-                        <div
-                          className="progress mb-2"
-                          style={{ height: "5px" }}
-                        >
-                          <div
-                            className="progress-bar bg-primary"
-                            role="progressbar"
-                            style={{ width: "70%" }}
-                            aria-valuenow={40}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          />
-                        </div>
-                        <p className="mb-0">
-                          Previous Month{" "}
-                          <span className="text-muted">$7,500</span>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between mb-3">
-                          <div>
-                            <span className="d-block">Profit</span>
-                          </div>
-                          <div>
-                            <span className="text-danger">-75%</span>
-                          </div>
-                        </div>
-                        <h3 className="mb-3">$1,12,000</h3>
-                        <div
-                          className="progress mb-2"
-                          style={{ height: "5px" }}
-                        >
-                          <div
-                            className="progress-bar bg-primary"
-                            role="progressbar"
-                            style={{ width: "70%" }}
-                            aria-valuenow={40}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          />
-                        </div>
-                        <p className="mb-0">
-                          Previous Month{" "}
-                          <span className="text-muted">$1,42,000</span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-              {/* Statistics Widget */}
-              {/* <div className="row">
-                <div className="col-md-12 col-lg-12 col-xl-4 d-flex">
-                  <div className="card flex-fill dash-statistics">
-                    <div className="card-body">
-                      <h5 className="card-title">Statistics</h5>
-                      <div className="stats-list">
-                        <div className="stats-info">
-                          <p>
-                            Today Leave{" "}
-                            <strong>
-                              4 <small>/ 65</small>
-                            </strong>
-                          </p>
-                          <div className="progress">
-                            <div
-                              className="progress-bar bg-primary"
-                              role="progressbar"
-                              style={{ width: "31%" }}
-                              aria-valuenow={31}
-                              aria-valuemin={0}
-                              aria-valuemax={100}
-                            />
-                          </div>
-                        </div>
-                        <div className="stats-info">
-                          <p>
-                            Pending Invoice{" "}
-                            <strong>
-                              15 <small>/ 92</small>
-                            </strong>
-                          </p>
-                          <div className="progress">
-                            <div
-                              className="progress-bar bg-warning"
-                              role="progressbar"
-                              style={{ width: "31%" }}
-                              aria-valuenow={31}
-                              aria-valuemin={0}
-                              aria-valuemax={100}
-                            />
-                          </div>
-                        </div>
-                        <div className="stats-info">
-                          <p>
-                            Completed Projects{" "}
-                            <strong>
-                              85 <small>/ 112</small>
-                            </strong>
-                          </p>
-                          <div className="progress">
-                            <div
-                              className="progress-bar bg-success"
-                              role="progressbar"
-                              style={{ width: "62%" }}
-                              aria-valuenow={62}
-                              aria-valuemin={0}
-                              aria-valuemax={100}
-                            />
-                          </div>
-                        </div>
-                        <div className="stats-info">
-                          <p>
-                            Open Tickets{" "}
-                            <strong>
-                              190 <small>/ 212</small>
-                            </strong>
-                          </p>
-                          <div className="progress">
-                            <div
-                              className="progress-bar bg-danger"
-                              role="progressbar"
-                              style={{ width: "62%" }}
-                              aria-valuenow={62}
-                              aria-valuemin={0}
-                              aria-valuemax={100}
-                            />
-                          </div>
-                        </div>
-                        <div className="stats-info">
-                          <p>
-                            Closed Tickets{" "}
-                            <strong>
-                              22 <small>/ 212</small>
-                            </strong>
-                          </p>
-                          <div className="progress">
-                            <div
-                              className="progress-bar bg-info"
-                              role="progressbar"
-                              style={{ width: "22%" }}
-                              aria-valuenow={22}
-                              aria-valuemin={0}
-                              aria-valuemax={100}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-12 col-lg-6 col-xl-4 d-flex">
-                  <div className="card flex-fill">
-                    <div className="card-body">
-                      <h4 className="card-title">Task Statistics</h4>
-                      <div className="statistics">
-                        <div className="row">
-                          <div className="col-md-6 col-6 text-center">
-                            <div className="stats-box mb-4">
-                              <p>Total Tasks</p>
-                              <h3>385</h3>
-                            </div>
-                          </div>
-                          <div className="col-md-6 col-6 text-center">
-                            <div className="stats-box mb-4">
-                              <p>Overdue Tasks</p>
-                              <h3>19</h3>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="progress mb-4">
-                        <div
-                          className="progress-bar bg-purple"
-                          role="progressbar"
-                          style={{ width: "30%" }}
-                          aria-valuenow={30}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                        >
-                          30%
-                        </div>
-                        <div
-                          className="progress-bar bg-warning"
-                          role="progressbar"
-                          style={{ width: "22%" }}
-                          aria-valuenow={18}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                        >
-                          22%
-                        </div>
-                        <div
-                          className="progress-bar bg-success"
-                          role="progressbar"
-                          style={{ width: "24%" }}
-                          aria-valuenow={12}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                        >
-                          24%
-                        </div>
-                        <div
-                          className="progress-bar bg-danger"
-                          role="progressbar"
-                          style={{ width: "26%" }}
-                          aria-valuenow={14}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                        >
-                          21%
-                        </div>
-                        <div
-                          className="progress-bar bg-info"
-                          role="progressbar"
-                          style={{ width: "10%" }}
-                          aria-valuenow={14}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                        >
-                          10%
-                        </div>
-                      </div>
-                      <div>
-                        <p>
-                          <i className="fa fa-dot-circle-o text-purple me-2" />
-                          Completed Tasks <span className="float-end">166</span>
-                        </p>
-                        <p>
-                          <i className="fa fa-dot-circle-o text-warning me-2" />
-                          Inprogress Tasks{" "}
-                          <span className="float-end">115</span>
-                        </p>
-                        <p>
-                          <i className="fa fa-dot-circle-o text-success me-2" />
-                          On Hold Tasks <span className="float-end">31</span>
-                        </p>
-                        <p>
-                          <i className="fa fa-dot-circle-o text-danger me-2" />
-                          Pending Tasks <span className="float-end">47</span>
-                        </p>
-                        <p className="mb-0">
-                          <i className="fa fa-dot-circle-o text-info me-2" />
-                          Review Tasks <span className="float-end">5</span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-12 col-lg-6 col-xl-4 d-flex">
-                  <div className="card flex-fill">
-                    <div className="card-body">
-                      <h4 className="card-title">
-                        Today Absent{" "}
-                        <span className="badge bg-inverse-danger ml-2">5</span>
-                      </h4>
-                      <div className="leave-info-box">
-                        <div className="media align-items-center">
-                          <Link
-                            to="/app/profile/employee-profile"
-                            className="avatar"
-                          >
-                            <img alt="" src={User} />
-                          </Link>
-                          <div className="media-body">
-                            <div className="text-sm my-0">Martin Lewis</div>
-                          </div>
-                        </div>
-                        <div className="row align-items-center mt-3">
-                          <div className="col-6">
-                            <h6 className="mb-0">4 Sep 2019</h6>
-                            <span className="text-sm text-muted">
-                              Leave Date
-                            </span>
-                          </div>
-                          <div className="col-6 text-end">
-                            <span className="badge bg-inverse-danger">
-                              Pending
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="leave-info-box">
-                        <div className="media align-items-center">
-                          <Link
-                            to="/app/profile/employee-profile"
-                            className="avatar"
-                          >
-                            <img alt="" src={User} />
-                          </Link>
-                          <div className="media-body">
-                            <div className="text-sm my-0">Martin Lewis</div>
-                          </div>
-                        </div>
-                        <div className="row align-items-center mt-3">
-                          <div className="col-6">
-                            <h6 className="mb-0">4 Sep 2019</h6>
-                            <span className="text-sm text-muted">
-                              Leave Date
-                            </span>
-                          </div>
-                          <div className="col-6 text-end">
-                            <span className="badge bg-inverse-success">
-                              Approved
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="load-more text-center">
-                        <a className="text-dark" href="#">
-                          Load More
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-              {/* /Statistics Widget */}
-              {/* <div className="row">
-                <div className="col-md-6 d-flex">
-                  <div className="card card-table flex-fill">
-                    <div className="card-header">
-                      <h3 className="card-title mb-0">Invoices</h3>
-                    </div>
-                    <div className="card-body">
-                      <div className="table-responsive">
-                        <table className="table table-nowrap custom-table mb-0">
-                          <thead>
-                            <tr>
-                              <th>Invoice ID</th>
-                              <th>Client</th>
-                              <th>Due Date</th>
-                              <th>Total</th>
-                              <th>Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <Link to="/app/sales/invoices-view">
-                                  #INV-0001
-                                </Link>
-                              </td>
-                              <td>
-                                <h2>
-                                  <a href="#">Global Technologies</a>
-                                </h2>
-                              </td>
-                              <td>11 Mar 2019</td>
-                              <td>$380</td>
-                              <td>
-                                <span className="badge bg-inverse-warning">
-                                  Partially Paid
-                                </span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <Link to="/app/sales/invoices-view">
-                                  #INV-0002
-                                </Link>
-                              </td>
-                              <td>
-                                <h2>
-                                  <a href="#">Delta Infotech</a>
-                                </h2>
-                              </td>
-                              <td>8 Feb 2019</td>
-                              <td>$500</td>
-                              <td>
-                                <span className="badge bg-inverse-success">
-                                  Paid
-                                </span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <Link to="/app/sales/invoices-view">
-                                  #INV-0003
-                                </Link>
-                              </td>
-                              <td>
-                                <h2>
-                                  <a href="#">Cream Inc</a>
-                                </h2>
-                              </td>
-                              <td>23 Jan 2019</td>
-                              <td>$60</td>
-                              <td>
-                                <span className="badge bg-inverse-danger">
-                                  Unpaid
-                                </span>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div className="card-footer">
-                      <Link to="/app/sales/invoices">View all invoices</Link>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 d-flex">
-                  <div className="card card-table flex-fill">
-                    <div className="card-header">
-                      <h3 className="card-title mb-0">Payments</h3>
-                    </div>
-                    <div className="card-body">
-                      <div className="table-responsive">
-                        <table className="table custom-table table-nowrap mb-0">
-                          <thead>
-                            <tr>
-                              <th>Invoice ID</th>
-                              <th>Client</th>
-                              <th>Payment Type</th>
-                              <th>Paid Date</th>
-                              <th>Paid Amount</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <Link to="/app/sales/invoices-view">
-                                  #INV-0001
-                                </Link>
-                              </td>
-                              <td>
-                                <h2>
-                                  <a href="#">Global Technologies</a>
-                                </h2>
-                              </td>
-                              <td>Paypal</td>
-                              <td>11 Mar 2019</td>
-                              <td>$380</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <Link to="/app/sales/invoices-view">
-                                  #INV-0002
-                                </Link>
-                              </td>
-                              <td>
-                                <h2>
-                                  <a href="#">Delta Infotech</a>
-                                </h2>
-                              </td>
-                              <td>Paypal</td>
-                              <td>8 Feb 2019</td>
-                              <td>$500</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <Link to="/app/sales/invoices-view">
-                                  #INV-0003
-                                </Link>
-                              </td>
-                              <td>
-                                <h2>
-                                  <a href="#">Cream Inc</a>
-                                </h2>
-                              </td>
-                              <td>Paypal</td>
-                              <td>23 Jan 2019</td>
-                              <td>$60</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div className="card-footer">
-                      <Link to="/app/sales/payments">View all payments</Link>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-              {/* <div className="row">
-                <div className="col-md-6 d-flex">
-                  <div className="card card-table flex-fill">
-                    <div className="card-header">
-                      <h3 className="card-title mb-0">Clients</h3>
-                    </div>
-                    <div className="card-body">
-                      <div className="table-responsive">
-                        <table className="table custom-table mb-0">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Email</th>
-                              <th>Status</th>
-                              <th className="text-end">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <h2 className="table-avatar">
-                                  <a href="#" className="avatar">
-                                    <img alt="" src={Avatar_19} />
-                                  </a>
-                                  <Link to="/app/profile/client-profile">
-                                    Barry Cuda <span>CEO</span>
-                                  </Link>
-                                </h2>
-                              </td>
-                              <td>barrycuda@example.com</td>
-                              <td>
-                                <div className="dropdown action-label">
-                                  <a
-                                    className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                    href="#"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="fa fa-dot-circle-o text-success" />{" "}
-                                    Active
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-success" />{" "}
-                                      Active
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-danger" />{" "}
-                                      Inactive
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2 className="table-avatar">
-                                  <a href="#" className="avatar">
-                                    <img alt="" src={Avatar_19} />
-                                  </a>
-                                  <Link to="/app/profile/client-profile">
-                                    Tressa Wexler <span>Manager</span>
-                                  </Link>
-                                </h2>
-                              </td>
-                              <td>tressawexler@example.com</td>
-                              <td>
-                                <div className="dropdown action-label">
-                                  <a
-                                    className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                    href="#"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="fa fa-dot-circle-o text-danger" />{" "}
-                                    Inactive
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-success" />{" "}
-                                      Active
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-danger" />{" "}
-                                      Inactive
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2 className="table-avatar">
-                                  <Link
-                                    to="/app/profile/client-profile"
-                                    className="avatar"
-                                  >
-                                    <img alt="" src={Avatar_07} />
-                                  </Link>
-                                  <Link to="/app/profile/client-profile">
-                                    Ruby Bartlett <span>CEO</span>
-                                  </Link>
-                                </h2>
-                              </td>
-                              <td>rubybartlett@example.com</td>
-                              <td>
-                                <div className="dropdown action-label">
-                                  <a
-                                    className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                    href="#"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="fa fa-dot-circle-o text-danger" />{" "}
-                                    Inactive
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-success" />{" "}
-                                      Active
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-danger" />{" "}
-                                      Inactive
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2 className="table-avatar">
-                                  <Link
-                                    to="/app/profile/client-profile"
-                                    className="avatar"
-                                  >
-                                    <img alt="" src={Avatar_06} />
-                                  </Link>
-                                  <Link to="/app/profile/client-profile">
-                                    {" "}
-                                    Misty Tison <span>CEO</span>
-                                  </Link>
-                                </h2>
-                              </td>
-                              <td>mistytison@example.com</td>
-                              <td>
-                                <div className="dropdown action-label">
-                                  <a
-                                    className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                    href="#"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="fa fa-dot-circle-o text-success" />{" "}
-                                    Active
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-success" />{" "}
-                                      Active
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-danger" />{" "}
-                                      Inactive
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2 className="table-avatar">
-                                  <Link
-                                    to="/app/profile/client-profile"
-                                    className="avatar"
-                                  >
-                                    <img alt="" src={Avatar_14} />
-                                  </Link>
-                                  <Link to="/app/profile/client-profile">
-                                    {" "}
-                                    Daniel Deacon <span>CEO</span>
-                                  </Link>
-                                </h2>
-                              </td>
-                              <td>danieldeacon@example.com</td>
-                              <td>
-                                <div className="dropdown action-label">
-                                  <a
-                                    className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                    href="#"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="fa fa-dot-circle-o text-danger" />{" "}
-                                    Inactive
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-success" />{" "}
-                                      Active
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-dot-circle-o text-danger" />{" "}
-                                      Inactive
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div className="card-footer">
-                      <Link to="/app/employees/clients">View all clients</Link>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 d-flex">
-                  <div className="card card-table flex-fill">
-                    <div className="card-header">
-                      <h3 className="card-title mb-0">Recent Projects</h3>
-                    </div>
-                    <div className="card-body">
-                      <div className="table-responsive">
-                        <table className="table custom-table mb-0">
-                          <thead>
-                            <tr>
-                              <th>Project Name </th>
-                              <th>Progress</th>
-                              <th className="text-end">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <h2>
-                                  <Link to="/app/projects/projects-view">
-                                    Office Management
-                                  </Link>
-                                </h2>
-                                <small className="block text-ellipsis">
-                                  <span>1</span>{" "}
-                                  <span className="text-muted">
-                                    open tasks,{" "}
-                                  </span>
-                                  <span>9</span>{" "}
-                                  <span className="text-muted">
-                                    tasks completed
-                                  </span>
-                                </small>
-                              </td>
-                              <td>
-                                <div className="progress progress-xs progress-striped">
-                                  <div
-                                    className="progress-bar"
-                                    role="progressbar"
-                                    data-bs-toggle="tooltip"
-                                    title="65%"
-                                    style={{ width: "65%" }}
-                                  />
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2>
-                                  <Link to="/app/projects/projects-view">
-                                    Project Management
-                                  </Link>
-                                </h2>
-                                <small className="block text-ellipsis">
-                                  <span>2</span>{" "}
-                                  <span className="text-muted">
-                                    open tasks,{" "}
-                                  </span>
-                                  <span>5</span>{" "}
-                                  <span className="text-muted">
-                                    tasks completed
-                                  </span>
-                                </small>
-                              </td>
-                              <td>
-                                <div className="progress progress-xs progress-striped">
-                                  <div
-                                    className="progress-bar"
-                                    role="progressbar"
-                                    data-bs-toggle="tooltip"
-                                    title="15%"
-                                    style={{ width: "15%" }}
-                                  />
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2>
-                                  <Link to="/app/projects/projects-view">
-                                    Video Calling App
-                                  </Link>
-                                </h2>
-                                <small className="block text-ellipsis">
-                                  <span>3</span>{" "}
-                                  <span className="text-muted">
-                                    open tasks,{" "}
-                                  </span>
-                                  <span>3</span>{" "}
-                                  <span className="text-muted">
-                                    tasks completed
-                                  </span>
-                                </small>
-                              </td>
-                              <td>
-                                <div className="progress progress-xs progress-striped">
-                                  <div
-                                    className="progress-bar"
-                                    role="progressbar"
-                                    data-bs-toggle="tooltip"
-                                    title="49%"
-                                    style={{ width: "49%" }}
-                                  />
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2>
-                                  <Link to="/app/projects/projects-view">
-                                    Hospital Administration
-                                  </Link>
-                                </h2>
-                                <small className="block text-ellipsis">
-                                  <span>12</span>{" "}
-                                  <span className="text-muted">
-                                    open tasks,{" "}
-                                  </span>
-                                  <span>4</span>{" "}
-                                  <span className="text-muted">
-                                    tasks completed
-                                  </span>
-                                </small>
-                              </td>
-                              <td>
-                                <div className="progress progress-xs progress-striped">
-                                  <div
-                                    className="progress-bar"
-                                    role="progressbar"
-                                    data-bs-toggle="tooltip"
-                                    title="88%"
-                                    style={{ width: "88%" }}
-                                  />
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2>
-                                  <Link to="/app/projects/projects-view">
-                                    Digital Marketplace
-                                  </Link>
-                                </h2>
-                                <small className="block text-ellipsis">
-                                  <span>7</span>{" "}
-                                  <span className="text-muted">
-                                    open tasks,{" "}
-                                  </span>
-                                  <span>14</span>{" "}
-                                  <span className="text-muted">
-                                    tasks completed
-                                  </span>
-                                </small>
-                              </td>
-                              <td>
-                                <div className="progress progress-xs progress-striped">
-                                  <div
-                                    className="progress-bar"
-                                    role="progressbar"
-                                    data-bs-toggle="tooltip"
-                                    title="100%"
-                                    style={{ width: "100%" }}
-                                  />
-                                </div>
-                              </td>
-                              <td className="text-end">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    href="#"
-                                    className="action-icon dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a className="dropdown-item">
-                                      <i className="fa fa-trash-o m-r-5" />{" "}
-                                      Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div className="card-footer">
-                      <Link to="/app/projects/project_dashboard">
-                        View all projects
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
             </div>
-            {/* /Page Content */}
+          </div>
+          {/* /Page Header */}
+          <div className="row">
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3 mb-4">
+              <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} class="container mx-auto px-4 py-8 border border-gray-300 rounded-md shadow-md card-body">
+                <div className="flex justify-between">
+                  <span class="general-text-color font-bold">Total Tasks</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.99805 16H11.998M7.99805 11H15.998" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M7.5 3.5C5.9442 3.54667 5.01661 3.71984 4.37477 4.36227C3.49609 5.24177 3.49609 6.6573 3.49609 9.48836L3.49609 15.9944C3.49609 18.8255 3.49609 20.241 4.37477 21.1205C5.25345 22 6.66767 22 9.49609 22L14.4961 22C17.3245 22 18.7387 22 19.6174 21.1205C20.4961 20.241 20.4961 18.8255 20.4961 15.9944V9.48836C20.4961 6.6573 20.4961 5.24177 19.6174 4.36228C18.9756 3.71984 18.048 3.54667 16.4922 3.5" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5"/>
+                    <path d="M7.49609 3.75C7.49609 2.7835 8.2796 2 9.24609 2H14.7461C15.7126 2 16.4961 2.7835 16.4961 3.75C16.4961 4.7165 15.7126 5.5 14.7461 5.5H9.24609C8.2796 5.5 7.49609 4.7165 7.49609 3.75Z" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="flex flex-col mt-4">
+                  {isTaskLoading ? (
+                    <SmallSingleLineLoader/>
+                  ) : (
+                    <p class="text-2xl font-bold text-orange-500 mr-2">{taskData?.length}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3 mb-4">
+              <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} class="container mx-auto px-4 py-8 border border-gray-300 rounded-md shadow-md card-body">
+                <div className="flex justify-between">
+                  <span class="general-text-color font-bold">Total Residents</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.57757 15.4816C5.1628 16.324 1.45336 18.0441 3.71266 20.1966C4.81631 21.248 6.04549 22 7.59087 22H16.4091C17.9545 22 19.1837 21.248 20.2873 20.1966C22.5466 18.0441 18.8372 16.324 17.4224 15.4816C14.1048 13.5061 9.89519 13.5061 6.57757 15.4816Z" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.5 6.5C16.5 8.98528 14.4853 11 12 11C9.51472 11 7.5 8.98528 7.5 6.5C7.5 4.01472 9.51472 2 12 2C14.4853 2 16.5 4.01472 16.5 6.5Z" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <div class="flex flex-col mt-4">
+                  {isResidentLoading ? (
+                    <SmallSingleLineLoader/>
+                  ) : (
+                    <p class="text-2xl font-bold text-orange-500 mr-2">{residentData?.length}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3 mb-4">
+              <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} class="container mx-auto px-4 py-8 border border-gray-300 rounded-md shadow-md card-body">
+                <div className="flex justify-between">
+                  <span class="general-text-color font-bold">Total Employees</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 9H18" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M14 12.5H17" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M17 3H7C4.23858 3 2 5.23858 2 8V16C2 18.7614 4.23858 21 7 21H17C19.7614 21 22 18.7614 22 16V8C22 5.23858 19.7614 3 17 3Z" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M5 16C6.20831 13.4189 10.7122 13.2491 12 16" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.5 9C10.5 10.1046 9.60457 11 8.5 11C7.39543 11 6.5 10.1046 6.5 9C6.5 7.89543 7.39543 7 8.5 7C9.60457 7 10.5 7.89543 10.5 9Z" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <div class="flex flex-col mt-4">
+                  {isEmployeeLoading ? (
+                    <SmallSingleLineLoader/>
+                  ) : (
+                    <p class="text-2xl font-bold text-orange-500 mr-2">{allEmployee?.length}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3 mb-4">
+              <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} class="container mx-auto px-4 py-8 border border-gray-300 rounded-md shadow-md card-body">
+                <div className="flex justify-between">
+                  <span class="general-text-color font-bold">Total House</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17H12.009" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20 8.5V13.5C20 17.2712 20 19.1569 18.8284 20.3284C17.6569 21.5 15.7712 21.5 12 21.5C8.22876 21.5 6.34315 21.5 5.17157 20.3284C4 19.1569 4 17.2712 4 13.5V8.5" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5"/>
+                    <path d="M22 10.5L17.6569 6.33548C14.9902 3.77849 13.6569 2.5 12 2.5C10.3431 2.5 9.00981 3.77849 6.34315 6.33548L2 10.5" stroke={`${isDarkMode ? '#625F5C' : '#141B34'}`} stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="flex flex-col mt-4">
+                  {isHouseDataLoading ? (
+                    <SmallSingleLineLoader/>
+                  ) : (
+                    <p class="text-2xl font-bold text-orange-500 mr-2">{houseData?.length}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12 p-4">
+              <div className="row">
+                <div className="col-md-12 text-center border border-gray-300 rounded-md shadow-md">
+                  <div className="">
+                    <div className="card-body">
+                      <h3 className="text-orange-500">Total Workforce</h3>
+                      <div id="bar-charts" />
+                      <ResponsiveContainer width="100%" height={500}>
+                        <BarChart
+                          data={barchartdata}
+                          margin={{
+                            top: 5,
+                            right: 5,
+                            left: 5,
+                            bottom: 5,
+                          }}
+                        >
+                          <CartesianGrid />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="Total" barSize={50} fill="#F97316" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      );
+        {/* /Page Content */}
+      </div>
+    </div>
+  );
 }
 
 export default withRouter(AdminDashboard);

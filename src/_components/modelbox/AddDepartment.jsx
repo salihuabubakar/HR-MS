@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { PopupContainer, PopupOverlay, PopupWrapper, Card } from './Addemployee.style';
 import { useGlobalState, setGlobalState } from "../../context/GlobalState";
-import { toast } from "react-toastify";
 
 const AddDepartment = ({
   dispatchDept,
@@ -37,14 +36,8 @@ const AddDepartment = ({
     };
     if (selectedDept[indexToEdit]?.id) {
       dispatchDept({ type: "update", payload: department });
-      toast.success("Department Updated", {
-        autoClose: 1500,
-      });
     } else {
       dispatchDept({ type: "add", payload: department });
-      toast.success("Department Updated", {
-        autoClose: 1500,
-      });
     }
     setGlobalState("showDeptModal", false);
   };
@@ -53,11 +46,13 @@ const AddDepartment = ({
     setDeptName(event.target.value);
     setDeptNameError("");
   };
+
+  const [isDarkMode] = useGlobalState("isDarkMode");
   return (
     <>
       <PopupWrapper>
         <PopupOverlay>
-          <PopupContainer className="custom-modal" role="dialog">
+          <PopupContainer isDarkMode={isDarkMode} className="custom-modal" role="dialog">
             <div
               className="modal-dialog modal-dialog-centered modal-lg"
               role="document"

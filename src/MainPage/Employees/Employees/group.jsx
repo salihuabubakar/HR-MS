@@ -34,6 +34,8 @@ const Group = () => {
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
+
+  const [isDarkMode] = useGlobalState("isDarkMode");
   return (
     <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
       <Header onMenuClick={(value) => toggleMobileMenu()} />
@@ -49,12 +51,10 @@ const Group = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title">Group</h3>
+                <h3 className="text-4xl text-orange-500">Group</h3>
                 <ul className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/app/main/dashboard">Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item active">Group</li>
+                  <Link style={{color: `${isDarkMode ? '#6C757D' : '#625F5C'}`}} className="breadcrumb-item" to="/app/main/dashboard">Dashboard</Link>
+                  <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Employee</li>
                 </ul>
               </div>
             </div>

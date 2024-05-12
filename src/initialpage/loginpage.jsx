@@ -1,57 +1,111 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { alphaNumericPattern, emailrgx } from "../constant";
-import { useHistory } from "react-router-dom";
 import HeaderLogo from "../assets/img/Header-logo.png"
+import { useGlobalState } from "../context/GlobalState";
+import { login_user } from "../utils/sendToServer";
+import { Link } from "react-router-dom"
 
+/**
+ * Yup Validation Schema for Login Form
+ *
+ * Defines a Yup schema for validating the fields of a login form.
+ *
+ * @constant {Object} schema - Yup schema object.
+ * @property {yup.string} username - Validation rules for the username field.
+ * @property {yup.string} password - Validation rules for the password field.
+ */
 const schema = yup.object({
+  /**
+   * Username validation:
+   * - Must be a string.
+   * - Is required.
+   * - Trimming leading and trailing whitespaces.
+   */
   username: yup
     .string()
     // .matches(emailrgx, "Email is required")
     .required("Username is required")
     .trim(),
-  password: yup.string().required("Password is required").trim(),
+
+  /**
+   * Password validation:
+   * - Must be a string.
+   * - Is required.
+   * - Trimming leading and trailing whitespaces.
+   */
+  password: yup
+    .string()
+    .required("Password is required")
+    .trim(),
 });
 
 const Loginpage = () => {
-  const history = useHistory();
   const [eye, seteye] = useState(true);
-  const {
-    handleSubmit,
-    control,
-    setError,
-    clearErrors,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
 
-  const localEmail = localStorage.getItem("email");
-  const localPassword = localStorage.getItem("password");
+  /**
+ * Form Configuration using React Hook Form
+ *
+ * Configures a form using React Hook Form with a Yup resolver for validation.
+ *
+ * @constant {Object} formConfig - Configuration object containing form-related properties.
+ * @property {function} handleSubmit - Function to handle form submission.
+ * @property {function} control - Function to control the form fields.
+ * @property {function} setError - Function to set custom error messages for form fields.
+ * @property {function} clearErrors - Function to clear custom error messages for form fields.
+ * @property {Object} formState - Object containing the current state of the form.
+ * @property {Object} formState.errors - Object containing validation errors for form fields.
+ */
+const {
+  handleSubmit,
+  control,
+  setError,
+  clearErrors,
+  formState: { errors },
+  reset,
+} = useForm({
+  resolver: yupResolver(schema), // Use Yup resolver for form validation
+});
 
-  const onSubmit = (data) => {
-    
-    const username = data.username;
-    const password = data.password;
-    if (username === "sachin" && password == "Sachin2023") {
-      localStorage.setItem("isLoggedIn", true);
-      localStorage.setItem("username", username);
-      history.push("/app/main/dashboard");
-      window.history.pushState(null, null, window.location.href);
-    } else {
-      setError("password", {
-        message: "username or password is mismatch",
-      });
-    }
-  };
+// Note: The following properties are available for use in your form component:
+// - handleSubmit: Function to handle form submission.
+// - control: Function to control the form fields.
+// - setError: Function to set custom error messages for form fields.
+// - clearErrors: Function to clear custom error messages for form fields.
+// - errors: Object containing validation errors for form fields.
+
+
+  /**
+ * Form Submission Handler
+ *
+ * Handles the submission of a login form by checking the provided username and password.
+ * If the credentials are valid, it sets user information in local storage and navigates
+ * to the dashboard. Otherwise, it sets a custom error message using the setError function.
+ *
+ * @param {Object} data - Form data containing username and password.
+ */
+
+  const [loginState, dispatchUserLogin] = useReducer(login_user, []);
+
+const onSubmit = (data) => {
+  const userData = {
+    username: data.username,
+    password: data.password
+  }
+  dispatchUserLogin({ type: "add", payload: userData });
+  // clear inpputs
+  reset();
+};
+
 
   const onEyeClick = () => {
     seteye(!eye);
   };
+
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
   return (
     <>
@@ -59,30 +113,28 @@ const Loginpage = () => {
         <title>Login - Peepal Tree HRMS</title>
         <meta name="description" content="Login page" />
       </Helmet>
-      <div className="account-content">
+      <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} className="account-content h-screen justify-center flex">
         <div className="container">
           {/* Account Logo */}
-          <div className="account-logo">
-            <Link to="">
-              <img
-                src={
-                  HeaderLogo
-                }
-                style={{ width: "25%" }}
-                alt=""
-              />
-            </Link>
+          <div className="flex items-center justify-center">
+            <img
+              src={
+                HeaderLogo
+              }
+              style={{ width: "25%" }}
+              alt=""
+            />
           </div>
           {/* /Account Logo */}
-          <div className="account-box">
+          <div className="account-box boader shadow-md">
             <div className="account-wrapper">
-              <h3 className="account-title">Login</h3>
+              <h3 className="account-title text-orange-500">Login</h3>
               <p className="account-subtitle">Access to our dashboard</p>
               {/* Account Form */}
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-group">
-                    <label>Username</label>
+                    <label>Email</label>
                     <Controller
                       name="username"
                       control={control}
@@ -91,7 +143,7 @@ const Loginpage = () => {
                           className={`form-control  ${
                             errors?.username ? "error-input" : ""
                           }`}
-                          type="text"
+                          type="email"
                           value={value}
                           onChange={onChange}
                           autoComplete="false"
@@ -106,8 +158,8 @@ const Loginpage = () => {
                       <div className="col">
                         <label>Password</label>
                       </div>
-                      <div className="col-auto">
-                        <Link className="text-muted" to="/forgotpassword">
+                      <div className="col-auto account-footer">
+                        <Link to="/forgot-password">
                           Forgot password?
                         </Link>
                       </div>
@@ -147,12 +199,6 @@ const Loginpage = () => {
                     </button>
                   </div>
                 </form>
-                {/* <div className="account-footer">
-                  <p>
-                    Don't have an account yet?{" "}
-                    <Link to="/register">Register</Link>
-                  </p>
-                </div> */}
               </div>
               {/* /Account Form */}
             </div>

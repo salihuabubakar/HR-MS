@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import "antd/dist/antd.css";
@@ -7,6 +7,9 @@ import "../../antdstyle.css";
 import {
   useRoleFetching,
 } from "../../../utils/employeeCustomFetchHook";
+import { highlightSearchQuery } from "../../../utils/highlightSearchQuery";
+import { useGlobalState } from "../../../context/GlobalState";
+import { TableDiv } from "../../../_components/modelbox/styles";
 const AllEmployeeList = ({
   DefaultImage,
   handleEditEmployee,
@@ -16,22 +19,42 @@ const AllEmployeeList = ({
   itemsPerPage,
   currentPage,
   setCurrentPage,
+  searchQuery,
 }) => {
   const { roleData } = useRoleFetching();
+  const [isDarkMode] = useGlobalState("isDarkMode");
 
-  // Table pagination
-  const startCount = (currentPage - 1) * itemsPerPage + 1;
-  const endCount = startCount + itemsPerPage - 1;
-  const paginationSettings = {
-    total: data?.length,
-    showTotal: (total, range) =>
-      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-    showSizeChanger: true,
-    onShowSizeChange: onShowSizeChange,
-    itemRender: itemRender,
-    current: currentPage,
-    onChange: setCurrentPage,
-  };
+  /**
+ * Table Pagination Settings
+ *
+ * Defines settings for paginating a table, including the current page, start and end counts,
+ * and various display options such as total entries, size changer, and custom item rendering.
+ *
+ * @constant {number} startCount - The starting count of items on the current page.
+ * @constant {number} endCount - The ending count of items on the current page.
+ * @constant {Object} paginationSettings - Configuration object for table pagination.
+ * @property {number} total - The total number of items in the table.
+ * @property {function} showTotal - Function to display the total number of items.
+ * @property {boolean} showSizeChanger - Flag to show the size changer for items per page.
+ * @property {function} onShowSizeChange - Callback function when changing items per page.
+ * @property {function} itemRender - Custom function for rendering pagination items.
+ * @property {number} current - The current page number.
+ * @property {function} onChange - Callback function when changing the current page.
+ */
+const startCount = (currentPage - 1) * itemsPerPage + 1;
+const endCount = startCount + itemsPerPage - 1;
+
+const paginationSettings = {
+  total: data?.length,
+  showTotal: (total, range) =>
+    `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+  showSizeChanger: true,
+  onShowSizeChange: onShowSizeChange, // Callback for changing items per page
+  itemRender: itemRender, // Custom function for rendering pagination items
+  current: currentPage, // The current page number
+  onChange: setCurrentPage, // Callback for changing the current page
+};
+
 
   const columns = [
     {
@@ -49,7 +72,7 @@ const AllEmployeeList = ({
         const matchedRole = roleData?.find((r) => r.id === role);
         return (
           <React.Fragment>
-            <h2 className="table-avatar">
+            <h5 className="table-avatar" style={{ display: 'flex', alignItems: 'center'}}>
               <Link
                 to={`/app/employee/profile/${id}`}
                 className="avatar"
@@ -65,13 +88,15 @@ const AllEmployeeList = ({
                   src={photo ? photo : DefaultImage}
                 />
               </Link>
-              <Link
-                to={`/app/employee/profile/${id}`}
-              >
-                {`${first_name} ${middle_name} ${last_name}`}{" "}
-                <span>{matchedRole ? matchedRole.role_name : "--"}</span>
-              </Link>
-            </h2>
+              <div style={{ display: 'flex', flexDirection: 'column'}}>
+                <Link
+                  to={`/app/employee/profile/${id}`}
+                >
+                  {highlightSearchQuery(`${first_name} ${middle_name} ${last_name}`, searchQuery, isDarkMode)}
+                </Link>
+                <span className="text-sm text-[#625F5C]">{matchedRole ? matchedRole.role_name : "--"}</span>
+              </div>
+            </h5>
           </React.Fragment>
         )
       },
@@ -79,20 +104,26 @@ const AllEmployeeList = ({
     },
     {
       title: "Employee ID",
-      dataIndex: "employee_number",
-      // sorter: (a, b) => a.employee_id.length - b.employee_id.length,
+      render: (text, record, index) => {
+        const { employee_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{employee_number}</TableDiv>;
+      },
     },
 
     {
       title: "Email",
-      dataIndex: "email",
-      // sorter: (a, b) => a.email.length - b.email.length,
+      render: (text, record, index) => {
+        const { email } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{email}</TableDiv>;
+      },
     },
-
+    
     {
       title: "Mobile",
-      dataIndex: "phone_number",
-      // sorter: (a, b) => a.phone_number?.length - b.phone_number?.length,
+      render: (text, record, index) => {
+        const { phone_number } = record;
+        return <TableDiv isDarkMode={isDarkMode}>{phone_number}</TableDiv>;
+      },
     },
     {
       title: "Action",
@@ -129,7 +160,7 @@ const AllEmployeeList = ({
       <div className="col-md-12">
         <div className="table-responsive">
           <Table
-            className="table-striped"
+            className="ant-table"
             pagination={paginationSettings}
             style={{ overflowX: "auto" }}
             columns={columns}

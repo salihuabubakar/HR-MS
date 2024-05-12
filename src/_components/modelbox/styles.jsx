@@ -28,6 +28,9 @@ export const HtmlSelectInput = styled.input`
 
 export const RadioBtn = styled.div`
   display: flex;
+  /* The CSS code input[type="checkbox"] { -webkit-appearance: none; } is removing the default
+  styling of the checkbox input element provided by the browser. By setting -webkit-appearance to
+  none, it allows the developer to apply custom styles to the checkbox element using CSS. */
   input[type="checkbox"] {
     -webkit-appearance: none;
   }
@@ -42,6 +45,8 @@ export const RadioBtn = styled.div`
     cursor: pointer;
     padding: 10px;
   }
+  /* The CSS code input[type="checkbox"]:checked + label is selecting the label element that
+  immediately follows a checked checkbox input element. */
   input[type="checkbox"]:checked + label {
     background-color: #ff9b44;
     color: #ffffff;
@@ -61,7 +66,28 @@ export const CheckBox = styled.div`
     cursor: pointer;
   }
   input[type="checkbox"]:checked + label {
-    background-color: #55CE63;
+    background-color: #FF9B44;
     color: #ffffff;
+  }
+`;
+
+export const TableDiv = styled.div`
+  color: ${props => (props.isDarkMode ? '#898888' : '#333333')};
+`;
+
+export const ResAppointmentDiv = styled.div`
+  tbody, td, tfoot, th, thead, tr {
+    background-color: transparent;
+  }
+  .fc-col-header-cell, .fc-multimonth-daygrid-table  {
+    background-color: ${props => (props.isDarkMode ? '#110C08' : 'white')} !important;
+  }
+
+  .fc-toolbar-title, .fc-col-header-cell-cushion {
+    color: #F97316 !important;
+  }
+
+  .fc .fc-timegrid-axis-cushion, .fc-daygrid-day-number, .fc-multimonth-title {
+    color: ${props => (props.isDarkMode ? '#898888' : '#333333')} !important;
   }
 `;
