@@ -13,7 +13,6 @@ import { useGlobalState } from "../context/GlobalState";
 import { checkTokenExpiration } from "../utils/auth/checkJwtExpiration";
 const LoginPage = lazy(() => import('./loginpage'));
 const ForgotPassword = lazy(() => import('./forgotpassword'));
-const ResetPassword = lazy(() => import('./resetpassword'));
 
 //Error Page
 const Error404 = lazy(() => import("../MainPage/Pages/ErrorPage/error404"));
@@ -44,12 +43,10 @@ const App = () => {
         <Switch>
           <Route path="/login" component={LoginPage} />
           <Route path="/forgot-password" component={ForgotPassword} />
-          <Route path="/reset-password/:id/:token" component={ResetPassword} />
+          <Route path="/error-404" component={Error404} />
           <ProtectedRoute 
             isTokenNotExpired={checkTokenExpiration()}
           />
-          <Route path="/error-404" component={Error404} />
-          <Route path="/error-500" component={Error500} />
         </Switch>
       </Suspense>
       <ToastContainer />
