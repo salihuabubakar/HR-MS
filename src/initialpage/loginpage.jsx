@@ -8,6 +8,7 @@ import HeaderLogo from "../assets/img/Header-logo.png"
 import { useGlobalState } from "../context/GlobalState";
 import { login_user } from "../utils/sendToServer";
 import { Link } from "react-router-dom"
+import Header from "./Sidebar/header";
 
 /**
  * Yup Validation Schema for Login Form
@@ -113,10 +114,11 @@ const onSubmit = (data) => {
         <title>Login - Peepal Tree HRMS</title>
         <meta name="description" content="Login page" />
       </Helmet>
+      <Header  />
       <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} className="account-content h-screen justify-center flex">
         <div className="container">
           {/* Account Logo */}
-          <div className="flex items-center justify-center">
+          {/* <div className="flex items-center justify-center">
             <img
               src={
                 HeaderLogo
@@ -124,9 +126,9 @@ const onSubmit = (data) => {
               style={{ width: "25%" }}
               alt=""
             />
-          </div>
+          </div> */}
           {/* /Account Logo */}
-          <div className="account-box boader shadow-md">
+          <div className="account-box boader shadow-md mt-20">
             <div className="account-wrapper">
               <h3 className="account-title text-orange-500">Login</h3>
               <p className="account-subtitle">Access to our dashboard</p>

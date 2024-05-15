@@ -35,22 +35,12 @@ const Sidebar = (props) => {
 
   const [isDarkMode] = useGlobalState('isDarkMode');
 
-  useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
-  }, [isDarkMode]);
 
   let pathname = props?.location?.pathname
   const url = "/app/shiftschedule/shift";
 
-  // Set mode to true
-  const toggleDarkModeOn = () => {
-    setGlobalState('isDarkMode', true);
-  };
-
-  // Set mode to false
-  const toggleDarkModeOff = () => {
-    setGlobalState('isDarkMode', false);
-  };
+  
+  const [user] = useGlobalState("user");
 
   return (
     <HeaderContainer style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} className="sidebar" id="sidebar"> 
@@ -98,98 +88,103 @@ const Sidebar = (props) => {
                       <Link
                         className={location.pathname.includes("/main/dashboard") ? "active" : ""}
                         to="/app/main/dashboard"
-                      >
-                        Admin Dashboard
+                      > 
+                        {user.role === "admin" ? (
+                          'Admin'
+                        ) : (
+                          'Employee'
+                        )} Dashboard
                       </Link>
                     </li>
                   </ul>
                 )}
               </li>
-              <li className="submenu">
-                <a
-                  // data-bs-toggle="dropdown"
-                  className={isSideMenu == "employee" ? "subdrop" : ""}
-                  onClick={() =>
-                    toggleSidebar(isSideMenu == "employee" ? "" : "employee")
-                  }
-                  title='Employees'
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14 9H18" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
-                    <path d="M14 12.5H17" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
-                    <path d="M17 3H7C4.23858 3 2 5.23858 2 8V16C2 18.7614 4.23858 21 7 21H17C19.7614 21 22 18.7614 22 16V8C22 5.23858 19.7614 3 17 3Z" stroke="#625F5C" stroke-width="1.5" stroke-linejoin="round"/>
-                    <path d="M5 16C6.20831 13.4189 10.7122 13.2491 12 16" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M10.5 9C10.5 10.1046 9.60457 11 8.5 11C7.39543 11 6.5 10.1046 6.5 9C6.5 7.89543 7.39543 7 8.5 7C9.60457 7 10.5 7.89543 10.5 9Z" stroke="#625F5C" stroke-width="1.5"/>
-                  </svg>
-
-                  <span
-                    onClick={() => activeLink("Employees")}
-                    className={isActiveLink == "Employees" ? "noti-dot" : ""}
+              {user.role === "admin" && (
+                <li className="submenu">
+                  <a
+                    // data-bs-toggle="dropdown"
+                    className={isSideMenu == "employee" ? "subdrop" : ""}
+                    onClick={() =>
+                      toggleSidebar(isSideMenu == "employee" ? "" : "employee")
+                    }
+                    title='Employees'
                   >
-                    {" "}
-                    Employees
-                  </span>{" "}
-                  <span className="menu-arrow" />
-                </a>
-                {isSideMenu == "employee" ? (
-                  <ul>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("allemployees")
-                            ? "active"
-                            : pathname.includes("employees-list")
-                            ? "active"
-                            : ""
-                        }
-                        to="/app/employee/allemployees"
-                      >
-                        All Employees
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={pathname.includes("group") ? "active" : ""}
-                        to="/app/employee/group"
-                      >
-                        Group
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("contacts") ? "active" : ""
-                        }
-                        to="/app/employee/contacts"
-                      >
-                        Contacts
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("review") ? "active" : ""
-                        }
-                        to="/app/employee/review"
-                      >
-                        Review
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("status") ? "active" : ""
-                        }
-                        to="/app/employee/status"
-                      >
-                        Status
-                      </Link>
-                    </li>
-                  </ul>
-                ) : (
-                  ""
-                )}
-              </li>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 9H18" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M14 12.5H17" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M17 3H7C4.23858 3 2 5.23858 2 8V16C2 18.7614 4.23858 21 7 21H17C19.7614 21 22 18.7614 22 16V8C22 5.23858 19.7614 3 17 3Z" stroke="#625F5C" stroke-width="1.5" stroke-linejoin="round"/>
+                      <path d="M5 16C6.20831 13.4189 10.7122 13.2491 12 16" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M10.5 9C10.5 10.1046 9.60457 11 8.5 11C7.39543 11 6.5 10.1046 6.5 9C6.5 7.89543 7.39543 7 8.5 7C9.60457 7 10.5 7.89543 10.5 9Z" stroke="#625F5C" stroke-width="1.5"/>
+                    </svg>    
+                    <span
+                      onClick={() => activeLink("Employees")}
+                      className={isActiveLink == "Employees" ? "noti-dot" : ""}
+                    >
+                      {" "}
+                      Employees
+                    </span>{" "}
+                    <span className="menu-arrow" />
+                  </a>
+                  {isSideMenu == "employee" ? (
+                    <ul>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("allemployees")
+                              ? "active"
+                              : pathname.includes("employees-list")
+                              ? "active"
+                              : ""
+                          }
+                          to="/app/employee/allemployees"
+                        >
+                          All Employees
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={pathname.includes("group") ? "active" : ""}
+                          to="/app/employee/group"
+                        >
+                          Group
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("contacts") ? "active" : ""
+                          }
+                          to="/app/employee/contacts"
+                        >
+                          Contacts
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("review") ? "active" : ""
+                          }
+                          to="/app/employee/review"
+                        >
+                          Review
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("status") ? "active" : ""
+                          }
+                          to="/app/employee/status"
+                        >
+                          Status
+                        </Link>
+                      </li>
+                    </ul>
+                  ) : (
+                    ""
+                  )}
+                </li>
+              )}
               <li
                 className={
                   pathname.includes("accomodation/accomodations")
@@ -593,23 +588,6 @@ const Sidebar = (props) => {
                 </Link>
               </li> */}
             </ul>
-            <div className='switch flex justify-between items-end justify-end border p-2 rounded-full'>
-              <div className='dark'>
-                <button title='dark' onClick={toggleDarkModeOn}>
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20.5 13.0784C19.3003 13.7189 17.9301 14.0821 16.4751 14.0821C11.7491 14.0821 7.91792 10.2509 7.91792 5.52485C7.91792 4.06986 8.28105 2.69968 8.92163 1.5C4.66765 2.49698 1.5 6.31513 1.5 10.8731C1.5 16.1899 5.8101 20.5 11.1269 20.5C15.6849 20.5 19.503 17.3324 20.5 13.0784Z" stroke="#110C08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-              <div className='light'>
-                <button title='light' onClick={toggleDarkModeOff}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" stroke="#F97316" stroke-width="1.5"/>
-                    <path d="M12 2V3.5M12 20.5V22M19.0708 19.0713L18.0101 18.0106M5.98926 5.98926L4.9286 4.9286M22 12H20.5M3.5 12H2M19.0713 4.92871L18.0106 5.98937M5.98975 18.0107L4.92909 19.0714" stroke="#F97316" stroke-width="1.5" stroke-linecap="round"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </Scrollbars>

@@ -3743,7 +3743,7 @@ export const login_user = async (state, { type, payload }) => {
         // Check the response status
         if (response.data) {
           localStorage.setItem("user", JSON.stringify(response.data));
-          toast.success("Loading......");
+          toast.loading("Loading......");
           window.open('/app/main/dashboard');
 
           // Close the previous tab on successful login
