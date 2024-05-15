@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import HeaderLogo from "../assets/img/Header-logo.png";
 import { useGlobalState } from "../context/GlobalState";
 import { forgot_password } from '../utils/sendToServer';
+import Header from "./Sidebar/header";
 
 const ForgotPassword = () => {
   const [isDarkMode] = useGlobalState("isDarkMode");
@@ -23,10 +24,11 @@ const ForgotPassword = () => {
         <title>Forgot Password - Peepal Tree HRMS</title>
         <meta name="description" content="Login page" />
       </Helmet>
+      <Header  />
       <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} className="account-content h-screen justify-center flex">
         <div className="container">
           {/* Account Logo */}
-          <div className="flex items-center justify-center">
+          {/* <div className="flex items-center justify-center">
             <img
               src={
                 HeaderLogo
@@ -34,9 +36,9 @@ const ForgotPassword = () => {
               style={{ width: "25%" }}
               alt=""
             />
-          </div>
+          </div> */}
           {/* /Account Logo */}
-          <div className="account-box">
+          <div className="account-box mt-20">
             <div className="account-wrapper">
               <h3 className="account-title text-orange-500">Forgot Password?</h3>
               <p className="account-subtitle">
