@@ -1495,8 +1495,8 @@ export const useAllUserFetching = () => {
 export const useProfileFetching = () => {
   const [user] = useGlobalState("user");
   const fetchData = async () => {
-    const response = !user?.token ? null : await axios.get(`${Base2Url}/users/profile/`, axiosConfig);
-    return response?.data;
+    const response = await axios.get(`${Base2Url}/users/profile/`, axiosConfig);
+    return response.data;
   };
   const queryClient = useQueryClient();
 
