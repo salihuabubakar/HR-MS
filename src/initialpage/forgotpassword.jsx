@@ -21,6 +21,7 @@ const ForgotPassword = () => {
   }
 
   console.log(Base2Url);
+  console.log("vEnv::", process.env.VERCEL_ENV)
   return (
     <>
       <Helmet>
