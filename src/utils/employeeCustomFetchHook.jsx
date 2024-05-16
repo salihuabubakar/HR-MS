@@ -6,6 +6,7 @@ import {
   useQueryClient,
 } from 'react-query'
 import { axiosConfig } from "./getUserToken";
+import { useGlobalState } from "../context/GlobalState";
 
 // Get employee data
 export const useDataFetching = () => {
@@ -1492,9 +1493,10 @@ export const useAllUserFetching = () => {
 
 // Get profile data
 export const useProfileFetching = () => {
+  const [user] = useGlobalState("user");
   const fetchData = async () => {
-    const response = await axios.get(`${Base2Url}/users/profile/`, axiosConfig);
-    return response.data;
+    const response = !user?.token ? null : await axios.get(`${Base2Url}/users/profile/`, axiosConfig);
+    return response?.data;
   };
   const queryClient = useQueryClient();
 
