@@ -20,8 +20,8 @@ const ForgotPassword = () => {
     setUsername("");
   }
 
-  console.log("base", Base2Url);
-  console.log("vEnv::", process.env.VERCEL_ENV)
+  console.log("baseUrl", Base2Url);
+  console.log("Env::", process.env.VERCEL_ENV)
   return (
     <>
       <Helmet>
