@@ -15,4 +15,4 @@ export const BaseUrl =
     : developmentUrl;
 
 
-export const Base2Url = nodeEnv === "production" ||  vercelEnv === "production" ? prod2Url : (vercelEnv === "preview") ? preview2Url : dev2Url; 
+export const Base2Url =  vercelEnv === "production" ? prod2Url : (vercelEnv === "preview") ? preview2Url : dev2Url; 
