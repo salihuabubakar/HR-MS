@@ -5,6 +5,7 @@ import HeaderLogo from "../assets/img/Header-logo.png";
 import { useGlobalState } from "../context/GlobalState";
 import { forgot_password } from '../utils/sendToServer';
 import Header from "./Sidebar/header";
+import { Base2Url } from '../utils/baseUrl';
 
 const ForgotPassword = () => {
   const [isDarkMode] = useGlobalState("isDarkMode");
@@ -18,6 +19,8 @@ const ForgotPassword = () => {
     dispatchForgotPasswordPayload({ type: "add", payload: {username: username} });
     setUsername("");
   }
+
+  console.log(Base2Url);
   return (
     <>
       <Helmet>
