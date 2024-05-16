@@ -5,7 +5,6 @@ const vercelEnv = process.env.VERCEL_ENV;
 
 const dev2Url = process.env.REACT_APP_DEV_URL;
 const prod2Url = process.env.REACT_APP_PROD_URL;
-const preview2Url = process.env.REACT_APP_PREVIEW_URL;
 
 export const BaseUrl =
   vercelEnv === "preview"
@@ -15,4 +14,4 @@ export const BaseUrl =
     : developmentUrl;
 
 
-export const Base2Url =  vercelEnv === "production" ? prod2Url : (vercelEnv === "preview") ? preview2Url : dev2Url; 
+export const Base2Url =  vercelEnv === "production" || vercelEnv === "preview" ? prod2Url : dev2Url; 
