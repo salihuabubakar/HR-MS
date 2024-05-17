@@ -3766,7 +3766,7 @@ export const forgot_password = async (state, { type, payload }) => {
   switch (type) {
     case "add":
       try {
-        const response = await axios.post(`/users/forgot-password`, payload);
+        const response = await axios.post(`${Base2Url}/users/forgot-password`, payload);
         // Check the response status
         if (response.status == 201) {
           window.alert("Password reset link has been sent to your email!");

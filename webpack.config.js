@@ -62,14 +62,7 @@ module.exports = {
   compress: true,
   port: 8005, // port number
   historyApiFallback: true,
-  quiet: true,
-  proxy: {
-    '/users': {
-        target:'https://staging-hr-ms.vercel.app',
-        secure: false,
-        changeOrigin: true,
-    }
-  }
+  quiet: true
 },
  externals: {
   // global app config object
