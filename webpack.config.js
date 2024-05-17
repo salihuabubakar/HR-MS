@@ -65,7 +65,7 @@ module.exports = {
   quiet: true,
   proxy: {
     '/users': {
-        target: process.env.VERCEL_ENV === 'preview' && 'https://staging-hr-ms.vercel.app',
+        target:'https://staging-hr-ms.vercel.app',
         secure: false,
         changeOrigin: true,
     }
