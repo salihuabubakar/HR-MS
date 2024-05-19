@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { alphaNumericPattern, emailrgx } from "../constant";
 import HeaderLogo from "../assets/img/Header-logo.png"
-import { useGlobalState } from "../context/GlobalState";
+import { setGlobalState, useGlobalState } from "../context/GlobalState";
 import { login_user } from "../utils/sendToServer";
 import { Link } from "react-router-dom"
 import Header from "./Sidebar/header";
@@ -90,12 +90,14 @@ const {
  */
 
   const [loginState, dispatchUserLogin] = useReducer(login_user, []);
+  const [loadingState] = useGlobalState("loadingState");
 
 const onSubmit = (data) => {
   const userData = {
     username: data.username,
     password: data.password
   }
+  setGlobalState("loadingState", true);
   dispatchUserLogin({ type: "add", payload: userData });
   // clear inpputs
   reset();
@@ -197,7 +199,7 @@ const onSubmit = (data) => {
                       className="btn btn-primary account-btn"
                       type="submit"
                     >
-                      Login
+                      {loadingState ? 'Loding..' : 'Login'}
                     </button>
                   </div>
                 </form>

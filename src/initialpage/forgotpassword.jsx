@@ -2,12 +2,13 @@ import React, { useReducer, useState } from 'react';
 import { Helmet } from "react-helmet";
 import { Link } from 'react-router-dom';
 import HeaderLogo from "../assets/img/Header-logo.png";
-import { useGlobalState } from "../context/GlobalState";
+import { setGlobalState, useGlobalState } from "../context/GlobalState";
 import { forgot_password } from '../utils/sendToServer';
 import Header from "./Sidebar/header";
 
 const ForgotPassword = () => {
   const [isDarkMode] = useGlobalState("isDarkMode");
+  const [loadingState] = useGlobalState("loadingState");
 
   const [forgotPasswordState, dispatchForgotPasswordPayload] = useReducer(forgot_password, []);
 
@@ -15,6 +16,7 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setGlobalState("loadingState", true);
     dispatchForgotPasswordPayload({ type: "add", payload: {username: username} });
     setUsername("");
   }
@@ -61,7 +63,7 @@ const ForgotPassword = () => {
                     className="btn btn-primary account-btn"
                     type="submit"
                   >
-                    Create Link
+                    {loadingState ? 'Loading....' : 'Create Link'}
                   </button>
                 </div>
                 <div className="account-footer">
