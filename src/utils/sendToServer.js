@@ -3742,8 +3742,8 @@ export const login_user = async (state, { type, payload }) => {
         const response = await axios.post(`${Base2Url}/users/login`, payload);
         // Check the response status
         if (response.data) {
+          setGlobalState("loadingState", false);
           localStorage.setItem("user", JSON.stringify(response.data));
-          toast.loading("Loading......");
           window.open('/app/main/dashboard');
 
           // Close the previous tab on successful login
@@ -3753,6 +3753,7 @@ export const login_user = async (state, { type, payload }) => {
           throw new Error("Failed to log in");
         }
       } catch (error) {
+        setGlobalState("loadingState", false);
         console.error("Error occurred while login user:", error);
         toast.error(error.response.data.message);
       }
@@ -3768,14 +3769,18 @@ export const forgot_password = async (state, { type, payload }) => {
       try {
         const response = await axios.post(`${Base2Url}/users/forgot-password`, payload);
         // Check the response status
-        if (response.status == 201) {
-          window.alert("Password reset link has been sent to your email!");
+        if (response.data) {
+          setGlobalState("loadingState", false);
+          toast.success("Reset link has been sent to your email!", {
+            autoClose: 1500
+          });
           window.location.replace("/login");
           return;
         } else {
           throw new Error("Failed to send link");
         }
       } catch (error) {
+        setGlobalState("loadingState", false);
         console.error("Error occurred while sending link:", error);
         toast.error(error.response.data.message);
       }

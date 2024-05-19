@@ -1493,7 +1493,6 @@ export const useAllUserFetching = () => {
 
 // Get profile data
 export const useProfileFetching = () => {
-  const [user] = useGlobalState("user");
   const fetchData = async () => {
     const response = await axios.get(`${Base2Url}/users/profile/`, axiosConfig);
     return response.data;

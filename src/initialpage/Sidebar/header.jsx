@@ -10,7 +10,12 @@ import { useProfileFetching } from "../../utils/employeeCustomFetchHook";
 
 const Header = (props) => {
   const history = useHistory();
-  const { profileInfo, isProfileInfoLoading, isProfileInfoError } = useProfileFetching();
+  const [user] = useGlobalState("user");
+
+  // Temporary fix
+  if (user?.token) {
+    var { profileInfo, isProfileInfoLoading, isProfileInfoError } = useProfileFetching();
+  }
 
   const handlesidebar = () => {
     setGlobalState("isMiniSidebar", prevState => !prevState);
@@ -27,7 +32,6 @@ const Header = (props) => {
   };
 
   const [isDarkMode] = useGlobalState("isDarkMode");
-  const [user] = useGlobalState("user");
 
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode));

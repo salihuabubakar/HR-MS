@@ -13,6 +13,8 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   // Mini Sidebar
   isMiniSidebar: false,
 
+  loadingState: false,
+
 
   //Employee Account
   selectedEmployeeAccount: [],
