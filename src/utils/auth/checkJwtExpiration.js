@@ -1,15 +1,14 @@
 import { jwtDecode } from "jwt-decode";
-import { useGlobalState } from '../../context/GlobalState';
+import { isAuth } from "../helperFucntions";
 
 export const checkTokenExpiration = () => {
-  const [user] = useGlobalState("user");
-  if (!user) {
+  if (!isAuth()) {
     // Token is not available, user is not logged in
     return true;
   }
 
   try {
-    const decodedToken = jwtDecode(user?.token);
+    const decodedToken = jwtDecode(isAuth());
     const currentTime = Date.now() / 1000; // Convert to seconds
     if (decodedToken.exp < currentTime) {
       // Token has expired, log the user out

@@ -6,7 +6,6 @@ import {
   useQueryClient,
 } from 'react-query'
 import { axiosConfig } from "./getUserToken";
-import { useGlobalState } from "../context/GlobalState";
 
 // Get employee data
 export const useDataFetching = () => {

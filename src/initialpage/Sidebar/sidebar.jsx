@@ -3,7 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { HeaderContainer } from './style';
-import { setGlobalState, useGlobalState } from '../../context/GlobalState';
+import { useGlobalState } from '../../context/GlobalState';
+import { isAdmin, isManager} from '../../utils/helperFucntions';
 
 const Sidebar = (props) => {
 
@@ -38,9 +39,6 @@ const Sidebar = (props) => {
 
   let pathname = props?.location?.pathname
   const url = "/app/shiftschedule/shift";
-
-  
-  const [user] = useGlobalState("user");
 
   return (
     <HeaderContainer style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} className="sidebar" id="sidebar"> 
@@ -89,7 +87,7 @@ const Sidebar = (props) => {
                         className={location.pathname.includes("/main/dashboard") ? "active" : ""}
                         to="/app/main/dashboard"
                       > 
-                        {user.role === "admin" ? (
+                        {isAdmin() ? (
                           'Admin'
                         ) : (
                           'Employee'
@@ -99,7 +97,7 @@ const Sidebar = (props) => {
                   </ul>
                 )}
               </li>
-              {user.role === "admin" && (
+              {isAdmin() && (
                 <li className="submenu">
                   <a
                     // data-bs-toggle="dropdown"
@@ -535,53 +533,59 @@ const Sidebar = (props) => {
                   ""
                 )}
               </li> */}
-              <li className="menu-title">
-                <span>Administration</span>
-              </li>
-              <li
-                className={
-                  pathname.includes("administration/users") ? "active" : ""
-                }
-                title='Users'
-              >
-                <Link
-                  to="/app/administration/users"
-                  onClick={() => activeLink("administration/users")}
+              {(isAdmin() || isManager()) && (
+                <li className="menu-title">
+                  <span>Administration</span>
+                </li>
+              )}
+              {isAdmin() && (
+                <li
                   className={
-                    isActiveLink == "administration/users" ? "noti-dot" : ""
+                    pathname.includes("administration/users") ? "active" : ""
                   }
+                  title='Users'
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.5 22H6.59087C5.04549 22 3.81631 21.248 2.71266 20.1966C0.453366 18.0441 4.1628 16.324 5.57757 15.4816C7.67837 14.2307 10.1368 13.7719 12.5 14.1052C13.3575 14.2261 14.1926 14.4514 15 14.7809" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M16.5 6.5C16.5 8.98528 14.4853 11 12 11C9.51472 11 7.5 8.98528 7.5 6.5C7.5 4.01472 9.51472 2 12 2C14.4853 2 16.5 4.01472 16.5 6.5Z" stroke="#625F5C" stroke-width="1.5"/>
-                    <path d="M18.5 22V15M15 18.5H22" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
-                  </svg>
-                  <span>Users</span>
-                </Link>
-              </li>
-              <li
-                className={
-                  pathname.includes("administration/careers") ? "active" : ""
-                }
-                title='Careers'
-              >
-                <Link
-                  to="/app/administration/careers"
-                  onClick={() => activeLink("administration/careers")}
+                  <Link
+                    to="/app/administration/users"
+                    onClick={() => activeLink("administration/users")}
+                    className={
+                      isActiveLink == "administration/users" ? "noti-dot" : ""
+                    }
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12.5 22H6.59087C5.04549 22 3.81631 21.248 2.71266 20.1966C0.453366 18.0441 4.1628 16.324 5.57757 15.4816C7.67837 14.2307 10.1368 13.7719 12.5 14.1052C13.3575 14.2261 14.1926 14.4514 15 14.7809" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16.5 6.5C16.5 8.98528 14.4853 11 12 11C9.51472 11 7.5 8.98528 7.5 6.5C7.5 4.01472 9.51472 2 12 2C14.4853 2 16.5 4.01472 16.5 6.5Z" stroke="#625F5C" stroke-width="1.5"/>
+                      <path d="M18.5 22V15M15 18.5H22" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>Users</span>
+                  </Link>
+                </li>
+              )}
+              {(isAdmin() || isManager()) && (
+                <li
                   className={
-                    isActiveLink == "administration/careers" ? "noti-dot" : ""
+                    pathname.includes("administration/careers") ? "active" : ""
                   }
+                  title='Careers'
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 11C4.3317 8.55783 7.64323 8.44283 10 11M8.49509 4.5C8.49509 5.88071 7.37421 7 5.99153 7C4.60885 7 3.48797 5.88071 3.48797 4.5C3.48797 3.11929 4.60885 2 5.99153 2C7.37421 2 8.49509 3.11929 8.49509 4.5Z" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
-                    <path d="M14 22C16.3317 19.5578 19.6432 19.4428 22 22M20.4951 15.5C20.4951 16.8807 19.3742 18 17.9915 18C16.6089 18 15.488 16.8807 15.488 15.5C15.488 14.1193 16.6089 13 17.9915 13C19.3742 13 20.4951 14.1193 20.4951 15.5Z" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
-                    <path d="M3 14C3 17.87 6.13 21 10 21L9 19" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M15 3H21M15 6H21M15 9H18.5" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+                  <Link
+                    to="/app/administration/careers"
+                    onClick={() => activeLink("administration/careers")}
+                    className={
+                      isActiveLink == "administration/careers" ? "noti-dot" : ""
+                    }
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M2 11C4.3317 8.55783 7.64323 8.44283 10 11M8.49509 4.5C8.49509 5.88071 7.37421 7 5.99153 7C4.60885 7 3.48797 5.88071 3.48797 4.5C3.48797 3.11929 4.60885 2 5.99153 2C7.37421 2 8.49509 3.11929 8.49509 4.5Z" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M14 22C16.3317 19.5578 19.6432 19.4428 22 22M20.4951 15.5C20.4951 16.8807 19.3742 18 17.9915 18C16.6089 18 15.488 16.8807 15.488 15.5C15.488 14.1193 16.6089 13 17.9915 13C19.3742 13 20.4951 14.1193 20.4951 15.5Z" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M3 14C3 17.87 6.13 21 10 21L9 19" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M15 3H21M15 6H21M15 9H18.5" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
 
-                  <span>Careers</span>
-                </Link>
-              </li>
+                    <span>Careers</span>
+                  </Link>
+                </li>
+              )}
               {/* <li>
                 <Link to="/settings/companysetting">
                   <i className="la la-cog" /> <span>Settings</span>

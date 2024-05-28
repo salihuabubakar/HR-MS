@@ -6,14 +6,14 @@ import {HeaderContainer} from "./style"
 import { Avatar } from "antd";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import { useProfileFetching } from "../../utils/employeeCustomFetchHook";
+import { isAuth } from "../../utils/helperFucntions";
 
 
 const Header = (props) => {
   const history = useHistory();
-  const [user] = useGlobalState("user");
 
   // Temporary fix
-  if (user?.token) {
+  if (isAuth()) {
     var { profileInfo, isProfileInfoLoading, isProfileInfoError } = useProfileFetching();
   }
 
@@ -27,7 +27,6 @@ const Header = (props) => {
 
   const handleLogOut = () => {
     localStorage.removeItem("user");
-    setGlobalState("user", null);
     history.push("/login");
   };
 
@@ -50,8 +49,8 @@ const Header = (props) => {
 
   return (
     <HeaderContainer className="header">
-      <div className={`handburger flex items-center ${!user?.token && 'absolute right-0'}`}>
-        {user?.token && (
+      <div className={`handburger flex items-center ${!isAuth() && 'absolute right-0'}`}>
+        {isAuth() && (
           <>
             <button id="toggle_btn" onClick={handlesidebar}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#f97316" fill="none">
@@ -89,12 +88,12 @@ const Header = (props) => {
           </div>
         </div>
       </div>
-      <div className={`local-logo ${!user?.token && 'absolute left-auto'}`}>
+      <div className={`local-logo ${!isAuth() && 'absolute left-auto'}`}>
         <Link to="/app/main/dashboard" className="logo">
-          <img src={"https://peepaltree.co.uk/wp-content/uploads/sites/4/2023/12/Header-logo-800px.png"} width={200} height={200} alt="" />
+          <img src={"https://peepaltree.co.uk/wp-content/uploads/sites/4/2023/12/Header-logo-800px.png"} width={200} height={200} alt="logo" />
         </Link>
       </div>
-      {user?.token && (
+      {isAuth() && (
         <>
           <div className="profile-handle flex justify-center items-center">
             <div className="mr-8">
