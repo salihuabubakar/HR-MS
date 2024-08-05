@@ -53,52 +53,17 @@ const Users = () => {
         render: (text, record) => (
           <h2 className="table-avatar">
             <Link
-              to="/app/profile/profile"
-              onClick={(e) => e.preventDefault()}
-              className="avatar"
-              style={{
-                borderRadius: "5px",
-                backgroundColor: "#00000000",
-                height: "100%",
-              }}
-            >
-              <img
-                style={{
-                  width: "30px",
-                  borderRadius: "50px",
-                  backgroundColor: "#00000000",
-                  height: "30px",
-                }}
-                alt=""
-                src={DefaultImage}
-              />
-            </Link>
-            <Link
-              to="/app/profile/profile"
+              to="#"
               onClick={(e) => e.preventDefault()}
             >
-              {record.firstName + " " + record.lastName}{" "}
-              <span>{record.role?.label}</span>
+              {record.first_name + " " + record.other_name}
             </Link>
           </h2>
         )
       },
       {
         title: "Email",
-        dataIndex: "email"
-      },
-
-      {
-        title: "Company",
-        dataIndex: "company",
-        render: (text, record) => {
-          const { id, company } = record;
-          return (
-            <React.Fragment>
-              <h2>{company?.label}</h2>
-            </React.Fragment>
-          );
-        }
+        dataIndex: "username"
       },
       {
         title: "Role",
@@ -109,12 +74,14 @@ const Users = () => {
             <React.Fragment>
               <span
                 className={
-                  role?.label === "Admin"
+                  role === "admin"
                     ? "badge bg-inverse-danger"
-                    : "badge bg-inverse-success"
+                    : role === "manager" 
+                    ? "badge bg-inverse-success"
+                    : "badge bg-inverse-warning"
                 }
               >
-                {role?.label}
+                {role}
               </span>
             </React.Fragment>
           );

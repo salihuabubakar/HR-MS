@@ -7,13 +7,12 @@ import Contacts from './contacts';
 import Review from './review';
 import Status from "./status";
 import Profile from './profile';
-import { useGlobalState } from '../../../context/GlobalState';
+import { isAdmin } from '../../../utils/helperFucntions';
 
 const EmployeesRoute = ({ match }) => {
-  const [user] = useGlobalState("user");
   return (
     <>
-      {user.role === "admin" ? (
+      {isAdmin() ? (
         <Switch>
           <Redirect exact from={`${match.url}/`} to={`${match.url}/allemployees`} />
           <Route path={`${match.url}/allemployees`} component={AllEmployees} />
