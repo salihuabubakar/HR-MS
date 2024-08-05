@@ -19,26 +19,37 @@ import Profile from "./profile";
 import Gp from "./general-practice";
 import Solicitor from "./solicitor";
 import School from "./school";
+import { isAdmin } from "../../utils/helperFucntions";
 
-const ServiceRoute = ({ match }) => (
-  <Switch>
-    <Redirect exact from={`${match.url}/`} to={`${match.url}/service-worker`} />
-    <Route path={`${match.url}/service-worker`} component={AllServiceWorkers} />
-    <Route path={`${match.url}/profile/:id`} component={Profile} />
-    <Route path={`${match.url}/borough`} component={Borough} />
-    <Route path={`${match.url}/social-worker`} component={SocialWorker} />
-    <Route path={`${match.url}/visitor`} component={Visitor} />
-    <Route path={`${match.url}/complaint`} component={Complaint} />
-    <Route path={`${match.url}/request`} component={Request} />
-    <Route path={`${match.url}/incident`} component={Incident} />
-    <Route path={`${match.url}/misper`} component={Misper} />
-    <Route path={`${match.url}/document-type`} component={DocumentType} />
-    <Route path={`${match.url}/legal-status`} component={LegalStatus} />
-    <Route path={`${match.url}/gp-type`} component={GpType} />
-    <Route path={`${match.url}/general-practice`} component={Gp} />
-    <Route path={`${match.url}/solicitor`} component={Solicitor} />
-    <Route path={`${match.url}/school`} component={School} />
-  </Switch>
-);
+const ServiceRoute = ({ match }) => {
+  return (
+    <>
+      {isAdmin() ? (
+        <Switch>
+          <Redirect exact from={`${match.url}/`} to={`${match.url}/service-worker`} />
+          <Route path={`${match.url}/service-worker`} component={AllServiceWorkers} />
+          <Route path={`${match.url}/profile/:id`} component={Profile} />
+          <Route path={`${match.url}/borough`} component={Borough} />
+          <Route path={`${match.url}/social-worker`} component={SocialWorker} />
+          <Route path={`${match.url}/visitor`} component={Visitor} />
+          <Route path={`${match.url}/complaint`} component={Complaint} />
+          <Route path={`${match.url}/request`} component={Request} />
+          <Route path={`${match.url}/incident`} component={Incident} />
+          <Route path={`${match.url}/misper`} component={Misper} />
+          <Route path={`${match.url}/document-type`} component={DocumentType} />
+          <Route path={`${match.url}/legal-status`} component={LegalStatus} />
+          <Route path={`${match.url}/gp-type`} component={GpType} />
+          <Route path={`${match.url}/general-practice`} component={Gp} />
+          <Route path={`${match.url}/solicitor`} component={Solicitor} />
+          <Route path={`${match.url}/school`} component={School} />
+        </Switch>
+      ) : (
+        <Switch>
+          <Redirect to="/error-404" />;
+        </Switch>
+      )}
+    </>
+  )
+};
 
 export default ServiceRoute;

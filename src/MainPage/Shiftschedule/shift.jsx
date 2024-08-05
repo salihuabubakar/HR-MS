@@ -18,6 +18,7 @@ import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import SearchComponent from "../../_components/searchComponent";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 import { TableDiv } from "../../_components/modelbox/styles";
+import { isAdmin } from "../../utils/helperFucntions";
 
 const shift = () => {
   const { shiftData, isShiftLoading } = useShiftFetching();
@@ -165,14 +166,17 @@ const shift = () => {
                   <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Shifts</li>
                 </ul>
                 </div>
-                <div className="col-auto float-end ml-auto">
-                  <a
-                    className="btn add-btn m-r-5"
-                    onClick={() => setGlobalState("showShiftModal", true)}
-                  >
-                    Add Shifts
-                  </a>
-                </div>
+                {isAdmin() && (
+                  <div className="col-auto float-end ml-auto">
+                    <a
+                      className="btn add-btn m-r-5"
+                      onClick={() => setGlobalState("showShiftModal", true)}
+                    >
+                      Add Shifts
+                    </a>
+                  </div>
+                )}
+                
               </div>
             </div>
             {/* /Page Header */}

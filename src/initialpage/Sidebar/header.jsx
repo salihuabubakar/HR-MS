@@ -6,14 +6,14 @@ import {HeaderContainer} from "./style"
 import { Avatar } from "antd";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
 import { useProfileFetching } from "../../utils/employeeCustomFetchHook";
+import { isAuth } from "../../utils/helperFucntions";
 
 
 const Header = (props) => {
   const history = useHistory();
-  const [user] = useGlobalState("user");
 
   // Temporary fix
-  if (user?.token) {
+  if (isAuth()) {
     var { profileInfo, isProfileInfoLoading, isProfileInfoError } = useProfileFetching();
   }
 
@@ -27,7 +27,6 @@ const Header = (props) => {
 
   const handleLogOut = () => {
     localStorage.removeItem("user");
-    setGlobalState("user", null);
     history.push("/login");
   };
 
@@ -37,21 +36,17 @@ const Header = (props) => {
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
   }, [isDarkMode]);
 
-  // Set mode to true
-  const toggleDarkModeOn = () => {
-    setGlobalState('isDarkMode', true);
-  };
 
-  // Set mode to false
-  const toggleDarkModeOff = () => {
-    setGlobalState('isDarkMode', false);
+  // Set mode on/off
+  const toggleBtn = () => {
+    setGlobalState('isDarkMode', prev => !prev);
   };
 
 
   return (
     <HeaderContainer className="header">
-      <div className={`handburger flex items-center ${!user?.token && 'absolute right-0'}`}>
-        {user?.token && (
+      <div className={`handburger flex items-center ${!isAuth() && 'absolute right-0'}`}>
+        {isAuth() && (
           <>
             <button id="toggle_btn" onClick={handlesidebar}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#f97316" fill="none">
@@ -72,29 +67,28 @@ const Header = (props) => {
           </>
         )}
         <div className='flex ml-5 p-2 rounded-full'>
-          <div className='dark'>
-            <button title='dark' onClick={toggleDarkModeOn}>
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.5 13.0784C19.3003 13.7189 17.9301 14.0821 16.4751 14.0821C11.7491 14.0821 7.91792 10.2509 7.91792 5.52485C7.91792 4.06986 8.28105 2.69968 8.92163 1.5C4.66765 2.49698 1.5 6.31513 1.5 10.8731C1.5 16.1899 5.8101 20.5 11.1269 20.5C15.6849 20.5 19.503 17.3324 20.5 13.0784Z" stroke={`${!isDarkMode && '#f97316'}`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-          <div className='light'>
-            <button title='light' onClick={toggleDarkModeOff}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" stroke={`${isDarkMode && '#f97316'}`} stroke-width="1.5"/>
-                <path d="M12 2V3.5M12 20.5V22M19.0708 19.0713L18.0101 18.0106M5.98926 5.98926L4.9286 4.9286M22 12H20.5M3.5 12H2M19.0713 4.92871L18.0106 5.98937M5.98975 18.0107L4.92909 19.0714" stroke={`${isDarkMode && '#f97316'}`} stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
+          <div>
+            <button title={isDarkMode ? 'light' : 'Dark'} onClick={toggleBtn}>
+              {!isDarkMode ? (
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20.5 13.0784C19.3003 13.7189 17.9301 14.0821 16.4751 14.0821C11.7491 14.0821 7.91792 10.2509 7.91792 5.52485C7.91792 4.06986 8.28105 2.69968 8.92163 1.5C4.66765 2.49698 1.5 6.31513 1.5 10.8731C1.5 16.1899 5.8101 20.5 11.1269 20.5C15.6849 20.5 19.503 17.3324 20.5 13.0784Z" stroke={`${'#f97316'}`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> 
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" stroke={`${'#f97316'}`} stroke-width="1.5"/>
+                  <path d="M12 2V3.5M12 20.5V22M19.0708 19.0713L18.0101 18.0106M5.98926 5.98926L4.9286 4.9286M22 12H20.5M3.5 12H2M19.0713 4.92871L18.0106 5.98937M5.98975 18.0107L4.92909 19.0714" stroke={`${'#f97316'}`} stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              )}
             </button>
           </div>
         </div>
       </div>
-      <div className={`local-logo ${!user?.token && 'absolute left-auto'}`}>
+      <div className={`local-logo ${!isAuth() && 'absolute left-auto'}`}>
         <Link to="/app/main/dashboard" className="logo">
-          <img src={"https://peepaltree.co.uk/wp-content/uploads/sites/4/2023/12/Header-logo-800px.png"} width={200} height={200} alt="" />
+          <img src={"https://peepaltree.co.uk/wp-content/uploads/sites/4/2023/12/Header-logo-800px.png"} width={200} height={200} alt="logo" />
         </Link>
       </div>
-      {user?.token && (
+      {isAuth() && (
         <>
           <div className="profile-handle flex justify-center items-center">
             <div className="mr-8">

@@ -1,10 +1,9 @@
-// Get the token from localStorage
-const user = JSON.parse(localStorage.getItem('user'));
+import { isAuth } from "./helperFucntions";
 
 // Set the Authorization header with the token
 export const axiosConfig = {
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${user?.token}`,
+    'Authorization': `Bearer ${isAuth()}`,
   },
 };

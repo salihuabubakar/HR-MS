@@ -1,4 +1,5 @@
 import React from "react";
+import { useGlobalState } from "../context/GlobalState";
 
 let progressCal;
 let status = "";
@@ -210,4 +211,28 @@ export const styles = {
     cursor: 'pointer', 
     userSelect: 'none'
   }
+}
+
+export const userSateFn = () => {
+  return JSON.parse(localStorage.getItem('user'));
+}
+
+export const notAdmin = () => {
+  const user = userSateFn();
+  return user?.role !== 'admin';
+}
+
+export const isAdmin = () => {
+  const user = userSateFn();
+  return user?.role === 'admin'
+}
+
+export const isManager = () => {
+  const user = userSateFn();
+  return user?.role === 'manager'
+}
+
+export const isAuth = () => {
+  const user = userSateFn();
+  return user?.token
 }
