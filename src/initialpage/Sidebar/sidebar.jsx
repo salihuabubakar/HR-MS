@@ -308,185 +308,187 @@ const Sidebar = (props) => {
                   ""
                 )}
               </li>
-              <li className="submenu">
-                <a
-                  // data-bs-toggle="dropdown"
-                  className={isSideMenu == "servicework" ? "subdrop" : ""}
-                  onClick={() =>
-                    toggleSidebar(
-                      isSideMenu == "servicework" ? "" : "servicework"
-                    )
-                  }
-                  title='Residents'
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6.57757 15.4816C5.1628 16.324 1.45336 18.0441 3.71266 20.1966C4.81631 21.248 6.04549 22 7.59087 22H16.4091C17.9545 22 19.1837 21.248 20.2873 20.1966C22.5466 18.0441 18.8372 16.324 17.4224 15.4816C14.1048 13.5061 9.89519 13.5061 6.57757 15.4816Z" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M16.5 6.5C16.5 8.98528 14.4853 11 12 11C9.51472 11 7.5 8.98528 7.5 6.5C7.5 4.01472 9.51472 2 12 2C14.4853 2 16.5 4.01472 16.5 6.5Z" /* The above code appears to be a comment block in JavaScript React. It is using the ` */
-                    stroke="#625F5C" stroke-width="1.5"/>
-                  </svg>
-
-                  <span
-                    onClick={() => activeLink("ServiceWorker")}
-                    className={
-                      isActiveLink == "ServiceWorker" ? "noti-dot" : ""
+              {isAdmin() && (
+                <li className="submenu">
+                  <a
+                    // data-bs-toggle="dropdown"
+                    className={isSideMenu == "servicework" ? "subdrop" : ""}
+                    onClick={() =>
+                      toggleSidebar(
+                        isSideMenu == "servicework" ? "" : "servicework"
+                      )
                     }
+                    title='Residents'
                   >
-                    {" "}
-                    Residents
-                  </span>{" "}
-                  <span className="menu-arrow" />
-                </a>
-                {isSideMenu == "servicework" ? (
-                  <ul>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("service-worker")
-                            ? "active"
-                            : pathname.includes("service-worker-table")
-                            ? "active"
-                            : ""
-                        }
-                        to="/app/servicework/service-worker"
-                      >
-                        All Residents
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("request") ? "active" : ""
-                        }
-                        to="/app/servicework/request"
-                      >
-                        Request
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("visitor") ? "active" : ""
-                        }
-                        to="/app/servicework/visitor"
-                      >
-                        Visitor
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("complaint") ? "active" : ""
-                        }
-                        to="/app/servicework/complaint"
-                      >
-                        Complaint
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("document-type") ? "active" : ""
-                        }
-                        to="/app/servicework/document-type"
-                      >
-                        Document Type
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("legal-status") ? "active" : ""
-                        }
-                        to="/app/servicework/legal-status"
-                      >
-                        Legal Status
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("gp-type") ? "active" : ""
-                        }
-                        to="/app/servicework/gp-type"
-                      >
-                        GP Type
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("general-practice") ? "active" : ""
-                        }
-                        to="/app/servicework/general-practice"
-                      >
-                        GP
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("solicitor") ? "active" : ""
-                        }
-                        to="/app/servicework/solicitor"
-                      >
-                        Solicitor
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("school") ? "active" : ""
-                        }
-                        to="/app/servicework/school"
-                      >
-                        School
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("incident") ? "active" : ""
-                        }
-                        to="/app/servicework/incident"
-                      >
-                        Incident
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("misper") ? "active" : ""
-                        }
-                        to="/app/servicework/misper"
-                      >
-                        Misper
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("social-worker") ? "active" : ""
-                        }
-                        to="/app/servicework/social-worker"
-                      >
-                        Social Worker
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes("borough") ? "active" : ""
-                        }
-                        to="/app/servicework/borough"
-                      >
-                        Borough
-                      </Link>
-                    </li>
-                  </ul>
-                ) : (
-                  ""
-                )}
-              </li>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M6.57757 15.4816C5.1628 16.324 1.45336 18.0441 3.71266 20.1966C4.81631 21.248 6.04549 22 7.59087 22H16.4091C17.9545 22 19.1837 21.248 20.2873 20.1966C22.5466 18.0441 18.8372 16.324 17.4224 15.4816C14.1048 13.5061 9.89519 13.5061 6.57757 15.4816Z" stroke="#625F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M16.5 6.5C16.5 8.98528 14.4853 11 12 11C9.51472 11 7.5 8.98528 7.5 6.5C7.5 4.01472 9.51472 2 12 2C14.4853 2 16.5 4.01472 16.5 6.5Z" /* The above code appears to be a comment block in JavaScript React. It is using the ` */
+                      stroke="#625F5C" stroke-width="1.5"/>
+                    </svg>
+                  
+                    <span
+                      onClick={() => activeLink("ServiceWorker")}
+                      className={
+                        isActiveLink == "ServiceWorker" ? "noti-dot" : ""
+                      }
+                    >
+                      {" "}
+                      Residents
+                    </span>{" "}
+                    <span className="menu-arrow" />
+                  </a>
+                  {isSideMenu == "servicework" ? (
+                    <ul>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("service-worker")
+                              ? "active"
+                              : pathname.includes("service-worker-table")
+                              ? "active"
+                              : ""
+                          }
+                          to="/app/servicework/service-worker"
+                        >
+                          All Residents
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("request") ? "active" : ""
+                          }
+                          to="/app/servicework/request"
+                        >
+                          Request
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("visitor") ? "active" : ""
+                          }
+                          to="/app/servicework/visitor"
+                        >
+                          Visitor
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("complaint") ? "active" : ""
+                          }
+                          to="/app/servicework/complaint"
+                        >
+                          Complaint
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("document-type") ? "active" : ""
+                          }
+                          to="/app/servicework/document-type"
+                        >
+                          Document Type
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("legal-status") ? "active" : ""
+                          }
+                          to="/app/servicework/legal-status"
+                        >
+                          Legal Status
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("gp-type") ? "active" : ""
+                          }
+                          to="/app/servicework/gp-type"
+                        >
+                          GP Type
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("general-practice") ? "active" : ""
+                          }
+                          to="/app/servicework/general-practice"
+                        >
+                          GP
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("solicitor") ? "active" : ""
+                          }
+                          to="/app/servicework/solicitor"
+                        >
+                          Solicitor
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("school") ? "active" : ""
+                          }
+                          to="/app/servicework/school"
+                        >
+                          School
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("incident") ? "active" : ""
+                          }
+                          to="/app/servicework/incident"
+                        >
+                          Incident
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("misper") ? "active" : ""
+                          }
+                          to="/app/servicework/misper"
+                        >
+                          Misper
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("social-worker") ? "active" : ""
+                          }
+                          to="/app/servicework/social-worker"
+                        >
+                          Social Worker
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("borough") ? "active" : ""
+                          }
+                          to="/app/servicework/borough"
+                        >
+                          Borough
+                        </Link>
+                      </li>
+                    </ul>
+                  ) : (
+                    ""
+                  )}
+                </li>
+              )}
               {/* <li className="menu-title">
                 <span>HR</span>
               </li>

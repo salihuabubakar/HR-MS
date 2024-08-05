@@ -13,6 +13,7 @@ import "../Employees/Employees/style.css"
 import { useSearch } from '../../utils/Hooks/searchFunctionCustomHook';
 import SearchComponent from "../../_components/searchComponent";
 import AllHouse from "./allhouse";
+import { isAdmin } from '../../utils/helperFucntions';
 
 const Accomodations = () => {
   const [tab, setTab] = useState("allHouse" || "houseList");
@@ -101,9 +102,11 @@ const Accomodations = () => {
                       </ul>
                     </div>
                     <div className="col-auto float-end ml-auto">
-                      <a className="btn add-btn" onClick={() => setGlobalState("showModal", true)}>
-                        <i className="fa fa-plus" /> Add House
-                      </a>
+                      {isAdmin() && (
+                        <a className="btn add-btn" onClick={() => setGlobalState("showModal", true)}>
+                          <i className="fa fa-plus" /> Add House
+                        </a>
+                      )}
                       <div className="view-icons">
                         <a
                           onClick={() => setTab("allHouse")}

@@ -17,6 +17,7 @@ import SearchComponent from "../../_components/searchComponent";
 import { useSearch } from "../../utils/Hooks/searchFunctionCustomHook";
 import { highlightSearchQuery } from "../../utils/highlightSearchQuery";
 import { TableDiv } from "../../_components/modelbox/styles";
+import { isAdmin } from "../../utils/helperFucntions";
 
 const TaskManagerTable = () => {
   const { taskData, isTaskLoading } = useTaskFetching();
@@ -436,11 +437,13 @@ const TaskManagerTable = () => {
                   <li style={{color: `${isDarkMode ? '#625F5C' : '#6C757D'}`}} className="breadcrumb-item">Task Manager</li>
                 </ul>
               </div>
-              <div className="col-auto float-end ml-auto">
-                <a className="btn add-btn" onClick={() => setGlobalState("showTaskModal", true)}>
-                  <i className="fa fa-plus" /> Add Task
-                </a>
-              </div>
+              {isAdmin() && (
+                <div className="col-auto float-end ml-auto">
+                  <a className="btn add-btn" onClick={() => setGlobalState("showTaskModal", true)}>
+                    <i className="fa fa-plus" /> Add Task
+                  </a>
+                </div>
+              )}
             </div>
           </div>
           <SearchComponent

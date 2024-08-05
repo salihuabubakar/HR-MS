@@ -9,6 +9,7 @@ import { useDataFetching, useHouseFetching, useResidentFetching, useTaskFetching
 import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Bar, Line, Tooltip, Legend, LineChart } from 'recharts';
 import { useGlobalState } from '../../../context/GlobalState.js';
 import { SmallSingleLineLoader } from '../../../_components/Loader.jsx';
+import { isAdmin } from '../../../utils/helperFucntions.js';
 
 const AdminDashboard = () => {
   
@@ -29,39 +30,42 @@ const AdminDashboard = () => {
   });
 
   const [isDarkMode] = useGlobalState("isDarkMode", isDarkMode);
-  const [user] = useGlobalState("user");
 
   const {data: allEmployee, isLoading: isEmployeeLoading} = useDataFetching(); 
   const {houseData, isHouseDataLoading} = useHouseFetching();
   const {residentData, isResidentLoading} = useResidentFetching();
   const { taskData, isTaskLoading } = useTaskFetching();
 
-  const barchartdata = [
+  const getBarChartData = () => {
+  const data = [
     {
       name: 'Total Task',
-      Total: taskData?.length
-      ? taskData?.length
-      : "0",
+      Total: taskData?.length ? taskData?.length : "0",
     },
     {
       name: 'Total Resident',
-      Total: residentData?.length
-      ? residentData?.length
-      : "0",
+      Total: residentData?.length ? residentData?.length : "0",
     },
     {
       name: 'Total Employees',
-      Total: allEmployee?.length
-      ? allEmployee?.length
-      : "0",
+      Total: allEmployee?.length ? allEmployee?.length : "0",
     },
     {
       name: 'Total House',
-      Total: houseData?.length
-      ? houseData?.length
-      : "0",
+      Total: houseData?.length ? houseData?.length : "0",
     },
   ];
+
+  if (!isAdmin()) {
+    return data.filter(
+      item => !['Total House', 'Total Resident', 'Total Employees'].includes(item.name)
+    );
+  }
+
+  return data;
+};
+
+const barchartdata = getBarChartData();
 
   return (
     <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
@@ -69,7 +73,7 @@ const AdminDashboard = () => {
       <Sidebar />
       <div className="page-wrapper">
         <Helmet>
-          <title>Dashboard - Peepal Tree HRMS</title>
+          <title>Dashboard - Peepal Tree</title>
           <meta name="description" content="Dashboard" />
         </Helmet>
         {/* Page Content */}
@@ -103,7 +107,7 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
-            {user?.role === 'admin' && (
+            {isAdmin() && (
               <>
                 <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3 mb-4">
                   <div style={{ backgroundColor: `${isDarkMode ? '#110C08' : 'white'}`}} class="container mx-auto px-4 py-8 border border-gray-300 rounded-md shadow-md card-body">
