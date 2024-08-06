@@ -5,8 +5,9 @@ import { Popup, Segment  } from "semantic-ui-react";
 import {HeaderContainer} from "./style"
 import { Avatar } from "antd";
 import { setGlobalState, useGlobalState } from "../../context/GlobalState";
-import { useProfileFetching } from "../../utils/employeeCustomFetchHook";
+import { useProfileFetching, useProfileImageFetching } from "../../utils/employeeCustomFetchHook";
 import { isAuth } from "../../utils/helperFucntions";
+import DefaultImage from "../../assets/img/placeholder.jpg";
 
 
 const Header = (props) => {
@@ -15,6 +16,7 @@ const Header = (props) => {
   // Temporary fix
   if (isAuth()) {
     var { profileInfo, isProfileInfoLoading, isProfileInfoError } = useProfileFetching();
+    var { profileImageInfo } = useProfileImageFetching();
   }
 
   const handlesidebar = () => {
@@ -41,6 +43,8 @@ const Header = (props) => {
   const toggleBtn = () => {
     setGlobalState('isDarkMode', prev => !prev);
   };
+
+  const photo = profileImageInfo?.profile_image.url;
 
 
   return (
@@ -137,7 +141,7 @@ const Header = (props) => {
               }
               trigger={
                   <a className="text-[#f97316]">
-                    <Avatar icon={<img src="http://peepaltree-4a1c3cfe9b46.herokuapp.com/media/employees/02fe99ea-d5ca-4e9b-bbf8-453ddd62f64b.jpg" alt="user" width={40} height={40} />} />
+                    <Avatar icon={<img src={photo ? photo : DefaultImage } alt="user" width={40} height={40} />} />
                   </a>
               }
             />

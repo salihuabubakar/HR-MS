@@ -1508,3 +1508,20 @@ export const useProfileFetching = () => {
   return { profileInfo, isProfileInfoLoading, isProfileInfoError };
 };
 
+// Get profile image
+export const useProfileImageFetching = () => {
+  const fetchData = async () => {
+    const response = await axios.get(`${Base2Url}/users/profile/profile_upload`, axiosConfig);
+    return response.data;
+  };
+  const queryClient = useQueryClient();
+
+  const { data: profileImageInfo, isLoading: isProfileImageInfoLoading, error: isProfileImageInfoError } = useQuery("profileImageData", fetchData, {
+    onSuccess: () => {
+      // Invalidate queries that depend on profileImageData
+      queryClient.invalidateQueries(["profileImageData"]);
+    },
+  });
+
+  return { profileImageInfo, isProfileImageInfoLoading, isProfileImageInfoError };
+};
