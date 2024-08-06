@@ -6,7 +6,7 @@ import Sidebar from "../../../initialpage/Sidebar/sidebar";
 import { useGlobalState, setGlobalState } from '../../../context/GlobalState';
 import DefaultImage from "../../../assets/img/placeholder.jpg";
 import { DivContainer } from '../../TaskManagement/style';
-import { useProfileFetching } from '../../../utils/employeeCustomFetchHook';
+import { useProfileFetching, useProfileImageFetching } from '../../../utils/employeeCustomFetchHook';
 import { LineLoader, AvatarLoader, Loader2 } from '../../../_components/Loader';
 import { Popup, Segment  } from "semantic-ui-react";
 import { BillCard } from '../../Employees/Employees/styles';
@@ -18,11 +18,13 @@ import { isAdmin, isManager } from '../../../utils/helperFucntions';
 const Profile = () => {
 
   const { profileInfo, isProfileInfoLoading, isProfileInfoError } = useProfileFetching();
+  const { profileImageInfo, isProfileImageInfoLoading, isProfileImageInfoError } = useProfileImageFetching();
 
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
+
 
   const first_name = profileInfo?.first_name;
   const other_name = profileInfo?.other_name;
@@ -30,7 +32,7 @@ const Profile = () => {
   const username = profileInfo?.username;
   const role = profileInfo?.role;
   const employee_id = profileInfo?.employee_id;
-  const photo = '';
+  const photo = profileImageInfo?.profile_image.url;
 
   const [isDarkMode] = useGlobalState("isDarkMode");
 
