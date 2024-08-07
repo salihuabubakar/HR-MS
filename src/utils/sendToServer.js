@@ -3792,6 +3792,8 @@ export const forgot_password = async (state, { type, payload }) => {
 
 // Add - Update - Profile Image
 export const add_update_profile_image = async (state, { type, payload }) => {
+
+  console.log("payload--", payload);
   switch (type) {
     case "add":
       try {
@@ -3801,6 +3803,8 @@ export const add_update_profile_image = async (state, { type, payload }) => {
             'Authorization': `${axiosConfig?.headers?.Authorization}`
           },
         });
+
+        console.log("response--", response);
 
         // Check the response status
         if (response.status === 201) {
