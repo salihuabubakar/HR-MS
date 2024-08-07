@@ -75,7 +75,7 @@ const EditProfile = ({ id, img_url, dispatchProfileImage }) => {
                               type="file"
                               accept="image/*"
                               onChange={imageOnChange}
-                              name='photo'
+                              name='upload_profile'
                             />
                           </div>
                         </div>
