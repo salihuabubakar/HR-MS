@@ -56,7 +56,7 @@ const EditProfile = ({ id, img_url, dispatchProfileImage }) => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form onSubmit={handleSubmit}>
+                  <form method='post' encType='multipart/form-data' onSubmit={handleSubmit}>
                     <div className='row'>
                       <div className="col-sm-12">
                         <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
