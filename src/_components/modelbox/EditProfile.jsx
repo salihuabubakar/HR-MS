@@ -12,12 +12,16 @@ const EditProfile = ({ id, img_url, dispatchProfileImage }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (photo) {
+      formData.append('photo', photo);
+    }
 
-    // if (id) {
-    //   dispatchProfileImage({ type: "update", payload: formData });
-    // } else {
-      dispatchProfileImage({ type: "add", payload: formData.append('photo', photo) });
-    // }
+
+    if (id) {
+      dispatchProfileImage({ type: "update", payload: formData });
+    } else {
+      dispatchProfileImage({ type: "add", payload: formData });
+    }
 
     setGlobalState("showModal", false);
   };
@@ -52,7 +56,7 @@ const EditProfile = ({ id, img_url, dispatchProfileImage }) => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form encType="multipart/form-data" onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit}>
                     <div className='row'>
                       <div className="col-sm-12">
                         <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
@@ -75,7 +79,7 @@ const EditProfile = ({ id, img_url, dispatchProfileImage }) => {
                               type="file"
                               accept="image/*"
                               onChange={imageOnChange}
-                              name='upload_profile'
+                              name='photo'
                             />
                           </div>
                         </div>
