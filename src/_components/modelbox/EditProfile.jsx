@@ -12,13 +12,11 @@ const EditProfile = ({ id, img_url, dispatchProfileImage }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    formData.append('photo', photo);
-
 
     // if (id) {
     //   dispatchProfileImage({ type: "update", payload: formData });
     // } else {
-      dispatchProfileImage({ type: "add", payload: formData });
+      dispatchProfileImage({ type: "add", payload: formData.append('photo', photo) });
     // }
 
     setGlobalState("showModal", false);
