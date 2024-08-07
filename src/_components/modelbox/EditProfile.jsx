@@ -15,11 +15,11 @@ const EditProfile = ({ id, img_url, dispatchProfileImage }) => {
     formData.append('photo', photo);
 
 
-    if (id) {
-      dispatchProfileImage({ type: "update", payload: formData });
-    } else {
+    // if (id) {
+    //   dispatchProfileImage({ type: "update", payload: formData });
+    // } else {
       dispatchProfileImage({ type: "add", payload: formData });
-    }
+    // }
 
     setGlobalState("showModal", false);
   };

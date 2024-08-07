@@ -3809,21 +3809,21 @@ export const add_update_profile_image = async (state, { type, payload }) => {
         toast.error(JSON.stringify(error.response.data));
       }
 
-    case "update":
-      try {
-        const response = await axios.put(`${Base2Url}/users/profile/profile_upload_update`, payload, axiosConfig);
+    // case "update":
+    //   try {
+    //     const response = await axios.put(`${Base2Url}/users/profile/profile_upload_update`, payload, axiosConfig);
 
-        // Check the response status
-        if (response.status === 200) {
-          toast.success("Profile Image Updated", {
-            autoClose: 1500,
-          });
-          return;
-        }
-      } catch (error) {
-        console.error("Error occurred while updating profile iamge:", error);
-        toast.error(JSON.stringify(error.response.data));
-      }
+    //     // Check the response status
+    //     if (response.status === 200) {
+    //       toast.success("Profile Image Updated", {
+    //         autoClose: 1500,
+    //       });
+    //       return;
+    //     }
+    //   } catch (error) {
+    //     console.error("Error occurred while updating profile iamge:", error);
+    //     toast.error(JSON.stringify(error.response.data));
+    //   }
     default:
       throw new Error();
   }
