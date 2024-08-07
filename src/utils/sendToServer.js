@@ -3831,7 +3831,7 @@ export const add_update_profile_image = async (state, { type, payload }) => {
           return;
         }
       } catch (error) {
-        console.error("Error occurred while updating profile iamge:", error);
+        console.error("Error occurred while updating profile image:", error);
         toast.error(JSON.stringify(error.response.data));
       }
     default:
