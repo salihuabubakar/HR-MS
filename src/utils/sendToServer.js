@@ -3,6 +3,7 @@ import axios from "axios";
 import { BaseUrl, Base2Url } from "./baseUrl";
 import { toast } from "react-toastify";
 import { setGlobalState } from "../context/GlobalState";
+import { axiosConfig } from "./getUserToken";
 
 /**
  * This JavaScript function handles adding, updating, and deleting employee data using axios and toast
@@ -3783,6 +3784,45 @@ export const forgot_password = async (state, { type, payload }) => {
         setGlobalState("loadingState", false);
         console.error("Error occurred while sending link:", error);
         toast.error(error.response.data.message);
+      }
+    default:
+      throw new Error();
+  }
+};
+
+// Add - Update - Profile Image
+export const add_update_profile_image = async (state, { type, payload }) => {
+  switch (type) {
+    case "add":
+      try {
+        const response = await axios.post(`${Base2Url}/users/profile/profile_upload`, payload, axiosConfig);
+
+        // Check the response status
+        if (response.status === 201) {
+          toast.success("Profile Image Added", {
+            autoClose: 1500,
+          });
+          return;
+        } 
+      } catch (error) {
+        console.error("Error occurred while posting Profile Image:", error);
+        toast.error(JSON.stringify(error.response.data));
+      }
+
+    case "update":
+      try {
+        const response = await axios.put(`${Base2Url}/users/profile/profile_upload_update`, payload, axiosConfig);
+
+        // Check the response status
+        if (response.status === 200) {
+          toast.success("Profile Image Updated", {
+            autoClose: 1500,
+          });
+          return;
+        }
+      } catch (error) {
+        console.error("Error occurred while updating profile iamge:", error);
+        toast.error(JSON.stringify(error.response.data));
       }
     default:
       throw new Error();

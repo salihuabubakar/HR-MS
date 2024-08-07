@@ -14,17 +14,22 @@ import { Wrapper } from '../../ServiceWork/style';
 import { ProgressDiv, ProgressSpan } from '../../../utils/helperFucntions';
 import NoAvailableData from "../../../_components/noAvailableData";
 import { isAdmin, isManager } from '../../../utils/helperFucntions';
+import EditProfile from '../../../_components/modelbox/EditProfile';
+import { add_update_profile_image } from '../../../utils/sendToServer';
 
 const Profile = () => {
 
   const { profileInfo, isProfileInfoLoading, isProfileInfoError } = useProfileFetching();
   const { profileImageInfo, isProfileImageInfoLoading, isProfileImageInfoError } = useProfileImageFetching();
 
+  const [profileImageState, dispatchProfileImage] = useReducer(add_update_profile_image, []);
+
   const [menu, setMenu] = useState(false);
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
 
+  const [showModal] = useGlobalState("showModal");
 
   const first_name = profileInfo?.first_name;
   const other_name = profileInfo?.other_name;
@@ -65,12 +70,20 @@ const Profile = () => {
               <div className="row">
                 <div className="col-md-12">
                   <div className="profile-view">
+                      <div className="">
+                        <a
+                          className="edit-icon"
+                          onClick={() => setGlobalState("showModal", true)}
+                        >
+                          <i className="fa fa-plus" />
+                        </a>
+				            	</div>
                     <div className="profile-img-wrap bg-transparent">
                       {isProfileInfoLoading ? (
                         <AvatarLoader />
                       ) : (
                         <>
-                          <img style={{ width: '100px', height: '100px'}} alt="" src={photo ? photo : DefaultImage} />
+                          <img style={{ width: '100px', height: '100px'}} alt="profile-pic" src={photo ? photo : DefaultImage} />
                         </>
                       )}
                     </div>
@@ -482,6 +495,14 @@ const Profile = () => {
         </div>
         {/* /Page Content */}
       </div>
+
+      {showModal && (
+        <EditProfile 
+          id={profileImageInfo?._id} 
+          img_url={photo}
+          dispatchProfileImage={dispatchProfileImage}
+        />
+      )}
     </DivContainer>
   );
 }
