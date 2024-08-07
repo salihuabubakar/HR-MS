@@ -3795,7 +3795,12 @@ export const add_update_profile_image = async (state, { type, payload }) => {
   switch (type) {
     case "add":
       try {
-        const response = await axios.post(`${Base2Url}/users/profile/profile_upload`, payload, axiosConfig);
+        const response = await axios.post(`${Base2Url}/users/profile/profile_upload`, payload, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `${axiosConfig?.headers?.Authorization}`
+          },
+        });
 
         // Check the response status
         if (response.status === 201) {
@@ -3811,7 +3816,12 @@ export const add_update_profile_image = async (state, { type, payload }) => {
 
     case "update":
       try {
-        const response = await axios.put(`${Base2Url}/users/profile/profile_upload_update`, payload, axiosConfig);
+        const response = await axios.put(`${Base2Url}/users/profile/profile_upload_update`, payload, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `${axiosConfig?.headers?.Authorization}`
+          },
+        });
 
         // Check the response status
         if (response.status === 200) {

@@ -12,7 +12,9 @@ const EditProfile = ({ id, img_url, dispatchProfileImage }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    formData.append('photo', photo);
+    if (photo) {
+      formData.append('photo', photo);
+    }
 
 
     if (id) {
@@ -54,7 +56,7 @@ const EditProfile = ({ id, img_url, dispatchProfileImage }) => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form encType="multipart/form-data" onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit}>
                     <div className='row'>
                       <div className="col-sm-12">
                         <div style={{ borderRadius: "5px" }} className="profile-img-wrap edit-img">
